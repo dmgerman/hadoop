@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdds.scm.chillmode
+DECL|package|org.apache.hadoop.hdds.scm.safemode
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|chillmode
+name|safemode
 package|;
 end_package
 
@@ -287,14 +287,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class tests SCM Chill mode with pipeline rules.  */
+comment|/**  * This class tests SCM Safe mode with pipeline rules.  */
 end_comment
 
 begin_class
-DECL|class|TestSCMChillModeWithPipelineRules
+DECL|class|TestSCMSafeModeWithPipelineRules
 specifier|public
 class|class
-name|TestSCMChillModeWithPipelineRules
+name|TestSCMSafeModeWithPipelineRules
 block|{
 DECL|field|cluster
 specifier|private
@@ -368,7 +368,7 @@ name|setBoolean
 argument_list|(
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_PIPELINE_AVAILABILITY_CHECK
+name|HDDS_SCM_SAFEMODE_PIPELINE_AVAILABILITY_CHECK
 argument_list|,
 literal|true
 argument_list|)
@@ -379,7 +379,7 @@ name|set
 argument_list|(
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_WAIT_TIME_AFTER_CHILL_MODE_EXIT
+name|HDDS_SCM_WAIT_TIME_AFTER_SAFE_MODE_EXIT
 argument_list|,
 literal|"10s"
 argument_list|)
@@ -449,10 +449,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testScmChillMode ()
+DECL|method|testScmSafeMode ()
 specifier|public
 name|void
-name|testScmChillMode
+name|testScmSafeMode
 parameter_list|()
 throws|throws
 name|Exception
@@ -583,15 +583,15 @@ block|}
 block|}
 argument_list|)
 expr_stmt|;
-name|SCMChillModeManager
-name|scmChillModeManager
+name|SCMSafeModeManager
+name|scmSafeModeManager
 init|=
 name|cluster
 operator|.
 name|getStorageContainerManager
 argument_list|()
 operator|.
-name|getScmChillModeManager
+name|getScmSafeModeManager
 argument_list|()
 decl_stmt|;
 comment|// Ceil(0.1 * 2) is 1, as one pipeline is healthy healthy pipeline rule is
@@ -602,9 +602,9 @@ name|waitFor
 argument_list|(
 parameter_list|()
 lambda|->
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getHealthyPipelineChillModeRule
+name|getHealthyPipelineSafeModeRule
 argument_list|()
 operator|.
 name|validate
@@ -624,9 +624,9 @@ argument_list|(
 parameter_list|()
 lambda|->
 operator|!
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getOneReplicaPipelineChillModeRule
+name|getOneReplicaPipelineSafeModeRule
 argument_list|()
 operator|.
 name|validate
@@ -646,7 +646,7 @@ operator|.
 name|getStorageContainerManager
 argument_list|()
 operator|.
-name|isInChillMode
+name|isInSafeMode
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -694,9 +694,9 @@ name|waitFor
 argument_list|(
 parameter_list|()
 lambda|->
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getOneReplicaPipelineChillModeRule
+name|getOneReplicaPipelineSafeModeRule
 argument_list|()
 operator|.
 name|validate
@@ -714,9 +714,9 @@ argument_list|(
 parameter_list|()
 lambda|->
 operator|!
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getInChillMode
+name|getInSafeMode
 argument_list|()
 argument_list|,
 literal|1000
@@ -724,7 +724,7 @@ argument_list|,
 literal|60000
 argument_list|)
 expr_stmt|;
-comment|// As after chillmode wait time is not completed, we should have total
+comment|// As after safemode wait time is not completed, we should have total
 comment|// pipeline's as original count 6(1 node pipelines) + 2 (3 node pipeline)
 name|Assert
 operator|.

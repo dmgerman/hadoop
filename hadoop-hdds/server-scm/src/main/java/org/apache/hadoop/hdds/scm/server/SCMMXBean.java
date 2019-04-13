@@ -99,16 +99,16 @@ argument_list|>
 name|getContainerReport
 parameter_list|()
 function_decl|;
-comment|/**    * Returns chill mode status.    * @return boolean    */
-DECL|method|isInChillMode ()
+comment|/**    * Returns safe mode status.    * @return boolean    */
+DECL|method|isInSafeMode ()
 name|boolean
-name|isInChillMode
+name|isInSafeMode
 parameter_list|()
 function_decl|;
-comment|/**    * Returns live chill mode container threshold.    * @return String    */
-DECL|method|getChillModeCurrentContainerThreshold ()
+comment|/**    * Returns live safe mode container threshold.    * @return String    */
+DECL|method|getSafeModeCurrentContainerThreshold ()
 name|double
-name|getChillModeCurrentContainerThreshold
+name|getSafeModeCurrentContainerThreshold
 parameter_list|()
 function_decl|;
 comment|/**    * Returns the container count in all states.    */

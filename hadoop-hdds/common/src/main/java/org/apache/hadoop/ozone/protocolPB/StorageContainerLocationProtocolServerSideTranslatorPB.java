@@ -82,7 +82,7 @@ name|proto
 operator|.
 name|StorageContainerLocationProtocolProtos
 operator|.
-name|InChillModeRequestProto
+name|InSafeModeRequestProto
 import|;
 end_import
 
@@ -102,7 +102,7 @@ name|proto
 operator|.
 name|StorageContainerLocationProtocolProtos
 operator|.
-name|InChillModeResponseProto
+name|InSafeModeResponseProto
 import|;
 end_import
 
@@ -122,7 +122,7 @@ name|proto
 operator|.
 name|StorageContainerLocationProtocolProtos
 operator|.
-name|ForceExitChillModeRequestProto
+name|ForceExitSafeModeRequestProto
 import|;
 end_import
 
@@ -142,7 +142,7 @@ name|proto
 operator|.
 name|StorageContainerLocationProtocolProtos
 operator|.
-name|ForceExitChillModeResponseProto
+name|ForceExitSafeModeResponseProto
 import|;
 end_import
 
@@ -1666,15 +1666,15 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|inChillMode ( RpcController controller, InChillModeRequestProto request)
+DECL|method|inSafeMode ( RpcController controller, InSafeModeRequestProto request)
 specifier|public
-name|InChillModeResponseProto
-name|inChillMode
+name|InSafeModeResponseProto
+name|inSafeMode
 parameter_list|(
 name|RpcController
 name|controller
 parameter_list|,
-name|InChillModeRequestProto
+name|InSafeModeRequestProto
 name|request
 parameter_list|)
 throws|throws
@@ -1689,7 +1689,7 @@ name|TracingUtil
 operator|.
 name|importAndCreateScope
 argument_list|(
-literal|"inChillMode"
+literal|"inSafeMode"
 argument_list|,
 name|request
 operator|.
@@ -1699,16 +1699,16 @@ argument_list|)
 init|)
 block|{
 return|return
-name|InChillModeResponseProto
+name|InSafeModeResponseProto
 operator|.
 name|newBuilder
 argument_list|()
 operator|.
-name|setInChillMode
+name|setInSafeMode
 argument_list|(
 name|impl
 operator|.
-name|inChillMode
+name|inSafeMode
 argument_list|()
 argument_list|)
 operator|.
@@ -1733,15 +1733,15 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|forceExitChillMode ( RpcController controller, ForceExitChillModeRequestProto request)
+DECL|method|forceExitSafeMode ( RpcController controller, ForceExitSafeModeRequestProto request)
 specifier|public
-name|ForceExitChillModeResponseProto
-name|forceExitChillMode
+name|ForceExitSafeModeResponseProto
+name|forceExitSafeMode
 parameter_list|(
 name|RpcController
 name|controller
 parameter_list|,
-name|ForceExitChillModeRequestProto
+name|ForceExitSafeModeRequestProto
 name|request
 parameter_list|)
 throws|throws
@@ -1756,7 +1756,7 @@ name|TracingUtil
 operator|.
 name|importAndCreateScope
 argument_list|(
-literal|"forceExitChillMode"
+literal|"forceExitSafeMode"
 argument_list|,
 name|request
 operator|.
@@ -1766,16 +1766,16 @@ argument_list|)
 init|)
 block|{
 return|return
-name|ForceExitChillModeResponseProto
+name|ForceExitSafeModeResponseProto
 operator|.
 name|newBuilder
 argument_list|()
 operator|.
-name|setExitedChillMode
+name|setExitedSafeMode
 argument_list|(
 name|impl
 operator|.
-name|forceExitChillMode
+name|forceExitSafeMode
 argument_list|()
 argument_list|)
 operator|.

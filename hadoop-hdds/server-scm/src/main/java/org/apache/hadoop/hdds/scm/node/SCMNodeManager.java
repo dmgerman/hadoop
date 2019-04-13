@@ -782,7 +782,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Entering startup chill mode."
+literal|"Entering startup safe mode."
 argument_list|)
 expr_stmt|;
 name|registerMXBean

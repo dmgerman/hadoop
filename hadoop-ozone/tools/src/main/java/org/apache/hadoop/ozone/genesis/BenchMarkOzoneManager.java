@@ -146,9 +146,9 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|chillmode
+name|safemode
 operator|.
-name|SCMChillModeManager
+name|SCMSafeModeManager
 import|;
 end_import
 
@@ -754,12 +754,12 @@ name|fireEvent
 argument_list|(
 name|SCMEvents
 operator|.
-name|CHILL_MODE_STATUS
+name|SAFE_MODE_STATUS
 argument_list|,
 operator|new
-name|SCMChillModeManager
+name|SCMSafeModeManager
 operator|.
-name|ChillModeStatus
+name|SafeModeStatus
 argument_list|(
 literal|false
 argument_list|)

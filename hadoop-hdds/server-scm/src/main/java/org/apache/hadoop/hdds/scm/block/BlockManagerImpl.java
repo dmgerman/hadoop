@@ -280,9 +280,9 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|chillmode
+name|safemode
 operator|.
-name|ChillModePrecheck
+name|SafeModePrecheck
 import|;
 end_import
 
@@ -660,10 +660,10 @@ specifier|private
 name|ObjectName
 name|mxBean
 decl_stmt|;
-DECL|field|chillModePrecheck
+DECL|field|safeModePrecheck
 specifier|private
-name|ChillModePrecheck
-name|chillModePrecheck
+name|SafeModePrecheck
+name|safeModePrecheck
 decl_stmt|;
 comment|/**    * Constructor.    *    * @param conf - configuration.    * @param scm    * @throws IOException    */
 DECL|method|BlockManagerImpl (final Configuration conf, final StorageContainerManager scm)
@@ -820,10 +820,10 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
-name|chillModePrecheck
+name|safeModePrecheck
 operator|=
 operator|new
-name|ChillModePrecheck
+name|SafeModePrecheck
 argument_list|(
 name|conf
 argument_list|)
@@ -916,7 +916,7 @@ name|ScmOps
 operator|.
 name|allocateBlock
 argument_list|,
-name|chillModePrecheck
+name|safeModePrecheck
 argument_list|)
 expr_stmt|;
 if|if
@@ -1254,7 +1254,7 @@ name|ScmOps
 operator|.
 name|deleteBlock
 argument_list|,
-name|chillModePrecheck
+name|safeModePrecheck
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -1506,38 +1506,38 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setChillModeStatus (boolean chillModeStatus)
+DECL|method|setSafeModeStatus (boolean safeModeStatus)
 specifier|public
 name|void
-name|setChillModeStatus
+name|setSafeModeStatus
 parameter_list|(
 name|boolean
-name|chillModeStatus
+name|safeModeStatus
 parameter_list|)
 block|{
 name|this
 operator|.
-name|chillModePrecheck
+name|safeModePrecheck
 operator|.
-name|setInChillMode
+name|setInSafeMode
 argument_list|(
-name|chillModeStatus
+name|safeModeStatus
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Returns status of scm chill mode determined by CHILL_MODE_STATUS event.    * */
-DECL|method|isScmInChillMode ()
+comment|/**    * Returns status of scm safe mode determined by SAFE_MODE_STATUS event.    * */
+DECL|method|isScmInSafeMode ()
 specifier|public
 name|boolean
-name|isScmInChillMode
+name|isScmInSafeMode
 parameter_list|()
 block|{
 return|return
 name|this
 operator|.
-name|chillModePrecheck
+name|safeModePrecheck
 operator|.
-name|isInChillMode
+name|isInSafeMode
 argument_list|()
 return|;
 block|}

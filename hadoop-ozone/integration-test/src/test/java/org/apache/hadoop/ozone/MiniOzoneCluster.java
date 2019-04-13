@@ -325,10 +325,10 @@ name|int
 name|timeoutInMs
 parameter_list|)
 function_decl|;
-comment|/**    * Waits/blocks till the cluster is out of chill mode.    *    * @throws TimeoutException TimeoutException In case of timeout    * @throws InterruptedException In case of interrupt while waiting    */
-DECL|method|waitTobeOutOfChillMode ()
+comment|/**    * Waits/blocks till the cluster is out of safe mode.    *    * @throws TimeoutException TimeoutException In case of timeout    * @throws InterruptedException In case of interrupt while waiting    */
+DECL|method|waitTobeOutOfSafeMode ()
 name|void
-name|waitTobeOutOfChillMode
+name|waitTobeOutOfSafeMode
 parameter_list|()
 throws|throws
 name|TimeoutException

@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdds.scm.chillmode
+DECL|package|org.apache.hadoop.hdds.scm.safemode
 package|package
 name|org
 operator|.
@@ -16,12 +16,12 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|chillmode
+name|safemode
 package|;
 end_package
 
 begin_comment
-comment|/**  * SCM Chill mode tests.  */
+comment|/**  * SCM Safe mode tests.  */
 end_comment
 
 end_unit

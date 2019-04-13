@@ -324,9 +324,9 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|chillmode
+name|safemode
 operator|.
-name|ChillModeHandler
+name|SafeModeHandler
 import|;
 end_import
 
@@ -342,9 +342,9 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|chillmode
+name|safemode
 operator|.
-name|SCMChillModeManager
+name|SCMSafeModeManager
 import|;
 end_import
 
@@ -1754,10 +1754,10 @@ name|Long
 argument_list|>
 name|commandWatcherLeaseManager
 decl_stmt|;
-DECL|field|scmChillModeManager
+DECL|field|scmSafeModeManager
 specifier|private
-name|SCMChillModeManager
-name|scmChillModeManager
+name|SCMSafeModeManager
+name|scmSafeModeManager
 decl_stmt|;
 DECL|field|certificateServer
 specifier|private
@@ -1775,11 +1775,11 @@ specifier|final
 name|OzoneConfiguration
 name|configuration
 decl_stmt|;
-DECL|field|chillModeHandler
+DECL|field|safeModeHandler
 specifier|private
 specifier|final
-name|ChillModeHandler
-name|chillModeHandler
+name|SafeModeHandler
+name|safeModeHandler
 decl_stmt|;
 DECL|field|scmContainerMetrics
 specifier|private
@@ -2035,7 +2035,7 @@ init|=
 operator|new
 name|PipelineReportHandler
 argument_list|(
-name|scmChillModeManager
+name|scmSafeModeManager
 argument_list|,
 name|pipelineManager
 argument_list|,
@@ -2250,10 +2250,10 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|chillModeHandler
+name|safeModeHandler
 operator|=
 operator|new
-name|ChillModeHandler
+name|SafeModeHandler
 argument_list|(
 name|configuration
 argument_list|,
@@ -2454,9 +2454,9 @@ name|addHandler
 argument_list|(
 name|SCMEvents
 operator|.
-name|CHILL_MODE_STATUS
+name|SAFE_MODE_STATUS
 argument_list|,
-name|chillModeHandler
+name|safeModeHandler
 argument_list|)
 expr_stmt|;
 name|registerMXBean
@@ -2468,7 +2468,7 @@ name|this
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * This function initializes the following managers. If the configurator    * specifies a value, we will use it, else we will use the default value.    *    *  Node Manager    *  Pipeline Manager    *  Container Manager    *  Block Manager    *  Replication Manager    *  Chill Mode Manager    *    * @param conf - Ozone Configuration.    * @param configurator - A customizer which allows different managers to be    *                    used if needed.    * @throws IOException - on Failure.    */
+comment|/**    * This function initializes the following managers. If the configurator    * specifies a value, we will use it, else we will use the default value.    *    *  Node Manager    *  Pipeline Manager    *  Container Manager    *  Block Manager    *  Replication Manager    *  Safe Mode Manager    *    * @param conf - Ozone Configuration.    * @param configurator - A customizer which allows different managers to be    *                    used if needed.    * @throws IOException - on Failure.    */
 DECL|method|initalizeSystemManagers (OzoneConfiguration conf, SCMConfigurator configurator)
 specifier|private
 name|void
@@ -2671,26 +2671,26 @@ if|if
 condition|(
 name|configurator
 operator|.
-name|getScmChillModeManager
+name|getScmSafeModeManager
 argument_list|()
 operator|!=
 literal|null
 condition|)
 block|{
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|=
 name|configurator
 operator|.
-name|getScmChillModeManager
+name|getScmSafeModeManager
 argument_list|()
 expr_stmt|;
 block|}
 else|else
 block|{
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|=
 operator|new
-name|SCMChillModeManager
+name|SCMSafeModeManager
 argument_list|(
 name|conf
 argument_list|,
@@ -5118,26 +5118,26 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getChillModeHandler ()
+DECL|method|getSafeModeHandler ()
 specifier|public
-name|ChillModeHandler
-name|getChillModeHandler
+name|SafeModeHandler
+name|getSafeModeHandler
 parameter_list|()
 block|{
 return|return
-name|chillModeHandler
+name|safeModeHandler
 return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getScmChillModeManager ()
+DECL|method|getScmSafeModeManager ()
 specifier|public
-name|SCMChillModeManager
-name|getScmChillModeManager
+name|SCMSafeModeManager
+name|getScmSafeModeManager
 parameter_list|()
 block|{
 return|return
-name|scmChillModeManager
+name|scmSafeModeManager
 return|;
 block|}
 annotation|@
@@ -5360,13 +5360,13 @@ return|return
 name|id2StatMap
 return|;
 block|}
-comment|/**    * Returns live chill mode container threshold.    *    * @return String    */
+comment|/**    * Returns live safe mode container threshold.    *    * @return String    */
 annotation|@
 name|Override
-DECL|method|getChillModeCurrentContainerThreshold ()
+DECL|method|getSafeModeCurrentContainerThreshold ()
 specifier|public
 name|double
-name|getChillModeCurrentContainerThreshold
+name|getSafeModeCurrentContainerThreshold
 parameter_list|()
 block|{
 return|return
@@ -5374,19 +5374,19 @@ name|getCurrentContainerThreshold
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns chill mode status.    * @return boolean    */
+comment|/**    * Returns safe mode status.    * @return boolean    */
 annotation|@
 name|Override
-DECL|method|isInChillMode ()
+DECL|method|isInSafeMode ()
 specifier|public
 name|boolean
-name|isInChillMode
+name|isInSafeMode
 parameter_list|()
 block|{
 return|return
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getInChillMode
+name|getInSafeMode
 argument_list|()
 return|;
 block|}
@@ -5401,16 +5401,16 @@ return|return
 name|eventQueue
 return|;
 block|}
-comment|/**    * Force SCM out of chill mode.    */
-DECL|method|exitChillMode ()
+comment|/**    * Force SCM out of safe mode.    */
+DECL|method|exitSafeMode ()
 specifier|public
 name|boolean
-name|exitChillMode
+name|exitSafeMode
 parameter_list|()
 block|{
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|exitChillMode
+name|exitSafeMode
 argument_list|(
 name|eventQueue
 argument_list|)
@@ -5428,7 +5428,7 @@ name|getCurrentContainerThreshold
 parameter_list|()
 block|{
 return|return
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
 name|getCurrentContainerThreshold
 argument_list|()

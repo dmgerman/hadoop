@@ -144,11 +144,11 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|chillmode
+name|safemode
 operator|.
-name|SCMChillModeManager
+name|SCMSafeModeManager
 operator|.
-name|ChillModeStatus
+name|SafeModeStatus
 import|;
 end_import
 
@@ -646,13 +646,13 @@ specifier|private
 name|OzoneConfiguration
 name|conf
 decl_stmt|;
-DECL|field|chillModeStatus
+DECL|field|safeModeStatus
 specifier|private
-name|ChillModeStatus
-name|chillModeStatus
+name|SafeModeStatus
+name|safeModeStatus
 init|=
 operator|new
-name|ChillModeStatus
+name|SafeModeStatus
 argument_list|(
 literal|false
 argument_list|)
@@ -805,11 +805,11 @@ name|addHandler
 argument_list|(
 name|SCMEvents
 operator|.
-name|CHILL_MODE_STATUS
+name|SAFE_MODE_STATUS
 argument_list|,
 name|scm
 operator|.
-name|getChillModeHandler
+name|getSafeModeHandler
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -931,9 +931,9 @@ name|fireEvent
 argument_list|(
 name|SCMEvents
 operator|.
-name|CHILL_MODE_STATUS
+name|SAFE_MODE_STATUS
 argument_list|,
-name|chillModeStatus
+name|safeModeStatus
 argument_list|)
 expr_stmt|;
 name|GenericTestUtils
@@ -947,7 +947,7 @@ return|return
 operator|!
 name|blockManager
 operator|.
-name|isScmInChillMode
+name|isScmInSafeMode
 argument_list|()
 return|;
 block|}
@@ -1003,9 +1003,9 @@ name|fireEvent
 argument_list|(
 name|SCMEvents
 operator|.
-name|CHILL_MODE_STATUS
+name|SAFE_MODE_STATUS
 argument_list|,
-name|chillModeStatus
+name|safeModeStatus
 argument_list|)
 expr_stmt|;
 name|GenericTestUtils
@@ -1019,7 +1019,7 @@ return|return
 operator|!
 name|blockManager
 operator|.
-name|isScmInChillMode
+name|isScmInSafeMode
 argument_list|()
 return|;
 block|}
@@ -1068,10 +1068,10 @@ decl_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testAllocateBlockFailureInChillMode ()
+DECL|method|testAllocateBlockFailureInSafeMode ()
 specifier|public
 name|void
-name|testAllocateBlockFailureInChillMode
+name|testAllocateBlockFailureInSafeMode
 parameter_list|()
 throws|throws
 name|Exception
@@ -1082,10 +1082,10 @@ name|fireEvent
 argument_list|(
 name|SCMEvents
 operator|.
-name|CHILL_MODE_STATUS
+name|SAFE_MODE_STATUS
 argument_list|,
 operator|new
-name|ChillModeStatus
+name|SafeModeStatus
 argument_list|(
 literal|true
 argument_list|)
@@ -1101,7 +1101,7 @@ block|{
 return|return
 name|blockManager
 operator|.
-name|isScmInChillMode
+name|isScmInSafeMode
 argument_list|()
 return|;
 block|}
@@ -1113,12 +1113,12 @@ operator|*
 literal|5
 argument_list|)
 expr_stmt|;
-comment|// Test1: In chill mode expect an SCMException.
+comment|// Test1: In safe mode expect an SCMException.
 name|thrown
 operator|.
 name|expectMessage
 argument_list|(
-literal|"ChillModePrecheck failed for "
+literal|"SafeModePrecheck failed for "
 operator|+
 literal|"allocateBlock"
 argument_list|)
@@ -1143,24 +1143,24 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testAllocateBlockSucInChillMode ()
+DECL|method|testAllocateBlockSucInSafeMode ()
 specifier|public
 name|void
-name|testAllocateBlockSucInChillMode
+name|testAllocateBlockSucInSafeMode
 parameter_list|()
 throws|throws
 name|Exception
 block|{
-comment|// Test2: Exit chill mode and then try allocateBock again.
+comment|// Test2: Exit safe mode and then try allocateBock again.
 name|eventQueue
 operator|.
 name|fireEvent
 argument_list|(
 name|SCMEvents
 operator|.
-name|CHILL_MODE_STATUS
+name|SAFE_MODE_STATUS
 argument_list|,
-name|chillModeStatus
+name|safeModeStatus
 argument_list|)
 expr_stmt|;
 name|GenericTestUtils
@@ -1174,7 +1174,7 @@ return|return
 operator|!
 name|blockManager
 operator|.
-name|isScmInChillMode
+name|isScmInSafeMode
 argument_list|()
 return|;
 block|}
@@ -1234,9 +1234,9 @@ name|fireEvent
 argument_list|(
 name|SCMEvents
 operator|.
-name|CHILL_MODE_STATUS
+name|SAFE_MODE_STATUS
 argument_list|,
-name|chillModeStatus
+name|safeModeStatus
 argument_list|)
 expr_stmt|;
 name|GenericTestUtils
@@ -1248,7 +1248,7 @@ lambda|->
 operator|!
 name|blockManager
 operator|.
-name|isScmInChillMode
+name|isScmInSafeMode
 argument_list|()
 argument_list|,
 literal|10
@@ -1451,9 +1451,9 @@ name|fireEvent
 argument_list|(
 name|SCMEvents
 operator|.
-name|CHILL_MODE_STATUS
+name|SAFE_MODE_STATUS
 argument_list|,
-name|chillModeStatus
+name|safeModeStatus
 argument_list|)
 expr_stmt|;
 name|GenericTestUtils
@@ -1465,7 +1465,7 @@ lambda|->
 operator|!
 name|blockManager
 operator|.
-name|isScmInChillMode
+name|isScmInSafeMode
 argument_list|()
 argument_list|,
 literal|10
@@ -1698,9 +1698,9 @@ name|fireEvent
 argument_list|(
 name|SCMEvents
 operator|.
-name|CHILL_MODE_STATUS
+name|SAFE_MODE_STATUS
 argument_list|,
-name|chillModeStatus
+name|safeModeStatus
 argument_list|)
 expr_stmt|;
 name|GenericTestUtils
@@ -1712,7 +1712,7 @@ lambda|->
 operator|!
 name|blockManager
 operator|.
-name|isScmInChillMode
+name|isScmInSafeMode
 argument_list|()
 argument_list|,
 literal|10

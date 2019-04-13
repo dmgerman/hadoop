@@ -1,10 +1,10 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/**  * Licensed to the Apache Software Foundation (ASF) under one or more  * contributor license agreements.  See the NOTICE file distributed with this  * work for additional information regarding copyright ownership.  The ASF  * licenses this file to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance with the License.  * You may obtain a copy of the License at  *<p/>  * http://www.apache.org/licenses/LICENSE-2.0  *<p/>  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the  * License for the specific language governing permissions and limitations under  * the License.  */
+comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  * http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdds.scm.chillmode
+DECL|package|org.apache.hadoop.hdds.scm.safemode
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|chillmode
+name|safemode
 package|;
 end_package
 
@@ -31,20 +31,6 @@ operator|.
 name|annotations
 operator|.
 name|VisibleForTesting
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Preconditions
 import|;
 end_import
 
@@ -73,6 +59,22 @@ operator|.
 name|hdds
 operator|.
 name|HddsConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|DatanodeDetails
 import|;
 end_import
 
@@ -246,6 +248,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -321,22 +337,22 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This rule covers whether we have at least one datanode is reported for each  * pipeline. This rule is for all open containers, we have at least one  * replica available for read when we exit chill mode.  */
+comment|/**  * Class defining Safe mode exit criteria for Pipelines.  *  * This rule defines percentage of healthy pipelines need to be reported.  * Once safe mode exit happens, this rules take care of writes can go  * through in a cluster.  */
 end_comment
 
 begin_class
-DECL|class|OneReplicaPipelineChillModeRule
+DECL|class|HealthyPipelineSafeModeRule
 specifier|public
 class|class
-name|OneReplicaPipelineChillModeRule
+name|HealthyPipelineSafeModeRule
 extends|extends
-name|ChillModeExitRule
+name|SafeModeExitRule
 argument_list|<
 name|PipelineReportFromDatanode
 argument_list|>
 block|{
 DECL|field|LOG
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|Logger
@@ -346,28 +362,10 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|OneReplicaPipelineChillModeRule
+name|HealthyPipelineSafeModeRule
 operator|.
 name|class
 argument_list|)
-decl_stmt|;
-DECL|field|thresholdCount
-specifier|private
-name|int
-name|thresholdCount
-decl_stmt|;
-DECL|field|reportedPipelineIDSet
-specifier|private
-name|Set
-argument_list|<
-name|PipelineID
-argument_list|>
-name|reportedPipelineIDSet
-init|=
-operator|new
-name|HashSet
-argument_list|<>
-argument_list|()
 decl_stmt|;
 DECL|field|pipelineManager
 specifier|private
@@ -375,16 +373,35 @@ specifier|final
 name|PipelineManager
 name|pipelineManager
 decl_stmt|;
-DECL|field|currentReportedPipelineCount
+DECL|field|healthyPipelineThresholdCount
+specifier|private
+specifier|final
+name|int
+name|healthyPipelineThresholdCount
+decl_stmt|;
+DECL|field|currentHealthyPipelineCount
 specifier|private
 name|int
-name|currentReportedPipelineCount
+name|currentHealthyPipelineCount
 init|=
 literal|0
 decl_stmt|;
-DECL|method|OneReplicaPipelineChillModeRule (String ruleName, EventQueue eventQueue, PipelineManager pipelineManager, SCMChillModeManager chillModeManager, Configuration configuration)
-specifier|public
-name|OneReplicaPipelineChillModeRule
+DECL|field|processedDatanodeDetails
+specifier|private
+specifier|final
+name|Set
+argument_list|<
+name|DatanodeDetails
+argument_list|>
+name|processedDatanodeDetails
+init|=
+operator|new
+name|HashSet
+argument_list|<>
+argument_list|()
+decl_stmt|;
+DECL|method|HealthyPipelineSafeModeRule (String ruleName, EventQueue eventQueue, PipelineManager pipelineManager, SCMSafeModeManager manager, Configuration configuration)
+name|HealthyPipelineSafeModeRule
 parameter_list|(
 name|String
 name|ruleName
@@ -395,8 +412,8 @@ parameter_list|,
 name|PipelineManager
 name|pipelineManager
 parameter_list|,
-name|SCMChillModeManager
-name|chillModeManager
+name|SCMSafeModeManager
+name|manager
 parameter_list|,
 name|Configuration
 name|configuration
@@ -404,7 +421,7 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
-name|chillModeManager
+name|manager
 argument_list|,
 name|ruleName
 argument_list|,
@@ -418,7 +435,7 @@ operator|=
 name|pipelineManager
 expr_stmt|;
 name|double
-name|percent
+name|healthyPipelinesPercent
 init|=
 name|configuration
 operator|.
@@ -426,11 +443,11 @@ name|getDouble
 argument_list|(
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_ONE_NODE_REPORTED_PIPELINE_PCT
+name|HDDS_SCM_SAFEMODE_HEALTHY_PIPELINE_THRESHOLD_PCT
 argument_list|,
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_ONE_NODE_REPORTED_PIPELINE_PCT_DEFAULT
+name|HDDS_SCM_SAFEMODE_HEALTHY_PIPELINE_THRESHOLD_PCT_DEFAULT
 argument_list|)
 decl_stmt|;
 name|Preconditions
@@ -438,24 +455,25 @@ operator|.
 name|checkArgument
 argument_list|(
 operator|(
-name|percent
+name|healthyPipelinesPercent
 operator|>=
 literal|0.0
 operator|&&
-name|percent
+name|healthyPipelinesPercent
 operator|<=
 literal|1.0
 operator|)
 argument_list|,
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_ONE_NODE_REPORTED_PIPELINE_PCT
+name|HDDS_SCM_SAFEMODE_HEALTHY_PIPELINE_THRESHOLD_PCT
 operator|+
 literal|" value should be>= 0.0 and<= 1.0"
 argument_list|)
 expr_stmt|;
+comment|// As we want to wait for 3 node pipelines
 name|int
-name|totalPipelineCount
+name|pipelineCount
 init|=
 name|pipelineManager
 operator|.
@@ -477,7 +495,10 @@ operator|.
 name|size
 argument_list|()
 decl_stmt|;
-name|thresholdCount
+comment|// This value will be zero when pipeline count is 0.
+comment|// On a fresh installed cluster, there will be zero pipelines in the SCM
+comment|// pipeline DB.
+name|healthyPipelineThresholdCount
 operator|=
 operator|(
 name|int
@@ -486,22 +507,22 @@ name|Math
 operator|.
 name|ceil
 argument_list|(
-name|percent
+name|healthyPipelinesPercent
 operator|*
-name|totalPipelineCount
+name|pipelineCount
 argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|" Total pipeline count is {}, pipeline's with atleast one "
+literal|" Total pipeline count is {}, healthy pipeline "
 operator|+
-literal|"datanode reported threshold count is {}"
+literal|"threshold count is {}"
 argument_list|,
-name|totalPipelineCount
+name|pipelineCount
 argument_list|,
-name|thresholdCount
+name|healthyPipelineThresholdCount
 argument_list|)
 expr_stmt|;
 block|}
@@ -532,9 +553,9 @@ parameter_list|()
 block|{
 if|if
 condition|(
-name|currentReportedPipelineCount
+name|currentHealthyPipelineCount
 operator|>=
-name|thresholdCount
+name|healthyPipelineThresholdCount
 condition|)
 block|{
 return|return
@@ -556,9 +577,10 @@ name|PipelineReportFromDatanode
 name|pipelineReportFromDatanode
 parameter_list|)
 block|{
-name|Pipeline
-name|pipeline
-decl_stmt|;
+comment|// When SCM is in safe mode for long time, already registered
+comment|// datanode can send pipeline report again, then pipeline handler fires
+comment|// processed report event, we should not consider this pipeline report
+comment|// from datanode again during threshold calculation.
 name|Preconditions
 operator|.
 name|checkNotNull
@@ -566,6 +588,31 @@ argument_list|(
 name|pipelineReportFromDatanode
 argument_list|)
 expr_stmt|;
+name|DatanodeDetails
+name|dnDetails
+init|=
+name|pipelineReportFromDatanode
+operator|.
+name|getDatanodeDetails
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|processedDatanodeDetails
+operator|.
+name|contains
+argument_list|(
+name|pipelineReportFromDatanode
+operator|.
+name|getDatanodeDetails
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|Pipeline
+name|pipeline
+decl_stmt|;
 name|PipelineReportsProto
 name|pipelineReport
 init|=
@@ -631,53 +678,53 @@ name|ReplicationFactor
 operator|.
 name|THREE
 operator|&&
-operator|!
-name|reportedPipelineIDSet
+name|pipeline
 operator|.
-name|contains
-argument_list|(
-name|pipelineID
-argument_list|)
+name|getPipelineState
+argument_list|()
+operator|==
+name|Pipeline
+operator|.
+name|PipelineState
+operator|.
+name|OPEN
 condition|)
 block|{
-name|reportedPipelineIDSet
-operator|.
-name|add
-argument_list|(
-name|pipelineID
-argument_list|)
+comment|// If the pipeline is open state mean, all 3 datanodes are reported
+comment|// for this pipeline.
+name|currentHealthyPipelineCount
+operator|++
 expr_stmt|;
 block|}
 block|}
-name|currentReportedPipelineCount
-operator|=
-name|reportedPipelineIDSet
-operator|.
-name|size
-argument_list|()
-expr_stmt|;
 if|if
 condition|(
-name|scmInChillMode
+name|scmInSafeMode
 argument_list|()
 condition|)
 block|{
-name|SCMChillModeManager
+name|SCMSafeModeManager
 operator|.
 name|getLogger
 argument_list|()
 operator|.
 name|info
 argument_list|(
-literal|"SCM in chill mode. Pipelines with atleast one datanode reported "
+literal|"SCM in safe mode. Healthy pipelines reported count is {}, "
 operator|+
-literal|"count is {}, required atleast one datanode reported per "
-operator|+
-literal|"pipeline count is {}"
+literal|"required healthy pipeline reported count is {}"
 argument_list|,
-name|currentReportedPipelineCount
+name|currentHealthyPipelineCount
 argument_list|,
-name|thresholdCount
+name|healthyPipelineThresholdCount
+argument_list|)
+expr_stmt|;
+block|}
+name|processedDatanodeDetails
+operator|.
+name|add
+argument_list|(
+name|dnDetails
 argument_list|)
 expr_stmt|;
 block|}
@@ -690,7 +737,7 @@ name|void
 name|cleanup
 parameter_list|()
 block|{
-name|reportedPipelineIDSet
+name|processedDatanodeDetails
 operator|.
 name|clear
 argument_list|()
@@ -698,26 +745,26 @@ expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getThresholdCount ()
+DECL|method|getCurrentHealthyPipelineCount ()
 specifier|public
 name|int
-name|getThresholdCount
+name|getCurrentHealthyPipelineCount
 parameter_list|()
 block|{
 return|return
-name|thresholdCount
+name|currentHealthyPipelineCount
 return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getCurrentReportedPipelineCount ()
+DECL|method|getHealthyPipelineThresholdCount ()
 specifier|public
 name|int
-name|getCurrentReportedPipelineCount
+name|getHealthyPipelineThresholdCount
 parameter_list|()
 block|{
 return|return
-name|currentReportedPipelineCount
+name|healthyPipelineThresholdCount
 return|;
 block|}
 block|}

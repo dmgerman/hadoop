@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdds.scm.chillmode
+DECL|package|org.apache.hadoop.hdds.scm.safemode
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|chillmode
+name|safemode
 package|;
 end_package
 
@@ -489,14 +489,14 @@ import|;
 end_import
 
 begin_comment
-comment|/** Test class for SCMChillModeManager.  */
+comment|/** Test class for SCMSafeModeManager.  */
 end_comment
 
 begin_class
-DECL|class|TestSCMChillModeManager
+DECL|class|TestSCMSafeModeManager
 specifier|public
 class|class
-name|TestSCMChillModeManager
+name|TestSCMSafeModeManager
 block|{
 DECL|field|queue
 specifier|private
@@ -504,10 +504,10 @@ specifier|static
 name|EventQueue
 name|queue
 decl_stmt|;
-DECL|field|scmChillModeManager
+DECL|field|scmSafeModeManager
 specifier|private
-name|SCMChillModeManager
-name|scmChillModeManager
+name|SCMSafeModeManager
+name|scmSafeModeManager
 decl_stmt|;
 DECL|field|config
 specifier|private
@@ -574,22 +574,22 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testChillModeState ()
+DECL|method|testSafeModeState ()
 specifier|public
 name|void
-name|testChillModeState
+name|testSafeModeState
 parameter_list|()
 throws|throws
 name|Exception
 block|{
 comment|// Test 1: test for 0 containers
-name|testChillMode
+name|testSafeMode
 argument_list|(
 literal|0
 argument_list|)
 expr_stmt|;
 comment|// Test 2: test for 20 containers
-name|testChillMode
+name|testSafeMode
 argument_list|(
 literal|20
 argument_list|)
@@ -597,14 +597,14 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testChillModeStateWithNullContainers ()
+DECL|method|testSafeModeStateWithNullContainers ()
 specifier|public
 name|void
-name|testChillModeStateWithNullContainers
+name|testSafeModeStateWithNullContainers
 parameter_list|()
 block|{
 operator|new
-name|SCMChillModeManager
+name|SCMSafeModeManager
 argument_list|(
 name|config
 argument_list|,
@@ -616,10 +616,10 @@ name|queue
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testChillMode (int numContainers)
+DECL|method|testSafeMode (int numContainers)
 specifier|private
 name|void
-name|testChillMode
+name|testSafeMode
 parameter_list|(
 name|int
 name|numContainers
@@ -646,7 +646,7 @@ name|numContainers
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Assign open state to containers to be included in the chill mode
+comment|// Assign open state to containers to be included in the safe mode
 comment|// container list
 for|for
 control|(
@@ -668,10 +668,10 @@ name|OPEN
 argument_list|)
 expr_stmt|;
 block|}
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|=
 operator|new
-name|SCMChillModeManager
+name|SCMSafeModeManager
 argument_list|(
 name|config
 argument_list|,
@@ -684,9 +684,9 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getInChillMode
+name|getInSafeMode
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -715,9 +715,9 @@ lambda|->
 block|{
 return|return
 operator|!
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getInChillMode
+name|getInSafeMode
 argument_list|()
 return|;
 block|}
@@ -732,10 +732,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testChillModeExitRule ()
+DECL|method|testSafeModeExitRule ()
 specifier|public
 name|void
-name|testChillModeExitRule
+name|testSafeModeExitRule
 parameter_list|()
 throws|throws
 name|Exception
@@ -761,7 +761,7 @@ literal|4
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Assign open state to containers to be included in the chill mode
+comment|// Assign open state to containers to be included in the safe mode
 comment|// container list
 for|for
 control|(
@@ -783,10 +783,10 @@ name|CLOSED
 argument_list|)
 expr_stmt|;
 block|}
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|=
 operator|new
-name|SCMChillModeManager
+name|SCMSafeModeManager
 argument_list|(
 name|config
 argument_list|,
@@ -799,9 +799,9 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getInChillMode
+name|getInSafeMode
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -821,9 +821,9 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getInChillMode
+name|getInSafeMode
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -843,9 +843,9 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getInChillMode
+name|getInSafeMode
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -865,9 +865,9 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getInChillMode
+name|getInSafeMode
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -894,9 +894,9 @@ lambda|->
 block|{
 return|return
 operator|!
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getInChillMode
+name|getInSafeMode
 argument_list|()
 return|;
 block|}
@@ -953,7 +953,7 @@ name|setBoolean
 argument_list|(
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_PIPELINE_AVAILABILITY_CHECK
+name|HDDS_SCM_SAFEMODE_PIPELINE_AVAILABILITY_CHECK
 argument_list|,
 literal|true
 argument_list|)
@@ -964,7 +964,7 @@ name|setDouble
 argument_list|(
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_HEALTHY_PIPELINE_THRESHOLD_PCT
+name|HDDS_SCM_SAFEMODE_HEALTHY_PIPELINE_THRESHOLD_PCT
 argument_list|,
 name|healthyPercent
 argument_list|)
@@ -975,7 +975,7 @@ name|setDouble
 argument_list|(
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_ONE_NODE_REPORTED_PIPELINE_PCT
+name|HDDS_SCM_SAFEMODE_ONE_NODE_REPORTED_PIPELINE_PCT
 argument_list|,
 name|oneReplicaPercent
 argument_list|)
@@ -986,15 +986,15 @@ return|;
 block|}
 annotation|@
 name|Test
-DECL|method|testChillModeExitRuleWithPipelineAvailabilityCheck ()
+DECL|method|testSafeModeExitRuleWithPipelineAvailabilityCheck ()
 specifier|public
 name|void
-name|testChillModeExitRuleWithPipelineAvailabilityCheck
+name|testSafeModeExitRuleWithPipelineAvailabilityCheck
 parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|testChillModeExitRuleWithPipelineAvailabilityCheck
+name|testSafeModeExitRuleWithPipelineAvailabilityCheck
 argument_list|(
 literal|100
 argument_list|,
@@ -1007,7 +1007,7 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
-name|testChillModeExitRuleWithPipelineAvailabilityCheck
+name|testSafeModeExitRuleWithPipelineAvailabilityCheck
 argument_list|(
 literal|100
 argument_list|,
@@ -1020,7 +1020,7 @@ argument_list|,
 literal|0.9
 argument_list|)
 expr_stmt|;
-name|testChillModeExitRuleWithPipelineAvailabilityCheck
+name|testSafeModeExitRuleWithPipelineAvailabilityCheck
 argument_list|(
 literal|100
 argument_list|,
@@ -1033,7 +1033,7 @@ argument_list|,
 literal|0.9
 argument_list|)
 expr_stmt|;
-name|testChillModeExitRuleWithPipelineAvailabilityCheck
+name|testSafeModeExitRuleWithPipelineAvailabilityCheck
 argument_list|(
 literal|100
 argument_list|,
@@ -1046,7 +1046,7 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
-name|testChillModeExitRuleWithPipelineAvailabilityCheck
+name|testSafeModeExitRuleWithPipelineAvailabilityCheck
 argument_list|(
 literal|100
 argument_list|,
@@ -1106,10 +1106,10 @@ argument_list|,
 name|queue
 argument_list|)
 decl_stmt|;
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|=
 operator|new
-name|SCMChillModeManager
+name|SCMSafeModeManager
 argument_list|(
 name|conf
 argument_list|,
@@ -1191,10 +1191,10 @@ argument_list|,
 name|queue
 argument_list|)
 decl_stmt|;
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|=
 operator|new
-name|SCMChillModeManager
+name|SCMSafeModeManager
 argument_list|(
 name|conf
 argument_list|,
@@ -1232,10 +1232,10 @@ block|}
 block|}
 annotation|@
 name|Test
-DECL|method|testFailWithIncorrectValueForChillModePercent ()
+DECL|method|testFailWithIncorrectValueForSafeModePercent ()
 specifier|public
 name|void
-name|testFailWithIncorrectValueForChillModePercent
+name|testFailWithIncorrectValueForSafeModePercent
 parameter_list|()
 throws|throws
 name|Exception
@@ -1258,7 +1258,7 @@ name|setDouble
 argument_list|(
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_THRESHOLD_PCT
+name|HDDS_SCM_SAFEMODE_THRESHOLD_PCT
 argument_list|,
 operator|-
 literal|1.0
@@ -1288,10 +1288,10 @@ argument_list|,
 name|queue
 argument_list|)
 decl_stmt|;
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|=
 operator|new
-name|SCMChillModeManager
+name|SCMSafeModeManager
 argument_list|(
 name|conf
 argument_list|,
@@ -1304,7 +1304,7 @@ argument_list|)
 expr_stmt|;
 name|fail
 argument_list|(
-literal|"testFailWithIncorrectValueForChillModePercent"
+literal|"testFailWithIncorrectValueForSafeModePercent"
 argument_list|)
 expr_stmt|;
 block|}
@@ -1327,10 +1327,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|testChillModeExitRuleWithPipelineAvailabilityCheck ( int containerCount, int nodeCount, int pipelineCount, double healthyPipelinePercent, double oneReplicaPercent)
+DECL|method|testSafeModeExitRuleWithPipelineAvailabilityCheck ( int containerCount, int nodeCount, int pipelineCount, double healthyPipelinePercent, double oneReplicaPercent)
 specifier|public
 name|void
-name|testChillModeExitRuleWithPipelineAvailabilityCheck
+name|testSafeModeExitRuleWithPipelineAvailabilityCheck
 parameter_list|(
 name|int
 name|containerCount
@@ -1485,10 +1485,10 @@ name|CLOSED
 argument_list|)
 expr_stmt|;
 block|}
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|=
 operator|new
-name|SCMChillModeManager
+name|SCMSafeModeManager
 argument_list|(
 name|conf
 argument_list|,
@@ -1501,9 +1501,9 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getInChillMode
+name|getInSafeMode
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1528,9 +1528,9 @@ decl_stmt|;
 name|int
 name|healthyPipelineThresholdCount
 init|=
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getHealthyPipelineChillModeRule
+name|getHealthyPipelineSafeModeRule
 argument_list|()
 operator|.
 name|getHealthyPipelineThresholdCount
@@ -1539,9 +1539,9 @@ decl_stmt|;
 name|int
 name|oneReplicaThresholdCount
 init|=
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getOneReplicaPipelineChillModeRule
+name|getOneReplicaPipelineSafeModeRule
 argument_list|()
 operator|.
 name|getThresholdCount
@@ -1647,9 +1647,9 @@ lambda|->
 block|{
 return|return
 operator|!
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getInChillMode
+name|getInSafeMode
 argument_list|()
 return|;
 block|}
@@ -1679,9 +1679,9 @@ name|waitFor
 argument_list|(
 parameter_list|()
 lambda|->
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getHealthyPipelineChillModeRule
+name|getHealthyPipelineSafeModeRule
 argument_list|()
 operator|.
 name|getCurrentHealthyPipelineCount
@@ -1712,9 +1712,9 @@ name|waitFor
 argument_list|(
 parameter_list|()
 lambda|->
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getOneReplicaPipelineChillModeRule
+name|getOneReplicaPipelineSafeModeRule
 argument_list|()
 operator|.
 name|getCurrentReportedPipelineCount
@@ -1801,10 +1801,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testDisableChillMode ()
+DECL|method|testDisableSafeMode ()
 specifier|public
 name|void
-name|testDisableChillMode
+name|testDisableSafeMode
 parameter_list|()
 block|{
 name|OzoneConfiguration
@@ -1822,7 +1822,7 @@ name|setBoolean
 argument_list|(
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_ENABLED
+name|HDDS_SCM_SAFEMODE_ENABLED
 argument_list|,
 literal|false
 argument_list|)
@@ -1852,10 +1852,10 @@ operator|.
 name|startPipelineCreator
 argument_list|()
 expr_stmt|;
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|=
 operator|new
-name|SCMChillModeManager
+name|SCMSafeModeManager
 argument_list|(
 name|conf
 argument_list|,
@@ -1868,19 +1868,19 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getInChillMode
+name|getInSafeMode
 argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testChillModeDataNodeExitRule ()
+DECL|method|testSafeModeDataNodeExitRule ()
 specifier|public
 name|void
-name|testChillModeDataNodeExitRule
+name|testSafeModeDataNodeExitRule
 parameter_list|()
 throws|throws
 name|Exception
@@ -1892,29 +1892,29 @@ name|ArrayList
 argument_list|<>
 argument_list|()
 expr_stmt|;
-name|testChillModeDataNodes
+name|testSafeModeDataNodes
 argument_list|(
 literal|0
 argument_list|)
 expr_stmt|;
-name|testChillModeDataNodes
+name|testSafeModeDataNodes
 argument_list|(
 literal|3
 argument_list|)
 expr_stmt|;
-name|testChillModeDataNodes
+name|testSafeModeDataNodes
 argument_list|(
 literal|5
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Check that containers in Allocated state are not considered while    * computing percentage of containers with at least 1 reported replica in    * chill mode exit rule.    */
+comment|/**    * Check that containers in Allocated state are not considered while    * computing percentage of containers with at least 1 reported replica in    * safe mode exit rule.    */
 annotation|@
 name|Test
-DECL|method|testContainerChillModeRule ()
+DECL|method|testContainerSafeModeRule ()
 specifier|public
 name|void
-name|testContainerChillModeRule
+name|testContainerSafeModeRule
 parameter_list|()
 throws|throws
 name|Exception
@@ -1997,10 +1997,10 @@ name|OPEN
 argument_list|)
 expr_stmt|;
 block|}
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|=
 operator|new
-name|SCMChillModeManager
+name|SCMSafeModeManager
 argument_list|(
 name|config
 argument_list|,
@@ -2013,16 +2013,16 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getInChillMode
+name|getInSafeMode
 argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// When 10 CLOSED containers are reported by DNs, the computed container
 comment|// threshold should be 10/25 as there are only 25 CLOSED containers.
 comment|// Containers in OPEN state should not contribute towards list of
-comment|// containers while calculating container threshold in SCMChillNodeManager
+comment|// containers while calculating container threshold in SCMSafeNodeManager
 name|testContainerThreshold
 argument_list|(
 name|containers
@@ -2039,9 +2039,9 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getInChillMode
+name|getInSafeMode
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2070,9 +2070,9 @@ lambda|->
 block|{
 return|return
 operator|!
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getInChillMode
+name|getInSafeMode
 argument_list|()
 return|;
 block|}
@@ -2085,10 +2085,10 @@ literal|5
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testChillModeDataNodes (int numOfDns)
+DECL|method|testSafeModeDataNodes (int numOfDns)
 specifier|private
 name|void
-name|testChillModeDataNodes
+name|testSafeModeDataNodes
 parameter_list|(
 name|int
 name|numOfDns
@@ -2111,15 +2111,15 @@ name|setInt
 argument_list|(
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_MIN_DATANODE
+name|HDDS_SCM_SAFEMODE_MIN_DATANODE
 argument_list|,
 name|numOfDns
 argument_list|)
 expr_stmt|;
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|=
 operator|new
-name|SCMChillModeManager
+name|SCMSafeModeManager
 argument_list|(
 name|conf
 argument_list|,
@@ -2130,16 +2130,16 @@ argument_list|,
 name|queue
 argument_list|)
 expr_stmt|;
-comment|// Assert SCM is in Chill mode.
+comment|// Assert SCM is in Safe mode.
 name|assertTrue
 argument_list|(
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getInChillMode
+name|getInSafeMode
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Register all DataNodes except last one and assert SCM is in chill mode.
+comment|// Register all DataNodes except last one and assert SCM is in safe mode.
 for|for
 control|(
 name|int
@@ -2175,15 +2175,15 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getInChillMode
+name|getInSafeMode
 argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
 name|getCurrentContainerThreshold
 argument_list|()
@@ -2207,9 +2207,9 @@ parameter_list|()
 lambda|->
 block|{
 return|return
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getInChillMode
+name|getInSafeMode
 argument_list|()
 return|;
 block|}
@@ -2223,7 +2223,7 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
-comment|// Register last DataNode and check that SCM is out of Chill mode.
+comment|// Register last DataNode and check that SCM is out of Safe mode.
 name|queue
 operator|.
 name|fireEvent
@@ -2249,9 +2249,9 @@ lambda|->
 block|{
 return|return
 operator|!
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getInChillMode
+name|getInSafeMode
 argument_list|()
 return|;
 block|}
@@ -2307,7 +2307,7 @@ block|{
 name|double
 name|threshold
 init|=
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
 name|getCurrentContainerThreshold
 argument_list|()
@@ -2329,10 +2329,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testChillModePipelineExitRule ()
+DECL|method|testSafeModePipelineExitRule ()
 specifier|public
 name|void
-name|testChillModePipelineExitRule
+name|testSafeModePipelineExitRule
 parameter_list|()
 throws|throws
 name|Exception
@@ -2365,7 +2365,7 @@ name|GenericTestUtils
 operator|.
 name|getTempPath
 argument_list|(
-name|TestSCMChillModeManager
+name|TestSCMSafeModeManager
 operator|.
 name|class
 operator|.
@@ -2409,7 +2409,7 @@ name|setBoolean
 argument_list|(
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_PIPELINE_AVAILABILITY_CHECK
+name|HDDS_SCM_SAFEMODE_PIPELINE_AVAILABILITY_CHECK
 argument_list|,
 literal|true
 argument_list|)
@@ -2507,10 +2507,10 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|=
 operator|new
-name|SCMChillModeManager
+name|SCMSafeModeManager
 argument_list|(
 name|config
 argument_list|,
@@ -2539,9 +2539,9 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getInChillMode
+name|getInSafeMode
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2583,9 +2583,9 @@ lambda|->
 block|{
 return|return
 operator|!
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getInChillMode
+name|getInSafeMode
 argument_list|()
 return|;
 block|}
@@ -2611,7 +2611,7 @@ name|setBoolean
 argument_list|(
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_PIPELINE_AVAILABILITY_CHECK
+name|HDDS_SCM_SAFEMODE_PIPELINE_AVAILABILITY_CHECK
 argument_list|,
 literal|false
 argument_list|)

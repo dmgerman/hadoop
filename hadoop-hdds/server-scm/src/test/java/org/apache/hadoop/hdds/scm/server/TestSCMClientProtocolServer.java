@@ -124,9 +124,9 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|chillmode
+name|safemode
 operator|.
-name|ChillModeHandler
+name|SafeModeHandler
 import|;
 end_import
 
@@ -385,11 +385,11 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|ChillModeHandler
-name|chillModeHandler
+name|SafeModeHandler
+name|safeModeHandler
 init|=
 operator|new
-name|ChillModeHandler
+name|SafeModeHandler
 argument_list|(
 name|config
 argument_list|,
@@ -408,9 +408,9 @@ name|addHandler
 argument_list|(
 name|SCMEvents
 operator|.
-name|CHILL_MODE_STATUS
+name|SAFE_MODE_STATUS
 argument_list|,
-name|chillModeHandler
+name|safeModeHandler
 argument_list|)
 expr_stmt|;
 block|}
@@ -426,10 +426,10 @@ name|Exception
 block|{   }
 annotation|@
 name|Test
-DECL|method|testAllocateContainerFailureInChillMode ()
+DECL|method|testAllocateContainerFailureInSafeMode ()
 specifier|public
 name|void
-name|testAllocateContainerFailureInChillMode
+name|testAllocateContainerFailureInSafeMode
 parameter_list|()
 throws|throws
 name|Exception
@@ -442,7 +442,7 @@ name|SCMException
 operator|.
 name|class
 argument_list|,
-literal|"hillModePrecheck failed for allocateContainer"
+literal|"SafeModePrecheck failed for allocateContainer"
 argument_list|,
 parameter_list|()
 lambda|->

@@ -69,11 +69,11 @@ block|,
 DECL|enumConstant|DELETE_CONTAINER
 name|DELETE_CONTAINER
 block|,
-DECL|enumConstant|IN_CHILL_MODE
-name|IN_CHILL_MODE
+DECL|enumConstant|IN_SAFE_MODE
+name|IN_SAFE_MODE
 block|,
-DECL|enumConstant|FORCE_EXIT_CHILL_MODE
-name|FORCE_EXIT_CHILL_MODE
+DECL|enumConstant|FORCE_EXIT_SAFE_MODE
+name|FORCE_EXIT_SAFE_MODE
 block|;
 annotation|@
 name|Override

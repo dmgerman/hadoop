@@ -893,7 +893,7 @@ name|getScmNodeManager
 argument_list|()
 return|;
 block|}
-comment|/**    * Tests that Node manager handles heartbeats correctly, and comes out of    * chill Mode.    *    * @throws IOException    * @throws InterruptedException    * @throws TimeoutException    */
+comment|/**    * Tests that Node manager handles heartbeats correctly, and comes out of    * safe Mode.    *    * @throws IOException    * @throws InterruptedException    * @throws TimeoutException    */
 annotation|@
 name|Test
 DECL|method|testScmHeartbeat ()
@@ -988,7 +988,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * asserts that if we send no heartbeats node manager stays in chillmode.    *    * @throws IOException    * @throws InterruptedException    * @throws TimeoutException    */
+comment|/**    * asserts that if we send no heartbeats node manager stays in safemode.    *    * @throws IOException    * @throws InterruptedException    * @throws TimeoutException    */
 annotation|@
 name|Test
 DECL|method|testScmNoHeartbeats ()

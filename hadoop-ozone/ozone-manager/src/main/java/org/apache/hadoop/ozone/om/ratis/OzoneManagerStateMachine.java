@@ -1658,7 +1658,7 @@ argument_list|)
 decl_stmt|;
 comment|// If request is failed, no need to proceed further.
 comment|// Setting the exception with omResponse message and code.
-comment|// TODO: the allocate block fails when scm is in chill mode or when scm is
+comment|// TODO: the allocate block fails when scm is in safe mode or when scm is
 comment|//  down, but that error is not correctly received in OM end, once that
 comment|//  is fixed, we need to see how to handle this failure case or how we
 comment|//  need to retry or how to handle this scenario. For other errors like

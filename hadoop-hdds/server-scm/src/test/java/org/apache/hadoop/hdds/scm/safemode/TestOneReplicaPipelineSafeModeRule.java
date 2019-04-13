@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one or mor
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdds.scm.chillmode
+DECL|package|org.apache.hadoop.hdds.scm.safemode
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|chillmode
+name|safemode
 package|;
 end_package
 
@@ -373,14 +373,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class tests OneReplicaPipelineChillModeRule.  */
+comment|/**  * This class tests OneReplicaPipelineSafeModeRule.  */
 end_comment
 
 begin_class
-DECL|class|TestOneReplicaPipelineChillModeRule
+DECL|class|TestOneReplicaPipelineSafeModeRule
 specifier|public
 class|class
-name|TestOneReplicaPipelineChillModeRule
+name|TestOneReplicaPipelineSafeModeRule
 block|{
 annotation|@
 name|Rule
@@ -395,7 +395,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|rule
 specifier|private
-name|OneReplicaPipelineChillModeRule
+name|OneReplicaPipelineSafeModeRule
 name|rule
 decl_stmt|;
 DECL|field|pipelineManager
@@ -438,7 +438,7 @@ name|setBoolean
 argument_list|(
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_PIPELINE_AVAILABILITY_CHECK
+name|HDDS_SCM_SAFEMODE_PIPELINE_AVAILABILITY_CHECK
 argument_list|,
 literal|true
 argument_list|)
@@ -563,11 +563,11 @@ operator|.
 name|ONE
 argument_list|)
 expr_stmt|;
-name|SCMChillModeManager
-name|scmChillModeManager
+name|SCMSafeModeManager
+name|scmSafeModeManager
 init|=
 operator|new
-name|SCMChillModeManager
+name|SCMSafeModeManager
 argument_list|(
 name|ozoneConfiguration
 argument_list|,
@@ -580,9 +580,9 @@ argument_list|)
 decl_stmt|;
 name|rule
 operator|=
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getOneReplicaPipelineChillModeRule
+name|getOneReplicaPipelineSafeModeRule
 argument_list|()
 expr_stmt|;
 block|}
@@ -638,7 +638,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|SCMChillModeManager
+name|SCMSafeModeManager
 operator|.
 name|class
 argument_list|)
@@ -798,7 +798,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|SCMChillModeManager
+name|SCMSafeModeManager
 operator|.
 name|class
 argument_list|)

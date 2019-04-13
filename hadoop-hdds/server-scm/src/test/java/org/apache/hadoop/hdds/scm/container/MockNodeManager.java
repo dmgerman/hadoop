@@ -810,10 +810,10 @@ specifier|final
 name|SCMNodeStat
 name|aggregateStat
 decl_stmt|;
-DECL|field|chillmode
+DECL|field|safemode
 specifier|private
 name|boolean
-name|chillmode
+name|safemode
 decl_stmt|;
 DECL|field|commandMap
 specifier|private
@@ -956,7 +956,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|chillmode
+name|safemode
 operator|=
 literal|false
 expr_stmt|;
@@ -1148,21 +1148,21 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Sets the chill mode value.    * @param chillmode boolean    */
-DECL|method|setChillmode (boolean chillmode)
+comment|/**    * Sets the safe mode value.    * @param safemode boolean    */
+DECL|method|setSafemode (boolean safemode)
 specifier|public
 name|void
-name|setChillmode
+name|setSafemode
 parameter_list|(
 name|boolean
-name|chillmode
+name|safemode
 parameter_list|)
 block|{
 name|this
 operator|.
-name|chillmode
+name|safemode
 operator|=
-name|chillmode
+name|safemode
 expr_stmt|;
 block|}
 comment|/**    * Gets all Live Datanodes that is currently communicating with SCM.    *    * @param nodestate - State of the node    * @return List of Datanodes that are Heartbeating SCM.    */

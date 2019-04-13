@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdds.scm.chillmode
+DECL|package|org.apache.hadoop.hdds.scm.safemode
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|chillmode
+name|safemode
 package|;
 end_package
 
@@ -385,21 +385,21 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class tests HealthyPipelineChillMode rule.  */
+comment|/**  * This class tests HealthyPipelineSafeMode rule.  */
 end_comment
 
 begin_class
-DECL|class|TestHealthyPipelineChillModeRule
+DECL|class|TestHealthyPipelineSafeModeRule
 specifier|public
 class|class
-name|TestHealthyPipelineChillModeRule
+name|TestHealthyPipelineSafeModeRule
 block|{
 annotation|@
 name|Test
-DECL|method|testHealthyPipelineChillModeRuleWithNoPipelines ()
+DECL|method|testHealthyPipelineSafeModeRuleWithNoPipelines ()
 specifier|public
 name|void
-name|testHealthyPipelineChillModeRuleWithNoPipelines
+name|testHealthyPipelineSafeModeRuleWithNoPipelines
 parameter_list|()
 throws|throws
 name|Exception
@@ -411,7 +411,7 @@ name|GenericTestUtils
 operator|.
 name|getTempPath
 argument_list|(
-name|TestHealthyPipelineChillModeRule
+name|TestHealthyPipelineSafeModeRule
 operator|.
 name|class
 operator|.
@@ -492,7 +492,7 @@ name|setBoolean
 argument_list|(
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_PIPELINE_AVAILABILITY_CHECK
+name|HDDS_SCM_SAFEMODE_PIPELINE_AVAILABILITY_CHECK
 argument_list|,
 literal|true
 argument_list|)
@@ -539,11 +539,11 @@ argument_list|,
 name|mockRatisProvider
 argument_list|)
 expr_stmt|;
-name|SCMChillModeManager
-name|scmChillModeManager
+name|SCMSafeModeManager
+name|scmSafeModeManager
 init|=
 operator|new
-name|SCMChillModeManager
+name|SCMSafeModeManager
 argument_list|(
 name|config
 argument_list|,
@@ -554,12 +554,12 @@ argument_list|,
 name|eventQueue
 argument_list|)
 decl_stmt|;
-name|HealthyPipelineChillModeRule
-name|healthyPipelineChillModeRule
+name|HealthyPipelineSafeModeRule
+name|healthyPipelineSafeModeRule
 init|=
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getHealthyPipelineChillModeRule
+name|getHealthyPipelineSafeModeRule
 argument_list|()
 decl_stmt|;
 comment|// This should be immediately satisfied, as no pipelines are there yet.
@@ -567,7 +567,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|healthyPipelineChillModeRule
+name|healthyPipelineSafeModeRule
 operator|.
 name|validate
 argument_list|()
@@ -591,10 +591,10 @@ block|}
 block|}
 annotation|@
 name|Test
-DECL|method|testHealthyPipelineChillModeRuleWithPipelines ()
+DECL|method|testHealthyPipelineSafeModeRuleWithPipelines ()
 specifier|public
 name|void
-name|testHealthyPipelineChillModeRuleWithPipelines
+name|testHealthyPipelineSafeModeRuleWithPipelines
 parameter_list|()
 throws|throws
 name|Exception
@@ -606,7 +606,7 @@ name|GenericTestUtils
 operator|.
 name|getTempPath
 argument_list|(
-name|TestHealthyPipelineChillModeRule
+name|TestHealthyPipelineSafeModeRule
 operator|.
 name|class
 operator|.
@@ -690,7 +690,7 @@ name|setBoolean
 argument_list|(
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_PIPELINE_AVAILABILITY_CHECK
+name|HDDS_SCM_SAFEMODE_PIPELINE_AVAILABILITY_CHECK
 argument_list|,
 literal|true
 argument_list|)
@@ -798,11 +798,11 @@ operator|.
 name|THREE
 argument_list|)
 decl_stmt|;
-name|SCMChillModeManager
-name|scmChillModeManager
+name|SCMSafeModeManager
+name|scmSafeModeManager
 init|=
 operator|new
-name|SCMChillModeManager
+name|SCMSafeModeManager
 argument_list|(
 name|config
 argument_list|,
@@ -813,12 +813,12 @@ argument_list|,
 name|eventQueue
 argument_list|)
 decl_stmt|;
-name|HealthyPipelineChillModeRule
-name|healthyPipelineChillModeRule
+name|HealthyPipelineSafeModeRule
+name|healthyPipelineSafeModeRule
 init|=
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getHealthyPipelineChillModeRule
+name|getHealthyPipelineSafeModeRule
 argument_list|()
 decl_stmt|;
 comment|// No datanodes have sent pipelinereport from datanode
@@ -826,7 +826,7 @@ name|Assert
 operator|.
 name|assertFalse
 argument_list|(
-name|healthyPipelineChillModeRule
+name|healthyPipelineSafeModeRule
 operator|.
 name|validate
 argument_list|()
@@ -852,7 +852,7 @@ name|waitFor
 argument_list|(
 parameter_list|()
 lambda|->
-name|healthyPipelineChillModeRule
+name|healthyPipelineSafeModeRule
 operator|.
 name|validate
 argument_list|()
@@ -880,10 +880,10 @@ block|}
 block|}
 annotation|@
 name|Test
-DECL|method|testHealthyPipelineChillModeRuleWithMixedPipelines ()
+DECL|method|testHealthyPipelineSafeModeRuleWithMixedPipelines ()
 specifier|public
 name|void
-name|testHealthyPipelineChillModeRuleWithMixedPipelines
+name|testHealthyPipelineSafeModeRuleWithMixedPipelines
 parameter_list|()
 throws|throws
 name|Exception
@@ -895,7 +895,7 @@ name|GenericTestUtils
 operator|.
 name|getTempPath
 argument_list|(
-name|TestHealthyPipelineChillModeRule
+name|TestHealthyPipelineSafeModeRule
 operator|.
 name|class
 operator|.
@@ -979,7 +979,7 @@ name|setBoolean
 argument_list|(
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_PIPELINE_AVAILABILITY_CHECK
+name|HDDS_SCM_SAFEMODE_PIPELINE_AVAILABILITY_CHECK
 argument_list|,
 literal|true
 argument_list|)
@@ -1087,11 +1087,11 @@ operator|.
 name|THREE
 argument_list|)
 decl_stmt|;
-name|SCMChillModeManager
-name|scmChillModeManager
+name|SCMSafeModeManager
+name|scmSafeModeManager
 init|=
 operator|new
-name|SCMChillModeManager
+name|SCMSafeModeManager
 argument_list|(
 name|config
 argument_list|,
@@ -1102,12 +1102,12 @@ argument_list|,
 name|eventQueue
 argument_list|)
 decl_stmt|;
-name|HealthyPipelineChillModeRule
-name|healthyPipelineChillModeRule
+name|HealthyPipelineSafeModeRule
+name|healthyPipelineSafeModeRule
 init|=
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getHealthyPipelineChillModeRule
+name|getHealthyPipelineSafeModeRule
 argument_list|()
 decl_stmt|;
 comment|// No datanodes have sent pipelinereport from datanode
@@ -1115,7 +1115,7 @@ name|Assert
 operator|.
 name|assertFalse
 argument_list|(
-name|healthyPipelineChillModeRule
+name|healthyPipelineSafeModeRule
 operator|.
 name|validate
 argument_list|()
@@ -1136,7 +1136,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|SCMChillModeManager
+name|SCMSafeModeManager
 operator|.
 name|class
 argument_list|)
@@ -1176,7 +1176,7 @@ name|Assert
 operator|.
 name|assertFalse
 argument_list|(
-name|healthyPipelineChillModeRule
+name|healthyPipelineSafeModeRule
 operator|.
 name|validate
 argument_list|()
@@ -1202,7 +1202,7 @@ name|waitFor
 argument_list|(
 parameter_list|()
 lambda|->
-name|healthyPipelineChillModeRule
+name|healthyPipelineSafeModeRule
 operator|.
 name|validate
 argument_list|()

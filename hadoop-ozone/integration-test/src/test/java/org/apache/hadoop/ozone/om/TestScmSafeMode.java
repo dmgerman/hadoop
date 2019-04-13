@@ -200,9 +200,9 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|chillmode
+name|safemode
 operator|.
-name|SCMChillModeManager
+name|SCMSafeModeManager
 import|;
 end_import
 
@@ -607,10 +607,10 @@ comment|/**  * Test Ozone Manager operation in distributed handler scenario.  */
 end_comment
 
 begin_class
-DECL|class|TestScmChillMode
+DECL|class|TestScmSafeMode
 specifier|public
 class|class
-name|TestScmChillMode
+name|TestScmSafeMode
 block|{
 DECL|field|LOG
 specifier|private
@@ -623,7 +623,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|TestScmChillMode
+name|TestScmSafeMode
 operator|.
 name|class
 argument_list|)
@@ -793,10 +793,10 @@ name|timeout
 operator|=
 literal|300_000
 argument_list|)
-DECL|method|testChillModeOperations ()
+DECL|method|testSafeModeOperations ()
 specifier|public
 name|void
-name|testChillModeOperations
+name|testSafeModeOperations
 parameter_list|()
 throws|throws
 name|Exception
@@ -1090,7 +1090,7 @@ name|assertTrue
 argument_list|(
 name|scm
 operator|.
-name|isInChillMode
+name|isInSafeMode
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1110,7 +1110,7 @@ name|IOException
 operator|.
 name|class
 argument_list|,
-literal|"ChillModePrecheck failed for allocateBlock"
+literal|"SafeModePrecheck failed for allocateBlock"
 argument_list|,
 parameter_list|()
 lambda|->
@@ -1123,7 +1123,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Tests inChillMode& forceExitChillMode api calls.    */
+comment|/**    * Tests inSafeMode& forceExitSafeMode api calls.    */
 annotation|@
 name|Test
 argument_list|(
@@ -1131,22 +1131,22 @@ name|timeout
 operator|=
 literal|300_000
 argument_list|)
-DECL|method|testIsScmInChillModeAndForceExit ()
+DECL|method|testIsScmInSafeModeAndForceExit ()
 specifier|public
 name|void
-name|testIsScmInChillModeAndForceExit
+name|testIsScmInSafeModeAndForceExit
 parameter_list|()
 throws|throws
 name|Exception
 block|{
-comment|// Test 1: SCM should be out of chill mode.
+comment|// Test 1: SCM should be out of safe mode.
 name|Assert
 operator|.
 name|assertFalse
 argument_list|(
 name|storageContainerLocationClient
 operator|.
-name|inChillMode
+name|inSafeMode
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1180,7 +1180,7 @@ literal|"Cluster startup failed."
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Test 2: Scm should be in chill mode as datanodes are not started yet.
+comment|// Test 2: Scm should be in safe mode as datanodes are not started yet.
 name|storageContainerLocationClient
 operator|=
 name|cluster
@@ -1194,11 +1194,11 @@ name|assertTrue
 argument_list|(
 name|storageContainerLocationClient
 operator|.
-name|inChillMode
+name|inSafeMode
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Force scm out of chill mode.
+comment|// Force scm out of safe mode.
 name|cluster
 operator|.
 name|getStorageContainerManager
@@ -1207,10 +1207,10 @@ operator|.
 name|getClientProtocolServer
 argument_list|()
 operator|.
-name|forceExitChillMode
+name|forceExitSafeMode
 argument_list|()
 expr_stmt|;
-comment|// Test 3: SCM should be out of chill mode.
+comment|// Test 3: SCM should be out of safe mode.
 name|GenericTestUtils
 operator|.
 name|waitFor
@@ -1230,7 +1230,7 @@ operator|.
 name|getClientProtocolServer
 argument_list|()
 operator|.
-name|inChillMode
+name|inSafeMode
 argument_list|()
 return|;
 block|}
@@ -1268,15 +1268,15 @@ name|timeout
 operator|=
 literal|300_000
 argument_list|)
-DECL|method|testSCMChillMode ()
+DECL|method|testSCMSafeMode ()
 specifier|public
 name|void
-name|testSCMChillMode
+name|testSCMSafeMode
 parameter_list|()
 throws|throws
 name|Exception
 block|{
-comment|// Test1: Test chill mode  when there are no containers in system.
+comment|// Test1: Test safe mode  when there are no containers in system.
 name|cluster
 operator|.
 name|stop
@@ -1313,7 +1313,7 @@ operator|.
 name|getStorageContainerManager
 argument_list|()
 operator|.
-name|isInChillMode
+name|isInSafeMode
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1334,11 +1334,11 @@ operator|.
 name|getStorageContainerManager
 argument_list|()
 operator|.
-name|isInChillMode
+name|isInSafeMode
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Test2: Test chill mode  when containers are there in system.
+comment|// Test2: Test safe mode  when containers are there in system.
 comment|// Create {numKeys} random names keys.
 name|TestStorageContainerManagerHelper
 name|helper
@@ -1513,7 +1513,7 @@ name|LogCapturer
 operator|.
 name|captureLogs
 argument_list|(
-name|SCMChillModeManager
+name|SCMSafeModeManager
 operator|.
 name|getLogger
 argument_list|()
@@ -1560,7 +1560,7 @@ name|assertTrue
 argument_list|(
 name|scm
 operator|.
-name|isInChillMode
+name|isInSafeMode
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1573,7 +1573,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"SCM exiting chill mode."
+literal|"SCM exiting safe mode."
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1625,7 +1625,7 @@ literal|20000
 argument_list|)
 expr_stmt|;
 name|double
-name|chillModeCutoff
+name|safeModeCutoff
 init|=
 name|conf
 operator|.
@@ -1633,11 +1633,11 @@ name|getDouble
 argument_list|(
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_THRESHOLD_PCT
+name|HDDS_SCM_SAFEMODE_THRESHOLD_PCT
 argument_list|,
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_THRESHOLD_PCT_DEFAULT
+name|HDDS_SCM_SAFEMODE_THRESHOLD_PCT_DEFAULT
 argument_list|)
 decl_stmt|;
 name|assertTrue
@@ -1647,7 +1647,7 @@ operator|.
 name|getCurrentContainerThreshold
 argument_list|()
 operator|>=
-name|chillModeCutoff
+name|safeModeCutoff
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -1659,7 +1659,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"SCM exiting chill mode."
+literal|"SCM exiting safe mode."
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1667,7 +1667,7 @@ name|assertFalse
 argument_list|(
 name|scm
 operator|.
-name|isInChillMode
+name|isInSafeMode
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1679,10 +1679,10 @@ name|timeout
 operator|=
 literal|300_000
 argument_list|)
-DECL|method|testSCMChillModeRestrictedOp ()
+DECL|method|testSCMSafeModeRestrictedOp ()
 specifier|public
 name|void
-name|testSCMChillModeRestrictedOp
+name|testSCMSafeModeRestrictedOp
 parameter_list|()
 throws|throws
 name|Exception
@@ -1724,7 +1724,7 @@ name|assertTrue
 argument_list|(
 name|scm
 operator|.
-name|isInChillMode
+name|isInSafeMode
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1736,7 +1736,7 @@ name|SCMException
 operator|.
 name|class
 argument_list|,
-literal|"ChillModePrecheck failed for allocateContainer"
+literal|"SafeModePrecheck failed for allocateContainer"
 argument_list|,
 parameter_list|()
 lambda|->
@@ -1776,7 +1776,7 @@ name|assertFalse
 argument_list|(
 name|scm
 operator|.
-name|isInChillMode
+name|isInSafeMode
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1820,7 +1820,7 @@ name|getClientProtocolServer
 argument_list|()
 operator|)
 operator|.
-name|getChillModeStatus
+name|getSafeModeStatus
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1848,12 +1848,12 @@ name|fireEvent
 argument_list|(
 name|SCMEvents
 operator|.
-name|CHILL_MODE_STATUS
+name|SAFE_MODE_STATUS
 argument_list|,
 operator|new
-name|SCMChillModeManager
+name|SCMSafeModeManager
 operator|.
-name|ChillModeStatus
+name|SafeModeStatus
 argument_list|(
 literal|true
 argument_list|)
@@ -1869,7 +1869,7 @@ block|{
 return|return
 name|clientProtocolServer
 operator|.
-name|getChillModeStatus
+name|getSafeModeStatus
 argument_list|()
 return|;
 block|}
@@ -1885,7 +1885,7 @@ name|assertTrue
 argument_list|(
 name|clientProtocolServer
 operator|.
-name|getChillModeStatus
+name|getSafeModeStatus
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1911,7 +1911,7 @@ argument_list|()
 operator|+
 literal|" "
 operator|+
-literal|"doesn't have enough replicas to service this operation in Chill"
+literal|"doesn't have enough replicas to service this operation in Safe"
 operator|+
 literal|" mode."
 argument_list|,
@@ -1941,10 +1941,10 @@ name|timeout
 operator|=
 literal|300_000
 argument_list|)
-DECL|method|testSCMChillModeDisabled ()
+DECL|method|testSCMSafeModeDisabled ()
 specifier|public
 name|void
-name|testSCMChillModeDisabled
+name|testSCMSafeModeDisabled
 parameter_list|()
 throws|throws
 name|Exception
@@ -1954,7 +1954,7 @@ operator|.
 name|stop
 argument_list|()
 expr_stmt|;
-comment|// If chill mode is disabled, cluster should not be in chill mode even if
+comment|// If safe mode is disabled, cluster should not be in safe mode even if
 comment|// min number of datanodes are not started.
 name|conf
 operator|.
@@ -1962,7 +1962,7 @@ name|setBoolean
 argument_list|(
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_ENABLED
+name|HDDS_SCM_SAFEMODE_ENABLED
 argument_list|,
 literal|false
 argument_list|)
@@ -1973,7 +1973,7 @@ name|setInt
 argument_list|(
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_MIN_DATANODE
+name|HDDS_SCM_SAFEMODE_MIN_DATANODE
 argument_list|,
 literal|3
 argument_list|)
@@ -2021,11 +2021,11 @@ name|assertFalse
 argument_list|(
 name|scm
 operator|.
-name|isInChillMode
+name|isInSafeMode
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Even on SCM restart, cluster should be out of chill mode immediately.
+comment|// Even on SCM restart, cluster should be out of safe mode immediately.
 name|cluster
 operator|.
 name|restartStorageContainerManager
@@ -2037,7 +2037,7 @@ name|assertFalse
 argument_list|(
 name|scm
 operator|.
-name|isInChillMode
+name|isInSafeMode
 argument_list|()
 argument_list|)
 expr_stmt|;

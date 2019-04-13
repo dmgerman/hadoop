@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdds.scm.chillmode
+DECL|package|org.apache.hadoop.hdds.scm.safemode
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|chillmode
+name|safemode
 package|;
 end_package
 
@@ -143,21 +143,21 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Class defining Chill mode exit criteria according to number of DataNodes  * registered with SCM.  */
+comment|/**  * Class defining Safe mode exit criteria according to number of DataNodes  * registered with SCM.  */
 end_comment
 
 begin_class
-DECL|class|DataNodeChillModeRule
+DECL|class|DataNodeSafeModeRule
 specifier|public
 class|class
-name|DataNodeChillModeRule
+name|DataNodeSafeModeRule
 extends|extends
-name|ChillModeExitRule
+name|SafeModeExitRule
 argument_list|<
 name|NodeRegistrationContainerReport
 argument_list|>
 block|{
-comment|// Min DataNodes required to exit chill mode.
+comment|// Min DataNodes required to exit safe mode.
 DECL|field|requiredDns
 specifier|private
 name|int
@@ -179,9 +179,9 @@ name|UUID
 argument_list|>
 name|registeredDnSet
 decl_stmt|;
-DECL|method|DataNodeChillModeRule (String ruleName, EventQueue eventQueue, Configuration conf, SCMChillModeManager manager)
+DECL|method|DataNodeSafeModeRule (String ruleName, EventQueue eventQueue, Configuration conf, SCMSafeModeManager manager)
 specifier|public
-name|DataNodeChillModeRule
+name|DataNodeSafeModeRule
 parameter_list|(
 name|String
 name|ruleName
@@ -192,7 +192,7 @@ parameter_list|,
 name|Configuration
 name|conf
 parameter_list|,
-name|SCMChillModeManager
+name|SCMSafeModeManager
 name|manager
 parameter_list|)
 block|{
@@ -213,11 +213,11 @@ name|getInt
 argument_list|(
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_MIN_DATANODE
+name|HDDS_SCM_SAFEMODE_MIN_DATANODE
 argument_list|,
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_MIN_DATANODE_DEFAULT
+name|HDDS_SCM_SAFEMODE_MIN_DATANODE_DEFAULT
 argument_list|)
 expr_stmt|;
 name|registeredDnSet
@@ -296,18 +296,18 @@ argument_list|()
 expr_stmt|;
 if|if
 condition|(
-name|scmInChillMode
+name|scmInSafeMode
 argument_list|()
 condition|)
 block|{
-name|SCMChillModeManager
+name|SCMSafeModeManager
 operator|.
 name|getLogger
 argument_list|()
 operator|.
 name|info
 argument_list|(
-literal|"SCM in chill mode. {} DataNodes registered, {} required."
+literal|"SCM in safe mode. {} DataNodes registered, {} required."
 argument_list|,
 name|registeredDns
 argument_list|,

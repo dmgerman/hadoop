@@ -66,11 +66,11 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|chillmode
+name|safemode
 operator|.
-name|SCMChillModeManager
+name|SCMSafeModeManager
 operator|.
-name|ChillModeStatus
+name|SafeModeStatus
 import|;
 end_import
 
@@ -571,7 +571,7 @@ argument_list|,
 literal|"Pipeline_Report"
 argument_list|)
 decl_stmt|;
-comment|/**    * PipelineReport processed by pipeline report handler. This event is    * received by HealthyPipelineChillModeRule.    */
+comment|/**    * PipelineReport processed by pipeline report handler. This event is    * received by HealthyPipelineSafeModeRule.    */
 specifier|public
 specifier|static
 specifier|final
@@ -987,21 +987,21 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|CHILL_MODE_STATUS
+DECL|field|SAFE_MODE_STATUS
 specifier|public
 specifier|static
 specifier|final
 name|TypedEvent
 argument_list|<
-name|ChillModeStatus
+name|SafeModeStatus
 argument_list|>
-name|CHILL_MODE_STATUS
+name|SAFE_MODE_STATUS
 init|=
 operator|new
 name|TypedEvent
 argument_list|<>
 argument_list|(
-name|ChillModeStatus
+name|SafeModeStatus
 operator|.
 name|class
 argument_list|)

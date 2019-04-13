@@ -78,7 +78,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|chillmode
+name|safemode
 operator|.
 name|Precheck
 import|;

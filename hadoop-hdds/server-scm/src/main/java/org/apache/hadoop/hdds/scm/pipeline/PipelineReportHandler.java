@@ -130,9 +130,9 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|chillmode
+name|safemode
 operator|.
-name|SCMChillModeManager
+name|SCMSafeModeManager
 import|;
 end_import
 
@@ -293,11 +293,11 @@ specifier|final
 name|Configuration
 name|conf
 decl_stmt|;
-DECL|field|scmChillModeManager
+DECL|field|scmSafeModeManager
 specifier|private
 specifier|final
-name|SCMChillModeManager
-name|scmChillModeManager
+name|SCMSafeModeManager
+name|scmSafeModeManager
 decl_stmt|;
 DECL|field|pipelineAvailabilityCheck
 specifier|private
@@ -305,12 +305,12 @@ specifier|final
 name|boolean
 name|pipelineAvailabilityCheck
 decl_stmt|;
-DECL|method|PipelineReportHandler (SCMChillModeManager scmChillModeManager, PipelineManager pipelineManager, Configuration conf)
+DECL|method|PipelineReportHandler (SCMSafeModeManager scmSafeModeManager, PipelineManager pipelineManager, Configuration conf)
 specifier|public
 name|PipelineReportHandler
 parameter_list|(
-name|SCMChillModeManager
-name|scmChillModeManager
+name|SCMSafeModeManager
+name|scmSafeModeManager
 parameter_list|,
 name|PipelineManager
 name|pipelineManager
@@ -330,14 +330,14 @@ name|Objects
 operator|.
 name|requireNonNull
 argument_list|(
-name|scmChillModeManager
+name|scmSafeModeManager
 argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|=
-name|scmChillModeManager
+name|scmSafeModeManager
 expr_stmt|;
 name|this
 operator|.
@@ -361,11 +361,11 @@ name|getBoolean
 argument_list|(
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_PIPELINE_AVAILABILITY_CHECK
+name|HDDS_SCM_SAFEMODE_PIPELINE_AVAILABILITY_CHECK
 argument_list|,
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_PIPELINE_AVAILABILITY_CHECK_DEFAULT
+name|HDDS_SCM_SAFEMODE_PIPELINE_AVAILABILITY_CHECK_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
@@ -472,9 +472,9 @@ if|if
 condition|(
 name|pipelineAvailabilityCheck
 operator|&&
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|.
-name|getInChillMode
+name|getInSafeMode
 argument_list|()
 condition|)
 block|{

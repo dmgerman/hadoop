@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdds.scm.chillmode
+DECL|package|org.apache.hadoop.hdds.scm.safemode
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|chillmode
+name|safemode
 package|;
 end_package
 
@@ -289,14 +289,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Tests ChillModeHandler behavior.  */
+comment|/**  * Tests SafeModeHandler behavior.  */
 end_comment
 
 begin_class
-DECL|class|TestChillModeHandler
+DECL|class|TestSafeModeHandler
 specifier|public
 class|class
-name|TestChillModeHandler
+name|TestSafeModeHandler
 block|{
 DECL|field|configuration
 specifier|private
@@ -318,22 +318,22 @@ specifier|private
 name|BlockManager
 name|blockManager
 decl_stmt|;
-DECL|field|chillModeHandler
+DECL|field|safeModeHandler
 specifier|private
-name|ChillModeHandler
-name|chillModeHandler
+name|SafeModeHandler
+name|safeModeHandler
 decl_stmt|;
 DECL|field|eventQueue
 specifier|private
 name|EventQueue
 name|eventQueue
 decl_stmt|;
-DECL|field|chillModeStatus
+DECL|field|safeModeStatus
 specifier|private
-name|SCMChillModeManager
+name|SCMSafeModeManager
 operator|.
-name|ChillModeStatus
-name|chillModeStatus
+name|SafeModeStatus
+name|safeModeStatus
 decl_stmt|;
 DECL|field|scmPipelineManager
 specifier|private
@@ -361,7 +361,7 @@ name|setBoolean
 argument_list|(
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_ENABLED
+name|HDDS_SCM_SAFEMODE_ENABLED
 argument_list|,
 name|enabled
 argument_list|)
@@ -372,7 +372,7 @@ name|set
 argument_list|(
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_WAIT_TIME_AFTER_CHILL_MODE_EXIT
+name|HDDS_SCM_WAIT_TIME_AFTER_SAFE_MODE_EXIT
 argument_list|,
 literal|"3s"
 argument_list|)
@@ -468,10 +468,10 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
-name|chillModeHandler
+name|safeModeHandler
 operator|=
 operator|new
-name|ChillModeHandler
+name|SafeModeHandler
 argument_list|(
 name|configuration
 argument_list|,
@@ -490,17 +490,17 @@ name|addHandler
 argument_list|(
 name|SCMEvents
 operator|.
-name|CHILL_MODE_STATUS
+name|SAFE_MODE_STATUS
 argument_list|,
-name|chillModeHandler
+name|safeModeHandler
 argument_list|)
 expr_stmt|;
-name|chillModeStatus
+name|safeModeStatus
 operator|=
 operator|new
-name|SCMChillModeManager
+name|SCMSafeModeManager
 operator|.
-name|ChillModeStatus
+name|SafeModeStatus
 argument_list|(
 literal|false
 argument_list|)
@@ -508,10 +508,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testChillModeHandlerWithChillModeEnabled ()
+DECL|method|testSafeModeHandlerWithSafeModeEnabled ()
 specifier|public
 name|void
-name|testChillModeHandlerWithChillModeEnabled
+name|testSafeModeHandlerWithSafeModeEnabled
 parameter_list|()
 throws|throws
 name|Exception
@@ -525,9 +525,9 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|chillModeHandler
+name|safeModeHandler
 operator|.
-name|getChillModeStatus
+name|getSafeModeStatus
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -537,9 +537,9 @@ name|fireEvent
 argument_list|(
 name|SCMEvents
 operator|.
-name|CHILL_MODE_STATUS
+name|SAFE_MODE_STATUS
 argument_list|,
-name|chillModeStatus
+name|safeModeStatus
 argument_list|)
 expr_stmt|;
 name|GenericTestUtils
@@ -549,9 +549,9 @@ argument_list|(
 parameter_list|()
 lambda|->
 operator|!
-name|chillModeHandler
+name|safeModeHandler
 operator|.
-name|getChillModeStatus
+name|getSafeModeStatus
 argument_list|()
 argument_list|,
 literal|1000
@@ -565,7 +565,7 @@ name|assertFalse
 argument_list|(
 name|scmClientProtocolServer
 operator|.
-name|getChillModeStatus
+name|getSafeModeStatus
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -580,7 +580,7 @@ operator|)
 name|blockManager
 operator|)
 operator|.
-name|isScmInChillMode
+name|isScmInSafeMode
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -603,10 +603,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testChillModeHandlerWithChillModeDisbaled ()
+DECL|method|testSafeModeHandlerWithSafeModeDisbaled ()
 specifier|public
 name|void
-name|testChillModeHandlerWithChillModeDisbaled
+name|testSafeModeHandlerWithSafeModeDisbaled
 parameter_list|()
 throws|throws
 name|Exception
@@ -620,9 +620,9 @@ name|Assert
 operator|.
 name|assertFalse
 argument_list|(
-name|chillModeHandler
+name|safeModeHandler
 operator|.
-name|getChillModeStatus
+name|getSafeModeStatus
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -632,18 +632,18 @@ name|fireEvent
 argument_list|(
 name|SCMEvents
 operator|.
-name|CHILL_MODE_STATUS
+name|SAFE_MODE_STATUS
 argument_list|,
-name|chillModeStatus
+name|safeModeStatus
 argument_list|)
 expr_stmt|;
 name|Assert
 operator|.
 name|assertFalse
 argument_list|(
-name|chillModeHandler
+name|safeModeHandler
 operator|.
-name|getChillModeStatus
+name|getSafeModeStatus
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -653,7 +653,7 @@ name|assertFalse
 argument_list|(
 name|scmClientProtocolServer
 operator|.
-name|getChillModeStatus
+name|getSafeModeStatus
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -668,7 +668,7 @@ operator|)
 name|blockManager
 operator|)
 operator|.
-name|isScmInChillMode
+name|isScmInSafeMode
 argument_list|()
 argument_list|)
 expr_stmt|;

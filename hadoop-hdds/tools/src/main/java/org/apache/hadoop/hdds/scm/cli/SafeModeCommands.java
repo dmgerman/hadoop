@@ -105,7 +105,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Subcommand to group chill mode related operations.  */
+comment|/**  * Subcommand to group safe mode related operations.  */
 end_comment
 
 begin_class
@@ -114,11 +114,11 @@ name|Command
 argument_list|(
 name|name
 operator|=
-literal|"chillmode"
+literal|"safemode"
 argument_list|,
 name|description
 operator|=
-literal|"Chill mode specific operations"
+literal|"Safe mode specific operations"
 argument_list|,
 name|mixinStandardHelpOptions
 operator|=
@@ -133,20 +133,20 @@ argument_list|,
 name|subcommands
 operator|=
 block|{
-name|ChillModeCheckSubcommand
+name|SafeModeCheckSubcommand
 operator|.
 name|class
 block|,
-name|ChillModeExitSubcommand
+name|SafeModeExitSubcommand
 operator|.
 name|class
 block|,
 block|}
 argument_list|)
-DECL|class|ChillModeCommands
+DECL|class|SafeModeCommands
 specifier|public
 class|class
-name|ChillModeCommands
+name|SafeModeCommands
 implements|implements
 name|Callable
 argument_list|<
@@ -164,7 +164,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|ChillModeCommands
+name|SafeModeCommands
 operator|.
 name|class
 argument_list|)
@@ -212,7 +212,7 @@ argument_list|()
 operator|.
 name|get
 argument_list|(
-literal|"chillmode"
+literal|"safemode"
 argument_list|)
 operator|.
 name|getUsageMessage

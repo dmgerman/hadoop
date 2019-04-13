@@ -709,7 +709,7 @@ argument_list|,
 name|subcommands
 operator|=
 block|{
-name|ChillModeCommands
+name|SafeModeCommands
 operator|.
 name|class
 block|,

@@ -341,14 +341,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Waits for    * {@link HddsConfigKeys#HDDS_SCM_WAIT_TIME_AFTER_CHILL_MODE_EXIT} and set    * replicationEnabled to start replication monitor thread.    */
-DECL|method|fireReplicationStart (boolean chillModeStatus, long waitTime)
+comment|/**    * Waits for    * {@link HddsConfigKeys#HDDS_SCM_WAIT_TIME_AFTER_SAFE_MODE_EXIT} and set    * replicationEnabled to start replication monitor thread.    */
+DECL|method|fireReplicationStart (boolean safeModeStatus, long waitTime)
 specifier|public
 name|void
 name|fireReplicationStart
 parameter_list|(
 name|boolean
-name|chillModeStatus
+name|safeModeStatus
 parameter_list|,
 name|long
 name|waitTime
@@ -357,7 +357,7 @@ block|{
 if|if
 condition|(
 operator|!
-name|chillModeStatus
+name|safeModeStatus
 condition|)
 block|{
 name|scheduler

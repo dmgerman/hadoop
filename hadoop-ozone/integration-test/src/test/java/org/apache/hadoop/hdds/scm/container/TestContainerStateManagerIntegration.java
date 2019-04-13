@@ -531,7 +531,7 @@ argument_list|()
 expr_stmt|;
 name|cluster
 operator|.
-name|waitTobeOutOfChillMode
+name|waitTobeOutOfSafeMode
 argument_list|()
 expr_stmt|;
 name|xceiverClientManager

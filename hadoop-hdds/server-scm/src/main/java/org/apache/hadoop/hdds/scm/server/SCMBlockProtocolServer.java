@@ -1388,7 +1388,7 @@ argument_list|()
 condition|)
 block|{
 case|case
-name|CHILL_MODE_EXCEPTION
+name|SAFE_MODE_EXCEPTION
 case|:
 name|resultCode
 operator|=
@@ -1398,7 +1398,7 @@ name|DeleteScmBlockResult
 operator|.
 name|Result
 operator|.
-name|chillMode
+name|safeMode
 expr_stmt|;
 break|break;
 case|case

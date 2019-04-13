@@ -148,7 +148,7 @@ name|proto
 operator|.
 name|StorageContainerLocationProtocolProtos
 operator|.
-name|ForceExitChillModeRequestProto
+name|ForceExitSafeModeRequestProto
 import|;
 end_import
 
@@ -168,7 +168,7 @@ name|proto
 operator|.
 name|StorageContainerLocationProtocolProtos
 operator|.
-name|ForceExitChillModeResponseProto
+name|ForceExitSafeModeResponseProto
 import|;
 end_import
 
@@ -228,7 +228,7 @@ name|proto
 operator|.
 name|StorageContainerLocationProtocolProtos
 operator|.
-name|InChillModeRequestProto
+name|InSafeModeRequestProto
 import|;
 end_import
 
@@ -248,7 +248,7 @@ name|proto
 operator|.
 name|StorageContainerLocationProtocolProtos
 operator|.
-name|InChillModeResponseProto
+name|InSafeModeResponseProto
 import|;
 end_import
 
@@ -1957,33 +1957,33 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Check if SCM is in chill mode.    *    * @return Returns true if SCM is in chill mode else returns false.    * @throws IOException    */
+comment|/**    * Check if SCM is in safe mode.    *    * @return Returns true if SCM is in safe mode else returns false.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|inChillMode ()
+DECL|method|inSafeMode ()
 specifier|public
 name|boolean
-name|inChillMode
+name|inSafeMode
 parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|InChillModeRequestProto
+name|InSafeModeRequestProto
 name|request
 init|=
-name|InChillModeRequestProto
+name|InSafeModeRequestProto
 operator|.
 name|getDefaultInstance
 argument_list|()
 decl_stmt|;
 try|try
 block|{
-name|InChillModeResponseProto
+name|InSafeModeResponseProto
 name|resp
 init|=
 name|rpcProxy
 operator|.
-name|inChillMode
+name|inSafeMode
 argument_list|(
 name|NULL_RPC_CONTROLLER
 argument_list|,
@@ -1993,7 +1993,7 @@ decl_stmt|;
 return|return
 name|resp
 operator|.
-name|getInChillMode
+name|getInSafeMode
 argument_list|()
 return|;
 block|}
@@ -2013,33 +2013,33 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Force SCM out of Chill mode.    *    * @return returns true if operation is successful.    * @throws IOException    */
+comment|/**    * Force SCM out of Safe mode.    *    * @return returns true if operation is successful.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|forceExitChillMode ()
+DECL|method|forceExitSafeMode ()
 specifier|public
 name|boolean
-name|forceExitChillMode
+name|forceExitSafeMode
 parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|ForceExitChillModeRequestProto
+name|ForceExitSafeModeRequestProto
 name|request
 init|=
-name|ForceExitChillModeRequestProto
+name|ForceExitSafeModeRequestProto
 operator|.
 name|getDefaultInstance
 argument_list|()
 decl_stmt|;
 try|try
 block|{
-name|ForceExitChillModeResponseProto
+name|ForceExitSafeModeResponseProto
 name|resp
 init|=
 name|rpcProxy
 operator|.
-name|forceExitChillMode
+name|forceExitSafeMode
 argument_list|(
 name|NULL_RPC_CONTROLLER
 argument_list|,
@@ -2049,7 +2049,7 @@ decl_stmt|;
 return|return
 name|resp
 operator|.
-name|getExitedChillMode
+name|getExitedSafeMode
 argument_list|()
 return|;
 block|}

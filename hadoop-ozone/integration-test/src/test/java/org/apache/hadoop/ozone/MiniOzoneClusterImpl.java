@@ -1014,13 +1014,13 @@ operator|=
 name|timeoutInMs
 expr_stmt|;
 block|}
-comment|/**    * Waits for SCM to be out of Chill Mode. Many tests can be run iff we are out    * of Chill mode.    *    * @throws TimeoutException    * @throws InterruptedException    */
+comment|/**    * Waits for SCM to be out of Safe Mode. Many tests can be run iff we are out    * of Safe mode.    *    * @throws TimeoutException    * @throws InterruptedException    */
 annotation|@
 name|Override
-DECL|method|waitTobeOutOfChillMode ()
+DECL|method|waitTobeOutOfSafeMode ()
 specifier|public
 name|void
-name|waitTobeOutOfChillMode
+name|waitTobeOutOfSafeMode
 parameter_list|()
 throws|throws
 name|TimeoutException
@@ -1039,7 +1039,7 @@ condition|(
 operator|!
 name|scm
 operator|.
-name|isInChillMode
+name|isInSafeMode
 argument_list|()
 condition|)
 block|{

@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdds.scm.chillmode
+DECL|package|org.apache.hadoop.hdds.scm.safemode
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|chillmode
+name|safemode
 package|;
 end_package
 
@@ -237,14 +237,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * StorageContainerManager enters chill mode on startup to allow system to  * reach a stable state before becoming fully functional. SCM will wait  * for certain resources to be reported before coming out of chill mode.  *  * ChillModeExitRule defines format to define new rules which must be satisfied  * to exit Chill mode.  *  * Current ChillMode rules:  * 1. ContainerChillModeRule:  * On every new datanode registration, it fires  * {@link SCMEvents#NODE_REGISTRATION_CONT_REPORT}.  This rule handles this  * event. This rule process this report, increment the  * containerWithMinReplicas count when this reported replica is in the  * containerMap. Then validates if cutoff threshold for containers is meet.  *  * 2. DatanodeChillModeRule:  * On every new datanode registration, it fires  * {@link SCMEvents#NODE_REGISTRATION_CONT_REPORT}. This rule handles this  * event. This rule process this report, and check if this is new node, add  * to its reported node list. Then validate it cutoff threshold for minimum  * number of datanode registered is met or not.  *  * 3. HealthyPipelineChillModeRule:  * Once the pipelineReportHandler processes the  * {@link SCMEvents#PIPELINE_REPORT}, it fires  * {@link SCMEvents#PROCESSED_PIPELINE_REPORT}. This rule handles this  * event. This rule processes this report, and check if pipeline is healthy  * and increments current healthy pipeline count. Then validate it cutoff  * threshold for healthy pipeline is met or not.  *  * 4. OneReplicaPipelineChillModeRule:  * Once the pipelineReportHandler processes the  * {@link SCMEvents#PIPELINE_REPORT}, it fires  * {@link SCMEvents#PROCESSED_PIPELINE_REPORT}. This rule handles this  * event. This rule processes this report, and add the reported pipeline to  * reported pipeline set. Then validate it cutoff threshold for one replica  * per pipeline is met or not.  *  */
+comment|/**  * StorageContainerManager enters safe mode on startup to allow system to  * reach a stable state before becoming fully functional. SCM will wait  * for certain resources to be reported before coming out of safe mode.  *  * SafeModeExitRule defines format to define new rules which must be satisfied  * to exit Safe mode.  *  * Current SafeMode rules:  * 1. ContainerSafeModeRule:  * On every new datanode registration, it fires  * {@link SCMEvents#NODE_REGISTRATION_CONT_REPORT}.  This rule handles this  * event. This rule process this report, increment the  * containerWithMinReplicas count when this reported replica is in the  * containerMap. Then validates if cutoff threshold for containers is meet.  *  * 2. DatanodeSafeModeRule:  * On every new datanode registration, it fires  * {@link SCMEvents#NODE_REGISTRATION_CONT_REPORT}. This rule handles this  * event. This rule process this report, and check if this is new node, add  * to its reported node list. Then validate it cutoff threshold for minimum  * number of datanode registered is met or not.  *  * 3. HealthyPipelineSafeModeRule:  * Once the pipelineReportHandler processes the  * {@link SCMEvents#PIPELINE_REPORT}, it fires  * {@link SCMEvents#PROCESSED_PIPELINE_REPORT}. This rule handles this  * event. This rule processes this report, and check if pipeline is healthy  * and increments current healthy pipeline count. Then validate it cutoff  * threshold for healthy pipeline is met or not.  *  * 4. OneReplicaPipelineSafeModeRule:  * Once the pipelineReportHandler processes the  * {@link SCMEvents#PIPELINE_REPORT}, it fires  * {@link SCMEvents#PROCESSED_PIPELINE_REPORT}. This rule handles this  * event. This rule processes this report, and add the reported pipeline to  * reported pipeline set. Then validate it cutoff threshold for one replica  * per pipeline is met or not.  *  */
 end_comment
 
 begin_class
-DECL|class|SCMChillModeManager
+DECL|class|SCMSafeModeManager
 specifier|public
 class|class
-name|SCMChillModeManager
+name|SCMSafeModeManager
 block|{
 DECL|field|LOG
 specifier|private
@@ -257,21 +257,21 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|SCMChillModeManager
+name|SCMSafeModeManager
 operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|isChillModeEnabled
+DECL|field|isSafeModeEnabled
 specifier|private
 specifier|final
 name|boolean
-name|isChillModeEnabled
+name|isSafeModeEnabled
 decl_stmt|;
-DECL|field|inChillMode
+DECL|field|inSafeMode
 specifier|private
 name|AtomicBoolean
-name|inChillMode
+name|inSafeMode
 init|=
 operator|new
 name|AtomicBoolean
@@ -285,7 +285,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|ChillModeExitRule
+name|SafeModeExitRule
 argument_list|>
 name|exitRules
 init|=
@@ -307,7 +307,7 @@ specifier|final
 name|String
 name|CONT_EXIT_RULE
 init|=
-literal|"ContainerChillModeRule"
+literal|"ContainerSafeModeRule"
 decl_stmt|;
 DECL|field|DN_EXIT_RULE
 specifier|private
@@ -316,7 +316,7 @@ specifier|final
 name|String
 name|DN_EXIT_RULE
 init|=
-literal|"DataNodeChillModeRule"
+literal|"DataNodeSafeModeRule"
 decl_stmt|;
 DECL|field|HEALTHY_PIPELINE_EXIT_RULE
 specifier|private
@@ -325,7 +325,7 @@ specifier|final
 name|String
 name|HEALTHY_PIPELINE_EXIT_RULE
 init|=
-literal|"HealthyPipelineChillModeRule"
+literal|"HealthyPipelineSafeModeRule"
 decl_stmt|;
 DECL|field|ATLEAST_ONE_DATANODE_REPORTED_PIPELINE_EXIT_RULE
 specifier|private
@@ -361,9 +361,9 @@ specifier|final
 name|PipelineManager
 name|pipelineManager
 decl_stmt|;
-DECL|method|SCMChillModeManager (Configuration conf, List<ContainerInfo> allContainers, PipelineManager pipelineManager, EventQueue eventQueue)
+DECL|method|SCMSafeModeManager (Configuration conf, List<ContainerInfo> allContainers, PipelineManager pipelineManager, EventQueue eventQueue)
 specifier|public
-name|SCMChillModeManager
+name|SCMSafeModeManager
 parameter_list|(
 name|Configuration
 name|conf
@@ -401,7 +401,7 @@ name|eventQueue
 expr_stmt|;
 name|this
 operator|.
-name|isChillModeEnabled
+name|isSafeModeEnabled
 operator|=
 name|conf
 operator|.
@@ -409,23 +409,23 @@ name|getBoolean
 argument_list|(
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_ENABLED
+name|HDDS_SCM_SAFEMODE_ENABLED
 argument_list|,
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_ENABLED_DEFAULT
+name|HDDS_SCM_SAFEMODE_ENABLED_DEFAULT
 argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|isChillModeEnabled
+name|isSafeModeEnabled
 condition|)
 block|{
-name|ContainerChillModeRule
-name|containerChillModeRule
+name|ContainerSafeModeRule
+name|containerSafeModeRule
 init|=
 operator|new
-name|ContainerChillModeRule
+name|ContainerSafeModeRule
 argument_list|(
 name|CONT_EXIT_RULE
 argument_list|,
@@ -438,11 +438,11 @@ argument_list|,
 name|this
 argument_list|)
 decl_stmt|;
-name|DataNodeChillModeRule
-name|dataNodeChillModeRule
+name|DataNodeSafeModeRule
+name|dataNodeSafeModeRule
 init|=
 operator|new
-name|DataNodeChillModeRule
+name|DataNodeSafeModeRule
 argument_list|(
 name|DN_EXIT_RULE
 argument_list|,
@@ -459,7 +459,7 @@ name|put
 argument_list|(
 name|CONT_EXIT_RULE
 argument_list|,
-name|containerChillModeRule
+name|containerSafeModeRule
 argument_list|)
 expr_stmt|;
 name|exitRules
@@ -468,7 +468,7 @@ name|put
 argument_list|(
 name|DN_EXIT_RULE
 argument_list|,
-name|dataNodeChillModeRule
+name|dataNodeSafeModeRule
 argument_list|)
 expr_stmt|;
 if|if
@@ -479,11 +479,11 @@ name|getBoolean
 argument_list|(
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_PIPELINE_AVAILABILITY_CHECK
+name|HDDS_SCM_SAFEMODE_PIPELINE_AVAILABILITY_CHECK
 argument_list|,
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_PIPELINE_AVAILABILITY_CHECK_DEFAULT
+name|HDDS_SCM_SAFEMODE_PIPELINE_AVAILABILITY_CHECK_DEFAULT
 argument_list|)
 operator|&&
 name|pipelineManager
@@ -491,11 +491,11 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|HealthyPipelineChillModeRule
-name|healthyPipelineChillModeRule
+name|HealthyPipelineSafeModeRule
+name|healthyPipelineSafeModeRule
 init|=
 operator|new
-name|HealthyPipelineChillModeRule
+name|HealthyPipelineSafeModeRule
 argument_list|(
 name|HEALTHY_PIPELINE_EXIT_RULE
 argument_list|,
@@ -508,11 +508,11 @@ argument_list|,
 name|config
 argument_list|)
 decl_stmt|;
-name|OneReplicaPipelineChillModeRule
-name|oneReplicaPipelineChillModeRule
+name|OneReplicaPipelineSafeModeRule
+name|oneReplicaPipelineSafeModeRule
 init|=
 operator|new
-name|OneReplicaPipelineChillModeRule
+name|OneReplicaPipelineSafeModeRule
 argument_list|(
 name|ATLEAST_ONE_DATANODE_REPORTED_PIPELINE_EXIT_RULE
 argument_list|,
@@ -531,7 +531,7 @@ name|put
 argument_list|(
 name|HEALTHY_PIPELINE_EXIT_RULE
 argument_list|,
-name|healthyPipelineChillModeRule
+name|healthyPipelineSafeModeRule
 argument_list|)
 expr_stmt|;
 name|exitRules
@@ -540,30 +540,30 @@ name|put
 argument_list|(
 name|ATLEAST_ONE_DATANODE_REPORTED_PIPELINE_EXIT_RULE
 argument_list|,
-name|oneReplicaPipelineChillModeRule
+name|oneReplicaPipelineSafeModeRule
 argument_list|)
 expr_stmt|;
 block|}
-name|emitChillModeStatus
+name|emitSafeModeStatus
 argument_list|()
 expr_stmt|;
 block|}
 else|else
 block|{
-name|exitChillMode
+name|exitSafeMode
 argument_list|(
 name|eventQueue
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Emit Chill mode status.    */
+comment|/**    * Emit Safe mode status.    */
 annotation|@
 name|VisibleForTesting
-DECL|method|emitChillModeStatus ()
+DECL|method|emitSafeModeStatus ()
 specifier|public
 name|void
-name|emitChillModeStatus
+name|emitSafeModeStatus
 parameter_list|()
 block|{
 name|eventPublisher
@@ -572,22 +572,22 @@ name|fireEvent
 argument_list|(
 name|SCMEvents
 operator|.
-name|CHILL_MODE_STATUS
+name|SAFE_MODE_STATUS
 argument_list|,
 operator|new
-name|ChillModeStatus
+name|SafeModeStatus
 argument_list|(
-name|getInChillMode
+name|getInSafeMode
 argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|validateChillModeExitRules (String ruleName, EventPublisher eventQueue)
+DECL|method|validateSafeModeExitRules (String ruleName, EventPublisher eventQueue)
 specifier|public
 specifier|synchronized
 name|void
-name|validateChillModeExitRules
+name|validateSafeModeExitRules
 parameter_list|(
 name|String
 name|ruleName
@@ -642,28 +642,28 @@ name|size
 argument_list|()
 condition|)
 block|{
-comment|// All rules are satisfied, we can exit chill mode.
+comment|// All rules are satisfied, we can exit safe mode.
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"ScmChillModeManager, all rules are successfully validated"
+literal|"ScmSafeModeManager, all rules are successfully validated"
 argument_list|)
 expr_stmt|;
-name|exitChillMode
+name|exitSafeMode
 argument_list|(
 name|eventQueue
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Exit chill mode. It does following actions:    * 1. Set chill mode status to false.    * 2. Emits START_REPLICATION for ReplicationManager.    * 3. Cleanup resources.    * 4. Emit chill mode status.    * @param eventQueue    */
+comment|/**    * Exit safe mode. It does following actions:    * 1. Set safe mode status to false.    * 2. Emits START_REPLICATION for ReplicationManager.    * 3. Cleanup resources.    * 4. Emit safe mode status.    * @param eventQueue    */
 annotation|@
 name|VisibleForTesting
-DECL|method|exitChillMode (EventPublisher eventQueue)
+DECL|method|exitSafeMode (EventPublisher eventQueue)
 specifier|public
 name|void
-name|exitChillMode
+name|exitSafeMode
 parameter_list|(
 name|EventPublisher
 name|eventQueue
@@ -673,20 +673,20 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"SCM exiting chill mode."
+literal|"SCM exiting safe mode."
 argument_list|)
 expr_stmt|;
-name|setInChillMode
+name|setInSafeMode
 argument_list|(
 literal|false
 argument_list|)
 expr_stmt|;
 comment|// TODO: Remove handler registration as there is no need to listen to
 comment|// register events anymore.
-name|emitChillModeStatus
+name|emitSafeModeStatus
 argument_list|()
 expr_stmt|;
-comment|// TODO: #CLUTIL if we reenter chill mode the fixed interval pipeline
+comment|// TODO: #CLUTIL if we reenter safe mode the fixed interval pipeline
 comment|// creation job needs to stop
 name|pipelineManager
 operator|.
@@ -694,16 +694,16 @@ name|startPipelineCreator
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|getInChillMode ()
+DECL|method|getInSafeMode ()
 specifier|public
 name|boolean
-name|getInChillMode
+name|getInSafeMode
 parameter_list|()
 block|{
 if|if
 condition|(
 operator|!
-name|isChillModeEnabled
+name|isSafeModeEnabled
 condition|)
 block|{
 return|return
@@ -711,29 +711,29 @@ literal|false
 return|;
 block|}
 return|return
-name|inChillMode
+name|inSafeMode
 operator|.
 name|get
 argument_list|()
 return|;
 block|}
-comment|/**    * Set chill mode status.    */
-DECL|method|setInChillMode (boolean inChillMode)
+comment|/**    * Set safe mode status.    */
+DECL|method|setInSafeMode (boolean inSafeMode)
 specifier|public
 name|void
-name|setInChillMode
+name|setInSafeMode
 parameter_list|(
 name|boolean
-name|inChillMode
+name|inSafeMode
 parameter_list|)
 block|{
 name|this
 operator|.
-name|inChillMode
+name|inSafeMode
 operator|.
 name|set
 argument_list|(
-name|inChillMode
+name|inSafeMode
 argument_list|)
 expr_stmt|;
 block|}
@@ -759,7 +759,7 @@ block|{
 return|return
 operator|(
 operator|(
-name|ContainerChillModeRule
+name|ContainerSafeModeRule
 operator|)
 name|exitRules
 operator|.
@@ -775,15 +775,15 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getHealthyPipelineChillModeRule ()
+DECL|method|getHealthyPipelineSafeModeRule ()
 specifier|public
-name|HealthyPipelineChillModeRule
-name|getHealthyPipelineChillModeRule
+name|HealthyPipelineSafeModeRule
+name|getHealthyPipelineSafeModeRule
 parameter_list|()
 block|{
 return|return
 operator|(
-name|HealthyPipelineChillModeRule
+name|HealthyPipelineSafeModeRule
 operator|)
 name|exitRules
 operator|.
@@ -795,15 +795,15 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getOneReplicaPipelineChillModeRule ()
+DECL|method|getOneReplicaPipelineSafeModeRule ()
 specifier|public
-name|OneReplicaPipelineChillModeRule
-name|getOneReplicaPipelineChillModeRule
+name|OneReplicaPipelineSafeModeRule
+name|getOneReplicaPipelineSafeModeRule
 parameter_list|()
 block|{
 return|return
 operator|(
-name|OneReplicaPipelineChillModeRule
+name|OneReplicaPipelineSafeModeRule
 operator|)
 name|exitRules
 operator|.
@@ -813,41 +813,41 @@ name|ATLEAST_ONE_DATANODE_REPORTED_PIPELINE_EXIT_RULE
 argument_list|)
 return|;
 block|}
-comment|/**    * Class used during ChillMode status event.    */
-DECL|class|ChillModeStatus
+comment|/**    * Class used during SafeMode status event.    */
+DECL|class|SafeModeStatus
 specifier|public
 specifier|static
 class|class
-name|ChillModeStatus
+name|SafeModeStatus
 block|{
-DECL|field|chillModeStatus
+DECL|field|safeModeStatus
 specifier|private
 name|boolean
-name|chillModeStatus
+name|safeModeStatus
 decl_stmt|;
-DECL|method|ChillModeStatus (boolean chillModeState)
+DECL|method|SafeModeStatus (boolean safeModeState)
 specifier|public
-name|ChillModeStatus
+name|SafeModeStatus
 parameter_list|(
 name|boolean
-name|chillModeState
+name|safeModeState
 parameter_list|)
 block|{
 name|this
 operator|.
-name|chillModeStatus
+name|safeModeStatus
 operator|=
-name|chillModeState
+name|safeModeState
 expr_stmt|;
 block|}
-DECL|method|getChillModeStatus ()
+DECL|method|getSafeModeStatus ()
 specifier|public
 name|boolean
-name|getChillModeStatus
+name|getSafeModeStatus
 parameter_list|()
 block|{
 return|return
-name|chillModeStatus
+name|safeModeStatus
 return|;
 block|}
 block|}

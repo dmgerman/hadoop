@@ -50,9 +50,9 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|chillmode
+name|safemode
 operator|.
-name|SCMChillModeManager
+name|SCMSafeModeManager
 import|;
 end_import
 
@@ -169,7 +169,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class acts as an SCM builder Class. This class is important for us  * from a resilience perspective of SCM. This class will allow us swap out  * different managers and replace with out on manager in the testing phase.  *<p>  * At some point in the future, we will make all these managers dynamically  * loadable, so other developers can extend SCM by replacing various managers.  *<p>  * TODO: Add different config keys, so that we can load different managers at  * run time. This will make it easy to extend SCM without having to replace  * whole SCM each time.  *<p>  * Different Managers supported by this builder are:  * NodeManager scmNodeManager;  * PipelineManager pipelineManager;  * ContainerManager containerManager;  * BlockManager scmBlockManager;  * ReplicationManager replicationManager;  * SCMChillModeManager scmChillModeManager;  * CertificateServer certificateServer;  * SCMMetadata scmMetadataStore.  *  * If any of these are *not* specified then the default version of these  * managers are used by SCM.  *  */
+comment|/**  * This class acts as an SCM builder Class. This class is important for us  * from a resilience perspective of SCM. This class will allow us swap out  * different managers and replace with out on manager in the testing phase.  *<p>  * At some point in the future, we will make all these managers dynamically  * loadable, so other developers can extend SCM by replacing various managers.  *<p>  * TODO: Add different config keys, so that we can load different managers at  * run time. This will make it easy to extend SCM without having to replace  * whole SCM each time.  *<p>  * Different Managers supported by this builder are:  * NodeManager scmNodeManager;  * PipelineManager pipelineManager;  * ContainerManager containerManager;  * BlockManager scmBlockManager;  * ReplicationManager replicationManager;  * SCMSafeModeManager scmSafeModeManager;  * CertificateServer certificateServer;  * SCMMetadata scmMetadataStore.  *  * If any of these are *not* specified then the default version of these  * managers are used by SCM.  *  */
 end_comment
 
 begin_class
@@ -204,10 +204,10 @@ specifier|private
 name|ReplicationManager
 name|replicationManager
 decl_stmt|;
-DECL|field|scmChillModeManager
+DECL|field|scmSafeModeManager
 specifier|private
-name|SCMChillModeManager
-name|scmChillModeManager
+name|SCMSafeModeManager
+name|scmSafeModeManager
 decl_stmt|;
 DECL|field|certificateServer
 specifier|private
@@ -304,21 +304,21 @@ operator|=
 name|replicationManager
 expr_stmt|;
 block|}
-comment|/**    * Allows user to specify a custom version of Chill Mode Manager to use    * with this SCM.    * @param scmChillModeManager - ChillMode Manager.    */
-DECL|method|setScmChillModeManager (SCMChillModeManager scmChillModeManager)
+comment|/**    * Allows user to specify a custom version of Safe Mode Manager to use    * with this SCM.    * @param scmSafeModeManager - SafeMode Manager.    */
+DECL|method|setScmSafeModeManager (SCMSafeModeManager scmSafeModeManager)
 specifier|public
 name|void
-name|setScmChillModeManager
+name|setScmSafeModeManager
 parameter_list|(
-name|SCMChillModeManager
-name|scmChillModeManager
+name|SCMSafeModeManager
+name|scmSafeModeManager
 parameter_list|)
 block|{
 name|this
 operator|.
-name|scmChillModeManager
+name|scmSafeModeManager
 operator|=
-name|scmChillModeManager
+name|scmSafeModeManager
 expr_stmt|;
 block|}
 comment|/**    * Allows user to specify a custom version of Certificate Server to use    * with this SCM.    * @param certificateAuthority - Certificate server.    */
@@ -410,15 +410,15 @@ return|return
 name|replicationManager
 return|;
 block|}
-comment|/**    * Gets Chill Mode Manager.    * @return Chill Mode manager.    */
-DECL|method|getScmChillModeManager ()
+comment|/**    * Gets Safe Mode Manager.    * @return Safe Mode manager.    */
+DECL|method|getScmSafeModeManager ()
 specifier|public
-name|SCMChillModeManager
-name|getScmChillModeManager
+name|SCMSafeModeManager
+name|getScmSafeModeManager
 parameter_list|()
 block|{
 return|return
-name|scmChillModeManager
+name|scmSafeModeManager
 return|;
 block|}
 comment|/**    * Get Certificate Manager.    * @return Certificate Manager.    */

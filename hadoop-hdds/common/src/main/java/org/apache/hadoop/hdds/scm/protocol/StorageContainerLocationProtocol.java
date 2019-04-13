@@ -403,18 +403,18 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Check if SCM is in chill mode.    *    * @return Returns true if SCM is in chill mode else returns false.    * @throws IOException    */
-DECL|method|inChillMode ()
+comment|/**    * Check if SCM is in safe mode.    *    * @return Returns true if SCM is in safe mode else returns false.    * @throws IOException    */
+DECL|method|inSafeMode ()
 name|boolean
-name|inChillMode
+name|inSafeMode
 parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Force SCM out of Chill mode.    *    * @return returns true if operation is successful.    * @throws IOException    */
-DECL|method|forceExitChillMode ()
+comment|/**    * Force SCM out of Safe mode.    *    * @return returns true if operation is successful.    * @throws IOException    */
+DECL|method|forceExitSafeMode ()
 name|boolean
-name|forceExitChillMode
+name|forceExitSafeMode
 parameter_list|()
 throws|throws
 name|IOException

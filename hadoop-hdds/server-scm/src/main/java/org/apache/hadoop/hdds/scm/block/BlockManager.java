@@ -209,13 +209,13 @@ name|SCMBlockDeletingService
 name|getSCMBlockDeletingService
 parameter_list|()
 function_decl|;
-comment|/**    * Set ChillMode status.    *    * @param chillModeStatus    */
-DECL|method|setChillModeStatus (boolean chillModeStatus)
+comment|/**    * Set SafeMode status.    *    * @param safeModeStatus    */
+DECL|method|setSafeModeStatus (boolean safeModeStatus)
 name|void
-name|setChillModeStatus
+name|setSafeModeStatus
 parameter_list|(
 name|boolean
-name|chillModeStatus
+name|safeModeStatus
 parameter_list|)
 function_decl|;
 block|}

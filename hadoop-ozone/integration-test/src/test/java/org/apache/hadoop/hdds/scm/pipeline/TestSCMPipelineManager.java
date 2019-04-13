@@ -172,9 +172,9 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|chillmode
+name|safemode
 operator|.
-name|SCMChillModeManager
+name|SCMSafeModeManager
 import|;
 end_import
 
@@ -979,11 +979,11 @@ argument_list|,
 name|mockRatisProvider
 argument_list|)
 expr_stmt|;
-name|SCMChillModeManager
-name|scmChillModeManager
+name|SCMSafeModeManager
+name|scmSafeModeManager
 init|=
 operator|new
-name|SCMChillModeManager
+name|SCMSafeModeManager
 argument_list|(
 operator|new
 name|OzoneConfiguration
@@ -1063,7 +1063,7 @@ init|=
 operator|new
 name|PipelineReportHandler
 argument_list|(
-name|scmChillModeManager
+name|scmSafeModeManager
 argument_list|,
 name|pipelineManager
 argument_list|,

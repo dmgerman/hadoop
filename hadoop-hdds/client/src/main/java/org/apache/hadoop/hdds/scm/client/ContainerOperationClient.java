@@ -1528,11 +1528,11 @@ return|return
 name|size
 return|;
 block|}
-comment|/**    * Check if SCM is in chill mode.    *    * @return Returns true if SCM is in chill mode else returns false.    * @throws IOException    */
-DECL|method|inChillMode ()
+comment|/**    * Check if SCM is in safe mode.    *    * @return Returns true if SCM is in safe mode else returns false.    * @throws IOException    */
+DECL|method|inSafeMode ()
 specifier|public
 name|boolean
-name|inChillMode
+name|inSafeMode
 parameter_list|()
 throws|throws
 name|IOException
@@ -1540,15 +1540,15 @@ block|{
 return|return
 name|storageContainerLocationClient
 operator|.
-name|inChillMode
+name|inSafeMode
 argument_list|()
 return|;
 block|}
-comment|/**    * Force SCM out of chill mode.    *    * @return returns true if operation is successful.    * @throws IOException    */
-DECL|method|forceExitChillMode ()
+comment|/**    * Force SCM out of safe mode.    *    * @return returns true if operation is successful.    * @throws IOException    */
+DECL|method|forceExitSafeMode ()
 specifier|public
 name|boolean
-name|forceExitChillMode
+name|forceExitSafeMode
 parameter_list|()
 throws|throws
 name|IOException
@@ -1556,7 +1556,7 @@ block|{
 return|return
 name|storageContainerLocationClient
 operator|.
-name|forceExitChillMode
+name|forceExitSafeMode
 argument_list|()
 return|;
 block|}

@@ -107,7 +107,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This is the handler that process chill mode exit command.  */
+comment|/**  * This is the handler that process safe mode check command.  */
 end_comment
 
 begin_class
@@ -116,11 +116,11 @@ name|Command
 argument_list|(
 name|name
 operator|=
-literal|"exit"
+literal|"status"
 argument_list|,
 name|description
 operator|=
-literal|"Force SCM out of chill mode"
+literal|"Check if SCM is in safe mode"
 argument_list|,
 name|mixinStandardHelpOptions
 operator|=
@@ -132,10 +132,10 @@ name|HddsVersionProvider
 operator|.
 name|class
 argument_list|)
-DECL|class|ChillModeExitSubcommand
+DECL|class|SafeModeCheckSubcommand
 specifier|public
 class|class
-name|ChillModeExitSubcommand
+name|SafeModeCheckSubcommand
 implements|implements
 name|Callable
 argument_list|<
@@ -153,7 +153,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|ChillModeExitSubcommand
+name|SafeModeCheckSubcommand
 operator|.
 name|class
 argument_list|)
@@ -162,7 +162,7 @@ annotation|@
 name|ParentCommand
 DECL|field|parent
 specifier|private
-name|ChillModeCommands
+name|SafeModeCommands
 name|parent
 decl_stmt|;
 annotation|@
@@ -194,9 +194,10 @@ name|execReturn
 init|=
 name|scmClient
 operator|.
-name|forceExitChillMode
+name|inSafeMode
 argument_list|()
 decl_stmt|;
+comment|// Output data list
 if|if
 condition|(
 name|execReturn
@@ -206,7 +207,17 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"SCM exit chill mode successfully."
+literal|"SCM is in safe mode."
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"SCM is out of safe mode."
 argument_list|)
 expr_stmt|;
 block|}

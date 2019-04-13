@@ -760,15 +760,15 @@ expr_stmt|;
 block|}
 annotation|@
 name|Before
-DECL|method|clearChillMode ()
+DECL|method|clearSafeMode ()
 specifier|public
 name|void
-name|clearChillMode
+name|clearSafeMode
 parameter_list|()
 block|{
 name|nodeManager
 operator|.
-name|setChillmode
+name|setSafemode
 argument_list|(
 literal|false
 argument_list|)
@@ -1616,7 +1616,7 @@ name|IOException
 block|{
 name|nodeManager
 operator|.
-name|setChillmode
+name|setSafemode
 argument_list|(
 literal|false
 argument_list|)

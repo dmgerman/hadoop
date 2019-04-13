@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdds.scm.chillmode
+DECL|package|org.apache.hadoop.hdds.scm.safemode
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|chillmode
+name|safemode
 package|;
 end_package
 
@@ -233,25 +233,25 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Class defining Chill mode exit criteria for Containers.  */
+comment|/**  * Class defining Safe mode exit criteria for Containers.  */
 end_comment
 
 begin_class
-DECL|class|ContainerChillModeRule
+DECL|class|ContainerSafeModeRule
 specifier|public
 class|class
-name|ContainerChillModeRule
+name|ContainerSafeModeRule
 extends|extends
-name|ChillModeExitRule
+name|SafeModeExitRule
 argument_list|<
 name|NodeRegistrationContainerReport
 argument_list|>
 block|{
 comment|// Required cutoff % for containers with at least 1 reported replica.
-DECL|field|chillModeCutoff
+DECL|field|safeModeCutoff
 specifier|private
 name|double
-name|chillModeCutoff
+name|safeModeCutoff
 decl_stmt|;
 comment|// Containers read from scm db (excluding containers in ALLOCATED state).
 DECL|field|containerMap
@@ -280,9 +280,9 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
-DECL|method|ContainerChillModeRule (String ruleName, EventQueue eventQueue, Configuration conf, List<ContainerInfo> containers, SCMChillModeManager manager)
+DECL|method|ContainerSafeModeRule (String ruleName, EventQueue eventQueue, Configuration conf, List<ContainerInfo> containers, SCMSafeModeManager manager)
 specifier|public
-name|ContainerChillModeRule
+name|ContainerSafeModeRule
 parameter_list|(
 name|String
 name|ruleName
@@ -299,7 +299,7 @@ name|ContainerInfo
 argument_list|>
 name|containers
 parameter_list|,
-name|SCMChillModeManager
+name|SCMSafeModeManager
 name|manager
 parameter_list|)
 block|{
@@ -312,7 +312,7 @@ argument_list|,
 name|eventQueue
 argument_list|)
 expr_stmt|;
-name|chillModeCutoff
+name|safeModeCutoff
 operator|=
 name|conf
 operator|.
@@ -320,11 +320,11 @@ name|getDouble
 argument_list|(
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_THRESHOLD_PCT
+name|HDDS_SCM_SAFEMODE_THRESHOLD_PCT
 argument_list|,
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_THRESHOLD_PCT_DEFAULT
+name|HDDS_SCM_SAFEMODE_THRESHOLD_PCT_DEFAULT
 argument_list|)
 expr_stmt|;
 name|Preconditions
@@ -332,18 +332,18 @@ operator|.
 name|checkArgument
 argument_list|(
 operator|(
-name|chillModeCutoff
+name|safeModeCutoff
 operator|>=
 literal|0.0
 operator|&&
-name|chillModeCutoff
+name|safeModeCutoff
 operator|<=
 literal|1.0
 operator|)
 argument_list|,
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_THRESHOLD_PCT
+name|HDDS_SCM_SAFEMODE_THRESHOLD_PCT
 operator|+
 literal|" value should be>= 0.0 and<= 1.0"
 argument_list|)
@@ -455,7 +455,7 @@ return|return
 name|getCurrentContainerThreshold
 argument_list|()
 operator|>=
-name|chillModeCutoff
+name|safeModeCutoff
 return|;
 block|}
 annotation|@
@@ -554,18 +554,18 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|scmInChillMode
+name|scmInSafeMode
 argument_list|()
 condition|)
 block|{
-name|SCMChillModeManager
+name|SCMSafeModeManager
 operator|.
 name|getLogger
 argument_list|()
 operator|.
 name|info
 argument_list|(
-literal|"SCM in chill mode. {} % containers have at least one"
+literal|"SCM in safe mode. {} % containers have at least one"
 operator|+
 literal|" reported replica."
 argument_list|,

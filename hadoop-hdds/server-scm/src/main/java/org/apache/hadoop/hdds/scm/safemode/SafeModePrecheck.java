@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdds.scm.chillmode
+DECL|package|org.apache.hadoop.hdds.scm.safemode
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|chillmode
+name|safemode
 package|;
 end_package
 
@@ -121,24 +121,24 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Chill mode pre-check for SCM operations.  * */
+comment|/**  * Safe mode pre-check for SCM operations.  * */
 end_comment
 
 begin_class
-DECL|class|ChillModePrecheck
+DECL|class|SafeModePrecheck
 specifier|public
 class|class
-name|ChillModePrecheck
+name|SafeModePrecheck
 implements|implements
 name|Precheck
 argument_list|<
 name|ScmOps
 argument_list|>
 block|{
-DECL|field|inChillMode
+DECL|field|inSafeMode
 specifier|private
 name|AtomicBoolean
-name|inChillMode
+name|inSafeMode
 decl_stmt|;
 DECL|field|PRECHECK_TYPE
 specifier|public
@@ -147,18 +147,18 @@ specifier|final
 name|String
 name|PRECHECK_TYPE
 init|=
-literal|"ChillModePrecheck"
+literal|"SafeModePrecheck"
 decl_stmt|;
-DECL|method|ChillModePrecheck (Configuration conf)
+DECL|method|SafeModePrecheck (Configuration conf)
 specifier|public
-name|ChillModePrecheck
+name|SafeModePrecheck
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
 block|{
 name|boolean
-name|chillModeEnabled
+name|safeModeEnabled
 init|=
 name|conf
 operator|.
@@ -166,19 +166,19 @@ name|getBoolean
 argument_list|(
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_ENABLED
+name|HDDS_SCM_SAFEMODE_ENABLED
 argument_list|,
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_ENABLED_DEFAULT
+name|HDDS_SCM_SAFEMODE_ENABLED_DEFAULT
 argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|chillModeEnabled
+name|safeModeEnabled
 condition|)
 block|{
-name|inChillMode
+name|inSafeMode
 operator|=
 operator|new
 name|AtomicBoolean
@@ -189,7 +189,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|inChillMode
+name|inSafeMode
 operator|=
 operator|new
 name|AtomicBoolean
@@ -214,14 +214,14 @@ name|SCMException
 block|{
 if|if
 condition|(
-name|inChillMode
+name|inSafeMode
 operator|.
 name|get
 argument_list|()
 operator|&&
-name|ChillModeRestrictedOps
+name|SafeModeRestrictedOps
 operator|.
-name|isRestrictedInChillMode
+name|isRestrictedInSafeMode
 argument_list|(
 name|op
 argument_list|)
@@ -231,18 +231,18 @@ throw|throw
 operator|new
 name|SCMException
 argument_list|(
-literal|"ChillModePrecheck failed for "
+literal|"SafeModePrecheck failed for "
 operator|+
 name|op
 argument_list|,
 name|ResultCodes
 operator|.
-name|CHILL_MODE_EXCEPTION
+name|SAFE_MODE_EXCEPTION
 argument_list|)
 throw|;
 block|}
 return|return
-name|inChillMode
+name|inSafeMode
 operator|.
 name|get
 argument_list|()
@@ -260,35 +260,35 @@ return|return
 name|PRECHECK_TYPE
 return|;
 block|}
-DECL|method|isInChillMode ()
+DECL|method|isInSafeMode ()
 specifier|public
 name|boolean
-name|isInChillMode
+name|isInSafeMode
 parameter_list|()
 block|{
 return|return
-name|inChillMode
+name|inSafeMode
 operator|.
 name|get
 argument_list|()
 return|;
 block|}
-DECL|method|setInChillMode (boolean inChillMode)
+DECL|method|setInSafeMode (boolean inSafeMode)
 specifier|public
 name|void
-name|setInChillMode
+name|setInSafeMode
 parameter_list|(
 name|boolean
-name|inChillMode
+name|inSafeMode
 parameter_list|)
 block|{
 name|this
 operator|.
-name|inChillMode
+name|inSafeMode
 operator|.
 name|set
 argument_list|(
-name|inChillMode
+name|inSafeMode
 argument_list|)
 expr_stmt|;
 block|}

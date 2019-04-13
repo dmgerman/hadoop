@@ -689,7 +689,7 @@ argument_list|()
 expr_stmt|;
 name|scm
 operator|.
-name|exitChillMode
+name|exitSafeMode
 argument_list|()
 expr_stmt|;
 name|scmBlockSize
@@ -795,11 +795,11 @@ argument_list|(
 operator|new
 name|SCMException
 argument_list|(
-literal|"ChillModePrecheck failed for allocateBlock"
+literal|"SafeModePrecheck failed for allocateBlock"
 argument_list|,
 name|ResultCodes
 operator|.
-name|CHILL_MODE_EXCEPTION
+name|SAFE_MODE_EXCEPTION
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -947,10 +947,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|allocateBlockFailureInChillMode ()
+DECL|method|allocateBlockFailureInSafeMode ()
 specifier|public
 name|void
-name|allocateBlockFailureInChillMode
+name|allocateBlockFailureInSafeMode
 parameter_list|()
 throws|throws
 name|Exception
@@ -1004,7 +1004,7 @@ name|OMException
 operator|.
 name|class
 argument_list|,
-literal|"ChillModePrecheck failed for allocateBlock"
+literal|"SafeModePrecheck failed for allocateBlock"
 argument_list|,
 parameter_list|()
 lambda|->
@@ -1031,10 +1031,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|openKeyFailureInChillMode ()
+DECL|method|openKeyFailureInSafeMode ()
 specifier|public
 name|void
-name|openKeyFailureInChillMode
+name|openKeyFailureInSafeMode
 parameter_list|()
 throws|throws
 name|Exception
@@ -1083,7 +1083,7 @@ name|OMException
 operator|.
 name|class
 argument_list|,
-literal|"ChillModePrecheck failed for allocateBlock"
+literal|"SafeModePrecheck failed for allocateBlock"
 argument_list|,
 parameter_list|()
 lambda|->

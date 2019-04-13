@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one or more
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdds.scm.chillmode
+DECL|package|org.apache.hadoop.hdds.scm.safemode
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|chillmode
+name|safemode
 package|;
 end_package
 
@@ -150,11 +150,11 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|chillmode
+name|safemode
 operator|.
-name|SCMChillModeManager
+name|SCMSafeModeManager
 operator|.
-name|ChillModeStatus
+name|SafeModeStatus
 import|;
 end_import
 
@@ -271,18 +271,18 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Class to handle the activities needed to be performed after exiting chill  * mode.  */
+comment|/**  * Class to handle the activities needed to be performed after exiting safe  * mode.  */
 end_comment
 
 begin_class
-DECL|class|ChillModeHandler
+DECL|class|SafeModeHandler
 specifier|public
 class|class
-name|ChillModeHandler
+name|SafeModeHandler
 implements|implements
 name|EventHandler
 argument_list|<
-name|ChillModeStatus
+name|SafeModeStatus
 argument_list|>
 block|{
 DECL|field|LOG
@@ -296,7 +296,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|ChillModeHandler
+name|SafeModeHandler
 operator|.
 name|class
 argument_list|)
@@ -319,11 +319,11 @@ specifier|final
 name|long
 name|waitTime
 decl_stmt|;
-DECL|field|isInChillMode
+DECL|field|isInSafeMode
 specifier|private
 specifier|final
 name|AtomicBoolean
-name|isInChillMode
+name|isInSafeMode
 init|=
 operator|new
 name|AtomicBoolean
@@ -343,10 +343,10 @@ specifier|final
 name|PipelineManager
 name|scmPipelineManager
 decl_stmt|;
-comment|/**    * ChillModeHandler, to handle the logic once we exit chill mode.    * @param configuration    * @param clientProtocolServer    * @param blockManager    * @param replicationManager    */
-DECL|method|ChillModeHandler (Configuration configuration, SCMClientProtocolServer clientProtocolServer, BlockManager blockManager, ReplicationManager replicationManager, PipelineManager pipelineManager)
+comment|/**    * SafeModeHandler, to handle the logic once we exit safe mode.    * @param configuration    * @param clientProtocolServer    * @param blockManager    * @param replicationManager    */
+DECL|method|SafeModeHandler (Configuration configuration, SCMClientProtocolServer clientProtocolServer, BlockManager blockManager, ReplicationManager replicationManager, PipelineManager pipelineManager)
 specifier|public
-name|ChillModeHandler
+name|SafeModeHandler
 parameter_list|(
 name|Configuration
 name|configuration
@@ -427,11 +427,11 @@ name|getTimeDuration
 argument_list|(
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_WAIT_TIME_AFTER_CHILL_MODE_EXIT
+name|HDDS_SCM_WAIT_TIME_AFTER_SAFE_MODE_EXIT
 argument_list|,
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_WAIT_TIME_AFTER_CHILL_MODE_EXIT_DEFAULT
+name|HDDS_SCM_WAIT_TIME_AFTER_SAFE_MODE_EXIT_DEFAULT
 argument_list|,
 name|TimeUnit
 operator|.
@@ -464,7 +464,7 @@ name|pipelineManager
 expr_stmt|;
 specifier|final
 name|boolean
-name|chillModeEnabled
+name|safeModeEnabled
 init|=
 name|configuration
 operator|.
@@ -472,51 +472,51 @@ name|getBoolean
 argument_list|(
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_ENABLED
+name|HDDS_SCM_SAFEMODE_ENABLED
 argument_list|,
 name|HddsConfigKeys
 operator|.
-name|HDDS_SCM_CHILLMODE_ENABLED_DEFAULT
+name|HDDS_SCM_SAFEMODE_ENABLED_DEFAULT
 argument_list|)
 decl_stmt|;
-name|isInChillMode
+name|isInSafeMode
 operator|.
 name|set
 argument_list|(
-name|chillModeEnabled
+name|safeModeEnabled
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Set ChillMode status based on    * {@link org.apache.hadoop.hdds.scm.events.SCMEvents#CHILL_MODE_STATUS}.    *    * Inform BlockManager, ScmClientProtocolServer and replicationAcitivity    * status about chillMode status.    *    * @param chillModeStatus    * @param publisher    */
+comment|/**    * Set SafeMode status based on    * {@link org.apache.hadoop.hdds.scm.events.SCMEvents#SAFE_MODE_STATUS}.    *    * Inform BlockManager, ScmClientProtocolServer and replicationAcitivity    * status about safeMode status.    *    * @param safeModeStatus    * @param publisher    */
 annotation|@
 name|Override
-DECL|method|onMessage (ChillModeStatus chillModeStatus, EventPublisher publisher)
+DECL|method|onMessage (SafeModeStatus safeModeStatus, EventPublisher publisher)
 specifier|public
 name|void
 name|onMessage
 parameter_list|(
-name|ChillModeStatus
-name|chillModeStatus
+name|SafeModeStatus
+name|safeModeStatus
 parameter_list|,
 name|EventPublisher
 name|publisher
 parameter_list|)
 block|{
-name|isInChillMode
+name|isInSafeMode
 operator|.
 name|set
 argument_list|(
-name|chillModeStatus
+name|safeModeStatus
 operator|.
-name|getChillModeStatus
+name|getSafeModeStatus
 argument_list|()
 argument_list|)
 expr_stmt|;
 name|scmClientProtocolServer
 operator|.
-name|setChillModeStatus
+name|setSafeModeStatus
 argument_list|(
-name|isInChillMode
+name|isInSafeMode
 operator|.
 name|get
 argument_list|()
@@ -524,9 +524,9 @@ argument_list|)
 expr_stmt|;
 name|scmBlockManager
 operator|.
-name|setChillModeStatus
+name|setSafeModeStatus
 argument_list|(
-name|isInChillMode
+name|isInSafeMode
 operator|.
 name|get
 argument_list|()
@@ -535,7 +535,7 @@ expr_stmt|;
 if|if
 condition|(
 operator|!
-name|isInChillMode
+name|isInSafeMode
 operator|.
 name|get
 argument_list|()
@@ -543,7 +543,7 @@ condition|)
 block|{
 specifier|final
 name|Thread
-name|chillModeExitThread
+name|safeModeExitThread
 init|=
 operator|new
 name|Thread
@@ -587,14 +587,14 @@ expr_stmt|;
 block|}
 argument_list|)
 decl_stmt|;
-name|chillModeExitThread
+name|safeModeExitThread
 operator|.
 name|setDaemon
 argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|chillModeExitThread
+name|safeModeExitThread
 operator|.
 name|start
 argument_list|()
@@ -679,14 +679,14 @@ block|}
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getChillModeStatus ()
+DECL|method|getSafeModeStatus ()
 specifier|public
 name|boolean
-name|getChillModeStatus
+name|getSafeModeStatus
 parameter_list|()
 block|{
 return|return
-name|isInChillMode
+name|isInSafeMode
 operator|.
 name|get
 argument_list|()

@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdds.scm.chillmode
+DECL|package|org.apache.hadoop.hdds.scm.safemode
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|chillmode
+name|safemode
 package|;
 end_package
 
@@ -93,15 +93,15 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Abstract class for ChillModeExitRules. When a new rule is added, the new  * rule should extend this abstract class.  *  * Each rule Should do:  * 1. Should add a handler for the event it is looking for during the  * initialization of the rule.  * 2. Add the rule in ScmChillModeManager to list of the rules.  *  *  * @param<T>  */
+comment|/**  * Abstract class for SafeModeExitRules. When a new rule is added, the new  * rule should extend this abstract class.  *  * Each rule Should do:  * 1. Should add a handler for the event it is looking for during the  * initialization of the rule.  * 2. Add the rule in ScmSafeModeManager to list of the rules.  *  *  * @param<T>  */
 end_comment
 
 begin_class
-DECL|class|ChillModeExitRule
+DECL|class|SafeModeExitRule
 specifier|public
 specifier|abstract
 class|class
-name|ChillModeExitRule
+name|SafeModeExitRule
 parameter_list|<
 name|T
 parameter_list|>
@@ -111,11 +111,11 @@ argument_list|<
 name|T
 argument_list|>
 block|{
-DECL|field|chillModeManager
+DECL|field|safeModeManager
 specifier|private
 specifier|final
-name|SCMChillModeManager
-name|chillModeManager
+name|SCMSafeModeManager
+name|safeModeManager
 decl_stmt|;
 DECL|field|ruleName
 specifier|private
@@ -123,12 +123,12 @@ specifier|final
 name|String
 name|ruleName
 decl_stmt|;
-DECL|method|ChillModeExitRule (SCMChillModeManager chillModeManager, String ruleName, EventQueue eventQueue)
+DECL|method|SafeModeExitRule (SCMSafeModeManager safeModeManager, String ruleName, EventQueue eventQueue)
 specifier|public
-name|ChillModeExitRule
+name|SafeModeExitRule
 parameter_list|(
-name|SCMChillModeManager
-name|chillModeManager
+name|SCMSafeModeManager
+name|safeModeManager
 parameter_list|,
 name|String
 name|ruleName
@@ -139,9 +139,9 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|chillModeManager
+name|safeModeManager
 operator|=
-name|chillModeManager
+name|safeModeManager
 expr_stmt|;
 name|this
 operator|.
@@ -160,7 +160,7 @@ name|this
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Return's the name of this ChillModeExit Rule.    * @return ruleName    */
+comment|/**    * Return's the name of this SafeModeExit Rule.    * @return ruleName    */
 DECL|method|getRuleName ()
 specifier|public
 name|String
@@ -171,7 +171,7 @@ return|return
 name|ruleName
 return|;
 block|}
-comment|/**    * Return's the event type this chillMode exit rule handles.    * @return TypedEvent    */
+comment|/**    * Return's the event type this safeMode exit rule handles.    * @return TypedEvent    */
 DECL|method|getEventType ()
 specifier|protected
 specifier|abstract
@@ -224,10 +224,10 @@ name|EventPublisher
 name|publisher
 parameter_list|)
 block|{
-comment|// TODO: when we have remove handlers, we can remove getInChillmode check
+comment|// TODO: when we have remove handlers, we can remove getInSafemode check
 if|if
 condition|(
-name|scmInChillMode
+name|scmInSafeMode
 argument_list|()
 condition|)
 block|{
@@ -237,9 +237,9 @@ name|validate
 argument_list|()
 condition|)
 block|{
-name|chillModeManager
+name|safeModeManager
 operator|.
-name|validateChillModeExitRules
+name|validateSafeModeExitRules
 argument_list|(
 name|ruleName
 argument_list|,
@@ -262,9 +262,9 @@ name|validate
 argument_list|()
 condition|)
 block|{
-name|chillModeManager
+name|safeModeManager
 operator|.
-name|validateChillModeExitRules
+name|validateSafeModeExitRules
 argument_list|(
 name|ruleName
 argument_list|,
@@ -277,17 +277,17 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Return true if SCM is in chill mode, else false.    * @return boolean    */
-DECL|method|scmInChillMode ()
+comment|/**    * Return true if SCM is in safe mode, else false.    * @return boolean    */
+DECL|method|scmInSafeMode ()
 specifier|protected
 name|boolean
-name|scmInChillMode
+name|scmInSafeMode
 parameter_list|()
 block|{
 return|return
-name|chillModeManager
+name|safeModeManager
 operator|.
-name|getInChillMode
+name|getInSafeMode
 argument_list|()
 return|;
 block|}

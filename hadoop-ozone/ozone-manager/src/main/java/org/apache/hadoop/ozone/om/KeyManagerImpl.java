@@ -2394,7 +2394,7 @@ name|SCMException
 operator|.
 name|ResultCodes
 operator|.
-name|CHILL_MODE_EXCEPTION
+name|SAFE_MODE_EXCEPTION
 argument_list|)
 condition|)
 block|{
@@ -2409,7 +2409,7 @@ argument_list|()
 argument_list|,
 name|ResultCodes
 operator|.
-name|SCM_IN_CHILL_MODE
+name|SCM_IN_SAFE_MODE
 argument_list|)
 throw|;
 block|}

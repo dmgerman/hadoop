@@ -236,9 +236,9 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|chillmode
+name|safemode
 operator|.
-name|ChillModePrecheck
+name|SafeModePrecheck
 import|;
 end_import
 
@@ -949,10 +949,10 @@ specifier|final
 name|OzoneConfiguration
 name|conf
 decl_stmt|;
-DECL|field|chillModePrecheck
+DECL|field|safeModePrecheck
 specifier|private
-name|ChillModePrecheck
-name|chillModePrecheck
+name|SafeModePrecheck
+name|safeModePrecheck
 decl_stmt|;
 DECL|method|SCMClientProtocolServer (OzoneConfiguration conf, StorageContainerManager scm)
 specifier|public
@@ -979,10 +979,10 @@ name|conf
 operator|=
 name|conf
 expr_stmt|;
-name|chillModePrecheck
+name|safeModePrecheck
 operator|=
 operator|new
-name|ChillModePrecheck
+name|SafeModePrecheck
 argument_list|(
 name|conf
 argument_list|)
@@ -1282,7 +1282,7 @@ name|ScmOps
 operator|.
 name|allocateContainer
 argument_list|,
-name|chillModePrecheck
+name|safeModePrecheck
 argument_list|)
 expr_stmt|;
 name|getScm
@@ -1520,9 +1520,9 @@ try|try
 block|{
 if|if
 condition|(
-name|chillModePrecheck
+name|safeModePrecheck
 operator|.
-name|isInChillMode
+name|isInSafeMode
 argument_list|()
 condition|)
 block|{
@@ -1573,11 +1573,11 @@ literal|" doesn't"
 operator|+
 literal|" have enough replicas to service this operation in "
 operator|+
-literal|"Chill mode."
+literal|"Safe mode."
 argument_list|,
 name|ResultCodes
 operator|.
-name|CHILL_MODE_EXCEPTION
+name|SAFE_MODE_EXCEPTION
 argument_list|)
 throw|;
 block|}
@@ -2615,13 +2615,13 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Check if SCM is in chill mode.    *    * @return Returns true if SCM is in chill mode else returns false.    * @throws IOException    */
+comment|/**    * Check if SCM is in safe mode.    *    * @return Returns true if SCM is in safe mode else returns false.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|inChillMode ()
+DECL|method|inSafeMode ()
 specifier|public
 name|boolean
-name|inChillMode
+name|inSafeMode
 parameter_list|()
 throws|throws
 name|IOException
@@ -2634,7 +2634,7 @@ name|buildAuditMessageForSuccess
 argument_list|(
 name|SCMAction
 operator|.
-name|IN_CHILL_MODE
+name|IN_SAFE_MODE
 argument_list|,
 literal|null
 argument_list|)
@@ -2643,17 +2643,17 @@ expr_stmt|;
 return|return
 name|scm
 operator|.
-name|isInChillMode
+name|isInSafeMode
 argument_list|()
 return|;
 block|}
-comment|/**    * Force SCM out of Chill mode.    *    * @return returns true if operation is successful.    * @throws IOException    */
+comment|/**    * Force SCM out of Safe mode.    *    * @return returns true if operation is successful.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|forceExitChillMode ()
+DECL|method|forceExitSafeMode ()
 specifier|public
 name|boolean
-name|forceExitChillMode
+name|forceExitSafeMode
 parameter_list|()
 throws|throws
 name|IOException
@@ -2666,7 +2666,7 @@ name|buildAuditMessageForSuccess
 argument_list|(
 name|SCMAction
 operator|.
-name|FORCE_EXIT_CHILL_MODE
+name|FORCE_EXIT_SAFE_MODE
 argument_list|,
 literal|null
 argument_list|)
@@ -2675,7 +2675,7 @@ expr_stmt|;
 return|return
 name|scm
 operator|.
-name|exitChillMode
+name|exitSafeMode
 argument_list|()
 return|;
 block|}
@@ -2727,17 +2727,17 @@ return|return
 name|scm
 return|;
 block|}
-comment|/**    * Set chill mode status based on .    */
-DECL|method|getChillModeStatus ()
+comment|/**    * Set safe mode status based on .    */
+DECL|method|getSafeModeStatus ()
 specifier|public
 name|boolean
-name|getChillModeStatus
+name|getSafeModeStatus
 parameter_list|()
 block|{
 return|return
-name|chillModePrecheck
+name|safeModePrecheck
 operator|.
-name|isInChillMode
+name|isInSafeMode
 argument_list|()
 return|;
 block|}
@@ -3034,21 +3034,21 @@ name|stop
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Set ChillMode status.    *    * @param chillModeStatus    */
-DECL|method|setChillModeStatus (boolean chillModeStatus)
+comment|/**    * Set SafeMode status.    *    * @param safeModeStatus    */
+DECL|method|setSafeModeStatus (boolean safeModeStatus)
 specifier|public
 name|void
-name|setChillModeStatus
+name|setSafeModeStatus
 parameter_list|(
 name|boolean
-name|chillModeStatus
+name|safeModeStatus
 parameter_list|)
 block|{
-name|chillModePrecheck
+name|safeModePrecheck
 operator|.
-name|setInChillMode
+name|setInSafeMode
 argument_list|(
-name|chillModeStatus
+name|safeModeStatus
 argument_list|)
 expr_stmt|;
 block|}

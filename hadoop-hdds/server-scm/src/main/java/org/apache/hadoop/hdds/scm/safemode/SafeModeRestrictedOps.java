@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdds.scm.chillmode
+DECL|package|org.apache.hadoop.hdds.scm.safemode
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|chillmode
+name|safemode
 package|;
 end_package
 
@@ -51,15 +51,15 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Operations restricted in SCM chill mode.  */
+comment|/**  * Operations restricted in SCM safe mode.  */
 end_comment
 
 begin_class
-DECL|class|ChillModeRestrictedOps
+DECL|class|SafeModeRestrictedOps
 specifier|public
 specifier|final
 class|class
-name|ChillModeRestrictedOps
+name|SafeModeRestrictedOps
 block|{
 DECL|field|restrictedOps
 specifier|private
@@ -76,9 +76,9 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|method|ChillModeRestrictedOps ()
+DECL|method|SafeModeRestrictedOps ()
 specifier|private
-name|ChillModeRestrictedOps
+name|SafeModeRestrictedOps
 parameter_list|()
 block|{   }
 static|static
@@ -102,11 +102,11 @@ name|allocateContainer
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|isRestrictedInChillMode (ScmOps opName)
+DECL|method|isRestrictedInSafeMode (ScmOps opName)
 specifier|public
 specifier|static
 name|boolean
-name|isRestrictedInChillMode
+name|isRestrictedInSafeMode
 parameter_list|(
 name|ScmOps
 name|opName

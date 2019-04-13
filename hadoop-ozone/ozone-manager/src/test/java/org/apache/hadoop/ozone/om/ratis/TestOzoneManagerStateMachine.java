@@ -1382,12 +1382,12 @@ name|OzoneManagerProtocolProtos
 operator|.
 name|Status
 operator|.
-name|SCM_IN_CHILL_MODE
+name|SCM_IN_SAFE_MODE
 argument_list|)
 operator|.
 name|setMessage
 argument_list|(
-literal|"Scm in Chill mode"
+literal|"Scm in Safe mode"
 argument_list|)
 operator|.
 name|setSuccess
@@ -1616,7 +1616,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"Scm in Chill mode "
+literal|"Scm in Safe mode "
 operator|+
 name|OMException
 operator|.
@@ -1626,7 +1626,7 @@ name|OMException
 operator|.
 name|ResultCodes
 operator|.
-name|SCM_IN_CHILL_MODE
+name|SCM_IN_SAFE_MODE
 argument_list|,
 name|transactionContext
 operator|.
