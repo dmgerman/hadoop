@@ -217,6 +217,13 @@ name|SUPPORTS_CONTENT_CHECK
 init|=
 literal|"supports-content-check"
 decl_stmt|;
+comment|/**    * Indicates that FS supports unbuffer.    */
+DECL|field|SUPPORTS_UNBUFFER
+name|String
+name|SUPPORTS_UNBUFFER
+init|=
+literal|"supports-unbuffer"
+decl_stmt|;
 comment|/**    * Maximum path length    * {@value}    */
 DECL|field|MAX_PATH_
 name|String
