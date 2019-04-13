@@ -332,6 +332,7 @@ decl_stmt|;
 DECL|field|client
 specifier|private
 specifier|static
+specifier|volatile
 name|DocumentClient
 name|client
 decl_stmt|;
