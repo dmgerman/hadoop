@@ -352,6 +352,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|nio
@@ -416,6 +436,22 @@ specifier|public
 class|class
 name|TestOpportunisticContainerAllocator
 block|{
+DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
+name|Logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|TestOpportunisticContainerAllocator
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 DECL|field|GB
 specifier|private
 specifier|static
@@ -1306,12 +1342,12 @@ argument_list|,
 literal|"luser"
 argument_list|)
 decl_stmt|;
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
+literal|"Containers: {}"
+argument_list|,
 name|containers
 argument_list|)
 expr_stmt|;
@@ -1855,12 +1891,12 @@ argument_list|,
 literal|"luser"
 argument_list|)
 decl_stmt|;
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
+literal|"Containers: {}"
+argument_list|,
 name|containers
 argument_list|)
 expr_stmt|;
@@ -2261,12 +2297,12 @@ argument_list|,
 literal|"luser"
 argument_list|)
 decl_stmt|;
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
+literal|"Containers: {}"
+argument_list|,
 name|containers
 argument_list|)
 expr_stmt|;
@@ -3202,12 +3238,12 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
+literal|"Containers: {}"
+argument_list|,
 name|containers
 argument_list|)
 expr_stmt|;
@@ -3585,12 +3621,12 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
+literal|"Containers: {}"
+argument_list|,
 name|containers
 argument_list|)
 expr_stmt|;
@@ -3938,12 +3974,12 @@ argument_list|,
 literal|"luser"
 argument_list|)
 decl_stmt|;
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
+literal|"Containers: {}"
+argument_list|,
 name|containers
 argument_list|)
 expr_stmt|;
