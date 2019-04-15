@@ -6777,6 +6777,31 @@ name|DEFAULT_NM_DOCKER_DEFAULT_CONTAINER_NETWORK
 init|=
 literal|"host"
 decl_stmt|;
+comment|/** The set of runtimes allowed when launching containers using the    * DockerContainerRuntime. */
+DECL|field|NM_DOCKER_ALLOWED_CONTAINER_RUNTIMES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_DOCKER_ALLOWED_CONTAINER_RUNTIMES
+init|=
+name|DOCKER_CONTAINER_RUNTIME_PREFIX
+operator|+
+literal|"allowed-container-runtimes"
+decl_stmt|;
+comment|/** The set of runtimes allowed when launching containers using the    * DockerContainerRuntime. */
+DECL|field|DEFAULT_NM_DOCKER_ALLOWED_CONTAINER_RUNTIMES
+specifier|public
+specifier|static
+specifier|final
+name|String
+index|[]
+name|DEFAULT_NM_DOCKER_ALLOWED_CONTAINER_RUNTIMES
+init|=
+block|{
+literal|"runc"
+block|}
+decl_stmt|;
 comment|/** Allow host pid namespace for containers. Use with care. */
 DECL|field|NM_DOCKER_ALLOW_HOST_PID_NAMESPACE
 specifier|public
