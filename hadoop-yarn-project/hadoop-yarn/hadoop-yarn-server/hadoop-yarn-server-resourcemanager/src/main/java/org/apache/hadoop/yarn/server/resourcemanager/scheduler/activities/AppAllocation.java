@@ -331,6 +331,12 @@ parameter_list|()
 block|{
 return|return
 name|nodeId
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
+name|nodeId
 operator|.
 name|toString
 argument_list|()

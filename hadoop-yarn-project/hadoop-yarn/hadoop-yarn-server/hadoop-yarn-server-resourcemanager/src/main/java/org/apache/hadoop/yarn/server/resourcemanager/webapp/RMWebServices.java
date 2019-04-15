@@ -6274,6 +6274,15 @@ name|errMessage
 init|=
 literal|"Cannot find application with given appId"
 decl_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+name|errMessage
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 return|return
 operator|new
 name|AppActivitiesInfo
