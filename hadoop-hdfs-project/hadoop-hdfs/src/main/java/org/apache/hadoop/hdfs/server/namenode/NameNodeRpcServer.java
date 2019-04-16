@@ -8523,11 +8523,6 @@ block|{
 name|checkNNStartup
 argument_list|()
 expr_stmt|;
-name|namesystem
-operator|.
-name|checkSuperuserPrivilege
-argument_list|()
-expr_stmt|;
 return|return
 name|namesystem
 operator|.

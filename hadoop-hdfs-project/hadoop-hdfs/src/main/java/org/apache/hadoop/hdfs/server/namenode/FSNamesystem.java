@@ -35141,11 +35141,6 @@ init|=
 name|getPermissionChecker
 argument_list|()
 decl_stmt|;
-name|checkSuperuserPrivilege
-argument_list|(
-name|pc
-argument_list|)
-expr_stmt|;
 name|checkOperation
 argument_list|(
 name|OperationCategory
@@ -35437,11 +35432,6 @@ init|=
 name|getPermissionChecker
 argument_list|()
 decl_stmt|;
-name|checkSuperuserPrivilege
-argument_list|(
-name|pc
-argument_list|)
-expr_stmt|;
 name|readLock
 argument_list|()
 expr_stmt|;
@@ -35642,11 +35632,6 @@ init|=
 name|getPermissionChecker
 argument_list|()
 decl_stmt|;
-name|checkSuperuserPrivilege
-argument_list|(
-name|pc
-argument_list|)
-expr_stmt|;
 name|readLock
 argument_list|()
 expr_stmt|;
