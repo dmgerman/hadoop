@@ -1552,6 +1552,26 @@ name|federation
 operator|.
 name|store
 operator|.
+name|StateStoreUnavailableException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|federation
+operator|.
+name|store
+operator|.
 name|records
 operator|.
 name|MountTable
@@ -3135,7 +3155,7 @@ argument_list|(
 name|op
 argument_list|)
 expr_stmt|;
-comment|// We allow unchecked and read operations
+comment|// We allow unchecked and read operations to try, fail later
 if|if
 condition|(
 name|op
@@ -3153,6 +3173,19 @@ condition|)
 block|{
 return|return;
 block|}
+name|checkSafeMode
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Check if the Router is in safe mode.    * @throws StandbyException If the Router is in safe mode and cannot serve    *                          client requests.    */
+DECL|method|checkSafeMode ()
+specifier|private
+name|void
+name|checkSafeMode
+parameter_list|()
+throws|throws
+name|StandbyException
+block|{
 name|RouterSafemodeService
 name|safemodeService
 init|=
@@ -3187,6 +3220,14 @@ name|routerFailureSafemode
 argument_list|()
 expr_stmt|;
 block|}
+name|OperationCategory
+name|op
+init|=
+name|opCategory
+operator|.
+name|get
+argument_list|()
+decl_stmt|;
 throw|throw
 operator|new
 name|StandbyException
@@ -8006,6 +8047,17 @@ operator|.
 name|rpcMonitor
 operator|.
 name|routerFailureStateStore
+argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|ioe
+operator|instanceof
+name|StateStoreUnavailableException
+condition|)
+block|{
+name|checkSafeMode
 argument_list|()
 expr_stmt|;
 block|}
