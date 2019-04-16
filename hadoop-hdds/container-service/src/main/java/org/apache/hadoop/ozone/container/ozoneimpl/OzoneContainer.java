@@ -1022,11 +1022,14 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Starts serving requests to ozone container.    *    * @throws IOException    */
-DECL|method|start ()
+DECL|method|start (String scmId)
 specifier|public
 name|void
 name|start
-parameter_list|()
+parameter_list|(
+name|String
+name|scmId
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -1054,6 +1057,13 @@ name|hddsDispatcher
 operator|.
 name|init
 argument_list|()
+expr_stmt|;
+name|hddsDispatcher
+operator|.
+name|setScmId
+argument_list|(
+name|scmId
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Stop Container Service on the datanode.    */

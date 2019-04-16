@@ -592,12 +592,10 @@ name|writeUnlock
 argument_list|()
 expr_stmt|;
 block|}
+comment|// Start the container services after getting the version information
 name|ozoneContainer
 operator|.
-name|getDispatcher
-argument_list|()
-operator|.
-name|setScmId
+name|start
 argument_list|(
 name|scmId
 argument_list|)

@@ -1008,11 +1008,6 @@ name|now
 init|=
 literal|0
 decl_stmt|;
-name|container
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
 name|reportManager
 operator|.
 name|init

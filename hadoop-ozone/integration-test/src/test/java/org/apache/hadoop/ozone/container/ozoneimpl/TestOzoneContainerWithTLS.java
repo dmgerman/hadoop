@@ -1090,13 +1090,10 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
-comment|//Setting scmId, as we start manually ozone container.
+comment|//Set scmId and manually start ozone container.
 name|container
 operator|.
-name|getDispatcher
-argument_list|()
-operator|.
-name|setScmId
+name|start
 argument_list|(
 name|UUID
 operator|.
@@ -1106,11 +1103,6 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|container
-operator|.
-name|start
-argument_list|()
 expr_stmt|;
 name|XceiverClientGrpc
 name|client
