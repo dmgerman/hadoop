@@ -1331,11 +1331,46 @@ name|owner
 argument_list|)
 decl_stmt|;
 comment|// Add container to DB.
+try|try
+block|{
 name|addContainerToDB
 argument_list|(
 name|containerInfo
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ex
+parameter_list|)
+block|{
+comment|// When adding to DB failed, we are removing from containerStateMap.
+comment|// We should also remove from pipeline2Container Map in
+comment|// PipelineStateManager.
+name|pipelineManager
+operator|.
+name|removeContainerFromPipeline
+argument_list|(
+name|containerInfo
+operator|.
+name|getPipelineID
+argument_list|()
+argument_list|,
+operator|new
+name|ContainerID
+argument_list|(
+name|containerInfo
+operator|.
+name|getContainerID
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+throw|throw
+name|ex
+throw|;
+block|}
 return|return
 name|containerInfo
 return|;
@@ -2175,6 +2210,18 @@ parameter_list|)
 block|{
 comment|// If adding to containerStore fails, we should remove the container
 comment|// from in-memory map.
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Add Container to DB failed for ContainerID #{}"
+argument_list|,
+name|containerInfo
+operator|.
+name|getContainerID
+argument_list|()
+argument_list|)
+expr_stmt|;
 try|try
 block|{
 name|containerStateManager
