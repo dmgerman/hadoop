@@ -10651,7 +10651,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|warn
+name|error
 argument_list|(
 literal|"Can't handle this event at current state: Current: ["
 operator|+
