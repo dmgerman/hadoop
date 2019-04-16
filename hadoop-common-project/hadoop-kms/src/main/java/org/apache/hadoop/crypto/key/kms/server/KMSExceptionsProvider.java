@@ -646,6 +646,14 @@ name|getURL
 argument_list|()
 decl_stmt|;
 name|String
+name|remoteClientAddress
+init|=
+name|KMSMDCFilter
+operator|.
+name|getRemoteClientAddress
+argument_list|()
+decl_stmt|;
+name|String
 name|msg
 init|=
 name|getOneLineMessage
@@ -657,13 +665,15 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"User:'{}' Method:{} URL:{} Response:{}-{}"
+literal|"User:'{}' Method:{} URL:{} From:{} Response:{}-{}"
 argument_list|,
 name|ugi
 argument_list|,
 name|method
 argument_list|,
 name|url
+argument_list|,
+name|remoteClientAddress
 argument_list|,
 name|status
 argument_list|,
