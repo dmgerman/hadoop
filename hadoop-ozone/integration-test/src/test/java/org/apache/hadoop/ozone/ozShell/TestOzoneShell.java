@@ -7295,6 +7295,13 @@ operator|.
 name|reset
 argument_list|()
 expr_stmt|;
+name|String
+name|msgText
+init|=
+literal|"Listing first 3 entries of the result. "
+operator|+
+literal|"Use --length (-l) to override max returned keys."
+decl_stmt|;
 name|args
 operator|=
 operator|new
@@ -7333,6 +7340,31 @@ name|out
 operator|.
 name|toString
 argument_list|()
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Expecting output to start with "
+operator|+
+name|msgText
+argument_list|,
+name|commandOutput
+operator|.
+name|contains
+argument_list|(
+name|msgText
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|commandOutput
+operator|=
+name|commandOutput
+operator|.
+name|replace
+argument_list|(
+name|msgText
+argument_list|,
+literal|""
+argument_list|)
 expr_stmt|;
 name|keys
 operator|=

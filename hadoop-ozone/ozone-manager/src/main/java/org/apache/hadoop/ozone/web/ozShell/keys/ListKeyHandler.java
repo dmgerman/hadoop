@@ -510,6 +510,11 @@ name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
+name|int
+name|maxKeyLimit
+init|=
+name|maxKeys
+decl_stmt|;
 while|while
 condition|(
 name|maxKeys
@@ -545,6 +550,31 @@ expr_stmt|;
 name|maxKeys
 operator|-=
 literal|1
+expr_stmt|;
+block|}
+comment|// More keys were returned notify about max length
+if|if
+condition|(
+name|keyIterator
+operator|.
+name|hasNext
+argument_list|()
+condition|)
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Listing first "
+operator|+
+name|maxKeyLimit
+operator|+
+literal|" entries of the "
+operator|+
+literal|"result. Use --length (-l) to override max returned keys."
+argument_list|)
 expr_stmt|;
 block|}
 if|if
