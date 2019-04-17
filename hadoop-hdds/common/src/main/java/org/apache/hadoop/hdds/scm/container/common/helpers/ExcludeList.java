@@ -497,28 +497,6 @@ return|return
 name|excludeList
 return|;
 block|}
-DECL|method|clear ()
-specifier|public
-name|void
-name|clear
-parameter_list|()
-block|{
-name|datanodes
-operator|.
-name|clear
-argument_list|()
-expr_stmt|;
-name|containerIds
-operator|.
-name|clear
-argument_list|()
-expr_stmt|;
-name|pipelineIds
-operator|.
-name|clear
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 end_class
 
