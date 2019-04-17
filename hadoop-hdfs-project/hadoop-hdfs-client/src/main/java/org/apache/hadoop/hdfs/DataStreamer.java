@@ -5533,7 +5533,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"ResponseProcessor: Expecting seqno "
+literal|"ResponseProcessor: Expecting seqno"
 operator|+
 literal|" for block "
 operator|+
@@ -6431,7 +6431,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to find a new datanode to add to the write pipeline, "
+literal|"Failed to find a new datanode to add to the write pipeline,"
 operator|+
 literal|" continue to write to the pipeline with "
 operator|+
