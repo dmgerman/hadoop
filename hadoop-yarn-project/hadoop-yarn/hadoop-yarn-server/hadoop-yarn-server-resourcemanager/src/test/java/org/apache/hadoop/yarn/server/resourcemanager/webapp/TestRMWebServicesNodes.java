@@ -26,6 +26,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|apache
 operator|.
 name|hadoop
@@ -8669,7 +8685,7 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
 name|tagInfo
 operator|.
@@ -8677,11 +8693,14 @@ name|getString
 argument_list|(
 literal|"allocationTag"
 argument_list|)
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 name|expectedTag
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
 name|tagInfo
 operator|.
@@ -8689,7 +8708,10 @@ name|getLong
 argument_list|(
 literal|"allocationsCount"
 argument_list|)
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 name|expectedTags
 operator|.
 name|get

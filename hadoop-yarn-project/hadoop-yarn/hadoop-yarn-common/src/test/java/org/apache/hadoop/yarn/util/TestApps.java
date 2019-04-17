@@ -90,6 +90,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -324,15 +340,13 @@ operator|.
 name|pathSeparator
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
 name|environment
-operator|.
-name|size
-argument_list|()
-argument_list|,
-literal|0
 argument_list|)
+operator|.
+name|isEmpty
+argument_list|()
 expr_stmt|;
 comment|// Test "=" in the value part
 name|environment

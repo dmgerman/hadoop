@@ -24,6 +24,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -2097,16 +2113,16 @@ literal|"unknown"
 argument_list|)
 expr_stmt|;
 comment|// Verify if four headers mentioned above have been added
-name|assertEquals
+name|assertThat
 argument_list|(
 name|proxyConn
 operator|.
 name|getRequestProperties
 argument_list|()
+argument_list|)
 operator|.
-name|size
-argument_list|()
-argument_list|,
+name|hasSize
+argument_list|(
 literal|4
 argument_list|)
 expr_stmt|;

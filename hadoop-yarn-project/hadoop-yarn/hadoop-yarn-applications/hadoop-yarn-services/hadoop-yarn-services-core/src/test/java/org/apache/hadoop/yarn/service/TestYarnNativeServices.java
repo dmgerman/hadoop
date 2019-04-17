@@ -652,6 +652,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|apache
 operator|.
 name|hadoop
@@ -5727,9 +5743,12 @@ range|:
 name|instances
 control|)
 block|{
-name|Assert
+name|assertThat
+argument_list|(
+name|s
+argument_list|)
 operator|.
-name|assertEquals
+name|isEqualTo
 argument_list|(
 name|component
 operator|.
@@ -5739,8 +5758,6 @@ operator|+
 literal|"-"
 operator|+
 name|i
-argument_list|,
-name|s
 argument_list|)
 expr_stmt|;
 name|i

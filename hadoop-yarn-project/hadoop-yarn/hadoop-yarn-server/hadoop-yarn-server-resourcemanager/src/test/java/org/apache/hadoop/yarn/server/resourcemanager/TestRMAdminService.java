@@ -24,6 +24,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -3752,15 +3768,16 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
 name|accessList
 operator|.
 name|getAclString
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|"*"
 argument_list|)
 expr_stmt|;

@@ -152,6 +152,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -1257,13 +1273,16 @@ name|hasFifoSelector
 operator|=
 literal|true
 expr_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
 name|pcs
 operator|.
 name|getMaximumKillWaitTimeMs
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 name|FB_MAX_BEFORE_KILL
 argument_list|)
 expr_stmt|;

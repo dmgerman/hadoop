@@ -28,6 +28,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|mockito
 operator|.
 name|ArgumentMatchers
@@ -3534,15 +3550,13 @@ name|Throwable
 name|e
 parameter_list|)
 block|{
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
 name|e
+argument_list|)
 operator|.
-name|getMessage
-argument_list|()
-argument_list|,
+name|hasMessage
+argument_list|(
 literal|"Exception from callback handler"
 argument_list|)
 expr_stmt|;

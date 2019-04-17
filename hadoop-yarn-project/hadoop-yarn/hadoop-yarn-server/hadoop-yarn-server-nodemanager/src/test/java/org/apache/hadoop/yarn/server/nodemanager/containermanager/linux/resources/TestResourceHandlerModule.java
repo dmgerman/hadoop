@@ -27,6 +27,22 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -300,15 +316,13 @@ name|getResourceHandlerList
 argument_list|()
 decl_stmt|;
 comment|//Exactly one resource handler in chain
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
 name|resourceHandlers
+argument_list|)
 operator|.
-name|size
-argument_list|()
-argument_list|,
+name|hasSize
+argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
@@ -453,15 +467,13 @@ name|getResourceHandlerList
 argument_list|()
 decl_stmt|;
 comment|// Exactly one resource handler in chain
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
 name|resourceHandlers
+argument_list|)
 operator|.
-name|size
-argument_list|()
-argument_list|,
+name|hasSize
+argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;

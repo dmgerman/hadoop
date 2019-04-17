@@ -28,11 +28,15 @@ begin_import
 import|import static
 name|org
 operator|.
-name|junit
+name|assertj
 operator|.
-name|Assert
+name|core
 operator|.
-name|assertEquals
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
 import|;
 end_import
 
@@ -1211,20 +1215,20 @@ expr_stmt|;
 comment|// add app end
 comment|// Now, the first assignment will be for app2 since app2 is of highest
 comment|// priority
-name|assertEquals
+name|assertThat
 argument_list|(
 name|q
 operator|.
 name|getApplications
 argument_list|()
+argument_list|)
 operator|.
-name|size
-argument_list|()
-argument_list|,
+name|hasSize
+argument_list|(
 literal|2
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
 name|q
 operator|.
@@ -1239,7 +1243,10 @@ argument_list|()
 operator|.
 name|getApplicationAttemptId
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 name|appAttemptId2
 argument_list|)
 expr_stmt|;

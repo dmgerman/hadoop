@@ -554,6 +554,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -2739,16 +2755,16 @@ name|getLoginUser
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
 name|entities
 operator|.
 name|getEntities
 argument_list|()
+argument_list|)
 operator|.
-name|size
-argument_list|()
-argument_list|,
+name|hasSize
+argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;

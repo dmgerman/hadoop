@@ -1366,6 +1366,22 @@ end_import
 
 begin_import
 import|import static
+name|org
+operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
+import|;
+end_import
+
+begin_import
+import|import static
 name|junit
 operator|.
 name|framework
@@ -7852,15 +7868,16 @@ name|getApplicationResourceUsageReport
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
 name|report
 operator|.
 name|getApplicationResourceUsageReport
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 name|RMServerUtils
 operator|.
 name|DUMMY_APPLICATION_RESOURCE_USAGE_REPORT
