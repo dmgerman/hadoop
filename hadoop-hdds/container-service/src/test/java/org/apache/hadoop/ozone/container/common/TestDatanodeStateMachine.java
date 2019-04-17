@@ -682,6 +682,17 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|OzoneConfigKeys
+operator|.
+name|DFS_CONTAINER_IPC_RANDOM_PORT
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 name|serverAddresses
 operator|=
 operator|new
