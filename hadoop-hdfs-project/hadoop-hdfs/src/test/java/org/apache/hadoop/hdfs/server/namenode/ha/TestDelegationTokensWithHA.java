@@ -1082,7 +1082,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Assuming Standby state"
+literal|"Failed to connect to"
 argument_list|)
 argument_list|)
 expr_stmt|;

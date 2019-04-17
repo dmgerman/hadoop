@@ -463,8 +463,6 @@ class|class
 name|ObserverReadProxyProvider
 parameter_list|<
 name|T
-extends|extends
-name|ClientProtocol
 parameter_list|>
 extends|extends
 name|AbstractNNFailoverProxyProvider
@@ -902,12 +900,47 @@ name|MILLISECONDS
 argument_list|)
 expr_stmt|;
 comment|// TODO : make this configurable or remove this variable
+if|if
+condition|(
+name|wrappedProxy
+operator|instanceof
+name|ClientProtocol
+condition|)
+block|{
 name|this
 operator|.
 name|observerReadEnabled
 operator|=
 literal|true
 expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Disabling observer reads for {} because the requested proxy "
+operator|+
+literal|"class does not implement {}"
+argument_list|,
+name|uri
+argument_list|,
+name|ClientProtocol
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|observerReadEnabled
+operator|=
+literal|false
+expr_stmt|;
+block|}
 block|}
 end_class
 
@@ -1194,9 +1227,12 @@ decl_stmt|;
 try|try
 block|{
 return|return
+name|getProxyAsClientProtocol
+argument_list|(
 name|proxyInfo
 operator|.
 name|proxy
+argument_list|)
 operator|.
 name|getHAServiceState
 argument_list|()
@@ -1256,9 +1292,9 @@ expr_stmt|;
 block|}
 name|LOG
 operator|.
-name|info
+name|warn
 argument_list|(
-literal|"Failed to connect to {}. Assuming Standby state"
+literal|"Failed to connect to {} while fetching HAServiceState"
 argument_list|,
 name|proxyInfo
 operator|.
@@ -1269,9 +1305,46 @@ name|ioe
 argument_list|)
 expr_stmt|;
 return|return
-name|HAServiceState
+literal|null
+return|;
+block|}
+end_function
+
+begin_comment
+comment|/**    * Return the input proxy, cast as a {@link ClientProtocol}. This catches any    * {@link ClassCastException} and wraps it in a more helpful message. This    * should ONLY be called if the caller is certain that the proxy is, in fact,    * a {@link ClientProtocol}.    */
+end_comment
+
+begin_function
+DECL|method|getProxyAsClientProtocol (T proxy)
+specifier|private
+name|ClientProtocol
+name|getProxyAsClientProtocol
+parameter_list|(
+name|T
+name|proxy
+parameter_list|)
+block|{
+assert|assert
+name|proxy
+operator|instanceof
+name|ClientProtocol
+operator|:
+literal|"BUG: Attempted to use proxy "
+operator|+
+literal|"of class "
+operator|+
+name|proxy
 operator|.
-name|STANDBY
+name|getClass
+argument_list|()
+operator|+
+literal|" as if it was a ClientProtocol."
+assert|;
+return|return
+operator|(
+name|ClientProtocol
+operator|)
+name|proxy
 return|;
 block|}
 end_function
@@ -1298,12 +1371,15 @@ block|{
 return|return;
 comment|// No need for an msync
 block|}
+name|getProxyAsClientProtocol
+argument_list|(
 name|failoverProxy
 operator|.
 name|getProxy
 argument_list|()
 operator|.
 name|proxy
+argument_list|)
 operator|.
 name|msync
 argument_list|()
@@ -1343,12 +1419,15 @@ literal|0
 condition|)
 block|{
 comment|// Always msync
+name|getProxyAsClientProtocol
+argument_list|(
 name|failoverProxy
 operator|.
 name|getProxy
 argument_list|()
 operator|.
 name|proxy
+argument_list|)
 operator|.
 name|msync
 argument_list|()
@@ -1395,12 +1474,15 @@ operator|>
 name|autoMsyncPeriodMs
 condition|)
 block|{
+name|getProxyAsClientProtocol
+argument_list|(
 name|failoverProxy
 operator|.
 name|getProxy
 argument_list|()
 operator|.
 name|proxy
+argument_list|)
 operator|.
 name|msync
 argument_list|()
@@ -1503,6 +1585,11 @@ name|standbyCount
 init|=
 literal|0
 decl_stmt|;
+name|int
+name|unreachableCount
+init|=
+literal|0
+decl_stmt|;
 for|for
 control|(
 name|int
@@ -1574,6 +1661,18 @@ name|standbyCount
 operator|++
 expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+name|currState
+operator|==
+literal|null
+condition|)
+block|{
+name|unreachableCount
+operator|++
+expr_stmt|;
+block|}
 name|LOG
 operator|.
 name|debug
@@ -1589,6 +1688,12 @@ operator|.
 name|getName
 argument_list|()
 argument_list|,
+name|currState
+operator|==
+literal|null
+condition|?
+literal|"unreachable"
+else|:
 name|currState
 argument_list|)
 expr_stmt|;
@@ -1823,9 +1928,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"{} observers have failed for read request {}; also found "
+literal|"{} observers have failed for read request {}; also found {} "
 operator|+
-literal|"{} standby and {} active. Falling back to active."
+literal|"standby, {} active, and {} unreachable. Falling back to active."
 argument_list|,
 name|failedObserverCount
 argument_list|,
@@ -1837,11 +1942,14 @@ argument_list|,
 name|standbyCount
 argument_list|,
 name|activeCount
+argument_list|,
+name|unreachableCount
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Either all observers have failed, or that it is a write request.
-comment|// In either case, we'll forward the request to active NameNode.
+comment|// Either all observers have failed, observer reads are disabled,
+comment|// or this is a write request. In any case, forward the request to
+comment|// the active NameNode.
 name|LOG
 operator|.
 name|debug
@@ -1939,7 +2047,16 @@ name|RPC
 operator|.
 name|getConnectionIdForProxy
 argument_list|(
+name|observerReadEnabled
+condition|?
 name|getCurrentProxy
+argument_list|()
+operator|.
+name|proxy
+else|:
+name|failoverProxy
+operator|.
+name|getProxy
 argument_list|()
 operator|.
 name|proxy
