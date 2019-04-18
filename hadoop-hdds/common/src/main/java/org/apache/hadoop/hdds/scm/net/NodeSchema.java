@@ -32,6 +32,16 @@ name|HadoopIllegalArgumentException
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
 begin_comment
 comment|/**  * Network topology schema to housekeeper relevant information.  */
 end_comment
@@ -184,30 +194,35 @@ block|}
 comment|// default cost
 DECL|field|cost
 specifier|private
-specifier|final
 name|int
 name|cost
 decl_stmt|;
 comment|// layer Type, mandatory property
 DECL|field|type
 specifier|private
-specifier|final
 name|LayerType
 name|type
 decl_stmt|;
 comment|// default name, can be null or ""
 DECL|field|defaultName
 specifier|private
-specifier|final
 name|String
 name|defaultName
 decl_stmt|;
 comment|// layer prefix, can be null or ""
 DECL|field|prefix
 specifier|private
-specifier|final
 name|String
 name|prefix
+decl_stmt|;
+comment|// sublayer
+DECL|field|sublayer
+specifier|private
+name|List
+argument_list|<
+name|NodeSchema
+argument_list|>
+name|sublayer
 decl_stmt|;
 comment|/**    * Builder for NodeSchema.    */
 DECL|class|Builder
@@ -412,6 +427,21 @@ operator|=
 name|defaultName
 expr_stmt|;
 block|}
+comment|/**    * Constructor. This constructor is only used when build NodeSchema from    * YAML file.    */
+DECL|method|NodeSchema ()
+specifier|public
+name|NodeSchema
+parameter_list|()
+block|{
+name|this
+operator|.
+name|type
+operator|=
+name|LayerType
+operator|.
+name|INNER_NODE
+expr_stmt|;
+block|}
 DECL|method|matchPrefix (String name)
 specifier|public
 name|boolean
@@ -476,6 +506,22 @@ operator|.
 name|type
 return|;
 block|}
+DECL|method|setType (LayerType type)
+specifier|public
+name|void
+name|setType
+parameter_list|(
+name|LayerType
+name|type
+parameter_list|)
+block|{
+name|this
+operator|.
+name|type
+operator|=
+name|type
+expr_stmt|;
+block|}
 DECL|method|getPrefix ()
 specifier|public
 name|String
@@ -487,6 +533,22 @@ name|this
 operator|.
 name|prefix
 return|;
+block|}
+DECL|method|setPrefix (String prefix)
+specifier|public
+name|void
+name|setPrefix
+parameter_list|(
+name|String
+name|prefix
+parameter_list|)
+block|{
+name|this
+operator|.
+name|prefix
+operator|=
+name|prefix
+expr_stmt|;
 block|}
 DECL|method|getDefaultName ()
 specifier|public
@@ -500,6 +562,22 @@ operator|.
 name|defaultName
 return|;
 block|}
+DECL|method|setDefaultName (String name)
+specifier|public
+name|void
+name|setDefaultName
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+block|{
+name|this
+operator|.
+name|defaultName
+operator|=
+name|name
+expr_stmt|;
+block|}
 DECL|method|getCost ()
 specifier|public
 name|int
@@ -510,6 +588,54 @@ return|return
 name|this
 operator|.
 name|cost
+return|;
+block|}
+DECL|method|setCost (int cost)
+specifier|public
+name|void
+name|setCost
+parameter_list|(
+name|int
+name|cost
+parameter_list|)
+block|{
+name|this
+operator|.
+name|cost
+operator|=
+name|cost
+expr_stmt|;
+block|}
+DECL|method|setSublayer (List<NodeSchema> sublayer)
+specifier|public
+name|void
+name|setSublayer
+parameter_list|(
+name|List
+argument_list|<
+name|NodeSchema
+argument_list|>
+name|sublayer
+parameter_list|)
+block|{
+name|this
+operator|.
+name|sublayer
+operator|=
+name|sublayer
+expr_stmt|;
+block|}
+DECL|method|getSublayer ()
+specifier|public
+name|List
+argument_list|<
+name|NodeSchema
+argument_list|>
+name|getSublayer
+parameter_list|()
+block|{
+return|return
+name|sublayer
 return|;
 block|}
 block|}

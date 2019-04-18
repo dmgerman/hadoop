@@ -166,10 +166,10 @@ name|Parameterized
 operator|.
 name|class
 argument_list|)
-DECL|class|TestNodeSchemaLoader
+DECL|class|TestYamlSchemaLoader
 specifier|public
 class|class
-name|TestNodeSchemaLoader
+name|TestYamlSchemaLoader
 block|{
 DECL|field|LOG
 specifier|private
@@ -182,7 +182,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|TestNodeSchemaLoader
+name|TestYamlSchemaLoader
 operator|.
 name|class
 argument_list|)
@@ -200,9 +200,9 @@ operator|.
 name|getContextClassLoader
 argument_list|()
 decl_stmt|;
-DECL|method|TestNodeSchemaLoader (String schemaFile, String errMsg)
+DECL|method|TestYamlSchemaLoader (String schemaFile, String errMsg)
 specifier|public
-name|TestNodeSchemaLoader
+name|TestYamlSchemaLoader
 parameter_list|(
 name|String
 name|schemaFile
@@ -233,7 +233,7 @@ operator|.
 name|getInstance
 argument_list|()
 operator|.
-name|loadSchemaFromXml
+name|loadSchemaFromYaml
 argument_list|(
 name|filePath
 argument_list|)
@@ -302,87 +302,15 @@ index|[]
 index|[]
 block|{
 block|{
-literal|"enforce-error.xml"
+literal|"multiple-root.yaml"
 block|,
-literal|"layer without prefix defined"
+literal|"Multiple root"
 block|}
 block|,
 block|{
-literal|"invalid-cost.xml"
+literal|"middle-leaf.yaml"
 block|,
-literal|"Cost should be positive number or 0"
-block|}
-block|,
-block|{
-literal|"multiple-leaf.xml"
-block|,
-literal|"Multiple LEAF layers are found"
-block|}
-block|,
-block|{
-literal|"multiple-root.xml"
-block|,
-literal|"Multiple ROOT layers are found"
-block|}
-block|,
-block|{
-literal|"no-leaf.xml"
-block|,
-literal|"No LEAF layer is found"
-block|}
-block|,
-block|{
-literal|"no-root.xml"
-block|,
-literal|"No ROOT layer is found"
-block|}
-block|,
-block|{
-literal|"path-layers-size-mismatch.xml"
-block|,
-literal|"Topology path depth doesn't match layer element numbers"
-block|}
-block|,
-block|{
-literal|"path-with-id-reference-failure.xml"
-block|,
-literal|"No layer found for id"
-block|}
-block|,
-block|{
-literal|"unknown-layer-type.xml"
-block|,
-literal|"Unsupported layer type"
-block|}
-block|,
-block|{
-literal|"wrong-path-order-1.xml"
-block|,
-literal|"Topology path doesn't start with ROOT layer"
-block|}
-block|,
-block|{
-literal|"wrong-path-order-2.xml"
-block|,
-literal|"Topology path doesn't end with LEAF layer"
-block|}
-block|,
-block|{
-literal|"no-topology.xml"
-block|,
-literal|"no or multiple<topology> element"
-block|}
-block|,
-block|{
-literal|"multiple-topology.xml"
-block|,
-literal|"no or multiple<topology> element"
-block|}
-block|,
-block|{
-literal|"invalid-version.xml"
-block|,
-literal|"Bad layoutversion value"
+literal|"Leaf node in the middle"
 block|}
 block|,     }
 decl_stmt|;
@@ -412,7 +340,7 @@ name|classLoader
 operator|.
 name|getResource
 argument_list|(
-literal|"./networkTopologyTestFiles/good.xml"
+literal|"./networkTopologyTestFiles/good.yaml"
 argument_list|)
 operator|.
 name|getPath
@@ -423,7 +351,7 @@ operator|.
 name|getInstance
 argument_list|()
 operator|.
-name|loadSchemaFromXml
+name|loadSchemaFromYaml
 argument_list|(
 name|filePath
 argument_list|)
