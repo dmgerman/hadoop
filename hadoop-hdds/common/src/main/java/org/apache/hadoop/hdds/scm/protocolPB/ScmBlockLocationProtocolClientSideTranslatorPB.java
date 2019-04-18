@@ -1036,7 +1036,7 @@ argument_list|()
 decl_stmt|;
 name|HddsProtos
 operator|.
-name|GetScmInfoRespsonseProto
+name|GetScmInfoResponseProto
 name|resp
 decl_stmt|;
 try|try

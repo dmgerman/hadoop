@@ -1895,7 +1895,7 @@ try|try
 block|{
 name|HddsProtos
 operator|.
-name|GetScmInfoRespsonseProto
+name|GetScmInfoResponseProto
 name|resp
 init|=
 name|rpcProxy

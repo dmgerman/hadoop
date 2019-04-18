@@ -1581,7 +1581,7 @@ DECL|method|getScmInfo ( RpcController controller, HddsProtos.GetScmInfoRequestP
 specifier|public
 name|HddsProtos
 operator|.
-name|GetScmInfoRespsonseProto
+name|GetScmInfoResponseProto
 name|getScmInfo
 parameter_list|(
 name|RpcController
@@ -1624,7 +1624,7 @@ decl_stmt|;
 return|return
 name|HddsProtos
 operator|.
-name|GetScmInfoRespsonseProto
+name|GetScmInfoResponseProto
 operator|.
 name|newBuilder
 argument_list|()
