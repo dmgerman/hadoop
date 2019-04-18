@@ -3342,6 +3342,13 @@ argument_list|(
 name|appId
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|timelineCollector
+operator|!=
+literal|null
+condition|)
+block|{
 name|TimelineEntities
 name|entities
 init|=
@@ -3368,6 +3375,19 @@ name|getCurrentUser
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Cannot find active collector while publishing entity "
+operator|+
+name|entity
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
