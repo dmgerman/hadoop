@@ -1782,8 +1782,8 @@ name|currentStreamIndex
 argument_list|)
 decl_stmt|;
 comment|// length(len) will be in int range if the call is happening through
-comment|// write API of blockOutputStream. Length can be in long range if it comes
-comment|// via Exception path.
+comment|// write API of blockOutputStream. Length can be in long range if it
+comment|// comes via Exception path.
 name|int
 name|writeLen
 init|=
@@ -3035,8 +3035,8 @@ operator|.
 name|getFailedServers
 argument_list|()
 decl_stmt|;
-comment|// failed servers can be null in case there is no data written in the
-comment|// stream
+comment|// failed servers can be null in case there is no data written in
+comment|// the stream
 if|if
 condition|(
 name|failedServers
