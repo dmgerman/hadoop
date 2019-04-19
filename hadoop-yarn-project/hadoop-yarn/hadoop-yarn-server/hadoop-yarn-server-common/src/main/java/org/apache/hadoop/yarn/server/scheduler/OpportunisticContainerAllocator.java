@@ -1326,6 +1326,17 @@ name|getBlacklist
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|allocatedNodes
+init|=
+operator|new
+name|HashSet
+argument_list|<>
+argument_list|()
+decl_stmt|;
 name|List
 argument_list|<
 name|Container
@@ -1415,6 +1426,8 @@ argument_list|,
 name|appSubmitter
 argument_list|,
 name|nodeBlackList
+argument_list|,
+name|allocatedNodes
 argument_list|)
 decl_stmt|;
 if|if
@@ -1521,7 +1534,7 @@ return|return
 name|allocatedContainers
 return|;
 block|}
-DECL|method|allocate (long rmIdentifier, OpportunisticContainerContext appContext, SchedulerRequestKey schedKey, ApplicationAttemptId appAttId, String userName, Set<String> blackList)
+DECL|method|allocate (long rmIdentifier, OpportunisticContainerContext appContext, SchedulerRequestKey schedKey, ApplicationAttemptId appAttId, String userName, Set<String> blackList, Set<String> allocatedNodes)
 specifier|private
 name|Map
 argument_list|<
@@ -1554,6 +1567,12 @@ argument_list|<
 name|String
 argument_list|>
 name|blackList
+parameter_list|,
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|allocatedNodes
 parameter_list|)
 throws|throws
 name|YarnException
@@ -1608,6 +1627,8 @@ name|getContainerIdGenerator
 argument_list|()
 argument_list|,
 name|blackList
+argument_list|,
+name|allocatedNodes
 argument_list|,
 name|appAttId
 argument_list|,
@@ -1682,7 +1703,7 @@ return|return
 name|containers
 return|;
 block|}
-DECL|method|allocateContainersInternal (long rmIdentifier, AllocationParams appParams, ContainerIdGenerator idCounter, Set<String> blacklist, ApplicationAttemptId id, Map<String, RemoteNode> allNodes, String userName, Map<Resource, List<Allocation>> allocations, EnrichedResourceRequest enrichedAsk)
+DECL|method|allocateContainersInternal (long rmIdentifier, AllocationParams appParams, ContainerIdGenerator idCounter, Set<String> blacklist, Set<String> allocatedNodes, ApplicationAttemptId id, Map<String, RemoteNode> allNodes, String userName, Map<Resource, List<Allocation>> allocations, EnrichedResourceRequest enrichedAsk)
 specifier|private
 name|void
 name|allocateContainersInternal
@@ -1701,6 +1722,12 @@ argument_list|<
 name|String
 argument_list|>
 name|blacklist
+parameter_list|,
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|allocatedNodes
 parameter_list|,
 name|ApplicationAttemptId
 name|id
@@ -1859,6 +1886,8 @@ name|allNodes
 argument_list|,
 name|blacklist
 argument_list|,
+name|allocatedNodes
+argument_list|,
 name|enrichedAsk
 argument_list|)
 decl_stmt|;
@@ -1944,6 +1973,28 @@ block|{
 continue|continue;
 block|}
 block|}
+elseif|else
+if|if
+condition|(
+name|allocatedNodes
+operator|.
+name|contains
+argument_list|(
+name|rNodeHost
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Opportunistic container has already been allocated on {}."
+argument_list|,
+name|rNodeHost
+argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
 if|if
 condition|(
 name|loopIndex
@@ -2012,29 +2063,13 @@ argument_list|(
 name|loopIndex
 argument_list|)
 expr_stmt|;
-comment|// Try to spread the allocations across the nodes.
-comment|// But don't add if it is a node local request.
-if|if
-condition|(
-name|loopIndex
-operator|!=
-name|NODE_LOCAL_LOOP
-condition|)
-block|{
-name|blacklist
+name|allocatedNodes
 operator|.
 name|add
 argument_list|(
-name|rNode
-operator|.
-name|getNodeId
-argument_list|()
-operator|.
-name|getHost
-argument_list|()
+name|rNodeHost
 argument_list|)
 expr_stmt|;
-block|}
 name|LOG
 operator|.
 name|info
@@ -2170,7 +2205,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|findNodeCandidates (int loopIndex, Map<String, RemoteNode> allNodes, Set<String> blackList, EnrichedResourceRequest enrichedRR)
+DECL|method|findNodeCandidates (int loopIndex, Map<String, RemoteNode> allNodes, Set<String> blackList, Set<String> allocatedNodes, EnrichedResourceRequest enrichedRR)
 specifier|private
 name|Collection
 argument_list|<
@@ -2194,6 +2229,12 @@ argument_list|<
 name|String
 argument_list|>
 name|blackList
+parameter_list|,
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|allocatedNodes
 parameter_list|,
 name|EnrichedResourceRequest
 name|enrichedRR
@@ -2321,6 +2362,8 @@ name|retList
 argument_list|,
 name|blackList
 argument_list|,
+name|allocatedNodes
+argument_list|,
 name|numContainers
 argument_list|)
 expr_stmt|;
@@ -2348,7 +2391,7 @@ name|retList
 return|;
 block|}
 block|}
-DECL|method|collectRackLocalCandidates (Map<String, RemoteNode> allNodes, EnrichedResourceRequest enrichedRR, LinkedList<RemoteNode> retList, Set<String> blackList, int numContainers)
+DECL|method|collectRackLocalCandidates (Map<String, RemoteNode> allNodes, EnrichedResourceRequest enrichedRR, LinkedList<RemoteNode> retList, Set<String> blackList, Set<String> allocatedNodes, int numContainers)
 specifier|private
 name|int
 name|collectRackLocalCandidates
@@ -2375,6 +2418,12 @@ argument_list|<
 name|String
 argument_list|>
 name|blackList
+parameter_list|,
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|allocatedNodes
 parameter_list|,
 name|int
 name|numContainers
@@ -2427,12 +2476,9 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|blackList
-operator|.
-name|contains
-argument_list|(
+name|String
+name|rHost
+init|=
 name|rNode
 operator|.
 name|getNodeId
@@ -2440,6 +2486,26 @@ argument_list|()
 operator|.
 name|getHost
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|blackList
+operator|.
+name|contains
+argument_list|(
+name|rHost
+argument_list|)
+condition|)
+block|{
+continue|continue;
+block|}
+if|if
+condition|(
+name|allocatedNodes
+operator|.
+name|contains
+argument_list|(
+name|rHost
 argument_list|)
 condition|)
 block|{
