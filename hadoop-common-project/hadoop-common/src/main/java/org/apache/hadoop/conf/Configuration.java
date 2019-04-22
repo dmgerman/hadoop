@@ -6775,7 +6775,14 @@ name|vStr
 condition|)
 block|{
 return|return
+name|returnUnit
+operator|.
+name|convert
+argument_list|(
 name|defaultValue
+argument_list|,
+name|defaultUnit
+argument_list|)
 return|;
 block|}
 else|else
