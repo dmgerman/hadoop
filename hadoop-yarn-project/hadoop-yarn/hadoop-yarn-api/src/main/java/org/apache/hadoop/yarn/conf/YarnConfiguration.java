@@ -1666,6 +1666,30 @@ name|DEFAULT_OPPORTUNISTIC_CONTAINER_ALLOCATION_ENABLED
 init|=
 literal|false
 decl_stmt|;
+comment|/**    * Maximum number of opportunistic containers to be allocated in    * AM heartbeat.    */
+annotation|@
+name|Unstable
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|OPP_CONTAINER_MAX_ALLOCATIONS_PER_AM_HEARTBEAT
+name|OPP_CONTAINER_MAX_ALLOCATIONS_PER_AM_HEARTBEAT
+init|=
+name|RM_PREFIX
+operator|+
+literal|"opportunistic.max.container-allocation.per.am.heartbeat"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|int
+DECL|field|DEFAULT_OPP_CONTAINER_MAX_ALLOCATIONS_PER_AM_HEARTBEAT
+name|DEFAULT_OPP_CONTAINER_MAX_ALLOCATIONS_PER_AM_HEARTBEAT
+init|=
+operator|-
+literal|1
+decl_stmt|;
 comment|/** Number of nodes to be used by the Opportunistic Container allocator for    * dispatching containers during container allocation. */
 annotation|@
 name|Unstable
