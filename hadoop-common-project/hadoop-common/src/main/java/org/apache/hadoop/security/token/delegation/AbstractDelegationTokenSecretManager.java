@@ -587,6 +587,20 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
+comment|/**    * Total count of active delegation tokens.    */
+DECL|method|getCurrentTokensSize ()
+specifier|public
+name|long
+name|getCurrentTokensSize
+parameter_list|()
+block|{
+return|return
+name|currentTokens
+operator|.
+name|size
+argument_list|()
+return|;
+block|}
 comment|/**     * Add a previously used master key to cache (when NN restarts),     * should be called before activate().     * */
 DECL|method|addKey (DelegationKey key)
 specifier|public
