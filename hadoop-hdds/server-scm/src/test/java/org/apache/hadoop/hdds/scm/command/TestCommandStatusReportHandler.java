@@ -473,39 +473,9 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"firing event of type "
-operator|+
-literal|"Replicate_Command_Status"
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|assertTrue
-argument_list|(
-name|logCapturer
-operator|.
-name|getOutput
-argument_list|()
-operator|.
-name|contains
-argument_list|(
 literal|"type: "
 operator|+
 literal|"deleteBlocksCommand"
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|assertTrue
-argument_list|(
-name|logCapturer
-operator|.
-name|getOutput
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-literal|"type: "
-operator|+
-literal|"replicateContainerCommand"
 argument_list|)
 argument_list|)
 expr_stmt|;

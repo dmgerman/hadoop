@@ -2081,6 +2081,8 @@ name|DeadNodeHandler
 argument_list|(
 name|scmNodeManager
 argument_list|,
+name|pipelineManager
+argument_list|,
 name|containerManager
 argument_list|)
 decl_stmt|;
