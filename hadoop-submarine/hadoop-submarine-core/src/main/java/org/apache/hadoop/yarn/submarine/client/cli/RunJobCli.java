@@ -1087,6 +1087,28 @@ argument_list|,
 literal|"Print help"
 argument_list|)
 expr_stmt|;
+name|options
+operator|.
+name|addOption
+argument_list|(
+literal|"insecure"
+argument_list|,
+literal|false
+argument_list|,
+literal|"Cluster is not Kerberos enabled."
+argument_list|)
+expr_stmt|;
+name|options
+operator|.
+name|addOption
+argument_list|(
+literal|"conf"
+argument_list|,
+literal|true
+argument_list|,
+literal|"User specified configuration, as key=val pairs."
+argument_list|)
+expr_stmt|;
 return|return
 name|options
 return|;

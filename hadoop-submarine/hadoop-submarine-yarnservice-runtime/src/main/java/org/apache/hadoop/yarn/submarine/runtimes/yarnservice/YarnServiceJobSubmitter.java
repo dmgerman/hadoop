@@ -1053,10 +1053,10 @@ return|return
 name|serviceResource
 return|;
 block|}
-DECL|method|getValueOfEnvionment (String envar)
+DECL|method|getValueOfEnvironment (String envar)
 specifier|private
 name|String
-name|getValueOfEnvionment
+name|getValueOfEnvironment
 parameter_list|(
 name|String
 name|envar
@@ -1179,7 +1179,7 @@ condition|)
 block|{
 name|hdfsHome
 operator|=
-name|getValueOfEnvionment
+name|getValueOfEnvironment
 argument_list|(
 name|envar
 argument_list|)
@@ -1202,7 +1202,7 @@ condition|)
 block|{
 name|javaHome
 operator|=
-name|getValueOfEnvionment
+name|getValueOfEnvironment
 argument_list|(
 name|envar
 argument_list|)
