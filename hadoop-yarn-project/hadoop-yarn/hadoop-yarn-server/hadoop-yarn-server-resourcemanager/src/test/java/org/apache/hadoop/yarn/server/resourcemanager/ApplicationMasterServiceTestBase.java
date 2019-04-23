@@ -3034,6 +3034,12 @@ argument_list|(
 name|allocateRequest
 argument_list|)
 expr_stmt|;
+comment|// wait until RMAppAttemptEventType.STATUS_UPDATE is handled
+name|rm
+operator|.
+name|drainEvents
+argument_list|()
+expr_stmt|;
 name|Assert
 operator|.
 name|assertEquals
