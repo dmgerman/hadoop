@@ -1714,6 +1714,12 @@ argument_list|,
 name|timeout
 argument_list|)
 expr_stmt|;
+comment|// wait until MARK_CONTAINER_FOR_PREEMPTION is handled
+name|rm
+operator|.
+name|drainEvents
+argument_list|()
+expr_stmt|;
 comment|// We should receive a notification to preempt the container
 name|PreemptionMessage
 name|preemptMsg
@@ -1853,7 +1859,7 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
-comment|// We give an overcommit time out of 2 seconds
+comment|// We give an overcommit time out of 1 seconds
 specifier|final
 name|int
 name|timeout
@@ -1905,6 +1911,12 @@ name|INTERVAL
 argument_list|,
 name|timeout
 argument_list|)
+expr_stmt|;
+comment|// wait until MARK_CONTAINER_FOR_PREEMPTION is handled
+name|rm
+operator|.
+name|drainEvents
+argument_list|()
 expr_stmt|;
 comment|// We should receive a notification to preempt the container
 name|PreemptionMessage
@@ -3147,6 +3159,12 @@ operator|*
 literal|1000
 argument_list|)
 expr_stmt|;
+comment|// wait until MARK_CONTAINER_FOR_PREEMPTION is handled
+name|rm
+operator|.
+name|drainEvents
+argument_list|()
+expr_stmt|;
 name|PreemptionMessage
 name|preemptMsg
 init|=
@@ -3273,6 +3291,12 @@ literal|5
 operator|*
 literal|1000
 argument_list|)
+expr_stmt|;
+comment|// wait until MARK_CONTAINER_FOR_PREEMPTION is handled
+name|rm
+operator|.
+name|drainEvents
+argument_list|()
 expr_stmt|;
 name|preemptMsg
 operator|=
