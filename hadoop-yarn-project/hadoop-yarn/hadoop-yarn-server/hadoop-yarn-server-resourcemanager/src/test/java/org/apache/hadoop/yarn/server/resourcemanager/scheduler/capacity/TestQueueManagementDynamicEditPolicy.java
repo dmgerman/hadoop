@@ -591,12 +591,12 @@ condition|)
 block|{
 if|if
 condition|(
-name|Float
+name|Math
 operator|.
-name|compare
+name|abs
 argument_list|(
 name|expectedVal
-argument_list|,
+operator|-
 name|queueManagementPolicy
 operator|.
 name|getAbsoluteActivatedChildQueueCapacity
