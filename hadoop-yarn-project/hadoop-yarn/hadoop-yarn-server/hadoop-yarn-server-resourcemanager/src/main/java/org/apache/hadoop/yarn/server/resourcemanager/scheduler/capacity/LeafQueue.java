@@ -3109,6 +3109,33 @@ name|String
 name|userName
 parameter_list|)
 block|{
+name|submitApplicationAttempt
+argument_list|(
+name|application
+argument_list|,
+name|userName
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|submitApplicationAttempt (FiCaSchedulerApp application, String userName, boolean isMoveApp)
+specifier|public
+name|void
+name|submitApplicationAttempt
+parameter_list|(
+name|FiCaSchedulerApp
+name|application
+parameter_list|,
+name|String
+name|userName
+parameter_list|,
+name|boolean
+name|isMoveApp
+parameter_list|)
+block|{
 comment|// Careful! Locking order is important!
 name|writeLock
 operator|.
@@ -3149,10 +3176,8 @@ block|}
 comment|// We don't want to update metrics for move app
 if|if
 condition|(
-name|application
-operator|.
-name|isPending
-argument_list|()
+operator|!
+name|isMoveApp
 condition|)
 block|{
 name|metrics

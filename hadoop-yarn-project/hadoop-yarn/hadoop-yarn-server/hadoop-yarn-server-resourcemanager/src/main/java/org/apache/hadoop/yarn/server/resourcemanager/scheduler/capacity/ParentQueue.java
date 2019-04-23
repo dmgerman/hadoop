@@ -2935,6 +2935,33 @@ comment|// submit attempt logic.
 block|}
 annotation|@
 name|Override
+DECL|method|submitApplicationAttempt (FiCaSchedulerApp application, String userName, boolean isMoveApp)
+specifier|public
+name|void
+name|submitApplicationAttempt
+parameter_list|(
+name|FiCaSchedulerApp
+name|application
+parameter_list|,
+name|String
+name|userName
+parameter_list|,
+name|boolean
+name|isMoveApp
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Submission of application attempt"
+operator|+
+literal|" to parent queue is not supported"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
 DECL|method|finishApplicationAttempt (FiCaSchedulerApp application, String queue)
 specifier|public
 name|void

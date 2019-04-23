@@ -756,6 +756,22 @@ name|String
 name|userName
 parameter_list|)
 function_decl|;
+comment|/**    * Submit an application attempt to the queue.    * @param application application whose attempt is being submitted    * @param userName user who submitted the application attempt    * @param isMoveApp is application being moved across the queue    */
+DECL|method|submitApplicationAttempt (FiCaSchedulerApp application, String userName, boolean isMoveApp)
+specifier|public
+name|void
+name|submitApplicationAttempt
+parameter_list|(
+name|FiCaSchedulerApp
+name|application
+parameter_list|,
+name|String
+name|userName
+parameter_list|,
+name|boolean
+name|isMoveApp
+parameter_list|)
+function_decl|;
 comment|/**    * An application submitted to this queue has finished.    * @param applicationId    * @param user user who submitted the application    */
 DECL|method|finishApplication (ApplicationId applicationId, String user)
 specifier|public
