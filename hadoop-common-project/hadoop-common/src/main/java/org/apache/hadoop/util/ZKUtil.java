@@ -716,7 +716,7 @@ decl_stmt|;
 return|return
 name|Files
 operator|.
-name|toString
+name|asCharSource
 argument_list|(
 operator|new
 name|File
@@ -728,6 +728,9 @@ name|Charsets
 operator|.
 name|UTF_8
 argument_list|)
+operator|.
+name|read
+argument_list|()
 operator|.
 name|trim
 argument_list|()

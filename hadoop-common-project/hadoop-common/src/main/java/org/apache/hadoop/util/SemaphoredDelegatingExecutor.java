@@ -478,7 +478,7 @@ expr_stmt|;
 return|return
 name|Futures
 operator|.
-name|immediateFailedCheckedFuture
+name|immediateFailedFuture
 argument_list|(
 name|e
 argument_list|)
@@ -543,7 +543,7 @@ expr_stmt|;
 return|return
 name|Futures
 operator|.
-name|immediateFailedCheckedFuture
+name|immediateFailedFuture
 argument_list|(
 name|e
 argument_list|)
@@ -603,7 +603,7 @@ expr_stmt|;
 return|return
 name|Futures
 operator|.
-name|immediateFailedCheckedFuture
+name|immediateFailedFuture
 argument_list|(
 name|e
 argument_list|)

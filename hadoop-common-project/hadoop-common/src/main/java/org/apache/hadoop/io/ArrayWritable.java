@@ -177,7 +177,7 @@ parameter_list|)
 block|{
 name|this
 argument_list|(
-name|UTF8
+name|Text
 operator|.
 name|class
 argument_list|,

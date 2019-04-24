@@ -470,7 +470,7 @@ name|assertEquals
 argument_list|(
 literal|"testArrayWritableStringConstructor class error!!!"
 argument_list|,
-name|UTF8
+name|Text
 operator|.
 name|class
 argument_list|,

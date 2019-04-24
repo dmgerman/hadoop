@@ -1257,7 +1257,7 @@ literal|""
 argument_list|,
 name|Files
 operator|.
-name|toString
+name|asCharSource
 argument_list|(
 name|tmpFile
 argument_list|,
@@ -1265,6 +1265,9 @@ name|Charsets
 operator|.
 name|UTF_8
 argument_list|)
+operator|.
+name|read
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Test failover with fencer and forcefence option
@@ -1292,7 +1295,7 @@ name|fenceCommandOutput
 init|=
 name|Files
 operator|.
-name|toString
+name|asCharSource
 argument_list|(
 name|tmpFile
 argument_list|,
@@ -1300,6 +1303,9 @@ name|Charsets
 operator|.
 name|UTF_8
 argument_list|)
+operator|.
+name|read
+argument_list|()
 operator|.
 name|replaceAll
 argument_list|(

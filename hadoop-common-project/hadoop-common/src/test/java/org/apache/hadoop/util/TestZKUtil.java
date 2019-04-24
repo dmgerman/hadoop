@@ -762,15 +762,18 @@ argument_list|()
 expr_stmt|;
 name|Files
 operator|.
-name|write
+name|asCharSink
 argument_list|(
-literal|"hello world"
-argument_list|,
 name|TEST_FILE
 argument_list|,
 name|Charsets
 operator|.
 name|UTF_8
+argument_list|)
+operator|.
+name|write
+argument_list|(
+literal|"hello world"
 argument_list|)
 expr_stmt|;
 name|assertEquals
