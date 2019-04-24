@@ -275,6 +275,18 @@ name|TEST_S3GUARD_IMPLEMENTATION_NONE
 init|=
 literal|"none"
 decl_stmt|;
+DECL|field|TEST_S3GUARD_DYNAMO_TABLE_PREFIX
+name|String
+name|TEST_S3GUARD_DYNAMO_TABLE_PREFIX
+init|=
+literal|"fs.s3a.s3guard.test.dynamo.table.prefix"
+decl_stmt|;
+DECL|field|TEST_S3GUARD_DYNAMO_TABLE_PREFIX_DEFAULT
+name|String
+name|TEST_S3GUARD_DYNAMO_TABLE_PREFIX_DEFAULT
+init|=
+literal|"s3guard.test."
+decl_stmt|;
 comment|/**    * Timeout in Milliseconds for standard tests: {@value}.    */
 DECL|field|S3A_TEST_TIMEOUT
 name|int

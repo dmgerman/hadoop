@@ -621,6 +621,8 @@ decl_stmt|;
 name|String
 name|tableName
 init|=
+name|getTestTableName
+argument_list|(
 literal|"testConcurrentTableCreations"
 operator|+
 operator|new
@@ -629,6 +631,7 @@ argument_list|()
 operator|.
 name|nextInt
 argument_list|()
+argument_list|)
 decl_stmt|;
 name|conf
 operator|.

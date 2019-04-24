@@ -354,6 +354,24 @@ name|fs
 operator|.
 name|s3a
 operator|.
+name|S3ATestUtils
+operator|.
+name|getTestDynamoTablePrefix
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
 name|S3AUtils
 operator|.
 name|setBucketOption
@@ -576,6 +594,8 @@ specifier|final
 name|String
 name|testTableName
 init|=
+name|getTestTableName
+argument_list|(
 literal|"testInvalidRegion"
 operator|+
 operator|new
@@ -584,6 +604,7 @@ argument_list|()
 operator|.
 name|nextInt
 argument_list|()
+argument_list|)
 decl_stmt|;
 specifier|final
 name|String
@@ -747,12 +768,15 @@ name|set
 argument_list|(
 name|S3GUARD_DDB_TABLE_NAME_KEY
 argument_list|,
+name|getTestTableName
+argument_list|(
 literal|"testDynamoTableTagging-"
 operator|+
 name|UUID
 operator|.
 name|randomUUID
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|S3GuardTool
@@ -1043,6 +1067,8 @@ block|{
 name|String
 name|testTableName
 init|=
+name|getTestTableName
+argument_list|(
 literal|"testDynamoDBInitDestroy"
 operator|+
 operator|new
@@ -1051,6 +1077,7 @@ argument_list|()
 operator|.
 name|nextInt
 argument_list|()
+argument_list|)
 decl_stmt|;
 name|String
 name|testS3Url
@@ -1670,7 +1697,12 @@ literal|"us-west-2"
 argument_list|,
 literal|"-meta"
 argument_list|,
+literal|"dynamodb://"
+operator|+
+name|getTestTableName
+argument_list|(
 name|DYNAMODB_TABLE
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

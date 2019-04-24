@@ -2596,6 +2596,29 @@ name|getHost
 argument_list|()
 return|;
 block|}
+comment|/**    * Get the prefix for DynamoDB table names used in tests.    * @param conf configuration to scan.    * @return the table name prefix    */
+DECL|method|getTestDynamoTablePrefix (final Configuration conf)
+specifier|public
+specifier|static
+name|String
+name|getTestDynamoTablePrefix
+parameter_list|(
+specifier|final
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+name|getTestProperty
+argument_list|(
+name|conf
+argument_list|,
+name|TEST_S3GUARD_DYNAMO_TABLE_PREFIX
+argument_list|,
+name|TEST_S3GUARD_DYNAMO_TABLE_PREFIX_DEFAULT
+argument_list|)
+return|;
+block|}
 comment|/**    * Remove any values from a bucket.    * @param bucket bucket whose overrides are to be removed. Can be null/empty    * @param conf config    * @param options list of fs.s3a options to remove    */
 DECL|method|removeBucketOverrides (final String bucket, final Configuration conf, final String... options)
 specifier|public

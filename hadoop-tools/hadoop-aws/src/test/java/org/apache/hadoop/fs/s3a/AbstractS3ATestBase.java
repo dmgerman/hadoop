@@ -202,6 +202,24 @@ name|writeDataset
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3ATestUtils
+operator|.
+name|getTestDynamoTablePrefix
+import|;
+end_import
+
 begin_comment
 comment|/**  * An extension of the contract test base set up for S3A tests.  */
 end_comment
@@ -510,6 +528,25 @@ argument_list|,
 name|data
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|getTestTableName (String suffix)
+specifier|protected
+name|String
+name|getTestTableName
+parameter_list|(
+name|String
+name|suffix
+parameter_list|)
+block|{
+return|return
+name|getTestDynamoTablePrefix
+argument_list|(
+name|getConfiguration
+argument_list|()
+argument_list|)
+operator|+
+name|suffix
+return|;
 block|}
 comment|/**    * Assert that an exception failed with a specific status code.    * @param e exception    * @param code expected status code    * @throws AWSServiceIOException rethrown if the status code does not match.    */
 DECL|method|assertStatusCode (AWSServiceIOException e, int code)
