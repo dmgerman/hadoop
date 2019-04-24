@@ -3605,7 +3605,7 @@ name|ApplicationClientProtocol
 operator|.
 name|class
 operator|.
-name|getDeclaredMethod
+name|getMethod
 argument_list|(
 name|request
 operator|.
