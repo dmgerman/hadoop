@@ -1407,15 +1407,6 @@ init|=
 literal|"hdds.scm.http.kerberos.keytab"
 decl_stmt|;
 comment|// Network topology
-DECL|field|OZONE_SCM_NETWORK_TOPOLOGY_SCHEMA_FILE_TYPE
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|OZONE_SCM_NETWORK_TOPOLOGY_SCHEMA_FILE_TYPE
-init|=
-literal|"ozone.scm.network.topology.schema.file.type"
-decl_stmt|;
 DECL|field|OZONE_SCM_NETWORK_TOPOLOGY_SCHEMA_FILE
 specifier|public
 specifier|static
