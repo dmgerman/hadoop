@@ -805,11 +805,13 @@ name|execute
 argument_list|(
 name|args
 argument_list|,
-literal|"Usage: ozone auditparser [-hV] [--verbose] [-D=<String=String>]... "
+literal|"Usage: ozone auditparser [-hV] [--verbose] "
 operator|+
-literal|"<database>\n"
+literal|"[-conf=<configurationPath>]\n"
 operator|+
-literal|"                         [COMMAND]"
+literal|"                         [-D=<String=String>]...<database> "
+operator|+
+literal|"[COMMAND]"
 argument_list|)
 expr_stmt|;
 block|}

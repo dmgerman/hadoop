@@ -18,6 +18,14 @@ name|cli
 package|;
 end_package
 
+begin_import
+import|import
+name|picocli
+operator|.
+name|CommandLine
+import|;
+end_import
+
 begin_comment
 comment|/**  * Exception to throw if subcommand is not selected but required.  */
 end_comment
@@ -28,42 +36,25 @@ specifier|public
 class|class
 name|MissingSubcommandException
 extends|extends
-name|RuntimeException
+name|CommandLine
+operator|.
+name|ParameterException
 block|{
-DECL|field|usage
-specifier|private
-name|String
-name|usage
-decl_stmt|;
-DECL|method|MissingSubcommandException (String usage)
+DECL|method|MissingSubcommandException (CommandLine cmd)
 specifier|public
 name|MissingSubcommandException
 parameter_list|(
-name|String
-name|usage
+name|CommandLine
+name|cmd
 parameter_list|)
 block|{
 name|super
 argument_list|(
+name|cmd
+argument_list|,
 literal|"Incomplete command"
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|usage
-operator|=
-name|usage
-expr_stmt|;
-block|}
-DECL|method|getUsage ()
-specifier|public
-name|String
-name|getUsage
-parameter_list|()
-block|{
-return|return
-name|usage
-return|;
 block|}
 block|}
 end_class

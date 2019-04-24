@@ -214,9 +214,6 @@ name|get
 argument_list|(
 literal|"safemode"
 argument_list|)
-operator|.
-name|getUsageMessage
-argument_list|()
 argument_list|)
 throw|;
 block|}

@@ -633,8 +633,6 @@ operator|.
 name|createHddsDatanodeService
 argument_list|(
 name|args
-argument_list|,
-name|conf
 argument_list|)
 expr_stmt|;
 name|dnLogs
@@ -658,7 +656,7 @@ name|service
 operator|.
 name|start
 argument_list|(
-literal|null
+name|conf
 argument_list|)
 expr_stmt|;
 return|return

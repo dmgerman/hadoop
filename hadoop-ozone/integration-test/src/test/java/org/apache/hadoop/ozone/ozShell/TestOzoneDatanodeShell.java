@@ -116,22 +116,6 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|cli
-operator|.
-name|MissingSubcommandException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
 name|client
 operator|.
 name|ReplicationFactor
@@ -674,9 +658,12 @@ argument_list|()
 expr_stmt|;
 name|datanode
 operator|=
-operator|new
 name|HddsDatanodeService
-argument_list|()
+operator|.
+name|createHddsDatanodeService
+argument_list|(
+literal|null
+argument_list|)
 expr_stmt|;
 name|cluster
 operator|=
@@ -941,7 +928,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Execute command, assert exception message and returns true if error    * was thrown and contains the specified usage string.    */
-DECL|method|executeDatanodeWithError (HddsDatanodeService hdds, String[] args, String expectedError, String usage)
+DECL|method|executeDatanodeWithError (HddsDatanodeService hdds, String[] args, String expectedError)
 specifier|private
 name|void
 name|executeDatanodeWithError
@@ -955,9 +942,6 @@ name|args
 parameter_list|,
 name|String
 name|expectedError
-parameter_list|,
-name|String
-name|usage
 parameter_list|)
 block|{
 if|if
@@ -1073,45 +1057,52 @@ name|expectedError
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
-name|exceptionToCheck
-operator|instanceof
-name|MissingSubcommandException
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
-operator|(
-operator|(
-name|MissingSubcommandException
-operator|)
-name|exceptionToCheck
-operator|)
-operator|.
-name|getUsage
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-name|usage
-argument_list|)
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 block|}
 block|}
 annotation|@
 name|Test
-DECL|method|testDatanodeIncompleteCommand ()
+DECL|method|testDatanodeCommand ()
 specifier|public
 name|void
-name|testDatanodeIncompleteCommand
+name|testDatanodeCommand
+parameter_list|()
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Running testDatanodeIncompleteCommand"
+argument_list|)
+expr_stmt|;
+name|String
+index|[]
+name|args
+init|=
+operator|new
+name|String
+index|[]
+block|{}
+decl_stmt|;
+comment|//executing 'ozone datanode'
+comment|//'ozone datanode' command should not result in error
+name|executeDatanodeWithError
+argument_list|(
+name|datanode
+argument_list|,
+name|args
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testDatanodeInvalidParamCommand ()
+specifier|public
+name|void
+name|testDatanodeInvalidParamCommand
 parameter_list|()
 block|{
 name|LOG
@@ -1124,8 +1115,9 @@ expr_stmt|;
 name|String
 name|expectedError
 init|=
-literal|"Incomplete command"
+literal|"Unknown option: -invalidParam"
 decl_stmt|;
+comment|//executing 'ozone datanode -invalidParam'
 name|String
 index|[]
 name|args
@@ -1133,9 +1125,10 @@ init|=
 operator|new
 name|String
 index|[]
-block|{}
+block|{
+literal|"-invalidParam"
+block|}
 decl_stmt|;
-comment|//executing 'ozone datanode'
 name|executeDatanodeWithError
 argument_list|(
 name|datanode
@@ -1143,8 +1136,6 @@ argument_list|,
 name|args
 argument_list|,
 name|expectedError
-argument_list|,
-literal|"Usage: ozone datanode [-hV] [--verbose] [-D=<String=String>]..."
 argument_list|)
 expr_stmt|;
 block|}
