@@ -2203,6 +2203,22 @@ name|securityManager
 init|=
 literal|null
 decl_stmt|;
+comment|/** Super user credentials that a thread may use. */
+DECL|field|CUR_USER
+specifier|private
+specifier|static
+specifier|final
+name|ThreadLocal
+argument_list|<
+name|UserGroupInformation
+argument_list|>
+name|CUR_USER
+init|=
+operator|new
+name|ThreadLocal
+argument_list|<>
+argument_list|()
+decl_stmt|;
 comment|/**    * Construct a router RPC server.    *    * @param configuration HDFS Configuration.    * @param router A router using this RPC server.    * @param nnResolver The NN resolver instance to determine active NNs in HA.    * @param fileResolver File resolver to resolve file paths to subclusters.    * @throws IOException If the RPC server could not be created.    */
 DECL|method|RouterRpcServer (Configuration configuration, Router router, ActiveNamenodeResolver nnResolver, FileSubclusterResolver fileResolver)
 specifier|public
@@ -8167,11 +8183,26 @@ block|{
 name|UserGroupInformation
 name|ugi
 init|=
+name|CUR_USER
+operator|.
+name|get
+argument_list|()
+decl_stmt|;
+name|ugi
+operator|=
+operator|(
+name|ugi
+operator|!=
+literal|null
+operator|)
+condition|?
+name|ugi
+else|:
 name|Server
 operator|.
 name|getRemoteUser
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 return|return
 operator|(
 name|ugi
@@ -8186,6 +8217,51 @@ operator|.
 name|getCurrentUser
 argument_list|()
 return|;
+block|}
+end_function
+
+begin_comment
+comment|/**    * Set super user credentials if needed.    */
+end_comment
+
+begin_function
+DECL|method|setCurrentUser (UserGroupInformation ugi)
+specifier|static
+name|void
+name|setCurrentUser
+parameter_list|(
+name|UserGroupInformation
+name|ugi
+parameter_list|)
+block|{
+name|CUR_USER
+operator|.
+name|set
+argument_list|(
+name|ugi
+argument_list|)
+expr_stmt|;
+block|}
+end_function
+
+begin_comment
+comment|/**    * Reset to discard super user credentials.    */
+end_comment
+
+begin_function
+DECL|method|resetCurrentUser ()
+specifier|static
+name|void
+name|resetCurrentUser
+parameter_list|()
+block|{
+name|CUR_USER
+operator|.
+name|set
+argument_list|(
+literal|null
+argument_list|)
+expr_stmt|;
 block|}
 end_function
 

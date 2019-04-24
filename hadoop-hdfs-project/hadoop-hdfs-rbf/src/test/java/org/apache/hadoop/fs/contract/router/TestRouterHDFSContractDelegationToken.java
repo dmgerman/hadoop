@@ -464,6 +464,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Renew delegation token
+name|long
+name|expiryTime
+init|=
 name|token
 operator|.
 name|renew
@@ -471,14 +474,16 @@ argument_list|(
 name|initSecurity
 argument_list|()
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|assertNotNull
 argument_list|(
 name|token
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
+name|existingMaxTime
+argument_list|,
 name|token
 operator|.
 name|decodeIdentifier
@@ -486,7 +491,13 @@ argument_list|()
 operator|.
 name|getMaxDate
 argument_list|()
-operator|>=
+argument_list|)
+expr_stmt|;
+comment|// Expiry time after renewal should never exceed max time of the token.
+name|assertTrue
+argument_list|(
+name|expiryTime
+operator|<=
 name|existingMaxTime
 argument_list|)
 expr_stmt|;
