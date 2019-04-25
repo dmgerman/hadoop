@@ -1871,6 +1871,13 @@ operator|.
 name|HASH_ALL
 argument_list|)
 expr_stmt|;
+name|testAddOrderMountTable
+argument_list|(
+name|DestinationOrder
+operator|.
+name|SPACE
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Test
@@ -3770,7 +3777,7 @@ literal|"\t[-add<source><nameservice1, nameservice2, ...><destination> "
 operator|+
 literal|"[-readonly] [-faulttolerant] "
 operator|+
-literal|"[-order HASH|LOCAL|RANDOM|HASH_ALL] "
+literal|"[-order HASH|LOCAL|RANDOM|HASH_ALL|SPACE] "
 operator|+
 literal|"-owner<owner> -group<group> -mode<mode>]"
 argument_list|)
@@ -3826,7 +3833,7 @@ literal|"\t[-update<source> [<nameservice1, nameservice2, ...><destination>] "
 operator|+
 literal|"[-readonly true|false] [-faulttolerant true|false] "
 operator|+
-literal|"[-order HASH|LOCAL|RANDOM|HASH_ALL] "
+literal|"[-order HASH|LOCAL|RANDOM|HASH_ALL|SPACE] "
 operator|+
 literal|"-owner<owner> -group<group> -mode<mode>]"
 argument_list|)
@@ -4126,7 +4133,9 @@ literal|"Usage: hdfs dfsrouteradmin :\n"
 operator|+
 literal|"\t[-add<source><nameservice1, nameservice2, ...><destination> "
 operator|+
-literal|"[-readonly] [-faulttolerant] [-order HASH|LOCAL|RANDOM|HASH_ALL] "
+literal|"[-readonly] [-faulttolerant] "
+operator|+
+literal|"[-order HASH|LOCAL|RANDOM|HASH_ALL|SPACE] "
 operator|+
 literal|"-owner<owner> -group<group> -mode<mode>]\n"
 operator|+
@@ -4134,7 +4143,9 @@ literal|"\t[-update<source> [<nameservice1, nameservice2, ...> "
 operator|+
 literal|"<destination>] [-readonly true|false]"
 operator|+
-literal|" [-faulttolerant true|false] [-order HASH|LOCAL|RANDOM|HASH_ALL] "
+literal|" [-faulttolerant true|false] "
+operator|+
+literal|"[-order HASH|LOCAL|RANDOM|HASH_ALL|SPACE] "
 operator|+
 literal|"-owner<owner> -group<group> -mode<mode>]\n"
 operator|+
@@ -8064,6 +8075,13 @@ argument_list|(
 name|DestinationOrder
 operator|.
 name|HASH_ALL
+argument_list|)
+expr_stmt|;
+name|testUpdateOrderMountTable
+argument_list|(
+name|DestinationOrder
+operator|.
+name|SPACE
 argument_list|)
 expr_stmt|;
 block|}

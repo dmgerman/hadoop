@@ -1427,7 +1427,9 @@ block|{
 return|return
 literal|"\t[-add<source><nameservice1, nameservice2, ...><destination> "
 operator|+
-literal|"[-readonly] [-faulttolerant] [-order HASH|LOCAL|RANDOM|HASH_ALL] "
+literal|"[-readonly] [-faulttolerant] "
+operator|+
+literal|"[-order HASH|LOCAL|RANDOM|HASH_ALL|SPACE] "
 operator|+
 literal|"-owner<owner> -group<group> -mode<mode>]"
 return|;
@@ -1448,9 +1450,9 @@ literal|"\t[-update<source>"
 operator|+
 literal|" [<nameservice1, nameservice2, ...><destination>] "
 operator|+
-literal|"[-readonly true|false] [-faulttolerant true|false]"
+literal|"[-readonly true|false] [-faulttolerant true|false] "
 operator|+
-literal|" [-order HASH|LOCAL|RANDOM|HASH_ALL] "
+literal|"[-order HASH|LOCAL|RANDOM|HASH_ALL|SPACE] "
 operator|+
 literal|"-owner<owner> -group<group> -mode<mode>]"
 return|;
