@@ -1404,6 +1404,22 @@ return|return
 name|psDockerImage
 return|;
 block|}
+DECL|method|setPsDockerImage (String psDockerImage)
+specifier|public
+name|void
+name|setPsDockerImage
+parameter_list|(
+name|String
+name|psDockerImage
+parameter_list|)
+block|{
+name|this
+operator|.
+name|psDockerImage
+operator|=
+name|psDockerImage
+expr_stmt|;
+block|}
 DECL|method|getWorkerDockerImage ()
 specifier|public
 name|String
@@ -1413,6 +1429,22 @@ block|{
 return|return
 name|workerDockerImage
 return|;
+block|}
+DECL|method|setWorkerDockerImage (String workerDockerImage)
+specifier|public
+name|void
+name|setWorkerDockerImage
+parameter_list|(
+name|String
+name|workerDockerImage
+parameter_list|)
+block|{
+name|this
+operator|.
+name|workerDockerImage
+operator|=
+name|workerDockerImage
+expr_stmt|;
 block|}
 DECL|method|isDistributed ()
 specifier|public
@@ -1459,6 +1491,22 @@ block|{
 return|return
 name|tensorboardDockerImage
 return|;
+block|}
+DECL|method|setTensorboardDockerImage (String tensorboardDockerImage)
+specifier|public
+name|void
+name|setTensorboardDockerImage
+parameter_list|(
+name|String
+name|tensorboardDockerImage
+parameter_list|)
+block|{
+name|this
+operator|.
+name|tensorboardDockerImage
+operator|=
+name|tensorboardDockerImage
+expr_stmt|;
 block|}
 DECL|method|getQuicklinks ()
 specifier|public
@@ -1633,6 +1681,22 @@ expr_stmt|;
 return|return
 name|this
 return|;
+block|}
+DECL|method|setDistributed (boolean distributed)
+specifier|public
+name|void
+name|setDistributed
+parameter_list|(
+name|boolean
+name|distributed
+parameter_list|)
+block|{
+name|this
+operator|.
+name|distributed
+operator|=
+name|distributed
+expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting

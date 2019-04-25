@@ -26,6 +26,28 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|submarine
+operator|.
+name|runtimes
+operator|.
+name|yarnservice
+operator|.
+name|tensorflow
+operator|.
+name|TensorFlowCommons
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|codehaus
 operator|.
 name|jettison
@@ -56,6 +78,10 @@ name|Test
 import|;
 end_import
 
+begin_comment
+comment|/**  * Class to test some functionality of {@link TensorFlowCommons}.  */
+end_comment
+
 begin_class
 DECL|class|TestTFConfigGenerator
 specifier|public
@@ -75,7 +101,7 @@ block|{
 name|String
 name|json
 init|=
-name|YarnServiceUtils
+name|TensorFlowCommons
 operator|.
 name|getTFConfigEnv
 argument_list|(
@@ -108,7 +134,7 @@ argument_list|)
 expr_stmt|;
 name|json
 operator|=
-name|YarnServiceUtils
+name|TensorFlowCommons
 operator|.
 name|getTFConfigEnv
 argument_list|(
@@ -140,7 +166,7 @@ argument_list|)
 expr_stmt|;
 name|json
 operator|=
-name|YarnServiceUtils
+name|TensorFlowCommons
 operator|.
 name|getTFConfigEnv
 argument_list|(

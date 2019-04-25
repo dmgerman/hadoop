@@ -112,6 +112,16 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Objects
+import|;
+end_import
+
 begin_class
 DECL|class|MockRemoteDirectoryManager
 specifier|public
@@ -157,6 +167,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|Objects
+operator|.
+name|requireNonNull
+argument_list|(
+name|jobName
+argument_list|,
+literal|"Job name must not be null!"
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|jobsParentDir
