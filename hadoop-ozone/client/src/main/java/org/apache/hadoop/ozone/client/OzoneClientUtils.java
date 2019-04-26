@@ -695,7 +695,7 @@ return|return
 name|keyInfo
 return|;
 block|}
-DECL|method|createRetryPolicy (int maxRetryCount)
+DECL|method|createRetryPolicy (int maxRetryCount, long retryInterval)
 specifier|public
 specifier|static
 name|RetryPolicy
@@ -703,6 +703,9 @@ name|createRetryPolicy
 parameter_list|(
 name|int
 name|maxRetryCount
+parameter_list|,
+name|long
+name|retryInterval
 parameter_list|)
 block|{
 comment|// just retry without sleep
@@ -715,7 +718,7 @@ name|retryUpToMaximumCountWithFixedSleep
 argument_list|(
 name|maxRetryCount
 argument_list|,
-literal|0
+name|retryInterval
 argument_list|,
 name|TimeUnit
 operator|.

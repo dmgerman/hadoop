@@ -973,7 +973,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"parameternumber"
 argument_list|)
-DECL|method|KeyOutputStream (OpenKeySession handler, XceiverClientManager xceiverClientManager, OzoneManagerProtocol omClient, int chunkSize, String requestId, ReplicationFactor factor, ReplicationType type, long bufferFlushSize, long bufferMaxSize, long size, long watchTimeout, ChecksumType checksumType, int bytesPerChecksum, String uploadID, int partNumber, boolean isMultipart, int maxRetryCount)
+DECL|method|KeyOutputStream (OpenKeySession handler, XceiverClientManager xceiverClientManager, OzoneManagerProtocol omClient, int chunkSize, String requestId, ReplicationFactor factor, ReplicationType type, long bufferFlushSize, long bufferMaxSize, long size, long watchTimeout, ChecksumType checksumType, int bytesPerChecksum, String uploadID, int partNumber, boolean isMultipart, int maxRetryCount, long retryInterval)
 specifier|public
 name|KeyOutputStream
 parameter_list|(
@@ -1027,6 +1027,9 @@ name|isMultipart
 parameter_list|,
 name|int
 name|maxRetryCount
+parameter_list|,
+name|long
+name|retryInterval
 parameter_list|)
 block|{
 name|this
@@ -1305,6 +1308,8 @@ operator|.
 name|createRetryPolicy
 argument_list|(
 name|maxRetryCount
+argument_list|,
+name|retryInterval
 argument_list|)
 expr_stmt|;
 name|this
@@ -3409,6 +3414,11 @@ specifier|private
 name|int
 name|maxRetryCount
 decl_stmt|;
+DECL|field|retryInterval
+specifier|private
+name|long
+name|retryInterval
+decl_stmt|;
 DECL|method|setMultipartUploadID (String uploadID)
 specifier|public
 name|Builder
@@ -3732,6 +3742,25 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|setRetryInterval (long retryIntervalInMS)
+specifier|public
+name|Builder
+name|setRetryInterval
+parameter_list|(
+name|long
+name|retryIntervalInMS
+parameter_list|)
+block|{
+name|this
+operator|.
+name|retryInterval
+operator|=
+name|retryIntervalInMS
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|build ()
 specifier|public
 name|KeyOutputStream
@@ -3777,6 +3806,8 @@ argument_list|,
 name|isMultipartKey
 argument_list|,
 name|maxRetryCount
+argument_list|,
+name|retryInterval
 argument_list|)
 return|;
 block|}

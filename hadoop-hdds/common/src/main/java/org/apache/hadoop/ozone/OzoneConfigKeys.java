@@ -122,6 +122,18 @@ name|TimeDuration
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class contains constants for configuration keys used in Ozone.  */
 end_comment
@@ -485,7 +497,34 @@ specifier|final
 name|int
 name|OZONE_CLIENT_MAX_RETRIES_DEFAULT
 init|=
-literal|5
+literal|100
+decl_stmt|;
+DECL|field|OZONE_CLIENT_RETRY_INTERVAL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_CLIENT_RETRY_INTERVAL
+init|=
+literal|"ozone.client.retry.interval"
+decl_stmt|;
+DECL|field|OZONE_CLIENT_RETRY_INTERVAL_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|TimeDuration
+name|OZONE_CLIENT_RETRY_INTERVAL_DEFAULT
+init|=
+name|TimeDuration
+operator|.
+name|valueOf
+argument_list|(
+literal|0
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+argument_list|)
 decl_stmt|;
 comment|// This defines the overall connection limit for the connection pool used in
 comment|// RestClient.
