@@ -697,7 +697,8 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
-comment|// launch flag will be set to true if process already launched
+comment|// launch flag will be set to true if process already launched,
+comment|// in process of launching, or failed to launch.
 name|boolean
 name|alreadyLaunched
 init|=
@@ -705,6 +706,11 @@ operator|!
 name|launch
 operator|.
 name|markLaunched
+argument_list|()
+operator|||
+name|launch
+operator|.
+name|isLaunchCompleted
 argument_list|()
 decl_stmt|;
 if|if

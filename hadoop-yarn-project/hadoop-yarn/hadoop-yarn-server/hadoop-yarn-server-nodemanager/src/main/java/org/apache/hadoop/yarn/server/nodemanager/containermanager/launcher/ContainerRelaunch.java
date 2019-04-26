@@ -611,6 +611,9 @@ argument_list|,
 name|containerIdStr
 argument_list|)
 decl_stmt|;
+try|try
+block|{
+comment|// try to locate existing pid file.
 name|pidFilePath
 operator|=
 name|getPidFilePath
@@ -620,6 +623,34 @@ argument_list|,
 name|containerIdStr
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+comment|// reset pid file path if it did not exist.
+name|String
+name|pidFileSubpath
+init|=
+name|getPidFileSubpath
+argument_list|(
+name|appIdStr
+argument_list|,
+name|containerIdStr
+argument_list|)
+decl_stmt|;
+name|pidFilePath
+operator|=
+name|dirsHandler
+operator|.
+name|getLocalPathForWrite
+argument_list|(
+name|pidFileSubpath
+argument_list|)
+expr_stmt|;
+block|}
 name|LOG
 operator|.
 name|info
