@@ -581,6 +581,13 @@ operator|.
 name|DatanodeStates
 name|state
 decl_stmt|;
+DECL|field|shutdownOnError
+specifier|private
+name|boolean
+name|shutdownOnError
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * Starting with a 2 sec heartbeat frequency which will be updated to the    * real HB frequency after scm registration. With this method the    * initial registration could be significant faster.    */
 DECL|field|heartbeatFrequency
 specifier|private
@@ -777,6 +784,34 @@ name|state
 operator|=
 name|state
 expr_stmt|;
+block|}
+comment|/**    * Sets the shutdownOnError. This method needs to be called when we    * set DatanodeState to SHUTDOWN when executing a task of a DatanodeState.    * @param value    */
+DECL|method|setShutdownOnError (boolean value)
+specifier|private
+name|void
+name|setShutdownOnError
+parameter_list|(
+name|boolean
+name|value
+parameter_list|)
+block|{
+name|this
+operator|.
+name|shutdownOnError
+operator|=
+name|value
+expr_stmt|;
+block|}
+comment|/**    * Get shutdownStateMachine.    * @return boolean    */
+DECL|method|getShutdownOnError ()
+specifier|public
+name|boolean
+name|getShutdownOnError
+parameter_list|()
+block|{
+return|return
+name|shutdownOnError
+return|;
 block|}
 comment|/**    * Adds the report to report queue.    *    * @param report report to be added    */
 DECL|method|addReport (GeneratedMessage report)
@@ -1495,6 +1530,36 @@ operator|.
 name|setState
 argument_list|(
 name|newState
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|this
+operator|.
+name|state
+operator|==
+name|DatanodeStateMachine
+operator|.
+name|DatanodeStates
+operator|.
+name|SHUTDOWN
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Critical error occurred in StateMachine, setting "
+operator|+
+literal|"shutDownMachine"
+argument_list|)
+expr_stmt|;
+comment|// When some exception occurred, set shutdownStateMachine to true, so
+comment|// that we can terminate the datanode.
+name|setShutdownOnError
+argument_list|(
+literal|true
 argument_list|)
 expr_stmt|;
 block|}

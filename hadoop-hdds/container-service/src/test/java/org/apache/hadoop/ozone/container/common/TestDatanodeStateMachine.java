@@ -1135,6 +1135,8 @@ argument_list|,
 name|conf
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 init|)
 block|{
@@ -1300,6 +1302,8 @@ argument_list|(
 name|datanodeDetails
 argument_list|,
 name|conf
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|)
@@ -1841,6 +1845,8 @@ argument_list|,
 name|conf
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 init|)
 block|{
@@ -2163,6 +2169,8 @@ name|getNewDatanodeDetails
 argument_list|()
 argument_list|,
 name|perTestConf
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|)

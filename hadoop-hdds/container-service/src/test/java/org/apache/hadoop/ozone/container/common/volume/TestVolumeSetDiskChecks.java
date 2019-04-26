@@ -262,6 +262,18 @@ name|junit
 operator|.
 name|Assert
 operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
 name|assertThat
 import|;
 end_import
@@ -664,7 +676,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Verify that initialization fails if all volumes are bad.    */
+comment|/**    * Verify that all volumes are added to fail list if all volumes are bad.    */
 annotation|@
 name|Test
 DECL|method|testAllVolumesAreBad ()
@@ -686,15 +698,6 @@ operator|=
 name|getConfWithDataNodeDirs
 argument_list|(
 name|numVolumes
-argument_list|)
-expr_stmt|;
-name|thrown
-operator|.
-name|expect
-argument_list|(
-name|IOException
-operator|.
-name|class
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -742,6 +745,32 @@ return|;
 block|}
 block|}
 decl_stmt|;
+name|assertEquals
+argument_list|(
+name|volumeSet
+operator|.
+name|getFailedVolumesList
+argument_list|()
+operator|.
+name|size
+argument_list|()
+argument_list|,
+name|numVolumes
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|volumeSet
+operator|.
+name|getVolumesList
+argument_list|()
+operator|.
+name|size
+argument_list|()
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Update configuration with the specified number of Datanode    * storage directories.    * @param conf    * @param numDirs    */
 DECL|method|getConfWithDataNodeDirs (int numDirs)

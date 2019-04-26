@@ -567,6 +567,20 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicBoolean
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -749,6 +763,18 @@ specifier|private
 name|String
 index|[]
 name|args
+decl_stmt|;
+DECL|field|isStopped
+specifier|private
+specifier|volatile
+name|AtomicBoolean
+name|isStopped
+init|=
+operator|new
+name|AtomicBoolean
+argument_list|(
+literal|false
+argument_list|)
 decl_stmt|;
 DECL|method|HddsDatanodeService (boolean printBanner, String[] args)
 specifier|public
@@ -1295,6 +1321,10 @@ argument_list|,
 name|conf
 argument_list|,
 name|dnCertClient
+argument_list|,
+name|this
+operator|::
+name|terminateDatanode
 argument_list|)
 expr_stmt|;
 try|try
@@ -2121,6 +2151,21 @@ expr_stmt|;
 block|}
 block|}
 block|}
+DECL|method|terminateDatanode ()
+specifier|public
+name|void
+name|terminateDatanode
+parameter_list|()
+block|{
+name|stop
+argument_list|()
+expr_stmt|;
+name|terminate
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|stop ()
@@ -2129,6 +2174,22 @@ name|void
 name|stop
 parameter_list|()
 block|{
+if|if
+condition|(
+operator|!
+name|isStopped
+operator|.
+name|get
+argument_list|()
+condition|)
+block|{
+name|isStopped
+operator|.
+name|set
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|plugins
@@ -2224,6 +2285,7 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}

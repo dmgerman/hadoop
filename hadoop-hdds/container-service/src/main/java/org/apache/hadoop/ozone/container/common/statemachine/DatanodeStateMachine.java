@@ -238,6 +238,20 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|HddsDatanodeStopService
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|container
 operator|.
 name|common
@@ -693,8 +707,14 @@ specifier|private
 name|CertificateClient
 name|dnCertClient
 decl_stmt|;
+DECL|field|hddsDatanodeStopService
+specifier|private
+specifier|final
+name|HddsDatanodeStopService
+name|hddsDatanodeStopService
+decl_stmt|;
 comment|/**    * Constructs a a datanode state machine.    *  @param datanodeDetails - DatanodeDetails used to identify a datanode    * @param conf - Configuration.    * @param certClient - Datanode Certificate client, required if security is    *                     enabled    */
-DECL|method|DatanodeStateMachine (DatanodeDetails datanodeDetails, Configuration conf, CertificateClient certClient)
+DECL|method|DatanodeStateMachine (DatanodeDetails datanodeDetails, Configuration conf, CertificateClient certClient, HddsDatanodeStopService hddsDatanodeStopService)
 specifier|public
 name|DatanodeStateMachine
 parameter_list|(
@@ -706,10 +726,19 @@ name|conf
 parameter_list|,
 name|CertificateClient
 name|certClient
+parameter_list|,
+name|HddsDatanodeStopService
+name|hddsDatanodeStopService
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|this
+operator|.
+name|hddsDatanodeStopService
+operator|=
+name|hddsDatanodeStopService
+expr_stmt|;
 name|this
 operator|.
 name|conf
@@ -1163,6 +1192,30 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|// If we have got some exception in stateMachine we set the state to
+comment|// shutdown to stop the stateMachine thread. Along with this we should
+comment|// also stop the datanode.
+if|if
+condition|(
+name|context
+operator|.
+name|getShutdownOnError
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"DatanodeStateMachine Shutdown due to an critical error"
+argument_list|)
+expr_stmt|;
+name|hddsDatanodeStopService
+operator|.
+name|stopService
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Gets the current context.    *    * @return StateContext    */

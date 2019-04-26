@@ -1169,6 +1169,8 @@ argument_list|,
 name|ozoneConf
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 init|;
 name|DatanodeStateMachine
@@ -1185,6 +1187,8 @@ argument_list|,
 name|ozoneConf
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 init|;
 name|DatanodeStateMachine
@@ -1199,6 +1203,8 @@ name|randomDatanodeDetails
 argument_list|()
 argument_list|,
 name|ozoneConf
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|)
@@ -1361,6 +1367,8 @@ argument_list|,
 name|ozoneConf
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 init|;
 name|DatanodeStateMachine
@@ -1375,6 +1383,8 @@ name|randomDatanodeDetails
 argument_list|()
 argument_list|,
 name|ozoneConf
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|)
@@ -1393,7 +1403,10 @@ argument_list|,
 name|ozoneConf
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
+init|;
 init|)
 block|{
 name|HashSet
