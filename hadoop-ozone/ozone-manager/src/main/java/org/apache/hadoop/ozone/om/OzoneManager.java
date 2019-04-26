@@ -3304,10 +3304,10 @@ block|{
 name|ScmInfo
 name|scmInfo
 init|=
-name|scmBlockClient
-operator|.
 name|getScmInfo
-argument_list|()
+argument_list|(
+name|configuration
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
