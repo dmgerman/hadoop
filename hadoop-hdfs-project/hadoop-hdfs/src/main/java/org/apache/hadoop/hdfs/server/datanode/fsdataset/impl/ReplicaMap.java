@@ -702,6 +702,46 @@ name|map
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Merge all entries from the given replica map into the local replica map.    */
+DECL|method|mergeAll (ReplicaMap other)
+name|void
+name|mergeAll
+parameter_list|(
+name|ReplicaMap
+name|other
+parameter_list|)
+block|{
+name|other
+operator|.
+name|map
+operator|.
+name|forEach
+argument_list|(
+parameter_list|(
+name|bp
+parameter_list|,
+name|replicaInfos
+parameter_list|)
+lambda|->
+block|{
+name|replicaInfos
+operator|.
+name|forEach
+argument_list|(
+name|replicaInfo
+lambda|->
+name|add
+argument_list|(
+name|bp
+argument_list|,
+name|replicaInfo
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Remove the replica's meta information from the map that matches    * the input block's id and generation stamp    * @param bpid block pool id    * @param block block with its id as the key    * @return the removed replica's meta information    * @throws IllegalArgumentException if the input block is null    */
 DECL|method|remove (String bpid, Block block)
 name|ReplicaInfo

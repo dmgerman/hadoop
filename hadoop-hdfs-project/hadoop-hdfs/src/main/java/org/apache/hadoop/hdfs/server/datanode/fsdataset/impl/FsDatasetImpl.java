@@ -2992,7 +2992,7 @@ throw|;
 block|}
 name|volumeMap
 operator|.
-name|addAll
+name|mergeAll
 argument_list|(
 name|replicaMap
 argument_list|)
