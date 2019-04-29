@@ -605,20 +605,6 @@ name|Exception
 name|ex
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|trace
-argument_list|(
-literal|"Incrementing the Missed count. Ex : {}"
-argument_list|,
-name|ex
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|incMissed
-argument_list|()
-expr_stmt|;
 if|if
 condition|(
 name|this
@@ -681,6 +667,20 @@ name|ex
 argument_list|)
 expr_stmt|;
 block|}
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Incrementing the Missed count. Ex : {}"
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|incMissed
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * States that an Endpoint can be in.    *<p>    * This is a sorted list of states that EndPoint will traverse.    *<p>    * GetNextState will move this enum from getInitState to getLastState.    */
 DECL|enum|EndPointStates
