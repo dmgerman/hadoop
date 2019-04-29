@@ -719,6 +719,21 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|serverProviderUri
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"KMS serverProviderUri is not configured."
+argument_list|)
+throw|;
+block|}
 return|return
 name|KMSUtil
 operator|.
