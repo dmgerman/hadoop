@@ -74,22 +74,19 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|addResponseTime (String name, int priorityLevel, int queueTime, int processingTime)
+DECL|method|addResponseTime (String callName, Schedulable schedulable, ProcessingDetails details)
 specifier|public
 name|void
 name|addResponseTime
 parameter_list|(
 name|String
-name|name
+name|callName
 parameter_list|,
-name|int
-name|priorityLevel
+name|Schedulable
+name|schedulable
 parameter_list|,
-name|int
-name|queueTime
-parameter_list|,
-name|int
-name|processingTime
+name|ProcessingDetails
+name|details
 parameter_list|)
 block|{   }
 DECL|method|DefaultRpcScheduler (int priorityLevels, String namespace, Configuration conf)

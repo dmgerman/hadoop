@@ -20,6 +20,18 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -178,22 +190,6 @@ name|metrics2
 operator|.
 name|lib
 operator|.
-name|MutableCounterInt
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|metrics2
-operator|.
-name|lib
-operator|.
 name|MutableCounterLong
 import|;
 end_import
@@ -310,6 +306,18 @@ specifier|final
 name|boolean
 name|rpcQuantileEnable
 decl_stmt|;
+comment|/** The time unit used when storing/accessing time durations. */
+DECL|field|TIMEUNIT
+specifier|public
+specifier|final
+specifier|static
+name|TimeUnit
+name|TIMEUNIT
+init|=
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+decl_stmt|;
 DECL|method|RpcMetrics (Server server, Configuration conf)
 name|RpcMetrics
 parameter_list|(
@@ -418,7 +426,7 @@ condition|(
 name|rpcQuantileEnable
 condition|)
 block|{
-name|rpcQueueTimeMillisQuantiles
+name|rpcQueueTimeQuantiles
 operator|=
 operator|new
 name|MutableQuantiles
@@ -428,7 +436,7 @@ operator|.
 name|length
 index|]
 expr_stmt|;
-name|rpcProcessingTimeMillisQuantiles
+name|rpcLockWaitTimeQuantiles
 operator|=
 operator|new
 name|MutableQuantiles
@@ -438,7 +446,17 @@ operator|.
 name|length
 index|]
 expr_stmt|;
-name|deferredRpcProcessingTimeMillisQuantiles
+name|rpcProcessingTimeQuantiles
+operator|=
+operator|new
+name|MutableQuantiles
+index|[
+name|intervals
+operator|.
+name|length
+index|]
+expr_stmt|;
+name|deferredRpcProcessingTimeQuantiles
 operator|=
 operator|new
 name|MutableQuantiles
@@ -473,7 +491,7 @@ index|[
 name|i
 index|]
 decl_stmt|;
-name|rpcQueueTimeMillisQuantiles
+name|rpcQueueTimeQuantiles
 index|[
 name|i
 index|]
@@ -488,7 +506,9 @@ name|interval
 operator|+
 literal|"s"
 argument_list|,
-literal|"rpc queue time in milli second"
+literal|"rpc queue time in "
+operator|+
+name|TIMEUNIT
 argument_list|,
 literal|"ops"
 argument_list|,
@@ -497,7 +517,33 @@ argument_list|,
 name|interval
 argument_list|)
 expr_stmt|;
-name|rpcProcessingTimeMillisQuantiles
+name|rpcLockWaitTimeQuantiles
+index|[
+name|i
+index|]
+operator|=
+name|registry
+operator|.
+name|newQuantiles
+argument_list|(
+literal|"rpcLockWaitTime"
+operator|+
+name|interval
+operator|+
+literal|"s"
+argument_list|,
+literal|"rpc lock wait time in "
+operator|+
+name|TIMEUNIT
+argument_list|,
+literal|"ops"
+argument_list|,
+literal|"latency"
+argument_list|,
+name|interval
+argument_list|)
+expr_stmt|;
+name|rpcProcessingTimeQuantiles
 index|[
 name|i
 index|]
@@ -512,7 +558,9 @@ name|interval
 operator|+
 literal|"s"
 argument_list|,
-literal|"rpc processing time in milli second"
+literal|"rpc processing time in "
+operator|+
+name|TIMEUNIT
 argument_list|,
 literal|"ops"
 argument_list|,
@@ -521,7 +569,7 @@ argument_list|,
 name|interval
 argument_list|)
 expr_stmt|;
-name|deferredRpcProcessingTimeMillisQuantiles
+name|deferredRpcProcessingTimeQuantiles
 index|[
 name|i
 index|]
@@ -536,7 +584,9 @@ name|interval
 operator|+
 literal|"s"
 argument_list|,
-literal|"deferred rpc processing time in milli seconds"
+literal|"deferred rpc processing time in "
+operator|+
+name|TIMEUNIT
 argument_list|,
 literal|"ops"
 argument_list|,
@@ -636,10 +686,24 @@ argument_list|)
 name|MutableRate
 name|rpcQueueTime
 decl_stmt|;
-DECL|field|rpcQueueTimeMillisQuantiles
+DECL|field|rpcQueueTimeQuantiles
 name|MutableQuantiles
 index|[]
-name|rpcQueueTimeMillisQuantiles
+name|rpcQueueTimeQuantiles
+decl_stmt|;
+DECL|field|rpcLockWaitTime
+annotation|@
+name|Metric
+argument_list|(
+literal|"Lock wait time"
+argument_list|)
+name|MutableRate
+name|rpcLockWaitTime
+decl_stmt|;
+DECL|field|rpcLockWaitTimeQuantiles
+name|MutableQuantiles
+index|[]
+name|rpcLockWaitTimeQuantiles
 decl_stmt|;
 DECL|field|rpcProcessingTime
 annotation|@
@@ -650,10 +714,10 @@ argument_list|)
 name|MutableRate
 name|rpcProcessingTime
 decl_stmt|;
-DECL|field|rpcProcessingTimeMillisQuantiles
+DECL|field|rpcProcessingTimeQuantiles
 name|MutableQuantiles
 index|[]
-name|rpcProcessingTimeMillisQuantiles
+name|rpcProcessingTimeQuantiles
 decl_stmt|;
 DECL|field|deferredRpcProcessingTime
 annotation|@
@@ -664,10 +728,10 @@ argument_list|)
 name|MutableRate
 name|deferredRpcProcessingTime
 decl_stmt|;
-DECL|field|deferredRpcProcessingTimeMillisQuantiles
+DECL|field|deferredRpcProcessingTimeQuantiles
 name|MutableQuantiles
 index|[]
-name|deferredRpcProcessingTimeMillisQuantiles
+name|deferredRpcProcessingTimeQuantiles
 decl_stmt|;
 annotation|@
 name|Metric
@@ -902,13 +966,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Add an RPC queue time sample    * @param qTime the queue time    */
-comment|//@Override
-DECL|method|addRpcQueueTime (int qTime)
+DECL|method|addRpcQueueTime (long qTime)
 specifier|public
 name|void
 name|addRpcQueueTime
 parameter_list|(
-name|int
+name|long
 name|qTime
 parameter_list|)
 block|{
@@ -929,7 +992,7 @@ control|(
 name|MutableQuantiles
 name|q
 range|:
-name|rpcQueueTimeMillisQuantiles
+name|rpcQueueTimeQuantiles
 control|)
 block|{
 name|q
@@ -942,14 +1005,52 @@ expr_stmt|;
 block|}
 block|}
 block|}
+DECL|method|addRpcLockWaitTime (long waitTime)
+specifier|public
+name|void
+name|addRpcLockWaitTime
+parameter_list|(
+name|long
+name|waitTime
+parameter_list|)
+block|{
+name|rpcLockWaitTime
+operator|.
+name|add
+argument_list|(
+name|waitTime
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|rpcQuantileEnable
+condition|)
+block|{
+for|for
+control|(
+name|MutableQuantiles
+name|q
+range|:
+name|rpcLockWaitTimeQuantiles
+control|)
+block|{
+name|q
+operator|.
+name|add
+argument_list|(
+name|waitTime
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
 comment|/**    * Add an RPC processing time sample    * @param processingTime the processing time    */
-comment|//@Override
-DECL|method|addRpcProcessingTime (int processingTime)
+DECL|method|addRpcProcessingTime (long processingTime)
 specifier|public
 name|void
 name|addRpcProcessingTime
 parameter_list|(
-name|int
+name|long
 name|processingTime
 parameter_list|)
 block|{
@@ -970,7 +1071,7 @@ control|(
 name|MutableQuantiles
 name|q
 range|:
-name|rpcProcessingTimeMillisQuantiles
+name|rpcProcessingTimeQuantiles
 control|)
 block|{
 name|q
@@ -1009,7 +1110,7 @@ control|(
 name|MutableQuantiles
 name|q
 range|:
-name|deferredRpcProcessingTimeMillisQuantiles
+name|deferredRpcProcessingTimeQuantiles
 control|)
 block|{
 name|q

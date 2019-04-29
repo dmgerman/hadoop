@@ -1902,26 +1902,6 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|addResponseTime (String name, int priorityLevel, int queueTime, int processingTime)
-specifier|public
-name|void
-name|addResponseTime
-parameter_list|(
-name|String
-name|name
-parameter_list|,
-name|int
-name|priorityLevel
-parameter_list|,
-name|int
-name|queueTime
-parameter_list|,
-name|int
-name|processingTime
-parameter_list|)
-block|{     }
-annotation|@
-name|Override
 DECL|method|stop ()
 specifier|public
 name|void

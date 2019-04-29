@@ -171,6 +171,18 @@ operator|=
 name|action
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|getDetailedMetricsName ()
+specifier|public
+name|String
+name|getDetailedMetricsName
+parameter_list|()
+block|{
+return|return
+literal|"(external)"
+return|;
+block|}
 DECL|method|getRemoteUser ()
 specifier|public
 specifier|abstract

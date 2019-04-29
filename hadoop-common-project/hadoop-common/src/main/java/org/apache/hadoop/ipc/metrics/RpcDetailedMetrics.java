@@ -318,17 +318,17 @@ name|protocol
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Add an RPC processing time sample    * @param name of the RPC call    * @param processingTime  the processing time    */
+comment|/**    * Add an RPC processing time sample    * @param rpcCallName of the RPC call    * @param processingTime  the processing time    */
 comment|//@Override // some instrumentation interface
-DECL|method|addProcessingTime (String name, int processingTime)
+DECL|method|addProcessingTime (String rpcCallName, long processingTime)
 specifier|public
 name|void
 name|addProcessingTime
 parameter_list|(
 name|String
-name|name
+name|rpcCallName
 parameter_list|,
-name|int
+name|long
 name|processingTime
 parameter_list|)
 block|{
@@ -336,7 +336,7 @@ name|rates
 operator|.
 name|add
 argument_list|(
-name|name
+name|rpcCallName
 argument_list|,
 name|processingTime
 argument_list|)

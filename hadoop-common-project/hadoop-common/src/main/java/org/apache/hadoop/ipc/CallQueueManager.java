@@ -1114,21 +1114,18 @@ name|e
 argument_list|)
 return|;
 block|}
-DECL|method|addResponseTime (String name, int priorityLevel, int queueTime, int processingTime)
+DECL|method|addResponseTime (String name, Schedulable e, ProcessingDetails details)
 name|void
 name|addResponseTime
 parameter_list|(
 name|String
 name|name
 parameter_list|,
-name|int
-name|priorityLevel
+name|Schedulable
+name|e
 parameter_list|,
-name|int
-name|queueTime
-parameter_list|,
-name|int
-name|processingTime
+name|ProcessingDetails
+name|details
 parameter_list|)
 block|{
 name|scheduler
@@ -1137,11 +1134,9 @@ name|addResponseTime
 argument_list|(
 name|name
 argument_list|,
-name|priorityLevel
+name|e
 argument_list|,
-name|queueTime
-argument_list|,
-name|processingTime
+name|details
 argument_list|)
 expr_stmt|;
 block|}
