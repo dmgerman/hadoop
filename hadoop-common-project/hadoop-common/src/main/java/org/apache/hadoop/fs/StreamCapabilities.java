@@ -104,6 +104,13 @@ name|READBYTEBUFFER
 init|=
 literal|"in:readbytebuffer"
 decl_stmt|;
+comment|/**    * Stream read(long, ByteBuffer) capability implemented by    * {@link ByteBufferPositionedReadable#read(long, java.nio.ByteBuffer)}.    */
+DECL|field|PREADBYTEBUFFER
+name|String
+name|PREADBYTEBUFFER
+init|=
+literal|"in:preadbytebuffer"
+decl_stmt|;
 comment|/**    * Capabilities that a stream can support and be queried for.    */
 annotation|@
 name|Deprecated

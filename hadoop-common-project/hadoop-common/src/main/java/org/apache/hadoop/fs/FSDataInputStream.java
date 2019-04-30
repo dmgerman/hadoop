@@ -189,6 +189,8 @@ implements|,
 name|CanUnbuffer
 implements|,
 name|StreamCapabilities
+implements|,
+name|ByteBufferPositionedReadable
 block|{
 comment|/**    * Map ByteBuffers that we have handed out to readers to ByteBufferPool     * objects    */
 specifier|private
@@ -514,7 +516,9 @@ throw|throw
 operator|new
 name|UnsupportedOperationException
 argument_list|(
-literal|"Byte-buffer read unsupported by input stream"
+literal|"Byte-buffer read unsupported "
+operator|+
+literal|"by input stream"
 argument_list|)
 throw|;
 block|}
@@ -940,6 +944,55 @@ literal|": "
 operator|+
 name|in
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|read (long position, ByteBuffer buf)
+specifier|public
+name|int
+name|read
+parameter_list|(
+name|long
+name|position
+parameter_list|,
+name|ByteBuffer
+name|buf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|in
+operator|instanceof
+name|ByteBufferPositionedReadable
+condition|)
+block|{
+return|return
+operator|(
+operator|(
+name|ByteBufferPositionedReadable
+operator|)
+name|in
+operator|)
+operator|.
+name|read
+argument_list|(
+name|position
+argument_list|,
+name|buf
+argument_list|)
+return|;
+block|}
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Byte-buffer pread unsupported "
+operator|+
+literal|"by input stream"
+argument_list|)
+throw|;
 block|}
 block|}
 end_class

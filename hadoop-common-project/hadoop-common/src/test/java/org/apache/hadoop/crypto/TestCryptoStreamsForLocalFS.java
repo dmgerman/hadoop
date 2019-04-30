@@ -520,6 +520,28 @@ block|{}
 annotation|@
 name|Ignore
 argument_list|(
+literal|"Wrapped stream doesn't support ByteBufferPositionedReadable"
+argument_list|)
+annotation|@
+name|Override
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
+DECL|method|testPositionedReadWithByteBuffer ()
+specifier|public
+name|void
+name|testPositionedReadWithByteBuffer
+parameter_list|()
+throws|throws
+name|IOException
+block|{}
+annotation|@
+name|Ignore
+argument_list|(
 literal|"ChecksumFSOutputSummer doesn't support Syncable"
 argument_list|)
 annotation|@
@@ -535,6 +557,28 @@ DECL|method|testSyncable ()
 specifier|public
 name|void
 name|testSyncable
+parameter_list|()
+throws|throws
+name|IOException
+block|{}
+annotation|@
+name|Ignore
+argument_list|(
+literal|"Wrapped stream doesn't support ByteBufferPositionedReadable"
+argument_list|)
+annotation|@
+name|Override
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
+DECL|method|testByteBufferPread ()
+specifier|public
+name|void
+name|testByteBufferPread
 parameter_list|()
 throws|throws
 name|IOException
