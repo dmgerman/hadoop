@@ -2014,6 +2014,11 @@ specifier|private
 name|CannedAccessControlList
 name|cannedACL
 decl_stmt|;
+DECL|field|failOnMetadataWriteError
+specifier|private
+name|boolean
+name|failOnMetadataWriteError
+decl_stmt|;
 comment|/**    * This must never be null; until initialized it just declares that there    * is no encryption.    */
 DECL|field|encryptionSecrets
 specifier|private
@@ -2418,6 +2423,17 @@ name|this
 argument_list|,
 name|getConf
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|failOnMetadataWriteError
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|FAIL_ON_METADATA_WRITE_ERROR
+argument_list|,
+name|FAIL_ON_METADATA_WRITE_ERROR_DEFAULT
 argument_list|)
 expr_stmt|;
 name|maxKeys
@@ -7209,13 +7225,13 @@ name|len
 argument_list|)
 return|;
 block|}
-comment|/**    * PUT an object directly (i.e. not via the transfer manager).    * Byte length is calculated from the file length, or, if there is no    * file, from the content length of the header.    *    * Retry Policy: none.    *<i>Important: this call will close any input stream in the request.</i>    * @param putObjectRequest the request    * @return the upload initiated    * @throws AmazonClientException on problems    */
+comment|/**    * PUT an object directly (i.e. not via the transfer manager).    * Byte length is calculated from the file length, or, if there is no    * file, from the content length of the header.    *    * Retry Policy: none.    *<i>Important: this call will close any input stream in the request.</i>    * @param putObjectRequest the request    * @return the upload initiated    * @throws AmazonClientException on problems    * @throws MetadataPersistenceException if metadata about the write could    * not be saved to the metadata store and    * fs.s3a.metadatastore.fail.on.write.error=true    */
 annotation|@
 name|Retries
 operator|.
 name|OnceRaw
 argument_list|(
-literal|"For PUT; post-PUT actions are RetriesExceptionsSwallowed"
+literal|"For PUT; post-PUT actions are RetryTranslated"
 argument_list|)
 DECL|method|putObjectDirect (PutObjectRequest putObjectRequest)
 name|PutObjectResult
@@ -7226,6 +7242,8 @@ name|putObjectRequest
 parameter_list|)
 throws|throws
 name|AmazonClientException
+throws|,
+name|MetadataPersistenceException
 block|{
 name|long
 name|len
@@ -10690,13 +10708,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Execute a PUT via the transfer manager, blocking for completion,    * updating the metastore afterwards.    * If the waiting for completion is interrupted, the upload will be    * aborted before an {@code InterruptedIOException} is thrown.    * @param putObjectRequest request    * @param progress optional progress callback    * @return the upload result    * @throws InterruptedIOException if the blocking was interrupted.    */
+comment|/**    * Execute a PUT via the transfer manager, blocking for completion,    * updating the metastore afterwards.    * If the waiting for completion is interrupted, the upload will be    * aborted before an {@code InterruptedIOException} is thrown.    * @param putObjectRequest request    * @param progress optional progress callback    * @return the upload result    * @throws InterruptedIOException if the blocking was interrupted.    * @throws MetadataPersistenceException if metadata about the write could    * not be saved to the metadata store and    * fs.s3a.metadatastore.fail.on.write.error=true    */
 annotation|@
 name|Retries
 operator|.
 name|OnceRaw
 argument_list|(
-literal|"For PUT; post-PUT actions are RetriesExceptionsSwallowed"
+literal|"For PUT; post-PUT actions are RetryTranslated"
 argument_list|)
 DECL|method|executePut (PutObjectRequest putObjectRequest, Progressable progress)
 name|UploadResult
@@ -10710,6 +10728,8 @@ name|progress
 parameter_list|)
 throws|throws
 name|InterruptedIOException
+throws|,
+name|MetadataPersistenceException
 block|{
 name|String
 name|key
@@ -11730,7 +11750,7 @@ name|encryptionSecrets
 argument_list|)
 return|;
 block|}
-comment|/**    * Perform post-write actions.    * Calls {@link #deleteUnnecessaryFakeDirectories(Path)} and then    * {@link S3Guard#addAncestors(MetadataStore, Path, String)}}.    * This operation MUST be called after any PUT/multipart PUT completes    * successfully.    *    * The operations actions include    *<ol>    *<li>Calling {@link #deleteUnnecessaryFakeDirectories(Path)}</li>    *<li>Updating any metadata store with details on the newly created    *   object.</li>    *</ol>    * @param key key written to    * @param length  total length of file written    */
+comment|/**    * Perform post-write actions.    * Calls {@link #deleteUnnecessaryFakeDirectories(Path)} and then    * {@link S3Guard#addAncestors(MetadataStore, Path, String)}}.    * This operation MUST be called after any PUT/multipart PUT completes    * successfully.    *    * The operations actions include    *<ol>    *<li>Calling {@link #deleteUnnecessaryFakeDirectories(Path)}</li>    *<li>Updating any metadata store with details on the newly created    *   object.</li>    *</ol>    * @param key key written to    * @param length  total length of file written    * @throws MetadataPersistenceException if metadata about the write could    * not be saved to the metadata store and    * fs.s3a.metadatastore.fail.on.write.error=true    */
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -11738,7 +11758,12 @@ name|Private
 annotation|@
 name|Retries
 operator|.
-name|RetryExceptionsSwallowed
+name|RetryTranslated
+argument_list|(
+literal|"Except if failOnMetadataWriteError=false, in which"
+operator|+
+literal|" case RetryExceptionsSwallowed"
+argument_list|)
 DECL|method|finishedWrite (String key, long length)
 name|void
 name|finishedWrite
@@ -11749,6 +11774,8 @@ parameter_list|,
 name|long
 name|length
 parameter_list|)
+throws|throws
+name|MetadataPersistenceException
 block|{
 name|LOG
 operator|.
@@ -11853,17 +11880,38 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
+name|failOnMetadataWriteError
+condition|)
+block|{
+throw|throw
+operator|new
+name|MetadataPersistenceException
+argument_list|(
+name|p
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
+else|else
+block|{
 name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"S3Guard: Error updating MetadataStore for write to {}:"
+literal|"S3Guard: Error updating MetadataStore for write to {}"
 argument_list|,
-name|key
+name|p
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+block|}
 name|instrumentation
 operator|.
 name|errorIgnored

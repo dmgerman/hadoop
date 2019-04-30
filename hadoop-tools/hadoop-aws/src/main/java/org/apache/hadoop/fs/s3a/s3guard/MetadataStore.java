@@ -144,6 +144,24 @@ name|Path
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|Retries
+operator|.
+name|RetryTranslated
+import|;
+end_import
+
 begin_comment
 comment|/**  * {@code MetadataStore} defines the set of operations that any metadata store  * implementation must provide.  Note that all {@link Path} objects provided  * to methods must be absolute, not relative paths.  * Implementations must implement any retries needed internally, such that  * transient errors are generally recovered from without throwing exceptions  * from this API.  */
 end_comment
@@ -278,6 +296,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Saves metadata for exactly one path.    *    * Implementations may pre-create all the path's ancestors automatically.    * Implementations must update any {@code DirListingMetadata} objects which    * track the immediate parent of this file.    *    * @param meta the metadata to save    * @throws IOException if there is an error    */
+annotation|@
+name|RetryTranslated
 DECL|method|put (PathMetadata meta)
 name|void
 name|put

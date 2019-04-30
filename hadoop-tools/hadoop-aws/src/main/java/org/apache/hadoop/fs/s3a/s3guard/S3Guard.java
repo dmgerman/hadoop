@@ -272,6 +272,24 @@ name|fs
 operator|.
 name|s3a
 operator|.
+name|Retries
+operator|.
+name|RetryTranslated
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
 name|S3AFileStatus
 import|;
 end_import
@@ -743,6 +761,8 @@ name|aClass
 return|;
 block|}
 comment|/**    * Helper function which puts a given S3AFileStatus into the MetadataStore and    * returns the same S3AFileStatus. Instrumentation monitors the put operation.    * @param ms MetadataStore to {@code put()} into.    * @param status status to store    * @param instrumentation instrumentation of the s3a file system    * @return The same status as passed in    * @throws IOException if metadata store update failed    */
+annotation|@
+name|RetryTranslated
 DECL|method|putAndReturn (MetadataStore ms, S3AFileStatus status, S3AInstrumentation instrumentation)
 specifier|public
 specifier|static

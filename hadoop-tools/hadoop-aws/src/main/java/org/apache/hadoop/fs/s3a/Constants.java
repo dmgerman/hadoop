@@ -1113,6 +1113,26 @@ name|S3_METADATA_STORE_IMPL
 init|=
 literal|"fs.s3a.metadatastore.impl"
 decl_stmt|;
+comment|/**    * Whether to fail when there is an error writing to the metadata store.    */
+DECL|field|FAIL_ON_METADATA_WRITE_ERROR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FAIL_ON_METADATA_WRITE_ERROR
+init|=
+literal|"fs.s3a.metadatastore.fail.on.write.error"
+decl_stmt|;
+comment|/**    * Default value ({@value}) for FAIL_ON_METADATA_WRITE_ERROR.    */
+DECL|field|FAIL_ON_METADATA_WRITE_ERROR_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|FAIL_ON_METADATA_WRITE_ERROR_DEFAULT
+init|=
+literal|true
+decl_stmt|;
 comment|/** Minimum period of time (in milliseconds) to keep metadata (may only be    * applied when a prune command is manually run).    */
 annotation|@
 name|InterfaceStability

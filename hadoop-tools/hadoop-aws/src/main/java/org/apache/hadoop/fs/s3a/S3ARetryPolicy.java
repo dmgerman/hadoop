@@ -656,6 +656,19 @@ argument_list|,
 name|fail
 argument_list|)
 expr_stmt|;
+comment|// metadata stores should do retries internally when it makes sense
+comment|// so there is no point doing another layer of retries after that
+name|policyMap
+operator|.
+name|put
+argument_list|(
+name|MetadataPersistenceException
+operator|.
+name|class
+argument_list|,
+name|fail
+argument_list|)
+expr_stmt|;
 comment|// once the file has changed, trying again is not going to help
 name|policyMap
 operator|.

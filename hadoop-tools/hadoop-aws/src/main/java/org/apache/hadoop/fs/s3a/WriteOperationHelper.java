@@ -944,7 +944,9 @@ name|destKey
 argument_list|)
 throw|;
 block|}
-return|return
+name|CompleteMultipartUploadResult
+name|uploadResult
+init|=
 name|invoker
 operator|.
 name|retry
@@ -962,9 +964,7 @@ lambda|->
 block|{
 comment|// a copy of the list is required, so that the AWS SDK doesn't
 comment|// attempt to sort an unmodifiable list.
-name|CompleteMultipartUploadResult
-name|result
-init|=
+return|return
 name|owner
 operator|.
 name|getAmazonS3Client
@@ -989,6 +989,9 @@ name|partETags
 argument_list|)
 argument_list|)
 argument_list|)
+return|;
+block|}
+argument_list|)
 decl_stmt|;
 name|owner
 operator|.
@@ -1000,10 +1003,7 @@ name|length
 argument_list|)
 expr_stmt|;
 return|return
-name|result
-return|;
-block|}
-argument_list|)
+name|uploadResult
 return|;
 block|}
 comment|/**    * This completes a multipart upload to the destination key via    * {@code finalizeMultipartUpload()}.    * Retry policy: retrying, translated.    * Retries increment the {@code errorCount} counter.    * @param destKey destination    * @param uploadId multipart operation Id    * @param partETags list of partial uploads    * @param length length of the upload    * @param errorCount a counter incremented by 1 on every error; for    * use in statistics    * @return the result of the operation.    * @throws IOException if problems arose which could not be retried, or    * the retry count was exceeded    */
