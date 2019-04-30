@@ -531,7 +531,7 @@ name|info
 argument_list|(
 literal|"Use {} as script name."
 argument_list|,
-name|envScriptName
+name|binaryName
 argument_list|)
 expr_stmt|;
 comment|// Try to find the script based on an environment variable, if set
@@ -691,6 +691,8 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|getRegisterRequestInfo ()
 specifier|public
 name|DeviceRegisterRequest
@@ -714,6 +716,8 @@ name|build
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getDevices ()
 specifier|public
 name|Set
@@ -792,6 +796,8 @@ return|return
 name|devices
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|onDevicesAllocated (Set<Device> set, YarnRuntimeType yarnRuntimeType)
 specifier|public
 name|DeviceRuntimeSpec
@@ -855,6 +861,8 @@ argument_list|(
 literal|"\n"
 argument_list|)
 decl_stmt|;
+name|outer
+label|:
 for|for
 control|(
 name|String
@@ -944,7 +952,9 @@ argument_list|(
 literal|"Unknown format of script output! Skipping this line"
 argument_list|)
 expr_stmt|;
-continue|continue;
+continue|continue
+name|outer
+continue|;
 block|}
 specifier|final
 name|String
