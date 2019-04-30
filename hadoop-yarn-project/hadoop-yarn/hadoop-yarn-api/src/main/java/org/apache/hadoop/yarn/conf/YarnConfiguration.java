@@ -5044,7 +5044,7 @@ name|DEFAULT_NM_REMOTE_APP_LOG_DIR
 init|=
 literal|"/tmp/logs"
 decl_stmt|;
-comment|/**    * The remote log dir will be created at    * NM_REMOTE_APP_LOG_DIR/${user}/NM_REMOTE_APP_LOG_DIR_SUFFIX/${appId}    */
+comment|/**    * The remote log dir will be created at below location.    * NM_REMOTE_APP_LOG_DIR/${user}/bucket_{NM_REMOTE_APP_LOG_DIR_SUFFIX}    * /${bucketDir}/${appId}    */
 DECL|field|NM_REMOTE_APP_LOG_DIR_SUFFIX
 specifier|public
 specifier|static
@@ -5064,6 +5064,27 @@ name|String
 name|DEFAULT_NM_REMOTE_APP_LOG_DIR_SUFFIX
 init|=
 literal|"logs"
+decl_stmt|;
+comment|/** Specifies whether Older Application Log Directory is included. */
+DECL|field|NM_REMOTE_APP_LOG_DIR_INCLUDE_OLDER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_REMOTE_APP_LOG_DIR_INCLUDE_OLDER
+init|=
+name|NM_PREFIX
+operator|+
+literal|"remote-app-log-dir-include-older"
+decl_stmt|;
+DECL|field|DEFAULT_NM_REMOTE_APP_LOG_DIR_INCLUDE_OLDER
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_NM_REMOTE_APP_LOG_DIR_INCLUDE_OLDER
+init|=
+literal|true
 decl_stmt|;
 DECL|field|YARN_LOG_SERVER_URL
 specifier|public
