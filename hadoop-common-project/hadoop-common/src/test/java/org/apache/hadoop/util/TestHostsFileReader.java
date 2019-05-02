@@ -32,7 +32,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileNotFoundException
+name|FileWriter
 import|;
 end_import
 
@@ -40,9 +40,11 @@ begin_import
 import|import
 name|java
 operator|.
-name|io
+name|nio
 operator|.
-name|FileWriter
+name|file
+operator|.
+name|NoSuchFileException
 import|;
 end_import
 
@@ -637,13 +639,13 @@ name|Assert
 operator|.
 name|fail
 argument_list|(
-literal|"Should throw FileNotFoundException"
+literal|"Should throw NoSuchFileException"
 argument_list|)
 expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|FileNotFoundException
+name|NoSuchFileException
 name|ex
 parameter_list|)
 block|{
@@ -719,13 +721,13 @@ name|Assert
 operator|.
 name|fail
 argument_list|(
-literal|"Should throw FileNotFoundException"
+literal|"Should throw NoSuchFileException"
 argument_list|)
 expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|FileNotFoundException
+name|NoSuchFileException
 name|ex
 parameter_list|)
 block|{

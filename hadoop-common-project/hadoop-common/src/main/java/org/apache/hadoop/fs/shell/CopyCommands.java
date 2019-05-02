@@ -24,7 +24,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileInputStream
+name|IOException
 import|;
 end_import
 
@@ -34,7 +34,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|IOException
+name|InputStream
 import|;
 end_import
 
@@ -55,6 +55,18 @@ operator|.
 name|net
 operator|.
 name|URISyntaxException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|file
+operator|.
+name|Files
 import|;
 end_import
 
@@ -2331,7 +2343,7 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
-name|FileInputStream
+name|InputStream
 name|is
 init|=
 literal|null
@@ -2404,12 +2416,16 @@ control|)
 block|{
 name|is
 operator|=
-operator|new
-name|FileInputStream
+name|Files
+operator|.
+name|newInputStream
 argument_list|(
 name|source
 operator|.
 name|toFile
+argument_list|()
+operator|.
+name|toPath
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -132,7 +132,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileInputStream
+name|IOException
 import|;
 end_import
 
@@ -142,7 +142,19 @@ name|java
 operator|.
 name|io
 operator|.
-name|IOException
+name|InputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|file
+operator|.
+name|Files
 import|;
 end_import
 
@@ -673,13 +685,17 @@ argument_list|(
 name|type
 argument_list|)
 decl_stmt|;
-name|FileInputStream
+name|InputStream
 name|in
 init|=
-operator|new
-name|FileInputStream
+name|Files
+operator|.
+name|newInputStream
 argument_list|(
 name|file
+operator|.
+name|toPath
+argument_list|()
 argument_list|)
 decl_stmt|;
 try|try

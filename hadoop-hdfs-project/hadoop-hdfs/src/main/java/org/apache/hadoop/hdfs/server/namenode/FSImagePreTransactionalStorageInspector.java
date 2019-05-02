@@ -46,7 +46,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileInputStream
+name|IOException
 import|;
 end_import
 
@@ -54,9 +54,11 @@ begin_import
 import|import
 name|java
 operator|.
-name|io
+name|nio
 operator|.
-name|IOException
+name|file
+operator|.
+name|Files
 import|;
 end_import
 
@@ -702,10 +704,14 @@ init|=
 operator|new
 name|DataInputStream
 argument_list|(
-operator|new
-name|FileInputStream
+name|Files
+operator|.
+name|newInputStream
 argument_list|(
 name|timeFile
+operator|.
+name|toPath
+argument_list|()
 argument_list|)
 argument_list|)
 decl_stmt|;
