@@ -152,6 +152,24 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|om
+operator|.
+name|helpers
+operator|.
+name|S3SecretValue
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|protocol
 operator|.
 name|proto
@@ -533,11 +551,9 @@ comment|/**    * Gets the S3Bucket to Ozone Volume/bucket mapping table.    *   
 DECL|method|getS3Table ()
 name|Table
 argument_list|<
-name|byte
-index|[]
+name|String
 argument_list|,
-name|byte
-index|[]
+name|String
 argument_list|>
 name|getS3Table
 parameter_list|()
@@ -575,11 +591,9 @@ comment|/**    * Gets the S3 Secrets table.    * @return Table    */
 DECL|method|getS3SecretTable ()
 name|Table
 argument_list|<
-name|byte
-index|[]
+name|String
 argument_list|,
-name|byte
-index|[]
+name|S3SecretValue
 argument_list|>
 name|getS3SecretTable
 parameter_list|()
