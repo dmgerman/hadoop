@@ -3087,6 +3087,49 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
+name|Test
+DECL|method|testGeneratedConfig ()
+specifier|public
+name|void
+name|testGeneratedConfig
+parameter_list|()
+block|{
+name|OzoneConfiguration
+name|ozoneConfiguration
+init|=
+operator|new
+name|OzoneConfiguration
+argument_list|()
+decl_stmt|;
+name|ReplicationManagerConfiguration
+name|rmc
+init|=
+name|ozoneConfiguration
+operator|.
+name|getObject
+argument_list|(
+name|ReplicationManagerConfiguration
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+comment|//default is not included in ozone-site.xml but generated from annotation
+comment|//to the ozone-site-generated.xml which should be loaded by the
+comment|// OzoneConfiguration.
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|600000
+argument_list|,
+name|rmc
+operator|.
+name|getEventTimeout
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
 name|After
 DECL|method|teardown ()
 specifier|public

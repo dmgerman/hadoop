@@ -19,7 +19,7 @@ package|;
 end_package
 
 begin_comment
-comment|/**  * Exeception to throw in case of a configuration problem.  */
+comment|/**  * Exception to throw in case of a configuration problem.  */
 end_comment
 
 begin_class

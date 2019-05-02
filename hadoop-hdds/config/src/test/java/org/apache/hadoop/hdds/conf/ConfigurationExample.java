@@ -42,10 +42,10 @@ name|prefix
 operator|=
 literal|"ozone.scm.client"
 argument_list|)
-DECL|class|SimpleConfiguration
+DECL|class|ConfigurationExample
 specifier|public
 class|class
-name|SimpleConfiguration
+name|ConfigurationExample
 block|{
 DECL|field|clientAddress
 specifier|private
@@ -57,10 +57,10 @@ specifier|private
 name|String
 name|bindHost
 decl_stmt|;
-DECL|field|enabled
+DECL|field|compressionEnabled
 specifier|private
 name|boolean
-name|enabled
+name|compressionEnabled
 decl_stmt|;
 DECL|field|port
 specifier|private
@@ -89,9 +89,9 @@ literal|"localhost"
 argument_list|,
 name|description
 operator|=
-literal|"Just "
+literal|"Client "
 operator|+
-literal|"for testing"
+literal|"addres (To test string injection)."
 argument_list|,
 name|tags
 operator|=
@@ -128,9 +128,9 @@ literal|"0.0.0.0"
 argument_list|,
 name|description
 operator|=
-literal|"Just "
+literal|"Bind "
 operator|+
-literal|"for testing"
+literal|"host(To test string injection)."
 argument_list|,
 name|tags
 operator|=
@@ -159,7 +159,7 @@ name|Config
 argument_list|(
 name|key
 operator|=
-literal|"enabled"
+literal|"compression.enabled"
 argument_list|,
 name|defaultValue
 operator|=
@@ -167,9 +167,7 @@ literal|"true"
 argument_list|,
 name|description
 operator|=
-literal|"Just for "
-operator|+
-literal|"testing"
+literal|"Compression enabled. (Just to test boolean flag)"
 argument_list|,
 name|tags
 operator|=
@@ -177,20 +175,20 @@ name|ConfigTag
 operator|.
 name|MANAGEMENT
 argument_list|)
-DECL|method|setEnabled (boolean enabled)
+DECL|method|setCompressionEnabled (boolean compressionEnabled)
 specifier|public
 name|void
-name|setEnabled
+name|setCompressionEnabled
 parameter_list|(
 name|boolean
-name|enabled
+name|compressionEnabled
 parameter_list|)
 block|{
 name|this
 operator|.
-name|enabled
+name|compressionEnabled
 operator|=
-name|enabled
+name|compressionEnabled
 expr_stmt|;
 block|}
 annotation|@
@@ -202,13 +200,13 @@ literal|"port"
 argument_list|,
 name|defaultValue
 operator|=
-literal|"9878"
+literal|"1234"
 argument_list|,
 name|description
 operator|=
-literal|"Just for "
+literal|"Port number "
 operator|+
-literal|"testing"
+literal|"config (To test in injection)"
 argument_list|,
 name|tags
 operator|=
@@ -253,13 +251,13 @@ name|SECONDS
 argument_list|,
 name|defaultValue
 operator|=
-literal|"10m"
+literal|"30m"
 argument_list|,
 name|description
 operator|=
-literal|"Just for "
+literal|"Wait time (To "
 operator|+
-literal|"testing"
+literal|"test TIME config type)"
 argument_list|,
 name|tags
 operator|=
@@ -303,14 +301,14 @@ return|return
 name|bindHost
 return|;
 block|}
-DECL|method|isEnabled ()
+DECL|method|isCompressionEnabled ()
 specifier|public
 name|boolean
-name|isEnabled
+name|isCompressionEnabled
 parameter_list|()
 block|{
 return|return
-name|enabled
+name|compressionEnabled
 return|;
 block|}
 DECL|method|getPort ()

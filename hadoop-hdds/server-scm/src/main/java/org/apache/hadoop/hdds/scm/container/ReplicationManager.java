@@ -361,6 +361,24 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|conf
+operator|.
+name|ConfigTag
+operator|.
+name|*
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -491,18 +509,6 @@ operator|.
 name|util
 operator|.
 name|UUID
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|TimeUnit
 import|;
 end_import
 
@@ -3079,11 +3085,49 @@ name|ConfigType
 operator|.
 name|TIME
 argument_list|,
-name|timeUnit
+name|defaultValue
 operator|=
-name|TimeUnit
-operator|.
-name|MILLISECONDS
+literal|"3s"
+argument_list|,
+name|tags
+operator|=
+block|{
+name|SCM
+block|,
+name|OZONE
+block|}
+argument_list|,
+name|description
+operator|=
+literal|"When a heartbeat from the data node arrives on SCM, "
+operator|+
+literal|"It is queued for processing with the time stamp of when the "
+operator|+
+literal|"heartbeat arrived. There is a heartbeat processing thread "
+operator|+
+literal|"inside "
+operator|+
+literal|"SCM that runs at a specified interval. This value controls how "
+operator|+
+literal|"frequently this thread is run.\n\n"
+operator|+
+literal|"There are some assumptions build into SCM such as this "
+operator|+
+literal|"value should allow the heartbeat processing thread to run at "
+operator|+
+literal|"least three times more frequently than heartbeats and at least "
+operator|+
+literal|"five times more than stale node detection time. "
+operator|+
+literal|"If you specify a wrong value, SCM will gracefully refuse to "
+operator|+
+literal|"run. "
+operator|+
+literal|"For more info look at the node manager tests in SCM.\n"
+operator|+
+literal|"\n"
+operator|+
+literal|"In short, you don't need to change this."
 argument_list|)
 DECL|method|setInterval (long interval)
 specifier|public
@@ -3114,11 +3158,25 @@ name|ConfigType
 operator|.
 name|TIME
 argument_list|,
-name|timeUnit
+name|defaultValue
 operator|=
-name|TimeUnit
-operator|.
-name|MILLISECONDS
+literal|"10m"
+argument_list|,
+name|tags
+operator|=
+block|{
+name|SCM
+block|,
+name|OZONE
+block|}
+argument_list|,
+name|description
+operator|=
+literal|"Timeout for the container replication/deletion commands "
+operator|+
+literal|"sent  to datanodes. After this timeout the command will be "
+operator|+
+literal|"retried."
 argument_list|)
 DECL|method|setEventTimeout (long eventTimeout)
 specifier|public

@@ -705,7 +705,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|false
+literal|true
 argument_list|,
 name|configuration
 operator|.
@@ -717,7 +717,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|9860
+literal|9878
 argument_list|,
 name|configuration
 operator|.

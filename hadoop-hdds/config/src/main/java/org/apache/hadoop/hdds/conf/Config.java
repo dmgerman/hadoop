@@ -108,6 +108,18 @@ name|String
 name|key
 parameter_list|()
 function_decl|;
+comment|/**    * Default value to use if not set.    */
+DECL|method|defaultValue ()
+name|String
+name|defaultValue
+parameter_list|()
+function_decl|;
+comment|/**    * Custom description as a help.    */
+DECL|method|description ()
+name|String
+name|description
+parameter_list|()
+function_decl|;
 comment|/**    * Type of configuration. Use AUTO to decide it based on the java type.    */
 DECL|method|type ()
 DECL|field|ConfigType.AUTO
@@ -129,6 +141,12 @@ default|default
 name|TimeUnit
 operator|.
 name|MILLISECONDS
+function_decl|;
+DECL|method|tags ()
+name|ConfigTag
+index|[]
+name|tags
+parameter_list|()
 function_decl|;
 block|}
 end_annotation_defn
