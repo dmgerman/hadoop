@@ -5533,16 +5533,16 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"ResponseProcessor: Expecting seqno"
-operator|+
-literal|" for block "
-operator|+
-name|block
+literal|"ResponseProcessor: Expecting seqno "
 operator|+
 name|one
 operator|.
 name|getSeqno
 argument_list|()
+operator|+
+literal|" for block "
+operator|+
+name|block
 operator|+
 literal|" but received "
 operator|+
