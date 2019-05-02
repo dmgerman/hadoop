@@ -542,7 +542,7 @@ argument_list|>
 name|getS3Table
 parameter_list|()
 function_decl|;
-comment|/**<<<<<<< HEAD    * Returns the DB key name of a multipart upload key in OM metadata store.    *    * @param volume - volume name    * @param bucket - bucket name    * @param key - key name    * @param uploadId - the upload id for this key    * @return bytes of DB key.    */
+comment|/**    * Returns the DB key name of a multipart upload key in OM metadata store.    *    * @param volume - volume name    * @param bucket - bucket name    * @param key - key name    * @param uploadId - the upload id for this key    * @return bytes of DB key.    */
 DECL|method|getMultipartKey (String volume, String bucket, String key, String uploadId)
 name|String
 name|getMultipartKey
