@@ -153,6 +153,12 @@ name|boolean
 name|isResourceManager
 parameter_list|)
 block|{
+comment|// default progress column index is 11
+name|String
+name|progressIndex
+init|=
+literal|"[11]"
+decl_stmt|;
 name|StringBuilder
 name|sb
 init|=
@@ -186,54 +192,60 @@ name|append
 argument_list|(
 literal|", 'mRender': renderHadoopDate }"
 argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|isResourceManager
+condition|)
+block|{
+comment|// Update following line if any column added in RM page before column 11
+name|sb
 operator|.
 name|append
 argument_list|(
 literal|"\n, {'sType':'num-ignore-str', 'aTargets': [11, 12, 13, 14, 15] }"
 argument_list|)
+expr_stmt|;
+comment|// set progress column index to 18
+name|progressIndex
+operator|=
+literal|"[18]"
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|isFairSchedulerPage
+condition|)
+block|{
+comment|// Update following line if any column added in scheduler page before column 11
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"\n, {'sType':'num-ignore-str', 'aTargets': [11, 12, 13, 14, 15] }"
+argument_list|)
+expr_stmt|;
+comment|// set progress column index to 16
+name|progressIndex
+operator|=
+literal|"[16]"
+expr_stmt|;
+block|}
+name|sb
 operator|.
 name|append
 argument_list|(
 literal|"\n, {'sType':'numeric', bSearchable:false, 'aTargets':"
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|isFairSchedulerPage
-condition|)
-block|{
 name|sb
 operator|.
 name|append
 argument_list|(
-literal|"[15]"
+name|progressIndex
 argument_list|)
 expr_stmt|;
-block|}
-elseif|else
-if|if
-condition|(
-name|isResourceManager
-condition|)
-block|{
-name|sb
-operator|.
-name|append
-argument_list|(
-literal|"[17]"
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|sb
-operator|.
-name|append
-argument_list|(
-literal|"[10]"
-argument_list|)
-expr_stmt|;
-block|}
 name|sb
 operator|.
 name|append
