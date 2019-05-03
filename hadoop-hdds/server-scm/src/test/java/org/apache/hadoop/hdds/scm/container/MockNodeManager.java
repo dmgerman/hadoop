@@ -438,6 +438,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Collections
 import|;
 end_import
@@ -1275,7 +1285,15 @@ name|getAllNodes
 parameter_list|()
 block|{
 return|return
-literal|null
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|(
+name|nodeMetricMap
+operator|.
+name|keySet
+argument_list|()
+argument_list|)
 return|;
 block|}
 comment|/**    * Returns the aggregated node stats.    * @return the aggregated node stats.    */
