@@ -908,6 +908,8 @@ argument_list|,
 name|accessToken
 argument_list|,
 name|datanodeId
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 comment|// TODO: Consider renaming EncryptedPeer to SaslPeer.
@@ -1048,54 +1050,6 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Checks if an address is already trusted and then sends client SASL    * negotiation if required.    *    * @param addr connection address    * @param underlyingOut connection output stream    * @param underlyingIn connection input stream    * @param encryptionKeyFactory for creation of an encryption key    * @param accessToken connection block access token    * @param datanodeId ID of destination DataNode    * @return new pair of streams, wrapped after SASL negotiation    * @throws IOException for any error    */
-DECL|method|checkTrustAndSend (InetAddress addr, OutputStream underlyingOut, InputStream underlyingIn, DataEncryptionKeyFactory encryptionKeyFactory, Token<BlockTokenIdentifier> accessToken, DatanodeID datanodeId)
-specifier|private
-name|IOStreamPair
-name|checkTrustAndSend
-parameter_list|(
-name|InetAddress
-name|addr
-parameter_list|,
-name|OutputStream
-name|underlyingOut
-parameter_list|,
-name|InputStream
-name|underlyingIn
-parameter_list|,
-name|DataEncryptionKeyFactory
-name|encryptionKeyFactory
-parameter_list|,
-name|Token
-argument_list|<
-name|BlockTokenIdentifier
-argument_list|>
-name|accessToken
-parameter_list|,
-name|DatanodeID
-name|datanodeId
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-name|checkTrustAndSend
-argument_list|(
-name|addr
-argument_list|,
-name|underlyingOut
-argument_list|,
-name|underlyingIn
-argument_list|,
-name|encryptionKeyFactory
-argument_list|,
-name|accessToken
-argument_list|,
-name|datanodeId
-argument_list|,
-literal|null
-argument_list|)
-return|;
-block|}
 DECL|method|checkTrustAndSend ( InetAddress addr, OutputStream underlyingOut, InputStream underlyingIn, DataEncryptionKeyFactory encryptionKeyFactory, Token<BlockTokenIdentifier> accessToken, DatanodeID datanodeId, SecretKey secretKey)
 specifier|private
 name|IOStreamPair
