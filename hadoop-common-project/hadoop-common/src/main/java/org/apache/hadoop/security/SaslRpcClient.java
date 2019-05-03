@@ -302,6 +302,18 @@ end_import
 
 begin_import
 import|import
+name|javax
+operator|.
+name|security
+operator|.
+name|sasl
+operator|.
+name|SaslClientFactory
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -828,6 +840,12 @@ specifier|private
 name|AuthMethod
 name|authMethod
 decl_stmt|;
+DECL|field|saslFactory
+specifier|private
+specifier|static
+name|SaslClientFactory
+name|saslFactory
+decl_stmt|;
 DECL|field|saslHeader
 specifier|private
 specifier|static
@@ -884,6 +902,17 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
+static|static
+block|{
+name|saslFactory
+operator|=
+operator|new
+name|FastSaslClientFactory
+argument_list|(
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Create a SaslRpcClient that can be used by a RPC client to negotiate    * SASL authentication with a RPC server    * @param ugi - connecting user    * @param protocol - RPC protocol    * @param serverAddr - InetSocketAddress of remote server    * @param conf - Configuration    */
 DECL|method|SaslRpcClient (UserGroupInformation ugi, Class<?> protocol, InetSocketAddress serverAddr, Configuration conf)
 specifier|public
@@ -1499,7 +1528,7 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|Sasl
+name|saslFactory
 operator|.
 name|createSaslClient
 argument_list|(
