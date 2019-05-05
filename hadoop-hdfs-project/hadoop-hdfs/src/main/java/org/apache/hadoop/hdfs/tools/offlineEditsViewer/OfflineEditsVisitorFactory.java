@@ -299,7 +299,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Unknown proccesor "
+literal|"Unknown processor "
 operator|+
 name|processor
 operator|+
