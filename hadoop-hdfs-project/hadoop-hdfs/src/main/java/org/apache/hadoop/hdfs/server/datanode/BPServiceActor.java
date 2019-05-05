@@ -4115,12 +4115,25 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+if|if
+condition|(
+name|bpRegistration
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"DN shut down before block pool registered"
+argument_list|)
+throw|;
+block|}
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Block pool "
-operator|+
 name|this
 operator|+
 literal|" successfully registered with NN"
