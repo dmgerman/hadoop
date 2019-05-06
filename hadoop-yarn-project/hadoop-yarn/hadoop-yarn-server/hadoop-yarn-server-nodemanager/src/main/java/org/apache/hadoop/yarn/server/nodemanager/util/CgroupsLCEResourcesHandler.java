@@ -2546,7 +2546,10 @@ literal|"Not able to enforce cpu weights; cannot write "
 operator|+
 literal|"to cgroup at: "
 operator|+
-name|controllerPath
+name|f
+operator|.
+name|getPath
+argument_list|()
 argument_list|)
 throw|;
 block|}
