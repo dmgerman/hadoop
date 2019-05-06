@@ -74,6 +74,28 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|scheduler
+operator|.
+name|activities
+operator|.
+name|DiagnosticsCollector
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|RMContext
 import|;
 end_import
@@ -252,6 +274,16 @@ name|Map
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Optional
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>  * This class has the following functionality:  * 1) Keeps track of pending resource requests when following events happen:  * - New ResourceRequests are added to scheduler.  * - New containers get allocated.  *  * 2) Determines the order that the nodes given in the {@link CandidateNodeSet}  * will be used for allocating containers.  *</p>  *  *<p>  * And different set of resource requests (E.g., resource requests with the  * same schedulerKey) can have one instance of AppPlacementAllocator, each  * AppPlacementAllocator can have different ways to order nodes depends on  * requests.  *</p>  */
 end_comment
@@ -411,7 +443,26 @@ name|String
 name|resourceName
 parameter_list|)
 function_decl|;
-comment|/**    * Does this {@link AppPlacementAllocator} accept resources on given node?    *    * @param schedulerNode schedulerNode    * @param schedulingMode schedulingMode    * @return accepted/not    */
+comment|/**    * Does this {@link AppPlacementAllocator} accept resources on given node?    *    * @param schedulerNode schedulerNode    * @param schedulingMode schedulingMode    * @param dcOpt optional diagnostics collector    * @return accepted/not    */
+DECL|method|precheckNode (SchedulerNode schedulerNode, SchedulingMode schedulingMode, Optional<DiagnosticsCollector> dcOpt)
+specifier|public
+specifier|abstract
+name|boolean
+name|precheckNode
+parameter_list|(
+name|SchedulerNode
+name|schedulerNode
+parameter_list|,
+name|SchedulingMode
+name|schedulingMode
+parameter_list|,
+name|Optional
+argument_list|<
+name|DiagnosticsCollector
+argument_list|>
+name|dcOpt
+parameter_list|)
+function_decl|;
 DECL|method|precheckNode (SchedulerNode schedulerNode, SchedulingMode schedulingMode)
 specifier|public
 specifier|abstract

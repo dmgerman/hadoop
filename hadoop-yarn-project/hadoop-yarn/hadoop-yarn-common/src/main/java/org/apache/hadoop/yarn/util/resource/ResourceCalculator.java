@@ -70,6 +70,16 @@ name|Resource
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
 begin_comment
 comment|/**  * A set of {@link Resource} comparison and manipulation interfaces.  */
 end_comment
@@ -656,6 +666,23 @@ name|isAnyMajorResourceAboveZero
 parameter_list|(
 name|Resource
 name|resource
+parameter_list|)
+function_decl|;
+comment|/**    * Get insufficient resource names via comparing required resource and    * capacity resource.    *    * @param required - required resource    * @param available - available resource    * @return insufficient resource names    */
+DECL|method|getInsufficientResourceNames (Resource required, Resource available)
+specifier|public
+specifier|abstract
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getInsufficientResourceNames
+parameter_list|(
+name|Resource
+name|required
+parameter_list|,
+name|Resource
+name|available
 parameter_list|)
 function_decl|;
 block|}

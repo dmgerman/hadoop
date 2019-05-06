@@ -233,7 +233,7 @@ argument_list|<>
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|addAllocationActivity (String parentName, String childName, String priority, ActivityState state, String diagnostic, String type)
+DECL|method|addAllocationActivity (String parentName, String childName, String priority, ActivityState state, String diagnostic, String type, NodeId nId, String allocationRequestId)
 specifier|public
 name|void
 name|addAllocationActivity
@@ -255,6 +255,12 @@ name|diagnostic
 parameter_list|,
 name|String
 name|type
+parameter_list|,
+name|NodeId
+name|nId
+parameter_list|,
+name|String
+name|allocationRequestId
 parameter_list|)
 block|{
 name|AllocationActivity
@@ -274,6 +280,10 @@ argument_list|,
 name|diagnostic
 argument_list|,
 name|type
+argument_list|,
+name|nId
+argument_list|,
+name|allocationRequestId
 argument_list|)
 decl_stmt|;
 name|this
@@ -611,15 +621,12 @@ return|;
 block|}
 DECL|method|getNodeId ()
 specifier|public
-name|String
+name|NodeId
 name|getNodeId
 parameter_list|()
 block|{
 return|return
 name|nodeId
-operator|.
-name|toString
-argument_list|()
 return|;
 block|}
 block|}

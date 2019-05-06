@@ -246,7 +246,7 @@ operator|=
 name|diagnostic
 expr_stmt|;
 block|}
-DECL|method|addAppAllocationActivity (String containerId, String priority, ActivityState state, String diagnostic, String type)
+DECL|method|addAppAllocationActivity (String containerId, String priority, ActivityState state, String diagnose, String type, NodeId nId, String allocationRequestId)
 specifier|public
 name|void
 name|addAppAllocationActivity
@@ -261,10 +261,16 @@ name|ActivityState
 name|state
 parameter_list|,
 name|String
-name|diagnostic
+name|diagnose
 parameter_list|,
 name|String
 name|type
+parameter_list|,
+name|NodeId
+name|nId
+parameter_list|,
+name|String
+name|allocationRequestId
 parameter_list|)
 block|{
 name|ActivityNode
@@ -281,9 +287,13 @@ name|priority
 argument_list|,
 name|state
 argument_list|,
-name|diagnostic
+name|diagnose
 argument_list|,
 name|type
+argument_list|,
+name|nId
+argument_list|,
+name|allocationRequestId
 argument_list|)
 decl_stmt|;
 name|this

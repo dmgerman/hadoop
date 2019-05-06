@@ -88,6 +88,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Optional
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Set
 import|;
 end_import
@@ -409,6 +419,28 @@ operator|.
 name|rmcontainer
 operator|.
 name|RMContainerState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|activities
+operator|.
+name|DiagnosticsCollector
 import|;
 end_import
 
@@ -3443,8 +3475,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Pre-check node to see if it satisfy the given schedulerKey and    * scheduler mode.    *    * @param schedulerKey schedulerKey    * @param schedulerNode schedulerNode    * @param schedulingMode schedulingMode    * @return can use the node or not.    */
-DECL|method|precheckNode (SchedulerRequestKey schedulerKey, SchedulerNode schedulerNode, SchedulingMode schedulingMode)
+comment|/**    * Pre-check node to see if it satisfy the given schedulerKey and    * scheduler mode.    *    * @param schedulerKey schedulerKey    * @param schedulerNode schedulerNode    * @param schedulingMode schedulingMode    * @param dcOpt optional diagnostics collector    * @return can use the node or not.    */
+DECL|method|precheckNode (SchedulerRequestKey schedulerKey, SchedulerNode schedulerNode, SchedulingMode schedulingMode, Optional<DiagnosticsCollector> dcOpt)
 specifier|public
 name|boolean
 name|precheckNode
@@ -3457,6 +3489,12 @@ name|schedulerNode
 parameter_list|,
 name|SchedulingMode
 name|schedulingMode
+parameter_list|,
+name|Optional
+argument_list|<
+name|DiagnosticsCollector
+argument_list|>
+name|dcOpt
 parameter_list|)
 block|{
 name|this
@@ -3492,6 +3530,8 @@ argument_list|(
 name|schedulerNode
 argument_list|,
 name|schedulingMode
+argument_list|,
+name|dcOpt
 argument_list|)
 return|;
 block|}

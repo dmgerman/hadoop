@@ -40,7 +40,39 @@ name|java
 operator|.
 name|util
 operator|.
+name|Optional
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Set
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|activities
+operator|.
+name|DiagnosticsCollector
 import|;
 end_import
 
@@ -1122,7 +1154,7 @@ return|return
 name|retCode
 return|;
 block|}
-DECL|method|canSatisfySingleConstraint (ApplicationId applicationId, SingleConstraint singleConstraint, SchedulerNode schedulerNode, AllocationTagsManager tagsManager)
+DECL|method|canSatisfySingleConstraint (ApplicationId applicationId, SingleConstraint singleConstraint, SchedulerNode schedulerNode, AllocationTagsManager tagsManager, Optional<DiagnosticsCollector> dcOpt)
 specifier|private
 specifier|static
 name|boolean
@@ -1139,6 +1171,12 @@ name|schedulerNode
 parameter_list|,
 name|AllocationTagsManager
 name|tagsManager
+parameter_list|,
+name|Optional
+argument_list|<
+name|DiagnosticsCollector
+argument_list|>
+name|dcOpt
 parameter_list|)
 throws|throws
 name|InvalidAllocationTagsQueryException
@@ -1208,6 +1246,32 @@ name|tagsManager
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|dcOpt
+operator|.
+name|isPresent
+argument_list|()
+condition|)
+block|{
+name|dcOpt
+operator|.
+name|get
+argument_list|()
+operator|.
+name|collectPlacementConstraintDiagnostics
+argument_list|(
+name|singleConstraint
+operator|.
+name|build
+argument_list|()
+argument_list|,
+name|TargetType
+operator|.
+name|ALLOCATION_TAG
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 literal|false
 return|;
@@ -1243,6 +1307,32 @@ name|schedulerNode
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|dcOpt
+operator|.
+name|isPresent
+argument_list|()
+condition|)
+block|{
+name|dcOpt
+operator|.
+name|get
+argument_list|()
+operator|.
+name|collectPlacementConstraintDiagnostics
+argument_list|(
+name|singleConstraint
+operator|.
+name|build
+argument_list|()
+argument_list|,
+name|TargetType
+operator|.
+name|NODE_ATTRIBUTE
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 literal|false
 return|;
@@ -1255,7 +1345,7 @@ literal|true
 return|;
 block|}
 comment|/**    * Returns true if all child constraints are satisfied.    * @param appId application id    * @param constraint Or constraint    * @param node node    * @param atm allocation tags manager    * @return true if all child constraints are satisfied, false otherwise    * @throws InvalidAllocationTagsQueryException    */
-DECL|method|canSatisfyAndConstraint (ApplicationId appId, And constraint, SchedulerNode node, AllocationTagsManager atm)
+DECL|method|canSatisfyAndConstraint (ApplicationId appId, And constraint, SchedulerNode node, AllocationTagsManager atm, Optional<DiagnosticsCollector> dcOpt)
 specifier|private
 specifier|static
 name|boolean
@@ -1272,6 +1362,12 @@ name|node
 parameter_list|,
 name|AllocationTagsManager
 name|atm
+parameter_list|,
+name|Optional
+argument_list|<
+name|DiagnosticsCollector
+argument_list|>
+name|dcOpt
 parameter_list|)
 throws|throws
 name|InvalidAllocationTagsQueryException
@@ -1304,6 +1400,8 @@ argument_list|,
 name|node
 argument_list|,
 name|atm
+argument_list|,
+name|dcOpt
 argument_list|)
 condition|)
 block|{
@@ -1317,7 +1415,7 @@ literal|true
 return|;
 block|}
 comment|/**    * Returns true as long as any of child constraint is satisfied.    * @param appId application id    * @param constraint Or constraint    * @param node node    * @param atm allocation tags manager    * @return true if any child constraint is satisfied, false otherwise    * @throws InvalidAllocationTagsQueryException    */
-DECL|method|canSatisfyOrConstraint (ApplicationId appId, Or constraint, SchedulerNode node, AllocationTagsManager atm)
+DECL|method|canSatisfyOrConstraint (ApplicationId appId, Or constraint, SchedulerNode node, AllocationTagsManager atm, Optional<DiagnosticsCollector> dcOpt)
 specifier|private
 specifier|static
 name|boolean
@@ -1334,6 +1432,12 @@ name|node
 parameter_list|,
 name|AllocationTagsManager
 name|atm
+parameter_list|,
+name|Optional
+argument_list|<
+name|DiagnosticsCollector
+argument_list|>
+name|dcOpt
 parameter_list|)
 throws|throws
 name|InvalidAllocationTagsQueryException
@@ -1363,6 +1467,8 @@ argument_list|,
 name|node
 argument_list|,
 name|atm
+argument_list|,
+name|dcOpt
 argument_list|)
 condition|)
 block|{
@@ -1375,7 +1481,7 @@ return|return
 literal|false
 return|;
 block|}
-DECL|method|canSatisfyConstraints (ApplicationId appId, PlacementConstraint constraint, SchedulerNode node, AllocationTagsManager atm)
+DECL|method|canSatisfyConstraints (ApplicationId appId, PlacementConstraint constraint, SchedulerNode node, AllocationTagsManager atm, Optional<DiagnosticsCollector> dcOpt)
 specifier|private
 specifier|static
 name|boolean
@@ -1392,6 +1498,12 @@ name|node
 parameter_list|,
 name|AllocationTagsManager
 name|atm
+parameter_list|,
+name|Optional
+argument_list|<
+name|DiagnosticsCollector
+argument_list|>
+name|dcOpt
 parameter_list|)
 throws|throws
 name|InvalidAllocationTagsQueryException
@@ -1469,6 +1581,8 @@ argument_list|,
 name|node
 argument_list|,
 name|atm
+argument_list|,
+name|dcOpt
 argument_list|)
 return|;
 block|}
@@ -1498,6 +1612,8 @@ argument_list|,
 name|node
 argument_list|,
 name|atm
+argument_list|,
+name|dcOpt
 argument_list|)
 return|;
 block|}
@@ -1527,6 +1643,8 @@ argument_list|,
 name|node
 argument_list|,
 name|atm
+argument_list|,
+name|dcOpt
 argument_list|)
 return|;
 block|}
@@ -1549,8 +1667,8 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Returns true if the placement constraint for a given scheduling request    * is<b>currently</b> satisfied by the specific scheduler node. This method    * first validates the constraint specified in the request; if not specified,    * then it validates application level constraint if exists; otherwise, it    * validates the global constraint if exists.    *    * This method only checks whether a scheduling request can be placed    * on a node with respect to the certain placement constraint. It gives no    * guarantee that asked allocations can be eventually allocated because    * it doesn't check resource, that needs to be further decided by a scheduler.    *    * @param applicationId application id    * @param request scheduling request    * @param schedulerNode node    * @param pcm placement constraint manager    * @param atm allocation tags manager    * @return true if the given node satisfies the constraint of the request    * @throws InvalidAllocationTagsQueryException    */
-DECL|method|canSatisfyConstraints (ApplicationId applicationId, SchedulingRequest request, SchedulerNode schedulerNode, PlacementConstraintManager pcm, AllocationTagsManager atm)
+comment|/**    * Returns true if the placement constraint for a given scheduling request    * is<b>currently</b> satisfied by the specific scheduler node. This method    * first validates the constraint specified in the request; if not specified,    * then it validates application level constraint if exists; otherwise, it    * validates the global constraint if exists.    *    * This method only checks whether a scheduling request can be placed    * on a node with respect to the certain placement constraint. It gives no    * guarantee that asked allocations can be eventually allocated because    * it doesn't check resource, that needs to be further decided by a scheduler.    *    * @param applicationId application id    * @param request scheduling request    * @param schedulerNode node    * @param pcm placement constraint manager    * @param atm allocation tags manager    * @param dcOpt optional diagnostics collector    * @return true if the given node satisfies the constraint of the request    * @throws InvalidAllocationTagsQueryException    */
+DECL|method|canSatisfyConstraints (ApplicationId applicationId, SchedulingRequest request, SchedulerNode schedulerNode, PlacementConstraintManager pcm, AllocationTagsManager atm, Optional<DiagnosticsCollector> dcOpt)
 specifier|public
 specifier|static
 name|boolean
@@ -1570,6 +1688,12 @@ name|pcm
 parameter_list|,
 name|AllocationTagsManager
 name|atm
+parameter_list|,
+name|Optional
+argument_list|<
+name|DiagnosticsCollector
+argument_list|>
+name|dcOpt
 parameter_list|)
 throws|throws
 name|InvalidAllocationTagsQueryException
@@ -1628,6 +1752,52 @@ argument_list|,
 name|schedulerNode
 argument_list|,
 name|atm
+argument_list|,
+name|dcOpt
+argument_list|)
+return|;
+block|}
+DECL|method|canSatisfyConstraints (ApplicationId applicationId, SchedulingRequest request, SchedulerNode schedulerNode, PlacementConstraintManager pcm, AllocationTagsManager atm)
+specifier|public
+specifier|static
+name|boolean
+name|canSatisfyConstraints
+parameter_list|(
+name|ApplicationId
+name|applicationId
+parameter_list|,
+name|SchedulingRequest
+name|request
+parameter_list|,
+name|SchedulerNode
+name|schedulerNode
+parameter_list|,
+name|PlacementConstraintManager
+name|pcm
+parameter_list|,
+name|AllocationTagsManager
+name|atm
+parameter_list|)
+throws|throws
+name|InvalidAllocationTagsQueryException
+block|{
+return|return
+name|canSatisfyConstraints
+argument_list|(
+name|applicationId
+argument_list|,
+name|request
+argument_list|,
+name|schedulerNode
+argument_list|,
+name|pcm
+argument_list|,
+name|atm
+argument_list|,
+name|Optional
+operator|.
+name|empty
+argument_list|()
 argument_list|)
 return|;
 block|}

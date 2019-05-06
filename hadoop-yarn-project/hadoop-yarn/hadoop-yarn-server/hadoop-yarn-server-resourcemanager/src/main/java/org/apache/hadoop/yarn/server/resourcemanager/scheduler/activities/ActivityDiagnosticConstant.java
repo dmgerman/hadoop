@@ -109,15 +109,6 @@ name|PRIORITY_SKIPPED_BECAUSE_NULL_ANY_REQUEST
 init|=
 literal|"Priority skipped because off-switch request is null"
 decl_stmt|;
-specifier|public
-specifier|final
-specifier|static
-name|String
-DECL|field|PRIORITY_SKIPPED_BECAUSE_NODE_PARTITION_DOES_NOT_MATCH_REQUEST
-name|PRIORITY_SKIPPED_BECAUSE_NODE_PARTITION_DOES_NOT_MATCH_REQUEST
-init|=
-literal|"Priority skipped because partition of node doesn't match request"
-decl_stmt|;
 DECL|field|SKIP_PRIORITY_BECAUSE_OF_RELAX_LOCALITY
 specifier|public
 specifier|final
@@ -274,6 +265,24 @@ init|=
 literal|"To respect FIFO of applications, "
 operator|+
 literal|"skipped following applications in the queue"
+decl_stmt|;
+specifier|public
+specifier|final
+specifier|static
+name|String
+DECL|field|NODE_DO_NOT_MATCH_PARTITION_OR_PLACEMENT_CONSTRAINTS
+name|NODE_DO_NOT_MATCH_PARTITION_OR_PLACEMENT_CONSTRAINTS
+init|=
+literal|"Node does not match partition or placement constraints"
+decl_stmt|;
+specifier|public
+specifier|final
+specifier|static
+name|String
+DECL|field|NODE_CAN_NOT_FIND_CONTAINER_TO_BE_UNRESERVED_WHEN_NEEDED
+name|NODE_CAN_NOT_FIND_CONTAINER_TO_BE_UNRESERVED_WHEN_NEEDED
+init|=
+literal|"Node can't find a container to be unreserved when needed"
 decl_stmt|;
 block|}
 end_class
