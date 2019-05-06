@@ -5303,6 +5303,8 @@ name|LogAggregationUtils
 operator|.
 name|getOlderRemoteAppLogDir
 argument_list|(
+name|conf
+argument_list|,
 name|appId
 argument_list|,
 name|user
