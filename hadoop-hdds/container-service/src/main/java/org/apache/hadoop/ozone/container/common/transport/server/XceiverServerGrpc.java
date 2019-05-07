@@ -606,6 +606,11 @@ specifier|final
 name|ContainerDispatcher
 name|storageContainer
 decl_stmt|;
+DECL|field|isStarted
+specifier|private
+name|boolean
+name|isStarted
+decl_stmt|;
 comment|/**    * Constructs a Grpc server class.    *    * @param conf - Configuration    */
 DECL|method|XceiverServerGrpc (DatanodeDetails datanodeDetails, Configuration conf, ContainerDispatcher dispatcher, CertificateClient caClient, BindableService... additionalServices)
 specifier|public
@@ -1047,11 +1052,22 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+operator|!
+name|isStarted
+condition|)
+block|{
 name|server
 operator|.
 name|start
 argument_list|()
 expr_stmt|;
+name|isStarted
+operator|=
+literal|true
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -1061,11 +1077,21 @@ name|void
 name|stop
 parameter_list|()
 block|{
+if|if
+condition|(
+name|isStarted
+condition|)
+block|{
 name|server
 operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|isStarted
+operator|=
+literal|false
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override

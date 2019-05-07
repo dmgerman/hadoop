@@ -1041,6 +1041,13 @@ specifier|final
 name|long
 name|cacheEntryExpiryInteval
 decl_stmt|;
+DECL|field|isStarted
+specifier|private
+name|boolean
+name|isStarted
+init|=
+literal|false
+decl_stmt|;
 DECL|method|XceiverServerRatis (DatanodeDetails dd, int port, ContainerDispatcher dispatcher, Configuration conf, StateContext context, GrpcTlsConfig tlsConfig, CertificateClient caClient)
 specifier|private
 name|XceiverServerRatis
@@ -2568,6 +2575,12 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+operator|!
+name|isStarted
+condition|)
+block|{
 name|LOG
 operator|.
 name|info
@@ -2599,6 +2612,11 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+name|isStarted
+operator|=
+literal|true
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -2607,6 +2625,11 @@ specifier|public
 name|void
 name|stop
 parameter_list|()
+block|{
+if|if
+condition|(
+name|isStarted
+condition|)
 block|{
 try|try
 block|{
@@ -2631,6 +2654,10 @@ operator|::
 name|shutdown
 argument_list|)
 expr_stmt|;
+name|isStarted
+operator|=
+literal|false
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -2645,6 +2672,7 @@ argument_list|(
 name|e
 argument_list|)
 throw|;
+block|}
 block|}
 block|}
 annotation|@

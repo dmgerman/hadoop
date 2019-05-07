@@ -980,6 +980,15 @@ expr_stmt|;
 block|}
 else|else
 block|{
+if|if
+condition|(
+name|this
+operator|.
+name|scrubber
+operator|==
+literal|null
+condition|)
+block|{
 name|this
 operator|.
 name|scrubber
@@ -992,6 +1001,7 @@ argument_list|,
 name|config
 argument_list|)
 expr_stmt|;
+block|}
 name|scrubber
 operator|.
 name|up
