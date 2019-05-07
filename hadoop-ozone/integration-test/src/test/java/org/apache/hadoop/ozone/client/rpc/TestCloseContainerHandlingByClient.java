@@ -1897,7 +1897,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// write data 4 blocks and one more chunk
+comment|// write data 3 blocks and one more chunk
 name|byte
 index|[]
 name|writtenData

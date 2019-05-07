@@ -110,24 +110,6 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|client
-operator|.
-name|HddsClientUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
 name|container
 operator|.
 name|ContainerID
@@ -504,6 +486,24 @@ name|HDDS_SCM_WATCHER_TIMEOUT
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|ScmConfigKeys
+operator|.
+name|OZONE_SCM_STALENODE_INTERVAL
+import|;
+end_import
+
 begin_comment
 comment|/**  * Tests failure detection and handling in BlockOutputStream Class.  */
 end_comment
@@ -636,7 +636,19 @@ operator|.
 name|MILLISECONDS
 argument_list|)
 expr_stmt|;
-comment|// conf.setTimeDuration(OZONE_SCM_STALENODE_INTERVAL, 30, TimeUnit.SECONDS);
+name|conf
+operator|.
+name|setTimeDuration
+argument_list|(
+name|OZONE_SCM_STALENODE_INTERVAL
+argument_list|,
+literal|3
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
+argument_list|)
+expr_stmt|;
 name|conf
 operator|.
 name|set
@@ -1030,7 +1042,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|HddsClientUtils
+name|keyOutputStream
 operator|.
 name|checkForException
 argument_list|(
@@ -1405,7 +1417,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|HddsClientUtils
+name|keyOutputStream
 operator|.
 name|checkForException
 argument_list|(
