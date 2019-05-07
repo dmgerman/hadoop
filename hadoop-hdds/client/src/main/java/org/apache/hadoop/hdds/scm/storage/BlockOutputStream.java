@@ -620,6 +620,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|blockID
 specifier|private
+specifier|volatile
 name|BlockID
 name|blockID
 decl_stmt|;
@@ -2564,9 +2565,8 @@ name|IOException
 block|{
 if|if
 condition|(
-name|xceiverClient
-operator|==
-literal|null
+name|isClosed
+argument_list|()
 condition|)
 block|{
 throw|throw
@@ -2594,6 +2594,18 @@ name|getIoException
 argument_list|()
 throw|;
 block|}
+block|}
+DECL|method|isClosed ()
+specifier|public
+name|boolean
+name|isClosed
+parameter_list|()
+block|{
+return|return
+name|xceiverClient
+operator|==
+literal|null
+return|;
 block|}
 comment|/**    * Writes buffered data as a new chunk to the container and saves chunk    * information to be used later in putKey call.    *    * @throws IOException if there is an I/O error while performing the call    * @throws OzoneChecksumException if there is an error while computing    * checksum    */
 DECL|method|writeChunkToContainer (ByteBuffer chunk)
@@ -2881,6 +2893,24 @@ name|addChunks
 argument_list|(
 name|chunkInfo
 argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setXceiverClient (XceiverClientSpi xceiverClient)
+specifier|public
+name|void
+name|setXceiverClient
+parameter_list|(
+name|XceiverClientSpi
+name|xceiverClient
+parameter_list|)
+block|{
+name|this
+operator|.
+name|xceiverClient
+operator|=
+name|xceiverClient
 expr_stmt|;
 block|}
 block|}
