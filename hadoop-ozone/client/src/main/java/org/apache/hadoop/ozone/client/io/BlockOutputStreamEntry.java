@@ -744,6 +744,34 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+DECL|method|isClosed ()
+name|boolean
+name|isClosed
+parameter_list|()
+block|{
+if|if
+condition|(
+name|outputStream
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+operator|(
+operator|(
+name|BlockOutputStream
+operator|)
+name|outputStream
+operator|)
+operator|.
+name|isClosed
+argument_list|()
+return|;
+block|}
+return|return
+literal|false
+return|;
+block|}
 DECL|method|getTotalAckDataLength ()
 name|long
 name|getTotalAckDataLength

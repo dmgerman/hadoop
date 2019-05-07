@@ -750,17 +750,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
-operator|!
-name|commitIndex2flushedDataMap
-operator|.
-name|isEmpty
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|long
 name|index
 decl_stmt|;

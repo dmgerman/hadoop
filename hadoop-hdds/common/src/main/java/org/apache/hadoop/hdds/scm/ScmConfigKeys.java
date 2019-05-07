@@ -481,7 +481,7 @@ specifier|final
 name|int
 name|DFS_RATIS_CLIENT_REQUEST_MAX_RETRIES_DEFAULT
 init|=
-literal|20
+literal|180
 decl_stmt|;
 DECL|field|DFS_RATIS_CLIENT_REQUEST_RETRY_INTERVAL_KEY
 specifier|public
@@ -503,7 +503,7 @@ name|TimeDuration
 operator|.
 name|valueOf
 argument_list|(
-literal|500
+literal|1000
 argument_list|,
 name|TimeUnit
 operator|.
