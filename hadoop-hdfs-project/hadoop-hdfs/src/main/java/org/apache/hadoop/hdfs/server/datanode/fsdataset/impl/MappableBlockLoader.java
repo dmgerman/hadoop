@@ -163,32 +163,31 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Try to reserve some given bytes.    *    * @param bytesCount    The number of bytes to add.    *    * @return              The new number of usedBytes if we succeeded;    *                      -1 if we failed.    */
-DECL|method|reserve (long bytesCount)
+comment|/**    * Try to reserve some given bytes.    *    * @param key           The ExtendedBlockId for a block.    *    * @param bytesCount    The number of bytes to add.    *    * @return              The new number of usedBytes if we succeeded;    *                      -1 if we failed.    */
+DECL|method|reserve (ExtendedBlockId key, long bytesCount)
 specifier|abstract
 name|long
 name|reserve
 parameter_list|(
+name|ExtendedBlockId
+name|key
+parameter_list|,
 name|long
 name|bytesCount
 parameter_list|)
 function_decl|;
-comment|/**    * Release some bytes that we're using.    *    * @param bytesCount    The number of bytes to release.    *    * @return              The new number of usedBytes.    */
-DECL|method|release (long bytesCount)
+comment|/**    * Release some bytes that we're using.    *    * @param key           The ExtendedBlockId for a block.    *    * @param bytesCount    The number of bytes to release.    *    * @return              The new number of usedBytes.    */
+DECL|method|release (ExtendedBlockId key, long bytesCount)
 specifier|abstract
 name|long
 name|release
 parameter_list|(
+name|ExtendedBlockId
+name|key
+parameter_list|,
 name|long
 name|bytesCount
 parameter_list|)
-function_decl|;
-comment|/**    * Get the config key of cache capacity.    */
-DECL|method|getCacheCapacityConfigKey ()
-specifier|abstract
-name|String
-name|getCacheCapacityConfigKey
-parameter_list|()
 function_decl|;
 comment|/**    * Get the approximate amount of cache space used.    */
 DECL|method|getCacheUsed ()
@@ -211,16 +210,14 @@ name|boolean
 name|isTransientCache
 parameter_list|()
 function_decl|;
-comment|/**    * Get a cache file path if applicable. Otherwise return null.    */
-DECL|method|getCachedPath (ExtendedBlockId key)
-specifier|abstract
-name|String
-name|getCachedPath
-parameter_list|(
-name|ExtendedBlockId
-name|key
-parameter_list|)
-function_decl|;
+comment|/**    * Clean up cache, can be used during DataNode shutdown.    */
+DECL|method|shutdown ()
+name|void
+name|shutdown
+parameter_list|()
+block|{
+comment|// Do nothing.
+block|}
 comment|/**    * Reads bytes into a buffer until EOF or the buffer's limit is reached.    */
 DECL|method|fillBuffer (FileChannel channel, ByteBuffer buf)
 specifier|protected

@@ -11976,6 +11976,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+name|cacheManager
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Override

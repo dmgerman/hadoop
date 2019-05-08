@@ -2904,6 +2904,8 @@ name|Boolean
 name|get
 parameter_list|()
 block|{
+comment|// check the log reported by FsDataSetCache
+comment|// in the case that cache capacity is exceeded.
 name|int
 name|lines
 init|=
@@ -2911,11 +2913,7 @@ name|appender
 operator|.
 name|countLinesWithMessage
 argument_list|(
-literal|"more bytes in the cache: "
-operator|+
-name|DFSConfigKeys
-operator|.
-name|DFS_DATANODE_MAX_LOCKED_MEMORY_KEY
+literal|"could not reserve more bytes in the cache: "
 argument_list|)
 decl_stmt|;
 return|return

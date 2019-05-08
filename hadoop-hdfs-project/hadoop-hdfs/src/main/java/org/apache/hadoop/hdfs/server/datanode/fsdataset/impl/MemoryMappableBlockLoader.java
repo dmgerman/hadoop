@@ -90,20 +90,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|ExtendedBlockId
 import|;
 end_import
@@ -153,6 +139,26 @@ operator|.
 name|util
 operator|.
 name|DataChecksum
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
 import|;
 end_import
 
@@ -248,6 +254,22 @@ name|MemoryMappableBlockLoader
 extends|extends
 name|MappableBlockLoader
 block|{
+DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
+name|Logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|MemoryMappableBlockLoader
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 DECL|field|memCacheStats
 specifier|private
 name|MemoryCacheStats
@@ -265,6 +287,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Initializing cache loader: MemoryMappableBlockLoader."
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|memCacheStats
@@ -715,20 +744,6 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getCacheCapacityConfigKey ()
-specifier|public
-name|String
-name|getCacheCapacityConfigKey
-parameter_list|()
-block|{
-return|return
-name|DFSConfigKeys
-operator|.
-name|DFS_DATANODE_MAX_LOCKED_MEMORY_KEY
-return|;
-block|}
-annotation|@
-name|Override
 DECL|method|getCacheUsed ()
 specifier|public
 name|long
@@ -759,10 +774,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|reserve (long bytesCount)
+DECL|method|reserve (ExtendedBlockId key, long bytesCount)
 name|long
 name|reserve
 parameter_list|(
+name|ExtendedBlockId
+name|key
+parameter_list|,
 name|long
 name|bytesCount
 parameter_list|)
@@ -778,10 +796,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|release (long bytesCount)
+DECL|method|release (ExtendedBlockId key, long bytesCount)
 name|long
 name|release
 parameter_list|(
+name|ExtendedBlockId
+name|key
+parameter_list|,
 name|long
 name|bytesCount
 parameter_list|)
@@ -805,21 +826,6 @@ parameter_list|()
 block|{
 return|return
 literal|true
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|getCachedPath (ExtendedBlockId key)
-specifier|public
-name|String
-name|getCachedPath
-parameter_list|(
-name|ExtendedBlockId
-name|key
-parameter_list|)
-block|{
-return|return
-literal|null
 return|;
 block|}
 block|}

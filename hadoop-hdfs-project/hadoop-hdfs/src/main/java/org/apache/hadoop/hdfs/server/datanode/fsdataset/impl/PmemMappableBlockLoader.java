@@ -32,20 +32,6 @@ name|google
 operator|.
 name|common
 operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
 name|base
 operator|.
 name|Preconditions
@@ -91,20 +77,6 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
 import|;
 end_import
 
@@ -343,6 +315,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Initializing cache loader: PmemMappableBlockLoader."
+argument_list|)
+expr_stmt|;
 name|DNConf
 name|dnConf
 init|=
@@ -351,37 +330,25 @@ operator|.
 name|getDnConf
 argument_list|()
 decl_stmt|;
-name|this
-operator|.
-name|pmemVolumeManager
-operator|=
-operator|new
 name|PmemVolumeManager
-argument_list|(
-name|dnConf
 operator|.
-name|getMaxLockedPmem
-argument_list|()
-argument_list|,
+name|init
+argument_list|(
 name|dnConf
 operator|.
 name|getPmemVolumes
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|getPmemVolumeManager ()
-name|PmemVolumeManager
-name|getPmemVolumeManager
-parameter_list|()
-block|{
-return|return
 name|pmemVolumeManager
-return|;
+operator|=
+name|PmemVolumeManager
+operator|.
+name|getInstance
+argument_list|()
+expr_stmt|;
 block|}
-comment|/**    * Load the block.    *    * Map the block and verify its checksum.    *    * The block will be mapped to PmemDir/BlockPoolId-BlockId, in which PmemDir    * is a persistent memory volume selected by getOneLocation() method.    *    * @param length         The current length of the block.    * @param blockIn        The block input stream. Should be positioned at the    *                       start. The caller must close this.    * @param metaIn         The meta file input stream. Should be positioned at    *                       the start. The caller must close this.    * @param blockFileName  The block file name, for logging purposes.    * @param key            The extended block ID.    *    * @throws IOException   If mapping block fails or checksum fails.    *    * @return               The Mappable block.    */
+comment|/**    * Load the block.    *    * Map the block and verify its checksum.    *    * The block will be mapped to PmemDir/BlockPoolId-BlockId, in which PmemDir    * is a persistent memory volume chosen by PmemVolumeManager.    *    * @param length         The current length of the block.    * @param blockIn        The block input stream. Should be positioned at the    *                       start. The caller must close this.    * @param metaIn         The meta file input stream. Should be positioned at    *                       the start. The caller must close this.    * @param blockFileName  The block file name, for logging purposes.    * @param key            The extended block ID.    *    * @throws IOException   If mapping block fails or checksum fails.    *    * @return               The Mappable block.    */
 annotation|@
 name|Override
 DECL|method|load (long length, FileInputStream blockIn, FileInputStream metaIn, String blockFileName, ExtendedBlockId key)
@@ -455,22 +422,12 @@ literal|"Block InputStream has no FileChannel."
 argument_list|)
 throw|;
 block|}
-name|Byte
-name|volumeIndex
-init|=
-name|pmemVolumeManager
-operator|.
-name|getOneVolumeIndex
-argument_list|()
-decl_stmt|;
 name|filePath
 operator|=
 name|pmemVolumeManager
 operator|.
-name|inferCacheFilePath
+name|getCachePath
 argument_list|(
-name|volumeIndex
-argument_list|,
 name|key
 argument_list|)
 expr_stmt|;
@@ -543,20 +500,7 @@ name|PmemMappedBlock
 argument_list|(
 name|length
 argument_list|,
-name|volumeIndex
-argument_list|,
 name|key
-argument_list|,
-name|pmemVolumeManager
-argument_list|)
-expr_stmt|;
-name|pmemVolumeManager
-operator|.
-name|afterCache
-argument_list|(
-name|key
-argument_list|,
-name|volumeIndex
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -615,6 +559,15 @@ operator|==
 literal|null
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Delete {} due to unsuccessful mapping."
+argument_list|,
+name|filePath
+argument_list|)
+expr_stmt|;
 name|FsDatasetUtil
 operator|.
 name|deleteMappedFile
@@ -933,20 +886,6 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getCacheCapacityConfigKey ()
-specifier|public
-name|String
-name|getCacheCapacityConfigKey
-parameter_list|()
-block|{
-return|return
-name|DFSConfigKeys
-operator|.
-name|DFS_DATANODE_CACHE_PMEM_CAPACITY_KEY
-return|;
-block|}
-annotation|@
-name|Override
 DECL|method|getCacheUsed ()
 specifier|public
 name|long
@@ -977,10 +916,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|reserve (long bytesCount)
+DECL|method|reserve (ExtendedBlockId key, long bytesCount)
 name|long
 name|reserve
 parameter_list|(
+name|ExtendedBlockId
+name|key
+parameter_list|,
 name|long
 name|bytesCount
 parameter_list|)
@@ -990,16 +932,21 @@ name|pmemVolumeManager
 operator|.
 name|reserve
 argument_list|(
+name|key
+argument_list|,
 name|bytesCount
 argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|release (long bytesCount)
+DECL|method|release (ExtendedBlockId key, long bytesCount)
 name|long
 name|release
 parameter_list|(
+name|ExtendedBlockId
+name|key
+parameter_list|,
 name|long
 name|bytesCount
 parameter_list|)
@@ -1009,6 +956,8 @@ name|pmemVolumeManager
 operator|.
 name|release
 argument_list|(
+name|key
+argument_list|,
 name|bytesCount
 argument_list|)
 return|;
@@ -1027,23 +976,26 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getCachedPath (ExtendedBlockId key)
-specifier|public
-name|String
-name|getCachedPath
-parameter_list|(
-name|ExtendedBlockId
-name|key
-parameter_list|)
+DECL|method|shutdown ()
+name|void
+name|shutdown
+parameter_list|()
 block|{
-return|return
-name|pmemVolumeManager
+name|LOG
 operator|.
-name|getCacheFilePath
+name|info
 argument_list|(
-name|key
+literal|"Clean up cache on persistent memory during shutdown."
 argument_list|)
-return|;
+expr_stmt|;
+name|PmemVolumeManager
+operator|.
+name|getInstance
+argument_list|()
+operator|.
+name|cleanup
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 end_class

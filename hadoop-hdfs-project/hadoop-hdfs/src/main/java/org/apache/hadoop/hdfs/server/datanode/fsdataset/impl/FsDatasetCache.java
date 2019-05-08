@@ -464,20 +464,6 @@ name|hadoop
 operator|.
 name|util
 operator|.
-name|ReflectionUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
 name|Time
 import|;
 end_import
@@ -902,35 +888,18 @@ name|getMaxLockedMemory
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Class
-argument_list|<
-name|?
-extends|extends
-name|MappableBlockLoader
-argument_list|>
-name|cacheLoaderClass
-init|=
-name|dataset
-operator|.
-name|datanode
-operator|.
-name|getDnConf
-argument_list|()
-operator|.
-name|getCacheLoaderClass
-argument_list|()
-decl_stmt|;
 name|this
 operator|.
 name|cacheLoader
 operator|=
-name|ReflectionUtils
+name|MappableBlockLoaderFactory
 operator|.
-name|newInstance
+name|createCacheLoader
 argument_list|(
-name|cacheLoaderClass
-argument_list|,
-literal|null
+name|this
+operator|.
+name|getDnConf
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|cacheLoader
@@ -1025,9 +994,12 @@ name|bpid
 argument_list|)
 decl_stmt|;
 return|return
-name|cacheLoader
+name|PmemVolumeManager
 operator|.
-name|getCachedPath
+name|getInstance
+argument_list|()
+operator|.
+name|getCachePath
 argument_list|(
 name|key
 argument_list|)
@@ -1738,6 +1710,8 @@ name|cacheLoader
 operator|.
 name|reserve
 argument_list|(
+name|key
+argument_list|,
 name|length
 argument_list|)
 decl_stmt|;
@@ -1765,23 +1739,18 @@ name|key
 operator|+
 literal|": could not reserve "
 operator|+
-name|length
-operator|+
-literal|" more bytes in the cache: "
-operator|+
-name|cacheLoader
-operator|.
-name|getCacheCapacityConfigKey
-argument_list|()
-operator|+
-literal|" of "
+literal|"more bytes in the cache: "
 operator|+
 name|cacheLoader
 operator|.
 name|getCacheCapacity
 argument_list|()
 operator|+
-literal|" exceeded."
+literal|" exceeded when try to reserve "
+operator|+
+name|length
+operator|+
+literal|"bytes."
 argument_list|)
 expr_stmt|;
 return|return;
@@ -2116,6 +2085,8 @@ name|cacheLoader
 operator|.
 name|release
 argument_list|(
+name|key
+argument_list|,
 name|length
 argument_list|)
 expr_stmt|;
@@ -2130,7 +2101,7 @@ literal|"bytes in total."
 argument_list|,
 name|key
 argument_list|,
-name|memCacheStats
+name|cacheLoader
 operator|.
 name|getCacheUsed
 argument_list|()
@@ -2460,6 +2431,8 @@ name|cacheLoader
 operator|.
 name|release
 argument_list|(
+name|key
+argument_list|,
 name|value
 operator|.
 name|mappableBlock
@@ -2698,6 +2671,18 @@ block|{
 return|return
 name|cacheLoader
 return|;
+block|}
+comment|/**    * This method can be executed during DataNode shutdown.    */
+DECL|method|shutdown ()
+name|void
+name|shutdown
+parameter_list|()
+block|{
+name|cacheLoader
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 end_class
