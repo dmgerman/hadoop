@@ -72,20 +72,6 @@ end_import
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Preconditions
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|junit
@@ -1221,19 +1207,13 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
+if|if
+condition|(
 name|abfs
 operator|==
 literal|null
-argument_list|,
-literal|"existing ABFS instance exists: %s"
-argument_list|,
-name|abfs
-argument_list|)
-expr_stmt|;
+condition|)
+block|{
 name|abfs
 operator|=
 operator|(
@@ -1246,6 +1226,7 @@ argument_list|(
 name|rawConfig
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|abfs
 return|;
