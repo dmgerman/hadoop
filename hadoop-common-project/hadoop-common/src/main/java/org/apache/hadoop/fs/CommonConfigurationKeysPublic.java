@@ -960,6 +960,26 @@ init|=
 literal|true
 decl_stmt|;
 comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
+DECL|field|IPC_SERVER_REUSEADDR_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IPC_SERVER_REUSEADDR_KEY
+init|=
+literal|"ipc.server.reuseaddr"
+decl_stmt|;
+comment|/** Default value for IPC_SERVER_REUSEADDR_KEY. */
+DECL|field|IPC_SERVER_REUSEADDR_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|IPC_SERVER_REUSEADDR_DEFAULT
+init|=
+literal|true
+decl_stmt|;
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|IPC_SERVER_MAX_CONNECTIONS_KEY
 specifier|public
 specifier|static
