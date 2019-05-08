@@ -8702,9 +8702,6 @@ return|return
 literal|null
 return|;
 block|}
-name|CSAssignment
-name|assignment
-decl_stmt|;
 comment|// Assign new containers...
 comment|// 1. Check for reserved applications
 comment|// 2. Schedule if there are no reservations
@@ -8722,6 +8719,123 @@ name|reservedContainer
 operator|!=
 literal|null
 condition|)
+block|{
+name|allocateFromReservedContainer
+argument_list|(
+name|node
+argument_list|,
+name|withNodeHeartbeat
+argument_list|,
+name|reservedContainer
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Do not schedule if there are any reservations to fulfill on the node
+if|if
+condition|(
+name|node
+operator|.
+name|getReservedContainer
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Skipping scheduling since node {} is reserved by"
+operator|+
+literal|" application {}"
+argument_list|,
+name|node
+operator|.
+name|getNodeID
+argument_list|()
+argument_list|,
+name|node
+operator|.
+name|getReservedContainer
+argument_list|()
+operator|.
+name|getContainerId
+argument_list|()
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
+comment|// First check if we can schedule
+comment|// When this time look at one node only, try schedule if the node
+comment|// has any available or killable resource
+if|if
+condition|(
+name|calculator
+operator|.
+name|computeAvailableContainers
+argument_list|(
+name|Resources
+operator|.
+name|add
+argument_list|(
+name|node
+operator|.
+name|getUnallocatedResource
+argument_list|()
+argument_list|,
+name|node
+operator|.
+name|getTotalKillableResources
+argument_list|()
+argument_list|)
+argument_list|,
+name|minimumAllocation
+argument_list|)
+operator|<=
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"This node or node partition doesn't have available or"
+operator|+
+literal|" preemptible resource"
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
+return|return
+name|allocateOrReserveNewContainers
+argument_list|(
+name|candidates
+argument_list|,
+name|withNodeHeartbeat
+argument_list|)
+return|;
+block|}
+DECL|method|allocateFromReservedContainer (FiCaSchedulerNode node, boolean withNodeHeartbeat, RMContainer reservedContainer)
+specifier|private
+name|void
+name|allocateFromReservedContainer
+parameter_list|(
+name|FiCaSchedulerNode
+name|node
+parameter_list|,
+name|boolean
+name|withNodeHeartbeat
+parameter_list|,
+name|RMContainer
+name|reservedContainer
+parameter_list|)
 block|{
 name|FiCaSchedulerApp
 name|reservedApplication
@@ -8760,9 +8874,7 @@ name|getContainerId
 argument_list|()
 argument_list|)
 expr_stmt|;
-return|return
-literal|null
-return|;
+return|return;
 block|}
 comment|// Try to fulfill the reservation
 name|LOG
@@ -8795,8 +8907,9 @@ name|getQueue
 argument_list|()
 operator|)
 decl_stmt|;
+name|CSAssignment
 name|assignment
-operator|=
+init|=
 name|queue
 operator|.
 name|assignContainers
@@ -8804,7 +8917,12 @@ argument_list|(
 name|getClusterResource
 argument_list|()
 argument_list|,
-name|candidates
+operator|new
+name|SimpleCandidateNodeSet
+argument_list|<>
+argument_list|(
+name|node
+argument_list|)
 argument_list|,
 comment|// TODO, now we only consider limits for parent for non-labeled
 comment|// resources, should consider labeled resources as well.
@@ -8828,7 +8946,7 @@ name|SchedulingMode
 operator|.
 name|RESPECT_PARTITION_EXCLUSIVITY
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 if|if
 condition|(
 name|assignment
@@ -8990,98 +9108,6 @@ argument_list|,
 name|assignment
 argument_list|)
 expr_stmt|;
-block|}
-comment|// Do not schedule if there are any reservations to fulfill on the node
-if|if
-condition|(
-name|node
-operator|.
-name|getReservedContainer
-argument_list|()
-operator|!=
-literal|null
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Skipping scheduling since node {} is reserved by"
-operator|+
-literal|" application {}"
-argument_list|,
-name|node
-operator|.
-name|getNodeID
-argument_list|()
-argument_list|,
-name|node
-operator|.
-name|getReservedContainer
-argument_list|()
-operator|.
-name|getContainerId
-argument_list|()
-operator|.
-name|getApplicationAttemptId
-argument_list|()
-argument_list|)
-expr_stmt|;
-return|return
-literal|null
-return|;
-block|}
-comment|// First check if we can schedule
-comment|// When this time look at one node only, try schedule if the node
-comment|// has any available or killable resource
-if|if
-condition|(
-name|calculator
-operator|.
-name|computeAvailableContainers
-argument_list|(
-name|Resources
-operator|.
-name|add
-argument_list|(
-name|node
-operator|.
-name|getUnallocatedResource
-argument_list|()
-argument_list|,
-name|node
-operator|.
-name|getTotalKillableResources
-argument_list|()
-argument_list|)
-argument_list|,
-name|minimumAllocation
-argument_list|)
-operator|<=
-literal|0
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"This node or node partition doesn't have available or"
-operator|+
-literal|" preemptible resource"
-argument_list|)
-expr_stmt|;
-return|return
-literal|null
-return|;
-block|}
-return|return
-name|allocateOrReserveNewContainers
-argument_list|(
-name|candidates
-argument_list|,
-name|withNodeHeartbeat
-argument_list|)
-return|;
 block|}
 DECL|method|allocateOrReserveNewContainers ( CandidateNodeSet<FiCaSchedulerNode> candidates, boolean withNodeHeartbeat)
 specifier|private
@@ -9402,11 +9428,52 @@ name|none
 argument_list|()
 condition|)
 block|{
+comment|// Try to allocate from reserved containers
+for|for
+control|(
+name|FiCaSchedulerNode
+name|node
+range|:
+name|candidates
+operator|.
+name|getAllNodes
+argument_list|()
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+name|RMContainer
+name|reservedContainer
+init|=
+name|node
+operator|.
+name|getReservedContainer
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|reservedContainer
+operator|!=
+literal|null
+condition|)
+block|{
+name|allocateFromReservedContainer
+argument_list|(
+name|node
+argument_list|,
+literal|false
+argument_list|,
+name|reservedContainer
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"This node or this node partition doesn't have available or"
+literal|"This node or this node partition doesn't have available or "
 operator|+
 literal|"killable resource"
 argument_list|)
