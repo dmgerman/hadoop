@@ -6067,7 +6067,7 @@ block|}
 argument_list|)
 annotation|@
 name|Override
-DECL|method|getAppActivities (@ontext HttpServletRequest hsr, @QueryParam(RMWSConsts.APP_ID) String appId, @QueryParam(RMWSConsts.MAX_TIME) String time)
+DECL|method|getAppActivities (@ontext HttpServletRequest hsr, @QueryParam(RMWSConsts.APP_ID) String appId, @QueryParam(RMWSConsts.MAX_TIME) String time, @QueryParam(RMWSConsts.REQUEST_PRIORITIES) Set<String> requestPriorities, @QueryParam(RMWSConsts.ALLOCATION_REQUEST_IDS) Set<String> allocationRequestIds)
 specifier|public
 name|AppActivitiesInfo
 name|getAppActivities
@@ -6096,6 +6096,32 @@ name|MAX_TIME
 argument_list|)
 name|String
 name|time
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+name|RMWSConsts
+operator|.
+name|REQUEST_PRIORITIES
+argument_list|)
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|requestPriorities
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+name|RMWSConsts
+operator|.
+name|ALLOCATION_REQUEST_IDS
+argument_list|)
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|allocationRequestIds
 parameter_list|)
 block|{
 name|initForReadableEndpoints
@@ -6257,6 +6283,10 @@ operator|.
 name|getAppActivitiesInfo
 argument_list|(
 name|applicationId
+argument_list|,
+name|requestPriorities
+argument_list|,
+name|allocationRequestIds
 argument_list|)
 decl_stmt|;
 return|return

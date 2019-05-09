@@ -797,6 +797,24 @@ name|QUEUE_ACL_TYPE
 init|=
 literal|"queue-acl-type"
 decl_stmt|;
+DECL|field|REQUEST_PRIORITIES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|REQUEST_PRIORITIES
+init|=
+literal|"requestPriorities"
+decl_stmt|;
+DECL|field|ALLOCATION_REQUEST_IDS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ALLOCATION_REQUEST_IDS
+init|=
+literal|"allocationRequestIds"
+decl_stmt|;
 DECL|method|RMWSConsts ()
 specifier|private
 name|RMWSConsts

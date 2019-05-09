@@ -5248,7 +5248,7 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|getAppActivities (HttpServletRequest hsr, String appId, String time)
+DECL|method|getAppActivities (HttpServletRequest hsr, String appId, String time, Set<String> requestPriorities, Set<String> allocationRequestIds)
 specifier|public
 name|AppActivitiesInfo
 name|getAppActivities
@@ -5261,6 +5261,18 @@ name|appId
 parameter_list|,
 name|String
 name|time
+parameter_list|,
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|requestPriorities
+parameter_list|,
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|allocationRequestIds
 parameter_list|)
 block|{
 throw|throw

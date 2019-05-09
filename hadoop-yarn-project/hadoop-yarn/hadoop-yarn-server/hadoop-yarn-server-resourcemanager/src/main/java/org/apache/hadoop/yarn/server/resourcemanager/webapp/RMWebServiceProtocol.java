@@ -1011,8 +1011,8 @@ name|String
 name|nodeId
 parameter_list|)
 function_decl|;
-comment|/**    * This method retrieves all the activities for a specific app for a specific    * period of time, and it is reachable by using    * {@link RMWSConsts#SCHEDULER_APP_ACTIVITIES}.    *    * @param hsr the servlet request    * @param appId the applicationId we want to retrieve the activities. It is a    *          QueryParam.    * @param time for how long we want to retrieve the activities. It is a    *          QueryParam.    * @return all the activities about a specific app for a specific time    */
-DECL|method|getAppActivities (HttpServletRequest hsr, String appId, String time)
+comment|/**    * This method retrieves all the activities for a specific app for a specific    * period of time, and it is reachable by using    * {@link RMWSConsts#SCHEDULER_APP_ACTIVITIES}.    *    * @param hsr the servlet request    * @param appId the applicationId we want to retrieve the activities. It is a    *          QueryParam.    * @param time for how long we want to retrieve the activities. It is a    *          QueryParam.    * @param requestPriorities the request priorities we want to retrieve the    *          activities. It is a QueryParam.    * @param allocationRequestIds the allocation request ids we want to retrieve    *          the activities. It is a QueryParam.    * @return all the activities about a specific app for a specific time    */
+DECL|method|getAppActivities (HttpServletRequest hsr, String appId, String time, Set<String> requestPriorities, Set<String> allocationRequestIds)
 name|AppActivitiesInfo
 name|getAppActivities
 parameter_list|(
@@ -1024,6 +1024,18 @@ name|appId
 parameter_list|,
 name|String
 name|time
+parameter_list|,
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|requestPriorities
+parameter_list|,
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|allocationRequestIds
 parameter_list|)
 function_decl|;
 comment|/**    * This method retrieves all the statistics for a specific app, and it is    * reachable by using {@link RMWSConsts#APP_STATISTICS}.    *    * @param hsr the servlet request    * @param stateQueries filter the result by states. It is a QueryParam.    * @param typeQueries filter the result by type names. It is a QueryParam.    * @return the application's statistics for specific states and types    */
