@@ -1793,11 +1793,11 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"A valid file path is needed for config setting {}"
+literal|"A valid path is needed for config setting {}"
 argument_list|,
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_DATANODE_ID
+name|OZONE_SCM_DATANODE_ID_DIR
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -1806,7 +1806,7 @@ name|IllegalArgumentException
 argument_list|(
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_DATANODE_ID
+name|OZONE_SCM_DATANODE_ID_DIR
 operator|+
 literal|" must be defined. See"
 operator|+
@@ -1918,11 +1918,11 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"A valid file path is needed for config setting {}"
+literal|"A valid path is needed for config setting {}"
 argument_list|,
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_DATANODE_ID
+name|OZONE_SCM_DATANODE_ID_DIR
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -1931,7 +1931,7 @@ name|IllegalArgumentException
 argument_list|(
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_DATANODE_ID
+name|OZONE_SCM_DATANODE_ID_DIR
 operator|+
 literal|" must be defined. See"
 operator|+
