@@ -162,20 +162,6 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|OzoneConsts
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
 name|container
 operator|.
 name|common
@@ -427,6 +413,18 @@ operator|.
 name|net
 operator|.
 name|InetSocketAddress
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|file
+operator|.
+name|Paths
 import|;
 end_import
 
@@ -921,15 +919,26 @@ argument_list|)
 expr_stmt|;
 name|path
 operator|=
-operator|new
-name|File
+name|Paths
+operator|.
+name|get
 argument_list|(
-name|testRoot
+name|path
+operator|.
+name|toString
+argument_list|()
 argument_list|,
-literal|"datanodeID"
+name|TestDatanodeStateMachine
+operator|.
+name|class
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|".id"
 argument_list|)
 operator|.
-name|getAbsolutePath
+name|toString
 argument_list|()
 expr_stmt|;
 name|conf
@@ -938,7 +947,7 @@ name|set
 argument_list|(
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_DATANODE_ID_DIR
+name|OZONE_SCM_DATANODE_ID
 argument_list|,
 name|path
 argument_list|)
@@ -1229,12 +1238,8 @@ name|get
 argument_list|(
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_DATANODE_ID_DIR
+name|OZONE_SCM_DATANODE_ID
 argument_list|)
-argument_list|,
-name|OzoneConsts
-operator|.
-name|OZONE_SCM_DATANODE_ID_FILE_DEFAULT
 argument_list|)
 decl_stmt|;
 name|idPath
@@ -1783,12 +1788,8 @@ name|get
 argument_list|(
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_DATANODE_ID_DIR
+name|OZONE_SCM_DATANODE_ID
 argument_list|)
-argument_list|,
-name|OzoneConsts
-operator|.
-name|OZONE_SCM_DATANODE_ID_FILE_DEFAULT
 argument_list|)
 decl_stmt|;
 name|idPath
@@ -2088,7 +2089,7 @@ literal|"scm:123456"
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Invalid ozone.scm.datanode.id.dir
+comment|// Invalid ozone.scm.datanode.id
 comment|/** Empty **/
 name|confList
 operator|.
@@ -2100,7 +2101,7 @@ name|immutableEntry
 argument_list|(
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_DATANODE_ID_DIR
+name|OZONE_SCM_DATANODE_ID
 argument_list|,
 literal|""
 argument_list|)

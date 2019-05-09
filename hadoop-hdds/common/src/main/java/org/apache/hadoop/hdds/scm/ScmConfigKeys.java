@@ -1170,16 +1170,25 @@ name|OZONE_SCM_DEFAULT_PORT
 init|=
 name|OZONE_SCM_DATANODE_PORT_DEFAULT
 decl_stmt|;
-comment|// The path where datanode ID is to be written to.
+comment|// File Name and path where datanode ID is to written to.
 comment|// if this value is not set then container startup will fail.
-DECL|field|OZONE_SCM_DATANODE_ID_DIR
+DECL|field|OZONE_SCM_DATANODE_ID
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|OZONE_SCM_DATANODE_ID_DIR
+name|OZONE_SCM_DATANODE_ID
 init|=
-literal|"ozone.scm.datanode.id.dir"
+literal|"ozone.scm.datanode.id"
+decl_stmt|;
+DECL|field|OZONE_SCM_DATANODE_ID_PATH_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_SCM_DATANODE_ID_PATH_DEFAULT
+init|=
+literal|"datanode.id"
 decl_stmt|;
 DECL|field|OZONE_SCM_DB_CACHE_SIZE_MB
 specifier|public

@@ -887,16 +887,6 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
-comment|/**    * Default SCM Datanode ID file name.    */
-DECL|field|OZONE_SCM_DATANODE_ID_FILE_DEFAULT
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|OZONE_SCM_DATANODE_ID_FILE_DEFAULT
-init|=
-literal|"datanode.id"
-decl_stmt|;
 comment|// The ServiceListJSONServlet context attribute where OzoneManager
 comment|// instance gets stored.
 DECL|field|OM_CONTEXT_ATTRIBUTE

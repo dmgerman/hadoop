@@ -648,11 +648,11 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"A valid path is needed for config setting {}"
+literal|"A valid file path is needed for config setting {}"
 argument_list|,
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_DATANODE_ID_DIR
+name|OZONE_SCM_DATANODE_ID
 argument_list|)
 expr_stmt|;
 name|this
