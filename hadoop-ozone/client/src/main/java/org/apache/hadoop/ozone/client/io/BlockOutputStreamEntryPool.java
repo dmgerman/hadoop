@@ -1537,11 +1537,11 @@ name|error
 argument_list|(
 literal|"Try to allocate more blocks for write failed, already "
 operator|+
-literal|"allocated "
-operator|+
+literal|"allocated {} blocks for this write."
+argument_list|,
 name|succeededAllocates
-operator|+
-literal|" blocks for this write."
+argument_list|,
+name|ioe
 argument_list|)
 expr_stmt|;
 throw|throw
