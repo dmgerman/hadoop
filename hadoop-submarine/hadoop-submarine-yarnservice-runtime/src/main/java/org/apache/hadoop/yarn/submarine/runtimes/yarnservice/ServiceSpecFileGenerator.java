@@ -161,6 +161,7 @@ argument_list|)
 throw|;
 block|}
 DECL|method|generateJson (Service service)
+specifier|public
 specifier|static
 name|String
 name|generateJson

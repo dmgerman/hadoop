@@ -110,7 +110,7 @@ name|common
 operator|.
 name|api
 operator|.
-name|TaskType
+name|Role
 import|;
 end_import
 
@@ -170,7 +170,7 @@ literal|"instantiated!"
 argument_list|)
 throw|;
 block|}
-DECL|method|addCommonEnvironments (Component component, TaskType taskType)
+DECL|method|addCommonEnvironments (Component component, Role role)
 specifier|public
 specifier|static
 name|void
@@ -179,8 +179,8 @@ parameter_list|(
 name|Component
 name|component
 parameter_list|,
-name|TaskType
-name|taskType
+name|Role
+name|role
 parameter_list|)
 block|{
 name|Map
@@ -220,9 +220,9 @@ name|Envs
 operator|.
 name|TASK_TYPE_ENV
 argument_list|,
-name|taskType
+name|role
 operator|.
-name|name
+name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -262,22 +262,22 @@ literal|"hadoop.registry.dns.domain-name"
 argument_list|)
 return|;
 block|}
-DECL|method|getScriptFileName (TaskType taskType)
+DECL|method|getScriptFileName (Role role)
 specifier|public
 specifier|static
 name|String
 name|getScriptFileName
 parameter_list|(
-name|TaskType
-name|taskType
+name|Role
+name|role
 parameter_list|)
 block|{
 return|return
 literal|"run-"
 operator|+
-name|taskType
+name|role
 operator|.
-name|name
+name|getName
 argument_list|()
 operator|+
 literal|".sh"

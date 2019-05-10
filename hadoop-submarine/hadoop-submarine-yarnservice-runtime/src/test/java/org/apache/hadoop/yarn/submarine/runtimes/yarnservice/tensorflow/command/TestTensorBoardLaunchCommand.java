@@ -78,7 +78,9 @@ name|cli
 operator|.
 name|param
 operator|.
-name|RunJobParameters
+name|runjob
+operator|.
+name|TensorFlowRunJobParameters
 import|;
 end_import
 
@@ -116,7 +118,7 @@ name|common
 operator|.
 name|api
 operator|.
-name|TaskType
+name|TensorFlowRole
 import|;
 end_import
 
@@ -178,7 +180,7 @@ name|yarnservice
 operator|.
 name|command
 operator|.
-name|AbstractLaunchCommandTestHelper
+name|AbstractTFLaunchCommandTestHelper
 import|;
 end_import
 
@@ -266,7 +268,7 @@ specifier|public
 class|class
 name|TestTensorBoardLaunchCommand
 extends|extends
-name|AbstractLaunchCommandTestHelper
+name|AbstractTFLaunchCommandTestHelper
 block|{
 annotation|@
 name|Test
@@ -278,11 +280,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 name|params
 init|=
 operator|new
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 argument_list|()
 decl_stmt|;
 name|params
@@ -308,7 +310,7 @@ argument_list|)
 expr_stmt|;
 name|testHdfsRelatedEnvironmentIsUndefined
 argument_list|(
-name|TaskType
+name|TensorFlowRole
 operator|.
 name|TENSORBOARD
 argument_list|,
@@ -326,11 +328,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 name|params
 init|=
 operator|new
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 argument_list|()
 decl_stmt|;
 name|params
@@ -384,7 +386,7 @@ name|fileContents
 init|=
 name|testHdfsRelatedEnvironmentIsDefined
 argument_list|(
-name|TaskType
+name|TensorFlowRole
 operator|.
 name|TENSORBOARD
 argument_list|,
@@ -445,11 +447,11 @@ operator|new
 name|Component
 argument_list|()
 decl_stmt|;
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 name|params
 init|=
 operator|new
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 argument_list|()
 decl_stmt|;
 name|params
@@ -480,7 +482,7 @@ name|TensorBoardLaunchCommand
 argument_list|(
 name|hadoopEnvSetup
 argument_list|,
-name|TaskType
+name|TensorFlowRole
 operator|.
 name|TENSORBOARD
 argument_list|,
@@ -534,11 +536,11 @@ operator|new
 name|Component
 argument_list|()
 decl_stmt|;
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 name|params
 init|=
 operator|new
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 argument_list|()
 decl_stmt|;
 name|params
@@ -569,7 +571,7 @@ name|TensorBoardLaunchCommand
 argument_list|(
 name|hadoopEnvSetup
 argument_list|,
-name|TaskType
+name|TensorFlowRole
 operator|.
 name|TENSORBOARD
 argument_list|,

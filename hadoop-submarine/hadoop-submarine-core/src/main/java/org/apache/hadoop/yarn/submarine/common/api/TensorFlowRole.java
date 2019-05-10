@@ -22,11 +22,17 @@ name|api
 package|;
 end_package
 
+begin_comment
+comment|/**  * Enum to represent a TensorFlow Role.  */
+end_comment
+
 begin_enum
-DECL|enum|TaskType
+DECL|enum|TensorFlowRole
 specifier|public
 enum|enum
-name|TaskType
+name|TensorFlowRole
+implements|implements
+name|Role
 block|{
 DECL|enumConstant|PRIMARY_WORKER
 name|PRIMARY_WORKER
@@ -57,8 +63,8 @@ specifier|private
 name|String
 name|compName
 decl_stmt|;
-DECL|method|TaskType (String compName)
-name|TaskType
+DECL|method|TensorFlowRole (String compName)
+name|TensorFlowRole
 parameter_list|(
 name|String
 name|compName
@@ -71,6 +77,8 @@ operator|=
 name|compName
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getComponentName ()
 specifier|public
 name|String
@@ -79,6 +87,19 @@ parameter_list|()
 block|{
 return|return
 name|compName
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getName ()
+specifier|public
+name|String
+name|getName
+parameter_list|()
+block|{
+return|return
+name|name
+argument_list|()
 return|;
 block|}
 block|}

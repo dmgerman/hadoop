@@ -105,6 +105,32 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|withFramework (String framework)
+name|ParamBuilderForTest
+name|withFramework
+parameter_list|(
+name|String
+name|framework
+parameter_list|)
+block|{
+name|params
+operator|.
+name|add
+argument_list|(
+literal|"--framework"
+argument_list|)
+expr_stmt|;
+name|params
+operator|.
+name|add
+argument_list|(
+name|framework
+argument_list|)
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|withDockerImage (String dockerImage)
 name|ParamBuilderForTest
 name|withDockerImage

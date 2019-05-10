@@ -92,7 +92,9 @@ name|cli
 operator|.
 name|param
 operator|.
-name|RunJobParameters
+name|runjob
+operator|.
+name|TensorFlowRunJobParameters
 import|;
 end_import
 
@@ -112,7 +114,7 @@ name|common
 operator|.
 name|api
 operator|.
-name|TaskType
+name|Role
 import|;
 end_import
 
@@ -220,20 +222,20 @@ specifier|final
 name|String
 name|launchCommand
 decl_stmt|;
-DECL|method|TensorFlowWorkerLaunchCommand ( HadoopEnvironmentSetup hadoopEnvSetup, TaskType taskType, Component component, RunJobParameters parameters, Configuration yarnConfig)
+DECL|method|TensorFlowWorkerLaunchCommand ( HadoopEnvironmentSetup hadoopEnvSetup, Role role, Component component, TensorFlowRunJobParameters parameters, Configuration yarnConfig)
 specifier|public
 name|TensorFlowWorkerLaunchCommand
 parameter_list|(
 name|HadoopEnvironmentSetup
 name|hadoopEnvSetup
 parameter_list|,
-name|TaskType
-name|taskType
+name|Role
+name|role
 parameter_list|,
 name|Component
 name|component
 parameter_list|,
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 name|parameters
 parameter_list|,
 name|Configuration
@@ -246,7 +248,7 @@ name|super
 argument_list|(
 name|hadoopEnvSetup
 argument_list|,
-name|taskType
+name|role
 argument_list|,
 name|component
 argument_list|,

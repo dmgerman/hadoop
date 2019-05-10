@@ -374,6 +374,15 @@ name|INSECURE_CLUSTER
 init|=
 literal|"insecure"
 decl_stmt|;
+DECL|field|FRAMEWORK
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FRAMEWORK
+init|=
+literal|"framework"
+decl_stmt|;
 block|}
 end_class
 

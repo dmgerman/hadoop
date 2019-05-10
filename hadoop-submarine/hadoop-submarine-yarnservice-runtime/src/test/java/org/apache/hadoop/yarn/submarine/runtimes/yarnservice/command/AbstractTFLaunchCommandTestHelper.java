@@ -76,7 +76,9 @@ name|cli
 operator|.
 name|param
 operator|.
-name|RunJobParameters
+name|runjob
+operator|.
+name|TensorFlowRunJobParameters
 import|;
 end_import
 
@@ -114,7 +116,7 @@ name|common
 operator|.
 name|api
 operator|.
-name|TaskType
+name|TensorFlowRole
 import|;
 end_import
 
@@ -393,15 +395,15 @@ comment|/**  * This class is an abstract base class for testing Tensorboard and 
 end_comment
 
 begin_class
-DECL|class|AbstractLaunchCommandTestHelper
+DECL|class|AbstractTFLaunchCommandTestHelper
 specifier|public
 specifier|abstract
 class|class
-name|AbstractLaunchCommandTestHelper
+name|AbstractTFLaunchCommandTestHelper
 block|{
 DECL|field|taskType
 specifier|private
-name|TaskType
+name|TensorFlowRole
 name|taskType
 decl_stmt|;
 DECL|field|useTaskTypeOverride
@@ -457,7 +459,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|assertScriptContainsExportedEnvVarWithValue ( List<String> fileContents, String varName, String value)
-specifier|public
+specifier|protected
 specifier|static
 name|void
 name|assertScriptContainsExportedEnvVarWithValue
@@ -498,7 +500,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|assertScriptContainsLine (List<String> fileContents, String expected)
-specifier|public
+specifier|protected
 specifier|static
 name|void
 name|assertScriptContainsLine
@@ -551,7 +553,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|assertScriptContainsLineWithRegex ( List<String> fileContents, String regex)
-specifier|public
+specifier|protected
 specifier|static
 name|void
 name|assertScriptContainsLineWithRegex
@@ -617,8 +619,8 @@ name|message
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|assertScriptDoesNotContainLine (List<String> fileContents, String expected)
-specifier|public
+DECL|method|assertScriptDoesNotContainLine ( List<String> fileContents, String expected)
+specifier|protected
 specifier|static
 name|void
 name|assertScriptDoesNotContainLine
@@ -670,15 +672,15 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|createLaunchCommandByTaskType (TaskType taskType, RunJobParameters params)
+DECL|method|createLaunchCommandByTaskType ( TensorFlowRole taskType, TensorFlowRunJobParameters params)
 specifier|private
 name|AbstractLaunchCommand
 name|createLaunchCommandByTaskType
 parameter_list|(
-name|TaskType
+name|TensorFlowRole
 name|taskType
 parameter_list|,
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 name|params
 parameter_list|)
 throws|throws
@@ -740,15 +742,15 @@ name|yarnConfig
 argument_list|)
 return|;
 block|}
-DECL|method|createLaunchCommandByTaskTypeInternal ( TaskType taskType, RunJobParameters params, HadoopEnvironmentSetup hadoopEnvSetup, Component component, Configuration yarnConfig)
+DECL|method|createLaunchCommandByTaskTypeInternal ( TensorFlowRole taskType, TensorFlowRunJobParameters params, HadoopEnvironmentSetup hadoopEnvSetup, Component component, Configuration yarnConfig)
 specifier|private
 name|AbstractLaunchCommand
 name|createLaunchCommandByTaskTypeInternal
 parameter_list|(
-name|TaskType
+name|TensorFlowRole
 name|taskType
 parameter_list|,
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 name|params
 parameter_list|,
 name|HadoopEnvironmentSetup
@@ -767,7 +769,7 @@ if|if
 condition|(
 name|taskType
 operator|==
-name|TaskType
+name|TensorFlowRole
 operator|.
 name|TENSORBOARD
 condition|)
@@ -794,13 +796,13 @@ if|if
 condition|(
 name|taskType
 operator|==
-name|TaskType
+name|TensorFlowRole
 operator|.
 name|WORKER
 operator|||
 name|taskType
 operator|==
-name|TaskType
+name|TensorFlowRole
 operator|.
 name|PRIMARY_WORKER
 condition|)
@@ -829,7 +831,7 @@ if|if
 condition|(
 name|taskType
 operator|==
-name|TaskType
+name|TensorFlowRole
 operator|.
 name|PS
 condition|)
@@ -857,16 +859,16 @@ throw|throw
 operator|new
 name|IllegalStateException
 argument_list|(
-literal|"Unknown taskType!"
+literal|"Unknown role!"
 argument_list|)
 throw|;
 block|}
-DECL|method|overrideTaskType (TaskType taskType)
-specifier|public
+DECL|method|overrideTaskType (TensorFlowRole taskType)
+specifier|protected
 name|void
 name|overrideTaskType
 parameter_list|(
-name|TaskType
+name|TensorFlowRole
 name|taskType
 parameter_list|)
 block|{
@@ -883,12 +885,12 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
-DECL|method|getTaskType (TaskType taskType)
+DECL|method|getTaskType (TensorFlowRole taskType)
 specifier|private
-name|TaskType
+name|TensorFlowRole
 name|getTaskType
 parameter_list|(
-name|TaskType
+name|TensorFlowRole
 name|taskType
 parameter_list|)
 block|{
@@ -907,15 +909,15 @@ return|return
 name|taskType
 return|;
 block|}
-DECL|method|testHdfsRelatedEnvironmentIsUndefined (TaskType taskType, RunJobParameters params)
-specifier|public
+DECL|method|testHdfsRelatedEnvironmentIsUndefined (TensorFlowRole taskType, TensorFlowRunJobParameters params)
+specifier|protected
 name|void
 name|testHdfsRelatedEnvironmentIsUndefined
 parameter_list|(
-name|TaskType
+name|TensorFlowRole
 name|taskType
 parameter_list|,
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 name|params
 parameter_list|)
 throws|throws
@@ -953,18 +955,18 @@ name|generateLaunchScript
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|testHdfsRelatedEnvironmentIsDefined (TaskType taskType, RunJobParameters params)
-specifier|public
+DECL|method|testHdfsRelatedEnvironmentIsDefined ( TensorFlowRole taskType, TensorFlowRunJobParameters params)
+specifier|protected
 name|List
 argument_list|<
 name|String
 argument_list|>
 name|testHdfsRelatedEnvironmentIsDefined
 parameter_list|(
-name|TaskType
+name|TensorFlowRole
 name|taskType
 parameter_list|,
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 name|params
 parameter_list|)
 throws|throws

@@ -74,7 +74,7 @@ name|cli
 operator|.
 name|param
 operator|.
-name|RunJobParameters
+name|ParametersHolder
 import|;
 end_import
 
@@ -89,7 +89,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Submit job to cluster master  */
+comment|/**  * Submit job to cluster master.  */
 end_comment
 
 begin_interface
@@ -98,12 +98,12 @@ specifier|public
 interface|interface
 name|JobSubmitter
 block|{
-comment|/**    * Submit job to cluster    * @param parameters run job parameters    * @return applicatioId when successfully submitted    * @throws YarnException for issues while contacting YARN daemons    * @throws IOException for other issues.    */
-DECL|method|submitJob (RunJobParameters parameters)
+comment|/**    * Submit a job to cluster.    * @param parameters run job parameters    * @return applicationId when successfully submitted    * @throws YarnException for issues while contacting YARN daemons    * @throws IOException for other issues.    */
+DECL|method|submitJob (ParametersHolder parameters)
 name|ApplicationId
 name|submitJob
 parameter_list|(
-name|RunJobParameters
+name|ParametersHolder
 name|parameters
 parameter_list|)
 throws|throws

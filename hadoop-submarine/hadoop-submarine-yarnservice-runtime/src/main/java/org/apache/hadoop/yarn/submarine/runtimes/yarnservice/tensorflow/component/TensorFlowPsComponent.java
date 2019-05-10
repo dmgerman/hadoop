@@ -78,7 +78,33 @@ name|cli
 operator|.
 name|param
 operator|.
+name|runjob
+operator|.
 name|RunJobParameters
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|submarine
+operator|.
+name|client
+operator|.
+name|cli
+operator|.
+name|param
+operator|.
+name|runjob
+operator|.
+name|TensorFlowRunJobParameters
 import|;
 end_import
 
@@ -98,7 +124,7 @@ name|common
 operator|.
 name|api
 operator|.
-name|TaskType
+name|TensorFlowRole
 import|;
 end_import
 
@@ -180,7 +206,7 @@ name|yarnservice
 operator|.
 name|command
 operator|.
-name|LaunchCommandFactory
+name|TensorFlowLaunchCommandFactory
 import|;
 end_import
 
@@ -280,7 +306,7 @@ name|TensorFlowPsComponent
 extends|extends
 name|AbstractComponent
 block|{
-DECL|method|TensorFlowPsComponent (FileSystemOperations fsOperations, RemoteDirectoryManager remoteDirectoryManager, LaunchCommandFactory launchCommandFactory, RunJobParameters parameters, Configuration yarnConfig)
+DECL|method|TensorFlowPsComponent (FileSystemOperations fsOperations, RemoteDirectoryManager remoteDirectoryManager, TensorFlowLaunchCommandFactory launchCommandFactory, RunJobParameters parameters, Configuration yarnConfig)
 specifier|public
 name|TensorFlowPsComponent
 parameter_list|(
@@ -290,7 +316,7 @@ parameter_list|,
 name|RemoteDirectoryManager
 name|remoteDirectoryManager
 parameter_list|,
-name|LaunchCommandFactory
+name|TensorFlowLaunchCommandFactory
 name|launchCommandFactory
 parameter_list|,
 name|RunJobParameters
@@ -308,7 +334,7 @@ name|remoteDirectoryManager
 argument_list|,
 name|parameters
 argument_list|,
-name|TaskType
+name|TensorFlowRole
 operator|.
 name|PS
 argument_list|,
@@ -328,11 +354,21 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|TensorFlowRunJobParameters
+name|tensorFlowParams
+init|=
+operator|(
+name|TensorFlowRunJobParameters
+operator|)
+name|this
+operator|.
+name|parameters
+decl_stmt|;
 name|Objects
 operator|.
 name|requireNonNull
 argument_list|(
-name|parameters
+name|tensorFlowParams
 operator|.
 name|getPsResource
 argument_list|()
@@ -342,7 +378,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|parameters
+name|tensorFlowParams
 operator|.
 name|getNumPS
 argument_list|()
@@ -369,7 +405,7 @@ name|component
 operator|.
 name|setName
 argument_list|(
-name|taskType
+name|role
 operator|.
 name|getComponentName
 argument_list|()
@@ -382,7 +418,7 @@ argument_list|(
 operator|(
 name|long
 operator|)
-name|parameters
+name|tensorFlowParams
 operator|.
 name|getNumPS
 argument_list|()
@@ -405,7 +441,7 @@ name|setResource
 argument_list|(
 name|convertYarnResourceToServiceResource
 argument_list|(
-name|parameters
+name|tensorFlowParams
 operator|.
 name|getPsResource
 argument_list|()
@@ -415,7 +451,7 @@ expr_stmt|;
 comment|// Override global docker image if needed.
 if|if
 condition|(
-name|parameters
+name|tensorFlowParams
 operator|.
 name|getPsDockerImage
 argument_list|()
@@ -429,7 +465,7 @@ name|setArtifact
 argument_list|(
 name|getDockerArtifact
 argument_list|(
-name|parameters
+name|tensorFlowParams
 operator|.
 name|getPsDockerImage
 argument_list|()
@@ -441,7 +477,7 @@ name|addCommonEnvironments
 argument_list|(
 name|component
 argument_list|,
-name|taskType
+name|role
 argument_list|)
 expr_stmt|;
 name|generateLaunchCommand

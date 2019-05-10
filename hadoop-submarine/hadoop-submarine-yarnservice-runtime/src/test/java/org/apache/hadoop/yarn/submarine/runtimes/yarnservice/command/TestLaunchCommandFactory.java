@@ -76,7 +76,9 @@ name|cli
 operator|.
 name|param
 operator|.
-name|RunJobParameters
+name|runjob
+operator|.
+name|TensorFlowRunJobParameters
 import|;
 end_import
 
@@ -96,7 +98,7 @@ name|common
 operator|.
 name|api
 operator|.
-name|TaskType
+name|TensorFlowRole
 import|;
 end_import
 
@@ -237,7 +239,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class is to test the {@link LaunchCommandFactory}.  */
+comment|/**  * This class is to test the {@link TensorFlowLaunchCommandFactory}.  */
 end_comment
 
 begin_class
@@ -246,12 +248,12 @@ specifier|public
 class|class
 name|TestLaunchCommandFactory
 block|{
-DECL|method|createLaunchCommandFactory ( RunJobParameters parameters)
+DECL|method|createLaunchCommandFactory ( TensorFlowRunJobParameters parameters)
 specifier|private
-name|LaunchCommandFactory
+name|TensorFlowLaunchCommandFactory
 name|createLaunchCommandFactory
 parameter_list|(
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 name|parameters
 parameter_list|)
 block|{
@@ -277,7 +279,7 @@ argument_list|)
 decl_stmt|;
 return|return
 operator|new
-name|LaunchCommandFactory
+name|TensorFlowLaunchCommandFactory
 argument_list|(
 name|hadoopEnvSetup
 argument_list|,
@@ -297,11 +299,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 name|parameters
 init|=
 operator|new
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 argument_list|()
 decl_stmt|;
 name|parameters
@@ -311,7 +313,7 @@ argument_list|(
 literal|"testWorkerLaunchCommand"
 argument_list|)
 expr_stmt|;
-name|LaunchCommandFactory
+name|TensorFlowLaunchCommandFactory
 name|launchCommandFactory
 init|=
 name|createLaunchCommandFactory
@@ -336,7 +338,7 @@ name|launchCommandFactory
 operator|.
 name|createLaunchCommand
 argument_list|(
-name|TaskType
+name|TensorFlowRole
 operator|.
 name|PRIMARY_WORKER
 argument_list|,
@@ -356,7 +358,7 @@ name|launchCommandFactory
 operator|.
 name|createLaunchCommand
 argument_list|(
-name|TaskType
+name|TensorFlowRole
 operator|.
 name|WORKER
 argument_list|,
@@ -381,11 +383,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 name|parameters
 init|=
 operator|new
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 argument_list|()
 decl_stmt|;
 name|parameters
@@ -395,7 +397,7 @@ argument_list|(
 literal|"testPSLaunchCommand"
 argument_list|)
 expr_stmt|;
-name|LaunchCommandFactory
+name|TensorFlowLaunchCommandFactory
 name|launchCommandFactory
 init|=
 name|createLaunchCommandFactory
@@ -420,7 +422,7 @@ name|launchCommandFactory
 operator|.
 name|createLaunchCommand
 argument_list|(
-name|TaskType
+name|TensorFlowRole
 operator|.
 name|PS
 argument_list|,
@@ -445,11 +447,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 name|parameters
 init|=
 operator|new
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 argument_list|()
 decl_stmt|;
 name|parameters
@@ -459,7 +461,7 @@ argument_list|(
 literal|"testCheckpointPath"
 argument_list|)
 expr_stmt|;
-name|LaunchCommandFactory
+name|TensorFlowLaunchCommandFactory
 name|launchCommandFactory
 init|=
 name|createLaunchCommandFactory
@@ -484,7 +486,7 @@ name|launchCommandFactory
 operator|.
 name|createLaunchCommand
 argument_list|(
-name|TaskType
+name|TensorFlowRole
 operator|.
 name|TENSORBOARD
 argument_list|,

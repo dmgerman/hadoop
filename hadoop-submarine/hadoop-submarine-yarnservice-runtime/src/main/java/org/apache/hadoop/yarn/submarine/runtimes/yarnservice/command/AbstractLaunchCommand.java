@@ -62,27 +62,9 @@ name|cli
 operator|.
 name|param
 operator|.
+name|runjob
+operator|.
 name|RunJobParameters
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|submarine
-operator|.
-name|common
-operator|.
-name|api
-operator|.
-name|TaskType
 import|;
 end_import
 
@@ -116,16 +98,6 @@ name|IOException
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Objects
-import|;
-end_import
-
 begin_comment
 comment|/**  * Abstract base class for Launch command implementations for Services.  * Currently we have launch command implementations  * for TensorFlow PS, worker and Tensorboard instances.  */
 end_comment
@@ -143,34 +115,25 @@ specifier|final
 name|LaunchScriptBuilder
 name|builder
 decl_stmt|;
-DECL|method|AbstractLaunchCommand (HadoopEnvironmentSetup hadoopEnvSetup, TaskType taskType, Component component, RunJobParameters parameters)
+DECL|method|AbstractLaunchCommand (HadoopEnvironmentSetup hadoopEnvSetup, Component component, RunJobParameters parameters, String launchCommandPrefix)
 specifier|public
 name|AbstractLaunchCommand
 parameter_list|(
 name|HadoopEnvironmentSetup
 name|hadoopEnvSetup
 parameter_list|,
-name|TaskType
-name|taskType
-parameter_list|,
 name|Component
 name|component
 parameter_list|,
 name|RunJobParameters
 name|parameters
+parameter_list|,
+name|String
+name|launchCommandPrefix
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|Objects
-operator|.
-name|requireNonNull
-argument_list|(
-name|taskType
-argument_list|,
-literal|"TaskType must not be null!"
-argument_list|)
-expr_stmt|;
 name|this
 operator|.
 name|builder
@@ -178,10 +141,7 @@ operator|=
 operator|new
 name|LaunchScriptBuilder
 argument_list|(
-name|taskType
-operator|.
-name|name
-argument_list|()
+name|launchCommandPrefix
 argument_list|,
 name|hadoopEnvSetup
 argument_list|,

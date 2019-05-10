@@ -100,7 +100,33 @@ name|cli
 operator|.
 name|param
 operator|.
+name|runjob
+operator|.
 name|RunJobParameters
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|submarine
+operator|.
+name|client
+operator|.
+name|cli
+operator|.
+name|param
+operator|.
+name|runjob
+operator|.
+name|TensorFlowRunJobParameters
 import|;
 end_import
 
@@ -120,7 +146,7 @@ name|common
 operator|.
 name|api
 operator|.
-name|TaskType
+name|TensorFlowRole
 import|;
 end_import
 
@@ -222,7 +248,7 @@ name|yarnservice
 operator|.
 name|command
 operator|.
-name|LaunchCommandFactory
+name|TensorFlowLaunchCommandFactory
 import|;
 end_import
 
@@ -430,7 +456,7 @@ specifier|private
 name|String
 name|tensorboardLink
 decl_stmt|;
-DECL|method|TensorBoardComponent (FileSystemOperations fsOperations, RemoteDirectoryManager remoteDirectoryManager, RunJobParameters parameters, LaunchCommandFactory launchCommandFactory, Configuration yarnConfig)
+DECL|method|TensorBoardComponent (FileSystemOperations fsOperations, RemoteDirectoryManager remoteDirectoryManager, RunJobParameters parameters, TensorFlowLaunchCommandFactory launchCommandFactory, Configuration yarnConfig)
 specifier|public
 name|TensorBoardComponent
 parameter_list|(
@@ -443,7 +469,7 @@ parameter_list|,
 name|RunJobParameters
 name|parameters
 parameter_list|,
-name|LaunchCommandFactory
+name|TensorFlowLaunchCommandFactory
 name|launchCommandFactory
 parameter_list|,
 name|Configuration
@@ -458,7 +484,7 @@ name|remoteDirectoryManager
 argument_list|,
 name|parameters
 argument_list|,
-name|TaskType
+name|TensorFlowRole
 operator|.
 name|TENSORBOARD
 argument_list|,
@@ -478,11 +504,21 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|TensorFlowRunJobParameters
+name|tensorFlowParams
+init|=
+operator|(
+name|TensorFlowRunJobParameters
+operator|)
+name|this
+operator|.
+name|parameters
+decl_stmt|;
 name|Objects
 operator|.
 name|requireNonNull
 argument_list|(
-name|parameters
+name|tensorFlowParams
 operator|.
 name|getTensorboardResource
 argument_list|()
@@ -501,7 +537,7 @@ name|component
 operator|.
 name|setName
 argument_list|(
-name|taskType
+name|role
 operator|.
 name|getComponentName
 argument_list|()
@@ -529,7 +565,7 @@ name|setResource
 argument_list|(
 name|convertYarnResourceToServiceResource
 argument_list|(
-name|parameters
+name|tensorFlowParams
 operator|.
 name|getTensorboardResource
 argument_list|()
@@ -538,7 +574,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|parameters
+name|tensorFlowParams
 operator|.
 name|getTensorboardDockerImage
 argument_list|()
@@ -552,7 +588,7 @@ name|setArtifact
 argument_list|(
 name|getDockerArtifact
 argument_list|(
-name|parameters
+name|tensorFlowParams
 operator|.
 name|getTensorboardDockerImage
 argument_list|()
@@ -564,7 +600,7 @@ name|addCommonEnvironments
 argument_list|(
 name|component
 argument_list|,
-name|taskType
+name|role
 argument_list|)
 expr_stmt|;
 name|generateLaunchCommand
@@ -585,7 +621,7 @@ operator|.
 name|getName
 argument_list|()
 argument_list|,
-name|taskType
+name|role
 operator|.
 name|getComponentName
 argument_list|()

@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.submarine.client.cli
+DECL|package|org.apache.hadoop.yarn.submarine.client.cli.runjob.tensorflow
 package|package
 name|org
 operator|.
@@ -19,6 +19,10 @@ operator|.
 name|client
 operator|.
 name|cli
+operator|.
+name|runjob
+operator|.
+name|tensorflow
 package|;
 end_package
 
@@ -337,10 +341,10 @@ comment|/**  * Test class that verifies the correctness of YAML configuration pa
 end_comment
 
 begin_class
-DECL|class|TestRunJobCliParsingYamlStandalone
+DECL|class|TestRunJobCliParsingTensorFlowYamlStandalone
 specifier|public
 class|class
-name|TestRunJobCliParsingYamlStandalone
+name|TestRunJobCliParsingTensorFlowYamlStandalone
 block|{
 DECL|field|OVERRIDDEN_PREFIX
 specifier|private
@@ -358,22 +362,8 @@ specifier|final
 name|String
 name|DIR_NAME
 init|=
-literal|"runjobcliparsing"
+literal|"runjob-tensorflow-yaml"
 decl_stmt|;
-annotation|@
-name|Before
-DECL|method|before ()
-specifier|public
-name|void
-name|before
-parameter_list|()
-block|{
-name|SubmarineLogs
-operator|.
-name|verboseOff
-argument_list|()
-expr_stmt|;
-block|}
 DECL|method|verifyBasicConfigValues (YamlConfigFile yamlConfigFile)
 specifier|private
 name|void
@@ -1195,6 +1185,20 @@ operator|.
 name|getResources
 argument_list|()
 argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Before
+DECL|method|before ()
+specifier|public
+name|void
+name|before
+parameter_list|()
+block|{
+name|SubmarineLogs
+operator|.
+name|verboseOff
+argument_list|()
 expr_stmt|;
 block|}
 annotation|@

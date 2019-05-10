@@ -78,6 +78,8 @@ name|cli
 operator|.
 name|param
 operator|.
+name|runjob
+operator|.
 name|RunJobParameters
 import|;
 end_import
@@ -98,7 +100,7 @@ name|common
 operator|.
 name|api
 operator|.
-name|TaskType
+name|Role
 import|;
 end_import
 
@@ -218,15 +220,15 @@ specifier|final
 name|String
 name|checkpointPath
 decl_stmt|;
-DECL|method|TensorBoardLaunchCommand (HadoopEnvironmentSetup hadoopEnvSetup, TaskType taskType, Component component, RunJobParameters parameters)
+DECL|method|TensorBoardLaunchCommand (HadoopEnvironmentSetup hadoopEnvSetup, Role role, Component component, RunJobParameters parameters)
 specifier|public
 name|TensorBoardLaunchCommand
 parameter_list|(
 name|HadoopEnvironmentSetup
 name|hadoopEnvSetup
 parameter_list|,
-name|TaskType
-name|taskType
+name|Role
+name|role
 parameter_list|,
 name|Component
 name|component
@@ -241,11 +243,14 @@ name|super
 argument_list|(
 name|hadoopEnvSetup
 argument_list|,
-name|taskType
-argument_list|,
 name|component
 argument_list|,
 name|parameters
+argument_list|,
+name|role
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|Objects

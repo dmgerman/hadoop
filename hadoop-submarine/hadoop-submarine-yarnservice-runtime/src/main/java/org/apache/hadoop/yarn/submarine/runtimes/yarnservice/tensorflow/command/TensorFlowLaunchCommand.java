@@ -78,7 +78,9 @@ name|cli
 operator|.
 name|param
 operator|.
-name|RunJobParameters
+name|runjob
+operator|.
+name|TensorFlowRunJobParameters
 import|;
 end_import
 
@@ -98,7 +100,7 @@ name|common
 operator|.
 name|api
 operator|.
-name|TaskType
+name|Role
 import|;
 end_import
 
@@ -218,6 +220,16 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Objects
+import|;
+end_import
+
 begin_comment
 comment|/**  * Launch command implementation for  * TensorFlow PS and Worker Service components.  */
 end_comment
@@ -277,25 +289,25 @@ specifier|final
 name|String
 name|name
 decl_stmt|;
-DECL|field|taskType
+DECL|field|role
 specifier|private
 specifier|final
-name|TaskType
-name|taskType
+name|Role
+name|role
 decl_stmt|;
-DECL|method|TensorFlowLaunchCommand (HadoopEnvironmentSetup hadoopEnvSetup, TaskType taskType, Component component, RunJobParameters parameters, Configuration yarnConfig)
+DECL|method|TensorFlowLaunchCommand (HadoopEnvironmentSetup hadoopEnvSetup, Role role, Component component, TensorFlowRunJobParameters parameters, Configuration yarnConfig)
 name|TensorFlowLaunchCommand
 parameter_list|(
 name|HadoopEnvironmentSetup
 name|hadoopEnvSetup
 parameter_list|,
-name|TaskType
-name|taskType
+name|Role
+name|role
 parameter_list|,
 name|Component
 name|component
 parameter_list|,
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 name|parameters
 parameter_list|,
 name|Configuration
@@ -308,18 +320,36 @@ name|super
 argument_list|(
 name|hadoopEnvSetup
 argument_list|,
-name|taskType
-argument_list|,
 name|component
 argument_list|,
 name|parameters
+argument_list|,
+name|role
+operator|!=
+literal|null
+condition|?
+name|role
+operator|.
+name|getName
+argument_list|()
+else|:
+literal|""
+argument_list|)
+expr_stmt|;
+name|Objects
+operator|.
+name|requireNonNull
+argument_list|(
+name|role
+argument_list|,
+literal|"TensorFlowRole must not be null!"
 argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|taskType
+name|role
 operator|=
-name|taskType
+name|role
 expr_stmt|;
 name|this
 operator|.
@@ -445,7 +475,7 @@ name|TensorFlowCommons
 operator|.
 name|getTFConfigEnv
 argument_list|(
-name|taskType
+name|role
 operator|.
 name|getComponentName
 argument_list|()

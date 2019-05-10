@@ -92,7 +92,9 @@ name|cli
 operator|.
 name|param
 operator|.
-name|RunJobParameters
+name|runjob
+operator|.
+name|TensorFlowRunJobParameters
 import|;
 end_import
 
@@ -130,7 +132,7 @@ name|common
 operator|.
 name|api
 operator|.
-name|TaskType
+name|TensorFlowRole
 import|;
 end_import
 
@@ -192,7 +194,7 @@ name|yarnservice
 operator|.
 name|command
 operator|.
-name|AbstractLaunchCommandTestHelper
+name|AbstractTFLaunchCommandTestHelper
 import|;
 end_import
 
@@ -331,11 +333,11 @@ specifier|public
 class|class
 name|TestTensorFlowLaunchCommand
 extends|extends
-name|AbstractLaunchCommandTestHelper
+name|AbstractTFLaunchCommandTestHelper
 block|{
 DECL|field|taskType
 specifier|private
-name|TaskType
+name|TensorFlowRole
 name|taskType
 decl_stmt|;
 annotation|@
@@ -373,7 +375,7 @@ operator|new
 name|Object
 index|[]
 block|{
-name|TaskType
+name|TensorFlowRole
 operator|.
 name|WORKER
 block|}
@@ -387,7 +389,7 @@ operator|new
 name|Object
 index|[]
 block|{
-name|TaskType
+name|TensorFlowRole
 operator|.
 name|PS
 block|}
@@ -397,11 +399,11 @@ return|return
 name|params
 return|;
 block|}
-DECL|method|TestTensorFlowLaunchCommand (TaskType taskType)
+DECL|method|TestTensorFlowLaunchCommand (TensorFlowRole taskType)
 specifier|public
 name|TestTensorFlowLaunchCommand
 parameter_list|(
-name|TaskType
+name|TensorFlowRole
 name|taskType
 parameter_list|)
 block|{
@@ -412,7 +414,7 @@ operator|=
 name|taskType
 expr_stmt|;
 block|}
-DECL|method|assertScriptContainsLaunchCommand (List<String> fileContents, RunJobParameters params)
+DECL|method|assertScriptContainsLaunchCommand (List<String> fileContents, TensorFlowRunJobParameters params)
 specifier|private
 name|void
 name|assertScriptContainsLaunchCommand
@@ -423,7 +425,7 @@ name|String
 argument_list|>
 name|fileContents
 parameter_list|,
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 name|params
 parameter_list|)
 block|{
@@ -436,7 +438,7 @@ if|if
 condition|(
 name|taskType
 operator|==
-name|TaskType
+name|TensorFlowRole
 operator|.
 name|WORKER
 condition|)
@@ -454,7 +456,7 @@ if|if
 condition|(
 name|taskType
 operator|==
-name|TaskType
+name|TensorFlowRole
 operator|.
 name|PS
 condition|)
@@ -475,12 +477,12 @@ name|launchCommand
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setLaunchCommandToParams (RunJobParameters params)
+DECL|method|setLaunchCommandToParams (TensorFlowRunJobParameters params)
 specifier|private
 name|void
 name|setLaunchCommandToParams
 parameter_list|(
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 name|params
 parameter_list|)
 block|{
@@ -488,7 +490,7 @@ if|if
 condition|(
 name|taskType
 operator|==
-name|TaskType
+name|TensorFlowRole
 operator|.
 name|WORKER
 condition|)
@@ -506,7 +508,7 @@ if|if
 condition|(
 name|taskType
 operator|==
-name|TaskType
+name|TensorFlowRole
 operator|.
 name|PS
 condition|)
@@ -520,12 +522,12 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|setLaunchCommandToParams (RunJobParameters params, String value)
+DECL|method|setLaunchCommandToParams (TensorFlowRunJobParameters params, String value)
 specifier|private
 name|void
 name|setLaunchCommandToParams
 parameter_list|(
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 name|params
 parameter_list|,
 name|String
@@ -536,7 +538,7 @@ if|if
 condition|(
 name|taskType
 operator|==
-name|TaskType
+name|TensorFlowRole
 operator|.
 name|WORKER
 condition|)
@@ -554,7 +556,7 @@ if|if
 condition|(
 name|taskType
 operator|==
-name|TaskType
+name|TensorFlowRole
 operator|.
 name|PS
 condition|)
@@ -589,7 +591,7 @@ if|if
 condition|(
 name|taskType
 operator|==
-name|TaskType
+name|TensorFlowRole
 operator|.
 name|WORKER
 condition|)
@@ -604,7 +606,7 @@ if|if
 condition|(
 name|taskType
 operator|==
-name|TaskType
+name|TensorFlowRole
 operator|.
 name|PS
 condition|)
@@ -631,7 +633,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|createTensorFlowLaunchCommandObject ( HadoopEnvironmentSetup hadoopEnvSetup, Configuration yarnConfig, Component component, RunJobParameters params)
+DECL|method|createTensorFlowLaunchCommandObject ( HadoopEnvironmentSetup hadoopEnvSetup, Configuration yarnConfig, Component component, TensorFlowRunJobParameters params)
 specifier|private
 name|TensorFlowLaunchCommand
 name|createTensorFlowLaunchCommandObject
@@ -645,7 +647,7 @@ parameter_list|,
 name|Component
 name|component
 parameter_list|,
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 name|params
 parameter_list|)
 throws|throws
@@ -655,7 +657,7 @@ if|if
 condition|(
 name|taskType
 operator|==
-name|TaskType
+name|TensorFlowRole
 operator|.
 name|WORKER
 condition|)
@@ -681,7 +683,7 @@ if|if
 condition|(
 name|taskType
 operator|==
-name|TaskType
+name|TensorFlowRole
 operator|.
 name|PS
 condition|)
@@ -720,11 +722,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 name|params
 init|=
 operator|new
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 argument_list|()
 decl_stmt|;
 name|params
@@ -764,11 +766,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 name|params
 init|=
 operator|new
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 argument_list|()
 decl_stmt|;
 name|params
@@ -891,11 +893,11 @@ operator|new
 name|Component
 argument_list|()
 decl_stmt|;
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 name|params
 init|=
 operator|new
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 argument_list|()
 decl_stmt|;
 name|params
@@ -999,11 +1001,11 @@ operator|new
 name|Component
 argument_list|()
 decl_stmt|;
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 name|params
 init|=
 operator|new
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 argument_list|()
 decl_stmt|;
 name|params
@@ -1071,11 +1073,11 @@ argument_list|(
 literal|null
 argument_list|)
 expr_stmt|;
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 name|params
 init|=
 operator|new
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 argument_list|()
 decl_stmt|;
 name|params
@@ -1139,7 +1141,7 @@ name|expectedException
 operator|.
 name|expectMessage
 argument_list|(
-literal|"TaskType must not be null"
+literal|"TensorFlowRole must not be null"
 argument_list|)
 expr_stmt|;
 name|testHdfsRelatedEnvironmentIsDefined
@@ -1160,11 +1162,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 name|params
 init|=
 operator|new
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 argument_list|()
 decl_stmt|;
 name|params
@@ -1279,11 +1281,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 name|params
 init|=
 operator|new
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 argument_list|()
 decl_stmt|;
 name|params

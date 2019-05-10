@@ -813,6 +813,25 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+DECL|method|addTrackedFile (File file)
+specifier|public
+name|void
+name|addTrackedFile
+parameter_list|(
+name|File
+name|file
+parameter_list|)
+block|{
+name|this
+operator|.
+name|cleanupFiles
+operator|.
+name|add
+argument_list|(
+name|file
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

@@ -154,7 +154,53 @@ name|cli
 operator|.
 name|param
 operator|.
-name|RunJobParameters
+name|ParametersHolder
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|submarine
+operator|.
+name|client
+operator|.
+name|cli
+operator|.
+name|param
+operator|.
+name|runjob
+operator|.
+name|TensorFlowRunJobParameters
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|submarine
+operator|.
+name|client
+operator|.
+name|cli
+operator|.
+name|runjob
+operator|.
+name|Framework
 import|;
 end_import
 
@@ -281,19 +327,43 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|submitJob (RunJobParameters parameters)
+DECL|method|submitJob (ParametersHolder parameters)
 specifier|public
 name|ApplicationId
 name|submitJob
 parameter_list|(
-name|RunJobParameters
+name|ParametersHolder
 name|parameters
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|YarnException
 block|{
+if|if
+condition|(
+name|parameters
+operator|.
+name|getFramework
+argument_list|()
+operator|==
+name|Framework
+operator|.
+name|PYTORCH
+condition|)
+block|{
+comment|// we need to throw an exception, as ParametersHolder's parameters field
+comment|// could not be casted to TensorFlowRunJobParameters.
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Support \"â-framework\" option for PyTorch in Tony is coming. "
+operator|+
+literal|"Please check the documentation about how to submit a "
+operator|+
+literal|"PyTorch job with TonY runtime."
+argument_list|)
+throw|;
+block|}
 name|LOG
 operator|.
 name|info
@@ -323,7 +393,13 @@ name|TonyUtils
 operator|.
 name|tonyConfFromClientContext
 argument_list|(
+operator|(
+name|TensorFlowRunJobParameters
+operator|)
 name|parameters
+operator|.
+name|getParameters
+argument_list|()
 argument_list|)
 decl_stmt|;
 try|try
@@ -413,6 +489,10 @@ operator|::
 name|start
 argument_list|)
 decl_stmt|;
+name|java
+operator|.
+name|lang
+operator|.
 name|Runtime
 operator|.
 name|getRuntime

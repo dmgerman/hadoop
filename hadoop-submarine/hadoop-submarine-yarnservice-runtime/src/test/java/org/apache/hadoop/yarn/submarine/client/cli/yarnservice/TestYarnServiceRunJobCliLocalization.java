@@ -110,6 +110,8 @@ name|client
 operator|.
 name|cli
 operator|.
+name|runjob
+operator|.
 name|RunJobCli
 import|;
 end_import
@@ -479,6 +481,11 @@ name|ParamBuilderForTest
 operator|.
 name|create
 argument_list|()
+operator|.
+name|withFramework
+argument_list|(
+literal|"tensorflow"
+argument_list|)
 operator|.
 name|withJobName
 argument_list|(

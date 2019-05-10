@@ -46,6 +46,11 @@ specifier|private
 name|String
 name|jobType
 decl_stmt|;
+DECL|field|framework
+specifier|private
+name|String
+name|framework
+decl_stmt|;
 DECL|method|getJobType ()
 specifier|public
 name|String
@@ -96,6 +101,32 @@ operator|.
 name|name
 operator|=
 name|name
+expr_stmt|;
+block|}
+DECL|method|getFramework ()
+specifier|public
+name|String
+name|getFramework
+parameter_list|()
+block|{
+return|return
+name|framework
+return|;
+block|}
+DECL|method|setFramework (String framework)
+specifier|public
+name|void
+name|setFramework
+parameter_list|(
+name|String
+name|framework
+parameter_list|)
+block|{
+name|this
+operator|.
+name|framework
+operator|=
+name|framework
 expr_stmt|;
 block|}
 block|}

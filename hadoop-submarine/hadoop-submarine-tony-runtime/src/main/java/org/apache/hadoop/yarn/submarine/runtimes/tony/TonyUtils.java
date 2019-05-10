@@ -154,7 +154,9 @@ name|cli
 operator|.
 name|param
 operator|.
-name|RunJobParameters
+name|runjob
+operator|.
+name|TensorFlowRunJobParameters
 import|;
 end_import
 
@@ -225,13 +227,13 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|method|tonyConfFromClientContext ( RunJobParameters parameters)
+DECL|method|tonyConfFromClientContext ( TensorFlowRunJobParameters parameters)
 specifier|public
 specifier|static
 name|Configuration
 name|tonyConfFromClientContext
 parameter_list|(
-name|RunJobParameters
+name|TensorFlowRunJobParameters
 name|parameters
 parameter_list|)
 block|{

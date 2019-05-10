@@ -62,6 +62,8 @@ name|cli
 operator|.
 name|param
 operator|.
+name|runjob
+operator|.
 name|RunJobParameters
 import|;
 end_import
@@ -237,11 +239,11 @@ specifier|private
 name|String
 name|launchCommand
 decl_stmt|;
-DECL|method|LaunchScriptBuilder (String namePrefix, HadoopEnvironmentSetup hadoopEnvSetup, RunJobParameters parameters, Component component)
+DECL|method|LaunchScriptBuilder (String launchScriptPrefix, HadoopEnvironmentSetup hadoopEnvSetup, RunJobParameters parameters, Component component)
 name|LaunchScriptBuilder
 parameter_list|(
 name|String
-name|namePrefix
+name|launchScriptPrefix
 parameter_list|,
 name|HadoopEnvironmentSetup
 name|hadoopEnvSetup
@@ -263,7 +265,7 @@ name|File
 operator|.
 name|createTempFile
 argument_list|(
-name|namePrefix
+name|launchScriptPrefix
 operator|+
 literal|"-launch-script"
 argument_list|,

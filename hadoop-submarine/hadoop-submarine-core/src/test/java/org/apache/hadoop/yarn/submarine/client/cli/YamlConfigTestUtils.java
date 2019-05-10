@@ -54,6 +54,8 @@ name|cli
 operator|.
 name|param
 operator|.
+name|runjob
+operator|.
 name|RunJobParameters
 operator|.
 name|UnderscoreConverterPropertyUtils
@@ -157,6 +159,7 @@ name|YamlConfigTestUtils
 parameter_list|()
 block|{}
 DECL|method|deleteFile (File file)
+specifier|public
 specifier|static
 name|void
 name|deleteFile
@@ -180,6 +183,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|readYamlConfigFile (String filename)
+specifier|public
 specifier|static
 name|YamlConfigFile
 name|readYamlConfigFile
@@ -246,6 +250,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|createTempFileWithContents (String filename)
+specifier|public
 specifier|static
 name|File
 name|createTempFileWithContents
@@ -297,6 +302,7 @@ name|targetFile
 return|;
 block|}
 DECL|method|createEmptyTempFile ()
+specifier|public
 specifier|static
 name|File
 name|createEmptyTempFile
