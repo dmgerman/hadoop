@@ -26,6 +26,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|slf4j
@@ -414,6 +428,21 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getAllocations ()
+specifier|public
+name|List
+argument_list|<
+name|AppAllocationInfo
+argument_list|>
+name|getAllocations
+parameter_list|()
+block|{
+return|return
+name|allocations
+return|;
 block|}
 block|}
 end_class
