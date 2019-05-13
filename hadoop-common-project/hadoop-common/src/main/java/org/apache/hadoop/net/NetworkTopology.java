@@ -3049,6 +3049,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Returns an integer weight which specifies how far away {node} is away from    * {reader}. A lower value signifies that a node is closer.    *     * @param reader Node where data will be read    * @param node Replica of data    * @return weight    */
+annotation|@
+name|VisibleForTesting
 DECL|method|getWeight (Node reader, Node node)
 specifier|protected
 name|int
@@ -3231,8 +3233,10 @@ name|weight
 return|;
 block|}
 comment|/**    * Returns an integer weight which specifies how far away<i>node</i> is    * from<i>reader</i>. A lower value signifies that a node is closer.    * It uses network location to calculate the weight    *    * @param reader Node where data will be read    * @param node Replica of data    * @return weight    */
+annotation|@
+name|VisibleForTesting
 DECL|method|getWeightUsingNetworkLocation (Node reader, Node node)
-specifier|private
+specifier|protected
 specifier|static
 name|int
 name|getWeightUsingNetworkLocation
@@ -3404,6 +3408,8 @@ name|currentLevel
 operator|++
 expr_stmt|;
 block|}
+comment|// +2 to correct the weight between reader and node rather than
+comment|// between parent of reader and parent of node.
 name|weight
 operator|=
 operator|(
@@ -3421,6 +3427,8 @@ name|length
 operator|-
 name|currentLevel
 operator|)
+operator|+
+literal|2
 expr_stmt|;
 block|}
 block|}
