@@ -76,7 +76,9 @@ name|__
 argument_list|(
 literal|"function reopenQueryNodes() {"
 argument_list|,
-literal|"  var currentParam = window.location.href.split('?');"
+literal|"  var currentParam = decodeURIComponent(window.location.href)"
+operator|+
+literal|".split('?');"
 argument_list|,
 literal|"  var tmpCurrentParam = currentParam;"
 argument_list|,
@@ -307,6 +309,8 @@ argument_list|,
 literal|""
 argument_list|,
 literal|"function removeQueueName(queryString, queueName) {"
+argument_list|,
+literal|"  queryString = decodeURIComponent(queryString);"
 argument_list|,
 literal|"  var index = queryString.indexOf(queueName);"
 argument_list|,
