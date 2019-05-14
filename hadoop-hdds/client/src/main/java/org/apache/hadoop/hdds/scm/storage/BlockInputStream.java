@@ -28,6 +28,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|base
 operator|.
 name|Preconditions
@@ -402,10 +416,21 @@ name|ChunkInfo
 argument_list|>
 name|chunks
 decl_stmt|;
+comment|// ChunkIndex points to the index current chunk in the buffers or the the
+comment|// index of chunk which will be read next into the buffers in
+comment|// readChunkFromContainer().
 DECL|field|chunkIndex
 specifier|private
 name|int
 name|chunkIndex
+decl_stmt|;
+comment|// ChunkIndexOfCurrentBuffer points to the index of chunk read into the
+comment|// buffers or index of the last chunk in the buffers. It is updated only
+comment|// when a new chunk is read from container into the buffers.
+DECL|field|chunkIndexOfCurrentBuffer
+specifier|private
+name|int
+name|chunkIndexOfCurrentBuffer
 decl_stmt|;
 DECL|field|chunkOffset
 specifier|private
@@ -426,14 +451,19 @@ specifier|private
 name|int
 name|bufferIndex
 decl_stmt|;
+DECL|field|bufferPosition
+specifier|private
+name|long
+name|bufferPosition
+decl_stmt|;
 DECL|field|verifyChecksum
 specifier|private
 specifier|final
 name|boolean
 name|verifyChecksum
 decl_stmt|;
-comment|/**    * Creates a new BlockInputStream.    *    * @param blockID block ID of the chunk    * @param xceiverClientManager client manager that controls client    * @param xceiverClient client to perform container calls    * @param chunks list of chunks to read    * @param traceID container protocol call traceID    * @param verifyChecksum verify checksum    */
-DECL|method|BlockInputStream ( BlockID blockID, XceiverClientManager xceiverClientManager, XceiverClientSpi xceiverClient, List<ChunkInfo> chunks, String traceID, boolean verifyChecksum)
+comment|/**    * Creates a new BlockInputStream.    *    * @param blockID block ID of the chunk    * @param xceiverClientManager client manager that controls client    * @param xceiverClient client to perform container calls    * @param chunks list of chunks to read    * @param traceID container protocol call traceID    * @param verifyChecksum verify checksum    * @param initialPosition the initial position of the stream pointer. This    *                        position is seeked now if the up-stream was seeked    *                        before this was created.    */
+DECL|method|BlockInputStream ( BlockID blockID, XceiverClientManager xceiverClientManager, XceiverClientSpi xceiverClient, List<ChunkInfo> chunks, String traceID, boolean verifyChecksum, long initialPosition)
 specifier|public
 name|BlockInputStream
 parameter_list|(
@@ -457,7 +487,12 @@ name|traceID
 parameter_list|,
 name|boolean
 name|verifyChecksum
+parameter_list|,
+name|long
+name|initialPosition
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|this
 operator|.
@@ -492,6 +527,12 @@ expr_stmt|;
 name|this
 operator|.
 name|chunkIndex
+operator|=
+literal|0
+expr_stmt|;
+name|this
+operator|.
+name|chunkIndexOfCurrentBuffer
 operator|=
 operator|-
 literal|1
@@ -530,10 +571,32 @@ literal|0
 expr_stmt|;
 name|this
 operator|.
+name|bufferPosition
+operator|=
+operator|-
+literal|1
+expr_stmt|;
+name|this
+operator|.
 name|verifyChecksum
 operator|=
 name|verifyChecksum
 expr_stmt|;
+if|if
+condition|(
+name|initialPosition
+operator|>
+literal|0
+condition|)
+block|{
+comment|// The stream was seeked to a position before the stream was
+comment|// initialized. So seeking to the position now.
+name|seek
+argument_list|(
+name|initialPosition
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|initializeChunkOffset ()
 specifier|private
@@ -841,7 +904,7 @@ return|;
 block|}
 comment|/**    * Determines if all data in the stream has been consumed.    *    * @return true if EOF, false if more data is available    */
 DECL|method|blockStreamEOF ()
-specifier|private
+specifier|protected
 name|boolean
 name|blockStreamEOF
 parameter_list|()
@@ -1000,6 +1063,19 @@ control|)
 block|{
 if|if
 condition|(
+operator|!
+name|buffersAllocated
+argument_list|()
+condition|)
+block|{
+comment|// The current chunk at chunkIndex has not been read from the
+comment|// container. Read the chunk and put the data into buffers.
+name|readChunkFromContainer
+argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
 name|buffersHaveData
 argument_list|()
 condition|)
@@ -1039,6 +1115,11 @@ argument_list|()
 condition|)
 block|{
 comment|// There are additional chunks available.
+comment|// Read the next chunk in the block.
+name|chunkIndex
+operator|+=
+literal|1
+expr_stmt|;
 name|readChunkFromContainer
 argument_list|()
 expr_stmt|;
@@ -1052,17 +1133,12 @@ return|;
 block|}
 block|}
 block|}
-DECL|method|buffersHaveData ()
+DECL|method|buffersAllocated ()
 specifier|private
 name|boolean
-name|buffersHaveData
+name|buffersAllocated
 parameter_list|()
 block|{
-name|boolean
-name|hasData
-init|=
-literal|false
-decl_stmt|;
 if|if
 condition|(
 name|buffers
@@ -1079,6 +1155,27 @@ return|return
 literal|false
 return|;
 block|}
+return|return
+literal|true
+return|;
+block|}
+DECL|method|buffersHaveData ()
+specifier|private
+name|boolean
+name|buffersHaveData
+parameter_list|()
+block|{
+name|boolean
+name|hasData
+init|=
+literal|false
+decl_stmt|;
+if|if
+condition|(
+name|buffersAllocated
+argument_list|()
+condition|)
+block|{
 while|while
 condition|(
 name|bufferIndex
@@ -1143,6 +1240,7 @@ break|break;
 block|}
 block|}
 block|}
+block|}
 return|return
 name|hasData
 return|;
@@ -1192,8 +1290,9 @@ return|return
 literal|false
 return|;
 block|}
-return|return
-operator|(
+comment|// Check if more chunks are remaining in the stream after chunkIndex
+if|if
+condition|(
 name|chunkIndex
 operator|<
 operator|(
@@ -1204,7 +1303,19 @@ argument_list|()
 operator|-
 literal|1
 operator|)
-operator|)
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+comment|// ChunkIndex is the last chunk in the stream. Check if this chunk has
+comment|// been read from container or not. Return true if chunkIndex has not
+comment|// been read yet and false otherwise.
+return|return
+name|chunkIndexOfCurrentBuffer
+operator|!=
+name|chunkIndex
 return|;
 block|}
 comment|/**    * Attempts to read the chunk at the specified offset in the chunk list.  If    * successful, then the data of the read chunk is saved so that its bytes can    * be returned from subsequent read calls.    *    * @throws IOException if there is an I/O error while performing the call    */
@@ -1217,20 +1328,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-comment|// On every chunk read chunkIndex should be increased so as to read the
-comment|// next chunk
-name|chunkIndex
-operator|+=
-literal|1
-expr_stmt|;
-name|XceiverClientReply
-name|reply
-decl_stmt|;
-name|ReadChunkResponseProto
-name|readChunkResponse
-init|=
-literal|null
-decl_stmt|;
+comment|// Read the chunk at chunkIndex
 specifier|final
 name|ChunkInfo
 name|chunkInfo
@@ -1259,12 +1357,7 @@ name|DatanodeDetails
 argument_list|>
 name|dnList
 init|=
-name|xceiverClient
-operator|.
-name|getPipeline
-argument_list|()
-operator|.
-name|getNodes
+name|getDatanodeList
 argument_list|()
 decl_stmt|;
 while|while
@@ -1272,116 +1365,27 @@ condition|(
 literal|true
 condition|)
 block|{
-try|try
-block|{
-name|reply
-operator|=
-name|ContainerProtocolCalls
-operator|.
-name|readChunk
-argument_list|(
-name|xceiverClient
-argument_list|,
-name|chunkInfo
-argument_list|,
-name|blockID
-argument_list|,
-name|traceID
-argument_list|,
-name|excludeDns
-argument_list|)
-expr_stmt|;
-name|ContainerProtos
-operator|.
-name|ContainerCommandResponseProto
-name|response
+name|List
+argument_list|<
+name|DatanodeDetails
+argument_list|>
+name|dnListFromReadChunkCall
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
 decl_stmt|;
-name|response
-operator|=
-name|reply
-operator|.
-name|getResponse
-argument_list|()
-operator|.
-name|get
-argument_list|()
-expr_stmt|;
-name|ContainerProtocolCalls
-operator|.
-name|validateContainerResponse
-argument_list|(
-name|response
-argument_list|)
-expr_stmt|;
-name|readChunkResponse
-operator|=
-name|response
-operator|.
-name|getReadChunk
-argument_list|()
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-if|if
-condition|(
-name|e
-operator|instanceof
-name|StorageContainerException
-condition|)
-block|{
-throw|throw
-name|e
-throw|;
-block|}
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Unexpected OzoneException: "
-operator|+
-name|e
-operator|.
-name|toString
-argument_list|()
-argument_list|,
-name|e
-argument_list|)
-throw|;
-block|}
-catch|catch
-parameter_list|(
-name|ExecutionException
-decl||
-name|InterruptedException
-name|e
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Failed to execute ReadChunk command for chunk  "
-operator|+
-name|chunkInfo
-operator|.
-name|getChunkName
-argument_list|()
-argument_list|,
-name|e
-argument_list|)
-throw|;
-block|}
 name|byteString
 operator|=
-name|readChunkResponse
-operator|.
-name|getData
-argument_list|()
+name|readChunk
+argument_list|(
+name|chunkInfo
+argument_list|,
+name|excludeDns
+argument_list|,
+name|dnListFromReadChunkCall
+argument_list|)
 expr_stmt|;
 try|try
 block|{
@@ -1486,10 +1490,7 @@ name|excludeDns
 operator|.
 name|addAll
 argument_list|(
-name|reply
-operator|.
-name|getDatanodes
-argument_list|()
+name|dnListFromReadChunkCall
 argument_list|)
 expr_stmt|;
 if|if
@@ -1522,6 +1523,193 @@ name|bufferIndex
 operator|=
 literal|0
 expr_stmt|;
+name|chunkIndexOfCurrentBuffer
+operator|=
+name|chunkIndex
+expr_stmt|;
+comment|// The bufferIndex and position might need to be adjusted if seek() was
+comment|// called on the stream before. This needs to be done so that the buffer
+comment|// position can be advanced to the 'seeked' position.
+name|adjustBufferIndex
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Send RPC call to get the chunk from the container.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|readChunk (final ChunkInfo chunkInfo, List<DatanodeDetails> excludeDns, List<DatanodeDetails> dnListFromReply)
+specifier|protected
+name|ByteString
+name|readChunk
+parameter_list|(
+specifier|final
+name|ChunkInfo
+name|chunkInfo
+parameter_list|,
+name|List
+argument_list|<
+name|DatanodeDetails
+argument_list|>
+name|excludeDns
+parameter_list|,
+name|List
+argument_list|<
+name|DatanodeDetails
+argument_list|>
+name|dnListFromReply
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|XceiverClientReply
+name|reply
+decl_stmt|;
+name|ReadChunkResponseProto
+name|readChunkResponse
+init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|reply
+operator|=
+name|ContainerProtocolCalls
+operator|.
+name|readChunk
+argument_list|(
+name|xceiverClient
+argument_list|,
+name|chunkInfo
+argument_list|,
+name|blockID
+argument_list|,
+name|traceID
+argument_list|,
+name|excludeDns
+argument_list|)
+expr_stmt|;
+name|ContainerProtos
+operator|.
+name|ContainerCommandResponseProto
+name|response
+decl_stmt|;
+name|response
+operator|=
+name|reply
+operator|.
+name|getResponse
+argument_list|()
+operator|.
+name|get
+argument_list|()
+expr_stmt|;
+name|ContainerProtocolCalls
+operator|.
+name|validateContainerResponse
+argument_list|(
+name|response
+argument_list|)
+expr_stmt|;
+name|readChunkResponse
+operator|=
+name|response
+operator|.
+name|getReadChunk
+argument_list|()
+expr_stmt|;
+name|dnListFromReply
+operator|.
+name|addAll
+argument_list|(
+name|reply
+operator|.
+name|getDatanodes
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+if|if
+condition|(
+name|e
+operator|instanceof
+name|StorageContainerException
+condition|)
+block|{
+throw|throw
+name|e
+throw|;
+block|}
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Unexpected OzoneException: "
+operator|+
+name|e
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|ExecutionException
+decl||
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Failed to execute ReadChunk command for chunk  "
+operator|+
+name|chunkInfo
+operator|.
+name|getChunkName
+argument_list|()
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
+return|return
+name|readChunkResponse
+operator|.
+name|getData
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getDatanodeList ()
+specifier|protected
+name|List
+argument_list|<
+name|DatanodeDetails
+argument_list|>
+name|getDatanodeList
+parameter_list|()
+block|{
+return|return
+name|xceiverClient
+operator|.
+name|getPipeline
+argument_list|()
+operator|.
+name|getNodes
+argument_list|()
+return|;
 block|}
 annotation|@
 name|Override
@@ -1601,27 +1789,6 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-if|if
-condition|(
-name|chunkIndex
-operator|==
-operator|-
-literal|1
-condition|)
-block|{
-name|chunkIndex
-operator|=
-name|Arrays
-operator|.
-name|binarySearch
-argument_list|(
-name|chunkOffset
-argument_list|,
-name|pos
-argument_list|)
-expr_stmt|;
-block|}
-elseif|else
 if|if
 condition|(
 name|pos
@@ -1709,36 +1876,68 @@ operator|-
 literal|2
 expr_stmt|;
 block|}
-comment|// adjust chunkIndex so that readChunkFromContainer reads the correct chunk
-name|chunkIndex
-operator|-=
-literal|1
-expr_stmt|;
-name|readChunkFromContainer
-argument_list|()
-expr_stmt|;
-name|adjustBufferIndex
-argument_list|(
+comment|// The bufferPosition should be adjusted to account for the chunk offset
+comment|// of the chunk the the pos actually points to.
+name|bufferPosition
+operator|=
 name|pos
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|adjustBufferIndex (long pos)
-specifier|private
-name|void
-name|adjustBufferIndex
-parameter_list|(
-name|long
-name|pos
-parameter_list|)
-block|{
-name|long
-name|tempOffest
-init|=
+operator|-
 name|chunkOffset
 index|[
 name|chunkIndex
 index|]
+expr_stmt|;
+comment|// Check if current buffers correspond to the chunk index being seeked
+comment|// and if the buffers have any data.
+if|if
+condition|(
+name|chunkIndex
+operator|==
+name|chunkIndexOfCurrentBuffer
+operator|&&
+name|buffersAllocated
+argument_list|()
+condition|)
+block|{
+comment|// Position the buffer to the seeked position.
+name|adjustBufferIndex
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// Release the current buffers. The next readChunkFromContainer will
+comment|// read the required chunk and position the buffer to the seeked
+comment|// position.
+name|releaseBuffers
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+DECL|method|adjustBufferIndex ()
+specifier|private
+name|void
+name|adjustBufferIndex
+parameter_list|()
+block|{
+if|if
+condition|(
+name|bufferPosition
+operator|==
+operator|-
+literal|1
+condition|)
+block|{
+comment|// The stream has not been seeked to a position. No need to adjust the
+comment|// buffer Index and position.
+return|return;
+block|}
+comment|// The bufferPosition is w.r.t the buffers for current chunk.
+comment|// Adjust the bufferIndex and position to the seeked position.
+name|long
+name|tempOffest
+init|=
+literal|0
 decl_stmt|;
 for|for
 control|(
@@ -1760,7 +1959,7 @@ control|)
 block|{
 if|if
 condition|(
-name|pos
+name|bufferPosition
 operator|-
 name|tempOffest
 operator|>=
@@ -1810,11 +2009,17 @@ call|(
 name|int
 call|)
 argument_list|(
-name|pos
+name|bufferPosition
 operator|-
 name|tempOffest
 argument_list|)
 argument_list|)
+expr_stmt|;
+comment|// Reset the bufferPosition as the seek() operation has been completed.
+name|bufferPosition
+operator|=
+operator|-
+literal|1
 expr_stmt|;
 block|}
 annotation|@
@@ -1828,19 +2033,30 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+comment|// position = chunkOffset of current chunk (at chunkIndex) + position of
+comment|// the buffer corresponding to the chunk.
+name|long
+name|bufferPos
+init|=
+literal|0
+decl_stmt|;
 if|if
 condition|(
-name|chunkIndex
-operator|==
-operator|-
-literal|1
+name|bufferPosition
+operator|>=
+literal|0
 condition|)
 block|{
-comment|// no data consumed yet, a new stream OR after seek
-return|return
-literal|0
-return|;
+comment|// seek has been called but the buffers were empty. Hence, the buffer
+comment|// position will be advanced after the buffers are filled.
+comment|// We return the chunkOffset + bufferPosition here as that will be the
+comment|// position of the buffer pointer after reading the chunk file.
+name|bufferPos
+operator|=
+name|bufferPosition
+expr_stmt|;
 block|}
+elseif|else
 if|if
 condition|(
 name|blockStreamEOF
@@ -1849,12 +2065,8 @@ condition|)
 block|{
 comment|// all data consumed, buffers have been released.
 comment|// get position from the chunk offset and chunk length of last chunk
-return|return
-name|chunkOffset
-index|[
-name|chunkIndex
-index|]
-operator|+
+name|bufferPos
+operator|=
 name|chunks
 operator|.
 name|get
@@ -1864,15 +2076,18 @@ argument_list|)
 operator|.
 name|getLen
 argument_list|()
-return|;
+expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+name|buffersAllocated
+argument_list|()
+condition|)
+block|{
 comment|// get position from available buffers of current chunk
-return|return
-name|chunkOffset
-index|[
-name|chunkIndex
-index|]
-operator|+
+name|bufferPos
+operator|=
 name|buffers
 operator|.
 name|get
@@ -1882,6 +2097,15 @@ argument_list|)
 operator|.
 name|position
 argument_list|()
+expr_stmt|;
+block|}
+return|return
+name|chunkOffset
+index|[
+name|chunkIndex
+index|]
+operator|+
+name|bufferPos
 return|;
 block|}
 annotation|@
@@ -1909,6 +2133,18 @@ parameter_list|()
 block|{
 return|return
 name|blockID
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getChunkIndex ()
+specifier|protected
+name|int
+name|getChunkIndex
+parameter_list|()
+block|{
+return|return
+name|chunkIndex
 return|;
 block|}
 block|}
