@@ -1149,7 +1149,9 @@ argument_list|()
 condition|)
 block|{
 return|return
-literal|null
+name|ExecutionType
+operator|.
+name|GUARANTEED
 return|;
 block|}
 return|return
