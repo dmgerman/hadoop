@@ -1259,6 +1259,11 @@ specifier|private
 name|boolean
 name|timelineServiceV2Enabled
 decl_stmt|;
+DECL|field|nodelabelsEnabled
+specifier|private
+name|boolean
+name|nodelabelsEnabled
+decl_stmt|;
 annotation|@
 name|Override
 DECL|method|init (ApplicationMasterServiceContext amsContext, ApplicationMasterServiceProcessor nextProcessor)
@@ -1298,6 +1303,20 @@ operator|=
 name|YarnConfiguration
 operator|.
 name|timelineServiceV2Enabled
+argument_list|(
+name|rmContext
+operator|.
+name|getYarnConfiguration
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|nodelabelsEnabled
+operator|=
+name|YarnConfiguration
+operator|.
+name|areNodeLabelsEnabled
 argument_list|(
 name|rmContext
 operator|.
@@ -1943,6 +1962,8 @@ argument_list|()
 argument_list|,
 name|getRmContext
 argument_list|()
+argument_list|,
+name|nodelabelsEnabled
 argument_list|)
 expr_stmt|;
 block|}

@@ -1733,7 +1733,7 @@ name|msg
 return|;
 block|}
 comment|/**    * Utility method to validate a list resource requests, by ensuring that the    * requested memory/vcore is non-negative and not greater than max    */
-DECL|method|normalizeAndValidateRequests (List<ResourceRequest> ask, Resource maximumAllocation, String queueName, YarnScheduler scheduler, RMContext rmContext)
+DECL|method|normalizeAndValidateRequests (List<ResourceRequest> ask, Resource maximumAllocation, String queueName, YarnScheduler scheduler, RMContext rmContext, boolean nodeLabelsEnabled)
 specifier|public
 specifier|static
 name|void
@@ -1756,6 +1756,9 @@ name|scheduler
 parameter_list|,
 name|RMContext
 name|rmContext
+parameter_list|,
+name|boolean
+name|nodeLabelsEnabled
 parameter_list|)
 throws|throws
 name|InvalidResourceRequestException
@@ -1809,11 +1812,11 @@ name|maximumAllocation
 argument_list|,
 name|queueName
 argument_list|,
-name|scheduler
-argument_list|,
 name|rmContext
 argument_list|,
 name|queueInfo
+argument_list|,
+name|nodeLabelsEnabled
 argument_list|)
 expr_stmt|;
 block|}

@@ -384,22 +384,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|conf
-operator|.
-name|YarnConfiguration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|exceptions
 operator|.
 name|InvalidLabelResourceRequestException
@@ -1301,7 +1285,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|normalizeAndValidateRequest (ResourceRequest resReq, Resource maximumAllocation, String queueName, YarnScheduler scheduler, boolean isRecovery, RMContext rmContext, QueueInfo queueInfo)
+DECL|method|normalizeAndValidateRequest (ResourceRequest resReq, Resource maximumAllocation, String queueName, boolean isRecovery, RMContext rmContext, QueueInfo queueInfo, boolean nodeLabelsEnabled)
 specifier|public
 specifier|static
 name|void
@@ -1316,9 +1300,6 @@ parameter_list|,
 name|String
 name|queueName
 parameter_list|,
-name|YarnScheduler
-name|scheduler
-parameter_list|,
 name|boolean
 name|isRecovery
 parameter_list|,
@@ -1327,6 +1308,9 @@ name|rmContext
 parameter_list|,
 name|QueueInfo
 name|queueInfo
+parameter_list|,
+name|boolean
+name|nodeLabelsEnabled
 parameter_list|)
 throws|throws
 name|InvalidResourceRequestException
@@ -1347,12 +1331,7 @@ operator|!=
 name|conf
 operator|&&
 operator|!
-name|YarnConfiguration
-operator|.
-name|areNodeLabelsEnabled
-argument_list|(
-name|conf
-argument_list|)
+name|nodeLabelsEnabled
 condition|)
 block|{
 name|String
@@ -1425,7 +1404,10 @@ try|try
 block|{
 name|queueInfo
 operator|=
-name|scheduler
+name|rmContext
+operator|.
+name|getScheduler
+argument_list|()
 operator|.
 name|getQueueInfo
 argument_list|(
@@ -1475,7 +1457,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|normalizeAndValidateRequest (ResourceRequest resReq, Resource maximumAllocation, String queueName, YarnScheduler scheduler, RMContext rmContext, QueueInfo queueInfo)
+DECL|method|normalizeAndValidateRequest (ResourceRequest resReq, Resource maximumAllocation, String queueName, RMContext rmContext, QueueInfo queueInfo, boolean nodeLabelsEnabled)
 specifier|public
 specifier|static
 name|void
@@ -1490,14 +1472,14 @@ parameter_list|,
 name|String
 name|queueName
 parameter_list|,
-name|YarnScheduler
-name|scheduler
-parameter_list|,
 name|RMContext
 name|rmContext
 parameter_list|,
 name|QueueInfo
 name|queueInfo
+parameter_list|,
+name|boolean
+name|nodeLabelsEnabled
 parameter_list|)
 throws|throws
 name|InvalidResourceRequestException
@@ -1510,13 +1492,13 @@ name|maximumAllocation
 argument_list|,
 name|queueName
 argument_list|,
-name|scheduler
-argument_list|,
 literal|false
 argument_list|,
 name|rmContext
 argument_list|,
 name|queueInfo
+argument_list|,
+name|nodeLabelsEnabled
 argument_list|)
 expr_stmt|;
 block|}
