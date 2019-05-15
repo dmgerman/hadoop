@@ -1209,6 +1209,18 @@ name|chooseRandom
 argument_list|()
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getAliasMap ()
+specifier|public
+name|BlockAliasMap
+name|getAliasMap
+parameter_list|()
+block|{
+return|return
+name|aliasMap
+return|;
+block|}
 comment|/**    * Builder used for creating {@link LocatedBlocks} when a block is provided.    */
 DECL|class|ProvidedBlocksBuilder
 class|class

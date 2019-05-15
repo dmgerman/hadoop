@@ -220,20 +220,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|UserGroupInformation
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -771,24 +757,6 @@ DECL|method|InMemoryLevelDBAliasMapClient ()
 name|InMemoryLevelDBAliasMapClient
 parameter_list|()
 block|{
-if|if
-condition|(
-name|UserGroupInformation
-operator|.
-name|isSecurityEnabled
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|(
-literal|"Unable to start "
-operator|+
-literal|"InMemoryLevelDBAliasMapClient as security is enabled"
-argument_list|)
-throw|;
-block|}
 name|aliasMaps
 operator|=
 operator|new
@@ -883,7 +851,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Unable to retrive InMemoryAliasMap for block pool id "
+literal|"Unable to retrieve InMemoryAliasMap for block pool id "
 operator|+
 name|blockPoolID
 argument_list|)

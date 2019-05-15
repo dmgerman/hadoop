@@ -56,6 +56,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|proto
@@ -78,8 +92,22 @@ name|ProtocolInfo
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|KerberosInfo
+import|;
+end_import
+
 begin_comment
-comment|/**  * Protocol between the Namenode and the Datanode to read the AliasMap  * used for Provided storage.  * TODO add Kerberos support  */
+comment|/**  * Protocol between the Namenode and the Datanode to read the AliasMap  * used for Provided storage.  */
 end_comment
 
 begin_interface
@@ -93,6 +121,15 @@ argument_list|,
 name|protocolVersion
 operator|=
 literal|1
+argument_list|)
+annotation|@
+name|KerberosInfo
+argument_list|(
+name|serverPrincipal
+operator|=
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_KERBEROS_PRINCIPAL_KEY
 argument_list|)
 annotation|@
 name|InterfaceAudience
