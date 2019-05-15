@@ -4333,6 +4333,11 @@ decl_stmt|;
 if|if
 condition|(
 name|ask
+operator|!=
+literal|null
+operator|&&
+operator|(
+name|ask
 operator|.
 name|getCount
 argument_list|()
@@ -4350,6 +4355,7 @@ operator|.
 name|getPerAllocationResource
 argument_list|()
 argument_list|)
+operator|)
 condition|)
 block|{
 return|return
