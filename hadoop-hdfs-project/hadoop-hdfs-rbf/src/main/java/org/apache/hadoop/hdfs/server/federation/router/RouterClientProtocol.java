@@ -1816,6 +1816,8 @@ argument_list|(
 name|src
 argument_list|,
 literal|false
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|RemoteMethod
@@ -2662,6 +2664,8 @@ argument_list|(
 name|src
 argument_list|,
 literal|true
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|RemoteMethod
@@ -2952,6 +2956,8 @@ argument_list|(
 name|src
 argument_list|,
 literal|true
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|RemoteMethod
@@ -3067,6 +3073,8 @@ argument_list|(
 name|src
 argument_list|,
 literal|true
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|RemoteMethod
@@ -3899,6 +3907,8 @@ argument_list|(
 name|src
 argument_list|,
 literal|true
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|RemoteMethod
@@ -5204,6 +5214,8 @@ argument_list|(
 name|src
 argument_list|,
 literal|true
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|RemoteMethod
@@ -5805,6 +5817,8 @@ argument_list|(
 name|src
 argument_list|,
 literal|false
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|RemoteMethod
@@ -6054,6 +6068,8 @@ argument_list|(
 name|src
 argument_list|,
 literal|false
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|RemoteMethod
@@ -6141,6 +6157,8 @@ operator|.
 name|getLocationsForPath
 argument_list|(
 name|src
+argument_list|,
+literal|false
 argument_list|,
 literal|false
 argument_list|)
@@ -6231,6 +6249,8 @@ operator|.
 name|getLocationsForPath
 argument_list|(
 name|src
+argument_list|,
+literal|false
 argument_list|,
 literal|false
 argument_list|)
@@ -7640,6 +7660,8 @@ argument_list|(
 name|path
 argument_list|,
 literal|false
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|RemoteMethod
@@ -7825,6 +7847,8 @@ operator|.
 name|getLocationsForPath
 argument_list|(
 name|path
+argument_list|,
+literal|false
 argument_list|,
 literal|false
 argument_list|)
@@ -8162,6 +8186,8 @@ argument_list|(
 name|src
 argument_list|,
 literal|true
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|RemoteMethod
@@ -8266,6 +8292,8 @@ argument_list|(
 name|src
 argument_list|,
 literal|true
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|RemoteMethod
@@ -8495,6 +8523,8 @@ argument_list|(
 name|path
 argument_list|,
 literal|true
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|RemoteMethod
@@ -9073,6 +9103,8 @@ argument_list|(
 name|src
 argument_list|,
 literal|true
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|RemoteMethod
@@ -9189,6 +9221,8 @@ argument_list|(
 name|src
 argument_list|,
 literal|true
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|RemoteMethod
@@ -9299,6 +9333,8 @@ argument_list|(
 name|src
 argument_list|,
 literal|true
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|RemoteMethod
@@ -9403,6 +9439,8 @@ argument_list|(
 name|src
 argument_list|,
 literal|true
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|RemoteMethod
@@ -9513,6 +9551,8 @@ argument_list|(
 name|src
 argument_list|,
 literal|true
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|RemoteMethod
@@ -9623,6 +9663,8 @@ argument_list|(
 name|src
 argument_list|,
 literal|false
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|RemoteMethod
@@ -9714,6 +9756,8 @@ argument_list|(
 name|src
 argument_list|,
 literal|true
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|RemoteMethod
@@ -9799,6 +9843,8 @@ operator|.
 name|getLocationsForPath
 argument_list|(
 name|src
+argument_list|,
+literal|false
 argument_list|,
 literal|false
 argument_list|)
@@ -10005,6 +10051,8 @@ argument_list|(
 name|src
 argument_list|,
 literal|true
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|RemoteMethod
@@ -10141,6 +10189,8 @@ argument_list|(
 name|src
 argument_list|,
 literal|false
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 end_decl_stmt
@@ -10267,6 +10317,8 @@ argument_list|(
 name|src
 argument_list|,
 literal|false
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 end_decl_stmt
@@ -10376,6 +10428,8 @@ argument_list|(
 name|src
 argument_list|,
 literal|true
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|RemoteMethod
@@ -10489,6 +10543,8 @@ argument_list|(
 name|path
 argument_list|,
 literal|true
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|RemoteMethod
@@ -11605,6 +11661,8 @@ argument_list|(
 name|dst
 argument_list|,
 literal|true
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -12880,6 +12938,8 @@ operator|.
 name|getLocationsForPath
 argument_list|(
 name|src
+argument_list|,
+literal|false
 argument_list|,
 literal|false
 argument_list|)
