@@ -395,6 +395,15 @@ argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
+comment|// wish we could have done this from ContainerData.setState
+name|container
+operator|.
+name|getContainerData
+argument_list|()
+operator|.
+name|commitSpace
+argument_list|()
+expr_stmt|;
 return|return
 literal|true
 return|;

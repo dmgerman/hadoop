@@ -372,6 +372,20 @@ name|UUID
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicLong
+import|;
+end_import
+
 begin_comment
 comment|/**  * HddsVolume represents volume in a datanode. {@link VolumeSet} maintains a  * list of HddsVolumes, one for each volume in the Datanode.  * {@link VolumeInfo} in encompassed by this class.  *<p>  * The disk layout per volume is as follows:  *<p>../hdds/VERSION  *<p>{@literal ../hdds/<<scmUuid>>/current/<<containerDir>>/<<containerID  *>>/metadata}  *<p>{@literal ../hdds/<<scmUuid>>/current/<<containerDir>>/<<containerID  *>>/<<dataDir>>}  *<p>  * Each hdds volume has its own VERSION file. The hdds volume will have one  * scmUuid directory for each SCM it is a part of (currently only one SCM is  * supported).  *  * During DN startup, if the VERSION file exists, we verify that the  * clusterID in the version file matches the clusterID from SCM.  */
 end_comment
@@ -481,6 +495,13 @@ name|int
 name|layoutVersion
 decl_stmt|;
 comment|// layout version of the storage data
+DECL|field|committedBytes
+specifier|private
+specifier|final
+name|AtomicLong
+name|committedBytes
+decl_stmt|;
+comment|// till Open containers become full
 comment|/**    * Run a check on the current volume to determine if it is healthy.    * @param unused context for the check, ignored.    * @return result of checking the volume.    * @throws Exception if an exception was encountered while running    *            the volume check.    */
 annotation|@
 name|Override
@@ -824,6 +845,16 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|committedBytes
+operator|=
+operator|new
+name|AtomicLong
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -889,6 +920,10 @@ operator|=
 name|VolumeState
 operator|.
 name|FAILED
+expr_stmt|;
+name|committedBytes
+operator|=
+literal|null
 expr_stmt|;
 block|}
 block|}
@@ -1765,6 +1800,39 @@ name|NOT_FORMATTED
 block|,
 DECL|enumConstant|NOT_INITIALIZED
 name|NOT_INITIALIZED
+block|}
+comment|/**    * add "delta" bytes to committed space in the volume.    * @param delta bytes to add to committed space counter    * @return bytes of committed space    */
+DECL|method|incCommittedBytes (long delta)
+specifier|public
+name|long
+name|incCommittedBytes
+parameter_list|(
+name|long
+name|delta
+parameter_list|)
+block|{
+return|return
+name|committedBytes
+operator|.
+name|addAndGet
+argument_list|(
+name|delta
+argument_list|)
+return|;
+block|}
+comment|/**    * return the committed space in the volume.    * @return bytes of committed space    */
+DECL|method|getCommittedBytes ()
+specifier|public
+name|long
+name|getCommittedBytes
+parameter_list|()
+block|{
+return|return
+name|committedBytes
+operator|.
+name|get
+argument_list|()
+return|;
 block|}
 comment|/**    * Only for testing. Do not use otherwise.    */
 annotation|@
