@@ -3833,10 +3833,29 @@ argument_list|,
 literal|"UTF-8"
 argument_list|)
 expr_stmt|;
+comment|//below condition check added as part of fixing HDFS-14323 to make
+comment|//sure pathAlreadyEncoded is not set in the case the input url does
+comment|//not have any encoded sequence already.This will help pulling data
+comment|//from 2.x hadoop cluster to 3.x using 3.x distcp client operation
+if|if
+condition|(
+operator|!
+name|fspathUri
+operator|.
+name|getPath
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|fspathUriDecoded
+argument_list|)
+condition|)
+block|{
 name|pathAlreadyEncoded
 operator|=
 literal|true
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
