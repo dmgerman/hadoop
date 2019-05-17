@@ -174,6 +174,22 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|metrics2
+operator|.
+name|lib
+operator|.
+name|MutableQuantiles
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -427,6 +443,15 @@ name|MutableCounterLong
 name|aggregateOffSwitchOContainersAllocated
 decl_stmt|;
 annotation|@
+name|Metric
+argument_list|(
+literal|"Aggregate latency for opportunistic container allocation"
+argument_list|)
+DECL|field|allocateLatencyOQuantiles
+name|MutableQuantiles
+name|allocateLatencyOQuantiles
+decl_stmt|;
+annotation|@
 name|VisibleForTesting
 DECL|method|getAllocatedContainers ()
 specifier|public
@@ -599,6 +624,23 @@ name|aggregateOffSwitchOContainersAllocated
 operator|.
 name|incr
 argument_list|()
+expr_stmt|;
+block|}
+DECL|method|addAllocateOLatencyEntry (long latency)
+specifier|public
+name|void
+name|addAllocateOLatencyEntry
+parameter_list|(
+name|long
+name|latency
+parameter_list|)
+block|{
+name|allocateLatencyOQuantiles
+operator|.
+name|add
+argument_list|(
+name|latency
+argument_list|)
 expr_stmt|;
 block|}
 block|}
