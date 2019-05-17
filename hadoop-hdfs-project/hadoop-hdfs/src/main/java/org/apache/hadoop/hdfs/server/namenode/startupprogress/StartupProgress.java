@@ -209,7 +209,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Begins execution of the specified step within the specified phase.    *     * @param phase Phase to begin    * @param step Step to begin    */
+comment|/**    * Begins execution of the specified step within the specified phase. This is    * a no-op if the phase is already completed.    *     * @param phase Phase within which the step should be started    * @param step Step to begin    */
 DECL|method|beginStep (Phase phase, Step step)
 specifier|public
 name|void
@@ -226,7 +226,9 @@ if|if
 condition|(
 operator|!
 name|isComplete
-argument_list|()
+argument_list|(
+name|phase
+argument_list|)
 condition|)
 block|{
 name|lazyInitStep
@@ -274,7 +276,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Ends execution of the specified step within the specified phase.    *     * @param phase Phase to end    * @param step Step to end    */
+comment|/**    * Ends execution of the specified step within the specified phase. This is    * a no-op if the phase is already completed.    *    * @param phase Phase within which the step should be ended    * @param step Step to end    */
 DECL|method|endStep (Phase phase, Step step)
 specifier|public
 name|void
@@ -291,7 +293,9 @@ if|if
 condition|(
 operator|!
 name|isComplete
-argument_list|()
+argument_list|(
+name|phase
+argument_list|)
 condition|)
 block|{
 name|lazyInitStep
@@ -389,7 +393,9 @@ if|if
 condition|(
 operator|!
 name|isComplete
-argument_list|()
+argument_list|(
+name|phase
+argument_list|)
 condition|)
 block|{
 specifier|final
@@ -601,11 +607,7 @@ name|boolean
 name|isComplete
 parameter_list|()
 block|{
-for|for
-control|(
-name|Phase
-name|phase
-range|:
+return|return
 name|EnumSet
 operator|.
 name|allOf
@@ -614,27 +616,37 @@ name|Phase
 operator|.
 name|class
 argument_list|)
-control|)
+operator|.
+name|stream
+argument_list|()
+operator|.
+name|allMatch
+argument_list|(
+name|this
+operator|::
+name|isComplete
+argument_list|)
+return|;
+block|}
+comment|/**    * Returns true if the given startup phase has been completed.    *    * @param phase Which phase to check for completion    * @return boolean true if the given startup phase has completed.    */
+DECL|method|isComplete (Phase phase)
+specifier|private
+name|boolean
+name|isComplete
+parameter_list|(
+name|Phase
+name|phase
+parameter_list|)
 block|{
-if|if
-condition|(
+return|return
 name|getStatus
 argument_list|(
 name|phase
 argument_list|)
-operator|!=
+operator|==
 name|Status
 operator|.
 name|COMPLETE
-condition|)
-block|{
-return|return
-literal|false
-return|;
-block|}
-block|}
-return|return
-literal|true
 return|;
 block|}
 comment|/**    * Lazily initializes the internal data structure for tracking the specified    * phase and step.  Returns either the newly initialized data structure or the    * existing one.  Initialization is atomic, so there is no risk of lost updates    * even if multiple threads attempt to initialize the same step simultaneously.    *     * @param phase Phase to initialize    * @param step Step to initialize    * @return StepTracking newly initialized, or existing if found    */
