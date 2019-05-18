@@ -170,16 +170,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|Properties
@@ -229,18 +219,6 @@ operator|.
 name|Assert
 operator|.
 name|assertTrue
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|fail
 import|;
 end_import
 
@@ -762,48 +740,13 @@ name|exists
 argument_list|()
 argument_list|)
 expr_stmt|;
-try|try
-block|{
-comment|// Volume.getAvailable() should fail with IOException
-comment|// as usage thread is shutdown.
+comment|// Volume.getAvailable() should succeed even when usage thread
+comment|// is shutdown.
 name|volume
 operator|.
 name|getAvailable
 argument_list|()
 expr_stmt|;
-name|fail
-argument_list|(
-literal|"HddsVolume#shutdown test failed"
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|ex
-parameter_list|)
-block|{
-name|assertTrue
-argument_list|(
-name|ex
-operator|instanceof
-name|IOException
-argument_list|)
-expr_stmt|;
-name|assertTrue
-argument_list|(
-name|ex
-operator|.
-name|getMessage
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-literal|"Volume Usage thread is not running."
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 block|}
 end_class

@@ -245,18 +245,6 @@ import|;
 end_import
 
 begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|fail
-import|;
-end_import
-
-begin_import
 import|import
 name|org
 operator|.
@@ -1179,7 +1167,7 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
-comment|// Verify that the volumes are shutdown and the volumeUsage is set to null.
+comment|// Verify that volume usage can be queried during shutdown.
 for|for
 control|(
 name|HddsVolume
@@ -1190,7 +1178,7 @@ control|)
 block|{
 name|Assert
 operator|.
-name|assertNull
+name|assertNotNull
 argument_list|(
 name|volume
 operator|.
@@ -1201,41 +1189,11 @@ name|getUsageForTesting
 argument_list|()
 argument_list|)
 expr_stmt|;
-try|try
-block|{
-comment|// getAvailable() should throw null pointer exception as usage is null.
 name|volume
 operator|.
 name|getAvailable
 argument_list|()
 expr_stmt|;
-name|fail
-argument_list|(
-literal|"Volume shutdown failed."
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ex
-parameter_list|)
-block|{
-comment|// Do Nothing. Exception is expected.
-name|assertTrue
-argument_list|(
-name|ex
-operator|.
-name|getMessage
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-literal|"Volume Usage thread is not running."
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 block|}
 annotation|@

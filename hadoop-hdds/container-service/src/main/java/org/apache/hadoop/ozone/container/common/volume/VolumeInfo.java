@@ -160,6 +160,7 @@ decl_stmt|;
 comment|// Space usage calculator
 DECL|field|usage
 specifier|private
+specifier|final
 name|VolumeUsage
 name|usage
 decl_stmt|;
@@ -415,23 +416,6 @@ operator|<
 literal|0
 condition|)
 block|{
-if|if
-condition|(
-name|usage
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Volume Usage thread is not running. This error"
-operator|+
-literal|" is usually seen during DataNode shutdown."
-argument_list|)
-throw|;
-block|}
 return|return
 name|usage
 operator|.
@@ -451,23 +435,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|usage
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Volume Usage thread is not running. This error "
-operator|+
-literal|"is usually seen during DataNode shutdown."
-argument_list|)
-throw|;
-block|}
 return|return
 name|usage
 operator|.
@@ -483,23 +450,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|usage
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Volume Usage thread is not running. This error "
-operator|+
-literal|"is usually seen during DataNode shutdown."
-argument_list|)
-throw|;
-block|}
 return|return
 name|usage
 operator|.
@@ -513,22 +463,10 @@ name|void
 name|shutdownUsageThread
 parameter_list|()
 block|{
-if|if
-condition|(
-name|usage
-operator|!=
-literal|null
-condition|)
-block|{
 name|usage
 operator|.
 name|shutdown
 argument_list|()
-expr_stmt|;
-block|}
-name|usage
-operator|=
-literal|null
 expr_stmt|;
 block|}
 DECL|method|getRootDir ()

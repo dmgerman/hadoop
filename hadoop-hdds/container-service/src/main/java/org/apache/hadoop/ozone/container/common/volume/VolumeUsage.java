@@ -38,6 +38,22 @@ end_import
 
 begin_import
 import|import
+name|edu
+operator|.
+name|umd
+operator|.
+name|cs
+operator|.
+name|findbugs
+operator|.
+name|annotations
+operator|.
+name|SuppressFBWarnings
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -212,6 +228,20 @@ name|Scanner
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicReference
+import|;
+end_import
+
 begin_comment
 comment|/**  * Class that wraps the space df of the Datanode Volumes used by SCM  * containers.  */
 end_comment
@@ -258,8 +288,16 @@ name|scmUsedFile
 decl_stmt|;
 DECL|field|scmUsage
 specifier|private
+name|AtomicReference
+argument_list|<
 name|GetSpaceUsed
+argument_list|>
 name|scmUsage
+decl_stmt|;
+DECL|field|shutdownComplete
+specifier|private
+name|boolean
+name|shutdownComplete
 decl_stmt|;
 DECL|field|DU_CACHE_FILE
 specifier|private
@@ -337,10 +375,12 @@ throws|throws
 name|IOException
 block|{
 comment|// get SCM specific df
-name|this
-operator|.
 name|scmUsage
 operator|=
+operator|new
+name|AtomicReference
+argument_list|<>
+argument_list|(
 operator|new
 name|CachingGetSpaceUsed
 operator|.
@@ -365,6 +405,7 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getCapacity ()
@@ -451,15 +492,25 @@ block|{
 return|return
 name|scmUsage
 operator|.
+name|get
+argument_list|()
+operator|.
 name|getUsed
 argument_list|()
 return|;
 block|}
 DECL|method|shutdown ()
 specifier|public
+specifier|synchronized
 name|void
 name|shutdown
 parameter_list|()
+block|{
+if|if
+condition|(
+operator|!
+name|shutdownComplete
+condition|)
 block|{
 name|saveScmUsed
 argument_list|()
@@ -467,6 +518,9 @@ expr_stmt|;
 if|if
 condition|(
 name|scmUsage
+operator|.
+name|get
+argument_list|()
 operator|instanceof
 name|CachingGetSpaceUsed
 condition|)
@@ -482,8 +536,16 @@ operator|(
 name|CachingGetSpaceUsed
 operator|)
 name|scmUsage
+operator|.
+name|get
+argument_list|()
 operator|)
 argument_list|)
+expr_stmt|;
+block|}
+name|shutdownComplete
+operator|=
+literal|true
 expr_stmt|;
 block|}
 block|}
@@ -767,6 +829,19 @@ block|}
 comment|/**    * Only for testing. Do not use otherwise.    */
 annotation|@
 name|VisibleForTesting
+annotation|@
+name|SuppressFBWarnings
+argument_list|(
+name|value
+operator|=
+literal|"IS2_INCONSISTENT_SYNC"
+argument_list|,
+name|justification
+operator|=
+literal|"scmUsage is an AtomicReference. No additional "
+operator|+
+literal|"synchronization is needed."
+argument_list|)
 DECL|method|setScmUsageForTesting (GetSpaceUsed scmUsageForTest)
 specifier|public
 name|void
@@ -776,11 +851,12 @@ name|GetSpaceUsed
 name|scmUsageForTest
 parameter_list|)
 block|{
-name|this
-operator|.
 name|scmUsage
-operator|=
+operator|.
+name|set
+argument_list|(
 name|scmUsageForTest
+argument_list|)
 expr_stmt|;
 block|}
 block|}
