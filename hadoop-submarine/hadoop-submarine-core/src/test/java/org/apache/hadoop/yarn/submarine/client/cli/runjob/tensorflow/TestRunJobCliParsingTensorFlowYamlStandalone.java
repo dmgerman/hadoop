@@ -985,7 +985,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"memory=20480M,vcores=32,gpu=2"
+literal|"memory=20480M,vcores=32"
 argument_list|,
 name|worker
 operator|.
@@ -1035,7 +1035,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"memory=20500M,vcores=34,gpu=4"
+literal|"memory=20500M,vcores=34"
 argument_list|,
 name|ps
 operator|.
@@ -1178,7 +1178,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"memory=21000M,vcores=37,gpu=3"
+literal|"memory=21000M,vcores=37"
 argument_list|,
 name|tensorBoard
 operator|.

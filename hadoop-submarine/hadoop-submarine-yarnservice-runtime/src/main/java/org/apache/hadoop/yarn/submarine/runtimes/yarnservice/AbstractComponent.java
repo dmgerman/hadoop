@@ -248,26 +248,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|service
-operator|.
-name|conf
-operator|.
-name|YarnServiceConstants
-operator|.
-name|CONTAINER_STATE_REPORT_AS_SERVICE_STATE
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|submarine
 operator|.
 name|runtimes
@@ -553,6 +533,9 @@ argument_list|(
 literal|1L
 argument_list|)
 expr_stmt|;
+comment|// If the dependencies are upgraded to hadoop 3.3.0.
+comment|// yarn.service.container-state-report-as-service-state can be replaced
+comment|// with CONTAINER_STATE_REPORT_AS_SERVICE_STATE
 name|component
 operator|.
 name|getConfiguration
@@ -560,7 +543,7 @@ argument_list|()
 operator|.
 name|setProperty
 argument_list|(
-name|CONTAINER_STATE_REPORT_AS_SERVICE_STATE
+literal|"yarn.service.container-state-report-as-service-state"
 argument_list|,
 literal|"true"
 argument_list|)
