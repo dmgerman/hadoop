@@ -30,7 +30,9 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FileStatus
+name|s3a
+operator|.
+name|S3AFileStatus
 import|;
 end_import
 
@@ -110,11 +112,11 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|DDBPathMetadata (FileStatus fileStatus)
+DECL|method|DDBPathMetadata (S3AFileStatus fileStatus)
 specifier|public
 name|DDBPathMetadata
 parameter_list|(
-name|FileStatus
+name|S3AFileStatus
 name|fileStatus
 parameter_list|)
 block|{
@@ -130,11 +132,11 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
-DECL|method|DDBPathMetadata (FileStatus fileStatus, Tristate isEmptyDir, boolean isDeleted)
+DECL|method|DDBPathMetadata (S3AFileStatus fileStatus, Tristate isEmptyDir, boolean isDeleted)
 specifier|public
 name|DDBPathMetadata
 parameter_list|(
-name|FileStatus
+name|S3AFileStatus
 name|fileStatus
 parameter_list|,
 name|Tristate
@@ -160,11 +162,11 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
-DECL|method|DDBPathMetadata (FileStatus fileStatus, Tristate isEmptyDir, boolean isDeleted, boolean isAuthoritativeDir, long lastUpdated)
+DECL|method|DDBPathMetadata (S3AFileStatus fileStatus, Tristate isEmptyDir, boolean isDeleted, boolean isAuthoritativeDir, long lastUpdated)
 specifier|public
 name|DDBPathMetadata
 parameter_list|(
-name|FileStatus
+name|S3AFileStatus
 name|fileStatus
 parameter_list|,
 name|Tristate

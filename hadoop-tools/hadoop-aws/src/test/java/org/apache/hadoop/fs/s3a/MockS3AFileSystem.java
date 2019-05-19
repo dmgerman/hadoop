@@ -796,7 +796,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|finishedWrite (String key, long length)
+DECL|method|finishedWrite (String key, long length, String eTag, String versionId)
 name|void
 name|finishedWrite
 parameter_list|(
@@ -805,6 +805,12 @@ name|key
 parameter_list|,
 name|long
 name|length
+parameter_list|,
+name|String
+name|eTag
+parameter_list|,
+name|String
+name|versionId
 parameter_list|)
 block|{    }
 annotation|@

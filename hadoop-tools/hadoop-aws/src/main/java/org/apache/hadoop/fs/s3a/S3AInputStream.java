@@ -718,6 +718,8 @@ name|streamStatistics
 operator|.
 name|getVersionMismatchCounter
 argument_list|()
+argument_list|,
+name|s3Attributes
 argument_list|)
 expr_stmt|;
 name|setInputPolicy
@@ -1444,7 +1446,9 @@ throws|throws
 name|IOException
 block|{
 comment|// With S3Guard, the metadatastore gave us metadata for the file in
-comment|// open(), so we use a slightly different retry policy.
+comment|// open(), so we use a slightly different retry policy, but only on initial
+comment|// open.  After that, an exception generally means the file has changed
+comment|// and there is no point retrying anymore.
 name|Invoker
 name|invoker
 init|=
@@ -1455,8 +1459,14 @@ argument_list|()
 decl_stmt|;
 name|invoker
 operator|.
-name|retry
+name|maybeRetry
 argument_list|(
+name|streamStatistics
+operator|.
+name|openOperations
+operator|==
+literal|0
+argument_list|,
 literal|"lazySeek"
 argument_list|,
 name|pathStr

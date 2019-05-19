@@ -72,7 +72,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FileStatus
+name|Path
 import|;
 end_import
 
@@ -86,7 +86,9 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|Path
+name|s3a
+operator|.
+name|S3AFileStatus
 import|;
 end_import
 
@@ -128,8 +130,7 @@ name|ExpirableMetadata
 block|{
 DECL|field|fileStatus
 specifier|private
-specifier|final
-name|FileStatus
+name|S3AFileStatus
 name|fileStatus
 decl_stmt|;
 DECL|field|isEmptyDirectory
@@ -153,38 +154,35 @@ name|Path
 name|path
 parameter_list|)
 block|{
-name|long
-name|now
+name|S3AFileStatus
+name|s3aStatus
 init|=
+operator|new
+name|S3AFileStatus
+argument_list|(
+literal|0
+argument_list|,
 name|System
 operator|.
 name|currentTimeMillis
 argument_list|()
-decl_stmt|;
-name|FileStatus
-name|status
-init|=
-operator|new
-name|FileStatus
-argument_list|(
-literal|0
-argument_list|,
-literal|false
-argument_list|,
-literal|0
-argument_list|,
-literal|0
-argument_list|,
-name|now
 argument_list|,
 name|path
+argument_list|,
+literal|0
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 return|return
 operator|new
 name|PathMetadata
 argument_list|(
-name|status
+name|s3aStatus
 argument_list|,
 name|Tristate
 operator|.
@@ -195,11 +193,11 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Creates a new {@code PathMetadata} containing given {@code FileStatus}.    * @param fileStatus file status containing an absolute path.    */
-DECL|method|PathMetadata (FileStatus fileStatus)
+DECL|method|PathMetadata (S3AFileStatus fileStatus)
 specifier|public
 name|PathMetadata
 parameter_list|(
-name|FileStatus
+name|S3AFileStatus
 name|fileStatus
 parameter_list|)
 block|{
@@ -210,14 +208,16 @@ argument_list|,
 name|Tristate
 operator|.
 name|UNKNOWN
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|PathMetadata (FileStatus fileStatus, Tristate isEmptyDir)
+DECL|method|PathMetadata (S3AFileStatus fileStatus, Tristate isEmptyDir)
 specifier|public
 name|PathMetadata
 parameter_list|(
-name|FileStatus
+name|S3AFileStatus
 name|fileStatus
 parameter_list|,
 name|Tristate
@@ -234,11 +234,11 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|PathMetadata (FileStatus fileStatus, Tristate isEmptyDir, boolean isDeleted)
+DECL|method|PathMetadata (S3AFileStatus fileStatus, Tristate isEmptyDir, boolean isDeleted)
 specifier|public
 name|PathMetadata
 parameter_list|(
-name|FileStatus
+name|S3AFileStatus
 name|fileStatus
 parameter_list|,
 name|Tristate
@@ -311,7 +311,7 @@ comment|/**    * @return {@code FileStatus} contained in this {@code PathMetadat
 DECL|method|getFileStatus ()
 specifier|public
 specifier|final
-name|FileStatus
+name|S3AFileStatus
 name|getFileStatus
 parameter_list|()
 block|{
@@ -343,6 +343,13 @@ operator|.
 name|isEmptyDirectory
 operator|=
 name|isEmptyDirectory
+expr_stmt|;
+name|fileStatus
+operator|.
+name|setIsEmptyDirectory
+argument_list|(
+name|isEmptyDirectory
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|isDeleted ()
@@ -472,7 +479,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"%-5s %-20s %-7d %-8s %-6s"
+literal|"%-5s %-20s %-7d %-8s %-6s %-20s %-20s"
 argument_list|,
 name|fileStatus
 operator|.
@@ -502,6 +509,16 @@ name|name
 argument_list|()
 argument_list|,
 name|isDeleted
+argument_list|,
+name|fileStatus
+operator|.
+name|getETag
+argument_list|()
+argument_list|,
+name|fileStatus
+operator|.
+name|getVersionId
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;

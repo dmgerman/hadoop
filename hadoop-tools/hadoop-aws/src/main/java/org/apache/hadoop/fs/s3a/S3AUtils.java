@@ -2396,8 +2396,8 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    * Create a files status instance from a listing.    * @param keyPath path to entry    * @param summary summary from AWS    * @param blockSize block size to declare.    * @param owner owner of the file    * @return a status entry    */
-DECL|method|createFileStatus (Path keyPath, S3ObjectSummary summary, long blockSize, String owner)
+comment|/**    * Create a files status instance from a listing.    * @param keyPath path to entry    * @param summary summary from AWS    * @param blockSize block size to declare.    * @param owner owner of the file    * @param eTag S3 object eTag or null if unavailable    * @param versionId S3 object versionId or null if unavailable    * @return a status entry    */
+DECL|method|createFileStatus (Path keyPath, S3ObjectSummary summary, long blockSize, String owner, String eTag, String versionId)
 specifier|public
 specifier|static
 name|S3AFileStatus
@@ -2414,6 +2414,12 @@ name|blockSize
 parameter_list|,
 name|String
 name|owner
+parameter_list|,
+name|String
+name|eTag
+parameter_list|,
+name|String
+name|versionId
 parameter_list|)
 block|{
 name|long
@@ -2449,11 +2455,15 @@ argument_list|,
 name|blockSize
 argument_list|,
 name|owner
+argument_list|,
+name|eTag
+argument_list|,
+name|versionId
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a file status for object we just uploaded.  For files, we use    * current time as modification time, since s3a uses S3's service-based    * modification time, which will not be available until we do a    * getFileStatus() later on.    * @param keyPath path for created object    * @param isDir true iff directory    * @param size file length    * @param blockSize block size for file status    * @param owner Hadoop username    * @return a status entry    */
-DECL|method|createUploadFileStatus (Path keyPath, boolean isDir, long size, long blockSize, String owner)
+comment|/**    * Create a file status for object we just uploaded.  For files, we use    * current time as modification time, since s3a uses S3's service-based    * modification time, which will not be available until we do a    * getFileStatus() later on.    * @param keyPath path for created object    * @param isDir true iff directory    * @param size file length    * @param blockSize block size for file status    * @param owner Hadoop username    * @param eTag S3 object eTag or null if unavailable    * @param versionId S3 object versionId or null if unavailable    * @return a status entry    */
+DECL|method|createUploadFileStatus (Path keyPath, boolean isDir, long size, long blockSize, String owner, String eTag, String versionId)
 specifier|public
 specifier|static
 name|S3AFileStatus
@@ -2473,6 +2483,12 @@ name|blockSize
 parameter_list|,
 name|String
 name|owner
+parameter_list|,
+name|String
+name|eTag
+parameter_list|,
+name|String
+name|versionId
 parameter_list|)
 block|{
 name|Date
@@ -2500,11 +2516,15 @@ argument_list|,
 name|blockSize
 argument_list|,
 name|owner
+argument_list|,
+name|eTag
+argument_list|,
+name|versionId
 argument_list|)
 return|;
 block|}
 comment|/* Date 'modified' is ignored when isDir is true. */
-DECL|method|createFileStatus (Path keyPath, boolean isDir, long size, Date modified, long blockSize, String owner)
+DECL|method|createFileStatus (Path keyPath, boolean isDir, long size, Date modified, long blockSize, String owner, String eTag, String versionId)
 specifier|private
 specifier|static
 name|S3AFileStatus
@@ -2527,6 +2547,12 @@ name|blockSize
 parameter_list|,
 name|String
 name|owner
+parameter_list|,
+name|String
+name|eTag
+parameter_list|,
+name|String
+name|versionId
 parameter_list|)
 block|{
 if|if
@@ -2566,6 +2592,10 @@ argument_list|,
 name|blockSize
 argument_list|,
 name|owner
+argument_list|,
+name|eTag
+argument_list|,
+name|versionId
 argument_list|)
 return|;
 block|}

@@ -1268,7 +1268,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|basicFileStatus (Path path, int size, boolean isDir)
-name|FileStatus
+name|S3AFileStatus
 name|basicFileStatus
 parameter_list|(
 name|Path
@@ -1320,6 +1320,10 @@ argument_list|,
 name|BLOCK_SIZE
 argument_list|,
 name|owner
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}

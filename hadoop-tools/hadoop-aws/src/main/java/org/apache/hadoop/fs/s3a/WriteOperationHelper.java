@@ -895,7 +895,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Finalize a multipart PUT operation.    * This completes the upload, and, if that works, calls    * {@link S3AFileSystem#finishedWrite(String, long)} to update the filesystem.    * Retry policy: retrying, translated.    * @param destKey destination of the commit    * @param uploadId multipart operation Id    * @param partETags list of partial uploads    * @param length length of the upload    * @param retrying retrying callback    * @return the result of the operation.    * @throws IOException on problems.    */
+comment|/**    * Finalize a multipart PUT operation.    * This completes the upload, and, if that works, calls    * {@link S3AFileSystem#finishedWrite(String, long, String, String)}    * to update the filesystem.    * Retry policy: retrying, translated.    * @param destKey destination of the commit    * @param uploadId multipart operation Id    * @param partETags list of partial uploads    * @param length length of the upload    * @param retrying retrying callback    * @return the result of the operation.    * @throws IOException on problems.    */
 annotation|@
 name|Retries
 operator|.
@@ -1000,6 +1000,16 @@ argument_list|(
 name|destKey
 argument_list|,
 name|length
+argument_list|,
+name|uploadResult
+operator|.
+name|getETag
+argument_list|()
+argument_list|,
+name|uploadResult
+operator|.
+name|getVersionId
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return

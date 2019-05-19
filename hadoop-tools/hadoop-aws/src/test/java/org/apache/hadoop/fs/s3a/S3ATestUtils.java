@@ -3675,33 +3675,21 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Verify the status entry of a directory matches that expected.    * @param status status entry to check    * @param replication replication factor    * @param modTime modified time    * @param accessTime access time    * @param owner owner    * @param group user group    * @param permission permission.    */
-DECL|method|verifyDirStatus (FileStatus status, int replication, long modTime, long accessTime, String owner, String group, FsPermission permission)
+comment|/**    * Verify the status entry of a directory matches that expected.    * @param status status entry to check    * @param replication replication factor    * @param owner owner    */
+DECL|method|verifyDirStatus (S3AFileStatus status, int replication, String owner)
 specifier|public
 specifier|static
 name|void
 name|verifyDirStatus
 parameter_list|(
-name|FileStatus
+name|S3AFileStatus
 name|status
 parameter_list|,
 name|int
 name|replication
 parameter_list|,
-name|long
-name|modTime
-parameter_list|,
-name|long
-name|accessTime
-parameter_list|,
 name|String
 name|owner
-parameter_list|,
-name|String
-name|group
-parameter_list|,
-name|FsPermission
-name|permission
 parameter_list|)
 block|{
 name|String
@@ -3738,18 +3726,19 @@ name|getLen
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertEquals
+comment|// S3AFileStatus always assigns modTime = System.currentTimeMillis()
+name|assertTrue
 argument_list|(
 literal|"Mod time: "
 operator|+
 name|details
 argument_list|,
-name|modTime
-argument_list|,
 name|status
 operator|.
 name|getModificationTime
 argument_list|()
+operator|>
+literal|0
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -3772,7 +3761,7 @@ literal|"Access time: "
 operator|+
 name|details
 argument_list|,
-name|accessTime
+literal|0
 argument_list|,
 name|status
 operator|.
@@ -3794,13 +3783,14 @@ name|getOwner
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// S3AFileStatus always assigns group=owner
 name|assertEquals
 argument_list|(
 literal|"Group: "
 operator|+
 name|details
 argument_list|,
-name|group
+name|owner
 argument_list|,
 name|status
 operator|.
@@ -3808,13 +3798,17 @@ name|getGroup
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// S3AFileStatus always assigns permission = default
 name|assertEquals
 argument_list|(
 literal|"Permission: "
 operator|+
 name|details
 argument_list|,
-name|permission
+name|FsPermission
+operator|.
+name|getDefault
+argument_list|()
 argument_list|,
 name|status
 operator|.

@@ -1310,6 +1310,10 @@ argument_list|,
 literal|512L
 argument_list|,
 literal|"hdfs"
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|putFile

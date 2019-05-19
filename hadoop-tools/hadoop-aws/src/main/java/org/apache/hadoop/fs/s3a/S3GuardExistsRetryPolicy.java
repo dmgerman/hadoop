@@ -142,6 +142,17 @@ argument_list|,
 name|retryIdempotentCalls
 argument_list|)
 expr_stmt|;
+name|b
+operator|.
+name|put
+argument_list|(
+name|RemoteFileChangedException
+operator|.
+name|class
+argument_list|,
+name|retryIdempotentCalls
+argument_list|)
+expr_stmt|;
 return|return
 name|b
 return|;

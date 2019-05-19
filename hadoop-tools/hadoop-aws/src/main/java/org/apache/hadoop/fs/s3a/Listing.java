@@ -188,7 +188,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashSet
+name|HashMap
 import|;
 end_import
 
@@ -219,6 +219,16 @@ operator|.
 name|util
 operator|.
 name|ListIterator
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
 import|;
 end_import
 
@@ -375,11 +385,11 @@ name|owner
 expr_stmt|;
 block|}
 comment|/**    * Create a FileStatus iterator against a provided list of file status, with    * a given status filter.    *    * @param fileStatuses the provided list of file status. NO remote calls.    * @param filter file path filter on which paths to accept    * @param acceptor the file status acceptor    * @return the file status iterator    */
-DECL|method|createProvidedFileStatusIterator ( FileStatus[] fileStatuses, PathFilter filter, FileStatusAcceptor acceptor)
+DECL|method|createProvidedFileStatusIterator ( S3AFileStatus[] fileStatuses, PathFilter filter, FileStatusAcceptor acceptor)
 name|ProvidedFileStatusIterator
 name|createProvidedFileStatusIterator
 parameter_list|(
-name|FileStatus
+name|S3AFileStatus
 index|[]
 name|fileStatuses
 parameter_list|,
@@ -444,7 +454,7 @@ annotation|@
 name|Retries
 operator|.
 name|RetryRaw
-DECL|method|createFileStatusListingIterator ( Path listPath, S3ListRequest request, PathFilter filter, Listing.FileStatusAcceptor acceptor, RemoteIterator<FileStatus> providedStatus)
+DECL|method|createFileStatusListingIterator ( Path listPath, S3ListRequest request, PathFilter filter, Listing.FileStatusAcceptor acceptor, RemoteIterator<S3AFileStatus> providedStatus)
 name|FileStatusListingIterator
 name|createFileStatusListingIterator
 parameter_list|(
@@ -464,7 +474,7 @@ name|acceptor
 parameter_list|,
 name|RemoteIterator
 argument_list|<
-name|FileStatus
+name|S3AFileStatus
 argument_list|>
 name|providedStatus
 parameter_list|)
@@ -494,13 +504,13 @@ block|}
 comment|/**    * Create a located status iterator over a file status iterator.    * @param statusIterator an iterator over the remote status entries    * @return a new remote iterator    */
 annotation|@
 name|VisibleForTesting
-DECL|method|createLocatedFileStatusIterator ( RemoteIterator<FileStatus> statusIterator)
+DECL|method|createLocatedFileStatusIterator ( RemoteIterator<S3AFileStatus> statusIterator)
 name|LocatedFileStatusIterator
 name|createLocatedFileStatusIterator
 parameter_list|(
 name|RemoteIterator
 argument_list|<
-name|FileStatus
+name|S3AFileStatus
 argument_list|>
 name|statusIterator
 parameter_list|)
@@ -516,13 +526,13 @@ block|}
 comment|/**    * Create an located status iterator that wraps another to filter out a set    * of recently deleted items.    * @param iterator an iterator over the remote located status entries.    * @param tombstones set of paths that are recently deleted and should be    *                   filtered.    * @return a new remote iterator.    */
 annotation|@
 name|VisibleForTesting
-DECL|method|createTombstoneReconcilingIterator ( RemoteIterator<LocatedFileStatus> iterator, Set<Path> tombstones)
+DECL|method|createTombstoneReconcilingIterator ( RemoteIterator<S3ALocatedFileStatus> iterator, Set<Path> tombstones)
 name|TombstoneReconcilingIterator
 name|createTombstoneReconcilingIterator
 parameter_list|(
 name|RemoteIterator
 argument_list|<
-name|LocatedFileStatus
+name|S3ALocatedFileStatus
 argument_list|>
 name|iterator
 parameter_list|,
@@ -591,21 +601,20 @@ name|SingleStatusRemoteIterator
 implements|implements
 name|RemoteIterator
 argument_list|<
-name|LocatedFileStatus
+name|S3ALocatedFileStatus
 argument_list|>
 block|{
 comment|/**      * The status to return; set to null after the first iteration.      */
 DECL|field|status
 specifier|private
-name|LocatedFileStatus
+name|S3ALocatedFileStatus
 name|status
 decl_stmt|;
 comment|/**      * Constructor.      * @param status status value: may be null, in which case      * the iterator is empty.      */
-DECL|method|SingleStatusRemoteIterator (LocatedFileStatus status)
-specifier|public
+DECL|method|SingleStatusRemoteIterator (S3ALocatedFileStatus status)
 name|SingleStatusRemoteIterator
 parameter_list|(
-name|LocatedFileStatus
+name|S3ALocatedFileStatus
 name|status
 parameter_list|)
 block|{
@@ -638,7 +647,7 @@ annotation|@
 name|Override
 DECL|method|next ()
 specifier|public
-name|LocatedFileStatus
+name|S3ALocatedFileStatus
 name|next
 parameter_list|()
 throws|throws
@@ -650,7 +659,7 @@ name|hasNext
 argument_list|()
 condition|)
 block|{
-name|LocatedFileStatus
+name|S3ALocatedFileStatus
 name|s
 init|=
 name|this
@@ -683,7 +692,7 @@ name|ProvidedFileStatusIterator
 implements|implements
 name|RemoteIterator
 argument_list|<
-name|FileStatus
+name|S3AFileStatus
 argument_list|>
 block|{
 DECL|field|filteredStatusList
@@ -691,7 +700,7 @@ specifier|private
 specifier|final
 name|ArrayList
 argument_list|<
-name|FileStatus
+name|S3AFileStatus
 argument_list|>
 name|filteredStatusList
 decl_stmt|;
@@ -702,10 +711,10 @@ name|index
 init|=
 literal|0
 decl_stmt|;
-DECL|method|ProvidedFileStatusIterator (FileStatus[] fileStatuses, PathFilter filter, FileStatusAcceptor acceptor)
+DECL|method|ProvidedFileStatusIterator (S3AFileStatus[] fileStatuses, PathFilter filter, FileStatusAcceptor acceptor)
 name|ProvidedFileStatusIterator
 parameter_list|(
-name|FileStatus
+name|S3AFileStatus
 index|[]
 name|fileStatuses
 parameter_list|,
@@ -740,7 +749,7 @@ argument_list|)
 expr_stmt|;
 for|for
 control|(
-name|FileStatus
+name|S3AFileStatus
 name|status
 range|:
 name|fileStatuses
@@ -804,7 +813,7 @@ annotation|@
 name|Override
 DECL|method|next ()
 specifier|public
-name|FileStatus
+name|S3AFileStatus
 name|next
 parameter_list|()
 throws|throws
@@ -841,7 +850,7 @@ name|FileStatusListingIterator
 implements|implements
 name|RemoteIterator
 argument_list|<
-name|FileStatus
+name|S3AFileStatus
 argument_list|>
 block|{
 comment|/** Source of objects. */
@@ -876,16 +885,18 @@ DECL|field|statusBatchIterator
 specifier|private
 name|ListIterator
 argument_list|<
-name|FileStatus
+name|S3AFileStatus
 argument_list|>
 name|statusBatchIterator
 decl_stmt|;
 DECL|field|providedStatus
 specifier|private
 specifier|final
-name|Set
+name|Map
 argument_list|<
-name|FileStatus
+name|Path
+argument_list|,
+name|S3AFileStatus
 argument_list|>
 name|providedStatus
 decl_stmt|;
@@ -893,7 +904,7 @@ DECL|field|providedStatusIterator
 specifier|private
 name|Iterator
 argument_list|<
-name|FileStatus
+name|S3AFileStatus
 argument_list|>
 name|providedStatusIterator
 decl_stmt|;
@@ -902,7 +913,7 @@ annotation|@
 name|Retries
 operator|.
 name|RetryTranslated
-DECL|method|FileStatusListingIterator (ObjectListingIterator source, PathFilter filter, FileStatusAcceptor acceptor, RemoteIterator<FileStatus> providedStatus)
+DECL|method|FileStatusListingIterator (ObjectListingIterator source, PathFilter filter, FileStatusAcceptor acceptor, RemoteIterator<S3AFileStatus> providedStatus)
 name|FileStatusListingIterator
 parameter_list|(
 name|ObjectListingIterator
@@ -916,7 +927,7 @@ name|acceptor
 parameter_list|,
 name|RemoteIterator
 argument_list|<
-name|FileStatus
+name|S3AFileStatus
 argument_list|>
 name|providedStatus
 parameter_list|)
@@ -946,7 +957,7 @@ operator|.
 name|providedStatus
 operator|=
 operator|new
-name|HashSet
+name|HashMap
 argument_list|<>
 argument_list|()
 expr_stmt|;
@@ -965,12 +976,20 @@ condition|;
 control|)
 block|{
 specifier|final
-name|FileStatus
+name|S3AFileStatus
 name|status
 init|=
 name|providedStatus
 operator|.
 name|next
+argument_list|()
+decl_stmt|;
+name|Path
+name|path
+init|=
+name|status
+operator|.
+name|getPath
 argument_list|()
 decl_stmt|;
 if|if
@@ -979,10 +998,7 @@ name|filter
 operator|.
 name|accept
 argument_list|(
-name|status
-operator|.
-name|getPath
-argument_list|()
+name|path
 argument_list|)
 operator|&&
 name|acceptor
@@ -997,8 +1013,10 @@ name|this
 operator|.
 name|providedStatus
 operator|.
-name|add
+name|put
 argument_list|(
+name|path
+argument_list|,
 name|status
 argument_list|)
 expr_stmt|;
@@ -1084,6 +1102,9 @@ name|providedStatusIterator
 operator|=
 name|providedStatus
 operator|.
+name|values
+argument_list|()
+operator|.
 name|iterator
 argument_list|()
 expr_stmt|;
@@ -1101,14 +1122,14 @@ operator|.
 name|RetryTranslated
 DECL|method|next ()
 specifier|public
-name|FileStatus
+name|S3AFileStatus
 name|next
 parameter_list|()
 throws|throws
 name|IOException
 block|{
 specifier|final
-name|FileStatus
+name|S3AFileStatus
 name|status
 decl_stmt|;
 if|if
@@ -1124,27 +1145,42 @@ operator|.
 name|next
 argument_list|()
 expr_stmt|;
-comment|// We remove from provided list the file status listed by S3 so that
+comment|// We remove from provided map the file status listed by S3 so that
 comment|// this does not return duplicate items.
-if|if
-condition|(
+comment|// The provided status is returned as it is assumed to have the better
+comment|// metadata (i.e. the eTag and versionId from S3Guard)
+name|S3AFileStatus
+name|provided
+init|=
 name|providedStatus
 operator|.
 name|remove
 argument_list|(
 name|status
+operator|.
+name|getPath
+argument_list|()
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|provided
+operator|!=
+literal|null
 condition|)
 block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Removed the status from provided file status {}"
+literal|"Removed and returned the status from provided file status {}"
 argument_list|,
 name|status
 argument_list|)
 expr_stmt|;
+return|return
+name|provided
+return|;
 block|}
 block|}
 else|else
@@ -1268,7 +1304,7 @@ decl_stmt|;
 comment|// list to fill in with results. Initial size will be list maximum.
 name|List
 argument_list|<
-name|FileStatus
+name|S3AFileStatus
 argument_list|>
 name|stats
 init|=
@@ -1366,7 +1402,7 @@ name|keyPath
 argument_list|)
 condition|)
 block|{
-name|FileStatus
+name|S3AFileStatus
 name|status
 init|=
 name|createFileStatus
@@ -1386,6 +1422,10 @@ name|owner
 operator|.
 name|getUsername
 argument_list|()
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|LOG
@@ -1465,7 +1505,7 @@ name|keyPath
 argument_list|)
 condition|)
 block|{
-name|FileStatus
+name|S3AFileStatus
 name|status
 init|=
 operator|new
@@ -1987,7 +2027,7 @@ name|LocatedFileStatusIterator
 implements|implements
 name|RemoteIterator
 argument_list|<
-name|LocatedFileStatus
+name|S3ALocatedFileStatus
 argument_list|>
 block|{
 DECL|field|statusIterator
@@ -1995,17 +2035,17 @@ specifier|private
 specifier|final
 name|RemoteIterator
 argument_list|<
-name|FileStatus
+name|S3AFileStatus
 argument_list|>
 name|statusIterator
 decl_stmt|;
 comment|/**      * Constructor.      * @param statusIterator an iterator over the remote status entries      */
-DECL|method|LocatedFileStatusIterator (RemoteIterator<FileStatus> statusIterator)
+DECL|method|LocatedFileStatusIterator (RemoteIterator<S3AFileStatus> statusIterator)
 name|LocatedFileStatusIterator
 parameter_list|(
 name|RemoteIterator
 argument_list|<
-name|FileStatus
+name|S3AFileStatus
 argument_list|>
 name|statusIterator
 parameter_list|)
@@ -2038,7 +2078,7 @@ annotation|@
 name|Override
 DECL|method|next ()
 specifier|public
-name|LocatedFileStatus
+name|S3ALocatedFileStatus
 name|next
 parameter_list|()
 throws|throws
@@ -2065,12 +2105,12 @@ name|TombstoneReconcilingIterator
 implements|implements
 name|RemoteIterator
 argument_list|<
-name|LocatedFileStatus
+name|S3ALocatedFileStatus
 argument_list|>
 block|{
 DECL|field|next
 specifier|private
-name|LocatedFileStatus
+name|S3ALocatedFileStatus
 name|next
 init|=
 literal|null
@@ -2080,7 +2120,7 @@ specifier|private
 specifier|final
 name|RemoteIterator
 argument_list|<
-name|LocatedFileStatus
+name|S3ALocatedFileStatus
 argument_list|>
 name|iterator
 decl_stmt|;
@@ -2094,12 +2134,12 @@ argument_list|>
 name|tombstones
 decl_stmt|;
 comment|/**      * @param iterator Source iterator to filter      * @param tombstones set of tombstone markers to filter out of results      */
-DECL|method|TombstoneReconcilingIterator (RemoteIterator<LocatedFileStatus> iterator, Set<Path> tombstones)
+DECL|method|TombstoneReconcilingIterator (RemoteIterator<S3ALocatedFileStatus> iterator, Set<Path> tombstones)
 name|TombstoneReconcilingIterator
 parameter_list|(
 name|RemoteIterator
 argument_list|<
-name|LocatedFileStatus
+name|S3ALocatedFileStatus
 argument_list|>
 name|iterator
 parameter_list|,
@@ -2163,7 +2203,7 @@ name|hasNext
 argument_list|()
 condition|)
 block|{
-name|LocatedFileStatus
+name|S3ALocatedFileStatus
 name|candidate
 init|=
 name|iterator
@@ -2224,7 +2264,7 @@ return|;
 block|}
 DECL|method|next ()
 specifier|public
-name|LocatedFileStatus
+name|S3ALocatedFileStatus
 name|next
 parameter_list|()
 throws|throws
@@ -2236,7 +2276,7 @@ name|hasNext
 argument_list|()
 condition|)
 block|{
-name|LocatedFileStatus
+name|S3ALocatedFileStatus
 name|result
 init|=
 name|next

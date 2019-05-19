@@ -487,12 +487,12 @@ DECL|field|EMPTY_LISTING
 specifier|private
 specifier|static
 specifier|final
-name|FileStatus
+name|S3AFileStatus
 index|[]
 name|EMPTY_LISTING
 init|=
 operator|new
-name|FileStatus
+name|S3AFileStatus
 index|[
 literal|0
 index|]
@@ -833,7 +833,7 @@ comment|/**    * Convert the data of a directory listing to an array of {@link F
 DECL|method|dirMetaToStatuses (DirListingMetadata dirMeta)
 specifier|public
 specifier|static
-name|FileStatus
+name|S3AFileStatus
 index|[]
 name|dirMetaToStatuses
 parameter_list|(
@@ -909,7 +909,7 @@ operator|.
 name|toArray
 argument_list|(
 operator|new
-name|FileStatus
+name|S3AFileStatus
 index|[
 literal|0
 index|]
@@ -917,7 +917,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Given directory listing metadata from both the backing store and the    * MetadataStore, merge the two sources of truth to create a consistent    * view of the current directory contents, which can be returned to clients.    *    * Also update the MetadataStore to reflect the resulting directory listing.    *    * In not authoritative case: update file metadata if mod_time in listing    * of a file is greater then what is currently in the ms    *    * @param ms MetadataStore to use.    * @param path path to directory    * @param backingStatuses Directory listing from the backing store.    * @param dirMeta  Directory listing from MetadataStore.  May be null.    * @param isAuthoritative State of authoritative mode    * @param timeProvider Time provider for testing.    * @return Final result of directory listing.    * @throws IOException if metadata store update failed    */
-DECL|method|dirListingUnion (MetadataStore ms, Path path, List<FileStatus> backingStatuses, DirListingMetadata dirMeta, boolean isAuthoritative, ITtlTimeProvider timeProvider)
+DECL|method|dirListingUnion (MetadataStore ms, Path path, List<S3AFileStatus> backingStatuses, DirListingMetadata dirMeta, boolean isAuthoritative, ITtlTimeProvider timeProvider)
 specifier|public
 specifier|static
 name|FileStatus
@@ -932,7 +932,7 @@ name|path
 parameter_list|,
 name|List
 argument_list|<
-name|FileStatus
+name|S3AFileStatus
 argument_list|>
 name|backingStatuses
 parameter_list|,
@@ -1063,7 +1063,7 @@ argument_list|)
 decl_stmt|;
 for|for
 control|(
-name|FileStatus
+name|S3AFileStatus
 name|s
 range|:
 name|backingStatuses
@@ -1277,7 +1277,7 @@ block|{
 return|return;
 block|}
 comment|/* We discussed atomicity of this implementation.      * The concern is that multiple clients could race to write different      * cached directories to the MetadataStore.  Two solutions are proposed:      * 1. Move mkdirs() into MetadataStore interface and let implementations      *    ensure they are atomic.      * 2. Specify that the semantics of MetadataStore#putListStatus() is      *    always additive,  That is, if MetadataStore has listStatus() state      *    for /a/b that contains [/a/b/file0, /a/b/file1], and we then call      *    putListStatus(/a/b -> [/a/b/file2, /a/b/file3], isAuthoritative=true),      *    then we will end up with final state of      *    [/a/b/file0, /a/b/file1, /a/b/file2, /a/b/file3], isAuthoritative =      *    true      */
-name|FileStatus
+name|S3AFileStatus
 name|prevStatus
 init|=
 literal|null
@@ -1344,7 +1344,7 @@ argument_list|(
 name|f
 argument_list|)
 expr_stmt|;
-name|FileStatus
+name|S3AFileStatus
 name|status
 init|=
 name|createUploadFileStatus
@@ -1358,6 +1358,10 @@ argument_list|,
 literal|0
 argument_list|,
 name|owner
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 comment|// We only need to put a DirListingMetadata if we are setting
@@ -1528,7 +1532,7 @@ argument_list|,
 name|dstPath
 argument_list|)
 expr_stmt|;
-name|FileStatus
+name|S3AFileStatus
 name|dstStatus
 init|=
 name|createUploadFileStatus
@@ -1542,6 +1546,10 @@ argument_list|,
 literal|0
 argument_list|,
 name|owner
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|addMoveStatus
@@ -1556,8 +1564,8 @@ name|dstStatus
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Like {@link #addMoveDir(MetadataStore, Collection, Collection, Path,    * Path, String)} (), but for files.    * @param ms  MetadataStore, used to make this a no-op, when it is    *            NullMetadataStore.    * @param srcPaths stores the source path here    * @param dstMetas stores destination metadata here    * @param srcPath  source path to store    * @param dstPath  destination path to store    * @param size length of file moved    * @param blockSize  blocksize to associate with destination file    * @param owner file owner to use in created records    */
-DECL|method|addMoveFile (MetadataStore ms, Collection<Path> srcPaths, Collection<PathMetadata> dstMetas, Path srcPath, Path dstPath, long size, long blockSize, String owner)
+comment|/**    * Like {@link #addMoveDir(MetadataStore, Collection, Collection, Path,    * Path, String)} (), but for files.    * @param ms  MetadataStore, used to make this a no-op, when it is    *            NullMetadataStore.    * @param srcPaths stores the source path here    * @param dstMetas stores destination metadata here    * @param srcPath  source path to store    * @param dstPath  destination path to store    * @param size length of file moved    * @param blockSize  blocksize to associate with destination file    * @param owner file owner to use in created records    * @param eTag the s3 object eTag of file moved    * @param versionId the s3 object versionId of file moved    */
+DECL|method|addMoveFile (MetadataStore ms, Collection<Path> srcPaths, Collection<PathMetadata> dstMetas, Path srcPath, Path dstPath, long size, long blockSize, String owner, String eTag, String versionId)
 specifier|public
 specifier|static
 name|void
@@ -1592,6 +1600,12 @@ name|blockSize
 parameter_list|,
 name|String
 name|owner
+parameter_list|,
+name|String
+name|eTag
+parameter_list|,
+name|String
+name|versionId
 parameter_list|)
 block|{
 if|if
@@ -1611,7 +1625,7 @@ argument_list|,
 name|dstPath
 argument_list|)
 expr_stmt|;
-name|FileStatus
+name|S3AFileStatus
 name|dstStatus
 init|=
 name|createUploadFileStatus
@@ -1625,6 +1639,10 @@ argument_list|,
 name|blockSize
 argument_list|,
 name|owner
+argument_list|,
+name|eTag
+argument_list|,
+name|versionId
 argument_list|)
 decl_stmt|;
 name|addMoveStatus
@@ -1871,31 +1889,19 @@ name|isDeleted
 argument_list|()
 condition|)
 block|{
-name|FileStatus
-name|status
+name|S3AFileStatus
+name|s3aStatus
 init|=
 operator|new
-name|FileStatus
+name|S3AFileStatus
 argument_list|(
-literal|0
-argument_list|,
-literal|true
-argument_list|,
-literal|1
-argument_list|,
-literal|0
-argument_list|,
-literal|0
-argument_list|,
-literal|0
-argument_list|,
-literal|null
-argument_list|,
-name|username
-argument_list|,
-literal|null
+name|Tristate
+operator|.
+name|FALSE
 argument_list|,
 name|parent
+argument_list|,
+name|username
 argument_list|)
 decl_stmt|;
 name|PathMetadata
@@ -1904,7 +1910,7 @@ init|=
 operator|new
 name|PathMetadata
 argument_list|(
-name|status
+name|s3aStatus
 argument_list|,
 name|Tristate
 operator|.
@@ -1941,7 +1947,7 @@ name|newDirs
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addMoveStatus (Collection<Path> srcPaths, Collection<PathMetadata> dstMetas, Path srcPath, FileStatus dstStatus)
+DECL|method|addMoveStatus (Collection<Path> srcPaths, Collection<PathMetadata> dstMetas, Path srcPath, S3AFileStatus dstStatus)
 specifier|private
 specifier|static
 name|void
@@ -1962,7 +1968,7 @@ parameter_list|,
 name|Path
 name|srcPath
 parameter_list|,
-name|FileStatus
+name|S3AFileStatus
 name|dstStatus
 parameter_list|)
 block|{

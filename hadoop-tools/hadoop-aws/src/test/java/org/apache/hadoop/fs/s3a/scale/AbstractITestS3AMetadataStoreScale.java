@@ -880,6 +880,16 @@ name|status
 operator|.
 name|getOwner
 argument_list|()
+argument_list|,
+name|status
+operator|.
+name|getETag
+argument_list|()
+argument_list|,
+name|status
+operator|.
+name|getVersionId
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -1093,6 +1103,10 @@ argument_list|,
 name|BLOCK_SIZE
 argument_list|,
 name|OWNER
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}

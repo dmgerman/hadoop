@@ -306,20 +306,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|LocatedFileStatus
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|Path
 import|;
 end_import
@@ -383,6 +369,22 @@ operator|.
 name|s3a
 operator|.
 name|S3AFileSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3ALocatedFileStatus
 import|;
 end_import
 
@@ -3390,7 +3392,7 @@ condition|)
 block|{
 return|return;
 block|}
-name|FileStatus
+name|S3AFileStatus
 name|dir
 init|=
 name|DynamoDBMetadataStore
@@ -3457,7 +3459,7 @@ argument_list|)
 expr_stmt|;
 name|RemoteIterator
 argument_list|<
-name|LocatedFileStatus
+name|S3ALocatedFileStatus
 argument_list|>
 name|it
 init|=
@@ -3487,7 +3489,7 @@ name|hasNext
 argument_list|()
 condition|)
 block|{
-name|LocatedFileStatus
+name|S3ALocatedFileStatus
 name|located
 init|=
 name|it
@@ -3495,7 +3497,7 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
-name|FileStatus
+name|S3AFileStatus
 name|child
 decl_stmt|;
 if|if
@@ -3564,6 +3566,16 @@ argument_list|,
 name|located
 operator|.
 name|getOwner
+argument_list|()
+argument_list|,
+name|located
+operator|.
+name|getETag
+argument_list|()
+argument_list|,
+name|located
+operator|.
+name|getVersionId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3697,9 +3709,12 @@ argument_list|(
 name|filePath
 argument_list|)
 decl_stmt|;
-name|FileStatus
+name|S3AFileStatus
 name|status
 init|=
+operator|(
+name|S3AFileStatus
+operator|)
 name|getFilesystem
 argument_list|()
 operator|.
@@ -5589,6 +5604,17 @@ argument_list|,
 literal|"%nS3A Client"
 argument_list|)
 expr_stmt|;
+name|printOption
+argument_list|(
+name|out
+argument_list|,
+literal|"\tSigning Algorithm"
+argument_list|,
+name|SIGNING_ALGORITHM
+argument_list|,
+literal|"(unset)"
+argument_list|)
+expr_stmt|;
 name|String
 name|endpoint
 init|=
@@ -5644,6 +5670,28 @@ argument_list|,
 name|INPUT_FADVISE
 argument_list|,
 name|INPUT_FADV_NORMAL
+argument_list|)
+expr_stmt|;
+name|printOption
+argument_list|(
+name|out
+argument_list|,
+literal|"\tChange Detection Source"
+argument_list|,
+name|CHANGE_DETECT_SOURCE
+argument_list|,
+name|CHANGE_DETECT_SOURCE_DEFAULT
+argument_list|)
+expr_stmt|;
+name|printOption
+argument_list|(
+name|out
+argument_list|,
+literal|"\tChange Detection Mode"
+argument_list|,
+name|CHANGE_DETECT_MODE
+argument_list|,
+name|CHANGE_DETECT_MODE_DEFAULT
 argument_list|)
 expr_stmt|;
 comment|// look at delegation token support
