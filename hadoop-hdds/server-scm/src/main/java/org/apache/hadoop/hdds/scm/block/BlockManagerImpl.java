@@ -993,6 +993,8 @@ argument_list|)
 decl_stmt|;
 name|Pipeline
 name|pipeline
+init|=
+literal|null
 decl_stmt|;
 if|if
 condition|(
@@ -1028,9 +1030,11 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|error
+name|warn
 argument_list|(
-literal|"Pipeline creation failed for type:{} factor:{}"
+literal|"Pipeline creation failed for type:{} factor:{}. Retrying "
+operator|+
+literal|"get pipelines call once."
 argument_list|,
 name|type
 argument_list|,
@@ -1039,10 +1043,66 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+name|availablePipelines
+operator|=
+name|pipelineManager
+operator|.
+name|getPipelines
+argument_list|(
+name|type
+argument_list|,
+name|factor
+argument_list|,
+name|Pipeline
+operator|.
+name|PipelineState
+operator|.
+name|OPEN
+argument_list|,
+name|excludeList
+operator|.
+name|getDatanodes
+argument_list|()
+argument_list|,
+name|excludeList
+operator|.
+name|getPipelineIds
+argument_list|()
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|availablePipelines
+operator|.
+name|size
+argument_list|()
+operator|==
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Could not find available pipeline of type:{} and "
+operator|+
+literal|"factor:{} even after retrying"
+argument_list|,
+name|type
+argument_list|,
+name|factor
+argument_list|)
+expr_stmt|;
 break|break;
 block|}
 block|}
-else|else
+block|}
+if|if
+condition|(
+literal|null
+operator|==
+name|pipeline
+condition|)
 block|{
 comment|// TODO: #CLUTIL Make the selection policy driven.
 name|pipeline
