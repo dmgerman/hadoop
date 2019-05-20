@@ -583,11 +583,11 @@ argument_list|>
 name|commitSpaceMap
 decl_stmt|;
 comment|//RootDir -> committed space
-DECL|field|NUM_TEST_CONTAINERS
+DECL|field|numTestContainers
 specifier|private
 specifier|final
 name|int
-name|NUM_TEST_CONTAINERS
+name|numTestContainers
 init|=
 literal|10
 decl_stmt|;
@@ -735,7 +735,7 @@ literal|0
 init|;
 name|i
 operator|<
-name|NUM_TEST_CONTAINERS
+name|numTestContainers
 condition|;
 name|i
 operator|++
@@ -959,7 +959,7 @@ argument_list|()
 decl_stmt|;
 name|assertEquals
 argument_list|(
-name|NUM_TEST_CONTAINERS
+name|numTestContainers
 argument_list|,
 name|containerset
 operator|.
