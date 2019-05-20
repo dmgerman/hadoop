@@ -278,6 +278,15 @@ name|ROLLING_LOG_EXCLUSION_PATTERN
 init|=
 literal|"yarn.service.rolling-log.exclude-pattern"
 decl_stmt|;
+DECL|field|YARN_SERVICE_CLASSPATH
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|YARN_SERVICE_CLASSPATH
+init|=
+literal|"yarn.service.classpath"
+decl_stmt|;
 DECL|field|YARN_SERVICES_SYSTEM_SERVICE_DIRECTORY
 specifier|public
 specifier|static

@@ -2121,8 +2121,8 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Build up the classpath for execution    * -behaves very differently on a mini test cluster vs a production    * production one.    *    * @param sliderConfDir relative path to the dir containing slider config    *                      options to put on the classpath -or null    * @param libdir directory containing the JAR files    * @param usingMiniMRCluster flag to indicate the MiniMR cluster is in use    * (and hence the current classpath should be used, not anything built up)    * @return a classpath    */
-DECL|method|buildClasspath (String sliderConfDir, String libdir, SliderFileSystem sliderFileSystem, boolean usingMiniMRCluster)
+comment|/**    * Build up the classpath for execution    * -behaves very differently on a mini test cluster vs a production    * production one.    *    * @param sliderConfDir relative path to the dir containing slider config    *                      options to put on the classpath -or null    * @param libdir directory containing the JAR files    * @param configClassPath extra class path configured in yarn-site.xml    * @param usingMiniMRCluster flag to indicate the MiniMR cluster is in use    * (and hence the current classpath should be used, not anything built up)    * @return a classpath    */
+DECL|method|buildClasspath (String sliderConfDir, String libdir, SliderFileSystem sliderFileSystem, String configClassPath, boolean usingMiniMRCluster)
 specifier|public
 specifier|static
 name|ClasspathConstructor
@@ -2136,6 +2136,9 @@ name|libdir
 parameter_list|,
 name|SliderFileSystem
 name|sliderFileSystem
+parameter_list|,
+name|String
+name|configClassPath
 parameter_list|,
 name|boolean
 name|usingMiniMRCluster
@@ -2240,6 +2243,33 @@ name|HADOOP_CONF_DIR
 operator|.
 name|$$
 argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+operator|!
+name|configClassPath
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|classpath
+operator|.
+name|appendAll
+argument_list|(
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|configClassPath
+operator|.
+name|split
+argument_list|(
+literal|","
+argument_list|)
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
