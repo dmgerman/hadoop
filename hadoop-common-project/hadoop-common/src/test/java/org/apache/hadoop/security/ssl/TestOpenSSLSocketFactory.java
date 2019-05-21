@@ -112,6 +112,18 @@ name|IOException
 block|{
 name|assumeTrue
 argument_list|(
+literal|"Unable to load native libraries"
+argument_list|,
+name|NativeCodeLoader
+operator|.
+name|isNativeCodeLoaded
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assumeTrue
+argument_list|(
+literal|"Build was not compiled with support for OpenSSL"
+argument_list|,
 name|NativeCodeLoader
 operator|.
 name|buildSupportsOpenssl
@@ -158,6 +170,8 @@ name|IOException
 block|{
 name|assumeTrue
 argument_list|(
+literal|"Not running on Java 8"
+argument_list|,
 name|System
 operator|.
 name|getProperty
