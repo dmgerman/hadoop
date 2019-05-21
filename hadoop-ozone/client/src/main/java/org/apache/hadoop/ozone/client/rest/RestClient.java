@@ -1227,14 +1227,7 @@ specifier|final
 name|UserGroupInformation
 name|ugi
 decl_stmt|;
-DECL|field|userRights
-specifier|private
-specifier|final
-name|OzoneAcl
-operator|.
-name|OzoneACLRights
-name|userRights
-decl_stmt|;
+comment|// private final OzoneAcl.OzoneACLRights userRights;
 comment|/**     * Creates RestClient instance with the given configuration.     * @param conf Configuration     * @throws IOException     */
 DECL|method|RestClient (Configuration conf)
 specifier|public
@@ -1412,23 +1405,8 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
-name|this
-operator|.
-name|userRights
-operator|=
-name|conf
-operator|.
-name|getEnum
-argument_list|(
-name|OMConfigKeys
-operator|.
-name|OZONE_OM_USER_RIGHTS
-argument_list|,
-name|OMConfigKeys
-operator|.
-name|OZONE_OM_USER_RIGHTS_DEFAULT
-argument_list|)
-expr_stmt|;
+comment|//      this.userRights = conf.getEnum(OMConfigKeys.OZONE_OM_USER_RIGHTS,
+comment|//          OMConfigKeys.OZONE_OM_USER_RIGHTS_DEFAULT);
 comment|// TODO: Add new configuration parameter to configure RestServerSelector.
 name|RestServerSelector
 name|defaultSelector

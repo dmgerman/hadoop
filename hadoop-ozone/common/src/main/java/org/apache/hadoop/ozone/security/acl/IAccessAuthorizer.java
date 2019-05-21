@@ -62,6 +62,16 @@ name|OzoneConsts
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
 begin_comment
 comment|/**  * Public API for Ozone ACLs. Security providers providing support for Ozone  * ACLs should implement this.  */
 end_comment
@@ -270,17 +280,68 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"ACL right is not recognized"
+name|type
+operator|+
+literal|" ACL right is not "
+operator|+
+literal|"recognized"
 argument_list|)
 throw|;
 block|}
 block|}
-comment|/**      * Returns String representation of ACL rights.      *      * @param acl ACLType      * @return String representation of acl      */
-DECL|method|getACLRightsString (ACLType acl)
+comment|/**      * Returns String representation of ACL rights.      *      * @param acls ACLType      * @return String representation of acl      */
+DECL|method|getACLString (List<ACLType> acls)
 specifier|public
 specifier|static
 name|String
-name|getACLRightsString
+name|getACLString
+parameter_list|(
+name|List
+argument_list|<
+name|ACLType
+argument_list|>
+name|acls
+parameter_list|)
+block|{
+name|StringBuffer
+name|sb
+init|=
+operator|new
+name|StringBuffer
+argument_list|()
+decl_stmt|;
+name|acls
+operator|.
+name|forEach
+argument_list|(
+name|acl
+lambda|->
+block|{
+name|sb
+operator|.
+name|append
+argument_list|(
+name|getAclString
+argument_list|(
+name|acl
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+argument_list|)
+expr_stmt|;
+return|return
+name|sb
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
+DECL|method|getAclString (ACLType acl)
+specifier|public
+specifier|static
+name|String
+name|getAclString
 parameter_list|(
 name|ACLType
 name|acl
@@ -402,7 +463,15 @@ operator|,
 DECL|enumConstant|WORLD
 constructor|WORLD(OzoneConsts.OZONE_ACL_WORLD_TYPE
 block|)
-empty_stmt|;
+operator|,
+DECL|enumConstant|ANONYMOUS
+name|ANONYMOUS
+argument_list|(
+name|OzoneConsts
+operator|.
+name|OZONE_ACL_ANONYMOUS_TYPE
+argument_list|)
+expr_stmt|;
 end_interface
 
 begin_function
