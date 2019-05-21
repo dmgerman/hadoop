@@ -829,6 +829,16 @@ name|shutdown
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|getXmitWeight ()
+specifier|public
+name|float
+name|getXmitWeight
+parameter_list|()
+block|{
+return|return
+name|xmitWeight
+return|;
+block|}
 block|}
 end_class
 
