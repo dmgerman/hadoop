@@ -131,6 +131,9 @@ name|CREATE_FILE
 block|,
 DECL|enumConstant|LOOKUP_FILE
 name|LOOKUP_FILE
+block|,
+DECL|enumConstant|LIST_STATUS
+name|LIST_STATUS
 block|;
 annotation|@
 name|Override

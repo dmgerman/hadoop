@@ -398,6 +398,13 @@ name|Metric
 name|MutableCounterLong
 name|numLookupFile
 decl_stmt|;
+DECL|field|numListStatus
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numListStatus
+decl_stmt|;
 comment|// Failure Metrics
 DECL|field|numVolumeCreateFails
 specifier|private
@@ -629,6 +636,13 @@ annotation|@
 name|Metric
 name|MutableCounterLong
 name|numLookupFileFails
+decl_stmt|;
+DECL|field|numListStatusFails
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numListStatusFails
 decl_stmt|;
 comment|// Metrics for total number of volumes, buckets and keys
 DECL|field|numVolumes
@@ -1391,6 +1405,40 @@ name|incNumLookupFileFails
 parameter_list|()
 block|{
 name|numLookupFileFails
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumListStatus ()
+specifier|public
+name|void
+name|incNumListStatus
+parameter_list|()
+block|{
+name|numKeyOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+name|numFSOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+name|numListStatus
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumListStatusFails ()
+specifier|public
+name|void
+name|incNumListStatusFails
+parameter_list|()
+block|{
+name|numListStatusFails
 operator|.
 name|incr
 argument_list|()
@@ -2336,6 +2384,21 @@ parameter_list|()
 block|{
 return|return
 name|numGetFileStatus
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumListStatus ()
+specifier|public
+name|long
+name|getNumListStatus
+parameter_list|()
+block|{
+return|return
+name|numListStatus
 operator|.
 name|value
 argument_list|()

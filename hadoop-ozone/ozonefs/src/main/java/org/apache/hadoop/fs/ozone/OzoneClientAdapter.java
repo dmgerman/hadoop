@@ -124,6 +124,16 @@ name|Iterator
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
 begin_comment
 comment|/**  * Lightweight adapter to separate hadoop/ozone classes.  *<p>  * This class contains only the bare minimum Ozone classes in the signature.  * It could be loaded by a different classloader because only the objects in  * the method signatures should be shared between the classloader.  */
 end_comment
@@ -208,6 +218,28 @@ parameter_list|(
 name|String
 name|pathKey
 parameter_list|)
+function_decl|;
+DECL|method|listStatus (String keyName, boolean recursive, String startKey, long numEntries)
+name|List
+argument_list|<
+name|OzoneFileStatus
+argument_list|>
+name|listStatus
+parameter_list|(
+name|String
+name|keyName
+parameter_list|,
+name|boolean
+name|recursive
+parameter_list|,
+name|String
+name|startKey
+parameter_list|,
+name|long
+name|numEntries
+parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 DECL|method|getDelegationToken (String renewer)
 name|Token
