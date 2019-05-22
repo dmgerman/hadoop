@@ -974,6 +974,11 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+synchronized|synchronized
+init|(
+name|pipeline
+init|)
+block|{
 return|return
 name|allocateContainer
 argument_list|(
@@ -985,7 +990,8 @@ name|pipeline
 argument_list|)
 return|;
 block|}
-comment|/**    * Allocates a new container based on the type, replication etc.    *    * @param pipelineManager   - Pipeline Manager class.    * @param owner             - Owner of the container.    * @param pipeline          - Pipeline to which the container needs to be    *                          allocated.    * @return ContainerWithPipeline    * @throws IOException on Failure.    */
+block|}
+comment|/**    * Allocates a new container based on the type, replication etc.    * This method should be called only after the lock on the pipeline is held    * on which the container will be allocated.    *    * @param pipelineManager   - Pipeline Manager class.    * @param owner             - Owner of the container.    * @param pipeline          - Pipeline to which the container needs to be    *                          allocated.    * @return ContainerWithPipeline    * @throws IOException on Failure.    */
 DECL|method|allocateContainer ( final PipelineManager pipelineManager, final String owner, Pipeline pipeline)
 name|ContainerInfo
 name|allocateContainer
@@ -1101,6 +1107,20 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|containerInfo
+argument_list|)
+expr_stmt|;
+name|containers
+operator|.
+name|addContainer
+argument_list|(
+name|containerInfo
+argument_list|)
+expr_stmt|;
 name|pipelineManager
 operator|.
 name|addContainerToPipeline
@@ -1116,20 +1136,6 @@ name|valueof
 argument_list|(
 name|containerID
 argument_list|)
-argument_list|)
-expr_stmt|;
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|containerInfo
-argument_list|)
-expr_stmt|;
-name|containers
-operator|.
-name|addContainer
-argument_list|(
-name|containerInfo
 argument_list|)
 expr_stmt|;
 name|containerStateCount

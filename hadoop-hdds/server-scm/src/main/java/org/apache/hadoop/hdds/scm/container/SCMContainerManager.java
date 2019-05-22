@@ -1931,15 +1931,22 @@ argument_list|>
 name|excludedContainers
 parameter_list|)
 block|{
-try|try
-block|{
-comment|//TODO: #CLUTIL See if lock is required here
 name|NavigableSet
 argument_list|<
 name|ContainerID
 argument_list|>
 name|containerIDs
-init|=
+decl_stmt|;
+try|try
+block|{
+synchronized|synchronized
+init|(
+name|pipeline
+init|)
+block|{
+comment|//TODO: #CLUTIL See if lock is required here
+name|containerIDs
+operator|=
 name|pipelineManager
 operator|.
 name|getContainersInPipeline
@@ -1949,7 +1956,7 @@ operator|.
 name|getId
 argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|containerIDs
 operator|=
 name|getContainersForOwner
@@ -1969,30 +1976,8 @@ operator|<
 name|numContainerPerOwnerInPipeline
 condition|)
 block|{
-synchronized|synchronized
-init|(
-name|pipeline
-init|)
-block|{
 comment|// TODO: #CLUTIL Maybe we can add selection logic inside synchronized
 comment|// as well
-name|containerIDs
-operator|=
-name|getContainersForOwner
-argument_list|(
-name|pipelineManager
-operator|.
-name|getContainersInPipeline
-argument_list|(
-name|pipeline
-operator|.
-name|getId
-argument_list|()
-argument_list|)
-argument_list|,
-name|owner
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|containerIDs
