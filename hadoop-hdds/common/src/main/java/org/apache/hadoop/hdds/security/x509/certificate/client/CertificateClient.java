@@ -272,6 +272,23 @@ parameter_list|)
 throws|throws
 name|CertificateException
 function_decl|;
+comment|/**    * Stores the Certificate  for this client. Don't use this api to add    * trusted certificates of others.    *    * @param pemEncodedCert        - pem encoded X509 Certificate    * @param force                 - override any existing file    * @param caCert                - Is CA certificate.    * @throws CertificateException - on Error.    *    */
+DECL|method|storeCertificate (String pemEncodedCert, boolean force, boolean caCert)
+name|void
+name|storeCertificate
+parameter_list|(
+name|String
+name|pemEncodedCert
+parameter_list|,
+name|boolean
+name|force
+parameter_list|,
+name|boolean
+name|caCert
+parameter_list|)
+throws|throws
+name|CertificateException
+function_decl|;
 comment|/**    * Stores the trusted chain of certificates.    *    * @param certStore - Cert Store.    * @throws CertificateException - on Error.    */
 DECL|method|storeTrustChain (CertStore certStore)
 name|void

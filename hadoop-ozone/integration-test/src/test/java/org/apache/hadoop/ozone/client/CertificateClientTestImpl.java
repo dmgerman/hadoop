@@ -675,7 +675,26 @@ name|force
 parameter_list|)
 throws|throws
 name|CertificateException
-block|{    }
+block|{   }
+annotation|@
+name|Override
+DECL|method|storeCertificate (String cert, boolean force, boolean caCert)
+specifier|public
+name|void
+name|storeCertificate
+parameter_list|(
+name|String
+name|cert
+parameter_list|,
+name|boolean
+name|force
+parameter_list|,
+name|boolean
+name|caCert
+parameter_list|)
+throws|throws
+name|CertificateException
+block|{   }
 comment|/**    * Stores the trusted chain of certificates for a specific component.    *    * @param keyStore - Cert Store.    * @throws CertificateException - on Error.    */
 annotation|@
 name|Override
