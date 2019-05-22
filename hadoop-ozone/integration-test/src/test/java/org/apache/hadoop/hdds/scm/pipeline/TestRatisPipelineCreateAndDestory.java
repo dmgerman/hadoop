@@ -94,20 +94,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
-operator|.
-name|MultipleIOException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|ozone
 operator|.
 name|HddsDatanodeService
@@ -249,10 +235,10 @@ comment|/**  * Tests for RatisPipelineUtils.  */
 end_comment
 
 begin_class
-DECL|class|TestRatisPipelineUtils
+DECL|class|TestRatisPipelineCreateAndDestory
 specifier|public
 class|class
-name|TestRatisPipelineUtils
+name|TestRatisPipelineCreateAndDestory
 block|{
 DECL|field|cluster
 specifier|private
@@ -542,18 +528,21 @@ block|}
 comment|// try creating another pipeline now
 try|try
 block|{
-name|RatisPipelineUtils
+name|pipelineManager
 operator|.
 name|createPipeline
 argument_list|(
-name|pipelines
+name|HddsProtos
 operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
+name|ReplicationType
+operator|.
+name|RATIS
 argument_list|,
-name|conf
+name|HddsProtos
+operator|.
+name|ReplicationFactor
+operator|.
+name|THREE
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -570,14 +559,15 @@ name|IOException
 name|ioe
 parameter_list|)
 block|{
-comment|// in case the pipeline creation fails, MultipleIOException is thrown
+comment|// As now all datanodes are shutdown, they move to stale state, there
+comment|// will be no sufficient datanodes to create the pipeline.
 name|Assert
 operator|.
 name|assertTrue
 argument_list|(
 name|ioe
 operator|instanceof
-name|MultipleIOException
+name|InsufficientDatanodesException
 argument_list|)
 expr_stmt|;
 block|}
