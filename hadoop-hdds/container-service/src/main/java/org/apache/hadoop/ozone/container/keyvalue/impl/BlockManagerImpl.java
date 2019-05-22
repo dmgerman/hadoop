@@ -304,9 +304,17 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
 name|utils
 operator|.
-name|MetadataStore
+name|ContainerCache
+operator|.
+name|ReferenceCountedDB
 import|;
 end_import
 
@@ -559,7 +567,9 @@ argument_list|)
 expr_stmt|;
 comment|// We are not locking the key manager since LevelDb serializes all actions
 comment|// against a single DB. We rely on DB level locking to avoid conflicts.
-name|MetadataStore
+try|try
+init|(
+name|ReferenceCountedDB
 name|db
 init|=
 name|BlockUtils
@@ -576,7 +586,8 @@ argument_list|()
 argument_list|,
 name|config
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 comment|// This is a post condition that acts as a hint to the user.
 comment|// Should never fail.
 name|Preconditions
@@ -706,6 +717,9 @@ argument_list|)
 expr_stmt|;
 name|db
 operator|.
+name|getStore
+argument_list|()
+operator|.
 name|writeBatch
 argument_list|(
 name|batch
@@ -759,6 +773,7 @@ operator|.
 name|getSize
 argument_list|()
 return|;
+block|}
 block|}
 comment|/**    * Gets an existing block.    *    * @param container - Container from which block need to be fetched.    * @param blockID - BlockID of the block.    * @return Key Data.    * @throws IOException    */
 annotation|@
@@ -814,7 +829,9 @@ operator|.
 name|getContainerData
 argument_list|()
 decl_stmt|;
-name|MetadataStore
+try|try
+init|(
+name|ReferenceCountedDB
 name|db
 init|=
 name|BlockUtils
@@ -825,7 +842,8 @@ name|containerData
 argument_list|,
 name|config
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 comment|// This is a post condition that acts as a hint to the user.
 comment|// Should never fail.
 name|Preconditions
@@ -885,6 +903,9 @@ index|[]
 name|kData
 init|=
 name|db
+operator|.
+name|getStore
+argument_list|()
 operator|.
 name|get
 argument_list|(
@@ -981,6 +1002,7 @@ name|blockData
 argument_list|)
 return|;
 block|}
+block|}
 comment|/**    * Returns the length of the committed block.    *    * @param container - Container from which block need to be fetched.    * @param blockID - BlockID of the block.    * @return length of the block.    * @throws IOException in case, the block key does not exist in db.    */
 annotation|@
 name|Override
@@ -1009,7 +1031,9 @@ operator|.
 name|getContainerData
 argument_list|()
 decl_stmt|;
-name|MetadataStore
+try|try
+init|(
+name|ReferenceCountedDB
 name|db
 init|=
 name|BlockUtils
@@ -1020,7 +1044,8 @@ name|containerData
 argument_list|,
 name|config
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 comment|// This is a post condition that acts as a hint to the user.
 comment|// Should never fail.
 name|Preconditions
@@ -1037,6 +1062,9 @@ index|[]
 name|kData
 init|=
 name|db
+operator|.
+name|getStore
+argument_list|()
 operator|.
 name|get
 argument_list|(
@@ -1088,6 +1116,7 @@ operator|.
 name|getSize
 argument_list|()
 return|;
+block|}
 block|}
 comment|/**    * Deletes an existing block.    *    * @param container - Container from which block need to be deleted.    * @param blockID - ID of the block.    * @throws StorageContainerException    */
 DECL|method|deleteBlock (Container container, BlockID blockID)
@@ -1152,7 +1181,9 @@ operator|.
 name|getContainerData
 argument_list|()
 decl_stmt|;
-name|MetadataStore
+try|try
+init|(
+name|ReferenceCountedDB
 name|db
 init|=
 name|BlockUtils
@@ -1163,7 +1194,8 @@ name|cData
 argument_list|,
 name|config
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 comment|// This is a post condition that acts as a hint to the user.
 comment|// Should never fail.
 name|Preconditions
@@ -1193,23 +1225,24 @@ name|getLocalID
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|byte
-index|[]
-name|kData
-init|=
+try|try
+block|{
 name|db
 operator|.
-name|get
+name|getStore
+argument_list|()
+operator|.
+name|delete
 argument_list|(
 name|kKey
 argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|kData
-operator|==
-literal|null
-condition|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
 block|{
 throw|throw
 operator|new
@@ -1221,13 +1254,6 @@ name|NO_SUCH_BLOCK
 argument_list|)
 throw|;
 block|}
-name|db
-operator|.
-name|delete
-argument_list|(
-name|kKey
-argument_list|)
-expr_stmt|;
 comment|// Decrement blockcount here
 name|container
 operator|.
@@ -1237,6 +1263,7 @@ operator|.
 name|decrKeyCount
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 comment|/**    * List blocks in a container.    *    * @param container - Container from which blocks need to be listed.    * @param startLocalID  - Key to start from, 0 to begin.    * @param count    - Number of blocks to return.    * @return List of Blocks that match the criteria.    */
 annotation|@
@@ -1318,7 +1345,9 @@ operator|.
 name|getContainerData
 argument_list|()
 decl_stmt|;
-name|MetadataStore
+try|try
+init|(
+name|ReferenceCountedDB
 name|db
 init|=
 name|BlockUtils
@@ -1329,7 +1358,8 @@ name|cData
 argument_list|,
 name|config
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|result
 operator|=
 operator|new
@@ -1364,6 +1394,9 @@ argument_list|>
 name|range
 init|=
 name|db
+operator|.
+name|getStore
+argument_list|()
 operator|.
 name|getSequentialRangeKVs
 argument_list|(
@@ -1430,6 +1463,7 @@ block|}
 return|return
 name|result
 return|;
+block|}
 block|}
 comment|/**    * Shutdown KeyValueContainerManager.    */
 DECL|method|shutdown ()

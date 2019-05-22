@@ -424,9 +424,17 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
 name|utils
 operator|.
-name|MetadataStore
+name|ContainerCache
+operator|.
+name|ReferenceCountedDB
 import|;
 end_import
 
@@ -928,7 +936,7 @@ operator|.
 name|newArrayList
 argument_list|()
 decl_stmt|;
-name|MetadataStore
+name|ReferenceCountedDB
 name|meta
 init|=
 name|getContainerMetadata
@@ -966,6 +974,9 @@ argument_list|>
 name|kvs
 init|=
 name|meta
+operator|.
+name|getStore
+argument_list|()
 operator|.
 name|getRangeKVs
 argument_list|(
@@ -1016,6 +1027,11 @@ argument_list|)
 expr_stmt|;
 block|}
 argument_list|)
+expr_stmt|;
+name|meta
+operator|.
+name|close
+argument_list|()
 expr_stmt|;
 return|return
 name|pendingDeletionBlocks
@@ -1097,7 +1113,7 @@ operator|.
 name|newArrayList
 argument_list|()
 decl_stmt|;
-name|MetadataStore
+name|ReferenceCountedDB
 name|meta
 init|=
 name|getContainerMetadata
@@ -1121,6 +1137,9 @@ argument_list|>
 name|kvs
 init|=
 name|meta
+operator|.
+name|getStore
+argument_list|()
 operator|.
 name|getRangeKVs
 argument_list|(
@@ -1161,13 +1180,18 @@ expr_stmt|;
 block|}
 argument_list|)
 expr_stmt|;
+name|meta
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 return|return
 name|allBlocks
 return|;
 block|}
 DECL|method|getContainerMetadata (Long containerID)
 specifier|private
-name|MetadataStore
+name|ReferenceCountedDB
 name|getContainerMetadata
 parameter_list|(
 name|Long

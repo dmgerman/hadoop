@@ -6772,6 +6772,8 @@ operator|.
 name|getParent
 argument_list|()
 decl_stmt|;
+try|try
+init|(
 name|KeyValueBlockIterator
 name|keyValueBlockIterator
 init|=
@@ -6786,7 +6788,8 @@ argument_list|(
 name|containerPath
 argument_list|)
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 while|while
 condition|(
 name|keyValueBlockIterator
@@ -6867,6 +6870,7 @@ name|length
 argument_list|)
 expr_stmt|;
 break|break;
+block|}
 block|}
 block|}
 block|}
@@ -7722,6 +7726,8 @@ operator|.
 name|getParent
 argument_list|()
 decl_stmt|;
+try|try
+init|(
 name|KeyValueBlockIterator
 name|keyValueBlockIterator
 init|=
@@ -7736,7 +7742,8 @@ argument_list|(
 name|containerPath
 argument_list|)
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 comment|// Find the block corresponding to the key we put. We use the localID of
 comment|// the BlockData to identify out key.
 name|BlockData
@@ -7865,6 +7872,7 @@ name|getBytes
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Test

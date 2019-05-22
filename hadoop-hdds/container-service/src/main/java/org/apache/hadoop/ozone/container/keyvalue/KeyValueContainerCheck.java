@@ -244,20 +244,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|utils
-operator|.
-name|MetadataStore
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -283,6 +269,28 @@ operator|.
 name|util
 operator|.
 name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|utils
+operator|.
+name|ContainerCache
+operator|.
+name|ReferenceCountedDB
 import|;
 end_import
 
@@ -955,7 +963,9 @@ argument_list|(
 name|dbFile
 argument_list|)
 expr_stmt|;
-name|MetadataStore
+try|try
+init|(
+name|ReferenceCountedDB
 name|db
 init|=
 name|BlockUtils
@@ -966,19 +976,21 @@ name|onDiskContainerData
 argument_list|,
 name|checkConfig
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|iterateBlockDB
 argument_list|(
 name|db
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|iterateBlockDB (MetadataStore db)
+block|}
+DECL|method|iterateBlockDB (ReferenceCountedDB db)
 specifier|private
 name|void
 name|iterateBlockDB
 parameter_list|(
-name|MetadataStore
+name|ReferenceCountedDB
 name|db
 parameter_list|)
 throws|throws
@@ -994,6 +1006,8 @@ literal|null
 argument_list|)
 expr_stmt|;
 comment|// get "normal" keys from the Block DB
+try|try
+init|(
 name|KeyValueBlockIterator
 name|kvIter
 init|=
@@ -1011,7 +1025,8 @@ name|getContainerPath
 argument_list|()
 argument_list|)
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 comment|// ensure there is a chunk file for each key in the DB
 while|while
 condition|(
@@ -1087,6 +1102,9 @@ name|bdata
 init|=
 name|db
 operator|.
+name|getStore
+argument_list|()
+operator|.
 name|get
 argument_list|(
 name|Longs
@@ -1139,6 +1157,7 @@ argument_list|(
 name|errorStr
 argument_list|)
 throw|;
+block|}
 block|}
 block|}
 block|}

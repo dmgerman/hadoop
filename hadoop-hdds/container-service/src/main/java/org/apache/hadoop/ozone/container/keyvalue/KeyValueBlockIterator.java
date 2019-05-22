@@ -256,9 +256,17 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
 name|utils
 operator|.
-name|MetadataStore
+name|ContainerCache
+operator|.
+name|ReferenceCountedDB
 import|;
 end_import
 
@@ -295,6 +303,16 @@ operator|.
 name|slf4j
 operator|.
 name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|Closeable
 import|;
 end_import
 
@@ -346,6 +364,8 @@ name|BlockIterator
 argument_list|<
 name|BlockData
 argument_list|>
+implements|,
+name|Closeable
 block|{
 DECL|field|LOG
 specifier|private
@@ -370,6 +390,12 @@ argument_list|<
 name|KeyValue
 argument_list|>
 name|blockIterator
+decl_stmt|;
+DECL|field|db
+specifier|private
+specifier|final
+name|ReferenceCountedDB
+name|db
 decl_stmt|;
 DECL|field|defaultBlockFilter
 specifier|private
@@ -500,9 +526,8 @@ name|containerId
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|MetadataStore
-name|metadataStore
-init|=
+name|db
+operator|=
 name|BlockUtils
 operator|.
 name|getDB
@@ -513,10 +538,13 @@ operator|new
 name|OzoneConfiguration
 argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|blockIterator
 operator|=
-name|metadataStore
+name|db
+operator|.
+name|getStore
+argument_list|()
 operator|.
 name|iterator
 argument_list|()
@@ -709,6 +737,18 @@ expr_stmt|;
 name|blockIterator
 operator|.
 name|seekToLast
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+block|{
+name|db
+operator|.
+name|close
 argument_list|()
 expr_stmt|;
 block|}

@@ -288,9 +288,17 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
 name|utils
 operator|.
-name|MetadataStore
+name|ContainerCache
+operator|.
+name|ReferenceCountedDB
 import|;
 end_import
 
@@ -373,7 +381,7 @@ comment|/**    * Get a DB handler for a given container.    * If the handler doe
 DECL|method|getDB (KeyValueContainerData containerData, Configuration conf)
 specifier|public
 specifier|static
-name|MetadataStore
+name|ReferenceCountedDB
 name|getDB
 parameter_list|(
 name|KeyValueContainerData

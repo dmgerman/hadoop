@@ -412,9 +412,17 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
 name|utils
 operator|.
-name|MetadataStore
+name|ContainerCache
+operator|.
+name|ReferenceCountedDB
 import|;
 end_import
 
@@ -1052,21 +1060,21 @@ name|monotonicNow
 argument_list|()
 decl_stmt|;
 comment|// Scan container's db and get list of under deletion blocks
-name|MetadataStore
+try|try
+init|(
+name|ReferenceCountedDB
 name|meta
 init|=
 name|BlockUtils
 operator|.
 name|getDB
 argument_list|(
-operator|(
-name|KeyValueContainerData
-operator|)
 name|containerData
 argument_list|,
 name|conf
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 comment|// # of blocks to delete is throttled
 name|KeyPrefixFilter
 name|filter
@@ -1098,6 +1106,9 @@ argument_list|>
 name|toDeleteBlocks
 init|=
 name|meta
+operator|.
+name|getStore
+argument_list|()
 operator|.
 name|getSequentialRangeKVs
 argument_list|(
@@ -1337,7 +1348,8 @@ block|}
 block|}
 argument_list|)
 expr_stmt|;
-comment|// Once files are deleted... replace deleting entries with deleted entries
+comment|// Once files are deleted... replace deleting entries with deleted
+comment|// entries
 name|BatchOperation
 name|batch
 init|=
@@ -1412,6 +1424,9 @@ argument_list|)
 expr_stmt|;
 name|meta
 operator|.
+name|getStore
+argument_list|()
+operator|.
 name|writeBatch
 argument_list|(
 name|batch
@@ -1472,6 +1487,7 @@ expr_stmt|;
 return|return
 name|crr
 return|;
+block|}
 block|}
 annotation|@
 name|Override

@@ -292,9 +292,17 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
 name|utils
 operator|.
-name|MetadataStore
+name|ContainerCache
+operator|.
+name|ReferenceCountedDB
 import|;
 end_import
 
@@ -754,6 +762,8 @@ operator|.
 name|getParent
 argument_list|()
 decl_stmt|;
+try|try
+init|(
 name|KeyValueBlockIterator
 name|keyValueBlockIterator
 init|=
@@ -768,7 +778,8 @@ argument_list|(
 name|containerPath
 argument_list|)
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|int
 name|counter
 init|=
@@ -884,6 +895,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
 annotation|@
 name|Test
 DECL|method|testKeyValueBlockIteratorWithNextBlock ()
@@ -923,6 +935,8 @@ operator|.
 name|getParent
 argument_list|()
 decl_stmt|;
+try|try
+init|(
 name|KeyValueBlockIterator
 name|keyValueBlockIterator
 init|=
@@ -937,7 +951,8 @@ argument_list|(
 name|containerPath
 argument_list|)
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|long
 name|blockID
 init|=
@@ -999,6 +1014,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
 annotation|@
 name|Test
 DECL|method|testKeyValueBlockIteratorWithHasNext ()
@@ -1038,6 +1054,8 @@ operator|.
 name|getParent
 argument_list|()
 decl_stmt|;
+try|try
+init|(
 name|KeyValueBlockIterator
 name|keyValueBlockIterator
 init|=
@@ -1052,7 +1070,8 @@ argument_list|(
 name|containerPath
 argument_list|)
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|long
 name|blockID
 init|=
@@ -1257,6 +1276,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
 annotation|@
 name|Test
 DECL|method|testKeyValueBlockIteratorWithFilter ()
@@ -1306,6 +1326,8 @@ operator|.
 name|getParent
 argument_list|()
 decl_stmt|;
+try|try
+init|(
 name|KeyValueBlockIterator
 name|keyValueBlockIterator
 init|=
@@ -1325,7 +1347,8 @@ operator|.
 name|getDeletingKeyFilter
 argument_list|()
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|int
 name|counter
 init|=
@@ -1358,6 +1381,7 @@ name|counter
 operator|++
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 annotation|@
@@ -1399,6 +1423,8 @@ operator|.
 name|getParent
 argument_list|()
 decl_stmt|;
+try|try
+init|(
 name|KeyValueBlockIterator
 name|keyValueBlockIterator
 init|=
@@ -1413,7 +1439,8 @@ argument_list|(
 name|containerPath
 argument_list|)
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 comment|//As all blocks are deleted blocks, blocks does not match with normal key
 comment|// filter.
 name|assertFalse
@@ -1424,6 +1451,7 @@ name|hasNext
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Creates a container with specified number of normal blocks and deleted    * blocks. First it will insert normal blocks, and then it will insert    * deleted blocks.    * @param containerId    * @param normalBlocks    * @param deletedBlocks    * @throws Exception    */
 DECL|method|createContainerWithBlocks (long containerId, int normalBlocks, int deletedBlocks)
@@ -1508,7 +1536,9 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|MetadataStore
+try|try
+init|(
+name|ReferenceCountedDB
 name|metadataStore
 init|=
 name|BlockUtils
@@ -1519,7 +1549,8 @@ name|containerData
 argument_list|,
 name|conf
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|List
 argument_list|<
 name|ContainerProtos
@@ -1600,6 +1631,9 @@ argument_list|)
 expr_stmt|;
 name|metadataStore
 operator|.
+name|getStore
+argument_list|()
+operator|.
 name|put
 argument_list|(
 name|Longs
@@ -1666,6 +1700,9 @@ argument_list|)
 expr_stmt|;
 name|metadataStore
 operator|.
+name|getStore
+argument_list|()
+operator|.
 name|put
 argument_list|(
 name|DFSUtil
@@ -1691,6 +1728,7 @@ name|toByteArray
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}

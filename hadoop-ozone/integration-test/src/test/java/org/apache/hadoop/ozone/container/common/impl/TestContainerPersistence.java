@@ -576,9 +576,17 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
 name|utils
 operator|.
-name|MetadataStore
+name|ContainerCache
+operator|.
+name|ReferenceCountedDB
 import|;
 end_import
 
@@ -1681,7 +1689,7 @@ name|meta
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|MetadataStore
+name|ReferenceCountedDB
 name|store
 init|=
 literal|null

@@ -322,9 +322,17 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
 name|utils
 operator|.
-name|MetadataStore
+name|ContainerCache
+operator|.
+name|ReferenceCountedDB
 import|;
 end_import
 
@@ -984,7 +992,9 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|MetadataStore
+try|try
+init|(
+name|ReferenceCountedDB
 name|metadataStore
 init|=
 name|BlockUtils
@@ -995,7 +1005,8 @@ name|containerData
 argument_list|,
 name|conf
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|chunkManager
 operator|=
 operator|new
@@ -1247,6 +1258,9 @@ block|{
 comment|// deleted key
 name|metadataStore
 operator|.
+name|getStore
+argument_list|()
+operator|.
 name|put
 argument_list|(
 name|DFSUtil
@@ -1278,6 +1292,9 @@ block|{
 comment|// normal key
 name|metadataStore
 operator|.
+name|getStore
+argument_list|()
+operator|.
 name|put
 argument_list|(
 name|Longs
@@ -1299,6 +1316,7 @@ name|toByteArray
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}
