@@ -936,7 +936,7 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
-name|verifyContainerData
+name|verifyAndFixupContainerData
 argument_list|(
 name|containerData
 argument_list|)
@@ -961,10 +961,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|verifyContainerData (ContainerData containerData)
+comment|/**    * verify ContainerData loaded from disk and fix-up stale members.    * Specifically blockCommitSequenceId, delete related metadata    * and bytesUsed    * @param containerData    * @throws IOException    */
+DECL|method|verifyAndFixupContainerData (ContainerData containerData)
 specifier|public
 name|void
-name|verifyContainerData
+name|verifyAndFixupContainerData
 parameter_list|(
 name|ContainerData
 name|containerData
