@@ -424,6 +424,24 @@ name|OZONE_RECON_SQL_MAX_IDLE_CONNECTION_TEST_STMT
 init|=
 literal|"ozone.recon.sql.db.conn.idle.test"
 decl_stmt|;
+DECL|field|OZONE_RECON_TASK_THREAD_COUNT_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_RECON_TASK_THREAD_COUNT_KEY
+init|=
+literal|"ozone.recon.task.thread.count"
+decl_stmt|;
+DECL|field|OZONE_RECON_TASK_THREAD_COUNT_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|OZONE_RECON_TASK_THREAD_COUNT_DEFAULT
+init|=
+literal|1
+decl_stmt|;
 comment|/**    * Private constructor for utility class.    */
 DECL|method|ReconServerConfigKeys ()
 specifier|private

@@ -323,13 +323,6 @@ specifier|private
 name|CodecRegistry
 name|registry
 decl_stmt|;
-DECL|field|readOnly
-specifier|private
-name|boolean
-name|readOnly
-init|=
-literal|false
-decl_stmt|;
 DECL|method|DBStoreBuilder (Configuration configuration)
 specifier|private
 name|DBStoreBuilder
@@ -587,23 +580,6 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setReadOnly (boolean rdOnly)
-specifier|public
-name|DBStoreBuilder
-name|setReadOnly
-parameter_list|(
-name|boolean
-name|rdOnly
-parameter_list|)
-block|{
-name|readOnly
-operator|=
-name|rdOnly
-expr_stmt|;
-return|return
-name|this
-return|;
-block|}
 comment|/**    * Builds a DBStore instance and returns that.    *    * @return DBStore    */
 DECL|method|build ()
 specifier|public
@@ -695,8 +671,6 @@ argument_list|,
 name|tables
 argument_list|,
 name|registry
-argument_list|,
-name|readOnly
 argument_list|)
 return|;
 block|}

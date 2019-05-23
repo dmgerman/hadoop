@@ -889,6 +889,44 @@ return|return
 name|containers
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|deleteContainerMapping (ContainerKeyPrefix containerKeyPrefix)
+specifier|public
+name|void
+name|deleteContainerMapping
+parameter_list|(
+name|ContainerKeyPrefix
+name|containerKeyPrefix
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|containerKeyTable
+operator|.
+name|delete
+argument_list|(
+name|containerKeyPrefix
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getContainerTableIterator ()
+specifier|public
+name|TableIterator
+name|getContainerTableIterator
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|containerKeyTable
+operator|.
+name|iterator
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

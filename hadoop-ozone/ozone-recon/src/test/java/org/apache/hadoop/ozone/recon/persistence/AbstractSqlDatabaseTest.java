@@ -353,7 +353,9 @@ return|return
 name|dslContext
 return|;
 block|}
+comment|/**    * Local Sqlite datasource provider.    */
 DECL|class|DataSourceConfigurationProvider
+specifier|public
 specifier|static
 class|class
 name|DataSourceConfigurationProvider

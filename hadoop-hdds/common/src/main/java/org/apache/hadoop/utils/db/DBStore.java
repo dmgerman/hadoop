@@ -50,6 +50,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -301,6 +311,23 @@ comment|/**    * Get DB Store location.    * @return DB file location.    */
 DECL|method|getDbLocation ()
 name|File
 name|getDbLocation
+parameter_list|()
+function_decl|;
+comment|/**    * Get List of Index to Table Names.    * (For decoding table from column family index)    * @return Map of Index -> TableName    */
+DECL|method|getTableNames ()
+name|Map
+argument_list|<
+name|Integer
+argument_list|,
+name|String
+argument_list|>
+name|getTableNames
+parameter_list|()
+function_decl|;
+comment|/**    * Get Codec registry.    * @return codec registry.    */
+DECL|method|getCodecRegistry ()
+name|CodecRegistry
+name|getCodecRegistry
 parameter_list|()
 function_decl|;
 block|}

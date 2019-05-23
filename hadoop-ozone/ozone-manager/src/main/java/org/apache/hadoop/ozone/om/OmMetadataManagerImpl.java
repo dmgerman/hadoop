@@ -732,7 +732,7 @@ argument_list|)
 decl_stmt|;
 comment|/**    * OM RocksDB Structure .    *<p>    * OM DB stores metadata as KV pairs in different column families.    *<p>    * OM DB Schema:    * |-------------------------------------------------------------------|    * |  Column Family     |        VALUE                                 |    * |-------------------------------------------------------------------|    * | userTable          |     user->VolumeList                         |    * |-------------------------------------------------------------------|    * | volumeTable        |     /volume->VolumeInfo                      |    * |-------------------------------------------------------------------|    * | bucketTable        |     /volume/bucket-> BucketInfo              |    * |-------------------------------------------------------------------|    * | keyTable           | /volumeName/bucketName/keyName->KeyInfo      |    * |-------------------------------------------------------------------|    * | deletedTable       | /volumeName/bucketName/keyName->KeyInfo      |    * |-------------------------------------------------------------------|    * | openKey            | /volumeName/bucketName/keyName/id->KeyInfo   |    * |-------------------------------------------------------------------|    * | s3Table            | s3BucketName -> /volumeName/bucketName       |    * |-------------------------------------------------------------------|    * | s3SecretTable      | s3g_access_key_id -> s3Secret                |    * |-------------------------------------------------------------------|    * | dTokenTable        | s3g_access_key_id -> s3Secret                |    * |-------------------------------------------------------------------|    */
 DECL|field|USER_TABLE
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -741,7 +741,7 @@ init|=
 literal|"userTable"
 decl_stmt|;
 DECL|field|VOLUME_TABLE
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -750,7 +750,7 @@ init|=
 literal|"volumeTable"
 decl_stmt|;
 DECL|field|BUCKET_TABLE
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -759,7 +759,7 @@ init|=
 literal|"bucketTable"
 decl_stmt|;
 DECL|field|KEY_TABLE
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -768,7 +768,7 @@ init|=
 literal|"keyTable"
 decl_stmt|;
 DECL|field|DELETED_TABLE
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -777,7 +777,7 @@ init|=
 literal|"deletedTable"
 decl_stmt|;
 DECL|field|OPEN_KEY_TABLE
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -786,7 +786,7 @@ init|=
 literal|"openKeyTable"
 decl_stmt|;
 DECL|field|S3_TABLE
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -795,7 +795,7 @@ init|=
 literal|"s3Table"
 decl_stmt|;
 DECL|field|MULTIPARTINFO_TABLE
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -804,7 +804,7 @@ init|=
 literal|"multipartInfoTable"
 decl_stmt|;
 DECL|field|S3_SECRET_TABLE
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -813,7 +813,7 @@ init|=
 literal|"s3SecretTable"
 decl_stmt|;
 DECL|field|DELEGATION_TOKEN_TABLE
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|String

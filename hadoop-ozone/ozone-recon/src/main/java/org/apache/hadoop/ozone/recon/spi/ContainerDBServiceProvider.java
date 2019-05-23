@@ -94,6 +94,22 @@ name|ContainerMetadata
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|utils
+operator|.
+name|db
+operator|.
+name|TableIterator
+import|;
+end_import
+
 begin_comment
 comment|/**  * The Recon Container DB Service interface.  */
 end_comment
@@ -174,6 +190,25 @@ argument_list|,
 name|ContainerMetadata
 argument_list|>
 name|getContainers
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Delete an entry in the container DB.    * @param containerKeyPrefix container key prefix to be deleted.    * @throws IOException exception.    */
+DECL|method|deleteContainerMapping (ContainerKeyPrefix containerKeyPrefix)
+name|void
+name|deleteContainerMapping
+parameter_list|(
+name|ContainerKeyPrefix
+name|containerKeyPrefix
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Get iterator to the entire container DB.    * @return TableIterator    * @throws IOException exception    */
+DECL|method|getContainerTableIterator ()
+name|TableIterator
+name|getContainerTableIterator
 parameter_list|()
 throws|throws
 name|IOException

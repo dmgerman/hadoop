@@ -247,11 +247,6 @@ argument_list|(
 name|ozoneConfiguration
 argument_list|)
 operator|.
-name|setReadOnly
-argument_list|(
-literal|true
-argument_list|)
-operator|.
 name|setName
 argument_list|(
 name|dbFile
