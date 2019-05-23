@@ -48,6 +48,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|DFSUtil
@@ -125,12 +139,15 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * RocksDB implementation of ozone metadata store.  */
+comment|/**  * RocksDB implementation of ozone metadata store. This class should be only  * used as part of TypedTable as it's underlying implementation to access the  * metadata store content. All other user's using Table should use TypedTable.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|RDBTable
-specifier|public
 class|class
 name|RDBTable
 implements|implements
@@ -179,7 +196,6 @@ name|writeOptions
 decl_stmt|;
 comment|/**    * Constructs a TableStore.    *    * @param db - DBstore that we are using.    * @param handle - ColumnFamily Handle.    * @param writeOptions - RocksDB write Options.    */
 DECL|method|RDBTable (RocksDB db, ColumnFamilyHandle handle, WriteOptions writeOptions)
-specifier|public
 name|RDBTable
 parameter_list|(
 name|RocksDB

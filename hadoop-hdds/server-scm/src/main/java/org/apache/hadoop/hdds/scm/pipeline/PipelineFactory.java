@@ -323,6 +323,28 @@ name|nodes
 argument_list|)
 return|;
 block|}
+DECL|method|shutdown ()
+specifier|public
+name|void
+name|shutdown
+parameter_list|()
+block|{
+name|providers
+operator|.
+name|values
+argument_list|()
+operator|.
+name|forEach
+argument_list|(
+name|provider
+lambda|->
+name|provider
+operator|.
+name|shutdown
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

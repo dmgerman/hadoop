@@ -760,6 +760,15 @@ name|CERT_FILE_NAME_FORMAT
 init|=
 literal|"%s.crt"
 decl_stmt|;
+DECL|field|CA_CERT_PREFIX
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|CA_CERT_PREFIX
+init|=
+literal|"CA-"
+decl_stmt|;
 DECL|field|logger
 specifier|private
 specifier|final
@@ -2182,7 +2191,7 @@ literal|"Operation not supported"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Stores the Certificate  for this client. Don't use this api to add trusted    * certificates of others.    *    * @param pemEncodedCert - pem encoded X509 Certificate    * @param force - override any existing file    * @throws CertificateException - on Error.    *    */
+comment|/**    * Stores the Certificate  for this client. Don't use this api to add trusted    * certificates of others.    *    * @param pemEncodedCert        - pem encoded X509 Certificate    * @param force                 - override any existing file    * @throws CertificateException - on Error.    *    */
 annotation|@
 name|Override
 DECL|method|storeCertificate (String pemEncodedCert, boolean force)
@@ -2195,6 +2204,38 @@ name|pemEncodedCert
 parameter_list|,
 name|boolean
 name|force
+parameter_list|)
+throws|throws
+name|CertificateException
+block|{
+name|this
+operator|.
+name|storeCertificate
+argument_list|(
+name|pemEncodedCert
+argument_list|,
+name|force
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Stores the Certificate  for this client. Don't use this api to add trusted    * certificates of others.    *    * @param pemEncodedCert        - pem encoded X509 Certificate    * @param force                 - override any existing file    * @param caCert                - Is CA certificate.    * @throws CertificateException - on Error.    *    */
+annotation|@
+name|Override
+DECL|method|storeCertificate (String pemEncodedCert, boolean force, boolean caCert)
+specifier|public
+name|void
+name|storeCertificate
+parameter_list|(
+name|String
+name|pemEncodedCert
+parameter_list|,
+name|boolean
+name|force
+parameter_list|,
+name|boolean
+name|caCert
 parameter_list|)
 throws|throws
 name|CertificateException
@@ -2246,6 +2287,18 @@ name|toString
 argument_list|()
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|caCert
+condition|)
+block|{
+name|certName
+operator|=
+name|CA_CERT_PREFIX
+operator|+
+name|certName
+expr_stmt|;
+block|}
 name|certificateCodec
 operator|.
 name|writeCertificate

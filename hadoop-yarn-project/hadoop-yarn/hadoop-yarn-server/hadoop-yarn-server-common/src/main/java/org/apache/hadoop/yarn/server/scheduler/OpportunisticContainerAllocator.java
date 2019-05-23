@@ -84,6 +84,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -1041,6 +1055,12 @@ specifier|final
 name|ResourceRequest
 name|request
 decl_stmt|;
+DECL|field|timestamp
+specifier|private
+specifier|final
+name|long
+name|timestamp
+decl_stmt|;
 DECL|method|EnrichedResourceRequest (ResourceRequest request)
 name|EnrichedResourceRequest
 parameter_list|(
@@ -1054,6 +1074,22 @@ name|request
 operator|=
 name|request
 expr_stmt|;
+name|timestamp
+operator|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|getTimestamp ()
+name|long
+name|getTimestamp
+parameter_list|()
+block|{
+return|return
+name|timestamp
+return|;
 block|}
 DECL|method|getRequest ()
 name|ResourceRequest

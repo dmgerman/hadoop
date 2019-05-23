@@ -215,7 +215,7 @@ specifier|final
 name|boolean
 name|DFS_CONTAINER_CHUNK_WRITE_SYNC_DEFAULT
 init|=
-literal|true
+literal|false
 decl_stmt|;
 comment|/**    * Ratis Port where containers listen to.    */
 DECL|field|DFS_CONTAINER_RATIS_IPC_PORT

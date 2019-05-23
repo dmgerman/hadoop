@@ -8344,8 +8344,10 @@ return|return
 name|cmdStr
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|addAMEnv ()
-specifier|private
+specifier|protected
 name|Map
 argument_list|<
 name|String
@@ -8382,6 +8384,18 @@ argument_list|,
 literal|"lib"
 argument_list|,
 name|fs
+argument_list|,
+name|getConfig
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|YarnServiceConf
+operator|.
+name|YARN_SERVICE_CLASSPATH
+argument_list|,
+literal|""
+argument_list|)
 argument_list|,
 name|getConfig
 argument_list|()

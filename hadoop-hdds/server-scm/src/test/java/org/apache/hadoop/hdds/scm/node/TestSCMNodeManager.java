@@ -686,20 +686,6 @@ begin_import
 import|import static
 name|org
 operator|.
-name|hamcrest
-operator|.
-name|core
-operator|.
-name|StringStartsWith
-operator|.
-name|startsWith
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
 name|junit
 operator|.
 name|Assert
@@ -1215,92 +1201,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-comment|/**    * Asserts that if user provides a value less than 5 times the heartbeat    * interval as the StaleNode Value, we throw since that is a QoS that we    * cannot maintain.    *    * @throws IOException    * @throws InterruptedException    * @throws TimeoutException    */
-annotation|@
-name|Test
-DECL|method|testScmSanityOfUserConfig1 ()
-specifier|public
-name|void
-name|testScmSanityOfUserConfig1
-parameter_list|()
-throws|throws
-name|IOException
-throws|,
-name|AuthenticationException
-block|{
-name|OzoneConfiguration
-name|conf
-init|=
-name|getConf
-argument_list|()
-decl_stmt|;
-specifier|final
-name|int
-name|interval
-init|=
-literal|100
-decl_stmt|;
-name|conf
-operator|.
-name|setTimeDuration
-argument_list|(
-name|OZONE_SCM_HEARTBEAT_PROCESS_INTERVAL
-argument_list|,
-name|interval
-argument_list|,
-name|MILLISECONDS
-argument_list|)
-expr_stmt|;
-name|conf
-operator|.
-name|setTimeDuration
-argument_list|(
-name|HDDS_HEARTBEAT_INTERVAL
-argument_list|,
-literal|1
-argument_list|,
-name|SECONDS
-argument_list|)
-expr_stmt|;
-comment|// This should be 5 times more than  OZONE_SCM_HEARTBEAT_PROCESS_INTERVAL
-comment|// and 3 times more than OZONE_SCM_HEARTBEAT_INTERVAL
-name|conf
-operator|.
-name|setTimeDuration
-argument_list|(
-name|OZONE_SCM_STALENODE_INTERVAL
-argument_list|,
-name|interval
-argument_list|,
-name|MILLISECONDS
-argument_list|)
-expr_stmt|;
-name|thrown
-operator|.
-name|expect
-argument_list|(
-name|IllegalArgumentException
-operator|.
-name|class
-argument_list|)
-expr_stmt|;
-comment|// This string is a multiple of the interval value
-name|thrown
-operator|.
-name|expectMessage
-argument_list|(
-name|startsWith
-argument_list|(
-literal|"100 is not within min = 500 or max = 100000"
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|createNodeManager
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 block|}
 comment|/**    * Asserts that if Stale Interval value is more than 5 times the value of HB    * processing thread it is a sane value.    *    * @throws IOException    * @throws InterruptedException    * @throws TimeoutException    */
 annotation|@

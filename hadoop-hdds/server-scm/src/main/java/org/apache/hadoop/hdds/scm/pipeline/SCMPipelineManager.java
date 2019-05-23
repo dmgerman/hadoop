@@ -2168,6 +2168,12 @@ name|unRegister
 argument_list|()
 expr_stmt|;
 block|}
+comment|// shutdown pipeline provider.
+name|pipelineFactory
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 end_class

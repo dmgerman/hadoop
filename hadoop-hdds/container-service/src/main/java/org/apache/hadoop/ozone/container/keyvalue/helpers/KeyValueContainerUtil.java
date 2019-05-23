@@ -296,6 +296,28 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|utils
+operator|.
+name|ContainerCache
+operator|.
+name|ReferenceCountedDB
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -736,7 +758,9 @@ argument_list|(
 name|dbFile
 argument_list|)
 expr_stmt|;
-name|MetadataStore
+try|try
+init|(
+name|ReferenceCountedDB
 name|metadata
 init|=
 name|BlockUtils
@@ -747,7 +771,8 @@ name|kvContainerData
 argument_list|,
 name|config
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|long
 name|bytesUsed
 init|=
@@ -769,6 +794,9 @@ argument_list|>
 name|liveKeys
 init|=
 name|metadata
+operator|.
+name|getStore
+argument_list|()
 operator|.
 name|getRangeKVs
 argument_list|(
@@ -853,6 +881,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Returns the path where data or chunks live for a given container.    *    * @param kvContainerData - KeyValueContainerData    * @return - Path to the chunks directory    */
 DECL|method|getDataDirectory (KeyValueContainerData kvContainerData)

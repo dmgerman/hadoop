@@ -172,20 +172,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FileStatus
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|Path
 import|;
 end_import
@@ -201,6 +187,22 @@ operator|.
 name|fs
 operator|.
 name|RemoteIterator
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3AFileStatus
 import|;
 end_import
 
@@ -224,7 +226,7 @@ name|MetadataStoreListFilesIterator
 implements|implements
 name|RemoteIterator
 argument_list|<
-name|FileStatus
+name|S3AFileStatus
 argument_list|>
 block|{
 DECL|field|LOG
@@ -273,7 +275,7 @@ DECL|field|leafNodesIterator
 specifier|private
 name|Iterator
 argument_list|<
-name|FileStatus
+name|S3AFileStatus
 argument_list|>
 name|leafNodesIterator
 init|=
@@ -346,7 +348,7 @@ decl_stmt|;
 specifier|final
 name|Collection
 argument_list|<
-name|FileStatus
+name|S3AFileStatus
 argument_list|>
 name|leafNodes
 init|=
@@ -452,7 +454,7 @@ operator|.
 name|poll
 argument_list|()
 decl_stmt|;
-name|FileStatus
+name|S3AFileStatus
 name|nextStatus
 init|=
 name|nextMetadata
@@ -610,7 +612,7 @@ annotation|@
 name|Override
 DECL|method|next ()
 specifier|public
-name|FileStatus
+name|S3AFileStatus
 name|next
 parameter_list|()
 block|{

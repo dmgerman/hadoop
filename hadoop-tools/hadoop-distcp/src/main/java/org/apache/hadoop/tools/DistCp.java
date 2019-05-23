@@ -1926,6 +1926,17 @@ return|return
 name|metaFolderPath
 return|;
 block|}
+comment|/**    * Returns the context.    *    * @return the context    */
+DECL|method|getContext ()
+specifier|protected
+name|DistCpContext
+name|getContext
+parameter_list|()
+block|{
+return|return
+name|context
+return|;
+block|}
 comment|/**    * Main function of the DistCp program. Parses the input arguments (via OptionsParser),    * and invokes the DistCp::run() method, via the ToolRunner.    * @param argv Command-line arguments sent to DistCp.    */
 DECL|method|main (String argv[])
 specifier|public

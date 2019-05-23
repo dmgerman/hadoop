@@ -911,6 +911,9 @@ case|:
 case|case
 name|LookupFile
 case|:
+case|case
+name|ListStatus
+case|:
 return|return
 literal|true
 return|;

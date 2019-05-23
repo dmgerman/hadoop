@@ -1032,11 +1032,15 @@ comment|// at which we run the heartbeat thread.
 comment|//
 comment|// Here we check that staleNodeInterval is at least five times more than the
 comment|// frequency at which the accounting thread is going to run.
-try|try
-block|{
+name|staleNodeIntervalMs
+operator|=
 name|sanitizeUserArgs
 argument_list|(
+name|OZONE_SCM_STALENODE_INTERVAL
+argument_list|,
 name|staleNodeIntervalMs
+argument_list|,
+name|OZONE_SCM_HEARTBEAT_PROCESS_INTERVAL
 argument_list|,
 name|heartbeatThreadFrequencyMs
 argument_list|,
@@ -1045,37 +1049,17 @@ argument_list|,
 literal|1000
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IllegalArgumentException
-name|ex
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Stale Node Interval is cannot be honored due to "
-operator|+
-literal|"mis-configured {}. ex:  {}"
-argument_list|,
-name|OZONE_SCM_HEARTBEAT_PROCESS_INTERVAL
-argument_list|,
-name|ex
-argument_list|)
-expr_stmt|;
-throw|throw
-name|ex
-throw|;
-block|}
 comment|// Make sure that stale node value is greater than configured value that
 comment|// datanodes are going to send HBs.
-try|try
-block|{
+name|staleNodeIntervalMs
+operator|=
 name|sanitizeUserArgs
 argument_list|(
+name|OZONE_SCM_STALENODE_INTERVAL
+argument_list|,
 name|staleNodeIntervalMs
+argument_list|,
+name|HDDS_HEARTBEAT_INTERVAL
 argument_list|,
 name|heartbeatIntervalMs
 argument_list|,
@@ -1084,30 +1068,6 @@ argument_list|,
 literal|1000
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IllegalArgumentException
-name|ex
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Stale Node Interval MS is cannot be honored due to "
-operator|+
-literal|"mis-configured {}. ex:  {}"
-argument_list|,
-name|HDDS_HEARTBEAT_INTERVAL
-argument_list|,
-name|ex
-argument_list|)
-expr_stmt|;
-throw|throw
-name|ex
-throw|;
-block|}
 return|return
 name|staleNodeIntervalMs
 return|;
@@ -1147,13 +1107,16 @@ operator|.
 name|MILLISECONDS
 argument_list|)
 decl_stmt|;
-try|try
-block|{
 comment|// Make sure that dead nodes Ms is at least twice the time for staleNodes
 comment|// with a max of 1000 times the staleNodes.
+return|return
 name|sanitizeUserArgs
 argument_list|(
+name|OZONE_SCM_DEADNODE_INTERVAL
+argument_list|,
 name|deadNodeIntervalMs
+argument_list|,
+name|OZONE_SCM_STALENODE_INTERVAL
 argument_list|,
 name|staleNodeIntervalMs
 argument_list|,
@@ -1161,33 +1124,6 @@ literal|2
 argument_list|,
 literal|1000
 argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IllegalArgumentException
-name|ex
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Dead Node Interval MS is cannot be honored due to "
-operator|+
-literal|"mis-configured {}. ex:  {}"
-argument_list|,
-name|OZONE_SCM_STALENODE_INTERVAL
-argument_list|,
-name|ex
-argument_list|)
-expr_stmt|;
-throw|throw
-name|ex
-throw|;
-block|}
-return|return
-name|deadNodeIntervalMs
 return|;
 block|}
 comment|/**    * Timeout value for the RPC from Datanode to SCM, primarily used for    * Heartbeats and container reports.    *    * @param conf - Ozone Config    * @return - Rpc timeout in Milliseconds.    */

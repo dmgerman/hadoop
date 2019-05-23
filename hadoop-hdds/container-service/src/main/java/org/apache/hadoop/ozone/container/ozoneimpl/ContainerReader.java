@@ -426,9 +426,17 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
 name|utils
 operator|.
-name|MetadataStore
+name|ContainerCache
+operator|.
+name|ReferenceCountedDB
 import|;
 end_import
 
@@ -1026,7 +1034,9 @@ argument_list|,
 name|config
 argument_list|)
 decl_stmt|;
-name|MetadataStore
+try|try
+init|(
+name|ReferenceCountedDB
 name|containerDB
 init|=
 name|BlockUtils
@@ -1037,7 +1047,8 @@ name|kvContainerData
 argument_list|,
 name|config
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|MetadataKeyFilters
 operator|.
 name|KeyPrefixFilter
@@ -1060,6 +1071,9 @@ name|int
 name|numPendingDeletionBlocks
 init|=
 name|containerDB
+operator|.
+name|getStore
+argument_list|()
 operator|.
 name|getSequentialRangeKVs
 argument_list|(
@@ -1087,6 +1101,9 @@ index|[]
 name|delTxnId
 init|=
 name|containerDB
+operator|.
+name|getStore
+argument_list|()
 operator|.
 name|get
 argument_list|(
@@ -1126,6 +1143,9 @@ index|[]
 name|bcsId
 init|=
 name|containerDB
+operator|.
+name|getStore
+argument_list|()
 operator|.
 name|get
 argument_list|(
@@ -1189,6 +1209,7 @@ argument_list|(
 name|kvContainer
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 else|else
 block|{

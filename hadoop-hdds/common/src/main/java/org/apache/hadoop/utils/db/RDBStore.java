@@ -1680,6 +1680,16 @@ return|return
 name|dbLocation
 return|;
 block|}
+DECL|method|getCodecRegistry ()
+specifier|public
+name|CodecRegistry
+name|getCodecRegistry
+parameter_list|()
+block|{
+return|return
+name|codecRegistry
+return|;
+block|}
 block|}
 end_class
 

@@ -88,7 +88,19 @@ specifier|final
 name|String
 name|serverSideEncryptionKey
 decl_stmt|;
-DECL|method|S3ObjectAttributes ( String bucket, String key, S3AEncryptionMethods serverSideEncryptionAlgorithm, String serverSideEncryptionKey)
+DECL|field|eTag
+specifier|private
+specifier|final
+name|String
+name|eTag
+decl_stmt|;
+DECL|field|versionId
+specifier|private
+specifier|final
+name|String
+name|versionId
+decl_stmt|;
+DECL|method|S3ObjectAttributes ( String bucket, String key, S3AEncryptionMethods serverSideEncryptionAlgorithm, String serverSideEncryptionKey, String eTag, String versionId)
 specifier|public
 name|S3ObjectAttributes
 parameter_list|(
@@ -103,6 +115,12 @@ name|serverSideEncryptionAlgorithm
 parameter_list|,
 name|String
 name|serverSideEncryptionKey
+parameter_list|,
+name|String
+name|eTag
+parameter_list|,
+name|String
+name|versionId
 parameter_list|)
 block|{
 name|this
@@ -128,6 +146,18 @@ operator|.
 name|serverSideEncryptionKey
 operator|=
 name|serverSideEncryptionKey
+expr_stmt|;
+name|this
+operator|.
+name|eTag
+operator|=
+name|eTag
+expr_stmt|;
+name|this
+operator|.
+name|versionId
+operator|=
+name|versionId
 expr_stmt|;
 block|}
 DECL|method|getBucket ()
@@ -168,6 +198,26 @@ parameter_list|()
 block|{
 return|return
 name|serverSideEncryptionKey
+return|;
+block|}
+DECL|method|getETag ()
+specifier|public
+name|String
+name|getETag
+parameter_list|()
+block|{
+return|return
+name|eTag
+return|;
+block|}
+DECL|method|getVersionId ()
+specifier|public
+name|String
+name|getVersionId
+parameter_list|()
+block|{
+return|return
+name|versionId
 return|;
 block|}
 block|}

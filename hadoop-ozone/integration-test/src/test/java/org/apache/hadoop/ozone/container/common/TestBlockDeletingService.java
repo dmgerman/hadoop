@@ -492,9 +492,17 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
 name|utils
 operator|.
-name|MetadataStore
+name|ContainerCache
+operator|.
+name|ReferenceCountedDB
 import|;
 end_import
 
@@ -985,7 +993,9 @@ operator|.
 name|getContainerData
 argument_list|()
 expr_stmt|;
-name|MetadataStore
+try|try
+init|(
+name|ReferenceCountedDB
 name|metadata
 init|=
 name|BlockUtils
@@ -996,7 +1006,8 @@ name|data
 argument_list|,
 name|conf
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 for|for
 control|(
 name|int
@@ -1198,6 +1209,9 @@ argument_list|)
 expr_stmt|;
 name|metadata
 operator|.
+name|getStore
+argument_list|()
+operator|.
 name|put
 argument_list|(
 name|DFSUtil
@@ -1216,6 +1230,7 @@ name|toByteArray
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}
@@ -1261,12 +1276,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Get under deletion blocks count from DB,    * note this info is parsed from container.db.    */
-DECL|method|getUnderDeletionBlocksCount (MetadataStore meta)
+DECL|method|getUnderDeletionBlocksCount (ReferenceCountedDB meta)
 specifier|private
 name|int
 name|getUnderDeletionBlocksCount
 parameter_list|(
-name|MetadataStore
+name|ReferenceCountedDB
 name|meta
 parameter_list|)
 throws|throws
@@ -1288,6 +1303,9 @@ argument_list|>
 name|underDeletionBlocks
 init|=
 name|meta
+operator|.
+name|getStore
+argument_list|()
 operator|.
 name|getRangeKVs
 argument_list|(
@@ -1316,12 +1334,12 @@ name|size
 argument_list|()
 return|;
 block|}
-DECL|method|getDeletedBlocksCount (MetadataStore db)
+DECL|method|getDeletedBlocksCount (ReferenceCountedDB db)
 specifier|private
 name|int
 name|getDeletedBlocksCount
 parameter_list|(
-name|MetadataStore
+name|ReferenceCountedDB
 name|db
 parameter_list|)
 throws|throws
@@ -1343,6 +1361,9 @@ argument_list|>
 name|underDeletionBlocks
 init|=
 name|db
+operator|.
+name|getStore
+argument_list|()
 operator|.
 name|getRangeKVs
 argument_list|(
@@ -1511,7 +1532,9 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|MetadataStore
+try|try
+init|(
+name|ReferenceCountedDB
 name|meta
 init|=
 name|BlockUtils
@@ -1530,7 +1553,8 @@ argument_list|)
 argument_list|,
 name|conf
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|Map
 argument_list|<
 name|Long
@@ -1706,6 +1730,7 @@ name|meta
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 name|svc
 operator|.
 name|shutdown
@@ -2128,7 +2153,9 @@ argument_list|,
 name|containerData
 argument_list|)
 expr_stmt|;
-name|MetadataStore
+try|try
+init|(
+name|ReferenceCountedDB
 name|meta
 init|=
 name|BlockUtils
@@ -2147,7 +2174,8 @@ argument_list|)
 argument_list|,
 name|conf
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|LogCapturer
 name|newLog
 init|=
@@ -2189,7 +2217,7 @@ parameter_list|(
 name|IOException
 name|ignored
 parameter_list|)
-block|{       }
+block|{         }
 return|return
 literal|false
 return|;
@@ -2223,6 +2251,7 @@ literal|"Background task executes timed out, retrying in next interval"
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 name|svc
 operator|.
 name|shutdown

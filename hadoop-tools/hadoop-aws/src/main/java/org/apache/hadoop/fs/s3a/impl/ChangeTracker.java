@@ -40,6 +40,58 @@ name|com
 operator|.
 name|amazonaws
 operator|.
+name|AmazonServiceException
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|amazonaws
+operator|.
+name|SdkBaseException
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|amazonaws
+operator|.
+name|services
+operator|.
+name|s3
+operator|.
+name|model
+operator|.
+name|CopyObjectRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|amazonaws
+operator|.
+name|services
+operator|.
+name|s3
+operator|.
+name|model
+operator|.
+name|GetObjectMetadataRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|amazonaws
+operator|.
 name|services
 operator|.
 name|s3
@@ -86,6 +138,24 @@ begin_import
 import|import
 name|com
 operator|.
+name|amazonaws
+operator|.
+name|services
+operator|.
+name|s3
+operator|.
+name|transfer
+operator|.
+name|model
+operator|.
+name|CopyResult
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
 name|google
 operator|.
 name|common
@@ -93,22 +163,6 @@ operator|.
 name|annotations
 operator|.
 name|VisibleForTesting
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|s3a
-operator|.
-name|NoVersionAttributeException
 import|;
 end_import
 
@@ -202,7 +256,39 @@ name|fs
 operator|.
 name|s3a
 operator|.
+name|NoVersionAttributeException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
 name|RemoteFileChangedException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3ObjectAttributes
 import|;
 end_import
 
@@ -222,8 +308,22 @@ name|checkNotNull
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|http
+operator|.
+name|HttpStatus
+operator|.
+name|SC_PRECONDITION_FAILED
+import|;
+end_import
+
 begin_comment
-comment|/**  * Change tracking for input streams: the revision ID/etag  * the previous request is recorded and when the next request comes in,  * it is compared.  * Self-contained for testing and use in different streams.  */
+comment|/**  * Change tracking for input streams: the version ID or etag of the object is  * tracked and compared on open/re-open.  An initial version ID or etag may or  * may not be available, depending on usage (e.g. if S3Guard is utilized).  *  * Self-contained for testing and use in different streams.  */
 end_comment
 
 begin_class
@@ -263,7 +363,7 @@ specifier|final
 name|String
 name|CHANGE_REPORTED_BY_S3
 init|=
-literal|"reported by S3"
+literal|"Change reported by S3"
 decl_stmt|;
 comment|/** Policy to use. */
 DECL|field|policy
@@ -292,8 +392,8 @@ specifier|private
 name|String
 name|revisionId
 decl_stmt|;
-comment|/**    * Create a change tracker.    * @param uri URI of object being tracked    * @param policy policy to track.    * @param versionMismatches reference to the version mismatch counter    */
-DECL|method|ChangeTracker (final String uri, final ChangeDetectionPolicy policy, final AtomicLong versionMismatches)
+comment|/**    * Create a change tracker.    * @param uri URI of object being tracked    * @param policy policy to track.    * @param versionMismatches reference to the version mismatch counter    * @param s3ObjectAttributes attributes of the object, potentially including    * an eTag or versionId to match depending on {@code policy}    */
+DECL|method|ChangeTracker (final String uri, final ChangeDetectionPolicy policy, final AtomicLong versionMismatches, final S3ObjectAttributes s3ObjectAttributes)
 specifier|public
 name|ChangeTracker
 parameter_list|(
@@ -308,6 +408,10 @@ parameter_list|,
 specifier|final
 name|AtomicLong
 name|versionMismatches
+parameter_list|,
+specifier|final
+name|S3ObjectAttributes
+name|s3ObjectAttributes
 parameter_list|)
 block|{
 name|this
@@ -331,6 +435,36 @@ name|versionMismatches
 operator|=
 name|versionMismatches
 expr_stmt|;
+name|this
+operator|.
+name|revisionId
+operator|=
+name|policy
+operator|.
+name|getRevisionId
+argument_list|(
+name|s3ObjectAttributes
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|revisionId
+operator|!=
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Revision ID for object at {}: {}"
+argument_list|,
+name|uri
+argument_list|,
+name|revisionId
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|getRevisionId ()
 specifier|public
@@ -377,6 +511,97 @@ name|maybeApplyConstraint
 parameter_list|(
 specifier|final
 name|GetObjectRequest
+name|request
+parameter_list|)
+block|{
+if|if
+condition|(
+name|policy
+operator|.
+name|getMode
+argument_list|()
+operator|==
+name|ChangeDetectionPolicy
+operator|.
+name|Mode
+operator|.
+name|Server
+operator|&&
+name|revisionId
+operator|!=
+literal|null
+condition|)
+block|{
+name|policy
+operator|.
+name|applyRevisionConstraint
+argument_list|(
+name|request
+argument_list|,
+name|revisionId
+argument_list|)
+expr_stmt|;
+return|return
+literal|true
+return|;
+block|}
+return|return
+literal|false
+return|;
+block|}
+comment|/**    * Apply any revision control set by the policy if it is to be    * enforced on the server.    * @param request request to modify    * @return true iff a constraint was added.    */
+DECL|method|maybeApplyConstraint ( final CopyObjectRequest request)
+specifier|public
+name|boolean
+name|maybeApplyConstraint
+parameter_list|(
+specifier|final
+name|CopyObjectRequest
+name|request
+parameter_list|)
+block|{
+if|if
+condition|(
+name|policy
+operator|.
+name|getMode
+argument_list|()
+operator|==
+name|ChangeDetectionPolicy
+operator|.
+name|Mode
+operator|.
+name|Server
+operator|&&
+name|revisionId
+operator|!=
+literal|null
+condition|)
+block|{
+name|policy
+operator|.
+name|applyRevisionConstraint
+argument_list|(
+name|request
+argument_list|,
+name|revisionId
+argument_list|)
+expr_stmt|;
+return|return
+literal|true
+return|;
+block|}
+return|return
+literal|false
+return|;
+block|}
+DECL|method|maybeApplyConstraint ( final GetObjectMetadataRequest request)
+specifier|public
+name|boolean
+name|maybeApplyConstraint
+parameter_list|(
+specifier|final
+name|GetObjectMetadataRequest
 name|request
 parameter_list|)
 block|{
@@ -470,20 +695,20 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"%s change "
-operator|+
 name|CHANGE_REPORTED_BY_S3
 operator|+
-literal|" while reading"
+literal|" during %s"
 operator|+
 literal|" at position %s."
 operator|+
-literal|" Version %s was unavailable"
+literal|" %s %s was unavailable"
+argument_list|,
+name|operation
+argument_list|,
+name|pos
 argument_list|,
 name|getSource
 argument_list|()
-argument_list|,
-name|pos
 argument_list|,
 name|getRevisionId
 argument_list|()
@@ -504,15 +729,189 @@ argument_list|)
 throw|;
 block|}
 block|}
-specifier|final
-name|ObjectMetadata
-name|metadata
-init|=
+name|processMetadata
+argument_list|(
 name|object
 operator|.
 name|getObjectMetadata
 argument_list|()
+argument_list|,
+name|operation
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Process the response from the server for validation against the    * change policy.    * @param copyResult result of a copy operation    * @throws PathIOException raised on failure    * @throws RemoteFileChangedException if the remote file has changed.    */
+DECL|method|processResponse (final CopyResult copyResult)
+specifier|public
+name|void
+name|processResponse
+parameter_list|(
+specifier|final
+name|CopyResult
+name|copyResult
+parameter_list|)
+throws|throws
+name|PathIOException
+block|{
+comment|// ETag (sometimes, depending on encryption and/or multipart) is not the
+comment|// same on the copied object as the original.  Version Id seems to never
+comment|// be the same on the copy.  As such, there isn't really anything that
+comment|// can be verified on the response, except that a revision ID is present
+comment|// if required.
+name|String
+name|newRevisionId
+init|=
+name|policy
+operator|.
+name|getRevisionId
+argument_list|(
+name|copyResult
+argument_list|)
 decl_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Copy result {}: {}"
+argument_list|,
+name|policy
+operator|.
+name|getSource
+argument_list|()
+argument_list|,
+name|newRevisionId
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|newRevisionId
+operator|==
+literal|null
+operator|&&
+name|policy
+operator|.
+name|isRequireVersion
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|NoVersionAttributeException
+argument_list|(
+name|uri
+argument_list|,
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Change detection policy requires %s"
+argument_list|,
+name|policy
+operator|.
+name|getSource
+argument_list|()
+argument_list|)
+argument_list|)
+throw|;
+block|}
+block|}
+comment|/**    * Process an exception generated against the change policy.    * If the exception indicates the file has changed, this method throws    * {@code RemoteFileChangedException} with the original exception as the    * cause.    * @param e the exception    * @param operation the operation performed when the exception was    * generated (e.g. "copy", "read", "select").    * @throws RemoteFileChangedException if the remote file has changed.    */
+DECL|method|processException (SdkBaseException e, String operation)
+specifier|public
+name|void
+name|processException
+parameter_list|(
+name|SdkBaseException
+name|e
+parameter_list|,
+name|String
+name|operation
+parameter_list|)
+throws|throws
+name|RemoteFileChangedException
+block|{
+if|if
+condition|(
+name|e
+operator|instanceof
+name|AmazonServiceException
+condition|)
+block|{
+name|AmazonServiceException
+name|serviceException
+init|=
+operator|(
+name|AmazonServiceException
+operator|)
+name|e
+decl_stmt|;
+comment|// This isn't really going to be hit due to
+comment|// https://github.com/aws/aws-sdk-java/issues/1644
+if|if
+condition|(
+name|serviceException
+operator|.
+name|getStatusCode
+argument_list|()
+operator|==
+name|SC_PRECONDITION_FAILED
+condition|)
+block|{
+name|versionMismatches
+operator|.
+name|incrementAndGet
+argument_list|()
+expr_stmt|;
+throw|throw
+operator|new
+name|RemoteFileChangedException
+argument_list|(
+name|uri
+argument_list|,
+name|operation
+argument_list|,
+name|String
+operator|.
+name|format
+argument_list|(
+name|RemoteFileChangedException
+operator|.
+name|PRECONDITIONS_FAILED
+operator|+
+literal|" on %s."
+operator|+
+literal|" Version %s was unavailable"
+argument_list|,
+name|getSource
+argument_list|()
+argument_list|,
+name|getRevisionId
+argument_list|()
+argument_list|)
+argument_list|,
+name|serviceException
+argument_list|)
+throw|;
+block|}
+block|}
+block|}
+comment|/**    * Process metadata response from server for validation against the change    * policy.    * @param metadata metadata returned from server    * @param operation operation in progress    * @throws PathIOException raised on failure    * @throws RemoteFileChangedException if the remote file has changed.    */
+DECL|method|processMetadata (final ObjectMetadata metadata, final String operation)
+specifier|public
+name|void
+name|processMetadata
+parameter_list|(
+specifier|final
+name|ObjectMetadata
+name|metadata
+parameter_list|,
+specifier|final
+name|String
+name|operation
+parameter_list|)
+throws|throws
+name|PathIOException
+block|{
 specifier|final
 name|String
 name|newRevisionId
@@ -526,6 +925,38 @@ argument_list|,
 name|uri
 argument_list|)
 decl_stmt|;
+name|processNewRevision
+argument_list|(
+name|newRevisionId
+argument_list|,
+name|operation
+argument_list|,
+operator|-
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Validate a revision from the server against our expectations.    * @param newRevisionId new revision.    * @param operation operation in progress    * @param pos offset in the file; -1 for "none"    * @throws PathIOException raised on failure    * @throws RemoteFileChangedException if the remote file has changed.    */
+DECL|method|processNewRevision (final String newRevisionId, final String operation, final long pos)
+specifier|private
+name|void
+name|processNewRevision
+parameter_list|(
+specifier|final
+name|String
+name|newRevisionId
+parameter_list|,
+specifier|final
+name|String
+name|operation
+parameter_list|,
+specifier|final
+name|long
+name|pos
+parameter_list|)
+throws|throws
+name|PathIOException
+block|{
 if|if
 condition|(
 name|newRevisionId
@@ -565,8 +996,8 @@ operator|==
 literal|null
 condition|)
 block|{
-comment|// revisionId is null on first (re)open. Pin it so change can be detected
-comment|// if object has been updated
+comment|// revisionId may be null on first (re)open. Pin it so change can be
+comment|// detected if object has been updated
 name|LOG
 operator|.
 name|debug

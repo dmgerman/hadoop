@@ -42,6 +42,38 @@ name|s3
 operator|.
 name|model
 operator|.
+name|CopyObjectRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|amazonaws
+operator|.
+name|services
+operator|.
+name|s3
+operator|.
+name|model
+operator|.
+name|GetObjectMetadataRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|amazonaws
+operator|.
+name|services
+operator|.
+name|s3
+operator|.
+name|model
+operator|.
 name|GetObjectRequest
 import|;
 end_import
@@ -59,6 +91,24 @@ operator|.
 name|model
 operator|.
 name|ObjectMetadata
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|amazonaws
+operator|.
+name|services
+operator|.
+name|s3
+operator|.
+name|transfer
+operator|.
+name|model
+operator|.
+name|CopyResult
 import|;
 end_import
 
@@ -166,6 +216,22 @@ name|fs
 operator|.
 name|s3a
 operator|.
+name|S3ObjectAttributes
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
 name|RemoteFileChangedException
 import|;
 end_import
@@ -232,7 +298,7 @@ specifier|final
 name|String
 name|CHANGE_DETECTED
 init|=
-literal|"change detected"
+literal|"change detected  on client"
 decl_stmt|;
 DECL|field|mode
 specifier|private
@@ -781,6 +847,40 @@ function_decl|;
 end_function_decl
 
 begin_comment
+comment|/**    * Like {{@link #getRevisionId(ObjectMetadata, String)}}, but retrieves the    * revision identifier from {@link S3ObjectAttributes}.    *    * @param s3Attributes the object attributes    * @return the revisionId string as interpreted by this policy, or potentially    * null if the attribute is unavailable (such as when the policy says to use    * versionId but object versioning is not enabled for the bucket).    */
+end_comment
+
+begin_function_decl
+DECL|method|getRevisionId (S3ObjectAttributes s3Attributes)
+specifier|public
+specifier|abstract
+name|String
+name|getRevisionId
+parameter_list|(
+name|S3ObjectAttributes
+name|s3Attributes
+parameter_list|)
+function_decl|;
+end_function_decl
+
+begin_comment
+comment|/**    * Like {{@link #getRevisionId(ObjectMetadata, String)}}, but retrieves the    * revision identifier from {@link CopyResult}.    *    * @param copyResult the copy result    * @return the revisionId string as interpreted by this policy, or potentially    * null if the attribute is unavailable (such as when the policy says to use    * versionId but object versioning is not enabled for the bucket).    */
+end_comment
+
+begin_function_decl
+DECL|method|getRevisionId (CopyResult copyResult)
+specifier|public
+specifier|abstract
+name|String
+name|getRevisionId
+parameter_list|(
+name|CopyResult
+name|copyResult
+parameter_list|)
+function_decl|;
+end_function_decl
+
+begin_comment
 comment|/**    * Applies the given {@link #getRevisionId(ObjectMetadata, String) revisionId}    * as a server-side qualification on the {@code GetObjectRequest}.    *    * @param request the request    * @param revisionId the revision id    */
 end_comment
 
@@ -792,6 +892,46 @@ name|void
 name|applyRevisionConstraint
 parameter_list|(
 name|GetObjectRequest
+name|request
+parameter_list|,
+name|String
+name|revisionId
+parameter_list|)
+function_decl|;
+end_function_decl
+
+begin_comment
+comment|/**    * Applies the given {@link #getRevisionId(ObjectMetadata, String) revisionId}    * as a server-side qualification on the {@code CopyObjectRequest}.    *    * @param request the request    * @param revisionId the revision id    */
+end_comment
+
+begin_function_decl
+DECL|method|applyRevisionConstraint (CopyObjectRequest request, String revisionId)
+specifier|public
+specifier|abstract
+name|void
+name|applyRevisionConstraint
+parameter_list|(
+name|CopyObjectRequest
+name|request
+parameter_list|,
+name|String
+name|revisionId
+parameter_list|)
+function_decl|;
+end_function_decl
+
+begin_comment
+comment|/**    * Applies the given {@link #getRevisionId(ObjectMetadata, String) revisionId}    * as a server-side qualification on the {@code GetObjectMetadataRequest}.    *    * @param request the request    * @param revisionId the revision id    */
+end_comment
+
+begin_function_decl
+DECL|method|applyRevisionConstraint (GetObjectMetadataRequest request, String revisionId)
+specifier|public
+specifier|abstract
+name|void
+name|applyRevisionConstraint
+parameter_list|(
+name|GetObjectMetadataRequest
 name|request
 parameter_list|,
 name|String
@@ -834,6 +974,21 @@ name|long
 name|timesAlreadyDetected
 parameter_list|)
 block|{
+name|String
+name|positionText
+init|=
+name|position
+operator|>=
+literal|0
+condition|?
+operator|(
+literal|" at "
+operator|+
+name|position
+operator|)
+else|:
+literal|""
+decl_stmt|;
 switch|switch
 condition|(
 name|mode
@@ -872,7 +1027,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"%s change detected on %s %s at %d. Expected %s got %s"
+literal|"%s change detected on %s %s%s. Expected %s got %s"
 argument_list|,
 name|getSource
 argument_list|()
@@ -881,7 +1036,7 @@ name|operation
 argument_list|,
 name|uri
 argument_list|,
-name|position
+name|positionText
 argument_list|,
 name|revisionId
 argument_list|,
@@ -917,7 +1072,8 @@ case|case
 name|Server
 case|:
 default|default:
-comment|// mode == Client (or Server, but really won't be called for Server)
+comment|// mode == Client or Server; will trigger on version failures
+comment|// of getObjectMetadata even on server.
 return|return
 operator|new
 name|ImmutablePair
@@ -940,14 +1096,16 @@ literal|"%s "
 operator|+
 name|CHANGE_DETECTED
 operator|+
-literal|" while reading at position %s."
+literal|" during %s%s."
 operator|+
 literal|" Expected %s got %s"
 argument_list|,
 name|getSource
 argument_list|()
 argument_list|,
-name|position
+name|operation
+argument_list|,
+name|positionText
 argument_list|,
 name|revisionId
 argument_list|,
@@ -1013,6 +1171,42 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getRevisionId (S3ObjectAttributes s3Attributes)
+specifier|public
+name|String
+name|getRevisionId
+parameter_list|(
+name|S3ObjectAttributes
+name|s3Attributes
+parameter_list|)
+block|{
+return|return
+name|s3Attributes
+operator|.
+name|getETag
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getRevisionId (CopyResult copyResult)
+specifier|public
+name|String
+name|getRevisionId
+parameter_list|(
+name|CopyResult
+name|copyResult
+parameter_list|)
+block|{
+return|return
+name|copyResult
+operator|.
+name|getETag
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|applyRevisionConstraint (GetObjectRequest request, String revisionId)
 specifier|public
 name|void
@@ -1025,11 +1219,18 @@ name|String
 name|revisionId
 parameter_list|)
 block|{
+if|if
+condition|(
+name|revisionId
+operator|!=
+literal|null
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Restricting request to etag {}"
+literal|"Restricting get request to etag {}"
 argument_list|,
 name|revisionId
 argument_list|)
@@ -1041,6 +1242,62 @@ argument_list|(
 name|revisionId
 argument_list|)
 expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Override
+DECL|method|applyRevisionConstraint (CopyObjectRequest request, String revisionId)
+specifier|public
+name|void
+name|applyRevisionConstraint
+parameter_list|(
+name|CopyObjectRequest
+name|request
+parameter_list|,
+name|String
+name|revisionId
+parameter_list|)
+block|{
+if|if
+condition|(
+name|revisionId
+operator|!=
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Restricting copy request to etag {}"
+argument_list|,
+name|revisionId
+argument_list|)
+expr_stmt|;
+name|request
+operator|.
+name|withMatchingETagConstraint
+argument_list|(
+name|revisionId
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Override
+DECL|method|applyRevisionConstraint (GetObjectMetadataRequest request, String revisionId)
+specifier|public
+name|void
+name|applyRevisionConstraint
+parameter_list|(
+name|GetObjectMetadataRequest
+name|request
+parameter_list|,
+name|String
+name|revisionId
+parameter_list|)
+block|{
+comment|// GetObjectMetadataRequest doesn't support eTag qualification
 block|}
 annotation|@
 name|Override
@@ -1164,6 +1421,42 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getRevisionId (S3ObjectAttributes s3Attributes)
+specifier|public
+name|String
+name|getRevisionId
+parameter_list|(
+name|S3ObjectAttributes
+name|s3Attributes
+parameter_list|)
+block|{
+return|return
+name|s3Attributes
+operator|.
+name|getVersionId
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getRevisionId (CopyResult copyResult)
+specifier|public
+name|String
+name|getRevisionId
+parameter_list|(
+name|CopyResult
+name|copyResult
+parameter_list|)
+block|{
+return|return
+name|copyResult
+operator|.
+name|getVersionId
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|applyRevisionConstraint (GetObjectRequest request, String revisionId)
 specifier|public
 name|void
@@ -1176,11 +1469,18 @@ name|String
 name|revisionId
 parameter_list|)
 block|{
+if|if
+condition|(
+name|revisionId
+operator|!=
+literal|null
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Restricting request to version {}"
+literal|"Restricting get request to version {}"
 argument_list|,
 name|revisionId
 argument_list|)
@@ -1192,6 +1492,85 @@ argument_list|(
 name|revisionId
 argument_list|)
 expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Override
+DECL|method|applyRevisionConstraint (CopyObjectRequest request, String revisionId)
+specifier|public
+name|void
+name|applyRevisionConstraint
+parameter_list|(
+name|CopyObjectRequest
+name|request
+parameter_list|,
+name|String
+name|revisionId
+parameter_list|)
+block|{
+if|if
+condition|(
+name|revisionId
+operator|!=
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Restricting copy request to version {}"
+argument_list|,
+name|revisionId
+argument_list|)
+expr_stmt|;
+name|request
+operator|.
+name|withSourceVersionId
+argument_list|(
+name|revisionId
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Override
+DECL|method|applyRevisionConstraint (GetObjectMetadataRequest request, String revisionId)
+specifier|public
+name|void
+name|applyRevisionConstraint
+parameter_list|(
+name|GetObjectMetadataRequest
+name|request
+parameter_list|,
+name|String
+name|revisionId
+parameter_list|)
+block|{
+if|if
+condition|(
+name|revisionId
+operator|!=
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Restricting metadata request to version {}"
+argument_list|,
+name|revisionId
+argument_list|)
+expr_stmt|;
+name|request
+operator|.
+name|withVersionId
+argument_list|(
+name|revisionId
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -1287,6 +1666,37 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getRevisionId (final S3ObjectAttributes s3ObjectAttributes)
+specifier|public
+name|String
+name|getRevisionId
+parameter_list|(
+specifier|final
+name|S3ObjectAttributes
+name|s3ObjectAttributes
+parameter_list|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getRevisionId (CopyResult copyResult)
+specifier|public
+name|String
+name|getRevisionId
+parameter_list|(
+name|CopyResult
+name|copyResult
+parameter_list|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|applyRevisionConstraint (final GetObjectRequest request, final String revisionId)
 specifier|public
 name|void
@@ -1297,6 +1707,34 @@ name|GetObjectRequest
 name|request
 parameter_list|,
 specifier|final
+name|String
+name|revisionId
+parameter_list|)
+block|{      }
+annotation|@
+name|Override
+DECL|method|applyRevisionConstraint (CopyObjectRequest request, String revisionId)
+specifier|public
+name|void
+name|applyRevisionConstraint
+parameter_list|(
+name|CopyObjectRequest
+name|request
+parameter_list|,
+name|String
+name|revisionId
+parameter_list|)
+block|{      }
+annotation|@
+name|Override
+DECL|method|applyRevisionConstraint (GetObjectMetadataRequest request, String revisionId)
+specifier|public
+name|void
+name|applyRevisionConstraint
+parameter_list|(
+name|GetObjectMetadataRequest
+name|request
+parameter_list|,
 name|String
 name|revisionId
 parameter_list|)

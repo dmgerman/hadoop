@@ -102,6 +102,16 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
 begin_comment
 comment|/**  * Ozone Manager FileSystem interface.  */
 end_comment
@@ -154,6 +164,28 @@ name|lookupFile
 parameter_list|(
 name|OmKeyArgs
 name|args
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+DECL|method|listStatus (OmKeyArgs keyArgs, boolean recursive, String startKey, long numEntries)
+name|List
+argument_list|<
+name|OzoneFileStatus
+argument_list|>
+name|listStatus
+parameter_list|(
+name|OmKeyArgs
+name|keyArgs
+parameter_list|,
+name|boolean
+name|recursive
+parameter_list|,
+name|String
+name|startKey
+parameter_list|,
+name|long
+name|numEntries
 parameter_list|)
 throws|throws
 name|IOException

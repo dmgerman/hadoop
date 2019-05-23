@@ -384,6 +384,16 @@ name|build
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|shutdown ()
+specifier|public
+name|void
+name|shutdown
+parameter_list|()
+block|{
+comment|// Do nothing.
+block|}
 block|}
 end_class
 

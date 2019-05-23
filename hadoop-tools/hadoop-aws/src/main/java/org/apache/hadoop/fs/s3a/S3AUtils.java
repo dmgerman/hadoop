@@ -230,6 +230,26 @@ begin_import
 import|import
 name|com
 operator|.
+name|amazonaws
+operator|.
+name|thirdparty
+operator|.
+name|apache
+operator|.
+name|http
+operator|.
+name|conn
+operator|.
+name|ssl
+operator|.
+name|SSLConnectionSocketFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
 name|google
 operator|.
 name|common
@@ -450,6 +470,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|ssl
+operator|.
+name|OpenSSLSocketFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|VersionInfo
@@ -497,6 +533,18 @@ operator|.
 name|annotation
 operator|.
 name|Nullable
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|net
+operator|.
+name|ssl
+operator|.
+name|HostnameVerifier
 import|;
 end_import
 
@@ -2348,8 +2396,8 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    * Create a files status instance from a listing.    * @param keyPath path to entry    * @param summary summary from AWS    * @param blockSize block size to declare.    * @param owner owner of the file    * @return a status entry    */
-DECL|method|createFileStatus (Path keyPath, S3ObjectSummary summary, long blockSize, String owner)
+comment|/**    * Create a files status instance from a listing.    * @param keyPath path to entry    * @param summary summary from AWS    * @param blockSize block size to declare.    * @param owner owner of the file    * @param eTag S3 object eTag or null if unavailable    * @param versionId S3 object versionId or null if unavailable    * @return a status entry    */
+DECL|method|createFileStatus (Path keyPath, S3ObjectSummary summary, long blockSize, String owner, String eTag, String versionId)
 specifier|public
 specifier|static
 name|S3AFileStatus
@@ -2366,6 +2414,12 @@ name|blockSize
 parameter_list|,
 name|String
 name|owner
+parameter_list|,
+name|String
+name|eTag
+parameter_list|,
+name|String
+name|versionId
 parameter_list|)
 block|{
 name|long
@@ -2401,11 +2455,15 @@ argument_list|,
 name|blockSize
 argument_list|,
 name|owner
+argument_list|,
+name|eTag
+argument_list|,
+name|versionId
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a file status for object we just uploaded.  For files, we use    * current time as modification time, since s3a uses S3's service-based    * modification time, which will not be available until we do a    * getFileStatus() later on.    * @param keyPath path for created object    * @param isDir true iff directory    * @param size file length    * @param blockSize block size for file status    * @param owner Hadoop username    * @return a status entry    */
-DECL|method|createUploadFileStatus (Path keyPath, boolean isDir, long size, long blockSize, String owner)
+comment|/**    * Create a file status for object we just uploaded.  For files, we use    * current time as modification time, since s3a uses S3's service-based    * modification time, which will not be available until we do a    * getFileStatus() later on.    * @param keyPath path for created object    * @param isDir true iff directory    * @param size file length    * @param blockSize block size for file status    * @param owner Hadoop username    * @param eTag S3 object eTag or null if unavailable    * @param versionId S3 object versionId or null if unavailable    * @return a status entry    */
+DECL|method|createUploadFileStatus (Path keyPath, boolean isDir, long size, long blockSize, String owner, String eTag, String versionId)
 specifier|public
 specifier|static
 name|S3AFileStatus
@@ -2425,6 +2483,12 @@ name|blockSize
 parameter_list|,
 name|String
 name|owner
+parameter_list|,
+name|String
+name|eTag
+parameter_list|,
+name|String
+name|versionId
 parameter_list|)
 block|{
 name|Date
@@ -2452,11 +2516,15 @@ argument_list|,
 name|blockSize
 argument_list|,
 name|owner
+argument_list|,
+name|eTag
+argument_list|,
+name|versionId
 argument_list|)
 return|;
 block|}
 comment|/* Date 'modified' is ignored when isDir is true. */
-DECL|method|createFileStatus (Path keyPath, boolean isDir, long size, Date modified, long blockSize, String owner)
+DECL|method|createFileStatus (Path keyPath, boolean isDir, long size, Date modified, long blockSize, String owner, String eTag, String versionId)
 specifier|private
 specifier|static
 name|S3AFileStatus
@@ -2479,6 +2547,12 @@ name|blockSize
 parameter_list|,
 name|String
 name|owner
+parameter_list|,
+name|String
+name|eTag
+parameter_list|,
+name|String
+name|versionId
 parameter_list|)
 block|{
 if|if
@@ -2518,6 +2592,10 @@ argument_list|,
 name|blockSize
 argument_list|,
 name|owner
+argument_list|,
+name|eTag
+argument_list|,
+name|versionId
 argument_list|)
 return|;
 block|}
@@ -4725,7 +4803,7 @@ return|return
 name|awsConf
 return|;
 block|}
-comment|/**    * Initializes all AWS SDK settings related to connection management.    *    * @param conf Hadoop configuration    * @param awsConf AWS SDK configuration    */
+comment|/**    * Initializes all AWS SDK settings related to connection management.    *    * @param conf Hadoop configuration    * @param awsConf AWS SDK configuration    *    * @throws IOException if there was an error initializing the protocol    *                     settings    */
 DECL|method|initConnectionSettings (Configuration conf, ClientConfiguration awsConf)
 specifier|public
 specifier|static
@@ -4738,6 +4816,8 @@ parameter_list|,
 name|ClientConfiguration
 name|awsConf
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|awsConf
 operator|.
@@ -4755,31 +4835,11 @@ literal|1
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|boolean
-name|secureConnections
-init|=
+name|initProtocolSettings
+argument_list|(
 name|conf
-operator|.
-name|getBoolean
-argument_list|(
-name|SECURE_CONNECTIONS
 argument_list|,
-name|DEFAULT_SECURE_CONNECTIONS
-argument_list|)
-decl_stmt|;
 name|awsConf
-operator|.
-name|setProtocol
-argument_list|(
-name|secureConnections
-condition|?
-name|Protocol
-operator|.
-name|HTTPS
-else|:
-name|Protocol
-operator|.
-name|HTTP
 argument_list|)
 expr_stmt|;
 name|awsConf
@@ -4902,6 +4962,92 @@ operator|.
 name|setSignerOverride
 argument_list|(
 name|signerOverride
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Initializes the connection protocol settings when connecting to S3 (e.g.    * either HTTP or HTTPS). If secure connections are enabled, this method    * will load the configured SSL providers.    *    * @param conf Hadoop configuration    * @param awsConf AWS SDK configuration    *    * @throws IOException if there is an error initializing the configured    *                     {@link javax.net.ssl.SSLSocketFactory}    */
+DECL|method|initProtocolSettings (Configuration conf, ClientConfiguration awsConf)
+specifier|private
+specifier|static
+name|void
+name|initProtocolSettings
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|ClientConfiguration
+name|awsConf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|boolean
+name|secureConnections
+init|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|SECURE_CONNECTIONS
+argument_list|,
+name|DEFAULT_SECURE_CONNECTIONS
+argument_list|)
+decl_stmt|;
+name|awsConf
+operator|.
+name|setProtocol
+argument_list|(
+name|secureConnections
+condition|?
+name|Protocol
+operator|.
+name|HTTPS
+else|:
+name|Protocol
+operator|.
+name|HTTP
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|secureConnections
+condition|)
+block|{
+name|OpenSSLSocketFactory
+operator|.
+name|initializeDefaultFactory
+argument_list|(
+name|conf
+operator|.
+name|getEnum
+argument_list|(
+name|SSL_CHANNEL_MODE
+argument_list|,
+name|DEFAULT_SSL_CHANNEL_MODE
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|awsConf
+operator|.
+name|getApacheHttpClientConfig
+argument_list|()
+operator|.
+name|setSslSocketFactory
+argument_list|(
+operator|new
+name|SSLConnectionSocketFactory
+argument_list|(
+name|OpenSSLSocketFactory
+operator|.
+name|getDefaultFactory
+argument_list|()
+argument_list|,
+operator|(
+name|HostnameVerifier
+operator|)
+literal|null
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

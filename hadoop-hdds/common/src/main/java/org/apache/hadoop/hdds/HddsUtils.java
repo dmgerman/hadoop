@@ -946,7 +946,7 @@ comment|/**    * Create a scm security client.    * @param conf    - Ozone confi
 DECL|method|getScmSecurityClient ( OzoneConfiguration conf, InetSocketAddress address)
 specifier|public
 specifier|static
-name|SCMSecurityProtocol
+name|SCMSecurityProtocolClientSideTranslatorPB
 name|getScmSecurityClient
 parameter_list|(
 name|OzoneConfiguration

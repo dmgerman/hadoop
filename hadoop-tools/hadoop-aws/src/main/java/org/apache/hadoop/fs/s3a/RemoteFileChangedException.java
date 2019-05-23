@@ -85,6 +85,15 @@ name|RemoteFileChangedException
 extends|extends
 name|PathIOException
 block|{
+DECL|field|PRECONDITIONS_FAILED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|PRECONDITIONS_FAILED
+init|=
+literal|"Constraints of request were unsatisfiable"
+decl_stmt|;
 comment|/**    * Constructs a RemoteFileChangedException.    *    * @param path the path accessed when the change was detected    * @param operation the operation (e.g. open, re-open) performed when the    * change was detected    * @param message a message providing more details about the condition    */
 DECL|method|RemoteFileChangedException (String path, String operation, String message)
 specifier|public
@@ -105,6 +114,39 @@ argument_list|(
 name|path
 argument_list|,
 name|message
+argument_list|)
+expr_stmt|;
+name|setOperation
+argument_list|(
+name|operation
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Constructs a RemoteFileChangedException.    *    * @param path the path accessed when the change was detected    * @param operation the operation (e.g. open, re-open) performed when the    * change was detected    * @param message a message providing more details about the condition    * @param cause inner cause.    */
+DECL|method|RemoteFileChangedException (String path, String operation, String message, Throwable cause)
+specifier|public
+name|RemoteFileChangedException
+parameter_list|(
+name|String
+name|path
+parameter_list|,
+name|String
+name|operation
+parameter_list|,
+name|String
+name|message
+parameter_list|,
+name|Throwable
+name|cause
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|path
+argument_list|,
+name|message
+argument_list|,
+name|cause
 argument_list|)
 expr_stmt|;
 name|setOperation

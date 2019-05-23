@@ -194,6 +194,22 @@ name|fs
 operator|.
 name|s3a
 operator|.
+name|S3AFileStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
 name|Tristate
 import|;
 end_import
@@ -261,7 +277,7 @@ specifier|private
 name|boolean
 name|isAuthoritative
 decl_stmt|;
-comment|/**    * Create a directory listing metadata container.    *    * @param path Path of the directory. If this path has a host component, then    *     all paths added later via {@link #put(FileStatus)} must also have    *     the same host.    * @param listing Entries in the directory.    * @param isAuthoritative true iff listing is the full contents of the    *     directory, and the calling client reports that this may be cached as    *     the full and authoritative listing of all files in the directory.    * @param lastUpdated last updated time on which expiration is based.    */
+comment|/**    * Create a directory listing metadata container.    *    * @param path Path of the directory. If this path has a host component, then    *     all paths added later via {@link #put(S3AFileStatus)} must also have    *     the same host.    * @param listing Entries in the directory.    * @param isAuthoritative true iff listing is the full contents of the    *     directory, and the calling client reports that this may be cached as    *     the full and authoritative listing of all files in the directory.    * @param lastUpdated last updated time on which expiration is based.    */
 DECL|method|DirListingMetadata (Path path, Collection<PathMetadata> listing, boolean isAuthoritative, long lastUpdated)
 specifier|public
 name|DirListingMetadata
@@ -744,12 +760,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Add an entry to the directory listing.  If this listing already contains a    * {@code FileStatus} with the same path, it will be replaced.    *    * @param childFileStatus entry to add to this directory listing.    * @return true if the status was added or replaced with a new value. False    * if the same FileStatus value was already present.    */
-DECL|method|put (FileStatus childFileStatus)
+DECL|method|put (S3AFileStatus childFileStatus)
 specifier|public
 name|boolean
 name|put
 parameter_list|(
-name|FileStatus
+name|S3AFileStatus
 name|childFileStatus
 parameter_list|)
 block|{

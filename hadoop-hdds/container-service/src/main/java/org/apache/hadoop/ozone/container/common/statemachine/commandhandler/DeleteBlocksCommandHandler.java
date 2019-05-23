@@ -468,9 +468,17 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
 name|utils
 operator|.
-name|MetadataStore
+name|ContainerCache
+operator|.
+name|ReferenceCountedDB
 import|;
 end_import
 
@@ -1205,7 +1213,9 @@ name|newDeletionBlocks
 init|=
 literal|0
 decl_stmt|;
-name|MetadataStore
+try|try
+init|(
+name|ReferenceCountedDB
 name|containerDB
 init|=
 name|BlockUtils
@@ -1216,7 +1226,8 @@ name|containerData
 argument_list|,
 name|conf
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 for|for
 control|(
 name|Long
@@ -1251,6 +1262,9 @@ index|[]
 name|blkInfo
 init|=
 name|containerDB
+operator|.
+name|getStore
+argument_list|()
 operator|.
 name|get
 argument_list|(
@@ -1298,6 +1312,9 @@ if|if
 condition|(
 name|containerDB
 operator|.
+name|getStore
+argument_list|()
+operator|.
 name|get
 argument_list|(
 name|deletingKeyBytes
@@ -1306,6 +1323,9 @@ operator|!=
 literal|null
 operator|||
 name|containerDB
+operator|.
+name|getStore
+argument_list|()
 operator|.
 name|get
 argument_list|(
@@ -1356,6 +1376,9 @@ expr_stmt|;
 try|try
 block|{
 name|containerDB
+operator|.
+name|getStore
+argument_list|()
 operator|.
 name|writeBatch
 argument_list|(
@@ -1421,6 +1444,9 @@ block|}
 block|}
 name|containerDB
 operator|.
+name|getStore
+argument_list|()
+operator|.
 name|put
 argument_list|(
 name|DFSUtil
@@ -1461,6 +1487,7 @@ argument_list|(
 name|newDeletionBlocks
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override

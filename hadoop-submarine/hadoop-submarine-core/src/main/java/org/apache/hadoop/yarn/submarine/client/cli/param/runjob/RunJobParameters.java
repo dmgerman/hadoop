@@ -324,7 +324,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|util
+name|submarine
+operator|.
+name|common
 operator|.
 name|resource
 operator|.
@@ -1361,14 +1363,6 @@ operator|.
 name|createResourceFromString
 argument_list|(
 name|workerResourceStr
-argument_list|,
-name|clientContext
-operator|.
-name|getOrCreateYarnClient
-argument_list|()
-operator|.
-name|getResourceTypeInfo
-argument_list|()
 argument_list|)
 return|;
 block|}

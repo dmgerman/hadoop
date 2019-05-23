@@ -442,9 +442,17 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
 name|utils
 operator|.
-name|MetadataStore
+name|ContainerCache
+operator|.
+name|ReferenceCountedDB
 import|;
 end_import
 
@@ -1583,7 +1591,7 @@ argument_list|)
 expr_stmt|;
 name|List
 argument_list|<
-name|MetadataStore
+name|ReferenceCountedDB
 argument_list|>
 name|metadataStores
 init|=
@@ -1684,10 +1692,11 @@ argument_list|(
 name|containerID
 argument_list|)
 decl_stmt|;
-name|metadataStores
-operator|.
-name|add
-argument_list|(
+try|try
+init|(
+name|ReferenceCountedDB
+name|store
+init|=
 name|BlockUtils
 operator|.
 name|getDB
@@ -1702,8 +1711,16 @@ argument_list|()
 argument_list|,
 name|conf
 argument_list|)
+init|)
+block|{
+name|metadataStores
+operator|.
+name|add
+argument_list|(
+name|store
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|// There should be as many rocks db as the number of datanodes in pipeline.
 name|Assert

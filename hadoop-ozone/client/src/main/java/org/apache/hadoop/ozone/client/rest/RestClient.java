@@ -1227,14 +1227,7 @@ specifier|final
 name|UserGroupInformation
 name|ugi
 decl_stmt|;
-DECL|field|userRights
-specifier|private
-specifier|final
-name|OzoneAcl
-operator|.
-name|OzoneACLRights
-name|userRights
-decl_stmt|;
+comment|// private final OzoneAcl.OzoneACLRights userRights;
 comment|/**     * Creates RestClient instance with the given configuration.     * @param conf Configuration     * @throws IOException     */
 DECL|method|RestClient (Configuration conf)
 specifier|public
@@ -1412,23 +1405,8 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
-name|this
-operator|.
-name|userRights
-operator|=
-name|conf
-operator|.
-name|getEnum
-argument_list|(
-name|OMConfigKeys
-operator|.
-name|OZONE_OM_USER_RIGHTS
-argument_list|,
-name|OMConfigKeys
-operator|.
-name|OZONE_OM_USER_RIGHTS_DEFAULT
-argument_list|)
-expr_stmt|;
+comment|//      this.userRights = conf.getEnum(OMConfigKeys.OZONE_OM_USER_RIGHTS,
+comment|//          OMConfigKeys.OZONE_OM_USER_RIGHTS_DEFAULT);
 comment|// TODO: Add new configuration parameter to configure RestServerSelector.
 name|RestServerSelector
 name|defaultSelector
@@ -6292,6 +6270,47 @@ parameter_list|,
 name|boolean
 name|recursive
 parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Ozone REST protocol does not "
+operator|+
+literal|"support this operation."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|listStatus (String volumeName, String bucketName, String keyName, boolean recursive, String startKey, long numEntries)
+specifier|public
+name|List
+argument_list|<
+name|OzoneFileStatus
+argument_list|>
+name|listStatus
+parameter_list|(
+name|String
+name|volumeName
+parameter_list|,
+name|String
+name|bucketName
+parameter_list|,
+name|String
+name|keyName
+parameter_list|,
+name|boolean
+name|recursive
+parameter_list|,
+name|String
+name|startKey
+parameter_list|,
+name|long
+name|numEntries
+parameter_list|)
+throws|throws
+name|IOException
 block|{
 throw|throw
 operator|new

@@ -952,6 +952,22 @@ name|fs
 operator|.
 name|s3a
 operator|.
+name|S3AFileStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
 name|S3AFileSystem
 import|;
 end_import
@@ -1237,7 +1253,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * DynamoDBMetadataStore is a {@link MetadataStore} that persists  * file system metadata to DynamoDB.  *  * The current implementation uses a schema consisting of a single table.  The  * name of the table can be configured by config key  * {@link org.apache.hadoop.fs.s3a.Constants#S3GUARD_DDB_TABLE_NAME_KEY}.  * By default, it matches the name of the S3 bucket.  Each item in the table  * represents a single directory or file.  Its path is split into separate table  * attributes:  *<ul>  *<li> parent (absolute path of the parent, with bucket name inserted as  * first path component).</li>  *<li> child (path of that specific child, relative to parent).</li>  *<li> optional boolean attribute tracking whether the path is a directory.  *      Absence or a false value indicates the path is a file.</li>  *<li> optional long attribute revealing modification time of file.  *      This attribute is meaningful only to file items.</li>  *<li> optional long attribute revealing file length.  *      This attribute is meaningful only to file items.</li>  *<li> optional long attribute revealing block size of the file.  *      This attribute is meaningful only to file items.</li>  *</ul>  *  * The DynamoDB partition key is the parent, and the range key is the child.  *  * To allow multiple buckets to share the same DynamoDB table, the bucket  * name is treated as the root directory.  *  * For example, assume the consistent store contains metadata representing this  * file system structure:  *  *<pre>  * s3a://bucket/dir1  * |-- dir2  * |   |-- file1  * |   `-- file2  * `-- dir3  *     |-- dir4  *     |   `-- file3  *     |-- dir5  *     |   `-- file4  *     `-- dir6  *</pre>  *  * This is persisted to a single DynamoDB table as:  *  *<pre>  * =========================================================================  * | parent                 | child | is_dir | mod_time | len |     ...    |  * =========================================================================  * | /bucket                | dir1  | true   |          |     |            |  * | /bucket/dir1           | dir2  | true   |          |     |            |  * | /bucket/dir1           | dir3  | true   |          |     |            |  * | /bucket/dir1/dir2      | file1 |        |   100    | 111 |            |  * | /bucket/dir1/dir2      | file2 |        |   200    | 222 |            |  * | /bucket/dir1/dir3      | dir4  | true   |          |     |            |  * | /bucket/dir1/dir3      | dir5  | true   |          |     |            |  * | /bucket/dir1/dir3/dir4 | file3 |        |   300    | 333 |            |  * | /bucket/dir1/dir3/dir5 | file4 |        |   400    | 444 |            |  * | /bucket/dir1/dir3      | dir6  | true   |          |     |            |  * =========================================================================  *</pre>  *  * This choice of schema is efficient for read access patterns.  * {@link #get(Path)} can be served from a single item lookup.  * {@link #listChildren(Path)} can be served from a query against all rows  * matching the parent (the partition key) and the returned list is guaranteed  * to be sorted by child (the range key).  Tracking whether or not a path is a  * directory helps prevent unnecessary queries during traversal of an entire  * sub-tree.  *  * Some mutating operations, notably {@link #deleteSubtree(Path)} and  * {@link #move(Collection, Collection)}, are less efficient with this schema.  * They require mutating multiple items in the DynamoDB table.  *  * By default, DynamoDB access is performed within the same AWS region as  * the S3 bucket that hosts the S3A instance.  During initialization, it checks  * the location of the S3 bucket and creates a DynamoDB client connected to the  * same region. The region may also be set explicitly by setting the config  * parameter {@code fs.s3a.s3guard.ddb.region} to the corresponding region.  */
+comment|/**  * DynamoDBMetadataStore is a {@link MetadataStore} that persists  * file system metadata to DynamoDB.  *  * The current implementation uses a schema consisting of a single table.  The  * name of the table can be configured by config key  * {@link org.apache.hadoop.fs.s3a.Constants#S3GUARD_DDB_TABLE_NAME_KEY}.  * By default, it matches the name of the S3 bucket.  Each item in the table  * represents a single directory or file.  Its path is split into separate table  * attributes:  *<ul>  *<li> parent (absolute path of the parent, with bucket name inserted as  * first path component).</li>  *<li> child (path of that specific child, relative to parent).</li>  *<li> optional boolean attribute tracking whether the path is a directory.  *      Absence or a false value indicates the path is a file.</li>  *<li> optional long attribute revealing modification time of file.  *      This attribute is meaningful only to file items.</li>  *<li> optional long attribute revealing file length.  *      This attribute is meaningful only to file items.</li>  *<li> optional long attribute revealing block size of the file.  *      This attribute is meaningful only to file items.</li>  *<li> optional string attribute tracking the s3 eTag of the file.  *      May be absent if the metadata was entered with a version of S3Guard  *      before this was tracked.  *      This attribute is meaningful only to file items.</li>   *<li> optional string attribute tracking the s3 versionId of the file.  *      May be absent if the metadata was entered with a version of S3Guard  *      before this was tracked.  *      This attribute is meaningful only to file items.</li>  *</ul>  *  * The DynamoDB partition key is the parent, and the range key is the child.  *  * To allow multiple buckets to share the same DynamoDB table, the bucket  * name is treated as the root directory.  *  * For example, assume the consistent store contains metadata representing this  * file system structure:  *  *<pre>  * s3a://bucket/dir1  * |-- dir2  * |   |-- file1  * |   `-- file2  * `-- dir3  *     |-- dir4  *     |   `-- file3  *     |-- dir5  *     |   `-- file4  *     `-- dir6  *</pre>  *  * This is persisted to a single DynamoDB table as:  *  *<pre>  * ====================================================================================  * | parent                 | child | is_dir | mod_time | len | etag | ver_id |  ...  |  * ====================================================================================  * | /bucket                | dir1  | true   |          |     |      |        |       |  * | /bucket/dir1           | dir2  | true   |          |     |      |        |       |  * | /bucket/dir1           | dir3  | true   |          |     |      |        |       |  * | /bucket/dir1/dir2      | file1 |        |   100    | 111 | abc  |  mno   |       |  * | /bucket/dir1/dir2      | file2 |        |   200    | 222 | def  |  pqr   |       |  * | /bucket/dir1/dir3      | dir4  | true   |          |     |      |        |       |  * | /bucket/dir1/dir3      | dir5  | true   |          |     |      |        |       |  * | /bucket/dir1/dir3/dir4 | file3 |        |   300    | 333 | ghi  |  stu   |       |  * | /bucket/dir1/dir3/dir5 | file4 |        |   400    | 444 | jkl  |  vwx   |       |  * | /bucket/dir1/dir3      | dir6  | true   |          |     |      |        |       |  * ====================================================================================  *</pre>  *  * This choice of schema is efficient for read access patterns.  * {@link #get(Path)} can be served from a single item lookup.  * {@link #listChildren(Path)} can be served from a query against all rows  * matching the parent (the partition key) and the returned list is guaranteed  * to be sorted by child (the range key).  Tracking whether or not a path is a  * directory helps prevent unnecessary queries during traversal of an entire  * sub-tree.  *  * Some mutating operations, notably {@link #deleteSubtree(Path)} and  * {@link #move(Collection, Collection)}, are less efficient with this schema.  * They require mutating multiple items in the DynamoDB table.  *  * By default, DynamoDB access is performed within the same AWS region as  * the S3 bucket that hosts the S3A instance.  During initialization, it checks  * the location of the S3 bucket and creates a DynamoDB client connected to the  * same region. The region may also be set explicitly by setting the config  * parameter {@code fs.s3a.s3guard.ddb.region} to the corresponding region.  */
 end_comment
 
 begin_class
@@ -2817,14 +2833,14 @@ return|return
 name|meta
 return|;
 block|}
-comment|/**    * Make a FileStatus object for a directory at given path.  The FileStatus    * only contains what S3A needs, and omits mod time since S3A uses its own    * implementation which returns current system time.    * @param owner  username of owner    * @param path   path to dir    * @return new FileStatus    */
-DECL|method|makeDirStatus (String owner, Path path)
+comment|/**    * Make a S3AFileStatus object for a directory at given path.    * The FileStatus only contains what S3A needs, and omits mod time    * since S3A uses its own implementation which returns current system time.    * @param dirOwner  username of owner    * @param path   path to dir    * @return new S3AFileStatus    */
+DECL|method|makeDirStatus (String dirOwner, Path path)
 specifier|private
-name|FileStatus
+name|S3AFileStatus
 name|makeDirStatus
 parameter_list|(
 name|String
-name|owner
+name|dirOwner
 parameter_list|,
 name|Path
 name|path
@@ -2832,27 +2848,15 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|FileStatus
+name|S3AFileStatus
 argument_list|(
-literal|0
-argument_list|,
-literal|true
-argument_list|,
-literal|1
-argument_list|,
-literal|0
-argument_list|,
-literal|0
-argument_list|,
-literal|0
-argument_list|,
-literal|null
-argument_list|,
-name|owner
-argument_list|,
-literal|null
+name|Tristate
+operator|.
+name|UNKNOWN
 argument_list|,
 name|path
+argument_list|,
+name|dirOwner
 argument_list|)
 return|;
 block|}
@@ -3242,7 +3246,7 @@ name|path
 argument_list|)
 expr_stmt|;
 specifier|final
-name|FileStatus
+name|S3AFileStatus
 name|status
 init|=
 name|makeDirStatus
@@ -4241,7 +4245,7 @@ argument_list|)
 condition|)
 block|{
 specifier|final
-name|FileStatus
+name|S3AFileStatus
 name|status
 init|=
 name|makeDirStatus
@@ -4343,7 +4347,7 @@ block|}
 comment|/** Create a directory FileStatus using current system time as mod time. */
 DECL|method|makeDirStatus (Path f, String owner)
 specifier|static
-name|FileStatus
+name|S3AFileStatus
 name|makeDirStatus
 parameter_list|(
 name|Path
@@ -4355,30 +4359,15 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|FileStatus
+name|S3AFileStatus
 argument_list|(
-literal|0
-argument_list|,
-literal|true
-argument_list|,
-literal|1
-argument_list|,
-literal|0
-argument_list|,
-name|System
+name|Tristate
 operator|.
-name|currentTimeMillis
-argument_list|()
-argument_list|,
-literal|0
-argument_list|,
-literal|null
-argument_list|,
-name|owner
-argument_list|,
-name|owner
+name|UNKNOWN
 argument_list|,
 name|f
+argument_list|,
+name|owner
 argument_list|)
 return|;
 block|}

@@ -619,7 +619,7 @@ name|scheduledTask
 operator|=
 name|scheduler
 operator|.
-name|scheduleAtFixedRate
+name|scheduleWithFixedDelay
 argument_list|(
 operator|new
 name|RolloverSample

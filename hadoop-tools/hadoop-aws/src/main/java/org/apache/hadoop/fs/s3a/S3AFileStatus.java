@@ -99,6 +99,16 @@ specifier|private
 name|Tristate
 name|isEmptyDirectory
 decl_stmt|;
+DECL|field|eTag
+specifier|private
+name|String
+name|eTag
+decl_stmt|;
+DECL|field|versionId
+specifier|private
+name|String
+name|versionId
+decl_stmt|;
 comment|/**    * Create a directory status.    * @param isemptydir is this an empty directory?    * @param path the path    * @param owner the owner    */
 DECL|method|S3AFileStatus (boolean isemptydir, Path path, String owner)
 specifier|public
@@ -190,8 +200,8 @@ name|owner
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * A simple file.    * @param length file length    * @param modification_time mod time    * @param path path    * @param blockSize block size    * @param owner owner    */
-DECL|method|S3AFileStatus (long length, long modification_time, Path path, long blockSize, String owner)
+comment|/**    * A simple file.    * @param length file length    * @param modification_time mod time    * @param path path    * @param blockSize block size    * @param owner owner    * @param eTag eTag of the S3 object if available, else null    * @param versionId versionId of the S3 object if available, else null    */
+DECL|method|S3AFileStatus (long length, long modification_time, Path path, long blockSize, String owner, String eTag, String versionId)
 specifier|public
 name|S3AFileStatus
 parameter_list|(
@@ -209,6 +219,12 @@ name|blockSize
 parameter_list|,
 name|String
 name|owner
+parameter_list|,
+name|String
+name|eTag
+parameter_list|,
+name|String
+name|versionId
 parameter_list|)
 block|{
 name|super
@@ -227,9 +243,9 @@ literal|0
 argument_list|,
 literal|null
 argument_list|,
-literal|null
+name|owner
 argument_list|,
-literal|null
+name|owner
 argument_list|,
 literal|null
 argument_list|,
@@ -248,19 +264,21 @@ name|Tristate
 operator|.
 name|FALSE
 expr_stmt|;
-name|setOwner
-argument_list|(
-name|owner
-argument_list|)
+name|this
+operator|.
+name|eTag
+operator|=
+name|eTag
 expr_stmt|;
-name|setGroup
-argument_list|(
-name|owner
-argument_list|)
+name|this
+operator|.
+name|versionId
+operator|=
+name|versionId
 expr_stmt|;
 block|}
-comment|/**    * Convenience constructor for creating from a vanilla FileStatus plus    * an isEmptyDirectory flag.    * @param source FileStatus to convert to S3AFileStatus    * @param isEmptyDirectory TRUE/FALSE if known to be / not be an empty    *     directory, UNKNOWN if that information was not computed.    * @return a new S3AFileStatus    */
-DECL|method|fromFileStatus (FileStatus source, Tristate isEmptyDirectory)
+comment|/**    * Convenience constructor for creating from a vanilla FileStatus plus    * an isEmptyDirectory flag.    * @param source FileStatus to convert to S3AFileStatus    * @param isEmptyDirectory TRUE/FALSE if known to be / not be an empty    *     directory, UNKNOWN if that information was not computed.    * @param eTag eTag of the S3 object if available, else null    * @param versionId versionId of the S3 object if available, else null    * @return a new S3AFileStatus    */
+DECL|method|fromFileStatus (FileStatus source, Tristate isEmptyDirectory, String eTag, String versionId)
 specifier|public
 specifier|static
 name|S3AFileStatus
@@ -271,6 +289,12 @@ name|source
 parameter_list|,
 name|Tristate
 name|isEmptyDirectory
+parameter_list|,
+name|String
+name|eTag
+parameter_list|,
+name|String
+name|versionId
 parameter_list|)
 block|{
 if|if
@@ -329,6 +353,10 @@ name|source
 operator|.
 name|getOwner
 argument_list|()
+argument_list|,
+name|eTag
+argument_list|,
+name|versionId
 argument_list|)
 return|;
 block|}
@@ -342,6 +370,45 @@ parameter_list|()
 block|{
 return|return
 name|isEmptyDirectory
+return|;
+block|}
+comment|/**    * Update isEmptyDirectory attribute.    * @param isEmptyDirectory new isEmptyDirectory value    */
+DECL|method|setIsEmptyDirectory (Tristate isEmptyDirectory)
+specifier|public
+name|void
+name|setIsEmptyDirectory
+parameter_list|(
+name|Tristate
+name|isEmptyDirectory
+parameter_list|)
+block|{
+name|this
+operator|.
+name|isEmptyDirectory
+operator|=
+name|isEmptyDirectory
+expr_stmt|;
+block|}
+comment|/**    * @return the S3 object eTag when available, else null.    */
+DECL|method|getETag ()
+specifier|public
+name|String
+name|getETag
+parameter_list|()
+block|{
+return|return
+name|eTag
+return|;
+block|}
+comment|/**    * @return the S3 object versionId when available, else null.    */
+DECL|method|getVersionId ()
+specifier|public
+name|String
+name|getVersionId
+parameter_list|()
+block|{
+return|return
+name|versionId
 return|;
 block|}
 comment|/** Compare if this object is equal to another object.    * @param   o the object to be compared.    * @return  true if two file status has the same path name; false if not.    */
@@ -438,6 +505,24 @@ argument_list|()
 operator|.
 name|name
 argument_list|()
+operator|+
+name|String
+operator|.
+name|format
+argument_list|(
+literal|" eTag=%s"
+argument_list|,
+name|eTag
+argument_list|)
+operator|+
+name|String
+operator|.
+name|format
+argument_list|(
+literal|" versionId=%s"
+argument_list|,
+name|versionId
+argument_list|)
 argument_list|)
 return|;
 block|}
