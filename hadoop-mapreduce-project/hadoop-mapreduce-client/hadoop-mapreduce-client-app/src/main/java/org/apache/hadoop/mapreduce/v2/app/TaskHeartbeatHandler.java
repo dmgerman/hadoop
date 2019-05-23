@@ -1019,6 +1019,12 @@ name|boolean
 name|taskStuck
 init|=
 operator|(
+name|taskStuckTimeOut
+operator|>
+literal|0
+operator|)
+operator|&&
+operator|(
 operator|!
 name|entry
 operator|.
@@ -1193,6 +1199,11 @@ annotation|@
 name|VisibleForTesting
 DECL|method|getRunningAttempts ()
 name|ConcurrentMap
+argument_list|<
+name|TaskAttemptId
+argument_list|,
+name|ReportTime
+argument_list|>
 name|getRunningAttempts
 parameter_list|()
 block|{
