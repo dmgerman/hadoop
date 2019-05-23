@@ -2391,6 +2391,14 @@ argument_list|(
 name|ctx
 argument_list|,
 name|conf
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+literal|"target/logs"
+argument_list|)
+argument_list|,
+literal|"logs"
 argument_list|)
 expr_stmt|;
 block|}

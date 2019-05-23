@@ -371,9 +371,19 @@ specifier|final
 name|Configuration
 name|conf
 decl_stmt|;
+DECL|field|remoteRootLogDir
+specifier|private
+name|Path
+name|remoteRootLogDir
+decl_stmt|;
+DECL|field|remoteRootLogDirSuffix
+specifier|private
+name|String
+name|remoteRootLogDirSuffix
+decl_stmt|;
 annotation|@
 name|Inject
-DECL|method|TFileAggregatedLogsBlock (ViewContext ctx, Configuration conf)
+DECL|method|TFileAggregatedLogsBlock (ViewContext ctx, Configuration conf, Path remoteRootLogDir, String remoteRootLogDirSuffix)
 specifier|public
 name|TFileAggregatedLogsBlock
 parameter_list|(
@@ -382,6 +392,12 @@ name|ctx
 parameter_list|,
 name|Configuration
 name|conf
+parameter_list|,
+name|Path
+name|remoteRootLogDir
+parameter_list|,
+name|String
+name|remoteRootLogDirSuffix
 parameter_list|)
 block|{
 name|super
@@ -394,6 +410,18 @@ operator|.
 name|conf
 operator|=
 name|conf
+expr_stmt|;
+name|this
+operator|.
+name|remoteRootLogDir
+operator|=
+name|remoteRootLogDir
+expr_stmt|;
+name|this
+operator|.
+name|remoteRootLogDirSuffix
+operator|=
+name|remoteRootLogDirSuffix
 expr_stmt|;
 block|}
 annotation|@
@@ -449,6 +477,10 @@ name|params
 operator|.
 name|getAppOwner
 argument_list|()
+argument_list|,
+name|remoteRootLogDir
+argument_list|,
+name|remoteRootLogDirSuffix
 argument_list|)
 expr_stmt|;
 block|}

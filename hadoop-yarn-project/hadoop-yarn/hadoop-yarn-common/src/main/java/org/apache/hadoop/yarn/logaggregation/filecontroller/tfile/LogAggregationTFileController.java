@@ -1192,6 +1192,10 @@ name|logRequest
 operator|.
 name|getAppOwner
 argument_list|()
+argument_list|,
+name|remoteRootLogDir
+argument_list|,
+name|remoteRootLogDirSuffix
 argument_list|)
 decl_stmt|;
 name|byte
@@ -1768,6 +1772,10 @@ argument_list|,
 name|appId
 argument_list|,
 name|appOwner
+argument_list|,
+name|remoteRootLogDir
+argument_list|,
+name|remoteRootLogDirSuffix
 argument_list|)
 decl_stmt|;
 if|if
@@ -2121,6 +2129,10 @@ argument_list|(
 name|context
 argument_list|,
 name|conf
+argument_list|,
+name|remoteRootLogDir
+argument_list|,
+name|remoteRootLogDirSuffix
 argument_list|)
 decl_stmt|;
 name|block
