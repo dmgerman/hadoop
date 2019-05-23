@@ -761,6 +761,8 @@ operator|.
 name|class
 argument_list|)
 argument_list|,
+literal|null
+argument_list|,
 name|Mockito
 operator|.
 name|anyInt

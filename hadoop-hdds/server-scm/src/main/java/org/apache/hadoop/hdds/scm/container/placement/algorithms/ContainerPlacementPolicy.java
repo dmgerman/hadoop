@@ -70,8 +70,8 @@ specifier|public
 interface|interface
 name|ContainerPlacementPolicy
 block|{
-comment|/**    * Given the replication factor and size required, return set of datanodes    * that satisfy the nodes and size requirement.    *    * @param excludedNodes - list of nodes to be excluded.    * @param nodesRequired - number of datanodes required.    * @param sizeRequired - size required for the container or block.    * @return list of datanodes chosen.    * @throws IOException    */
-DECL|method|chooseDatanodes (List<DatanodeDetails> excludedNodes, int nodesRequired, long sizeRequired)
+comment|/**    * Given the replication factor and size required, return set of datanodes    * that satisfy the nodes and size requirement.    *    * @param excludedNodes - list of nodes to be excluded.    * @param favoredNodes - list of nodes preferred.    * @param nodesRequired - number of datanodes required.    * @param sizeRequired - size required for the container or block.    * @return list of datanodes chosen.    * @throws IOException    */
+DECL|method|chooseDatanodes (List<DatanodeDetails> excludedNodes, List<DatanodeDetails> favoredNodes, int nodesRequired, long sizeRequired)
 name|List
 argument_list|<
 name|DatanodeDetails
@@ -83,6 +83,12 @@ argument_list|<
 name|DatanodeDetails
 argument_list|>
 name|excludedNodes
+parameter_list|,
+name|List
+argument_list|<
+name|DatanodeDetails
+argument_list|>
+name|favoredNodes
 parameter_list|,
 name|int
 name|nodesRequired

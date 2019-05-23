@@ -510,6 +510,8 @@ name|ArrayList
 argument_list|<>
 argument_list|()
 argument_list|,
+literal|null
+argument_list|,
 name|nodesRequired
 argument_list|,
 name|containerSize
@@ -536,6 +538,8 @@ operator|.
 name|chooseDatanodes
 argument_list|(
 name|nodesCapacity
+argument_list|,
+literal|null
 argument_list|,
 name|nodesRequired
 argument_list|,

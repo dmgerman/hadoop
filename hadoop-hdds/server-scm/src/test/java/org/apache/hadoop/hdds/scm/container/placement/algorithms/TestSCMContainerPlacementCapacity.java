@@ -570,6 +570,8 @@ name|chooseDatanodes
 argument_list|(
 name|existingNodes
 argument_list|,
+literal|null
+argument_list|,
 literal|1
 argument_list|,
 literal|15

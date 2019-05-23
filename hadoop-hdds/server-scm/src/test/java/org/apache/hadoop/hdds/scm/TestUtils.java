@@ -757,6 +757,76 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+comment|/**    * Creates DatanodeDetails with random UUID, specific hostname and network    * location.    *    * @return DatanodeDetails    */
+DECL|method|createDatanodeDetails (String hostname, String loc)
+specifier|public
+specifier|static
+name|DatanodeDetails
+name|createDatanodeDetails
+parameter_list|(
+name|String
+name|hostname
+parameter_list|,
+name|String
+name|loc
+parameter_list|)
+block|{
+name|String
+name|ipAddress
+init|=
+name|random
+operator|.
+name|nextInt
+argument_list|(
+literal|256
+argument_list|)
+operator|+
+literal|"."
+operator|+
+name|random
+operator|.
+name|nextInt
+argument_list|(
+literal|256
+argument_list|)
+operator|+
+literal|"."
+operator|+
+name|random
+operator|.
+name|nextInt
+argument_list|(
+literal|256
+argument_list|)
+operator|+
+literal|"."
+operator|+
+name|random
+operator|.
+name|nextInt
+argument_list|(
+literal|256
+argument_list|)
+decl_stmt|;
+return|return
+name|createDatanodeDetails
+argument_list|(
+name|UUID
+operator|.
+name|randomUUID
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|hostname
+argument_list|,
+name|ipAddress
+argument_list|,
+name|loc
+argument_list|)
+return|;
+block|}
 comment|/**    * Creates DatanodeDetails using the given UUID.    *    * @param uuid Datanode's UUID    *    * @return DatanodeDetails    */
 DECL|method|createDatanodeDetails (UUID uuid)
 specifier|public
@@ -816,6 +886,8 @@ argument_list|,
 literal|"localhost"
 argument_list|,
 name|ipAddress
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
@@ -847,11 +919,13 @@ name|registeredCommand
 operator|.
 name|getIpAddress
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
 comment|/**    * Creates DatanodeDetails with the given information.    *    * @param uuid      Datanode's UUID    * @param hostname  hostname of Datanode    * @param ipAddress ip address of Datanode    *    * @return DatanodeDetails    */
-DECL|method|createDatanodeDetails (String uuid, String hostname, String ipAddress)
+DECL|method|createDatanodeDetails (String uuid, String hostname, String ipAddress, String networkLocation)
 specifier|private
 specifier|static
 name|DatanodeDetails
@@ -865,6 +939,9 @@ name|hostname
 parameter_list|,
 name|String
 name|ipAddress
+parameter_list|,
+name|String
+name|networkLocation
 parameter_list|)
 block|{
 name|DatanodeDetails
@@ -967,6 +1044,11 @@ operator|.
 name|addPort
 argument_list|(
 name|restPort
+argument_list|)
+operator|.
+name|setNetworkLocation
+argument_list|(
+name|networkLocation
 argument_list|)
 expr_stmt|;
 return|return

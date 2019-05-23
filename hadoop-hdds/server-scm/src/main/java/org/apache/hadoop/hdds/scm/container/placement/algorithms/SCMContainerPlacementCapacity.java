@@ -208,10 +208,10 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Called by SCM to choose datanodes.    *    *    * @param excludedNodes - list of the datanodes to exclude.    * @param nodesRequired - number of datanodes required.    * @param sizeRequired - size required for the container or block.    * @return List of datanodes.    * @throws SCMException  SCMException    */
+comment|/**    * Called by SCM to choose datanodes.    *    *    * @param excludedNodes - list of the datanodes to exclude.    * @param favoredNodes - list of nodes preferred.    * @param nodesRequired - number of datanodes required.    * @param sizeRequired - size required for the container or block.    * @return List of datanodes.    * @throws SCMException  SCMException    */
 annotation|@
 name|Override
-DECL|method|chooseDatanodes ( List<DatanodeDetails> excludedNodes, final int nodesRequired, final long sizeRequired)
+DECL|method|chooseDatanodes ( List<DatanodeDetails> excludedNodes, List<DatanodeDetails> favoredNodes, final int nodesRequired, final long sizeRequired)
 specifier|public
 name|List
 argument_list|<
@@ -224,6 +224,12 @@ argument_list|<
 name|DatanodeDetails
 argument_list|>
 name|excludedNodes
+parameter_list|,
+name|List
+argument_list|<
+name|DatanodeDetails
+argument_list|>
+name|favoredNodes
 parameter_list|,
 specifier|final
 name|int
@@ -247,6 +253,8 @@ operator|.
 name|chooseDatanodes
 argument_list|(
 name|excludedNodes
+argument_list|,
+name|favoredNodes
 argument_list|,
 name|nodesRequired
 argument_list|,

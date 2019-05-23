@@ -320,10 +320,10 @@ return|return
 name|conf
 return|;
 block|}
-comment|/**    * Given the replication factor and size required, return set of datanodes    * that satisfy the nodes and size requirement.    *<p>    * Here are some invariants of container placement.    *<p>    * 1. We place containers only on healthy nodes.    * 2. We place containers on nodes with enough space for that container.    * 3. if a set of containers are requested, we either meet the required    * number of nodes or we fail that request.    *    *    * @param excludedNodes - datanodes with existing replicas    * @param nodesRequired - number of datanodes required.    * @param sizeRequired - size required for the container or block.    * @return list of datanodes chosen.    * @throws SCMException SCM exception.    */
+comment|/**    * Given the replication factor and size required, return set of datanodes    * that satisfy the nodes and size requirement.    *<p>    * Here are some invariants of container placement.    *<p>    * 1. We place containers only on healthy nodes.    * 2. We place containers on nodes with enough space for that container.    * 3. if a set of containers are requested, we either meet the required    * number of nodes or we fail that request.    *    *    * @param excludedNodes - datanodes with existing replicas    * @param favoredNodes - list of nodes preferred.    * @param nodesRequired - number of datanodes required.    * @param sizeRequired - size required for the container or block.    * @return list of datanodes chosen.    * @throws SCMException SCM exception.    */
 annotation|@
 name|Override
-DECL|method|chooseDatanodes ( List<DatanodeDetails> excludedNodes, int nodesRequired, final long sizeRequired)
+DECL|method|chooseDatanodes ( List<DatanodeDetails> excludedNodes, List<DatanodeDetails> favoredNodes, int nodesRequired, final long sizeRequired)
 specifier|public
 name|List
 argument_list|<
@@ -336,6 +336,12 @@ argument_list|<
 name|DatanodeDetails
 argument_list|>
 name|excludedNodes
+parameter_list|,
+name|List
+argument_list|<
+name|DatanodeDetails
+argument_list|>
+name|favoredNodes
 parameter_list|,
 name|int
 name|nodesRequired
@@ -548,7 +554,6 @@ return|;
 block|}
 comment|/**    * Returns true if this node has enough space to meet our requirement.    *    * @param datanodeDetails DatanodeDetails    * @return true if we have enough space.    */
 DECL|method|hasEnoughSpace (DatanodeDetails datanodeDetails, long sizeRequired)
-specifier|private
 name|boolean
 name|hasEnoughSpace
 parameter_list|(

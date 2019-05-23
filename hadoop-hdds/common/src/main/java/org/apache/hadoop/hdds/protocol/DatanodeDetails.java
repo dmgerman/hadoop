@@ -80,6 +80,42 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|net
+operator|.
+name|NetConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|net
+operator|.
+name|NodeImpl
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -125,6 +161,8 @@ DECL|class|DatanodeDetails
 specifier|public
 class|class
 name|DatanodeDetails
+extends|extends
+name|NodeImpl
 implements|implements
 name|Comparable
 argument_list|<
@@ -161,8 +199,8 @@ specifier|private
 name|String
 name|certSerialId
 decl_stmt|;
-comment|/**    * Constructs DatanodeDetails instance. DatanodeDetails.Builder is used    * for instantiating DatanodeDetails.    * @param uuid DataNode's UUID    * @param ipAddress IP Address of this DataNode    * @param hostName DataNode's hostname    * @param ports Ports used by the DataNode    * @param certSerialId serial id from SCM issued certificate.    */
-DECL|method|DatanodeDetails (String uuid, String ipAddress, String hostName, List<Port> ports, String certSerialId)
+comment|/**    * Constructs DatanodeDetails instance. DatanodeDetails.Builder is used    * for instantiating DatanodeDetails.    * @param uuid DataNode's UUID    * @param ipAddress IP Address of this DataNode    * @param hostName DataNode's hostname    * @param networkLocation DataNode's network location path    * @param ports Ports used by the DataNode    * @param certSerialId serial id from SCM issued certificate.    */
+DECL|method|DatanodeDetails (String uuid, String ipAddress, String hostName, String networkLocation, List<Port> ports, String certSerialId)
 specifier|private
 name|DatanodeDetails
 parameter_list|(
@@ -175,6 +213,9 @@ parameter_list|,
 name|String
 name|hostName
 parameter_list|,
+name|String
+name|networkLocation
+parameter_list|,
 name|List
 argument_list|<
 name|Port
@@ -185,6 +226,17 @@ name|String
 name|certSerialId
 parameter_list|)
 block|{
+name|super
+argument_list|(
+name|hostName
+argument_list|,
+name|networkLocation
+argument_list|,
+name|NetConstants
+operator|.
+name|NODE_COST_DEFAULT
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|uuid
@@ -229,6 +281,24 @@ name|DatanodeDetails
 name|datanodeDetails
 parameter_list|)
 block|{
+name|super
+argument_list|(
+name|datanodeDetails
+operator|.
+name|getHostName
+argument_list|()
+argument_list|,
+name|datanodeDetails
+operator|.
+name|getNetworkLocation
+argument_list|()
+argument_list|,
+name|datanodeDetails
+operator|.
+name|getCost
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|uuid
@@ -711,6 +781,11 @@ literal|", host: "
 operator|+
 name|hostName
 operator|+
+literal|", networkLocation: "
+operator|+
+name|getNetworkLocation
+argument_list|()
+operator|+
 literal|", certSerialId: "
 operator|+
 name|certSerialId
@@ -827,6 +902,11 @@ specifier|private
 name|String
 name|hostName
 decl_stmt|;
+DECL|field|networkLocation
+specifier|private
+name|String
+name|networkLocation
+decl_stmt|;
 DECL|field|ports
 specifier|private
 name|List
@@ -914,6 +994,26 @@ return|return
 name|this
 return|;
 block|}
+comment|/**      * Sets the network location of DataNode.      *      * @param loc location      * @return DatanodeDetails.Builder      */
+DECL|method|setNetworkLocation (String loc)
+specifier|public
+name|Builder
+name|setNetworkLocation
+parameter_list|(
+name|String
+name|loc
+parameter_list|)
+block|{
+name|this
+operator|.
+name|networkLocation
+operator|=
+name|loc
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 comment|/**      * Adds a DataNode Port.      *      * @param port DataNode port      *      * @return DatanodeDetails.Builder      */
 DECL|method|addPort (Port port)
 specifier|public
@@ -971,6 +1071,20 @@ argument_list|(
 name|id
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|networkLocation
+operator|==
+literal|null
+condition|)
+block|{
+name|networkLocation
+operator|=
+name|NetConstants
+operator|.
+name|DEFAULT_RACK
+expr_stmt|;
+block|}
 return|return
 operator|new
 name|DatanodeDetails
@@ -980,6 +1094,8 @@ argument_list|,
 name|ipAddress
 argument_list|,
 name|hostName
+argument_list|,
+name|networkLocation
 argument_list|,
 name|ports
 argument_list|,
