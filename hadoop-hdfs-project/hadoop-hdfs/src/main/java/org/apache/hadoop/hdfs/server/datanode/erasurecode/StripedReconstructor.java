@@ -1071,16 +1071,6 @@ return|return
 name|datanode
 return|;
 block|}
-DECL|method|getErasureCodingWorker ()
-specifier|public
-name|ErasureCodingWorker
-name|getErasureCodingWorker
-parameter_list|()
-block|{
-return|return
-name|erasureCodingWorker
-return|;
-block|}
 block|}
 end_class
 
