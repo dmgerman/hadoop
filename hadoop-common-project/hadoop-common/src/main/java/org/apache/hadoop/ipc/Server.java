@@ -10604,7 +10604,39 @@ name|equals
 argument_list|(
 name|dataLengthBuffer
 argument_list|)
-operator|||
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Incorrect RPC Header length from {}:{} "
+operator|+
+literal|"expected length: {} got length: {}"
+argument_list|,
+name|hostAddress
+argument_list|,
+name|remotePort
+argument_list|,
+name|RpcConstants
+operator|.
+name|HEADER
+argument_list|,
+name|dataLengthBuffer
+argument_list|)
+expr_stmt|;
+name|setupBadVersionResponse
+argument_list|(
+name|version
+argument_list|)
+expr_stmt|;
+return|return
+operator|-
+literal|1
+return|;
+block|}
+if|if
+condition|(
 name|version
 operator|!=
 name|CURRENT_VERSION
@@ -10615,7 +10647,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Incorrect header or version mismatch from "
+literal|"Version mismatch from "
 operator|+
 name|hostAddress
 operator|+
