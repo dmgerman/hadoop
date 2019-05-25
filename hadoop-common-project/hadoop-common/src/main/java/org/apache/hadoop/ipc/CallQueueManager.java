@@ -1141,7 +1141,6 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// This should be only called once per call and cached in the call object
-comment|// each getPriorityLevel call will increment the counter for the caller
 DECL|method|getPriorityLevel (Schedulable e)
 name|int
 name|getPriorityLevel

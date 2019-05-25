@@ -376,6 +376,15 @@ name|IPC_IDENTITY_PROVIDER_KEY
 init|=
 literal|"identity-provider.impl"
 decl_stmt|;
+DECL|field|IPC_COST_PROVIDER_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IPC_COST_PROVIDER_KEY
+init|=
+literal|"cost-provider.impl"
+decl_stmt|;
 DECL|field|IPC_BACKOFF_ENABLE
 specifier|public
 specifier|static

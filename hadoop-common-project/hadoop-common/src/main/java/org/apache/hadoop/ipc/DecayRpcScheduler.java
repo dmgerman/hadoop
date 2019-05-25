@@ -463,7 +463,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The decay RPC scheduler counts incoming requests in a map, then  * decays the counts at a fixed time interval. The scheduler is optimized  * for large periods (on the order of seconds), as it offloads work to the  * decay sweep.  */
+comment|/**  * The decay RPC scheduler tracks the cost of incoming requests in a map, then  * decays the costs at a fixed time interval. The scheduler is optimized  * for large periods (on the order of seconds), as it offloads work to the  * decay sweep.  */
 end_comment
 
 begin_class
@@ -508,7 +508,7 @@ name|IPC_FCQ_DECAYSCHEDULER_PERIOD_KEY
 init|=
 literal|"faircallqueue.decay-scheduler.period-ms"
 decl_stmt|;
-comment|/**    * Decay factor controls how much each count is suppressed by on each sweep.    * Valid numbers are&gt; 0 and&lt; 1. Decay factor works in tandem with    * period    * to control how long the scheduler remembers an identity.    */
+comment|/**    * Decay factor controls how much each cost is suppressed by on each sweep.    * Valid numbers are&gt; 0 and&lt; 1. Decay factor works in tandem with    * period    * to control how long the scheduler remembers an identity.    */
 DECL|field|IPC_SCHEDULER_DECAYSCHEDULER_FACTOR_KEY
 specifier|public
 specifier|static
@@ -650,9 +650,9 @@ name|writer
 argument_list|()
 decl_stmt|;
 comment|// Track the decayed and raw (no decay) number of calls for each schedulable
-comment|// identity from all previous decay windows: idx 0 for decayed call count and
-comment|// idx 1 for the raw call count
-DECL|field|callCounts
+comment|// identity from all previous decay windows: idx 0 for decayed call cost and
+comment|// idx 1 for the raw call cost
+DECL|field|callCosts
 specifier|private
 specifier|final
 name|ConcurrentHashMap
@@ -664,7 +664,7 @@ argument_list|<
 name|AtomicLong
 argument_list|>
 argument_list|>
-name|callCounts
+name|callCosts
 init|=
 operator|new
 name|ConcurrentHashMap
@@ -678,23 +678,23 @@ argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|// Should be the sum of all AtomicLongs in decayed callCounts
-DECL|field|totalDecayedCallCount
+comment|// Should be the sum of all AtomicLongs in decayed callCosts
+DECL|field|totalDecayedCallCost
 specifier|private
 specifier|final
 name|AtomicLong
-name|totalDecayedCallCount
+name|totalDecayedCallCost
 init|=
 operator|new
 name|AtomicLong
 argument_list|()
 decl_stmt|;
-comment|// The sum of all AtomicLongs in raw callCounts
-DECL|field|totalRawCallCount
+comment|// The sum of all AtomicLongs in raw callCosts
+DECL|field|totalRawCallCost
 specifier|private
 specifier|final
 name|AtomicLong
-name|totalRawCallCount
+name|totalRawCallCost
 init|=
 operator|new
 name|AtomicLong
@@ -768,7 +768,7 @@ specifier|final
 name|double
 name|decayFactor
 decl_stmt|;
-comment|// nextCount = currentCount * decayFactor
+comment|// nextCost = currentCost * decayFactor
 DECL|field|numLevels
 specifier|private
 specifier|final
@@ -828,7 +828,13 @@ specifier|private
 name|MetricsProxy
 name|metricsProxy
 decl_stmt|;
-comment|/**    * This TimerTask will call decayCurrentCounts until    * the scheduler has been garbage collected.    */
+DECL|field|costProvider
+specifier|private
+specifier|final
+name|CostProvider
+name|costProvider
+decl_stmt|;
+comment|/**    * This TimerTask will call decayCurrentCosts until    * the scheduler has been garbage collected.    */
 DECL|class|DecayTask
 specifier|public
 specifier|static
@@ -906,7 +912,7 @@ condition|)
 block|{
 name|sched
 operator|.
-name|decayCurrentCounts
+name|decayCurrentCosts
 argument_list|()
 expr_stmt|;
 block|}
@@ -1000,6 +1006,19 @@ operator|=
 name|this
 operator|.
 name|parseIdentityProvider
+argument_list|(
+name|ns
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|costProvider
+operator|=
+name|this
+operator|.
+name|parseCostProvider
 argument_list|(
 name|ns
 argument_list|,
@@ -1146,6 +1165,117 @@ expr_stmt|;
 name|recomputeScheduleCache
 argument_list|()
 expr_stmt|;
+block|}
+DECL|method|parseCostProvider (String ns, Configuration conf)
+specifier|private
+name|CostProvider
+name|parseCostProvider
+parameter_list|(
+name|String
+name|ns
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|List
+argument_list|<
+name|CostProvider
+argument_list|>
+name|providers
+init|=
+name|conf
+operator|.
+name|getInstances
+argument_list|(
+name|ns
+operator|+
+literal|"."
+operator|+
+name|CommonConfigurationKeys
+operator|.
+name|IPC_COST_PROVIDER_KEY
+argument_list|,
+name|CostProvider
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|providers
+operator|.
+name|size
+argument_list|()
+operator|<
+literal|1
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"CostProvider not specified, defaulting to DefaultCostProvider"
+argument_list|)
+expr_stmt|;
+return|return
+operator|new
+name|DefaultCostProvider
+argument_list|()
+return|;
+block|}
+elseif|else
+if|if
+condition|(
+name|providers
+operator|.
+name|size
+argument_list|()
+operator|>
+literal|1
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Found multiple CostProviders; using: {}"
+argument_list|,
+name|providers
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|getClass
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+name|CostProvider
+name|provider
+init|=
+name|providers
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
+comment|// use the first
+name|provider
+operator|.
+name|init
+argument_list|(
+name|ns
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+return|return
+name|provider
+return|;
 block|}
 comment|// Load configs
 DECL|method|parseIdentityProvider (String ns, Configuration conf)
@@ -1844,29 +1974,29 @@ name|IPC_DECAYSCHEDULER_BACKOFF_RESPONSETIME_ENABLE_DEFAULT
 argument_list|)
 return|;
 block|}
-comment|/**    * Decay the stored counts for each user and clean as necessary.    * This method should be called periodically in order to keep    * counts current.    */
-DECL|method|decayCurrentCounts ()
+comment|/**    * Decay the stored costs for each user and clean as necessary.    * This method should be called periodically in order to keep    * costs current.    */
+DECL|method|decayCurrentCosts ()
 specifier|private
 name|void
-name|decayCurrentCounts
+name|decayCurrentCosts
 parameter_list|()
 block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Start to decay current counts."
+literal|"Start to decay current costs."
 argument_list|)
 expr_stmt|;
 try|try
 block|{
 name|long
-name|totalDecayedCount
+name|totalDecayedCost
 init|=
 literal|0
 decl_stmt|;
 name|long
-name|totalRawCount
+name|totalRawCost
 init|=
 literal|0
 decl_stmt|;
@@ -1886,7 +2016,7 @@ argument_list|>
 argument_list|>
 name|it
 init|=
-name|callCounts
+name|callCosts
 operator|.
 name|entrySet
 argument_list|()
@@ -1921,7 +2051,7 @@ name|next
 argument_list|()
 decl_stmt|;
 name|AtomicLong
-name|decayedCount
+name|decayedCost
 init|=
 name|entry
 operator|.
@@ -1934,7 +2064,7 @@ literal|0
 argument_list|)
 decl_stmt|;
 name|AtomicLong
-name|rawCount
+name|rawCost
 init|=
 name|entry
 operator|.
@@ -1947,9 +2077,9 @@ literal|1
 argument_list|)
 decl_stmt|;
 comment|// Compute the next value by reducing it by the decayFactor
-name|totalRawCount
+name|totalRawCost
 operator|+=
-name|rawCount
+name|rawCost
 operator|.
 name|get
 argument_list|()
@@ -1957,7 +2087,7 @@ expr_stmt|;
 name|long
 name|currentValue
 init|=
-name|decayedCount
+name|decayedCost
 operator|.
 name|get
 argument_list|()
@@ -1974,11 +2104,11 @@ operator|*
 name|decayFactor
 argument_list|)
 decl_stmt|;
-name|totalDecayedCount
+name|totalDecayedCost
 operator|+=
 name|nextValue
 expr_stmt|;
-name|decayedCount
+name|decayedCost
 operator|.
 name|set
 argument_list|(
@@ -1989,9 +2119,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Decaying counts for the user: {}, "
-operator|+
-literal|"its decayedCount: {}, rawCount: {}"
+literal|"Decaying costs for the user: {}, its decayedCost: {}, rawCost: {}"
 argument_list|,
 name|entry
 operator|.
@@ -2000,7 +2128,7 @@ argument_list|()
 argument_list|,
 name|nextValue
 argument_list|,
-name|rawCount
+name|rawCost
 operator|.
 name|get
 argument_list|()
@@ -2017,7 +2145,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"The decayed count for the user {} is zero "
+literal|"The decayed cost for the user {} is zero "
 operator|+
 literal|"and being cleaned."
 argument_list|,
@@ -2028,7 +2156,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// We will clean up unused keys here. An interesting optimization
-comment|// might be to have an upper bound on keyspace in callCounts and only
+comment|// might be to have an upper bound on keyspace in callCosts and only
 comment|// clean once we pass it.
 name|it
 operator|.
@@ -2038,31 +2166,31 @@ expr_stmt|;
 block|}
 block|}
 comment|// Update the total so that we remain in sync
-name|totalDecayedCallCount
+name|totalDecayedCallCost
 operator|.
 name|set
 argument_list|(
-name|totalDecayedCount
+name|totalDecayedCost
 argument_list|)
 expr_stmt|;
-name|totalRawCallCount
+name|totalRawCallCost
 operator|.
 name|set
 argument_list|(
-name|totalRawCount
+name|totalRawCost
 argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"After decaying the stored counts, totalDecayedCount: {}, "
+literal|"After decaying the stored costs, totalDecayedCost: {}, "
 operator|+
-literal|"totalRawCallCount: {}."
+literal|"totalRawCallCost: {}."
 argument_list|,
-name|totalDecayedCount
+name|totalDecayedCost
 argument_list|,
-name|totalRawCount
+name|totalRawCost
 argument_list|)
 expr_stmt|;
 comment|// Now refresh the cache of scheduling decisions
@@ -2086,7 +2214,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"decayCurrentCounts exception: "
+literal|"decayCurrentCosts exception: "
 operator|+
 name|ExceptionUtils
 operator|.
@@ -2101,7 +2229,7 @@ name|ex
 throw|;
 block|}
 block|}
-comment|/**    * Update the scheduleCache to match current conditions in callCounts.    */
+comment|/**    * Update the scheduleCache to match current conditions in callCosts.    */
 DECL|method|recomputeScheduleCache ()
 specifier|private
 name|void
@@ -2140,7 +2268,7 @@ argument_list|>
 argument_list|>
 name|entry
 range|:
-name|callCounts
+name|callCosts
 operator|.
 name|entrySet
 argument_list|()
@@ -2207,28 +2335,29 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get the number of occurrences and increment atomically.    * @param identity the identity of the user to increment    * @return the value before incrementation    */
-DECL|method|getAndIncrementCallCounts (Object identity)
+comment|/**    * Adjust the stored cost for a given identity.    *    * @param identity the identity of the user whose cost should be adjusted    * @param costDelta the cost to add for the given identity    */
+DECL|method|addCost (Object identity, long costDelta)
 specifier|private
-name|long
-name|getAndIncrementCallCounts
+name|void
+name|addCost
 parameter_list|(
 name|Object
 name|identity
+parameter_list|,
+name|long
+name|costDelta
 parameter_list|)
-throws|throws
-name|InterruptedException
 block|{
-comment|// We will increment the count, or create it if no such count exists
+comment|// We will increment the cost, or create it if no such cost exists
 name|List
 argument_list|<
 name|AtomicLong
 argument_list|>
-name|count
+name|cost
 init|=
 name|this
 operator|.
-name|callCounts
+name|callCosts
 operator|.
 name|get
 argument_list|(
@@ -2237,15 +2366,15 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|count
+name|cost
 operator|==
 literal|null
 condition|)
 block|{
-comment|// Create the counts since no such count exists.
-comment|// idx 0 for decayed call count
-comment|// idx 1 for the raw call count
-name|count
+comment|// Create the costs since no such cost exists.
+comment|// idx 0 for decayed call cost
+comment|// idx 1 for the raw call cost
+name|cost
 operator|=
 operator|new
 name|ArrayList
@@ -2256,7 +2385,7 @@ argument_list|(
 literal|2
 argument_list|)
 expr_stmt|;
-name|count
+name|cost
 operator|.
 name|add
 argument_list|(
@@ -2267,7 +2396,7 @@ literal|0
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|count
+name|cost
 operator|.
 name|add
 argument_list|(
@@ -2283,80 +2412,87 @@ name|List
 argument_list|<
 name|AtomicLong
 argument_list|>
-name|otherCount
+name|otherCost
 init|=
-name|callCounts
+name|callCosts
 operator|.
 name|putIfAbsent
 argument_list|(
 name|identity
 argument_list|,
-name|count
+name|cost
 argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|otherCount
+name|otherCost
 operator|!=
 literal|null
 condition|)
 block|{
-name|count
+name|cost
 operator|=
-name|otherCount
+name|otherCost
 expr_stmt|;
 block|}
 block|}
 comment|// Update the total
-name|totalDecayedCallCount
+name|totalDecayedCallCost
 operator|.
-name|getAndIncrement
-argument_list|()
+name|getAndAdd
+argument_list|(
+name|costDelta
+argument_list|)
 expr_stmt|;
-name|totalRawCallCount
+name|totalRawCallCost
 operator|.
-name|getAndIncrement
-argument_list|()
+name|getAndAdd
+argument_list|(
+name|costDelta
+argument_list|)
 expr_stmt|;
 comment|// At this point value is guaranteed to be not null. It may however have
-comment|// been clobbered from callCounts. Nonetheless, we return what
+comment|// been clobbered from callCosts. Nonetheless, we return what
 comment|// we have.
-name|count
+name|cost
 operator|.
 name|get
 argument_list|(
 literal|1
 argument_list|)
 operator|.
-name|getAndIncrement
-argument_list|()
+name|getAndAdd
+argument_list|(
+name|costDelta
+argument_list|)
 expr_stmt|;
-return|return
-name|count
+name|cost
 operator|.
 name|get
 argument_list|(
 literal|0
 argument_list|)
 operator|.
-name|getAndIncrement
-argument_list|()
-return|;
+name|getAndAdd
+argument_list|(
+name|costDelta
+argument_list|)
+expr_stmt|;
 block|}
-comment|/**    * Given the number of occurrences, compute a scheduling decision.    * @param occurrences how many occurrences    * @return scheduling decision from 0 to numLevels - 1    */
-DECL|method|computePriorityLevel (long occurrences)
+comment|/**    * Given the cost for an identity, compute a scheduling decision.    *    * @param cost the cost for an identity    * @return scheduling decision from 0 to numLevels - 1    */
+DECL|method|computePriorityLevel (long cost)
 specifier|private
 name|int
 name|computePriorityLevel
 parameter_list|(
 name|long
-name|occurrences
+name|cost
 parameter_list|)
 block|{
 name|long
 name|totalCallSnapshot
 init|=
-name|totalDecayedCallCount
+name|totalDecayedCallCost
 operator|.
 name|get
 argument_list|()
@@ -2378,7 +2514,7 @@ operator|=
 operator|(
 name|double
 operator|)
-name|occurrences
+name|cost
 operator|/
 name|totalCallSnapshot
 expr_stmt|;
@@ -2438,18 +2574,6 @@ name|Object
 name|identity
 parameter_list|)
 block|{
-try|try
-block|{
-name|long
-name|occurrences
-init|=
-name|this
-operator|.
-name|getAndIncrementCallCounts
-argument_list|(
-name|identity
-argument_list|)
-decl_stmt|;
 comment|// Try the cache
 name|Map
 argument_list|<
@@ -2505,63 +2629,60 @@ return|;
 block|}
 block|}
 comment|// Cache was no good, compute it
+name|List
+argument_list|<
+name|AtomicLong
+argument_list|>
+name|costList
+init|=
+name|callCosts
+operator|.
+name|get
+argument_list|(
+name|identity
+argument_list|)
+decl_stmt|;
+name|long
+name|currentCost
+init|=
+name|costList
+operator|==
+literal|null
+condition|?
+literal|0
+else|:
+name|costList
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|get
+argument_list|()
+decl_stmt|;
 name|int
 name|priority
 init|=
 name|computePriorityLevel
 argument_list|(
-name|occurrences
+name|currentCost
 argument_list|)
 decl_stmt|;
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"compute priority for "
-operator|+
+literal|"compute priority for {} priority {}"
+argument_list|,
 name|identity
-operator|+
-literal|" priority "
-operator|+
+argument_list|,
 name|priority
 argument_list|)
 expr_stmt|;
 return|return
 name|priority
 return|;
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|ie
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Caught InterruptedException, returning low priority level"
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Fallback priority for: {} with priority: {}"
-argument_list|,
-name|identity
-argument_list|,
-name|numLevels
-operator|-
-literal|1
-argument_list|)
-expr_stmt|;
-return|return
-name|numLevels
-operator|-
-literal|1
-return|;
-block|}
 block|}
 comment|/**    * Compute the appropriate priority for a schedulable based on past requests.    * @param obj the schedulable obj to query and remember    * @return the level index which we recommend scheduling in    */
 annotation|@
@@ -2770,6 +2891,33 @@ name|ProcessingDetails
 name|details
 parameter_list|)
 block|{
+name|String
+name|user
+init|=
+name|identityProvider
+operator|.
+name|makeIdentity
+argument_list|(
+name|schedulable
+argument_list|)
+decl_stmt|;
+name|long
+name|processingCost
+init|=
+name|costProvider
+operator|.
+name|getCost
+argument_list|(
+name|details
+argument_list|)
+decl_stmt|;
+name|addCost
+argument_list|(
+name|user
+argument_list|,
+name|processingCost
+argument_list|)
+expr_stmt|;
 name|int
 name|priorityLevel
 init|=
@@ -3049,7 +3197,6 @@ comment|// For testing
 annotation|@
 name|VisibleForTesting
 DECL|method|getDecayFactor ()
-specifier|public
 name|double
 name|getDecayFactor
 parameter_list|()
@@ -3061,7 +3208,6 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getDecayPeriodMillis ()
-specifier|public
 name|long
 name|getDecayPeriodMillis
 parameter_list|()
@@ -3073,7 +3219,6 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getThresholds ()
-specifier|public
 name|double
 index|[]
 name|getThresholds
@@ -3086,26 +3231,24 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|forceDecay ()
-specifier|public
 name|void
 name|forceDecay
 parameter_list|()
 block|{
-name|decayCurrentCounts
+name|decayCurrentCosts
 argument_list|()
 expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getCallCountSnapshot ()
-specifier|public
+DECL|method|getCallCostSnapshot ()
 name|Map
 argument_list|<
 name|Object
 argument_list|,
 name|Long
 argument_list|>
-name|getCallCountSnapshot
+name|getCallCostSnapshot
 parameter_list|()
 block|{
 name|HashMap
@@ -3140,7 +3283,7 @@ argument_list|>
 argument_list|>
 name|entry
 range|:
-name|callCounts
+name|callCosts
 operator|.
 name|entrySet
 argument_list|()
@@ -3182,13 +3325,12 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getTotalCallSnapshot ()
-specifier|public
 name|long
 name|getTotalCallSnapshot
 parameter_list|()
 block|{
 return|return
-name|totalDecayedCallCount
+name|totalDecayedCallCost
 operator|.
 name|get
 argument_list|()
@@ -3782,7 +3924,7 @@ name|getUniqueIdentityCount
 parameter_list|()
 block|{
 return|return
-name|callCounts
+name|callCosts
 operator|.
 name|size
 argument_list|()
@@ -3795,7 +3937,7 @@ name|getTotalCallVolume
 parameter_list|()
 block|{
 return|return
-name|totalDecayedCallCount
+name|totalDecayedCallCost
 operator|.
 name|get
 argument_list|()
@@ -3808,7 +3950,7 @@ name|getTotalRawCallVolume
 parameter_list|()
 block|{
 return|return
-name|totalRawCallCount
+name|totalRawCallCost
 operator|.
 name|get
 argument_list|()
@@ -4365,7 +4507,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|// Get the top N callers' raw call count and scheduler decision
+comment|// Get the top N callers' raw call cost and scheduler decision
 DECL|method|getTopCallers (int n)
 specifier|private
 name|TopN
@@ -4400,7 +4542,7 @@ argument_list|>
 argument_list|>
 name|it
 init|=
-name|callCounts
+name|callCosts
 operator|.
 name|entrySet
 argument_list|()
@@ -4446,7 +4588,7 @@ name|toString
 argument_list|()
 decl_stmt|;
 name|Long
-name|count
+name|cost
 init|=
 name|entry
 operator|.
@@ -4463,7 +4605,7 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|count
+name|cost
 operator|>
 literal|0
 condition|)
@@ -4477,7 +4619,7 @@ name|NameValuePair
 argument_list|(
 name|caller
 argument_list|,
-name|count
+name|cost
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4560,7 +4702,7 @@ name|WRITER
 operator|.
 name|writeValueAsString
 argument_list|(
-name|getDecayedCallCounts
+name|getDecayedCallCosts
 argument_list|()
 argument_list|)
 return|;
@@ -4581,7 +4723,7 @@ argument_list|()
 return|;
 block|}
 block|}
-DECL|method|getDecayedCallCounts ()
+DECL|method|getDecayedCallCosts ()
 specifier|private
 name|Map
 argument_list|<
@@ -4589,7 +4731,7 @@ name|Object
 argument_list|,
 name|Long
 argument_list|>
-name|getDecayedCallCounts
+name|getDecayedCallCosts
 parameter_list|()
 block|{
 name|Map
@@ -4598,13 +4740,13 @@ name|Object
 argument_list|,
 name|Long
 argument_list|>
-name|decayedCallCounts
+name|decayedCallCosts
 init|=
 operator|new
 name|HashMap
 argument_list|<>
 argument_list|(
-name|callCounts
+name|callCosts
 operator|.
 name|size
 argument_list|()
@@ -4626,7 +4768,7 @@ argument_list|>
 argument_list|>
 name|it
 init|=
-name|callCounts
+name|callCosts
 operator|.
 name|entrySet
 argument_list|()
@@ -4669,7 +4811,7 @@ name|getKey
 argument_list|()
 decl_stmt|;
 name|Long
-name|decayedCount
+name|decayedCost
 init|=
 name|entry
 operator|.
@@ -4686,24 +4828,24 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|decayedCount
+name|decayedCost
 operator|>
 literal|0
 condition|)
 block|{
-name|decayedCallCounts
+name|decayedCallCosts
 operator|.
 name|put
 argument_list|(
 name|user
 argument_list|,
-name|decayedCount
+name|decayedCost
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 return|return
-name|decayedCallCounts
+name|decayedCallCosts
 return|;
 block|}
 annotation|@
