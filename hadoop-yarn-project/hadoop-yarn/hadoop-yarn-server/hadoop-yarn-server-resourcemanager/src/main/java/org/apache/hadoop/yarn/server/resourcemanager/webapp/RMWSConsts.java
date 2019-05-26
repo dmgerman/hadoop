@@ -815,12 +815,30 @@ name|ALLOCATION_REQUEST_IDS
 init|=
 literal|"allocationRequestIds"
 decl_stmt|;
+DECL|field|GROUP_BY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|GROUP_BY
+init|=
+literal|"groupBy"
+decl_stmt|;
 DECL|method|RMWSConsts ()
 specifier|private
 name|RMWSConsts
 parameter_list|()
 block|{
 comment|// not called
+block|}
+comment|/**    * Defines the groupBy types of activities, currently only support    * DIAGNOSTIC with which user can query aggregated activities    * grouped by allocation state and diagnostic.    */
+DECL|enum|ActivitiesGroupBy
+specifier|public
+enum|enum
+name|ActivitiesGroupBy
+block|{
+DECL|enumConstant|DIAGNOSTIC
+name|DIAGNOSTIC
 block|}
 block|}
 end_class

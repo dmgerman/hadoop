@@ -999,8 +999,8 @@ argument_list|>
 name|unselectedFields
 parameter_list|)
 function_decl|;
-comment|/**    * This method retrieve all the activities in a specific node, and it is    * reachable by using {@link RMWSConsts#SCHEDULER_ACTIVITIES}.    *    * @param hsr the servlet request    * @param nodeId the node we want to retrieve the activities. It is a    *          QueryParam.    * @return all the activities in the specific node    */
-DECL|method|getActivities (HttpServletRequest hsr, String nodeId)
+comment|/**    * This method retrieve all the activities in a specific node, and it is    * reachable by using {@link RMWSConsts#SCHEDULER_ACTIVITIES}.    *    * @param hsr the servlet request    * @param nodeId the node we want to retrieve the activities. It is a    *          QueryParam.    * @param groupBy the groupBy type by which the activities should be    *          aggregated. It is a QueryParam.    * @return all the activities in the specific node    */
+DECL|method|getActivities (HttpServletRequest hsr, String nodeId, String groupBy)
 name|ActivitiesInfo
 name|getActivities
 parameter_list|(
@@ -1009,10 +1009,13 @@ name|hsr
 parameter_list|,
 name|String
 name|nodeId
+parameter_list|,
+name|String
+name|groupBy
 parameter_list|)
 function_decl|;
-comment|/**    * This method retrieves all the activities for a specific app for a specific    * period of time, and it is reachable by using    * {@link RMWSConsts#SCHEDULER_APP_ACTIVITIES}.    *    * @param hsr the servlet request    * @param appId the applicationId we want to retrieve the activities. It is a    *          QueryParam.    * @param time for how long we want to retrieve the activities. It is a    *          QueryParam.    * @param requestPriorities the request priorities we want to retrieve the    *          activities. It is a QueryParam.    * @param allocationRequestIds the allocation request ids we want to retrieve    *          the activities. It is a QueryParam.    * @return all the activities about a specific app for a specific time    */
-DECL|method|getAppActivities (HttpServletRequest hsr, String appId, String time, Set<String> requestPriorities, Set<String> allocationRequestIds)
+comment|/**    * This method retrieves all the activities for a specific app for a specific    * period of time, and it is reachable by using    * {@link RMWSConsts#SCHEDULER_APP_ACTIVITIES}.    *    * @param hsr the servlet request    * @param appId the applicationId we want to retrieve the activities. It is a    *          QueryParam.    * @param time for how long we want to retrieve the activities. It is a    *          QueryParam.    * @param requestPriorities the request priorities we want to retrieve the    *          activities. It is a QueryParam.    * @param allocationRequestIds the allocation request ids we want to retrieve    *          the activities. It is a QueryParam.    * @param groupBy the groupBy type by which the activities should be    *          aggregated. It is a QueryParam.    * @return all the activities about a specific app for a specific time    */
+DECL|method|getAppActivities (HttpServletRequest hsr, String appId, String time, Set<String> requestPriorities, Set<String> allocationRequestIds, String groupBy)
 name|AppActivitiesInfo
 name|getAppActivities
 parameter_list|(
@@ -1036,6 +1039,9 @@ argument_list|<
 name|String
 argument_list|>
 name|allocationRequestIds
+parameter_list|,
+name|String
+name|groupBy
 parameter_list|)
 function_decl|;
 comment|/**    * This method retrieves all the statistics for a specific app, and it is    * reachable by using {@link RMWSConsts#APP_STATISTICS}.    *    * @param hsr the servlet request    * @param stateQueries filter the result by states. It is a QueryParam.    * @param typeQueries filter the result by type names. It is a QueryParam.    * @return the application's statistics for specific states and types    */

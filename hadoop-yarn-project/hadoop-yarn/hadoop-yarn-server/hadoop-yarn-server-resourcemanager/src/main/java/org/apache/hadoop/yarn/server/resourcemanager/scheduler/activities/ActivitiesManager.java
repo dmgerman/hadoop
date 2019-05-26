@@ -112,6 +112,26 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|webapp
+operator|.
+name|RMWSConsts
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|conf
 operator|.
 name|YarnConfiguration
@@ -500,10 +520,10 @@ DECL|field|DIAGNOSTICS_DETAILS_SEPARATOR
 specifier|public
 specifier|static
 specifier|final
-name|String
+name|char
 name|DIAGNOSTICS_DETAILS_SEPARATOR
 init|=
-literal|"\n"
+literal|'\n'
 decl_stmt|;
 DECL|field|EMPTY_DIAGNOSTICS
 specifier|public
@@ -841,7 +861,7 @@ name|DEFAULT_RM_ACTIVITIES_MANAGER_APP_ACTIVITIES_MAX_QUEUE_LENGTH
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getAppActivitiesInfo (ApplicationId applicationId, Set<String> requestPriorities, Set<String> allocationRequestIds)
+DECL|method|getAppActivitiesInfo (ApplicationId applicationId, Set<String> requestPriorities, Set<String> allocationRequestIds, RMWSConsts.ActivitiesGroupBy groupBy)
 specifier|public
 name|AppActivitiesInfo
 name|getAppActivitiesInfo
@@ -860,6 +880,11 @@ argument_list|<
 name|String
 argument_list|>
 name|allocationRequestIds
+parameter_list|,
+name|RMWSConsts
+operator|.
+name|ActivitiesGroupBy
+name|groupBy
 parameter_list|)
 block|{
 name|RMApp
@@ -999,6 +1024,8 @@ argument_list|(
 name|allocations
 argument_list|,
 name|applicationId
+argument_list|,
+name|groupBy
 argument_list|)
 return|;
 block|}
@@ -1018,13 +1045,18 @@ argument_list|)
 return|;
 block|}
 block|}
-DECL|method|getActivitiesInfo (String nodeId)
+DECL|method|getActivitiesInfo (String nodeId, RMWSConsts.ActivitiesGroupBy groupBy)
 specifier|public
 name|ActivitiesInfo
 name|getActivitiesInfo
 parameter_list|(
 name|String
 name|nodeId
+parameter_list|,
+name|RMWSConsts
+operator|.
+name|ActivitiesGroupBy
+name|groupBy
 parameter_list|)
 block|{
 name|List
@@ -1069,6 +1101,8 @@ argument_list|(
 name|allocations
 argument_list|,
 name|nodeId
+argument_list|,
+name|groupBy
 argument_list|)
 return|;
 block|}

@@ -42,6 +42,26 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|webapp
+operator|.
+name|RMWSConsts
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -259,7 +279,7 @@ operator|=
 name|nodeId
 expr_stmt|;
 block|}
-DECL|method|ActivitiesInfo (List<NodeAllocation> nodeAllocations, String nodeId)
+DECL|method|ActivitiesInfo (List<NodeAllocation> nodeAllocations, String nodeId, RMWSConsts.ActivitiesGroupBy groupBy)
 specifier|public
 name|ActivitiesInfo
 parameter_list|(
@@ -271,6 +291,11 @@ name|nodeAllocations
 parameter_list|,
 name|String
 name|nodeId
+parameter_list|,
+name|RMWSConsts
+operator|.
+name|ActivitiesGroupBy
+name|groupBy
 parameter_list|)
 block|{
 name|this
@@ -442,6 +467,8 @@ operator|new
 name|NodeAllocationInfo
 argument_list|(
 name|nodeAllocation
+argument_list|,
+name|groupBy
 argument_list|)
 decl_stmt|;
 name|this

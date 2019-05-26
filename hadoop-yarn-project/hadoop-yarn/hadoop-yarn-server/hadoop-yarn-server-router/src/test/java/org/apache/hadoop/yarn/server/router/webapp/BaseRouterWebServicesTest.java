@@ -1201,6 +1201,8 @@ name|user
 argument_list|)
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
@@ -1226,6 +1228,8 @@ name|createHttpServletRequest
 argument_list|(
 name|user
 argument_list|)
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,

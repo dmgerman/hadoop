@@ -5226,7 +5226,7 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|getActivities (HttpServletRequest hsr, String nodeId)
+DECL|method|getActivities (HttpServletRequest hsr, String nodeId, String groupBy)
 specifier|public
 name|ActivitiesInfo
 name|getActivities
@@ -5236,6 +5236,9 @@ name|hsr
 parameter_list|,
 name|String
 name|nodeId
+parameter_list|,
+name|String
+name|groupBy
 parameter_list|)
 block|{
 throw|throw
@@ -5248,7 +5251,7 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|getAppActivities (HttpServletRequest hsr, String appId, String time, Set<String> requestPriorities, Set<String> allocationRequestIds)
+DECL|method|getAppActivities (HttpServletRequest hsr, String appId, String time, Set<String> requestPriorities, Set<String> allocationRequestIds, String groupBy)
 specifier|public
 name|AppActivitiesInfo
 name|getAppActivities
@@ -5273,6 +5276,9 @@ argument_list|<
 name|String
 argument_list|>
 name|allocationRequestIds
+parameter_list|,
+name|String
+name|groupBy
 parameter_list|)
 block|{
 throw|throw

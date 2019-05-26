@@ -70,6 +70,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|webapp
+operator|.
+name|RMWSConsts
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|xml
@@ -223,11 +243,16 @@ DECL|method|AppAllocationInfo ()
 name|AppAllocationInfo
 parameter_list|()
 block|{   }
-DECL|method|AppAllocationInfo (AppAllocation allocation)
+DECL|method|AppAllocationInfo (AppAllocation allocation, RMWSConsts.ActivitiesGroupBy groupBy)
 name|AppAllocationInfo
 parameter_list|(
 name|AppAllocation
 name|allocation
+parameter_list|,
+name|RMWSConsts
+operator|.
+name|ActivitiesGroupBy
+name|groupBy
 parameter_list|)
 block|{
 name|this
@@ -372,6 +397,8 @@ operator|new
 name|AppRequestAllocationInfo
 argument_list|(
 name|requestActivityNodes
+argument_list|,
+name|groupBy
 argument_list|)
 decl_stmt|;
 name|this

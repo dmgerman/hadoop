@@ -28,6 +28,26 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|webapp
+operator|.
+name|RMWSConsts
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -164,11 +184,16 @@ DECL|method|NodeAllocationInfo ()
 name|NodeAllocationInfo
 parameter_list|()
 block|{   }
-DECL|method|NodeAllocationInfo (NodeAllocation allocation)
+DECL|method|NodeAllocationInfo (NodeAllocation allocation, RMWSConsts.ActivitiesGroupBy groupBy)
 name|NodeAllocationInfo
 parameter_list|(
 name|NodeAllocation
 name|allocation
+parameter_list|,
+name|RMWSConsts
+operator|.
+name|ActivitiesGroupBy
+name|groupBy
 parameter_list|)
 block|{
 name|this
@@ -201,6 +226,8 @@ name|allocation
 operator|.
 name|getRoot
 argument_list|()
+argument_list|,
+name|groupBy
 argument_list|)
 expr_stmt|;
 block|}

@@ -2923,7 +2923,7 @@ block|}
 argument_list|)
 annotation|@
 name|Override
-DECL|method|getActivities (@ontext HttpServletRequest hsr, @QueryParam(RMWSConsts.NODEID) String nodeId)
+DECL|method|getActivities (@ontext HttpServletRequest hsr, @QueryParam(RMWSConsts.NODEID) String nodeId, @QueryParam(RMWSConsts.GROUP_BY) String groupBy)
 specifier|public
 name|ActivitiesInfo
 name|getActivities
@@ -2942,6 +2942,16 @@ name|NODEID
 argument_list|)
 name|String
 name|nodeId
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+name|RMWSConsts
+operator|.
+name|GROUP_BY
+argument_list|)
+name|String
+name|groupBy
 parameter_list|)
 block|{
 name|init
@@ -2966,6 +2976,8 @@ argument_list|(
 name|hsr
 argument_list|,
 name|nodeId
+argument_list|,
+name|groupBy
 argument_list|)
 return|;
 block|}
@@ -3005,7 +3017,7 @@ block|}
 argument_list|)
 annotation|@
 name|Override
-DECL|method|getAppActivities (@ontext HttpServletRequest hsr, @QueryParam(RMWSConsts.APP_ID) String appId, @QueryParam(RMWSConsts.MAX_TIME) String time, @QueryParam(RMWSConsts.REQUEST_PRIORITIES) Set<String> requestPriorities, @QueryParam(RMWSConsts.ALLOCATION_REQUEST_IDS) Set<String> allocationRequestIds)
+DECL|method|getAppActivities (@ontext HttpServletRequest hsr, @QueryParam(RMWSConsts.APP_ID) String appId, @QueryParam(RMWSConsts.MAX_TIME) String time, @QueryParam(RMWSConsts.REQUEST_PRIORITIES) Set<String> requestPriorities, @QueryParam(RMWSConsts.ALLOCATION_REQUEST_IDS) Set<String> allocationRequestIds, @QueryParam(RMWSConsts.GROUP_BY) String groupBy)
 specifier|public
 name|AppActivitiesInfo
 name|getAppActivities
@@ -3060,6 +3072,16 @@ argument_list|<
 name|String
 argument_list|>
 name|allocationRequestIds
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+name|RMWSConsts
+operator|.
+name|GROUP_BY
+argument_list|)
+name|String
+name|groupBy
 parameter_list|)
 block|{
 name|init
@@ -3090,6 +3112,8 @@ argument_list|,
 name|requestPriorities
 argument_list|,
 name|allocationRequestIds
+argument_list|,
+name|groupBy
 argument_list|)
 return|;
 block|}

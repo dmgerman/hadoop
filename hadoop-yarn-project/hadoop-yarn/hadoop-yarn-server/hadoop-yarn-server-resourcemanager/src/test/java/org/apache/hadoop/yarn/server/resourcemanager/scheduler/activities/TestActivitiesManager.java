@@ -1938,6 +1938,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -1976,6 +1978,8 @@ name|app
 operator|.
 name|getApplicationId
 argument_list|()
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,
