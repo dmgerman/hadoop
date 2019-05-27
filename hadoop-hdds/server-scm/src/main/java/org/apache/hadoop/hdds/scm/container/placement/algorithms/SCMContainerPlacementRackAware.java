@@ -265,6 +265,8 @@ name|fallback
 decl_stmt|;
 DECL|field|RACK_LEVEL
 specifier|private
+specifier|static
+specifier|final
 name|int
 name|RACK_LEVEL
 init|=
@@ -272,6 +274,8 @@ literal|1
 decl_stmt|;
 DECL|field|MAX_RETRY
 specifier|private
+specifier|static
+specifier|final
 name|int
 name|MAX_RETRY
 init|=

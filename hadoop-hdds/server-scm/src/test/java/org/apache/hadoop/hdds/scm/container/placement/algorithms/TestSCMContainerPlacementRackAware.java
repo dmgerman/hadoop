@@ -423,6 +423,7 @@ decl_stmt|;
 comment|// node storage capacity
 DECL|field|STORAGE_CAPACITY
 specifier|private
+specifier|static
 specifier|final
 name|long
 name|STORAGE_CAPACITY
