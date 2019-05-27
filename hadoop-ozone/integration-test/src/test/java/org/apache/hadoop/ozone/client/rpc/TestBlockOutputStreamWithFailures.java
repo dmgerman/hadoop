@@ -364,6 +364,20 @@ name|ratis
 operator|.
 name|protocol
 operator|.
+name|GroupMismatchException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|ratis
+operator|.
+name|protocol
+operator|.
 name|RaftRetryFailureException
 import|;
 end_import
@@ -571,9 +585,9 @@ name|String
 name|keyString
 decl_stmt|;
 comment|/**    * Create a MiniDFSCluster for testing.    *<p>    * Ozone is made active by setting OZONE_ENABLED = true    *    * @throws IOException    */
-DECL|method|init ()
 annotation|@
 name|Before
+DECL|method|init ()
 specifier|public
 name|void
 name|init
@@ -794,9 +808,9 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Shutdown MiniDFSCluster.    */
-DECL|method|shutdown ()
 annotation|@
 name|After
+DECL|method|shutdown ()
 specifier|public
 name|void
 name|shutdown
@@ -816,9 +830,9 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|testWatchForCommitWithCloseContainerException ()
 annotation|@
 name|Test
+DECL|method|testWatchForCommitWithCloseContainerException ()
 specifier|public
 name|void
 name|testWatchForCommitWithCloseContainerException
@@ -1674,9 +1688,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testWatchForCommitDatanodeFailure ()
 annotation|@
 name|Test
+DECL|method|testWatchForCommitDatanodeFailure ()
 specifier|public
 name|void
 name|testWatchForCommitDatanodeFailure
@@ -2492,9 +2506,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|test2DatanodesFailure ()
 annotation|@
 name|Test
+DECL|method|test2DatanodesFailure ()
 specifier|public
 name|void
 name|test2DatanodesFailure
@@ -3106,10 +3120,14 @@ operator|.
 name|flush
 argument_list|()
 expr_stmt|;
+comment|// Since, 2 datanodes went down, if the pipeline gets destroyed quickly,
+comment|// it will hit GroupMismatchException else, it will fail with
+comment|// RaftRetryFailureException
 name|Assert
 operator|.
 name|assertTrue
 argument_list|(
+operator|(
 name|HddsClientUtils
 operator|.
 name|checkForException
@@ -3121,6 +3139,19 @@ argument_list|()
 argument_list|)
 operator|instanceof
 name|RaftRetryFailureException
+operator|)
+operator|||
+name|HddsClientUtils
+operator|.
+name|checkForException
+argument_list|(
+name|blockOutputStream
+operator|.
+name|getIoException
+argument_list|()
+argument_list|)
+operator|instanceof
+name|GroupMismatchException
 argument_list|)
 expr_stmt|;
 comment|// Make sure the retryCount is reset after the exception is handled
@@ -3345,9 +3376,9 @@ name|data1
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testFailureWithPrimeSizedData ()
 annotation|@
 name|Test
+DECL|method|testFailureWithPrimeSizedData ()
 specifier|public
 name|void
 name|testFailureWithPrimeSizedData
@@ -4148,9 +4179,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testExceptionDuringClose ()
 annotation|@
 name|Test
+DECL|method|testExceptionDuringClose ()
 specifier|public
 name|void
 name|testExceptionDuringClose
@@ -4928,9 +4959,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testWatchForCommitWithSingleNodeRatis ()
 annotation|@
 name|Test
+DECL|method|testWatchForCommitWithSingleNodeRatis ()
 specifier|public
 name|void
 name|testWatchForCommitWithSingleNodeRatis
@@ -5790,9 +5821,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testDatanodeFailureWithSingleNodeRatis ()
 annotation|@
 name|Test
+DECL|method|testDatanodeFailureWithSingleNodeRatis ()
 specifier|public
 name|void
 name|testDatanodeFailureWithSingleNodeRatis
@@ -6662,9 +6693,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testDatanodeFailureWithPreAllocation ()
 annotation|@
 name|Test
+DECL|method|testDatanodeFailureWithPreAllocation ()
 specifier|public
 name|void
 name|testDatanodeFailureWithPreAllocation
