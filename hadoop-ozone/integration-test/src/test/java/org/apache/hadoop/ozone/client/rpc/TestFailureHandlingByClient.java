@@ -260,6 +260,24 @@ name|client
 operator|.
 name|io
 operator|.
+name|BlockOutputStreamEntry
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|client
+operator|.
+name|io
+operator|.
 name|KeyOutputStream
 import|;
 end_import
@@ -368,16 +386,6 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Ignore
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
 name|Test
 import|;
 end_import
@@ -471,12 +479,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Tests Close Container Exception handling by Ozone Client.  * XXX Disabled [HDDS-1323]  */
+comment|/**  * Tests Close Container Exception handling by Ozone Client.  */
 end_comment
 
 begin_class
-annotation|@
-name|Ignore
 DECL|class|TestFailureHandlingByClient
 specifier|public
 class|class
@@ -1433,7 +1439,7 @@ name|KeyOutputStream
 argument_list|)
 expr_stmt|;
 name|KeyOutputStream
-name|groupOutputStream
+name|keyOutputStream
 init|=
 operator|(
 name|KeyOutputStream
@@ -1445,38 +1451,70 @@ argument_list|()
 decl_stmt|;
 name|List
 argument_list|<
-name|OmKeyLocationInfo
+name|BlockOutputStreamEntry
 argument_list|>
-name|locationInfoList
+name|streamEntryList
 init|=
-name|groupOutputStream
+name|keyOutputStream
 operator|.
-name|getLocationInfoList
+name|getStreamEntries
 argument_list|()
 decl_stmt|;
+comment|// Assert that 6 block will be preallocated
 name|Assert
 operator|.
-name|assertTrue
+name|assertEquals
 argument_list|(
-name|locationInfoList
+literal|6
+argument_list|,
+name|streamEntryList
 operator|.
 name|size
 argument_list|()
-operator|==
-literal|6
 argument_list|)
+expr_stmt|;
+name|key
+operator|.
+name|write
+argument_list|(
+name|data
+operator|.
+name|getBytes
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|key
+operator|.
+name|flush
+argument_list|()
 expr_stmt|;
 name|long
 name|containerId
 init|=
-name|locationInfoList
+name|streamEntryList
 operator|.
 name|get
 argument_list|(
-literal|1
+literal|0
 argument_list|)
 operator|.
+name|getBlockID
+argument_list|()
+operator|.
 name|getContainerID
+argument_list|()
+decl_stmt|;
+name|BlockID
+name|blockId
+init|=
+name|streamEntryList
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|getBlockID
 argument_list|()
 decl_stmt|;
 name|ContainerInfo
@@ -1649,7 +1687,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|3
+literal|4
 operator|*
 name|data
 operator|.
@@ -1669,6 +1707,11 @@ argument_list|(
 name|keyName
 argument_list|,
 name|data
+operator|.
+name|concat
+argument_list|(
+name|data
+argument_list|)
 operator|.
 name|concat
 argument_list|(
@@ -2087,13 +2130,13 @@ argument_list|()
 decl_stmt|;
 name|List
 argument_list|<
-name|OmKeyLocationInfo
+name|BlockOutputStreamEntry
 argument_list|>
-name|locationInfoList
+name|streamEntryList
 init|=
 name|keyOutputStream
 operator|.
-name|getLocationInfoList
+name|getStreamEntries
 argument_list|()
 decl_stmt|;
 comment|// Assert that 1 block will be preallocated
@@ -2103,7 +2146,7 @@ name|assertEquals
 argument_list|(
 literal|1
 argument_list|,
-name|locationInfoList
+name|streamEntryList
 operator|.
 name|size
 argument_list|()
@@ -2127,12 +2170,15 @@ expr_stmt|;
 name|long
 name|containerId
 init|=
-name|locationInfoList
+name|streamEntryList
 operator|.
 name|get
 argument_list|(
 literal|0
 argument_list|)
+operator|.
+name|getBlockID
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -2140,7 +2186,7 @@ decl_stmt|;
 name|BlockID
 name|blockId
 init|=
-name|locationInfoList
+name|streamEntryList
 operator|.
 name|get
 argument_list|(
@@ -2466,13 +2512,13 @@ argument_list|()
 decl_stmt|;
 name|List
 argument_list|<
-name|OmKeyLocationInfo
+name|BlockOutputStreamEntry
 argument_list|>
-name|locationInfoList
+name|streamEntryList
 init|=
 name|keyOutputStream
 operator|.
-name|getLocationInfoList
+name|getStreamEntries
 argument_list|()
 decl_stmt|;
 comment|// Assert that 1 block will be preallocated
@@ -2482,7 +2528,7 @@ name|assertEquals
 argument_list|(
 literal|1
 argument_list|,
-name|locationInfoList
+name|streamEntryList
 operator|.
 name|size
 argument_list|()
@@ -2506,12 +2552,15 @@ expr_stmt|;
 name|long
 name|containerId
 init|=
-name|locationInfoList
+name|streamEntryList
 operator|.
 name|get
 argument_list|(
 literal|0
 argument_list|)
+operator|.
+name|getBlockID
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -2519,7 +2568,7 @@ decl_stmt|;
 name|BlockID
 name|blockId
 init|=
-name|locationInfoList
+name|streamEntryList
 operator|.
 name|get
 argument_list|(
@@ -2614,10 +2663,9 @@ name|getBytes
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// The close will just write to the buffer
 name|key
 operator|.
-name|close
+name|flush
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -2674,6 +2722,12 @@ operator|.
 name|isEmpty
 argument_list|()
 argument_list|)
+expr_stmt|;
+comment|// The close will just write to the buffer
+name|key
+operator|.
+name|close
+argument_list|()
 expr_stmt|;
 name|OmKeyArgs
 name|keyArgs
@@ -2881,13 +2935,13 @@ argument_list|()
 decl_stmt|;
 name|List
 argument_list|<
-name|OmKeyLocationInfo
+name|BlockOutputStreamEntry
 argument_list|>
-name|locationInfoList
+name|streamEntryList
 init|=
 name|keyOutputStream
 operator|.
-name|getLocationInfoList
+name|getStreamEntries
 argument_list|()
 decl_stmt|;
 comment|// Assert that 1 block will be preallocated
@@ -2897,7 +2951,7 @@ name|assertEquals
 argument_list|(
 literal|1
 argument_list|,
-name|locationInfoList
+name|streamEntryList
 operator|.
 name|size
 argument_list|()
@@ -2921,12 +2975,15 @@ expr_stmt|;
 name|long
 name|containerId
 init|=
-name|locationInfoList
+name|streamEntryList
 operator|.
 name|get
 argument_list|(
 literal|0
 argument_list|)
+operator|.
+name|getBlockID
+argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
@@ -2934,7 +2991,7 @@ decl_stmt|;
 name|BlockID
 name|blockId
 init|=
-name|locationInfoList
+name|streamEntryList
 operator|.
 name|get
 argument_list|(
@@ -2995,7 +3052,7 @@ operator|.
 name|getNodes
 argument_list|()
 decl_stmt|;
-comment|// Two nodes, next write will hit AlraedyClosedException , the pipeline
+comment|// Two nodes, next write will hit AlreadyClosedException , the pipeline
 comment|// will be added in the exclude list
 name|cluster
 operator|.
@@ -3041,10 +3098,9 @@ name|getBytes
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// The close will just write to the buffer
 name|key
 operator|.
-name|close
+name|flush
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -3099,6 +3155,12 @@ operator|.
 name|isEmpty
 argument_list|()
 argument_list|)
+expr_stmt|;
+comment|// The close will just write to the buffer
+name|key
+operator|.
+name|close
+argument_list|()
 expr_stmt|;
 name|OmKeyArgs
 name|keyArgs
