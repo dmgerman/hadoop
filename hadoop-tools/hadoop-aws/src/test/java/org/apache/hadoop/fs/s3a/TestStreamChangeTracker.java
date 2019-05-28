@@ -243,18 +243,6 @@ import|;
 end_import
 
 begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|http
-operator|.
-name|HttpStatus
-import|;
-end_import
-
-begin_import
 import|import static
 name|org
 operator|.
@@ -1278,7 +1266,7 @@ name|awsException
 operator|.
 name|setStatusCode
 argument_list|(
-name|HttpStatus
+name|ChangeTracker
 operator|.
 name|SC_PRECONDITION_FAILED
 argument_list|)

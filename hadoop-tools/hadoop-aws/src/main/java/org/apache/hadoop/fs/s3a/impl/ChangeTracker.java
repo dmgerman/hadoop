@@ -308,20 +308,6 @@ name|checkNotNull
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|http
-operator|.
-name|HttpStatus
-operator|.
-name|SC_PRECONDITION_FAILED
-import|;
-end_import
-
 begin_comment
 comment|/**  * Change tracking for input streams: the version ID or etag of the object is  * tracked and compared on open/re-open.  An initial version ID or etag may or  * may not be available, depending on usage (e.g. if S3Guard is utilized).  *  * Self-contained for testing and use in different streams.  */
 end_comment
@@ -355,6 +341,16 @@ name|ChangeTracker
 operator|.
 name|class
 argument_list|)
+decl_stmt|;
+comment|/** {@code 412 Precondition Failed} (HTTP/1.1 - RFC 2616) */
+DECL|field|SC_PRECONDITION_FAILED
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|SC_PRECONDITION_FAILED
+init|=
+literal|412
 decl_stmt|;
 DECL|field|CHANGE_REPORTED_BY_S3
 specifier|public
