@@ -84,6 +84,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicLong
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -216,6 +230,12 @@ specifier|final
 name|ThreadPoolExecutor
 name|executor
 decl_stmt|;
+DECL|field|replicationCounter
+specifier|private
+specifier|final
+name|AtomicLong
+name|replicationCounter
+decl_stmt|;
 comment|/**    * A set of container IDs that are currently being downloaded    * or queued for download. Tracked so we don't schedule> 1    * concurrent download for the same container.    */
 DECL|field|containersInFlight
 specifier|private
@@ -261,6 +281,12 @@ operator|=
 name|ConcurrentHashMap
 operator|.
 name|newKeySet
+argument_list|()
+expr_stmt|;
+name|replicationCounter
+operator|=
+operator|new
+name|AtomicLong
 argument_list|()
 expr_stmt|;
 name|this
@@ -556,8 +582,26 @@ name|getContainerId
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|replicationCounter
+operator|.
+name|incrementAndGet
+argument_list|()
+expr_stmt|;
 block|}
 block|}
+block|}
+DECL|method|getReplicationCounter ()
+specifier|public
+name|long
+name|getReplicationCounter
+parameter_list|()
+block|{
+return|return
+name|replicationCounter
+operator|.
+name|get
+argument_list|()
+return|;
 block|}
 block|}
 end_class

@@ -1997,6 +1997,18 @@ return|return
 name|commandDispatcher
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getSupervisor ()
+specifier|public
+name|ReplicationSupervisor
+name|getSupervisor
+parameter_list|()
+block|{
+return|return
+name|supervisor
+return|;
+block|}
 block|}
 end_class
 
