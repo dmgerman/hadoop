@@ -717,7 +717,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Generic tests for overcommitting resources. This needs to be instantiated  * with a scheduler ({@link YarnConfiguration.RM_SCHEDULER}).  *  * If reducing the amount of resources leads to overcommitting (negative  * available resources), the scheduler will select containers to make room.  *<ul>  *<li>If there is no timeout (&lt;0), it doesn't kill or preempt surplus  * containers.</li>  *<li>If the timeout is 0, it kills the surplus containers immediately.</li>  *<li>If the timeout is larger than 0, it first asks the application to  * preempt those containers and after the timeout passes, it kills the surplus  * containers.</li>  *</ul>  */
+comment|/**  * Generic tests for overcommitting resources. This needs to be instantiated  * with a scheduler ({@link YarnConfiguration#RM_SCHEDULER}).  *  * If reducing the amount of resources leads to overcommitting (negative  * available resources), the scheduler will select containers to make room.  *<ul>  *<li>If there is no timeout (&lt;0), it doesn't kill or preempt surplus  * containers.</li>  *<li>If the timeout is 0, it kills the surplus containers immediately.</li>  *<li>If the timeout is larger than 0, it first asks the application to  * preempt those containers and after the timeout passes, it kills the surplus  * containers.</li>  *</ul>  */
 end_comment
 
 begin_class
@@ -931,7 +931,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get the configuration for the scheduler. This is used when setting up the    * Resource Manager and should setup the scheduler (e.g., Capacity Scheduler    * or Fair Scheduler). It needs to set the configuration with    * {@link YarnConfiguration.RM_SCHEDULER}.    * @return Configuration for the scheduler.    */
+comment|/**    * Get the configuration for the scheduler. This is used when setting up the    * Resource Manager and should setup the scheduler (e.g., Capacity Scheduler    * or Fair Scheduler). It needs to set the configuration with    * {@link YarnConfiguration#RM_SCHEDULER}.    * @return Configuration for the scheduler.    */
 DECL|method|getConfiguration ()
 specifier|protected
 name|Configuration
@@ -3455,7 +3455,7 @@ name|t0
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create a container with a particular size and make sure it succeeds.    * @param am Application Master to add the container to.    * @param memory Memory of the container.    * @return Newly created container.    * @throws Exception If there are issues creating the container.    */
+comment|/**    * Create a container with a particular size and make sure it succeeds.    * @param app Application Master to add the container to.    * @param memory Memory of the container.    * @return Newly created container.    * @throws Exception If there are issues creating the container.    */
 DECL|method|createContainer ( final MockAM app, final int memory)
 specifier|protected
 name|Container
