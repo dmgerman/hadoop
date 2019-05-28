@@ -1327,6 +1327,11 @@ operator|.
 name|waitForClusterToBeReady
 argument_list|()
 expr_stmt|;
+name|cluster
+operator|.
+name|waitTobeOutOfSafeMode
+argument_list|()
+expr_stmt|;
 name|assertFalse
 argument_list|(
 name|cluster
@@ -1768,6 +1773,11 @@ expr_stmt|;
 name|cluster
 operator|.
 name|waitForClusterToBeReady
+argument_list|()
+expr_stmt|;
+name|cluster
+operator|.
+name|waitTobeOutOfSafeMode
 argument_list|()
 expr_stmt|;
 name|assertFalse
