@@ -996,9 +996,9 @@ operator|=
 operator|new
 name|ContainerScrubber
 argument_list|(
-name|containerSet
-argument_list|,
 name|config
+argument_list|,
+name|controller
 argument_list|)
 expr_stmt|;
 block|}

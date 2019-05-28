@@ -22,20 +22,6 @@ end_package
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Preconditions
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -102,9 +88,9 @@ name|container
 operator|.
 name|common
 operator|.
-name|impl
+name|interfaces
 operator|.
-name|ContainerSet
+name|Container
 import|;
 end_import
 
@@ -124,7 +110,7 @@ name|common
 operator|.
 name|interfaces
 operator|.
-name|Container
+name|Handler
 import|;
 end_import
 
@@ -186,12 +172,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|containerSet
-specifier|private
-specifier|final
-name|ContainerSet
-name|containerSet
-decl_stmt|;
 DECL|field|config
 specifier|private
 specifier|final
@@ -217,39 +197,22 @@ specifier|private
 name|Thread
 name|scrubThread
 decl_stmt|;
-DECL|method|ContainerScrubber (ContainerSet cSet, OzoneConfiguration conf)
+DECL|field|controller
+specifier|private
+name|ContainerController
+name|controller
+decl_stmt|;
+DECL|method|ContainerScrubber (OzoneConfiguration conf, ContainerController controller)
 specifier|public
 name|ContainerScrubber
 parameter_list|(
-name|ContainerSet
-name|cSet
-parameter_list|,
 name|OzoneConfiguration
 name|conf
+parameter_list|,
+name|ContainerController
+name|controller
 parameter_list|)
 block|{
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|cSet
-argument_list|,
-literal|"ContainerScrubber received a null ContainerSet"
-argument_list|)
-expr_stmt|;
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|containerSet
-operator|=
-name|cSet
-expr_stmt|;
 name|this
 operator|.
 name|config
@@ -267,6 +230,12 @@ operator|.
 name|scrubThread
 operator|=
 literal|null
+expr_stmt|;
+name|this
+operator|.
+name|controller
+operator|=
+name|controller
 expr_stmt|;
 block|}
 DECL|method|run ()
@@ -533,9 +502,9 @@ name|Container
 argument_list|>
 name|containerIt
 init|=
-name|containerSet
+name|controller
 operator|.
-name|getContainerIterator
+name|getContainerSetIterator
 argument_list|()
 decl_stmt|;
 name|long
@@ -570,6 +539,16 @@ name|containerIt
 operator|.
 name|next
 argument_list|()
+decl_stmt|;
+name|Handler
+name|containerHandler
+init|=
+name|controller
+operator|.
+name|getHandler
+argument_list|(
+name|container
+argument_list|)
 decl_stmt|;
 if|if
 condition|(

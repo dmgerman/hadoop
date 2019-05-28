@@ -190,6 +190,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Iterator
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Map
 import|;
 end_import
@@ -507,7 +517,6 @@ expr_stmt|;
 block|}
 comment|/**    * Given a container, returns its handler instance.    *    * @param container Container    * @return handler of the container    */
 DECL|method|getHandler (final Container container)
-specifier|private
 name|Handler
 name|getHandler
 parameter_list|(
@@ -526,6 +535,21 @@ operator|.
 name|getContainerType
 argument_list|()
 argument_list|)
+return|;
+block|}
+DECL|method|getContainerSetIterator ()
+name|Iterator
+argument_list|<
+name|Container
+argument_list|>
+name|getContainerSetIterator
+parameter_list|()
+block|{
+return|return
+name|containerSet
+operator|.
+name|getContainerIterator
+argument_list|()
 return|;
 block|}
 block|}
