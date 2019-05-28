@@ -761,7 +761,14 @@ operator|.
 name|class
 argument_list|)
 argument_list|,
-literal|null
+name|Mockito
+operator|.
+name|anyListOf
+argument_list|(
+name|DatanodeDetails
+operator|.
+name|class
+argument_list|)
 argument_list|,
 name|Mockito
 operator|.
@@ -791,7 +798,7 @@ operator|.
 name|getArguments
 argument_list|()
 index|[
-literal|1
+literal|2
 index|]
 decl_stmt|;
 return|return
