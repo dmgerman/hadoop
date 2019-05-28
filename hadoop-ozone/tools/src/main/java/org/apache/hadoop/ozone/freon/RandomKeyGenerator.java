@@ -858,10 +858,10 @@ literal|false
 decl_stmt|;
 DECL|field|exception
 specifier|private
-name|boolean
+name|Exception
 name|exception
 init|=
-literal|false
+literal|null
 decl_stmt|;
 annotation|@
 name|Option
@@ -1609,6 +1609,8 @@ expr_stmt|;
 if|if
 condition|(
 name|exception
+operator|!=
+literal|null
 condition|)
 block|{
 name|progressbar
@@ -1643,6 +1645,17 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|exception
+operator|!=
+literal|null
+condition|)
+block|{
+throw|throw
+name|exception
+throw|;
+block|}
 return|return
 literal|null
 return|;
@@ -1867,6 +1880,8 @@ literal|"Status: "
 operator|+
 operator|(
 name|exception
+operator|!=
+literal|null
 condition|?
 literal|"Failed"
 else|:
@@ -2928,7 +2943,7 @@ parameter_list|)
 block|{
 name|exception
 operator|=
-literal|true
+name|e
 expr_stmt|;
 name|LOG
 operator|.
@@ -3379,7 +3394,7 @@ parameter_list|)
 block|{
 name|exception
 operator|=
-literal|true
+name|e
 expr_stmt|;
 name|LOG
 operator|.
@@ -3409,7 +3424,7 @@ parameter_list|)
 block|{
 name|exception
 operator|=
-literal|true
+name|e
 expr_stmt|;
 name|LOG
 operator|.
@@ -3582,6 +3597,8 @@ operator|.
 name|status
 operator|=
 name|exception
+operator|!=
+literal|null
 condition|?
 literal|"Failed"
 else|:
