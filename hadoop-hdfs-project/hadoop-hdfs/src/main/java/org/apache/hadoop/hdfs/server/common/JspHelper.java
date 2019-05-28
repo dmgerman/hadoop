@@ -737,9 +737,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-comment|// Token-based connections need only verify the effective user, and
-comment|// disallow proxying to different user.  Proxy authorization checks
-comment|// are not required since the checks apply to issuing a token.
+comment|// user.name, doas param is ignored in the token-based auth
 name|ugi
 operator|=
 name|getTokenUGI
@@ -751,26 +749,6 @@ argument_list|,
 name|tokenString
 argument_list|,
 name|conf
-argument_list|)
-expr_stmt|;
-name|checkUsername
-argument_list|(
-name|ugi
-operator|.
-name|getShortUserName
-argument_list|()
-argument_list|,
-name|usernameFromQuery
-argument_list|)
-expr_stmt|;
-name|checkUsername
-argument_list|(
-name|ugi
-operator|.
-name|getShortUserName
-argument_list|()
-argument_list|,
-name|doAsUserFromQuery
 argument_list|)
 expr_stmt|;
 block|}
@@ -826,16 +804,6 @@ operator|.
 name|createRemoteUser
 argument_list|(
 name|remoteUser
-argument_list|)
-expr_stmt|;
-name|checkUsername
-argument_list|(
-name|ugi
-operator|.
-name|getShortUserName
-argument_list|()
-argument_list|,
-name|usernameFromQuery
 argument_list|)
 expr_stmt|;
 if|if
