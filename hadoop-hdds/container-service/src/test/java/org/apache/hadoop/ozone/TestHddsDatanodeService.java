@@ -350,11 +350,6 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|service
-operator|.
-name|join
-argument_list|()
-expr_stmt|;
 name|assertNotNull
 argument_list|(
 name|service
@@ -388,6 +383,11 @@ expr_stmt|;
 name|service
 operator|.
 name|stop
+argument_list|()
+expr_stmt|;
+name|service
+operator|.
+name|join
 argument_list|()
 expr_stmt|;
 name|service
