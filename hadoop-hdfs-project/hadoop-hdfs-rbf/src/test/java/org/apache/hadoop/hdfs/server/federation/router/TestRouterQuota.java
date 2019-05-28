@@ -58,6 +58,18 @@ name|junit
 operator|.
 name|Assert
 operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
 name|assertNotEquals
 import|;
 end_import
@@ -105,6 +117,16 @@ operator|.
 name|io
 operator|.
 name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|ArrayList
 import|;
 end_import
 
@@ -1136,23 +1158,24 @@ operator|.
 name|getFileSystem
 argument_list|()
 decl_stmt|;
+specifier|final
+name|List
+argument_list|<
+name|Path
+argument_list|>
+name|created
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+decl_stmt|;
 name|GenericTestUtils
 operator|.
 name|waitFor
 argument_list|(
-operator|new
-name|Supplier
-argument_list|<
-name|Boolean
-argument_list|>
-argument_list|()
-block|{
-annotation|@
-name|Override
-specifier|public
-name|Boolean
-name|get
 parameter_list|()
+lambda|->
 block|{
 name|boolean
 name|isNsQuotaViolated
@@ -1162,10 +1185,9 @@ decl_stmt|;
 try|try
 block|{
 comment|// create new directory to trigger NSQuotaExceededException
-name|routerFs
-operator|.
-name|mkdirs
-argument_list|(
+name|Path
+name|p
+init|=
 operator|new
 name|Path
 argument_list|(
@@ -1176,12 +1198,23 @@ operator|.
 name|randomUUID
 argument_list|()
 argument_list|)
-argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|routerFs
 operator|.
 name|mkdirs
 argument_list|(
+name|p
+argument_list|)
+expr_stmt|;
+name|created
+operator|.
+name|add
+argument_list|(
+name|p
+argument_list|)
+expr_stmt|;
+name|p
+operator|=
 operator|new
 name|Path
 argument_list|(
@@ -1192,6 +1225,19 @@ operator|.
 name|randomUUID
 argument_list|()
 argument_list|)
+expr_stmt|;
+name|routerFs
+operator|.
+name|mkdirs
+argument_list|(
+name|p
+argument_list|)
+expr_stmt|;
+name|created
+operator|.
+name|add
+argument_list|(
+name|p
 argument_list|)
 expr_stmt|;
 block|}
@@ -1211,11 +1257,10 @@ parameter_list|(
 name|IOException
 name|ignored
 parameter_list|)
-block|{         }
+block|{       }
 return|return
 name|isNsQuotaViolated
 return|;
-block|}
 block|}
 argument_list|,
 literal|5000
@@ -1256,37 +1301,57 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// delete/rename call should be still okay
-name|routerFs
-operator|.
-name|delete
+comment|// rename/delete call should be still okay
+name|assertFalse
 argument_list|(
+name|created
+operator|.
+name|isEmpty
+argument_list|()
+argument_list|)
+expr_stmt|;
+for|for
+control|(
+name|Path
+name|src
+range|:
+name|created
+control|)
+block|{
+specifier|final
+name|Path
+name|dst
+init|=
 operator|new
 name|Path
 argument_list|(
-literal|"/nsquota"
+name|src
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|"-renamed"
 argument_list|)
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|routerFs
 operator|.
 name|rename
 argument_list|(
-operator|new
-name|Path
-argument_list|(
-literal|"/nsquota/subdir"
-argument_list|)
+name|src
 argument_list|,
-operator|new
-name|Path
-argument_list|(
-literal|"/nsquota/subdir"
-argument_list|)
+name|dst
 argument_list|)
 expr_stmt|;
+name|routerFs
+operator|.
+name|delete
+argument_list|(
+name|dst
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Test
@@ -2387,7 +2452,7 @@ name|quota
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Remove a mount table entry to the mount table through the admin API.    * @param entry Mount table entry to remove.    * @return If it was successfully removed.    * @throws IOException Problems removing entries.    */
+comment|/**    * Remove a mount table entry to the mount table through the admin API.    * @param path Mount table entry to remove.    * @return If it was successfully removed.    * @throws IOException Problems removing entries.    */
 DECL|method|removeMountTable (String path)
 specifier|private
 name|boolean
@@ -4134,7 +4199,7 @@ operator|.
 name|getFileSystem
 argument_list|()
 decl_stmt|;
-comment|// Remove destination directory for the mount entry
+comment|// Remove file in setdir1. The target directory still exists.
 name|routerFs
 operator|.
 name|delete
@@ -4142,7 +4207,7 @@ argument_list|(
 operator|new
 name|Path
 argument_list|(
-literal|"/setdir1"
+literal|"/setdir1/file1"
 argument_list|)
 argument_list|,
 literal|true
@@ -4240,10 +4305,10 @@ operator|.
 name|getQuota
 argument_list|()
 expr_stmt|;
-comment|// If destination is not present the quota usage should be reset to 0
+comment|// The quota usage should be reset.
 name|assertEquals
 argument_list|(
-literal|0
+literal|1
 argument_list|,
 name|cacheQuota1
 operator|.
@@ -4253,7 +4318,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|0
+literal|1
 argument_list|,
 name|mountQuota1
 operator|.

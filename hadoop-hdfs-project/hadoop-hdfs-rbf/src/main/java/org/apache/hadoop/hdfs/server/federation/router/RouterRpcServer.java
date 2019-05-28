@@ -7956,7 +7956,7 @@ block|}
 end_function
 
 begin_comment
-comment|/**    * Get the possible locations of a path in the federated cluster.    *    * @param path Path to check.    * @param failIfLocked Fail the request if locked (top mount point).    * @param needQuotaVerify If need to do the quota verification.    * @return Prioritized list of locations in the federated cluster.    * @throws IOException If the location for this path cannot be determined.    */
+comment|/**    * Get the possible locations of a path in the federated cluster.    *    * @param path Path to check.    * @param failIfLocked Fail the request if there is any mount point under    *                     the path.    * @param needQuotaVerify If need to do the quota verification.    * @return Prioritized list of locations in the federated cluster.    * @throws IOException If the location for this path cannot be determined.    */
 end_comment
 
 begin_function
@@ -7982,6 +7982,119 @@ name|IOException
 block|{
 try|try
 block|{
+if|if
+condition|(
+name|failIfLocked
+condition|)
+block|{
+comment|// check if there is any mount point under the path
+specifier|final
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|mountPoints
+init|=
+name|this
+operator|.
+name|subclusterResolver
+operator|.
+name|getMountPoints
+argument_list|(
+name|path
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|mountPoints
+operator|!=
+literal|null
+condition|)
+block|{
+name|StringBuilder
+name|sb
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"The operation is not allowed because "
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|mountPoints
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"the path: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|path
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" is a mount point"
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"there are mount points: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|String
+operator|.
+name|join
+argument_list|(
+literal|","
+argument_list|,
+name|mountPoints
+argument_list|)
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" under the path: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|path
+argument_list|)
+expr_stmt|;
+block|}
+throw|throw
+operator|new
+name|AccessControlException
+argument_list|(
+name|sb
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+throw|;
+block|}
+block|}
 comment|// Check the location for this path
 specifier|final
 name|PathLocation

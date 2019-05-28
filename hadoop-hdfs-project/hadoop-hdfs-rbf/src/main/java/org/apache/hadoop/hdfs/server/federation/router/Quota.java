@@ -1078,7 +1078,7 @@ name|getLocationsForPath
 argument_list|(
 name|childPath
 argument_list|,
-literal|true
+literal|false
 argument_list|,
 literal|false
 argument_list|)
@@ -1112,7 +1112,7 @@ name|getLocationsForPath
 argument_list|(
 name|path
 argument_list|,
-literal|true
+literal|false
 argument_list|,
 literal|false
 argument_list|)

@@ -197,6 +197,26 @@ name|IOException
 block|{
 comment|// It doesn't apply because we still have the mount points here
 block|}
+annotation|@
+name|Override
+DECL|method|testRmRootRecursive ()
+specifier|public
+name|void
+name|testRmRootRecursive
+parameter_list|()
+block|{
+comment|// It doesn't apply because we still have the mount points here
+block|}
+annotation|@
+name|Override
+DECL|method|testRmEmptyRootDirRecursive ()
+specifier|public
+name|void
+name|testRmEmptyRootDirRecursive
+parameter_list|()
+block|{
+comment|// It doesn't apply because we still have the mount points here
+block|}
 block|}
 end_class
 
