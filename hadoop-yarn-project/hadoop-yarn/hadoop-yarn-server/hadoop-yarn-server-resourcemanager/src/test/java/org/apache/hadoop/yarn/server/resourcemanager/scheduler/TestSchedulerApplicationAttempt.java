@@ -2233,7 +2233,9 @@ literal|"test3"
 argument_list|,
 literal|null
 argument_list|,
-literal|0.0f
+name|Float
+operator|.
+name|MIN_VALUE
 argument_list|)
 expr_stmt|;
 name|app
