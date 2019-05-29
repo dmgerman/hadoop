@@ -291,6 +291,19 @@ name|getInSafeMode
 argument_list|()
 return|;
 block|}
+DECL|method|getSafeModeMetrics ()
+specifier|protected
+name|SafeModeMetrics
+name|getSafeModeMetrics
+parameter_list|()
+block|{
+return|return
+name|safeModeManager
+operator|.
+name|getSafeModeMetrics
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

@@ -525,6 +525,14 @@ argument_list|,
 name|healthyPipelineThresholdCount
 argument_list|)
 expr_stmt|;
+name|getSafeModeMetrics
+argument_list|()
+operator|.
+name|setNumHealthyPipelinesThreshold
+argument_list|(
+name|healthyPipelineThresholdCount
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -694,6 +702,12 @@ comment|// If the pipeline is open state mean, all 3 datanodes are reported
 comment|// for this pipeline.
 name|currentHealthyPipelineCount
 operator|++
+expr_stmt|;
+name|getSafeModeMetrics
+argument_list|()
+operator|.
+name|incCurrentHealthyPipelinesCount
+argument_list|()
 expr_stmt|;
 block|}
 block|}

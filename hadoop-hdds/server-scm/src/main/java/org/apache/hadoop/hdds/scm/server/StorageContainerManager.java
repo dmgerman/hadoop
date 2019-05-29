@@ -5031,6 +5031,11 @@ name|ex
 argument_list|)
 expr_stmt|;
 block|}
+name|scmSafeModeManager
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Wait until service has completed shutdown.    */
 DECL|method|join ()

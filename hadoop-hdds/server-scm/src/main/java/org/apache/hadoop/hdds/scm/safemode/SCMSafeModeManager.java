@@ -361,6 +361,12 @@ specifier|final
 name|PipelineManager
 name|pipelineManager
 decl_stmt|;
+DECL|field|safeModeMetrics
+specifier|private
+specifier|final
+name|SafeModeMetrics
+name|safeModeMetrics
+decl_stmt|;
 DECL|method|SCMSafeModeManager (Configuration conf, List<ContainerInfo> allContainers, PipelineManager pipelineManager, EventQueue eventQueue)
 specifier|public
 name|SCMSafeModeManager
@@ -421,6 +427,15 @@ condition|(
 name|isSafeModeEnabled
 condition|)
 block|{
+name|this
+operator|.
+name|safeModeMetrics
+operator|=
+name|SafeModeMetrics
+operator|.
+name|create
+argument_list|()
+expr_stmt|;
 name|ContainerSafeModeRule
 name|containerSafeModeRule
 init|=
@@ -550,12 +565,48 @@ expr_stmt|;
 block|}
 else|else
 block|{
+name|this
+operator|.
+name|safeModeMetrics
+operator|=
+literal|null
+expr_stmt|;
 name|exitSafeMode
 argument_list|(
 name|eventQueue
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+DECL|method|stop ()
+specifier|public
+name|void
+name|stop
+parameter_list|()
+block|{
+if|if
+condition|(
+name|isSafeModeEnabled
+condition|)
+block|{
+name|this
+operator|.
+name|safeModeMetrics
+operator|.
+name|unRegister
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+DECL|method|getSafeModeMetrics ()
+specifier|public
+name|SafeModeMetrics
+name|getSafeModeMetrics
+parameter_list|()
+block|{
+return|return
+name|safeModeMetrics
+return|;
 block|}
 comment|/**    * Emit Safe mode status.    */
 annotation|@

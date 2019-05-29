@@ -504,6 +504,14 @@ argument_list|,
 name|thresholdCount
 argument_list|)
 expr_stmt|;
+name|getSafeModeMetrics
+argument_list|()
+operator|.
+name|setNumPipelinesWithAtleastOneReplicaReportedThreshold
+argument_list|(
+name|thresholdCount
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -646,6 +654,12 @@ name|add
 argument_list|(
 name|pipelineID
 argument_list|)
+expr_stmt|;
+name|getSafeModeMetrics
+argument_list|()
+operator|.
+name|incCurrentHealthyPipelinesWithAtleastOneReplicaReportedCount
+argument_list|()
 expr_stmt|;
 block|}
 block|}
