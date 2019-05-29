@@ -6106,6 +6106,31 @@ throw|;
 block|}
 annotation|@
 name|Override
+DECL|method|signalToContainer (String containerId, String command, HttpServletRequest req)
+specifier|public
+name|Response
+name|signalToContainer
+parameter_list|(
+name|String
+name|containerId
+parameter_list|,
+name|String
+name|command
+parameter_list|,
+name|HttpServletRequest
+name|req
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|NotImplementedException
+argument_list|(
+literal|"Code is not implemented"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
 DECL|method|shutdown ()
 specifier|public
 name|void

@@ -481,6 +481,16 @@ name|CHECK_USER_ACCESS_TO_QUEUE
 init|=
 literal|"/queues/{queue}/access"
 decl_stmt|;
+comment|/**    * Path for {@code RMWebServiceProtocol#signalContainer}.    */
+DECL|field|SIGNAL_TO_CONTAINER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SIGNAL_TO_CONTAINER
+init|=
+literal|"/containers/{containerid}/signal/{command}"
+decl_stmt|;
 comment|// ----------------QueryParams for RMWebServiceProtocol----------------
 DECL|field|TIME
 specifier|public
@@ -823,6 +833,24 @@ name|String
 name|GROUP_BY
 init|=
 literal|"groupBy"
+decl_stmt|;
+DECL|field|SIGNAL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SIGNAL
+init|=
+literal|"signal"
+decl_stmt|;
+DECL|field|COMMAND
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|COMMAND
+init|=
+literal|"command"
 decl_stmt|;
 DECL|method|RMWSConsts ()
 specifier|private

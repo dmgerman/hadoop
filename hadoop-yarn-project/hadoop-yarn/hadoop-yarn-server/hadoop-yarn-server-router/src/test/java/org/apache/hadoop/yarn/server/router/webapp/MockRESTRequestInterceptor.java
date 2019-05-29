@@ -2171,6 +2171,37 @@ name|ContainerInfo
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|signalToContainer (String containerId, String command, HttpServletRequest req)
+specifier|public
+name|Response
+name|signalToContainer
+parameter_list|(
+name|String
+name|containerId
+parameter_list|,
+name|String
+name|command
+parameter_list|,
+name|HttpServletRequest
+name|req
+parameter_list|)
+block|{
+return|return
+name|Response
+operator|.
+name|status
+argument_list|(
+name|Status
+operator|.
+name|OK
+argument_list|)
+operator|.
+name|build
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 
