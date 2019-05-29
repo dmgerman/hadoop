@@ -248,12 +248,18 @@ argument_list|(
 name|currentVolumeIndex
 argument_list|)
 decl_stmt|;
+comment|// adjust for remaining capacity in Open containers
 name|long
 name|availableVolumeSize
 init|=
 name|volume
 operator|.
 name|getAvailable
+argument_list|()
+operator|-
+name|volume
+operator|.
+name|getCommittedBytes
 argument_list|()
 decl_stmt|;
 name|currentVolumeIndex
