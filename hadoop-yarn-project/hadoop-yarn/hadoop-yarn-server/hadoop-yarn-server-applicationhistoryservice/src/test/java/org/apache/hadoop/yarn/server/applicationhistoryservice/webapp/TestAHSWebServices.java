@@ -88,6 +88,18 @@ name|junit
 operator|.
 name|Assert
 operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
 name|fail
 import|;
 end_import
@@ -3380,6 +3392,30 @@ operator|.
 name|get
 argument_list|(
 literal|"appState"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertNotNull
+argument_list|(
+literal|"Aggregate resource allocation is null"
+argument_list|,
+name|app
+operator|.
+name|get
+argument_list|(
+literal|"aggregateResourceAllocation"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertNotNull
+argument_list|(
+literal|"Aggregate Preempted Resource Allocation is null"
+argument_list|,
+name|app
+operator|.
+name|get
+argument_list|(
+literal|"aggregatePreemptedResourceAllocation"
 argument_list|)
 argument_list|)
 expr_stmt|;
