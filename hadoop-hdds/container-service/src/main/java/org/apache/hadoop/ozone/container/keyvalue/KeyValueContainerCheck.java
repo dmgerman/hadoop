@@ -288,8 +288,6 @@ name|common
 operator|.
 name|utils
 operator|.
-name|ContainerCache
-operator|.
 name|ReferenceCountedDB
 import|;
 end_import

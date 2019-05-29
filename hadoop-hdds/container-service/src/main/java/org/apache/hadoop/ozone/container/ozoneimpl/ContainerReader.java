@@ -434,8 +434,6 @@ name|common
 operator|.
 name|utils
 operator|.
-name|ContainerCache
-operator|.
 name|ReferenceCountedDB
 import|;
 end_import
@@ -1264,6 +1262,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+init|(
 name|KeyValueBlockIterator
 name|blockIter
 init|=
@@ -1290,7 +1290,8 @@ name|getContainerPath
 argument_list|()
 argument_list|)
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|long
 name|usedBytes
 init|=
@@ -1373,6 +1374,7 @@ argument_list|(
 name|usedBytes
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 end_class

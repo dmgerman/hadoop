@@ -276,7 +276,7 @@ name|common
 operator|.
 name|utils
 operator|.
-name|ContainerCache
+name|ReferenceCountedDB
 import|;
 end_import
 
@@ -1102,8 +1102,6 @@ operator|.
 name|getContainerID
 argument_list|()
 decl_stmt|;
-name|ContainerCache
-operator|.
 name|ReferenceCountedDB
 name|db
 init|=
