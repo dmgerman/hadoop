@@ -720,7 +720,9 @@ name|assertFalse
 argument_list|(
 name|cmdtype
 operator|+
-literal|"is not categorized in OmUtils#isReadyOnly"
+literal|" is not categorized in "
+operator|+
+literal|"OmUtils#isReadyOnly"
 argument_list|,
 name|logCapturer
 operator|.

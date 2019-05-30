@@ -68,7 +68,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|List
+name|BitSet
 import|;
 end_import
 
@@ -149,6 +149,30 @@ block|,
 DECL|enumConstant|NONE
 name|NONE
 block|;
+DECL|field|length
+specifier|private
+specifier|static
+name|int
+name|length
+init|=
+name|ACLType
+operator|.
+name|values
+argument_list|()
+operator|.
+name|length
+decl_stmt|;
+DECL|method|getNoOfAcls ()
+specifier|public
+specifier|static
+name|int
+name|getNoOfAcls
+parameter_list|()
+block|{
+return|return
+name|length
+return|;
+block|}
 comment|/**      * Returns the ACL rights based on passed in String.      *      * @param type ACL right string      * @return ACLType      */
 DECL|method|getACLRight (String type)
 specifier|public
@@ -280,9 +304,11 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
+literal|"["
+operator|+
 name|type
 operator|+
-literal|" ACL right is not "
+literal|"] ACL right is not "
 operator|+
 literal|"recognized"
 argument_list|)
@@ -290,16 +316,13 @@ throw|;
 block|}
 block|}
 comment|/**      * Returns String representation of ACL rights.      *      * @param acls ACLType      * @return String representation of acl      */
-DECL|method|getACLString (List<ACLType> acls)
+DECL|method|getACLString (BitSet acls)
 specifier|public
 specifier|static
 name|String
 name|getACLString
 parameter_list|(
-name|List
-argument_list|<
-name|ACLType
-argument_list|>
+name|BitSet
 name|acls
 parameter_list|)
 block|{
@@ -312,6 +335,9 @@ argument_list|()
 decl_stmt|;
 name|acls
 operator|.
+name|stream
+argument_list|()
+operator|.
 name|forEach
 argument_list|(
 name|acl
@@ -323,7 +349,13 @@ name|append
 argument_list|(
 name|getAclString
 argument_list|(
+name|ACLType
+operator|.
+name|values
+argument_list|()
+index|[
 name|acl
+index|]
 argument_list|)
 argument_list|)
 expr_stmt|;

@@ -914,6 +914,9 @@ case|:
 case|case
 name|ListStatus
 case|:
+case|case
+name|GetAcl
+case|:
 return|return
 literal|true
 return|;
@@ -991,6 +994,15 @@ name|CreateDirectory
 case|:
 case|case
 name|CreateFile
+case|:
+case|case
+name|RemoveAcl
+case|:
+case|case
+name|SetAcl
+case|:
+case|case
+name|AddAcl
 case|:
 return|return
 literal|false

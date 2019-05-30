@@ -338,7 +338,7 @@ name|FILE_ALREADY_EXISTS
 block|,
 DECL|enumConstant|NOT_A_FILE
 name|NOT_A_FILE
-block|}
+block|,   }
 block|}
 end_class
 

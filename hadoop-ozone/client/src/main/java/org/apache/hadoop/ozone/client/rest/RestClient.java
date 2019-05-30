@@ -632,6 +632,24 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|security
+operator|.
+name|acl
+operator|.
+name|OzoneObj
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|web
 operator|.
 name|response
@@ -6319,6 +6337,117 @@ argument_list|(
 literal|"Ozone REST protocol does not "
 operator|+
 literal|"support this operation."
+argument_list|)
+throw|;
+block|}
+comment|/**    * Add acl for Ozone object. Return true if acl is added successfully else    * false.    *    * @param obj Ozone object for which acl should be added.    * @param acl ozone acl top be added.    * @throws IOException if there is error.    */
+annotation|@
+name|Override
+DECL|method|addAcl (OzoneObj obj, OzoneAcl acl)
+specifier|public
+name|boolean
+name|addAcl
+parameter_list|(
+name|OzoneObj
+name|obj
+parameter_list|,
+name|OzoneAcl
+name|acl
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Ozone REST protocol does not"
+operator|+
+literal|" support this operation."
+argument_list|)
+throw|;
+block|}
+comment|/**    * Remove acl for Ozone object. Return true if acl is removed successfully    * else false.    *    * @param obj Ozone object.    * @param acl Ozone acl to be removed.    * @throws IOException if there is error.    */
+annotation|@
+name|Override
+DECL|method|removeAcl (OzoneObj obj, OzoneAcl acl)
+specifier|public
+name|boolean
+name|removeAcl
+parameter_list|(
+name|OzoneObj
+name|obj
+parameter_list|,
+name|OzoneAcl
+name|acl
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Ozone REST protocol does not"
+operator|+
+literal|" support this operation."
+argument_list|)
+throw|;
+block|}
+comment|/**    * Acls to be set for given Ozone object. This operations reset ACL for given    * object to list of ACLs provided in argument.    *    * @param obj Ozone object.    * @param acls List of acls.    * @throws IOException if there is error.    */
+annotation|@
+name|Override
+DECL|method|setAcl (OzoneObj obj, List<OzoneAcl> acls)
+specifier|public
+name|boolean
+name|setAcl
+parameter_list|(
+name|OzoneObj
+name|obj
+parameter_list|,
+name|List
+argument_list|<
+name|OzoneAcl
+argument_list|>
+name|acls
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Ozone REST protocol does not"
+operator|+
+literal|" support this operation."
+argument_list|)
+throw|;
+block|}
+comment|/**    * Returns list of ACLs for given Ozone object.    *    * @param obj Ozone object.    * @throws IOException if there is error.    */
+annotation|@
+name|Override
+DECL|method|getAcl (OzoneObj obj)
+specifier|public
+name|List
+argument_list|<
+name|OzoneAcl
+argument_list|>
+name|getAcl
+parameter_list|(
+name|OzoneObj
+name|obj
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Ozone REST protocol does not"
+operator|+
+literal|" support this operation."
 argument_list|)
 throw|;
 block|}
