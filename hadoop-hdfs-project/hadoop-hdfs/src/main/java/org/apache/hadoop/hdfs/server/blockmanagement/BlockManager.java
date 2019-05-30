@@ -3832,7 +3832,7 @@ block|{
 assert|assert
 name|namesystem
 operator|.
-name|hasWriteLock
+name|hasReadLock
 argument_list|()
 assert|;
 comment|// TODO: block manager read lock and NS write lock

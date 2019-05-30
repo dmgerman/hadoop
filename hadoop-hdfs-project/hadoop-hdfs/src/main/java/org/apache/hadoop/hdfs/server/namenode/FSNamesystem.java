@@ -5666,6 +5666,16 @@ name|nameNodeHostName
 init|=
 literal|null
 decl_stmt|;
+comment|/**    * HDFS-14497: Concurrency control when many metaSave request to write    * meta to same out stream after switch to read lock.    */
+DECL|field|metaSaveLock
+specifier|private
+name|Object
+name|metaSaveLock
+init|=
+operator|new
+name|Object
+argument_list|()
+decl_stmt|;
 comment|/**    * Notify that loading of this FSDirectory is complete, and    * it is imageLoaded for use    */
 DECL|method|imageLoadComplete ()
 name|void
@@ -10535,7 +10545,7 @@ operator|.
 name|READ
 argument_list|)
 expr_stmt|;
-name|writeLock
+name|readLock
 argument_list|()
 expr_stmt|;
 try|try
@@ -10547,6 +10557,11 @@ operator|.
 name|READ
 argument_list|)
 expr_stmt|;
+synchronized|synchronized
+init|(
+name|metaSaveLock
+init|)
+block|{
 name|File
 name|file
 init|=
@@ -10608,9 +10623,10 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+block|}
 finally|finally
 block|{
-name|writeUnlock
+name|readUnlock
 argument_list|(
 name|operationName
 argument_list|)
@@ -10636,7 +10652,7 @@ name|out
 parameter_list|)
 block|{
 assert|assert
-name|hasWriteLock
+name|hasReadLock
 argument_list|()
 assert|;
 name|long
