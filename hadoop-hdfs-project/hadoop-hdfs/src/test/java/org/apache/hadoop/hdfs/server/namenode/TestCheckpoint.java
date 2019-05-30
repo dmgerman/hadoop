@@ -6079,26 +6079,6 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
-name|eIO
-parameter_list|)
-block|{
-name|assertTrue
-argument_list|(
-name|eIO
-operator|.
-name|getLocalizedMessage
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-literal|"Safe mode should be turned ON"
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
 name|Exception
 name|e
 parameter_list|)

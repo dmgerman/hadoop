@@ -495,8 +495,6 @@ specifier|protected
 name|void
 name|init
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 name|getConf
 argument_list|()
@@ -1399,17 +1397,15 @@ block|}
 comment|/**    * run    */
 annotation|@
 name|Override
-DECL|method|run (String argv[])
+DECL|method|run (String[] argv)
 specifier|public
 name|int
 name|run
 parameter_list|(
 name|String
-name|argv
 index|[]
+name|argv
 parameter_list|)
-throws|throws
-name|Exception
 block|{
 comment|// initialize FsShell
 name|init

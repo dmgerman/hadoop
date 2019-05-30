@@ -1115,6 +1115,45 @@ name|fs
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|removeFileSystemForTesting (URI uri, Configuration conf, FileSystem fs)
+specifier|static
+name|void
+name|removeFileSystemForTesting
+parameter_list|(
+name|URI
+name|uri
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|,
+name|FileSystem
+name|fs
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|CACHE
+operator|.
+name|map
+operator|.
+name|remove
+argument_list|(
+operator|new
+name|Cache
+operator|.
+name|Key
+argument_list|(
+name|uri
+argument_list|,
+name|conf
+argument_list|)
+argument_list|,
+name|fs
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Get a FileSystem instance based on the uri, the passed in    * configuration and the user.    * @param uri of the filesystem    * @param conf the configuration to use    * @param user to perform the get as    * @return the filesystem instance    * @throws IOException failure to load    * @throws InterruptedException If the {@code UGI.doAs()} call was    * somehow interrupted.    */
 DECL|method|get (final URI uri, final Configuration conf, final String user)
 specifier|public

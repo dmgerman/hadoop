@@ -637,7 +637,7 @@ name|void
 name|testTrash
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|TestTrash
 operator|.

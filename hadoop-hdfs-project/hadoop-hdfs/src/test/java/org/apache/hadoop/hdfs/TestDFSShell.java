@@ -9614,35 +9614,6 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"RUN: "
-operator|+
-name|args
-index|[
-literal|0
-index|]
-operator|+
-literal|" IOException="
-operator|+
-name|e
-operator|.
-name|getMessage
-argument_list|()
-argument_list|)
-expr_stmt|;
-throw|throw
-name|e
-throw|;
-block|}
-catch|catch
-parameter_list|(
 name|RuntimeException
 name|e
 parameter_list|)

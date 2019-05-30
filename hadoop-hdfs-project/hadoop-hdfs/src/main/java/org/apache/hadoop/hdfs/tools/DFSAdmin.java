@@ -11915,8 +11915,6 @@ name|String
 index|[]
 name|argv
 parameter_list|)
-throws|throws
-name|Exception
 block|{
 if|if
 condition|(
@@ -12808,54 +12806,9 @@ return|;
 block|}
 block|}
 comment|// initialize DFSAdmin
-try|try
-block|{
 name|init
 argument_list|()
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|RPC
-operator|.
-name|VersionMismatch
-name|v
-parameter_list|)
-block|{
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"Version Mismatch between client and server"
-operator|+
-literal|"... command aborted."
-argument_list|)
-expr_stmt|;
-return|return
-name|exitCode
-return|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"Bad connection to DFS... command aborted."
-argument_list|)
-expr_stmt|;
-return|return
-name|exitCode
-return|;
-block|}
 name|Exception
 name|debugException
 init|=
