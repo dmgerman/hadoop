@@ -79,6 +79,18 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -2185,6 +2197,14 @@ name|length
 argument_list|()
 operator|>
 literal|0
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+name|bean
+operator|.
+name|isSecurityEnabled
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

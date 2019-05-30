@@ -278,7 +278,7 @@ name|String
 name|getBlockPoolId
 parameter_list|()
 function_decl|;
-comment|/**    * Get the current state of the router.    *    * @return String label for the current router state.    */
+comment|/**    * Get the current state of the router.    * @return String label for the current router state.    */
 DECL|method|getRouterStatus ()
 name|String
 name|getRouterStatus
@@ -288,6 +288,12 @@ comment|/**    * Get the current number of delegation tokens in memory.    * @re
 DECL|method|getCurrentTokensCount ()
 name|long
 name|getCurrentTokensCount
+parameter_list|()
+function_decl|;
+comment|/**    * Get the security status of the router.    * @return Security status.    */
+DECL|method|isSecurityEnabled ()
+name|boolean
+name|isSecurityEnabled
 parameter_list|()
 function_decl|;
 block|}

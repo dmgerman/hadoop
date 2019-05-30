@@ -932,6 +932,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|StringUtils
@@ -3641,6 +3655,19 @@ block|}
 return|return
 operator|-
 literal|1
+return|;
+block|}
+DECL|method|isSecurityEnabled ()
+specifier|public
+name|boolean
+name|isSecurityEnabled
+parameter_list|()
+block|{
+return|return
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
 return|;
 block|}
 comment|/**    * Build a set of unique values found in all namespaces.    *    * @param f Method reference of the appropriate FederationNamespaceInfo    *          getter function    * @return Set of unique string values found in all discovered namespaces.    * @throws IOException if the query could not be executed.    */
