@@ -5855,7 +5855,7 @@ end_function
 begin_function
 annotation|@
 name|Override
-comment|// Client Protocol
+comment|// ClientProtocol
 DECL|method|allowSnapshot (String snapshotRoot)
 specifier|public
 name|void
@@ -5880,7 +5880,7 @@ end_function
 begin_function
 annotation|@
 name|Override
-comment|// Client Protocol
+comment|// ClientProtocol
 DECL|method|disallowSnapshot (String snapshot)
 specifier|public
 name|void
@@ -5940,7 +5940,7 @@ end_function
 begin_function
 annotation|@
 name|Override
-comment|// Client Protocol
+comment|// ClientProtocol
 DECL|method|getSnapshottableDirListing ()
 specifier|public
 name|SnapshottableDirectoryStatus
@@ -8524,7 +8524,6 @@ end_comment
 
 begin_function
 DECL|method|merge ( Map<FederationNamespaceInfo, T[]> map, Class<T> clazz)
-specifier|protected
 specifier|static
 parameter_list|<
 name|T
@@ -8573,6 +8572,13 @@ name|values
 argument_list|()
 control|)
 block|{
+if|if
+condition|(
+name|values
+operator|!=
+literal|null
+condition|)
+block|{
 for|for
 control|(
 name|T
@@ -8588,6 +8594,7 @@ argument_list|(
 name|val
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 return|return
@@ -8607,7 +8614,6 @@ end_comment
 
 begin_function
 DECL|method|toArray (Collection<T> set, Class<T> clazz)
-specifier|private
 specifier|static
 parameter_list|<
 name|T
