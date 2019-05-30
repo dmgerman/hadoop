@@ -1,6 +1,6 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *<p>  * http://www.apache.org/licenses/LICENSE-2.0  *<p>  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
+comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *<p>  * http://www.apache.org/licenses/LICENSE-2.0  *<p>  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.       = GenericTestUtils.getTestDir("dfs").getAbsolutePath() + File.separator;   */
 end_comment
 
 begin_package
@@ -507,7 +507,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class tests the metrics of ContainerStateMachine.  */
+comment|/**    * This class tests the metrics of ContainerStateMachine.    */
 end_comment
 
 begin_class
@@ -516,64 +516,47 @@ specifier|public
 class|class
 name|TestCSMMetrics
 block|{
-DECL|field|TEST_DIR
 specifier|static
-specifier|final
+name|final
 name|String
 name|TEST_DIR
-init|=
-name|GenericTestUtils
-operator|.
-name|getTestDir
-argument_list|(
-literal|"dfs"
-argument_list|)
-operator|.
-name|getAbsolutePath
-argument_list|()
-operator|+
-name|File
-operator|.
-name|separator
-decl_stmt|;
-annotation|@
+expr|@
 name|FunctionalInterface
 DECL|interface|CheckedBiFunction
-interface|interface
+expr|interface
 name|CheckedBiFunction
-parameter_list|<
+argument_list|<
 name|LEFT
-parameter_list|,
+argument_list|,
 name|RIGHT
-parameter_list|,
+argument_list|,
 name|OUT
-parameter_list|,
+argument_list|,
 name|THROWABLE
 extends|extends
 name|Throwable
-parameter_list|>
+argument_list|>
 block|{
 DECL|method|apply (LEFT left, RIGHT right)
 name|OUT
 name|apply
-parameter_list|(
+argument_list|(
 name|LEFT
 name|left
-parameter_list|,
+argument_list|,
 name|RIGHT
 name|right
-parameter_list|)
+argument_list|)
 throws|throws
 name|THROWABLE
-function_decl|;
-block|}
-annotation|@
+block|;   }
+expr|@
 name|Test
 DECL|method|testContainerStateMachineMetrics ()
 specifier|public
 name|void
 name|testContainerStateMachineMetrics
-parameter_list|()
+argument_list|()
 throws|throws
 name|Exception
 block|{
@@ -623,6 +606,9 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+end_class
+
+begin_function
 DECL|method|runContainerStateMachineMetrics ( int numDatanodes, BiConsumer<Pipeline, OzoneConfiguration> initConf, TestCSMMetrics.CheckedBiFunction<Pipeline, OzoneConfiguration, XceiverClientSpi, IOException> createClient, TestCSMMetrics.CheckedBiFunction<DatanodeDetails, OzoneConfiguration, XceiverServerSpi, IOException> createServer, CheckedBiConsumer<DatanodeDetails, Pipeline, IOException> initServer)
 specifier|static
 name|void
@@ -851,6 +837,24 @@ argument_list|,
 name|metric
 argument_list|)
 expr_stmt|;
+name|assertCounter
+argument_list|(
+literal|"NumBytesWrittenCount"
+argument_list|,
+literal|0L
+argument_list|,
+name|metric
+argument_list|)
+expr_stmt|;
+name|assertCounter
+argument_list|(
+literal|"NumBytesCommittedCount"
+argument_list|,
+literal|0L
+argument_list|,
+name|metric
+argument_list|)
+expr_stmt|;
 comment|// Write Chunk
 name|BlockID
 name|blockID
@@ -943,9 +947,27 @@ argument_list|)
 expr_stmt|;
 name|assertCounter
 argument_list|(
+literal|"NumBytesWrittenCount"
+argument_list|,
+literal|1024L
+argument_list|,
+name|metric
+argument_list|)
+expr_stmt|;
+name|assertCounter
+argument_list|(
 literal|"NumApplyTransactionOps"
 argument_list|,
 literal|1L
+argument_list|,
+name|metric
+argument_list|)
+expr_stmt|;
+name|assertCounter
+argument_list|(
+literal|"NumBytesCommittedCount"
+argument_list|,
+literal|1024L
 argument_list|,
 name|metric
 argument_list|)
@@ -1020,7 +1042,7 @@ argument_list|)
 expr_stmt|;
 name|assertCounter
 argument_list|(
-literal|"NumReadStateMachineOps"
+literal|"NumQueryStateMachineOps"
 argument_list|,
 literal|1L
 argument_list|,
@@ -1066,6 +1088,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+end_function
+
+begin_function
 DECL|method|newXceiverServerRatis ( DatanodeDetails dn, OzoneConfiguration conf)
 specifier|static
 name|XceiverServerRatis
@@ -1152,6 +1177,9 @@ literal|null
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_class
 DECL|class|TestContainerDispatcher
 specifier|private
 specifier|static
@@ -1256,8 +1284,8 @@ name|createdContainerSet
 parameter_list|)
 block|{     }
 block|}
-block|}
 end_class
 
+unit|}
 end_unit
 

@@ -193,12 +193,12 @@ name|Metric
 name|MutableCounterLong
 name|numWriteStateMachineOps
 decl_stmt|;
-DECL|field|numReadStateMachineOps
+DECL|field|numQueryStateMachineOps
 specifier|private
 annotation|@
 name|Metric
 name|MutableCounterLong
-name|numReadStateMachineOps
+name|numQueryStateMachineOps
 decl_stmt|;
 DECL|field|numApplyTransactionOps
 specifier|private
@@ -206,6 +206,27 @@ annotation|@
 name|Metric
 name|MutableCounterLong
 name|numApplyTransactionOps
+decl_stmt|;
+DECL|field|numReadStateMachineOps
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numReadStateMachineOps
+decl_stmt|;
+DECL|field|numBytesWrittenCount
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numBytesWrittenCount
+decl_stmt|;
+DECL|field|numBytesCommittedCount
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numBytesCommittedCount
 decl_stmt|;
 comment|// Failure Metrics
 DECL|field|numWriteStateMachineFails
@@ -215,12 +236,12 @@ name|Metric
 name|MutableCounterLong
 name|numWriteStateMachineFails
 decl_stmt|;
-DECL|field|numReadStateMachineFails
+DECL|field|numQueryStateMachineFails
 specifier|private
 annotation|@
 name|Metric
 name|MutableCounterLong
-name|numReadStateMachineFails
+name|numQueryStateMachineFails
 decl_stmt|;
 DECL|field|numApplyTransactionFails
 specifier|private
@@ -228,6 +249,20 @@ annotation|@
 name|Metric
 name|MutableCounterLong
 name|numApplyTransactionFails
+decl_stmt|;
+DECL|field|numReadStateMachineFails
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numReadStateMachineFails
+decl_stmt|;
+DECL|field|numReadStateMachineMissCount
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numReadStateMachineMissCount
 decl_stmt|;
 DECL|method|CSMMetrics ()
 specifier|public
@@ -284,6 +319,18 @@ name|incr
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|incNumQueryStateMachineOps ()
+specifier|public
+name|void
+name|incNumQueryStateMachineOps
+parameter_list|()
+block|{
+name|numQueryStateMachineOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
 DECL|method|incNumReadStateMachineOps ()
 specifier|public
 name|void
@@ -320,6 +367,52 @@ name|incr
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|incNumQueryStateMachineFails ()
+specifier|public
+name|void
+name|incNumQueryStateMachineFails
+parameter_list|()
+block|{
+name|numQueryStateMachineFails
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumBytesWrittenCount (long value)
+specifier|public
+name|void
+name|incNumBytesWrittenCount
+parameter_list|(
+name|long
+name|value
+parameter_list|)
+block|{
+name|numBytesWrittenCount
+operator|.
+name|incr
+argument_list|(
+name|value
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|incNumBytesCommittedCount (long value)
+specifier|public
+name|void
+name|incNumBytesCommittedCount
+parameter_list|(
+name|long
+name|value
+parameter_list|)
+block|{
+name|numBytesCommittedCount
+operator|.
+name|incr
+argument_list|(
+name|value
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|incNumReadStateMachineFails ()
 specifier|public
 name|void
@@ -327,6 +420,18 @@ name|incNumReadStateMachineFails
 parameter_list|()
 block|{
 name|numReadStateMachineFails
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumReadStateMachineMissCount ()
+specifier|public
+name|void
+name|incNumReadStateMachineMissCount
+parameter_list|()
+block|{
+name|numReadStateMachineMissCount
 operator|.
 name|incr
 argument_list|()
@@ -361,14 +466,14 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getNumReadStateMachineOps ()
+DECL|method|getNumQueryStateMachineOps ()
 specifier|public
 name|long
-name|getNumReadStateMachineOps
+name|getNumQueryStateMachineOps
 parameter_list|()
 block|{
 return|return
-name|numReadStateMachineOps
+name|numQueryStateMachineOps
 operator|.
 name|value
 argument_list|()
@@ -406,14 +511,14 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getNumReadStateMachineFails ()
+DECL|method|getNumQueryStateMachineFails ()
 specifier|public
 name|long
-name|getNumReadStateMachineFails
+name|getNumQueryStateMachineFails
 parameter_list|()
 block|{
 return|return
-name|numReadStateMachineFails
+name|numQueryStateMachineFails
 operator|.
 name|value
 argument_list|()
@@ -429,6 +534,66 @@ parameter_list|()
 block|{
 return|return
 name|numApplyTransactionFails
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumReadStateMachineFails ()
+specifier|public
+name|long
+name|getNumReadStateMachineFails
+parameter_list|()
+block|{
+return|return
+name|numReadStateMachineFails
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumReadStateMachineMissCount ()
+specifier|public
+name|long
+name|getNumReadStateMachineMissCount
+parameter_list|()
+block|{
+return|return
+name|numReadStateMachineMissCount
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumBytesWrittenCount ()
+specifier|public
+name|long
+name|getNumBytesWrittenCount
+parameter_list|()
+block|{
+return|return
+name|numBytesWrittenCount
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumBytesCommittedCount ()
+specifier|public
+name|long
+name|getNumBytesCommittedCount
+parameter_list|()
+block|{
+return|return
+name|numBytesCommittedCount
 operator|.
 name|value
 argument_list|()
