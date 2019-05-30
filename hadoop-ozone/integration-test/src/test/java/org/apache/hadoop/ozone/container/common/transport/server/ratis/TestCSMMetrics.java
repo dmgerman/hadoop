@@ -507,7 +507,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**    * This class tests the metrics of ContainerStateMachine.    */
+comment|/**  * This class tests the metrics of ContainerStateMachine.  */
 end_comment
 
 begin_class

@@ -138,6 +138,24 @@ name|om
 operator|.
 name|helpers
 operator|.
+name|OmPrefixInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|helpers
+operator|.
 name|OmVolumeArgs
 import|;
 end_import
@@ -556,6 +574,17 @@ argument_list|,
 name|String
 argument_list|>
 name|getS3Table
+parameter_list|()
+function_decl|;
+comment|/**    * Gets the Ozone prefix path to its acl mapping table.    * @return Table.    */
+DECL|method|getPrefixTable ()
+name|Table
+argument_list|<
+name|String
+argument_list|,
+name|OmPrefixInfo
+argument_list|>
+name|getPrefixTable
 parameter_list|()
 function_decl|;
 comment|/**    * Returns the DB key name of a multipart upload key in OM metadata store.    *    * @param volume - volume name    * @param bucket - bucket name    * @param key - key name    * @param uploadId - the upload id for this key    * @return bytes of DB key.    */
