@@ -390,6 +390,23 @@ literal|"small"
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|//RocksDB metrics are handled differently.
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"rocksdb_om.db_num_open_connections"
+argument_list|,
+name|sink
+operator|.
+name|prometheusName
+argument_list|(
+literal|"Rocksdb_om.db"
+argument_list|,
+literal|"num_open_connections"
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Example metric pojo.    */
 annotation|@
