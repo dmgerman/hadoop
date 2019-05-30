@@ -2416,7 +2416,7 @@ name|FSDirectory
 operator|.
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Decreasing replication from {} to {} for {}"
 argument_list|,
@@ -2443,7 +2443,7 @@ name|FSDirectory
 operator|.
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Increasing replication from {} to {} for {}"
 argument_list|,
@@ -2464,7 +2464,7 @@ name|FSDirectory
 operator|.
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Replication remains unchanged at {} for {}"
 argument_list|,
