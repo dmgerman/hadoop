@@ -79,6 +79,28 @@ operator|.
 name|proto
 operator|.
 name|OzoneManagerProtocolProtos
+operator|.
+name|OMResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneManagerProtocolProtos
+operator|.
+name|VolumeList
 import|;
 end_import
 
@@ -107,13 +129,11 @@ DECL|class|OMVolumeCreateResponse
 specifier|public
 class|class
 name|OMVolumeCreateResponse
-implements|implements
+extends|extends
 name|OMClientResponse
 block|{
 DECL|field|volumeList
 specifier|private
-name|OzoneManagerProtocolProtos
-operator|.
 name|VolumeList
 name|volumeList
 decl_stmt|;
@@ -122,19 +142,25 @@ specifier|private
 name|OmVolumeArgs
 name|omVolumeArgs
 decl_stmt|;
-DECL|method|OMVolumeCreateResponse (OmVolumeArgs omVolumeArgs, OzoneManagerProtocolProtos.VolumeList volumeList)
+DECL|method|OMVolumeCreateResponse (OmVolumeArgs omVolumeArgs, VolumeList volumeList, OMResponse omResponse)
 specifier|public
 name|OMVolumeCreateResponse
 parameter_list|(
 name|OmVolumeArgs
 name|omVolumeArgs
 parameter_list|,
-name|OzoneManagerProtocolProtos
-operator|.
 name|VolumeList
 name|volumeList
+parameter_list|,
+name|OMResponse
+name|omResponse
 parameter_list|)
 block|{
+name|super
+argument_list|(
+name|omResponse
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|omVolumeArgs
@@ -221,8 +247,6 @@ expr_stmt|;
 block|}
 DECL|method|getVolumeList ()
 specifier|public
-name|OzoneManagerProtocolProtos
-operator|.
 name|VolumeList
 name|getVolumeList
 parameter_list|()

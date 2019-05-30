@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.om.response
+DECL|package|org.apache.hadoop.ozone.om.response.bucket
 package|package
 name|org
 operator|.
@@ -17,6 +17,8 @@ operator|.
 name|om
 operator|.
 name|response
+operator|.
+name|bucket
 package|;
 end_package
 
@@ -43,6 +45,42 @@ operator|.
 name|om
 operator|.
 name|OMMetadataManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|helpers
+operator|.
+name|OmBucketInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|response
+operator|.
+name|OMClientResponse
 import|;
 end_import
 
@@ -83,40 +121,51 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Interface for OM Responses, each OM response should implement this interface.  */
+comment|/**  * Response for CreateBucket request.  */
 end_comment
 
 begin_class
-DECL|class|OMClientResponse
+DECL|class|OMBucketCreateResponse
 specifier|public
-specifier|abstract
+specifier|final
 class|class
+name|OMBucketCreateResponse
+extends|extends
 name|OMClientResponse
 block|{
-DECL|field|omResponse
+DECL|field|omBucketInfo
 specifier|private
-name|OMResponse
-name|omResponse
+specifier|final
+name|OmBucketInfo
+name|omBucketInfo
 decl_stmt|;
-DECL|method|OMClientResponse (OMResponse omResponse)
+DECL|method|OMBucketCreateResponse (OmBucketInfo omBucketInfo, OMResponse omResponse)
 specifier|public
-name|OMClientResponse
+name|OMBucketCreateResponse
 parameter_list|(
+name|OmBucketInfo
+name|omBucketInfo
+parameter_list|,
 name|OMResponse
 name|omResponse
 parameter_list|)
 block|{
+name|super
+argument_list|(
+name|omResponse
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
-name|omResponse
+name|omBucketInfo
 operator|=
-name|omResponse
+name|omBucketInfo
 expr_stmt|;
 block|}
-comment|/**    * Implement logic to add the response to batch.    * @param omMetadataManager    * @param batchOperation    * @throws IOException    */
+annotation|@
+name|Override
 DECL|method|addToDBBatch (OMMetadataManager omMetadataManager, BatchOperation batchOperation)
 specifier|public
-specifier|abstract
 name|void
 name|addToDBBatch
 parameter_list|(
@@ -128,16 +177,48 @@ name|batchOperation
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    * Return OMResponse.    * @return OMResponse    */
-DECL|method|getOMResponse ()
+block|{
+name|String
+name|dbBucketKey
+init|=
+name|omMetadataManager
+operator|.
+name|getBucketKey
+argument_list|(
+name|omBucketInfo
+operator|.
+name|getVolumeName
+argument_list|()
+argument_list|,
+name|omBucketInfo
+operator|.
+name|getBucketName
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|omMetadataManager
+operator|.
+name|getBucketTable
+argument_list|()
+operator|.
+name|putWithBatch
+argument_list|(
+name|batchOperation
+argument_list|,
+name|dbBucketKey
+argument_list|,
+name|omBucketInfo
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|getOmBucketInfo ()
 specifier|public
-name|OMResponse
-name|getOMResponse
+name|OmBucketInfo
+name|getOmBucketInfo
 parameter_list|()
 block|{
 return|return
-name|omResponse
+name|omBucketInfo
 return|;
 block|}
 block|}

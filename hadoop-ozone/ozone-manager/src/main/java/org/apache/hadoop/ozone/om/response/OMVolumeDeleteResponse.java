@@ -61,6 +61,28 @@ operator|.
 name|proto
 operator|.
 name|OzoneManagerProtocolProtos
+operator|.
+name|OMResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneManagerProtocolProtos
+operator|.
+name|VolumeList
 import|;
 end_import
 
@@ -89,7 +111,7 @@ DECL|class|OMVolumeDeleteResponse
 specifier|public
 class|class
 name|OMVolumeDeleteResponse
-implements|implements
+extends|extends
 name|OMClientResponse
 block|{
 DECL|field|volume
@@ -104,12 +126,10 @@ name|owner
 decl_stmt|;
 DECL|field|updatedVolumeList
 specifier|private
-name|OzoneManagerProtocolProtos
-operator|.
 name|VolumeList
 name|updatedVolumeList
 decl_stmt|;
-DECL|method|OMVolumeDeleteResponse (String volume, String owner, OzoneManagerProtocolProtos.VolumeList updatedVolumeList)
+DECL|method|OMVolumeDeleteResponse (String volume, String owner, VolumeList updatedVolumeList, OMResponse omResponse)
 specifier|public
 name|OMVolumeDeleteResponse
 parameter_list|(
@@ -119,12 +139,18 @@ parameter_list|,
 name|String
 name|owner
 parameter_list|,
-name|OzoneManagerProtocolProtos
-operator|.
 name|VolumeList
 name|updatedVolumeList
+parameter_list|,
+name|OMResponse
+name|omResponse
 parameter_list|)
 block|{
+name|super
+argument_list|(
+name|omResponse
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|volume
@@ -170,8 +196,6 @@ argument_list|(
 name|owner
 argument_list|)
 decl_stmt|;
-name|OzoneManagerProtocolProtos
-operator|.
 name|VolumeList
 name|volumeList
 init|=

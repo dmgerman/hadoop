@@ -1,10 +1,10 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *<p>  * http://www.apache.org/licenses/LICENSE-2.0  *<p>  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
+comment|/**  * Licensed to the Apache Software Foundation (ASF) under one or more  * contributor license agreements.  See the NOTICE file distributed with this  * work for additional information regarding copyright ownership.  The ASF  * licenses this file to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance with the License.  * You may obtain a copy of the License at  *<p>  * http://www.apache.org/licenses/LICENSE-2.0  *<p>  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the  * License for the specific language governing permissions and limitations under  * the License.  */
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.om.response
+DECL|package|org.apache.hadoop.ozone.om.response.bucket
 package|package
 name|org
 operator|.
@@ -17,6 +17,8 @@ operator|.
 name|om
 operator|.
 name|response
+operator|.
+name|bucket
 package|;
 end_package
 
@@ -72,6 +74,44 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|response
+operator|.
+name|OMClientResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneManagerProtocolProtos
+operator|.
+name|OMResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|utils
 operator|.
 name|db
@@ -81,32 +121,38 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Response for CreateBucket request.  */
+comment|/**  * Response for SetBucketProperty request.  */
 end_comment
 
 begin_class
-DECL|class|OMBucketCreateResponse
+DECL|class|OMBucketSetPropertyResponse
 specifier|public
-specifier|final
 class|class
-name|OMBucketCreateResponse
-implements|implements
+name|OMBucketSetPropertyResponse
+extends|extends
 name|OMClientResponse
 block|{
 DECL|field|omBucketInfo
 specifier|private
-specifier|final
 name|OmBucketInfo
 name|omBucketInfo
 decl_stmt|;
-DECL|method|OMBucketCreateResponse (OmBucketInfo omBucketInfo)
+DECL|method|OMBucketSetPropertyResponse (OmBucketInfo omBucketInfo, OMResponse omResponse)
 specifier|public
-name|OMBucketCreateResponse
+name|OMBucketSetPropertyResponse
 parameter_list|(
 name|OmBucketInfo
 name|omBucketInfo
+parameter_list|,
+name|OMResponse
+name|omResponse
 parameter_list|)
 block|{
+name|super
+argument_list|(
+name|omResponse
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|omBucketInfo
@@ -162,16 +208,6 @@ argument_list|,
 name|omBucketInfo
 argument_list|)
 expr_stmt|;
-block|}
-DECL|method|getOmBucketInfo ()
-specifier|public
-name|OmBucketInfo
-name|getOmBucketInfo
-parameter_list|()
-block|{
-return|return
-name|omBucketInfo
-return|;
 block|}
 block|}
 end_class

@@ -208,9 +208,6 @@ argument_list|(
 name|OzoneManagerDoubleBuffer
 operator|.
 name|class
-operator|.
-name|getName
-argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// Taken unbounded queue, if sync thread is taking too long time, we
@@ -468,10 +465,41 @@ argument_list|,
 name|flushedTransactionsSize
 argument_list|)
 expr_stmt|;
+name|long
+name|lastRatisTransactionIndex
+init|=
+name|readyBuffer
+operator|.
+name|stream
+argument_list|()
+operator|.
+name|map
+argument_list|(
+name|DoubleBufferEntry
+operator|::
+name|getTrxLogIndex
+argument_list|)
+operator|.
+name|max
+argument_list|(
+name|Long
+operator|::
+name|compareTo
+argument_list|)
+operator|.
+name|get
+argument_list|()
+decl_stmt|;
 name|readyBuffer
 operator|.
 name|clear
 argument_list|()
+expr_stmt|;
+comment|// cleanup cache.
+name|cleanupCache
+argument_list|(
+name|lastRatisTransactionIndex
+argument_list|)
 expr_stmt|;
 comment|// TODO: update the last updated index in OzoneManagerStateMachine.
 block|}
@@ -607,6 +635,30 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+DECL|method|cleanupCache (long lastRatisTransactionIndex)
+specifier|private
+name|void
+name|cleanupCache
+parameter_list|(
+name|long
+name|lastRatisTransactionIndex
+parameter_list|)
+block|{
+comment|// As now only bucket transactions are handled only called cleanupCache
+comment|// on bucketTable.
+comment|// TODO: After supporting all write operations we need to call
+comment|//  cleanupCache on the tables only when buffer has entries for that table.
+name|omMetadataManager
+operator|.
+name|getBucketTable
+argument_list|()
+operator|.
+name|cleanupCache
+argument_list|(
+name|lastRatisTransactionIndex
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Stop OM DoubleBuffer flush thread.    */
 DECL|method|stop ()

@@ -91,13 +91,16 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Handle Apply Transaction Requests from OzoneManager StateMachine.    * @param omRequest    * @return OMResponse    */
-DECL|method|handleApplyTransaction (OMRequest omRequest)
+comment|/**    * Handle Apply Transaction Requests from OzoneManager StateMachine.    * @param omRequest    * @param transactionLogIndex - ratis transaction log index    * @return OMResponse    */
+DECL|method|handleApplyTransaction (OMRequest omRequest, long transactionLogIndex)
 name|OMResponse
 name|handleApplyTransaction
 parameter_list|(
 name|OMRequest
 name|omRequest
+parameter_list|,
+name|long
+name|transactionLogIndex
 parameter_list|)
 function_decl|;
 block|}

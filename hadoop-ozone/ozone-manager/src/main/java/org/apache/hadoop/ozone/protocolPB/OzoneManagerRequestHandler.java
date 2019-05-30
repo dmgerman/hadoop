@@ -150,6 +150,22 @@ name|ozone
 operator|.
 name|om
 operator|.
+name|OzoneManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
 name|exceptions
 operator|.
 name|OMException
@@ -423,24 +439,6 @@ operator|.
 name|helpers
 operator|.
 name|ServiceInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|om
-operator|.
-name|protocol
-operator|.
-name|OzoneManagerServerProtocol
 import|;
 end_import
 
@@ -2072,14 +2070,14 @@ decl_stmt|;
 DECL|field|impl
 specifier|private
 specifier|final
-name|OzoneManagerServerProtocol
+name|OzoneManager
 name|impl
 decl_stmt|;
-DECL|method|OzoneManagerRequestHandler (OzoneManagerServerProtocol om)
+DECL|method|OzoneManagerRequestHandler (OzoneManager om)
 specifier|public
 name|OzoneManagerRequestHandler
 parameter_list|(
-name|OzoneManagerServerProtocol
+name|OzoneManager
 name|om
 parameter_list|)
 block|{
@@ -6933,16 +6931,6 @@ name|build
 argument_list|()
 return|;
 block|}
-DECL|method|getOzoneManagerServerProtocol ()
-specifier|protected
-name|OzoneManagerServerProtocol
-name|getOzoneManagerServerProtocol
-parameter_list|()
-block|{
-return|return
-name|impl
-return|;
-block|}
 DECL|method|listStatus ( ListStatusRequest request)
 specifier|private
 name|ListStatusResponse
@@ -7060,6 +7048,16 @@ name|listStatusResponseBuilder
 operator|.
 name|build
 argument_list|()
+return|;
+block|}
+DECL|method|getOzoneManager ()
+specifier|protected
+name|OzoneManager
+name|getOzoneManager
+parameter_list|()
+block|{
+return|return
+name|impl
 return|;
 block|}
 block|}

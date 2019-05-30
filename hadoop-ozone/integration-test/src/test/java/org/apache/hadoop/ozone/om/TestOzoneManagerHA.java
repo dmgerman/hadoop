@@ -2311,7 +2311,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"RaftRetryFailureException"
+literal|"NotLeaderException"
 argument_list|,
 name|e
 argument_list|)
@@ -2507,7 +2507,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"RaftRetryFailureException"
+literal|"NotLeaderException"
 argument_list|,
 name|e
 argument_list|)

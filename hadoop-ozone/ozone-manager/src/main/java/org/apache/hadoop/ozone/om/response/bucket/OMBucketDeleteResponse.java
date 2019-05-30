@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.om.response
+DECL|package|org.apache.hadoop.ozone.om.response.bucket
 package|package
 name|org
 operator|.
@@ -17,6 +17,8 @@ operator|.
 name|om
 operator|.
 name|response
+operator|.
+name|bucket
 package|;
 end_package
 
@@ -54,6 +56,42 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|response
+operator|.
+name|OMClientResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneManagerProtocolProtos
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|utils
 operator|.
 name|db
@@ -72,7 +110,7 @@ specifier|public
 specifier|final
 class|class
 name|OMBucketDeleteResponse
-implements|implements
+extends|extends
 name|OMClientResponse
 block|{
 DECL|field|volumeName
@@ -85,7 +123,7 @@ specifier|private
 name|String
 name|bucketName
 decl_stmt|;
-DECL|method|OMBucketDeleteResponse ( String volumeName, String bucketName)
+DECL|method|OMBucketDeleteResponse ( String volumeName, String bucketName, OzoneManagerProtocolProtos.OMResponse omResponse)
 specifier|public
 name|OMBucketDeleteResponse
 parameter_list|(
@@ -94,8 +132,18 @@ name|volumeName
 parameter_list|,
 name|String
 name|bucketName
+parameter_list|,
+name|OzoneManagerProtocolProtos
+operator|.
+name|OMResponse
+name|omResponse
 parameter_list|)
 block|{
+name|super
+argument_list|(
+name|omResponse
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|volumeName
