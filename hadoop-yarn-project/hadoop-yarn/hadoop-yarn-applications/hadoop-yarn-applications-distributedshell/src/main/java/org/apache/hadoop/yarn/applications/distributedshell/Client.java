@@ -5796,6 +5796,18 @@ argument_list|)
 expr_stmt|;
 name|vargs
 operator|.
+name|add
+argument_list|(
+literal|"--homedir "
+operator|+
+name|fs
+operator|.
+name|getHomeDirectory
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|vargs
+operator|.
 name|addAll
 argument_list|(
 name|containerRetryOptions
