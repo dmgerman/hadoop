@@ -206,6 +206,36 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|web
+operator|.
+name|URLConnectionFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|VersionInfo
@@ -308,8 +338,8 @@ parameter_list|()
 block|{
 comment|// Utility Class
 block|}
-comment|/**    * Get a JMX data from a web endpoint.    *    * @param beanQuery JMX bean.    * @param webAddress Web address of the JMX endpoint.    * @return JSON with the JMX data    */
-DECL|method|getJmx (String beanQuery, String webAddress)
+comment|/**    * Get a JMX data from a web endpoint.    *    * @param beanQuery JMX bean.    * @param webAddress Web address of the JMX endpoint.    * @param connectionFactory to open http/https connection.    * @param scheme to use for URL connection.    * @return JSON with the JMX data    */
+DECL|method|getJmx (String beanQuery, String webAddress, URLConnectionFactory connectionFactory, String scheme)
 specifier|public
 specifier|static
 name|JSONArray
@@ -320,6 +350,12 @@ name|beanQuery
 parameter_list|,
 name|String
 name|webAddress
+parameter_list|,
+name|URLConnectionFactory
+name|connectionFactory
+parameter_list|,
+name|String
+name|scheme
 parameter_list|)
 block|{
 name|JSONArray
@@ -394,7 +430,7 @@ init|=
 operator|new
 name|URL
 argument_list|(
-literal|"http"
+name|scheme
 argument_list|,
 name|host
 argument_list|,
@@ -405,13 +441,30 @@ operator|+
 name|beanQuery
 argument_list|)
 decl_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"JMX URL: {}"
+argument_list|,
+name|jmxURL
+argument_list|)
+expr_stmt|;
+comment|// Create a URL connection
 name|URLConnection
 name|conn
 init|=
-name|jmxURL
+name|connectionFactory
 operator|.
 name|openConnection
+argument_list|(
+name|jmxURL
+argument_list|,
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
 argument_list|()
+argument_list|)
 decl_stmt|;
 name|conn
 operator|.
