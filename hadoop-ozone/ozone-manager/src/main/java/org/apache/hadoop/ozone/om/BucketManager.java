@@ -83,6 +83,8 @@ DECL|interface|BucketManager
 specifier|public
 interface|interface
 name|BucketManager
+extends|extends
+name|IOzoneAcl
 block|{
 comment|/**    * Creates a bucket.    * @param bucketInfo - OmBucketInfo for creating bucket.    */
 DECL|method|createBucket (OmBucketInfo bucketInfo)
