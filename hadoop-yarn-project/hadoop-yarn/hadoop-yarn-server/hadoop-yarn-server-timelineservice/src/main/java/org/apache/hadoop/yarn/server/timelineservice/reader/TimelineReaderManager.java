@@ -130,6 +130,26 @@ name|api
 operator|.
 name|records
 operator|.
+name|timeline
+operator|.
+name|TimelineHealth
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|timelineservice
 operator|.
 name|FlowActivityEntity
@@ -905,6 +925,20 @@ name|isAdmin
 argument_list|(
 name|callerUGI
 argument_list|)
+return|;
+block|}
+comment|/**    * Check if reader connection is alive.    *    * @return boolean True if reader connection is alive, false otherwise.    */
+DECL|method|getHealthStatus ()
+specifier|public
+name|TimelineHealth
+name|getHealthStatus
+parameter_list|()
+block|{
+return|return
+name|reader
+operator|.
+name|getHealthStatus
+argument_list|()
 return|;
 block|}
 block|}

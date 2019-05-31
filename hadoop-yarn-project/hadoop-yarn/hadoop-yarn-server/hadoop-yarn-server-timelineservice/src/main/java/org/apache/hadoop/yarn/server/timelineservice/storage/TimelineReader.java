@@ -102,6 +102,26 @@ name|api
 operator|.
 name|records
 operator|.
+name|timeline
+operator|.
+name|TimelineHealth
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|timelineservice
 operator|.
 name|TimelineEntity
@@ -258,6 +278,12 @@ name|context
 parameter_list|)
 throws|throws
 name|IOException
+function_decl|;
+comment|/**    * Check if reader connection is working properly.    *    * @return True if reader connection works as expected, false otherwise.    */
+DECL|method|getHealthStatus ()
+name|TimelineHealth
+name|getHealthStatus
+parameter_list|()
 function_decl|;
 block|}
 end_interface
