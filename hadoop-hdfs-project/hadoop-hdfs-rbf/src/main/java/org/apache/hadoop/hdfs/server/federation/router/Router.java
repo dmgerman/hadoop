@@ -1013,8 +1013,9 @@ name|httpServer
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
+name|boolean
+name|isRouterHeartbeatEnabled
+init|=
 name|conf
 operator|.
 name|getBoolean
@@ -1027,6 +1028,24 @@ name|RBFConfigKeys
 operator|.
 name|DFS_ROUTER_HEARTBEAT_ENABLE_DEFAULT
 argument_list|)
+decl_stmt|;
+name|boolean
+name|isNamenodeHeartbeatEnable
+init|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|RBFConfigKeys
+operator|.
+name|DFS_ROUTER_NAMENODE_HEARTBEAT_ENABLE
+argument_list|,
+name|isRouterHeartbeatEnabled
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|isNamenodeHeartbeatEnable
 condition|)
 block|{
 comment|// Create status updater for each monitored Namenode
@@ -1071,6 +1090,12 @@ literal|"Heartbeat is enabled but there are no namenodes to monitor"
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+if|if
+condition|(
+name|isRouterHeartbeatEnabled
+condition|)
+block|{
 comment|// Periodically update the router state
 name|this
 operator|.
@@ -2583,6 +2608,20 @@ return|return
 name|this
 operator|.
 name|namenodeHeartbeatServices
+return|;
+block|}
+comment|/**    * Get this router heartbeat service.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getRouterHeartbeatService ()
+name|RouterHeartbeatService
+name|getRouterHeartbeatService
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|routerHeartbeatService
 return|;
 block|}
 comment|/**    * Get the Router safe mode service.    */

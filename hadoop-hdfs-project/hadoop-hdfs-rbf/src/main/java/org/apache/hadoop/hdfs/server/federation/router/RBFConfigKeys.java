@@ -574,6 +574,17 @@ name|DFS_ROUTER_HEARTBEAT_ENABLE_DEFAULT
 init|=
 literal|true
 decl_stmt|;
+DECL|field|DFS_ROUTER_NAMENODE_HEARTBEAT_ENABLE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_ROUTER_NAMENODE_HEARTBEAT_ENABLE
+init|=
+name|FEDERATION_ROUTER_PREFIX
+operator|+
+literal|"namenode.heartbeat.enable"
+decl_stmt|;
 DECL|field|DFS_ROUTER_HEARTBEAT_INTERVAL_MS
 specifier|public
 specifier|static
