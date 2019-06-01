@@ -931,8 +931,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|" Using ResourceCalculatorPlugin : "
-operator|+
+literal|"Using ResourceCalculatorPlugin: {}"
+argument_list|,
 name|this
 operator|.
 name|resourceCalculatorPlugin
@@ -961,8 +961,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|" Using ResourceCalculatorProcessTree : "
-operator|+
+literal|"Using ResourceCalculatorProcessTree: {}"
+argument_list|,
 name|this
 operator|.
 name|processTreeClass
@@ -1192,8 +1192,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Physical memory check enabled: "
-operator|+
+literal|"Physical memory check enabled: {}"
+argument_list|,
 name|pmemCheckEnabled
 argument_list|)
 expr_stmt|;
@@ -1201,8 +1201,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Virtual memory check enabled: "
-operator|+
+literal|"Virtual memory check enabled: {}"
+argument_list|,
 name|vmemCheckEnabled
 argument_list|)
 expr_stmt|;
@@ -1210,8 +1210,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Elastic memory control enabled: "
-operator|+
+literal|"Elastic memory control enabled: {}"
+argument_list|,
 name|elasticMemoryEnforcement
 argument_list|)
 expr_stmt|;
@@ -1219,8 +1219,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Strict memory control enabled: "
-operator|+
+literal|"Strict memory control enabled: {}"
+argument_list|,
 name|strictMemoryEnforcement
 argument_list|)
 expr_stmt|;
@@ -1295,8 +1295,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"ContainersMonitor enabled: "
-operator|+
+literal|"ContainersMonitor enabled: {}"
+argument_list|,
 name|containersMonitorEnabled
 argument_list|)
 expr_stmt|;
@@ -1353,8 +1353,8 @@ name|warn
 argument_list|(
 literal|"NodeManager's totalPmem could not be calculated. "
 operator|+
-literal|"Setting it to "
-operator|+
+literal|"Setting it to {}"
+argument_list|,
 name|UNKNOWN_MEMORY_LIMIT
 argument_list|)
 expr_stmt|;
@@ -1383,35 +1383,33 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"NodeManager configured with "
+literal|"NodeManager configured with {} physical memory allocated to "
 operator|+
+literal|"containers, which is more than 80% of the total physical memory "
+operator|+
+literal|"available ({}). Thrashing might happen."
+argument_list|,
 name|TraditionalBinaryPrefix
 operator|.
 name|long2String
 argument_list|(
 name|maxPmemAllottedForContainers
 argument_list|,
-literal|""
+literal|"B"
 argument_list|,
 literal|1
 argument_list|)
-operator|+
-literal|" physical memory allocated to containers, which is more than "
-operator|+
-literal|"80% of the total physical memory available ("
-operator|+
+argument_list|,
 name|TraditionalBinaryPrefix
 operator|.
 name|long2String
 argument_list|(
 name|totalPhysicalMemoryOnNM
 argument_list|,
-literal|""
+literal|"B"
 argument_list|,
 literal|1
 argument_list|)
-operator|+
-literal|"). Thrashing might happen."
 argument_list|)
 expr_stmt|;
 block|}
@@ -1489,6 +1487,8 @@ name|info
 argument_list|(
 literal|"ResourceCalculatorPlugin is unavailable on this system. "
 operator|+
+literal|"{} is disabled."
+argument_list|,
 name|this
 operator|.
 name|getClass
@@ -1496,8 +1496,6 @@ argument_list|()
 operator|.
 name|getName
 argument_list|()
-operator|+
-literal|" is disabled."
 argument_list|)
 expr_stmt|;
 return|return
@@ -1520,6 +1518,8 @@ name|info
 argument_list|(
 literal|"ResourceCalculatorProcessTree is unavailable on this system. "
 operator|+
+literal|"{} is disabled."
+argument_list|,
 name|this
 operator|.
 name|getClass
@@ -1527,8 +1527,6 @@ argument_list|()
 operator|.
 name|getName
 argument_list|()
-operator|+
-literal|" is disabled."
 argument_list|)
 expr_stmt|;
 return|return
@@ -1954,18 +1952,14 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Process tree for container: "
+literal|"Process tree for container: {} running over twice "
 operator|+
+literal|"the configured limit. Limit={}, current usage = {}"
+argument_list|,
 name|containerId
-operator|+
-literal|" running over twice "
-operator|+
-literal|"the configured limit. Limit="
-operator|+
+argument_list|,
 name|memLimit
-operator|+
-literal|", current usage = "
-operator|+
+argument_list|,
 name|currentMemUsage
 argument_list|)
 expr_stmt|;
@@ -1986,18 +1980,16 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Process tree for container: "
+literal|"Process tree for container: {} has processes older than 1 "
 operator|+
+literal|"iteration running over the configured limit. "
+operator|+
+literal|"Limit={}, current usage = {}"
+argument_list|,
 name|containerId
-operator|+
-literal|" has processes older than 1 "
-operator|+
-literal|"iteration running over the configured limit. Limit="
-operator|+
+argument_list|,
 name|memLimit
-operator|+
-literal|", current usage = "
-operator|+
+argument_list|,
 name|curMemUsageOfAgedProcesses
 argument_list|)
 expr_stmt|;
@@ -2145,6 +2137,13 @@ literal|" "
 argument_list|)
 expr_stmt|;
 block|}
+name|tmp
+operator|.
+name|append
+argument_list|(
+literal|"]"
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|debug
@@ -2152,18 +2151,6 @@ argument_list|(
 literal|"Current ProcessTree list : {}"
 argument_list|,
 name|tmp
-operator|.
-name|substring
-argument_list|(
-literal|0
-argument_list|,
-name|tmp
-operator|.
-name|length
-argument_list|()
-argument_list|)
-operator|+
-literal|"]"
 argument_list|)
 expr_stmt|;
 block|}
@@ -2266,9 +2253,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Constructing ProcessTree for : PID = {}"
-operator|+
-literal|" ContainerId = {}"
+literal|"Constructing ProcessTree for : PID = {} ContainerId = {}"
 argument_list|,
 name|pId
 argument_list|,
@@ -2329,11 +2314,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Skipping monitoring container "
+literal|"Skipping monitoring container {} since "
 operator|+
+literal|"CPU usage is not yet available."
+argument_list|,
 name|containerId
-operator|+
-literal|" since CPU usage is not yet available."
 argument_list|)
 expr_stmt|;
 continue|continue;
@@ -2507,14 +2492,14 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
+literal|"{} is interrupted. Exiting."
+argument_list|,
 name|ContainersMonitorImpl
 operator|.
 name|class
 operator|.
 name|getName
 argument_list|()
-operator|+
-literal|" is interrupted. Exiting."
 argument_list|)
 expr_stmt|;
 break|break;
@@ -2719,17 +2704,15 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+literal|"{}'s ip = {}, and hostname = {}"
+argument_list|,
 name|containerId
-operator|+
-literal|"'s ip = "
-operator|+
+argument_list|,
 name|ipAndHost
 index|[
 literal|0
 index|]
-operator|+
-literal|", and hostname = "
-operator|+
+argument_list|,
 name|ipAndHost
 index|[
 literal|1
@@ -2743,8 +2726,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Can not get both ip and hostname: "
-operator|+
+literal|"Can not get both ip and hostname: {}"
+argument_list|,
 name|Arrays
 operator|.
 name|toString
@@ -2778,9 +2761,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+literal|"{} is missing. Not setting ip and hostname"
+argument_list|,
 name|containerId
-operator|+
-literal|" is missing. Not setting ip and hostname"
 argument_list|)
 expr_stmt|;
 block|}
@@ -2882,20 +2865,13 @@ name|AUDITLOG
 operator|.
 name|debug
 argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"Resource usage of ProcessTree %s for container-id %s:"
+literal|"Resource usage of ProcessTree {} for container-id {}:"
 operator|+
-literal|" %s CPU:%f CPU/core:%f"
+literal|" {} CPU:{} CPU/core:{}"
 argument_list|,
 name|pId
 argument_list|,
 name|containerId
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|formatUsageString
 argument_list|(
@@ -2911,7 +2887,6 @@ argument_list|,
 name|cpuUsagePercentPerCore
 argument_list|,
 name|cpuUsageTotalCoresPercentage
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -3266,11 +3241,11 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Killed container process with PID "
+literal|"Killed container process with PID {} "
 operator|+
+literal|"but it is not a process group leader."
+argument_list|,
 name|pId
-operator|+
-literal|" but it is not a process group leader."
 argument_list|)
 expr_stmt|;
 block|}
@@ -3304,8 +3279,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Removed ProcessTree with root "
-operator|+
+literal|"Removed ProcessTree with root {}"
+argument_list|,
 name|pId
 argument_list|)
 expr_stmt|;
@@ -3384,9 +3359,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+literal|"{} does not exist to report"
+argument_list|,
 name|containerId
-operator|+
-literal|" does not exist to report"
 argument_list|)
 expr_stmt|;
 block|}
@@ -4046,14 +4021,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to track container "
-operator|+
+literal|"Failed to track container {}. It may have already completed."
+argument_list|,
 name|containerId
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|". It may have already completed."
 argument_list|)
 expr_stmt|;
 return|return;
@@ -4062,8 +4032,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Changing resource-monitoring for "
-operator|+
+literal|"Changing resource-monitoring for {}"
+argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
@@ -4139,8 +4109,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Stopping resource-monitoring for "
-operator|+
+literal|"Stopping resource-monitoring for {}"
+argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
@@ -4181,8 +4151,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Starting resource-monitoring for "
-operator|+
+literal|"Starting resource-monitoring for {}"
+argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
