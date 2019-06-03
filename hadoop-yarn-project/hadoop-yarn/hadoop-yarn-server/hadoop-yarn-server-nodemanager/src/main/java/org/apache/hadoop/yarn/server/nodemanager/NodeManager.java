@@ -3279,6 +3279,13 @@ name|shutdown
 argument_list|()
 expr_stmt|;
 comment|// Cleanup ResourcePluginManager
+if|if
+condition|(
+literal|null
+operator|!=
+name|context
+condition|)
+block|{
 name|ResourcePluginManager
 name|rpm
 init|=
@@ -3299,6 +3306,7 @@ operator|.
 name|cleanup
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 block|}
 finally|finally
