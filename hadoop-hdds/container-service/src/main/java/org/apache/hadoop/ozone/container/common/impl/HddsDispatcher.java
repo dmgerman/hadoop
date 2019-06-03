@@ -678,6 +678,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|Map
@@ -1805,15 +1815,52 @@ operator|.
 name|CLOSING
 argument_list|)
 expr_stmt|;
+comment|// mark and persist the container state to be unhealthy
+try|try
+block|{
+name|handler
+operator|.
+name|markContainerUhealthy
+argument_list|(
+name|container
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+comment|// just log the error here in case marking the container fails,
+comment|// Return the actual failure response to the client
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Failed to mark container "
+operator|+
+name|containerID
+operator|+
+literal|" UNHEALTHY. "
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+block|}
+comment|// in any case, the in memory state of the container should be unhealthy
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
 name|container
 operator|.
 name|getContainerData
 argument_list|()
 operator|.
-name|setState
-argument_list|(
-name|ContainerDataProto
-operator|.
+name|getState
+argument_list|()
+operator|==
 name|State
 operator|.
 name|UNHEALTHY

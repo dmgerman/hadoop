@@ -4630,6 +4630,27 @@ block|}
 block|}
 annotation|@
 name|Override
+DECL|method|markContainerUhealthy (Container container)
+specifier|public
+name|void
+name|markContainerUhealthy
+parameter_list|(
+name|Container
+name|container
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// this will mark the container unhealthy and a close container action will
+comment|// be sent from the dispatcher ton SCM to close down this container.
+name|container
+operator|.
+name|markContainerUnhealthy
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|quasiCloseContainer (Container container)
 specifier|public
 name|void
@@ -4755,6 +4776,43 @@ name|CLOSED
 condition|)
 block|{
 return|return;
+block|}
+if|if
+condition|(
+name|state
+operator|==
+name|State
+operator|.
+name|UNHEALTHY
+condition|)
+block|{
+throw|throw
+operator|new
+name|StorageContainerException
+argument_list|(
+literal|"Cannot close container #"
+operator|+
+name|container
+operator|.
+name|getContainerData
+argument_list|()
+operator|.
+name|getContainerID
+argument_list|()
+operator|+
+literal|" while in "
+operator|+
+name|state
+operator|+
+literal|" state."
+argument_list|,
+name|ContainerProtos
+operator|.
+name|Result
+operator|.
+name|CONTAINER_UNHEALTHY
+argument_list|)
+throw|;
 block|}
 comment|// The container has to be either in CLOSING or in QUASI_CLOSED state.
 if|if

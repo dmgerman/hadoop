@@ -1841,9 +1841,21 @@ condition|(
 name|oldState
 operator|!=
 literal|null
+operator|&&
+name|containerData
+operator|.
+name|getState
+argument_list|()
+operator|!=
+name|ContainerDataProto
+operator|.
+name|State
+operator|.
+name|UNHEALTHY
 condition|)
 block|{
-comment|// Failed to update .container file. Reset the state to CLOSING
+comment|// Failed to update .container file. Reset the state to old state only
+comment|// if the current state is not unhealthy.
 name|containerData
 operator|.
 name|setState

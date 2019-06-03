@@ -624,6 +624,19 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Marks the container Unhealthy. Moves the container to UHEALTHY state.    *    * @param container container to update    * @throws IOException in case of exception    */
+DECL|method|markContainerUhealthy (Container container)
+specifier|public
+specifier|abstract
+name|void
+name|markContainerUhealthy
+parameter_list|(
+name|Container
+name|container
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Moves the Container to QUASI_CLOSED state.    *    * @param container container to be quasi closed    * @throws IOException    */
 DECL|method|quasiCloseContainer (Container container)
 specifier|public
