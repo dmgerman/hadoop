@@ -276,9 +276,9 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|server
+name|scm
 operator|.
-name|ServerUtils
+name|ScmUtils
 import|;
 end_import
 
@@ -832,7 +832,7 @@ name|conf
 parameter_list|)
 block|{
 return|return
-name|ServerUtils
+name|ScmUtils
 operator|.
 name|getDBPath
 argument_list|(
