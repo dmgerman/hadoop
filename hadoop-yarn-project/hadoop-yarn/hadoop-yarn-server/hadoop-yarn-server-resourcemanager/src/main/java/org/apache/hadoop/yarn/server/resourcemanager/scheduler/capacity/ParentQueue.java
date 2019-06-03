@@ -3619,6 +3619,26 @@ name|getContainersToKill
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|assignment
+operator|.
+name|setFulfilledReservation
+argument_list|(
+name|assignedToChild
+operator|.
+name|isFulfilledReservation
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assignment
+operator|.
+name|setFulfilledReservedContainer
+argument_list|(
+name|assignedToChild
+operator|.
+name|getFulfilledReservedContainer
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// Done if no child-queue assigned anything
 if|if
 condition|(
