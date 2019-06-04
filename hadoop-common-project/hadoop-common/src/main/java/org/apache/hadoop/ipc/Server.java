@@ -7413,7 +7413,14 @@ name|writeSelector
 operator|.
 name|select
 argument_list|(
+name|TimeUnit
+operator|.
+name|NANOSECONDS
+operator|.
+name|toMillis
+argument_list|(
 name|PURGE_INTERVAL_NANOS
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|Iterator
