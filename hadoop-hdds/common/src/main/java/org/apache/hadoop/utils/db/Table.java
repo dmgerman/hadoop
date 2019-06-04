@@ -152,6 +152,17 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Check if a given key exists in Metadata store.    * (Optimization to save on data deserialization)    * A lock on the key / bucket needs to be acquired before invoking this API.    * @param key metadata key    * @return true if the metadata store contains a key.    * @throws IOException on Failure    */
+DECL|method|isExist (KEY key)
+name|boolean
+name|isExist
+parameter_list|(
+name|KEY
+name|key
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Returns the value mapped to the given key in byte array or returns null    * if the key is not found.    *    * @param key metadata key    * @return value in byte array or null if the key is not found.    * @throws IOException on Failure    */
 DECL|method|get (KEY key)
 name|VALUE
