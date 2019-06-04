@@ -326,7 +326,7 @@ name|federation
 operator|.
 name|metrics
 operator|.
-name|FederationMetrics
+name|RBFMetrics
 import|;
 end_import
 
@@ -2332,7 +2332,7 @@ block|}
 comment|/**    * Get the federation metrics.    *    * @return Federation metrics.    */
 DECL|method|getMetrics ()
 specifier|public
-name|FederationMetrics
+name|RBFMetrics
 name|getMetrics
 parameter_list|()
 block|{
@@ -2350,7 +2350,7 @@ name|this
 operator|.
 name|metrics
 operator|.
-name|getFederationMetrics
+name|getRBFMetrics
 argument_list|()
 return|;
 block|}

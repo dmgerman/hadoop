@@ -56,9 +56,9 @@ name|federation
 operator|.
 name|metrics
 operator|.
-name|TestFederationMetrics
+name|TestRBFMetrics
 operator|.
-name|FEDERATION_BEAN
+name|ROUTER_BEAN
 import|;
 end_import
 
@@ -186,7 +186,7 @@ name|federation
 operator|.
 name|metrics
 operator|.
-name|FederationMBean
+name|RouterMBean
 import|;
 end_import
 
@@ -368,16 +368,16 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|FederationMBean
+name|RouterMBean
 name|bean
 init|=
 name|FederationTestUtils
 operator|.
 name|getBean
 argument_list|(
-name|FEDERATION_BEAN
+name|ROUTER_BEAN
 argument_list|,
-name|FederationMBean
+name|RouterMBean
 operator|.
 name|class
 argument_list|)

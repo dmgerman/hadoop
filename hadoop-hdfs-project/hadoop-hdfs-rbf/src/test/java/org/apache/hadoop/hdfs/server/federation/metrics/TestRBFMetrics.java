@@ -331,10 +331,10 @@ comment|/**  * Test the JMX interface for the {@link Router}.  */
 end_comment
 
 begin_class
-DECL|class|TestFederationMetrics
+DECL|class|TestRBFMetrics
 specifier|public
 class|class
-name|TestFederationMetrics
+name|TestRBFMetrics
 extends|extends
 name|TestMetricsBase
 block|{
@@ -347,23 +347,14 @@ name|FEDERATION_BEAN
 init|=
 literal|"Hadoop:service=Router,name=FederationState"
 decl_stmt|;
-DECL|field|STATE_STORE_BEAN
+DECL|field|ROUTER_BEAN
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|STATE_STORE_BEAN
+name|ROUTER_BEAN
 init|=
-literal|"Hadoop:service=Router,name=StateStore"
-decl_stmt|;
-DECL|field|RPC_BEAN
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|RPC_BEAN
-init|=
-literal|"Hadoop:service=Router,name=FederationRPC"
+literal|"Hadoop:service=Router,name=Router"
 decl_stmt|;
 annotation|@
 name|Test
@@ -378,7 +369,7 @@ throws|,
 name|IOException
 block|{
 name|FederationMBean
-name|bean
+name|federationBean
 init|=
 name|getBean
 argument_list|(
@@ -389,9 +380,26 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|validateClusterStatsBean
+name|validateClusterStatsFederationBean
 argument_list|(
-name|bean
+name|federationBean
+argument_list|)
+expr_stmt|;
+name|RouterMBean
+name|routerBean
+init|=
+name|getBean
+argument_list|(
+name|ROUTER_BEAN
+argument_list|,
+name|RouterMBean
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|validateClusterStatsRouterBean
+argument_list|(
+name|routerBean
 argument_list|)
 expr_stmt|;
 block|}
@@ -405,7 +413,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|FederationMetrics
+name|RBFMetrics
 name|metrics
 init|=
 name|getRouter
@@ -414,7 +422,12 @@ operator|.
 name|getMetrics
 argument_list|()
 decl_stmt|;
-name|validateClusterStatsBean
+name|validateClusterStatsFederationBean
+argument_list|(
+name|metrics
+argument_list|)
+expr_stmt|;
+name|validateClusterStatsRouterBean
 argument_list|(
 name|metrics
 argument_list|)
@@ -432,7 +445,7 @@ name|IOException
 throws|,
 name|JSONException
 block|{
-name|FederationMetrics
+name|RBFMetrics
 name|metrics
 init|=
 name|getRouter
@@ -763,7 +776,7 @@ name|IOException
 throws|,
 name|JSONException
 block|{
-name|FederationMetrics
+name|RBFMetrics
 name|metrics
 init|=
 name|getRouter
@@ -1108,7 +1121,7 @@ name|IOException
 throws|,
 name|JSONException
 block|{
-name|FederationMetrics
+name|RBFMetrics
 name|metrics
 init|=
 name|getRouter
@@ -1489,7 +1502,7 @@ name|IOException
 throws|,
 name|JSONException
 block|{
-name|FederationMetrics
+name|RBFMetrics
 name|metrics
 init|=
 name|getRouter
@@ -1686,7 +1699,7 @@ argument_list|()
 decl_stmt|;
 name|assertEquals
 argument_list|(
-name|FederationMetrics
+name|RBFMetrics
 operator|.
 name|getDateString
 argument_list|(
@@ -1706,7 +1719,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|FederationMetrics
+name|RBFMetrics
 operator|.
 name|getDateString
 argument_list|(
@@ -1835,16 +1848,14 @@ return|return
 literal|null
 return|;
 block|}
-DECL|method|validateClusterStatsBean (FederationMBean bean)
+DECL|method|validateClusterStatsFederationBean (FederationMBean bean)
 specifier|private
 name|void
-name|validateClusterStatsBean
+name|validateClusterStatsFederationBean
 parameter_list|(
 name|FederationMBean
 name|bean
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 comment|// Determine aggregates
 name|long
@@ -2134,6 +2145,16 @@ name|getNumNameservices
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|validateClusterStatsRouterBean (RouterMBean bean)
+specifier|private
+name|void
+name|validateClusterStatsRouterBean
+parameter_list|(
+name|RouterMBean
+name|bean
+parameter_list|)
+block|{
 name|assertTrue
 argument_list|(
 name|bean

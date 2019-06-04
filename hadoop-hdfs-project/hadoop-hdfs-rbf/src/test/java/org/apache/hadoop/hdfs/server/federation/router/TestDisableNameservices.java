@@ -334,7 +334,7 @@ name|federation
 operator|.
 name|metrics
 operator|.
-name|FederationMetrics
+name|RBFMetrics
 import|;
 end_import
 
@@ -1378,7 +1378,7 @@ operator|.
 name|getRouter
 argument_list|()
 decl_stmt|;
-name|FederationMetrics
+name|RBFMetrics
 name|metrics
 init|=
 name|router

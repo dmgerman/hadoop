@@ -230,67 +230,87 @@ name|long
 name|getNumFiles
 parameter_list|()
 function_decl|;
-comment|/**    * When the router started.    * @return Date as a string the router started.    */
+comment|/**    * When the router started.    * @return Date as a string the router started.    * @deprecated Use {@link RouterMBean#getRouterStarted()} instead.    */
+annotation|@
+name|Deprecated
 DECL|method|getRouterStarted ()
 name|String
 name|getRouterStarted
 parameter_list|()
 function_decl|;
-comment|/**    * Get the version of the router.    * @return Version of the router.    */
+comment|/**    * Get the version of the router.    * @return Version of the router.    * @deprecated Use {@link RouterMBean#getVersion()} instead.    */
+annotation|@
+name|Deprecated
 DECL|method|getVersion ()
 name|String
 name|getVersion
 parameter_list|()
 function_decl|;
-comment|/**    * Get the compilation date of the router.    * @return Compilation date of the router.    */
+comment|/**    * Get the compilation date of the router.    * @return Compilation date of the router.    * @deprecated Use {@link RouterMBean#getCompiledDate()} instead.    */
+annotation|@
+name|Deprecated
 DECL|method|getCompiledDate ()
 name|String
 name|getCompiledDate
 parameter_list|()
 function_decl|;
-comment|/**    * Get the compilation info of the router.    * @return Compilation info of the router.    */
+comment|/**    * Get the compilation info of the router.    * @return Compilation info of the router.    * @deprecated Use {@link RouterMBean#getCompileInfo()} instead.    */
+annotation|@
+name|Deprecated
 DECL|method|getCompileInfo ()
 name|String
 name|getCompileInfo
 parameter_list|()
 function_decl|;
-comment|/**    * Get the host and port of the router.    * @return Host and port of the router.    */
+comment|/**    * Get the host and port of the router.    * @return Host and port of the router.    * @deprecated Use {@link RouterMBean#getHostAndPort()} instead.    */
+annotation|@
+name|Deprecated
 DECL|method|getHostAndPort ()
 name|String
 name|getHostAndPort
 parameter_list|()
 function_decl|;
-comment|/**    * Get the identifier of the router.    * @return Identifier of the router.    */
+comment|/**    * Get the identifier of the router.    * @return Identifier of the router.    * @deprecated Use {@link RouterMBean#getRouterId()} instead.    */
+annotation|@
+name|Deprecated
 DECL|method|getRouterId ()
 name|String
 name|getRouterId
 parameter_list|()
 function_decl|;
-comment|/**    * Get the host and port of the router.    * @return Host and port of the router.    */
+comment|/**    * Gets the cluster ids of the namenodes.    * @return the cluster ids of the namenodes.    * @deprecated Use {@link RouterMBean#getClusterId()} instead.    */
 DECL|method|getClusterId ()
 name|String
 name|getClusterId
 parameter_list|()
 function_decl|;
-comment|/**    * Get the host and port of the router.    * @return Host and port of the router.    */
+comment|/**    * Gets the block pool ids of the namenodes.    * @return the block pool ids of the namenodes.    * @deprecated Use {@link RouterMBean#getBlockPoolId()} instead.    */
+annotation|@
+name|Deprecated
 DECL|method|getBlockPoolId ()
 name|String
 name|getBlockPoolId
 parameter_list|()
 function_decl|;
-comment|/**    * Get the current state of the router.    * @return String label for the current router state.    */
+comment|/**    * Get the current state of the router.    * @return String label for the current router state.    * @deprecated Use {@link RouterMBean#getRouterStatus()} instead.    */
+annotation|@
+name|Deprecated
 DECL|method|getRouterStatus ()
 name|String
 name|getRouterStatus
 parameter_list|()
 function_decl|;
-comment|/**    * Get the current number of delegation tokens in memory.    * @return number of DTs    */
+comment|/**    * Get the current number of delegation tokens in memory.    * @return number of DTs    * @deprecated Use {@link RouterMBean#getCurrentTokensCount()} instead.    */
+annotation|@
+name|Deprecated
 DECL|method|getCurrentTokensCount ()
 name|long
 name|getCurrentTokensCount
 parameter_list|()
 function_decl|;
-comment|/**    * Get the security status of the router.    * @return Security status.    */
+comment|/**    * Get the security status of the router.    * @return Security status.    * @deprecated Use {@link RouterMBean#isSecurityEnabled()} instead.    */
+annotation|@
+name|Deprecated
 DECL|method|isSecurityEnabled ()
 name|boolean
 name|isSecurityEnabled

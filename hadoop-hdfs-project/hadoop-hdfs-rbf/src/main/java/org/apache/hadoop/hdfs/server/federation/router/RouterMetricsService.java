@@ -52,7 +52,7 @@ name|federation
 operator|.
 name|metrics
 operator|.
-name|FederationMetrics
+name|RBFMetrics
 import|;
 end_import
 
@@ -132,10 +132,10 @@ name|RouterMetrics
 name|routerMetrics
 decl_stmt|;
 comment|/** Federation metrics. */
-DECL|field|federationMetrics
+DECL|field|rbfMetrics
 specifier|private
-name|FederationMetrics
-name|federationMetrics
+name|RBFMetrics
+name|rbfMetrics
 decl_stmt|;
 comment|/** Namenode mock metrics. */
 DECL|field|nnMetrics
@@ -220,10 +220,10 @@ expr_stmt|;
 comment|// Federation MBean JMX interface
 name|this
 operator|.
-name|federationMetrics
+name|rbfMetrics
 operator|=
 operator|new
-name|FederationMetrics
+name|RBFMetrics
 argument_list|(
 name|this
 operator|.
@@ -246,14 +246,14 @@ if|if
 condition|(
 name|this
 operator|.
-name|federationMetrics
+name|rbfMetrics
 operator|!=
 literal|null
 condition|)
 block|{
 name|this
 operator|.
-name|federationMetrics
+name|rbfMetrics
 operator|.
 name|close
 argument_list|()
@@ -310,16 +310,16 @@ name|routerMetrics
 return|;
 block|}
 comment|/**    * Get the federation metrics.    *    * @return Federation metrics.    */
-DECL|method|getFederationMetrics ()
+DECL|method|getRBFMetrics ()
 specifier|public
-name|FederationMetrics
-name|getFederationMetrics
+name|RBFMetrics
+name|getRBFMetrics
 parameter_list|()
 block|{
 return|return
 name|this
 operator|.
-name|federationMetrics
+name|rbfMetrics
 return|;
 block|}
 comment|/**    * Get the Namenode metrics.    *    * @return Namenode metrics.    */

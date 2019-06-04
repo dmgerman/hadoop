@@ -514,6 +514,26 @@ name|federation
 operator|.
 name|router
 operator|.
+name|RouterServiceState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|federation
+operator|.
+name|router
+operator|.
 name|security
 operator|.
 name|RouterSecurityManager
@@ -1035,11 +1055,13 @@ comment|/**  * Implementation of the Router metrics collector.  */
 end_comment
 
 begin_class
-DECL|class|FederationMetrics
+DECL|class|RBFMetrics
 specifier|public
 class|class
-name|FederationMetrics
+name|RBFMetrics
 implements|implements
+name|RouterMBean
+implements|,
 name|FederationMBean
 block|{
 DECL|field|LOG
@@ -1053,7 +1075,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|FederationMetrics
+name|RBFMetrics
 operator|.
 name|class
 argument_list|)
@@ -1083,10 +1105,15 @@ name|Router
 name|router
 decl_stmt|;
 comment|/** FederationState JMX bean. */
-DECL|field|beanName
+DECL|field|routerBeanName
 specifier|private
 name|ObjectName
-name|beanName
+name|routerBeanName
+decl_stmt|;
+DECL|field|federationBeanName
+specifier|private
+name|ObjectName
+name|federationBeanName
 decl_stmt|;
 comment|/** Resolve the namenode for each namespace. */
 DECL|field|namenodeResolver
@@ -1120,9 +1147,9 @@ specifier|private
 name|RouterStore
 name|routerStore
 decl_stmt|;
-DECL|method|FederationMetrics (Router router)
+DECL|method|RBFMetrics (Router router)
 specifier|public
-name|FederationMetrics
+name|RBFMetrics
 parameter_list|(
 name|Router
 name|router
@@ -1146,6 +1173,64 @@ name|StandardMBean
 argument_list|(
 name|this
 argument_list|,
+name|RouterMBean
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|this
+operator|.
+name|routerBeanName
+operator|=
+name|MBeans
+operator|.
+name|register
+argument_list|(
+literal|"Router"
+argument_list|,
+literal|"Router"
+argument_list|,
+name|bean
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Registered Router MBean: {}"
+argument_list|,
+name|this
+operator|.
+name|routerBeanName
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|NotCompliantMBeanException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"Bad Router MBean setup"
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
+try|try
+block|{
+name|StandardMBean
+name|bean
+init|=
+operator|new
+name|StandardMBean
+argument_list|(
+name|this
+argument_list|,
 name|FederationMBean
 operator|.
 name|class
@@ -1153,7 +1238,7 @@ argument_list|)
 decl_stmt|;
 name|this
 operator|.
-name|beanName
+name|federationBeanName
 operator|=
 name|MBeans
 operator|.
@@ -1170,11 +1255,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Registered Router MBean: {}"
+literal|"Registered FederationState MBean: {}"
 argument_list|,
 name|this
 operator|.
-name|beanName
+name|federationBeanName
 argument_list|)
 expr_stmt|;
 block|}
@@ -1188,7 +1273,7 @@ throw|throw
 operator|new
 name|RuntimeException
 argument_list|(
-literal|"Bad Router MBean setup"
+literal|"Bad FederationState MBean setup"
 argument_list|,
 name|e
 argument_list|)
@@ -1319,7 +1404,7 @@ if|if
 condition|(
 name|this
 operator|.
-name|beanName
+name|routerBeanName
 operator|!=
 literal|null
 condition|)
@@ -1328,7 +1413,24 @@ name|MBeans
 operator|.
 name|unregister
 argument_list|(
-name|beanName
+name|routerBeanName
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|this
+operator|.
+name|federationBeanName
+operator|!=
+literal|null
+condition|)
+block|{
+name|MBeans
+operator|.
+name|unregister
+argument_list|(
+name|federationBeanName
 argument_list|)
 expr_stmt|;
 block|}
@@ -3657,6 +3759,8 @@ operator|-
 literal|1
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|isSecurityEnabled ()
 specifier|public
 name|boolean
@@ -3668,6 +3772,124 @@ name|UserGroupInformation
 operator|.
 name|isSecurityEnabled
 argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getSafemode ()
+specifier|public
+name|String
+name|getSafemode
+parameter_list|()
+block|{
+if|if
+condition|(
+name|this
+operator|.
+name|router
+operator|.
+name|isRouterState
+argument_list|(
+name|RouterServiceState
+operator|.
+name|SAFEMODE
+argument_list|)
+condition|)
+block|{
+return|return
+literal|"Safe mode is ON. "
+operator|+
+name|this
+operator|.
+name|getSafeModeTip
+argument_list|()
+return|;
+block|}
+else|else
+block|{
+return|return
+literal|""
+return|;
+block|}
+block|}
+DECL|method|getSafeModeTip ()
+specifier|private
+name|String
+name|getSafeModeTip
+parameter_list|()
+block|{
+name|String
+name|cmd
+init|=
+literal|"Use \"hdfs dfsrouteradmin -safemode leave\" "
+operator|+
+literal|"to turn safe mode off."
+decl_stmt|;
+if|if
+condition|(
+name|this
+operator|.
+name|router
+operator|.
+name|isRouterState
+argument_list|(
+name|RouterServiceState
+operator|.
+name|INITIALIZING
+argument_list|)
+operator|||
+name|this
+operator|.
+name|router
+operator|.
+name|isRouterState
+argument_list|(
+name|RouterServiceState
+operator|.
+name|UNINITIALIZED
+argument_list|)
+condition|)
+block|{
+return|return
+literal|"Router is in"
+operator|+
+name|this
+operator|.
+name|router
+operator|.
+name|getRouterState
+argument_list|()
+operator|+
+literal|"mode, the router will immediately return to "
+operator|+
+literal|"normal mode after some time. "
+operator|+
+name|cmd
+return|;
+block|}
+elseif|else
+if|if
+condition|(
+name|this
+operator|.
+name|router
+operator|.
+name|isRouterState
+argument_list|(
+name|RouterServiceState
+operator|.
+name|SAFEMODE
+argument_list|)
+condition|)
+block|{
+return|return
+literal|"It was turned on manually. "
+operator|+
+name|cmd
+return|;
+block|}
+return|return
+literal|""
 return|;
 block|}
 comment|/**    * Build a set of unique values found in all namespaces.    *    * @param f Method reference of the appropriate FederationNamespaceInfo    *          getter function    * @return Set of unique string values found in all discovered namespaces.    * @throws IOException if the query could not be executed.    */

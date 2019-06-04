@@ -294,7 +294,7 @@ name|federation
 operator|.
 name|metrics
 operator|.
-name|FederationMetrics
+name|RBFMetrics
 import|;
 end_import
 
@@ -5384,7 +5384,7 @@ block|}
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|FederationMetrics
+name|RBFMetrics
 name|metrics
 init|=
 name|router
@@ -5425,7 +5425,7 @@ literal|"Safe mode is ON."
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// verify state using FederationMetrics
+comment|// verify state using RBFMetrics
 name|assertEquals
 argument_list|(
 name|RouterServiceState
