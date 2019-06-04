@@ -774,6 +774,15 @@ name|AUTOMATICALLY_DISCOVER_GPU_DEVICES
 argument_list|)
 condition|)
 block|{
+name|currentFpgaInfo
+operator|=
+name|ImmutableList
+operator|.
+name|copyOf
+argument_list|(
+name|list
+argument_list|)
+expr_stmt|;
 return|return
 name|list
 return|;
@@ -843,6 +852,15 @@ name|toList
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|currentFpgaInfo
+operator|=
+name|ImmutableList
+operator|.
+name|copyOf
+argument_list|(
+name|list
+argument_list|)
+expr_stmt|;
 comment|// if the count of user configured is still larger than actual
 if|if
 condition|(
@@ -901,15 +919,6 @@ literal|"\""
 argument_list|)
 throw|;
 block|}
-name|currentFpgaInfo
-operator|=
-name|ImmutableList
-operator|.
-name|copyOf
-argument_list|(
-name|list
-argument_list|)
-expr_stmt|;
 return|return
 name|list
 return|;
