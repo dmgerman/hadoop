@@ -484,11 +484,10 @@ argument_list|(
 name|omRequest
 argument_list|)
 decl_stmt|;
-comment|// As preExecute of DeleteBucket request is do nothing, requests should
-comment|// be same.
+comment|// As user info gets added.
 name|Assert
 operator|.
-name|assertEquals
+name|assertNotEquals
 argument_list|(
 name|omRequest
 argument_list|,

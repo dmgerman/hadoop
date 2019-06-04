@@ -338,7 +338,15 @@ name|FILE_ALREADY_EXISTS
 block|,
 DECL|enumConstant|NOT_A_FILE
 name|NOT_A_FILE
-block|,   }
+block|,
+DECL|enumConstant|PERMISSION_DENIED
+name|PERMISSION_DENIED
+block|,
+comment|// Error codes used during acl validation
+DECL|enumConstant|TIMEOUT
+name|TIMEOUT
+comment|// Error codes used during acl validation
+block|}
 block|}
 end_class
 

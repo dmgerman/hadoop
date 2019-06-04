@@ -64,6 +64,24 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|exceptions
+operator|.
+name|OMException
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -103,7 +121,7 @@ specifier|public
 interface|interface
 name|IAccessAuthorizer
 block|{
-comment|/**    * Check access for given ozoneObject.    *    * @param ozoneObject object for which access needs to be checked.    * @param context Context object encapsulating all user related information.    * @throws OzoneAclException    * @return true if user has access else false.    */
+comment|/**    * Check access for given ozoneObject.    *    * @param ozoneObject object for which access needs to be checked.    * @param context Context object encapsulating all user related information.    * @throws org.apache.hadoop.ozone.om.exceptions.OMException    * @return true if user has access else false.    */
 DECL|method|checkAccess (IOzoneObj ozoneObject, RequestContext context)
 name|boolean
 name|checkAccess
@@ -115,7 +133,7 @@ name|RequestContext
 name|context
 parameter_list|)
 throws|throws
-name|OzoneAclException
+name|OMException
 function_decl|;
 comment|/**    * ACL rights.    */
 DECL|enum|ACLType

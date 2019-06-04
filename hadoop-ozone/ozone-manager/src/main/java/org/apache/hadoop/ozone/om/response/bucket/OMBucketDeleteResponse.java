@@ -173,6 +173,21 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|getOMResponse
+argument_list|()
+operator|.
+name|getStatus
+argument_list|()
+operator|==
+name|OzoneManagerProtocolProtos
+operator|.
+name|Status
+operator|.
+name|OK
+condition|)
+block|{
 name|String
 name|dbBucketKey
 init|=
@@ -197,6 +212,7 @@ argument_list|,
 name|dbBucketKey
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|getVolumeName ()
 specifier|public

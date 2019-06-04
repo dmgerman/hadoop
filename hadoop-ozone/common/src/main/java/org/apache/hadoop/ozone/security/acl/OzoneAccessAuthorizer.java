@@ -20,6 +20,24 @@ name|acl
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|exceptions
+operator|.
+name|OMException
+import|;
+end_import
+
 begin_comment
 comment|/**  * Default implementation for {@link IAccessAuthorizer}.  * */
 end_comment
@@ -46,7 +64,7 @@ name|RequestContext
 name|context
 parameter_list|)
 throws|throws
-name|OzoneAclException
+name|OMException
 block|{
 return|return
 literal|true
