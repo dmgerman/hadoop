@@ -620,7 +620,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|readChunk (final ChunkInfo chunkInfo, List<DatanodeDetails> excludeDns, List<DatanodeDetails> dnListFromReply)
+DECL|method|readChunk (final ChunkInfo chunkInfo)
 specifier|protected
 name|ByteString
 name|readChunk
@@ -628,18 +628,6 @@ parameter_list|(
 specifier|final
 name|ChunkInfo
 name|chunkInfo
-parameter_list|,
-name|List
-argument_list|<
-name|DatanodeDetails
-argument_list|>
-name|excludeDns
-parameter_list|,
-name|List
-argument_list|<
-name|DatanodeDetails
-argument_list|>
-name|dnListFromReply
 parameter_list|)
 throws|throws
 name|IOException

@@ -1383,41 +1383,8 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
-name|e
-operator|.
-name|getMessage
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-literal|"Failed to execute command"
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
-name|e
-operator|.
-name|getMessage
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-literal|"on the pipeline "
-operator|+
-name|pipeline
-operator|.
-name|getId
-argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
+comment|// it should throw an ioException as none of the servers
+comment|// are available
 block|}
 name|manager
 operator|.

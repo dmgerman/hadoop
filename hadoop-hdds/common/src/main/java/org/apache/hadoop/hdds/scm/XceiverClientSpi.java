@@ -98,22 +98,6 @@ name|hdds
 operator|.
 name|protocol
 operator|.
-name|DatanodeDetails
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|protocol
-operator|.
 name|datanode
 operator|.
 name|proto
@@ -193,6 +177,24 @@ operator|.
 name|annotations
 operator|.
 name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
+name|storage
+operator|.
+name|CheckedBiFunction
 import|;
 end_import
 
@@ -424,10 +426,10 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Sends a given command to server and gets the reply back along with    * the server associated info.    * @param request Request    * @param excludeDns list of servers on which the command won't be sent to.    * @return Response to the command    * @throws IOException    */
-DECL|method|sendCommand ( ContainerCommandRequestProto request, List<DatanodeDetails> excludeDns)
+comment|/**    * Sends a given command to server and gets the reply back along with    * the server associated info.    * @param request Request    * @param validators functions to validate the response    * @return Response to the command    * @throws IOException    */
+DECL|method|sendCommand ( ContainerCommandRequestProto request, List<CheckedBiFunction> validators)
 specifier|public
-name|XceiverClientReply
+name|ContainerCommandResponseProto
 name|sendCommand
 parameter_list|(
 name|ContainerCommandRequestProto
@@ -435,9 +437,9 @@ name|request
 parameter_list|,
 name|List
 argument_list|<
-name|DatanodeDetails
+name|CheckedBiFunction
 argument_list|>
-name|excludeDns
+name|validators
 parameter_list|)
 throws|throws
 name|IOException
@@ -454,6 +456,9 @@ argument_list|(
 name|request
 argument_list|)
 expr_stmt|;
+name|ContainerCommandResponseProto
+name|responseProto
+init|=
 name|reply
 operator|.
 name|getResponse
@@ -461,9 +466,27 @@ argument_list|()
 operator|.
 name|get
 argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|CheckedBiFunction
+name|function
+range|:
+name|validators
+control|)
+block|{
+name|function
+operator|.
+name|apply
+argument_list|(
+name|request
+argument_list|,
+name|responseProto
+argument_list|)
 expr_stmt|;
+block|}
 return|return
-name|reply
+name|responseProto
 return|;
 block|}
 catch|catch
@@ -514,7 +537,7 @@ name|ReplicationType
 name|getPipelineType
 parameter_list|()
 function_decl|;
-comment|/**    * Check if an specfic commitIndex is replicated to majority/all servers.    * @param index index to watch for    * @param timeout timeout provided for the watch ipeartion to complete    * @return reply containing the min commit index replicated to all or majority    *         servers in case of a failure    * @throws InterruptedException    * @throws ExecutionException    * @throws TimeoutException    * @throws IOException    */
+comment|/**    * Check if an specfic commitIndex is replicated to majority/all servers.    * @param index index to watch for    * @param timeout timeout provided for the watch operation to complete    * @return reply containing the min commit index replicated to all or majority    *         servers in case of a failure    * @throws InterruptedException    * @throws ExecutionException    * @throws TimeoutException    * @throws IOException    */
 DECL|method|watchForCommit (long index, long timeout)
 specifier|public
 specifier|abstract

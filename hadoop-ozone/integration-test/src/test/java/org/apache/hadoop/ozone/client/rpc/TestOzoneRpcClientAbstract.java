@@ -6228,7 +6228,7 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|OzoneChecksumException
+name|IOException
 name|e
 parameter_list|)
 block|{
@@ -7191,7 +7191,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|OzoneChecksumException
+name|IOException
 name|e
 parameter_list|)
 block|{
@@ -7687,7 +7687,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|OzoneChecksumException
+name|IOException
 name|e
 parameter_list|)
 block|{
