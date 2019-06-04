@@ -28,19 +28,9 @@ begin_import
 import|import
 name|java
 operator|.
-name|net
+name|io
 operator|.
-name|MalformedURLException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|URL
+name|IOException
 import|;
 end_import
 
@@ -65,6 +55,48 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|FileSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|FSDataInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|Path
 import|;
 end_import
 
@@ -180,7 +212,7 @@ specifier|private
 name|HBaseTimelineStorageUtils
 parameter_list|()
 block|{   }
-comment|/**    * @param conf YARN configuration. Used to see if there is an explicit config    *          pointing to the HBase config file to read. It should not be null    *          or a NullPointerException will be thrown.    * @return a configuration with the HBase configuration from the classpath,    *         optionally overwritten by the timeline service configuration URL if    *         specified.    * @throws MalformedURLException if a timeline service HBase configuration URL    *           is specified but is a malformed URL.    */
+comment|/**    * @param conf YARN configuration. Used to see if there is an explicit config    *          pointing to the HBase config file to read. It should not be null    *          or a NullPointerException will be thrown.    * @return a configuration with the HBase configuration from the classpath,    *         optionally overwritten by the timeline service configuration URL if    *         specified.    * @throws IOException if a timeline service HBase configuration URL    *           is specified but unable to read it.    */
 DECL|method|getTimelineServiceHBaseConf (Configuration conf)
 specifier|public
 specifier|static
@@ -191,7 +223,7 @@ name|Configuration
 name|conf
 parameter_list|)
 throws|throws
-name|MalformedURLException
+name|IOException
 block|{
 if|if
 condition|(
@@ -210,7 +242,7 @@ name|Configuration
 name|hbaseConf
 decl_stmt|;
 name|String
-name|timelineServiceHBaseConfFileURL
+name|timelineServiceHBaseConfFilePath
 init|=
 name|conf
 operator|.
@@ -223,11 +255,11 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|timelineServiceHBaseConfFileURL
+name|timelineServiceHBaseConfFilePath
 operator|!=
 literal|null
 operator|&&
-name|timelineServiceHBaseConfFileURL
+name|timelineServiceHBaseConfFilePath
 operator|.
 name|length
 argument_list|()
@@ -241,7 +273,7 @@ name|info
 argument_list|(
 literal|"Using hbase configuration at "
 operator|+
-name|timelineServiceHBaseConfFileURL
+name|timelineServiceHBaseConfFilePath
 argument_list|)
 expr_stmt|;
 comment|// create a clone so that we don't mess with out input one
@@ -262,20 +294,39 @@ argument_list|(
 literal|false
 argument_list|)
 decl_stmt|;
-name|URL
-name|hbaseSiteXML
+name|Path
+name|hbaseConfigPath
 init|=
 operator|new
-name|URL
+name|Path
 argument_list|(
-name|timelineServiceHBaseConfFileURL
+name|timelineServiceHBaseConfFilePath
 argument_list|)
 decl_stmt|;
+try|try
+init|(
+name|FileSystem
+name|fs
+init|=
+name|FileSystem
+operator|.
+name|newInstance
+argument_list|(
+name|hbaseConfigPath
+operator|.
+name|toUri
+argument_list|()
+argument_list|,
+name|conf
+argument_list|)
+init|;           FSDataInputStream in = fs.open(hbaseConfigPath)
+block|)
+block|{
 name|plainHBaseConf
 operator|.
 name|addResource
 argument_list|(
-name|hbaseSiteXML
+name|in
 argument_list|)
 expr_stmt|;
 name|HBaseConfiguration
@@ -287,6 +338,7 @@ argument_list|,
 name|plainHBaseConf
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 else|else
 block|{
@@ -305,7 +357,13 @@ return|return
 name|hbaseConf
 return|;
 block|}
+end_class
+
+begin_comment
 comment|/**    * Given a row key prefix stored in a byte array, return a byte array for its    * immediate next row key.    *    * @param rowKeyPrefix The provided row key prefix, represented in an array.    * @return the closest next row key of the provided row key.    */
+end_comment
+
+begin_function
 DECL|method|calculateTheClosestNextRowKeyForPrefix ( byte[] rowKeyPrefix)
 specifier|public
 specifier|static
@@ -403,6 +461,9 @@ return|return
 name|newStopRow
 return|;
 block|}
+end_function
+
+begin_function
 DECL|method|setMetricsTimeRange (Query query, byte[] metricsCf, long tsBegin, long tsEnd)
 specifier|public
 specifier|static
@@ -467,8 +528,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-block|}
-end_class
+end_function
 
+unit|}
 end_unit
 
