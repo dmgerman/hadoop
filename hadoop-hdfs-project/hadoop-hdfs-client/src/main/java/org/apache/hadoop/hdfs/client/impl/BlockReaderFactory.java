@@ -901,6 +901,15 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|SMALL_BUFFER_SIZE
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|SMALL_BUFFER_SIZE
+init|=
+literal|512
+decl_stmt|;
 DECL|class|FailureInjector
 specifier|public
 specifier|static
@@ -2612,6 +2621,8 @@ name|peer
 operator|.
 name|getOutputStream
 argument_list|()
+argument_list|,
+name|SMALL_BUFFER_SIZE
 argument_list|)
 argument_list|)
 decl_stmt|;
