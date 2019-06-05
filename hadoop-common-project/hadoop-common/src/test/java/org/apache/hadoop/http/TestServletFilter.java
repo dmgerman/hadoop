@@ -512,8 +512,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Test
 DECL|method|testServletFilter ()
 specifier|public
 name|void

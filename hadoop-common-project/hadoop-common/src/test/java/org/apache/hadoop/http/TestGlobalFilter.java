@@ -761,8 +761,21 @@ name|assertTrue
 argument_list|(
 name|RECORDS
 operator|.
-name|isEmpty
+name|size
 argument_list|()
+operator|==
+literal|1
+argument_list|)
+expr_stmt|;
+comment|// Accesing "/" will redirect to /index.html
+name|assertTrue
+argument_list|(
+name|RECORDS
+operator|.
+name|contains
+argument_list|(
+literal|"/index.html"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
