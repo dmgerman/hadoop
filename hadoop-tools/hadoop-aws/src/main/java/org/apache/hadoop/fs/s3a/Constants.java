@@ -48,22 +48,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|ssl
-operator|.
-name|OpenSSLSocketFactory
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|util
@@ -320,31 +304,6 @@ name|boolean
 name|DEFAULT_SECURE_CONNECTIONS
 init|=
 literal|true
-decl_stmt|;
-comment|// use OpenSSL or JSEE for secure connections
-DECL|field|SSL_CHANNEL_MODE
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|SSL_CHANNEL_MODE
-init|=
-literal|"fs.s3a.ssl.channel.mode"
-decl_stmt|;
-specifier|public
-specifier|static
-specifier|final
-name|OpenSSLSocketFactory
-operator|.
-name|SSLChannelMode
-DECL|field|DEFAULT_SSL_CHANNEL_MODE
-name|DEFAULT_SSL_CHANNEL_MODE
-init|=
-name|OpenSSLSocketFactory
-operator|.
-name|SSLChannelMode
-operator|.
-name|Default
 decl_stmt|;
 comment|//use a custom endpoint?
 DECL|field|ENDPOINT

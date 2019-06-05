@@ -132,11 +132,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|security
+name|fs
 operator|.
-name|ssl
+name|azurebfs
 operator|.
-name|OpenSSLSocketFactory
+name|utils
+operator|.
+name|SSLSocketFactoryEx
 import|;
 end_import
 
@@ -575,7 +577,7 @@ condition|)
 block|{
 try|try
 block|{
-name|OpenSSLSocketFactory
+name|SSLSocketFactoryEx
 operator|.
 name|initializeDefaultFactory
 argument_list|(
@@ -589,7 +591,7 @@ argument_list|)
 expr_stmt|;
 name|sslProviderName
 operator|=
-name|OpenSSLSocketFactory
+name|SSLSocketFactoryEx
 operator|.
 name|getDefaultFactory
 argument_list|()
@@ -604,7 +606,7 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-comment|// Suppress exception. Failure to init OpenSSLSocketFactory would have only performance impact.
+comment|// Suppress exception. Failure to init SSLSocketFactoryEx would have only performance impact.
 block|}
 block|}
 name|this

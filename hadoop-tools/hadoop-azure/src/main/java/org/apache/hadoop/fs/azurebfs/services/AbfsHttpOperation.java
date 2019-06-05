@@ -122,11 +122,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|security
+name|fs
 operator|.
-name|ssl
+name|azurebfs
 operator|.
-name|OpenSSLSocketFactory
+name|utils
+operator|.
+name|SSLSocketFactoryEx
 import|;
 end_import
 
@@ -839,7 +841,7 @@ decl_stmt|;
 name|SSLSocketFactory
 name|sslSocketFactory
 init|=
-name|OpenSSLSocketFactory
+name|SSLSocketFactoryEx
 operator|.
 name|getDefaultFactory
 argument_list|()

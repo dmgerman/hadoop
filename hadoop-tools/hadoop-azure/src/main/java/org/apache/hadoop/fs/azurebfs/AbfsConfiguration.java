@@ -660,11 +660,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|security
+name|fs
 operator|.
-name|ssl
+name|azurebfs
 operator|.
-name|OpenSSLSocketFactory
+name|utils
+operator|.
+name|SSLSocketFactoryEx
 import|;
 end_import
 
@@ -2136,7 +2138,7 @@ return|;
 block|}
 DECL|method|getPreferredSSLFactoryOption ()
 specifier|public
-name|OpenSSLSocketFactory
+name|SSLSocketFactoryEx
 operator|.
 name|SSLChannelMode
 name|getPreferredSSLFactoryOption

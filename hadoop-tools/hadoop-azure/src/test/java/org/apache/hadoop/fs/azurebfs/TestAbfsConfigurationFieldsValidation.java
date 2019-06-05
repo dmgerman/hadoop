@@ -484,11 +484,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|security
+name|fs
 operator|.
-name|ssl
+name|azurebfs
 operator|.
-name|OpenSSLSocketFactory
+name|utils
+operator|.
+name|SSLSocketFactoryEx
 import|;
 end_import
 
@@ -1226,7 +1228,7 @@ name|IOException
 block|{
 name|assertEquals
 argument_list|(
-name|OpenSSLSocketFactory
+name|SSLSocketFactoryEx
 operator|.
 name|SSLChannelMode
 operator|.
@@ -1240,7 +1242,7 @@ argument_list|)
 expr_stmt|;
 name|assertNotEquals
 argument_list|(
-name|OpenSSLSocketFactory
+name|SSLSocketFactoryEx
 operator|.
 name|SSLChannelMode
 operator|.
@@ -1254,7 +1256,7 @@ argument_list|)
 expr_stmt|;
 name|assertNotEquals
 argument_list|(
-name|OpenSSLSocketFactory
+name|SSLSocketFactoryEx
 operator|.
 name|SSLChannelMode
 operator|.
@@ -1279,7 +1281,7 @@ name|setEnum
 argument_list|(
 name|FS_AZURE_SSL_CHANNEL_MODE_KEY
 argument_list|,
-name|OpenSSLSocketFactory
+name|SSLSocketFactoryEx
 operator|.
 name|SSLChannelMode
 operator|.
@@ -1299,7 +1301,7 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-name|OpenSSLSocketFactory
+name|SSLSocketFactoryEx
 operator|.
 name|SSLChannelMode
 operator|.
@@ -1323,7 +1325,7 @@ name|setEnum
 argument_list|(
 name|FS_AZURE_SSL_CHANNEL_MODE_KEY
 argument_list|,
-name|OpenSSLSocketFactory
+name|SSLSocketFactoryEx
 operator|.
 name|SSLChannelMode
 operator|.
@@ -1342,7 +1344,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|OpenSSLSocketFactory
+name|SSLSocketFactoryEx
 operator|.
 name|SSLChannelMode
 operator|.

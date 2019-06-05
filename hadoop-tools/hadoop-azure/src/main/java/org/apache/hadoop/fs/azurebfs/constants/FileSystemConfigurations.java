@@ -56,11 +56,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|security
+name|fs
 operator|.
-name|ssl
+name|azurebfs
 operator|.
-name|OpenSSLSocketFactory
+name|utils
+operator|.
+name|SSLSocketFactoryEx
 import|;
 end_import
 
@@ -315,12 +317,12 @@ DECL|field|DEFAULT_FS_AZURE_SSL_CHANNEL_MODE
 specifier|public
 specifier|static
 specifier|final
-name|OpenSSLSocketFactory
+name|SSLSocketFactoryEx
 operator|.
 name|SSLChannelMode
 name|DEFAULT_FS_AZURE_SSL_CHANNEL_MODE
 init|=
-name|OpenSSLSocketFactory
+name|SSLSocketFactoryEx
 operator|.
 name|SSLChannelMode
 operator|.
