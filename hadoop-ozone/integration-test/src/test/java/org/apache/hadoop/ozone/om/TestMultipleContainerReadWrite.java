@@ -783,6 +783,13 @@ operator|.
 name|MB
 argument_list|)
 expr_stmt|;
+name|keyArgs
+operator|.
+name|setUserName
+argument_list|(
+name|userName
+argument_list|)
+expr_stmt|;
 try|try
 init|(
 name|OutputStream
@@ -1314,6 +1321,13 @@ operator|.
 name|setSize
 argument_list|(
 literal|500
+argument_list|)
+expr_stmt|;
+name|keyArgs
+operator|.
+name|setUserName
+argument_list|(
+name|userName
 argument_list|)
 expr_stmt|;
 try|try

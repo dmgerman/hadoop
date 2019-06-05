@@ -2802,7 +2802,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Add acl failed."
 argument_list|,
@@ -3050,7 +3050,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Remove acl failed."
 argument_list|,

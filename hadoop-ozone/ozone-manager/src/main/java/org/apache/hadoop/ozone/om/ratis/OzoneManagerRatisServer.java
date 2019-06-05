@@ -1216,6 +1216,17 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Error while executing ratis request. "
+operator|+
+literal|"stateMachineException: "
+argument_list|,
+name|stateMachineException
+argument_list|)
+expr_stmt|;
 return|return
 name|omResponse
 operator|.

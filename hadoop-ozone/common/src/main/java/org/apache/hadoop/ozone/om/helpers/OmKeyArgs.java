@@ -84,6 +84,20 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|OzoneAcl
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|OzoneConsts
 import|;
 end_import
@@ -243,12 +257,20 @@ specifier|private
 name|boolean
 name|refreshPipeline
 decl_stmt|;
+DECL|field|acls
+specifier|private
+name|List
+argument_list|<
+name|OzoneAcl
+argument_list|>
+name|acls
+decl_stmt|;
 annotation|@
 name|SuppressWarnings
 argument_list|(
 literal|"parameternumber"
 argument_list|)
-DECL|method|OmKeyArgs (String volumeName, String bucketName, String keyName, long dataSize, ReplicationType type, ReplicationFactor factor, List<OmKeyLocationInfo> locationInfoList, boolean isMultipart, String uploadID, int partNumber, Map<String, String> metadataMap, boolean refreshPipeline)
+DECL|method|OmKeyArgs (String volumeName, String bucketName, String keyName, long dataSize, ReplicationType type, ReplicationFactor factor, List<OmKeyLocationInfo> locationInfoList, boolean isMultipart, String uploadID, int partNumber, Map<String, String> metadataMap, boolean refreshPipeline, List<OzoneAcl> acls)
 specifier|private
 name|OmKeyArgs
 parameter_list|(
@@ -295,6 +317,12 @@ name|metadataMap
 parameter_list|,
 name|boolean
 name|refreshPipeline
+parameter_list|,
+name|List
+argument_list|<
+name|OzoneAcl
+argument_list|>
+name|acls
 parameter_list|)
 block|{
 name|this
@@ -369,6 +397,12 @@ name|refreshPipeline
 operator|=
 name|refreshPipeline
 expr_stmt|;
+name|this
+operator|.
+name|acls
+operator|=
+name|acls
+expr_stmt|;
 block|}
 DECL|method|getIsMultipartKey ()
 specifier|public
@@ -418,6 +452,19 @@ parameter_list|()
 block|{
 return|return
 name|factor
+return|;
+block|}
+DECL|method|getAcls ()
+specifier|public
+name|List
+argument_list|<
+name|OzoneAcl
+argument_list|>
+name|getAcls
+parameter_list|()
+block|{
+return|return
+name|acls
 return|;
 block|}
 DECL|method|getVolumeName ()
@@ -831,6 +878,14 @@ specifier|private
 name|boolean
 name|refreshPipeline
 decl_stmt|;
+DECL|field|acls
+specifier|private
+name|List
+argument_list|<
+name|OzoneAcl
+argument_list|>
+name|acls
+decl_stmt|;
 DECL|method|setVolumeName (String volume)
 specifier|public
 name|Builder
@@ -962,6 +1017,28 @@ operator|.
 name|locationInfoList
 operator|=
 name|locationInfos
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|setAcls (List<OzoneAcl> listOfAcls)
+specifier|public
+name|Builder
+name|setAcls
+parameter_list|(
+name|List
+argument_list|<
+name|OzoneAcl
+argument_list|>
+name|listOfAcls
+parameter_list|)
+block|{
+name|this
+operator|.
+name|acls
+operator|=
+name|listOfAcls
 expr_stmt|;
 return|return
 name|this
@@ -1130,6 +1207,8 @@ argument_list|,
 name|metadata
 argument_list|,
 name|refreshPipeline
+argument_list|,
+name|acls
 argument_list|)
 return|;
 block|}

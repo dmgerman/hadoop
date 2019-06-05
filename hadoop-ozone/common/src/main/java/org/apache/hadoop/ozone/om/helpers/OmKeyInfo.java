@@ -154,6 +154,26 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneManagerProtocolProtos
+operator|.
+name|OzoneAclInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|protocolPB
 operator|.
 name|OMPBHelper
@@ -262,12 +282,21 @@ specifier|private
 name|FileEncryptionInfo
 name|encInfo
 decl_stmt|;
+comment|/**    * ACL Information.    */
+DECL|field|acls
+specifier|private
+name|List
+argument_list|<
+name|OzoneAclInfo
+argument_list|>
+name|acls
+decl_stmt|;
 annotation|@
 name|SuppressWarnings
 argument_list|(
 literal|"parameternumber"
 argument_list|)
-DECL|method|OmKeyInfo (String volumeName, String bucketName, String keyName, List<OmKeyLocationInfoGroup> versions, long dataSize, long creationTime, long modificationTime, HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor factor, Map<String, String> metadata, FileEncryptionInfo encInfo)
+DECL|method|OmKeyInfo (String volumeName, String bucketName, String keyName, List<OmKeyLocationInfoGroup> versions, long dataSize, long creationTime, long modificationTime, HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor factor, Map<String, String> metadata, FileEncryptionInfo encInfo, List<OzoneAclInfo> acls)
 name|OmKeyInfo
 parameter_list|(
 name|String
@@ -314,6 +343,12 @@ name|metadata
 parameter_list|,
 name|FileEncryptionInfo
 name|encInfo
+parameter_list|,
+name|List
+argument_list|<
+name|OzoneAclInfo
+argument_list|>
+name|acls
 parameter_list|)
 block|{
 name|this
@@ -422,6 +457,12 @@ operator|.
 name|encInfo
 operator|=
 name|encInfo
+expr_stmt|;
+name|this
+operator|.
+name|acls
+operator|=
+name|acls
 expr_stmt|;
 block|}
 DECL|method|getVolumeName ()
@@ -883,6 +924,19 @@ return|return
 name|encInfo
 return|;
 block|}
+DECL|method|getAcls ()
+specifier|public
+name|List
+argument_list|<
+name|OzoneAclInfo
+argument_list|>
+name|getAcls
+parameter_list|()
+block|{
+return|return
+name|acls
+return|;
+block|}
 comment|/**    * Builder of OmKeyInfo.    */
 DECL|class|Builder
 specifier|public
@@ -961,6 +1015,14 @@ DECL|field|encInfo
 specifier|private
 name|FileEncryptionInfo
 name|encInfo
+decl_stmt|;
+DECL|field|acls
+specifier|private
+name|List
+argument_list|<
+name|OzoneAclInfo
+argument_list|>
+name|acls
 decl_stmt|;
 DECL|method|Builder ()
 specifier|public
@@ -1231,6 +1293,28 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|setAcls (List<OzoneAclInfo> listOfAcls)
+specifier|public
+name|Builder
+name|setAcls
+parameter_list|(
+name|List
+argument_list|<
+name|OzoneAclInfo
+argument_list|>
+name|listOfAcls
+parameter_list|)
+block|{
+name|this
+operator|.
+name|acls
+operator|=
+name|listOfAcls
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|build ()
 specifier|public
 name|OmKeyInfo
@@ -1262,6 +1346,8 @@ argument_list|,
 name|metadata
 argument_list|,
 name|encInfo
+argument_list|,
+name|acls
 argument_list|)
 return|;
 block|}
@@ -1408,6 +1494,21 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|acls
+operator|!=
+literal|null
+condition|)
+block|{
+name|kb
+operator|.
+name|addAllAcls
+argument_list|(
+name|acls
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|kb
 operator|.
@@ -1518,6 +1619,11 @@ argument_list|()
 argument_list|)
 else|:
 literal|null
+argument_list|,
+name|keyInfo
+operator|.
+name|getAclsList
+argument_list|()
 argument_list|)
 return|;
 block|}

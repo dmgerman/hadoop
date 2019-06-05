@@ -428,6 +428,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|LinkedList
 import|;
 end_import
@@ -800,6 +810,14 @@ operator|.
 name|setRefreshPipeline
 argument_list|(
 literal|true
+argument_list|)
+operator|.
+name|setAcls
+argument_list|(
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
 argument_list|)
 operator|.
 name|build
@@ -1423,6 +1441,13 @@ argument_list|,
 name|userArgs
 argument_list|)
 decl_stmt|;
+name|keyArgs
+operator|.
+name|setUserName
+argument_list|(
+name|userName
+argument_list|)
+expr_stmt|;
 comment|// this write will create 1st version with one block
 try|try
 init|(

@@ -208,7 +208,20 @@ specifier|private
 name|BitSet
 name|aclBitSet
 decl_stmt|;
-comment|/**    * Constructor for OzoneAcl.    */
+DECL|field|ZERO_BITSET
+specifier|public
+specifier|static
+specifier|final
+name|BitSet
+name|ZERO_BITSET
+init|=
+operator|new
+name|BitSet
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
+comment|/**    * Default constructor.    */
 DECL|method|OzoneAcl ()
 specifier|public
 name|OzoneAcl
