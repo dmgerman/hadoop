@@ -938,6 +938,11 @@ argument_list|(
 literal|"#containers"
 argument_list|)
 operator|.
+name|$style
+argument_list|(
+literal|"width:100%"
+argument_list|)
+operator|.
 name|thead
 argument_list|()
 operator|.
