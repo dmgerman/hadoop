@@ -88,6 +88,12 @@ name|long
 name|getLength
 parameter_list|()
 function_decl|;
+comment|/**    * Get cache address if applicable.    * Return -1 if not applicable.    */
+DECL|method|getAddress ()
+name|long
+name|getAddress
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

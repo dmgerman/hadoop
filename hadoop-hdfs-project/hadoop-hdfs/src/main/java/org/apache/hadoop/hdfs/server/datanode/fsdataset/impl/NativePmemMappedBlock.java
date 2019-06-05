@@ -70,6 +70,22 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|nativeio
+operator|.
+name|NativeIO
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -97,7 +113,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Represents an HDFS block that is mapped to persistent memory by DataNode  * with mapped byte buffer. PMDK is NOT involved in this implementation.  */
+comment|/**  * Represents an HDFS block that is mapped to persistent memory by the DataNode.  */
 end_comment
 
 begin_class
@@ -109,10 +125,10 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Unstable
-DECL|class|PmemMappedBlock
+DECL|class|NativePmemMappedBlock
 specifier|public
 class|class
-name|PmemMappedBlock
+name|NativePmemMappedBlock
 implements|implements
 name|MappableBlock
 block|{
@@ -127,10 +143,18 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|PmemMappedBlock
+name|NativePmemMappedBlock
 operator|.
 name|class
 argument_list|)
+decl_stmt|;
+DECL|field|pmemMappedAddress
+specifier|private
+name|long
+name|pmemMappedAddress
+init|=
+operator|-
+literal|1L
 decl_stmt|;
 DECL|field|length
 specifier|private
@@ -142,9 +166,12 @@ specifier|private
 name|ExtendedBlockId
 name|key
 decl_stmt|;
-DECL|method|PmemMappedBlock (long length, ExtendedBlockId key)
-name|PmemMappedBlock
+DECL|method|NativePmemMappedBlock (long pmemMappedAddress, long length, ExtendedBlockId key)
+name|NativePmemMappedBlock
 parameter_list|(
+name|long
+name|pmemMappedAddress
+parameter_list|,
 name|long
 name|length
 parameter_list|,
@@ -157,6 +184,12 @@ name|length
 operator|>
 literal|0
 assert|;
+name|this
+operator|.
+name|pmemMappedAddress
+operator|=
+name|pmemMappedAddress
+expr_stmt|;
 name|this
 operator|.
 name|length
@@ -191,8 +224,7 @@ name|getAddress
 parameter_list|()
 block|{
 return|return
-operator|-
-literal|1L
+name|pmemMappedAddress
 return|;
 block|}
 annotation|@
@@ -202,6 +234,14 @@ specifier|public
 name|void
 name|close
 parameter_list|()
+block|{
+if|if
+condition|(
+name|pmemMappedAddress
+operator|!=
+operator|-
+literal|1L
+condition|)
 block|{
 name|String
 name|cacheFilePath
@@ -218,6 +258,48 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
+comment|// Current libpmem will report error when pmem_unmap is called with
+comment|// length not aligned with page size, although the length is returned
+comment|// by pmem_map_file.
+name|boolean
+name|success
+init|=
+name|NativeIO
+operator|.
+name|POSIX
+operator|.
+name|Pmem
+operator|.
+name|unmapBlock
+argument_list|(
+name|pmemMappedAddress
+argument_list|,
+name|length
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|success
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Failed to unmap the mapped file from "
+operator|+
+literal|"pmem address: "
+operator|+
+name|pmemMappedAddress
+argument_list|)
+throw|;
+block|}
+name|pmemMappedAddress
+operator|=
+operator|-
+literal|1L
+expr_stmt|;
 name|FsDatasetUtil
 operator|.
 name|deleteMappedFile
@@ -251,13 +333,14 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to delete the mapped File: {}!"
+literal|"IOException occurred for block {}!"
 argument_list|,
-name|cacheFilePath
+name|key
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}

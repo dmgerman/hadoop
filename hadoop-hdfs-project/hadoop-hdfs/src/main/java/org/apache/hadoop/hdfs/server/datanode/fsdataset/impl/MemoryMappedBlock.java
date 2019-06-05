@@ -151,6 +151,19 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getAddress ()
+specifier|public
+name|long
+name|getAddress
+parameter_list|()
+block|{
+return|return
+operator|-
+literal|1L
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void

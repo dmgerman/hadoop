@@ -473,6 +473,18 @@ return|return
 literal|true
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|isNativeLoader ()
+specifier|public
+name|boolean
+name|isNativeLoader
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
 block|}
 end_class
 

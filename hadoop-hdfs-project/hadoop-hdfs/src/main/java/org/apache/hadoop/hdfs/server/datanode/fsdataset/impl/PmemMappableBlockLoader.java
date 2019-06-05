@@ -217,7 +217,15 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Initializing cache loader: PmemMappableBlockLoader."
+literal|"Initializing cache loader: "
+operator|+
+name|this
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|DNConf
@@ -529,6 +537,18 @@ DECL|method|isTransientCache ()
 specifier|public
 name|boolean
 name|isTransientCache
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|isNativeLoader ()
+specifier|public
+name|boolean
+name|isNativeLoader
 parameter_list|()
 block|{
 return|return
