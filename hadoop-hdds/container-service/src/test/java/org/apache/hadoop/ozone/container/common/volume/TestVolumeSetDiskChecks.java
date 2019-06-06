@@ -565,6 +565,11 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|volumeSet
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Verify that bad volumes are filtered at startup.    * @throws IOException    */
 annotation|@
@@ -675,6 +680,11 @@ name|numBadVolumes
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|volumeSet
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Verify that all volumes are added to fail list if all volumes are bad.    */
 annotation|@
@@ -770,6 +780,11 @@ argument_list|()
 argument_list|,
 literal|0
 argument_list|)
+expr_stmt|;
+name|volumeSet
+operator|.
+name|shutdown
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Update configuration with the specified number of Datanode    * storage directories.    * @param conf    * @param numDirs    */

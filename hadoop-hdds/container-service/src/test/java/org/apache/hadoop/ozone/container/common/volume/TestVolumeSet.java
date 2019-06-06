@@ -1317,6 +1317,11 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
+name|volSet
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
 block|}
 finally|finally
 block|{
