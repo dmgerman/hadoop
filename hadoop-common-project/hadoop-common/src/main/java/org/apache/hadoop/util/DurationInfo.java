@@ -60,8 +60,12 @@ end_comment
 
 begin_class
 annotation|@
-name|Public
+name|InterfaceAudience
+operator|.
+name|Private
 annotation|@
+name|InterfaceStability
+operator|.
 name|Unstable
 DECL|class|DurationInfo
 specifier|public
