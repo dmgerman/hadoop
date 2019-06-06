@@ -907,14 +907,7 @@ specifier|public
 name|void
 name|shutdown
 parameter_list|()
-block|{
-comment|// Shutdown the volumes
-name|volumeSet
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
+block|{   }
 comment|/**    * Returns true for exceptions which can be ignored for marking the container    * unhealthy.    * @param result ContainerCommandResponse error code.    * @return true if exception can be ignored, false otherwise.    */
 DECL|method|canIgnoreException (Result result)
 specifier|private

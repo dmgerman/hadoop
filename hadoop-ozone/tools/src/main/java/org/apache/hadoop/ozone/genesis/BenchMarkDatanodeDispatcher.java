@@ -718,6 +718,11 @@ name|String
 argument_list|>
 name|chunks
 decl_stmt|;
+DECL|field|volumeSet
+specifier|private
+name|VolumeSet
+name|volumeSet
+decl_stmt|;
 annotation|@
 name|Setup
 argument_list|(
@@ -809,9 +814,8 @@ operator|new
 name|ContainerSet
 argument_list|()
 decl_stmt|;
-name|VolumeSet
 name|volumeSet
-init|=
+operator|=
 operator|new
 name|VolumeSet
 argument_list|(
@@ -819,7 +823,7 @@ name|datanodeUuid
 argument_list|,
 name|conf
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|StateContext
 name|context
 init|=
@@ -1199,7 +1203,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|dispatcher
+name|volumeSet
 operator|.
 name|shutdown
 argument_list|()
