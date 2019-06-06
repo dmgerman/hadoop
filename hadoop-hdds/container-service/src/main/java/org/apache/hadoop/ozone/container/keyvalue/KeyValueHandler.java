@@ -4598,18 +4598,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|State
-name|currentState
-init|=
+comment|// Move the container to CLOSING state only if it's OPEN
+if|if
+condition|(
 name|container
 operator|.
 name|getContainerState
 argument_list|()
-decl_stmt|;
-comment|// Move the container to CLOSING state only if it's OPEN
-if|if
-condition|(
-name|currentState
 operator|==
 name|State
 operator|.
@@ -4630,10 +4625,10 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|markContainerUhealthy (Container container)
+DECL|method|markContainerUnhealthy (Container container)
 specifier|public
 name|void
-name|markContainerUhealthy
+name|markContainerUnhealthy
 parameter_list|(
 name|Container
 name|container
@@ -4641,13 +4636,29 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// this will mark the container unhealthy and a close container action will
-comment|// be sent from the dispatcher ton SCM to close down this container.
+if|if
+condition|(
+name|container
+operator|.
+name|getContainerState
+argument_list|()
+operator|!=
+name|State
+operator|.
+name|UNHEALTHY
+condition|)
+block|{
 name|container
 operator|.
 name|markContainerUnhealthy
 argument_list|()
 expr_stmt|;
+name|sendICR
+argument_list|(
+name|container
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override

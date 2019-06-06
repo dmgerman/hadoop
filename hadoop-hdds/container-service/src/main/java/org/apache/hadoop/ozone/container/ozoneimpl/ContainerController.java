@@ -517,6 +517,7 @@ expr_stmt|;
 block|}
 comment|/**    * Given a container, returns its handler instance.    *    * @param container Container    * @return handler of the container    */
 DECL|method|getHandler (final Container container)
+specifier|private
 name|Handler
 name|getHandler
 parameter_list|(
@@ -537,12 +538,13 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|getContainerSetIterator ()
+DECL|method|getContainers ()
+specifier|public
 name|Iterator
 argument_list|<
 name|Container
 argument_list|>
-name|getContainerSetIterator
+name|getContainers
 parameter_list|()
 block|{
 return|return

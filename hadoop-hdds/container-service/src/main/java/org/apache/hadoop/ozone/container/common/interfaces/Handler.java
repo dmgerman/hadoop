@@ -625,11 +625,11 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Marks the container Unhealthy. Moves the container to UHEALTHY state.    *    * @param container container to update    * @throws IOException in case of exception    */
-DECL|method|markContainerUhealthy (Container container)
+DECL|method|markContainerUnhealthy (Container container)
 specifier|public
 specifier|abstract
 name|void
-name|markContainerUhealthy
+name|markContainerUnhealthy
 parameter_list|(
 name|Container
 name|container

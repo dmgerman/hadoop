@@ -1820,7 +1820,7 @@ try|try
 block|{
 name|handler
 operator|.
-name|markContainerUhealthy
+name|markContainerUnhealthy
 argument_list|(
 name|container
 argument_list|)
