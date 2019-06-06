@@ -92,6 +92,18 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|HadoopIllegalArgumentException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|classification
 operator|.
 name|InterfaceAudience
@@ -547,7 +559,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|DiskErrorException
+name|HadoopIllegalArgumentException
 argument_list|(
 literal|"Invalid value configured for "
 operator|+
@@ -598,7 +610,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|DiskErrorException
+name|HadoopIllegalArgumentException
 argument_list|(
 literal|"Invalid value configured for "
 operator|+
@@ -834,7 +846,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|DiskErrorException
+name|HadoopIllegalArgumentException
 argument_list|(
 literal|"Invalid value configured for "
 operator|+
