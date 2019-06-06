@@ -704,6 +704,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|LogAggregationContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|NodeReport
 import|;
 end_import
@@ -1546,6 +1564,14 @@ name|log4jPropFile
 init|=
 literal|""
 decl_stmt|;
+comment|// rolling
+DECL|field|rollingFilesPattern
+specifier|private
+name|String
+name|rollingFilesPattern
+init|=
+literal|""
+decl_stmt|;
 comment|// Start time for client
 DECL|field|clientStartTime
 specifier|private
@@ -2275,6 +2301,17 @@ name|opts
 operator|.
 name|addOption
 argument_list|(
+literal|"rolling_log_pattern"
+argument_list|,
+literal|true
+argument_list|,
+literal|"pattern for files that should be aggregated in a rolling fashion"
+argument_list|)
+expr_stmt|;
+name|opts
+operator|.
+name|addOption
+argument_list|(
 literal|"keep_containers_across_application_attempts"
 argument_list|,
 literal|false
@@ -2692,6 +2729,26 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+if|if
+condition|(
+name|cliParser
+operator|.
+name|hasOption
+argument_list|(
+literal|"rolling_log_pattern"
+argument_list|)
+condition|)
+block|{
+name|rollingFilesPattern
+operator|=
+name|cliParser
+operator|.
+name|getOptionValue
+argument_list|(
+literal|"rolling_log_pattern"
+argument_list|)
+expr_stmt|;
 block|}
 if|if
 condition|(
@@ -6179,6 +6236,11 @@ argument_list|(
 name|amQueue
 argument_list|)
 expr_stmt|;
+name|specifyLogAggregationContext
+argument_list|(
+name|appContext
+argument_list|)
+expr_stmt|;
 comment|// Submit the application to the applications manager
 comment|// SubmitApplicationResponse submitResp = applicationsManager.submitApplication(appRequest);
 comment|// Ignore the response as either a valid response object is returned on success
@@ -6207,6 +6269,50 @@ argument_list|(
 name|applicationId
 argument_list|)
 return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|specifyLogAggregationContext (ApplicationSubmissionContext appContext)
+name|void
+name|specifyLogAggregationContext
+parameter_list|(
+name|ApplicationSubmissionContext
+name|appContext
+parameter_list|)
+block|{
+if|if
+condition|(
+operator|!
+name|rollingFilesPattern
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|LogAggregationContext
+name|logAggregationContext
+init|=
+name|LogAggregationContext
+operator|.
+name|newInstance
+argument_list|(
+literal|null
+argument_list|,
+literal|null
+argument_list|,
+name|rollingFilesPattern
+argument_list|,
+literal|""
+argument_list|)
+decl_stmt|;
+name|appContext
+operator|.
+name|setLogAggregationContext
+argument_list|(
+name|logAggregationContext
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Monitor the submitted application for completion.     * Kill application if time expires.     * @param appId Application Id of application to be monitored    * @return true if application completed successfully    * @throws YarnException    * @throws IOException    */
 DECL|method|monitorApplication (ApplicationId appId)
