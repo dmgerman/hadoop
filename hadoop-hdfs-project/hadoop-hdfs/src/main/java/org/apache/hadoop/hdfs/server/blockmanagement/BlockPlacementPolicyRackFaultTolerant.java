@@ -177,10 +177,12 @@ operator|.
 name|getNumOfRacks
 argument_list|()
 decl_stmt|;
+comment|// HDFS-14527 return default when numOfRacks = 0 to avoid
+comment|// ArithmeticException when calc maxNodesPerRack at following logic.
 if|if
 condition|(
 name|numOfRacks
-operator|==
+operator|<=
 literal|1
 operator|||
 name|totalNumOfReplicas
