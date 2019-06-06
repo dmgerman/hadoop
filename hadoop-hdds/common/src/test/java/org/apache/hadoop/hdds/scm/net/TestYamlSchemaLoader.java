@@ -233,7 +233,7 @@ operator|.
 name|getInstance
 argument_list|()
 operator|.
-name|loadSchemaFromYaml
+name|loadSchemaFromFile
 argument_list|(
 name|filePath
 argument_list|)
@@ -351,7 +351,7 @@ operator|.
 name|getInstance
 argument_list|()
 operator|.
-name|loadSchemaFromYaml
+name|loadSchemaFromFile
 argument_list|(
 name|filePath
 argument_list|)
@@ -385,7 +385,7 @@ name|classLoader
 operator|.
 name|getResource
 argument_list|(
-literal|"./networkTopologyTestFiles/good.xml"
+literal|"./networkTopologyTestFiles/good.yaml"
 argument_list|)
 operator|.
 name|getPath
@@ -400,7 +400,7 @@ operator|.
 name|getInstance
 argument_list|()
 operator|.
-name|loadSchemaFromXml
+name|loadSchemaFromFile
 argument_list|(
 name|filePath
 argument_list|)
@@ -426,11 +426,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"file "
-operator|+
-name|filePath
-operator|+
-literal|" is not found"
+literal|"not found"
 argument_list|)
 argument_list|)
 expr_stmt|;

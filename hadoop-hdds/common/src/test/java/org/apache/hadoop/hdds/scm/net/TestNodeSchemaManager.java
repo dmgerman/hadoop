@@ -464,7 +464,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Fail to load schema file:"
+literal|"Failed to load schema file:"
 operator|+
 name|filePath
 argument_list|)

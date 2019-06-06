@@ -82,6 +82,24 @@ name|hdds
 operator|.
 name|scm
 operator|.
+name|net
+operator|.
+name|NetworkTopology
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
 name|node
 operator|.
 name|NodeManager
@@ -167,7 +185,7 @@ name|class
 argument_list|)
 decl_stmt|;
 comment|/**    * Construct a random Block Placement policy.    *    * @param nodeManager nodeManager    * @param conf Config    */
-DECL|method|SCMContainerPlacementRandom (final NodeManager nodeManager, final Configuration conf)
+DECL|method|SCMContainerPlacementRandom (final NodeManager nodeManager, final Configuration conf, final NetworkTopology networkTopology, final boolean fallback)
 specifier|public
 name|SCMContainerPlacementRandom
 parameter_list|(
@@ -178,6 +196,14 @@ parameter_list|,
 specifier|final
 name|Configuration
 name|conf
+parameter_list|,
+specifier|final
+name|NetworkTopology
+name|networkTopology
+parameter_list|,
+specifier|final
+name|boolean
+name|fallback
 parameter_list|)
 block|{
 name|super

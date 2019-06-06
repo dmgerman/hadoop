@@ -2886,7 +2886,7 @@ name|tree
 operator|.
 name|append
 argument_list|(
-literal|"Expected number of leaves:"
+literal|"Number of leaves:"
 argument_list|)
 expr_stmt|;
 name|tree
