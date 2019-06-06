@@ -707,6 +707,14 @@ name|certSerialId
 argument_list|)
 expr_stmt|;
 block|}
+name|builder
+operator|.
+name|setNetworkLocation
+argument_list|(
+name|getNetworkLocation
+argument_list|()
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|Port

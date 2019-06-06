@@ -740,6 +740,10 @@ block|,
 name|ClosePipelineSubcommand
 operator|.
 name|class
+block|,
+name|TopologySubcommand
+operator|.
+name|class
 block|}
 argument_list|,
 name|mixinStandardHelpOptions
