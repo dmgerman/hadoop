@@ -4118,7 +4118,9 @@ name|shell
 argument_list|,
 name|args
 argument_list|,
-literal|"For input string: \"invalid-length\""
+literal|"Invalid value for option "
+operator|+
+literal|"'--length': 'invalid-length' is not an int"
 argument_list|)
 expr_stmt|;
 block|}
