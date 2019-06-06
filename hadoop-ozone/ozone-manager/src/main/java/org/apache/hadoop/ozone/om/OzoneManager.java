@@ -13046,6 +13046,16 @@ return|return
 name|auditMap
 return|;
 block|}
+DECL|method|getAuditLogger ()
+specifier|public
+name|AuditLogger
+name|getAuditLogger
+parameter_list|()
+block|{
+return|return
+name|AUDIT
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|buildAuditMessageForSuccess (AuditAction op, Map<String, String> auditMap)
