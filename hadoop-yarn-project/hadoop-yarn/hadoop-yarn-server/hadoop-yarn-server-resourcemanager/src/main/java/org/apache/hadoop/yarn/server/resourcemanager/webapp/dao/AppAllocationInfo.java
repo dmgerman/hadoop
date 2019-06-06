@@ -231,6 +231,11 @@ specifier|private
 name|String
 name|allocationState
 decl_stmt|;
+DECL|field|diagnostic
+specifier|private
+name|String
+name|diagnostic
+decl_stmt|;
 DECL|field|requestAllocation
 specifier|private
 name|List
@@ -326,6 +331,15 @@ name|getAppState
 argument_list|()
 operator|.
 name|name
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|diagnostic
+operator|=
+name|allocation
+operator|.
+name|getDiagnostic
 argument_list|()
 expr_stmt|;
 name|Map
@@ -483,6 +497,16 @@ parameter_list|()
 block|{
 return|return
 name|requestAllocation
+return|;
+block|}
+DECL|method|getDiagnostic ()
+specifier|public
+name|String
+name|getDiagnostic
+parameter_list|()
+block|{
+return|return
+name|diagnostic
 return|;
 block|}
 block|}

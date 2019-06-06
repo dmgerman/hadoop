@@ -3557,7 +3557,7 @@ name|allocations
 argument_list|,
 literal|"allocationState"
 argument_list|,
-literal|"ACCEPTED"
+literal|"ALLOCATED"
 argument_list|)
 expr_stmt|;
 comment|//Check request allocation
@@ -4038,7 +4038,7 @@ argument_list|)
 argument_list|,
 literal|"allocationState"
 argument_list|,
-literal|"ACCEPTED"
+literal|"ALLOCATED"
 argument_list|)
 expr_stmt|;
 block|}

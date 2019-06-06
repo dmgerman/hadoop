@@ -507,9 +507,7 @@ literal|null
 argument_list|,
 name|priorityStr
 argument_list|,
-name|ActivityState
-operator|.
-name|SKIPPED
+name|appState
 argument_list|,
 name|diagnostic
 argument_list|,
@@ -541,9 +539,7 @@ name|requestName
 argument_list|,
 name|priorityStr
 argument_list|,
-name|ActivityState
-operator|.
-name|SKIPPED
+name|appState
 argument_list|,
 name|ActivityDiagnosticConstant
 operator|.
@@ -583,9 +579,7 @@ operator|.
 name|toString
 argument_list|()
 argument_list|,
-name|ActivityState
-operator|.
-name|SKIPPED
+name|appState
 argument_list|,
 name|schedulerKey
 operator|!=

@@ -2193,7 +2193,7 @@ name|allocationObj
 argument_list|,
 literal|"allocationState"
 argument_list|,
-literal|"ACCEPTED"
+literal|"ALLOCATED"
 argument_list|)
 expr_stmt|;
 name|JSONObject
@@ -3448,7 +3448,7 @@ name|allocationObj
 argument_list|,
 literal|"allocationState"
 argument_list|,
-literal|"ACCEPTED"
+literal|"ALLOCATED"
 argument_list|)
 expr_stmt|;
 name|requestAllocationObj
@@ -4672,7 +4672,7 @@ name|allocationObj
 argument_list|,
 literal|"allocationState"
 argument_list|,
-literal|"ACCEPTED"
+literal|"ALLOCATED"
 argument_list|)
 expr_stmt|;
 name|requestAllocationObj

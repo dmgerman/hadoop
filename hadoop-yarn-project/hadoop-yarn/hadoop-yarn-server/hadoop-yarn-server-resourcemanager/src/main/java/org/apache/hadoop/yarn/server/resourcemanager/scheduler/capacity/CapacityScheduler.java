@@ -9063,7 +9063,7 @@ argument_list|()
 argument_list|,
 name|ActivityState
 operator|.
-name|ACCEPTED
+name|SKIPPED
 argument_list|,
 name|ActivityDiagnosticConstant
 operator|.
@@ -9476,6 +9476,40 @@ argument_list|(
 literal|"This node or this node partition doesn't have available or "
 operator|+
 literal|"killable resource"
+argument_list|)
+expr_stmt|;
+name|ActivitiesLogger
+operator|.
+name|QUEUE
+operator|.
+name|recordQueueActivity
+argument_list|(
+name|activitiesManager
+argument_list|,
+literal|null
+argument_list|,
+literal|""
+argument_list|,
+name|getRootQueue
+argument_list|()
+operator|.
+name|getQueueName
+argument_list|()
+argument_list|,
+name|ActivityState
+operator|.
+name|REJECTED
+argument_list|,
+name|ActivityDiagnosticConstant
+operator|.
+name|NOT_ABLE_TO_ACCESS_PARTITION
+operator|+
+literal|" "
+operator|+
+name|candidates
+operator|.
+name|getPartition
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
