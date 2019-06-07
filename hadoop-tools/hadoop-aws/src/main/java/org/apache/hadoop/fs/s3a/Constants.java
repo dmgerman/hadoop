@@ -1148,10 +1148,6 @@ init|=
 literal|"fs.s3a.s3guard.cli.prune.age"
 decl_stmt|;
 comment|/**    * The region of the DynamoDB service.    *    * This config has no default value. If the user does not set this, the    * S3Guard will operate table in the associated S3 bucket region.    */
-annotation|@
-name|InterfaceStability
-operator|.
-name|Unstable
 DECL|field|S3GUARD_DDB_REGION_KEY
 specifier|public
 specifier|static
@@ -1162,10 +1158,6 @@ init|=
 literal|"fs.s3a.s3guard.ddb.region"
 decl_stmt|;
 comment|/**    * The DynamoDB table name to use.    *    * This config has no default value. If the user does not set this, the    * S3Guard implementation will use the respective S3 bucket name.    */
-annotation|@
-name|InterfaceStability
-operator|.
-name|Unstable
 DECL|field|S3GUARD_DDB_TABLE_NAME_KEY
 specifier|public
 specifier|static
@@ -1176,10 +1168,6 @@ init|=
 literal|"fs.s3a.s3guard.ddb.table"
 decl_stmt|;
 comment|/**    * A prefix for adding tags to the DDB Table upon creation.    *    * For example:    * fs.s3a.s3guard.ddb.table.tag.mytag    */
-annotation|@
-name|InterfaceStability
-operator|.
-name|Unstable
 DECL|field|S3GUARD_DDB_TABLE_TAG
 specifier|public
 specifier|static
@@ -1189,25 +1177,7 @@ name|S3GUARD_DDB_TABLE_TAG
 init|=
 literal|"fs.s3a.s3guard.ddb.table.tag."
 decl_stmt|;
-comment|/**    * Test table name to use during DynamoDB integration test.    *    * The table will be modified, and deleted in the end of the tests.    * If this value is not set, the integration tests that would be destructive    * won't run.    */
-annotation|@
-name|InterfaceStability
-operator|.
-name|Unstable
-DECL|field|S3GUARD_DDB_TEST_TABLE_NAME_KEY
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|S3GUARD_DDB_TEST_TABLE_NAME_KEY
-init|=
-literal|"fs.s3a.s3guard.ddb.test.table"
-decl_stmt|;
-comment|/**    * Whether to create the DynamoDB table if the table does not exist.    */
-annotation|@
-name|InterfaceStability
-operator|.
-name|Unstable
+comment|/**    * Whether to create the DynamoDB table if the table does not exist.    * Value: {@value}.    */
 DECL|field|S3GUARD_DDB_TABLE_CREATE_KEY
 specifier|public
 specifier|static
@@ -1217,10 +1187,7 @@ name|S3GUARD_DDB_TABLE_CREATE_KEY
 init|=
 literal|"fs.s3a.s3guard.ddb.table.create"
 decl_stmt|;
-annotation|@
-name|InterfaceStability
-operator|.
-name|Unstable
+comment|/**    * Read capacity when creating a table.    * When it and the write capacity are both "0", a per-request table is    * created.    * Value: {@value}.    */
 DECL|field|S3GUARD_DDB_TABLE_CAPACITY_READ_KEY
 specifier|public
 specifier|static
@@ -1230,6 +1197,7 @@ name|S3GUARD_DDB_TABLE_CAPACITY_READ_KEY
 init|=
 literal|"fs.s3a.s3guard.ddb.table.capacity.read"
 decl_stmt|;
+comment|/**    * Default read capacity when creating a table.    * Value: {@value}.    */
 DECL|field|S3GUARD_DDB_TABLE_CAPACITY_READ_DEFAULT
 specifier|public
 specifier|static
@@ -1237,12 +1205,9 @@ specifier|final
 name|long
 name|S3GUARD_DDB_TABLE_CAPACITY_READ_DEFAULT
 init|=
-literal|500
+literal|0
 decl_stmt|;
-annotation|@
-name|InterfaceStability
-operator|.
-name|Unstable
+comment|/**    * Write capacity when creating a table.    * When it and the read capacity are both "0", a per-request table is    * created.    * Value: {@value}.    */
 DECL|field|S3GUARD_DDB_TABLE_CAPACITY_WRITE_KEY
 specifier|public
 specifier|static
@@ -1252,6 +1217,7 @@ name|S3GUARD_DDB_TABLE_CAPACITY_WRITE_KEY
 init|=
 literal|"fs.s3a.s3guard.ddb.table.capacity.write"
 decl_stmt|;
+comment|/**    * Default write capacity when creating a table.    * Value: {@value}.    */
 DECL|field|S3GUARD_DDB_TABLE_CAPACITY_WRITE_DEFAULT
 specifier|public
 specifier|static
@@ -1259,7 +1225,7 @@ specifier|final
 name|long
 name|S3GUARD_DDB_TABLE_CAPACITY_WRITE_DEFAULT
 init|=
-literal|100
+literal|0
 decl_stmt|;
 comment|/**    * The maximum put or delete requests per BatchWriteItem request.    *    * Refer to Amazon API reference for this limit.    */
 DECL|field|S3GUARD_DDB_BATCH_WRITE_REQUEST_LIMIT
@@ -1271,10 +1237,6 @@ name|S3GUARD_DDB_BATCH_WRITE_REQUEST_LIMIT
 init|=
 literal|25
 decl_stmt|;
-annotation|@
-name|InterfaceStability
-operator|.
-name|Unstable
 DECL|field|S3GUARD_DDB_MAX_RETRIES
 specifier|public
 specifier|static
@@ -1294,10 +1256,6 @@ name|S3GUARD_DDB_MAX_RETRIES_DEFAULT
 init|=
 name|DEFAULT_MAX_ERROR_RETRIES
 decl_stmt|;
-annotation|@
-name|InterfaceStability
-operator|.
-name|Unstable
 DECL|field|S3GUARD_DDB_THROTTLE_RETRY_INTERVAL
 specifier|public
 specifier|static
@@ -1340,10 +1298,6 @@ init|=
 literal|25
 decl_stmt|;
 comment|/**    * The default "Null" metadata store: {@value}.    */
-annotation|@
-name|InterfaceStability
-operator|.
-name|Unstable
 DECL|field|S3GUARD_METASTORE_NULL
 specifier|public
 specifier|static
@@ -1416,10 +1370,6 @@ operator|*
 literal|1000
 decl_stmt|;
 comment|/**    * Use DynamoDB for the metadata: {@value}.    */
-annotation|@
-name|InterfaceStability
-operator|.
-name|Unstable
 DECL|field|S3GUARD_METASTORE_DYNAMO
 specifier|public
 specifier|static

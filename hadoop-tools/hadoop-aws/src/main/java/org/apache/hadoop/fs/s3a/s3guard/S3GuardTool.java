@@ -2187,7 +2187,11 @@ name|REGION_FLAG
 operator|+
 literal|" option and an S3A path\n"
 operator|+
-literal|"  is not supported."
+literal|"  is not supported.\n"
+operator|+
+literal|"To create a table with per-request billing, set the read and write\n"
+operator|+
+literal|"capacities to 0"
 decl_stmt|;
 DECL|method|Init (Configuration conf)
 name|Init

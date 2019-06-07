@@ -354,24 +354,6 @@ name|fs
 operator|.
 name|s3a
 operator|.
-name|S3ATestUtils
-operator|.
-name|getTestDynamoTablePrefix
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|s3a
-operator|.
 name|S3AUtils
 operator|.
 name|setBucketOption
@@ -1130,13 +1112,13 @@ literal|"-"
 operator|+
 name|READ_FLAG
 argument_list|,
-literal|"2"
+literal|"0"
 argument_list|,
 literal|"-"
 operator|+
 name|WRITE_FLAG
 argument_list|,
-literal|"2"
+literal|"0"
 argument_list|,
 literal|"-"
 operator|+
@@ -1324,14 +1306,22 @@ name|DESCRIPTION
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"No Dynamo diagnostics in output "
+operator|+
+name|info
+argument_list|,
+name|info
+operator|.
+name|contains
+argument_list|(
+name|DESCRIPTION
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// get the current values to set again
 comment|// play with the set-capacity option
-name|DDBCapacities
-name|original
-init|=
-name|getCapacities
-argument_list|()
-decl_stmt|;
 name|String
 name|fsURI
 init|=
@@ -1344,99 +1334,12 @@ operator|.
 name|toString
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-operator|!
+name|DDBCapacities
 name|original
-operator|.
-name|isOnDemandTable
-argument_list|()
-condition|)
-block|{
-comment|// classic provisioned table
-name|assertTrue
-argument_list|(
-literal|"Wrong billing mode in "
-operator|+
-name|info
-argument_list|,
-name|info
-operator|.
-name|contains
-argument_list|(
-name|BILLING_MODE_PROVISIONED
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|String
-name|capacityOut
 init|=
-name|exec
-argument_list|(
-name|newSetCapacity
+name|getCapacities
 argument_list|()
-argument_list|,
-name|SetCapacity
-operator|.
-name|NAME
-argument_list|,
-name|fsURI
-argument_list|)
 decl_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Set Capacity output=\n{}"
-argument_list|,
-name|capacityOut
-argument_list|)
-expr_stmt|;
-name|capacityOut
-operator|=
-name|exec
-argument_list|(
-name|newSetCapacity
-argument_list|()
-argument_list|,
-name|SetCapacity
-operator|.
-name|NAME
-argument_list|,
-literal|"-"
-operator|+
-name|READ_FLAG
-argument_list|,
-name|original
-operator|.
-name|getReadStr
-argument_list|()
-argument_list|,
-literal|"-"
-operator|+
-name|WRITE_FLAG
-argument_list|,
-name|original
-operator|.
-name|getWriteStr
-argument_list|()
-argument_list|,
-name|fsURI
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Set Capacity output=\n{}"
-argument_list|,
-name|capacityOut
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-comment|// on demand table
 name|assertTrue
 argument_list|(
 literal|"Wrong billing mode in "
@@ -1451,7 +1354,7 @@ name|BILLING_MODE_PER_REQUEST
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// on demand tables fail here, so expect that
+comment|// per-request tables fail here, so expect that
 name|intercept
 argument_list|(
 name|IOException
@@ -1473,18 +1376,6 @@ name|NAME
 argument_list|,
 name|fsURI
 argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-comment|// that call does not change the values
-name|original
-operator|.
-name|checkEquals
-argument_list|(
-literal|"unchanged"
-argument_list|,
-name|getCapacities
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Destroy MetadataStore

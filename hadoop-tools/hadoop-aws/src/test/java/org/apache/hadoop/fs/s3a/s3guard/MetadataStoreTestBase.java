@@ -316,24 +316,6 @@ name|s3a
 operator|.
 name|S3ATestUtils
 operator|.
-name|isMetadataStoreAuthoritative
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|s3a
-operator|.
-name|S3ATestUtils
-operator|.
 name|metadataStorePersistsAuthoritativeBit
 import|;
 end_import

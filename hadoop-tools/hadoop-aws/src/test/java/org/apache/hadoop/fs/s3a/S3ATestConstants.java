@@ -348,6 +348,13 @@ argument_list|(
 name|TEST_SESSION_TOKEN_DURATION_SECONDS
 argument_list|)
 decl_stmt|;
+comment|/**    * Test table name to use during DynamoDB integration tests in    * {@code ITestDynamoDBMetadataStore}.    *    * The table will be modified, and deleted in the end of the tests.    * If this value is not set, the integration tests that would be destructive    * won't run.    */
+DECL|field|S3GUARD_DDB_TEST_TABLE_NAME_KEY
+name|String
+name|S3GUARD_DDB_TEST_TABLE_NAME_KEY
+init|=
+literal|"fs.s3a.s3guard.ddb.test.table"
+decl_stmt|;
 block|}
 end_interface
 

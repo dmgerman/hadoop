@@ -42,6 +42,22 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|amazonaws
+operator|.
+name|services
+operator|.
+name|dynamodbv2
+operator|.
+name|model
+operator|.
+name|ProvisionedThroughputDescription
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|junit
@@ -69,6 +85,30 @@ operator|.
 name|READ_CAPACITY
 import|;
 end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|s3guard
+operator|.
+name|DynamoDBMetadataStore
+operator|.
+name|WRITE_CAPACITY
+import|;
+end_import
+
+begin_comment
+comment|/**  * Tuple of read and write capacity of a DDB table.  */
+end_comment
 
 begin_class
 DECL|class|DDBCapacities
@@ -154,47 +194,6 @@ argument_list|(
 name|write
 argument_list|)
 return|;
-block|}
-DECL|method|checkEquals (String text, DDBCapacities that)
-name|void
-name|checkEquals
-parameter_list|(
-name|String
-name|text
-parameter_list|,
-name|DDBCapacities
-name|that
-parameter_list|)
-throws|throws
-name|Exception
-block|{
-if|if
-condition|(
-operator|!
-name|this
-operator|.
-name|equals
-argument_list|(
-name|that
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|Exception
-argument_list|(
-name|text
-operator|+
-literal|" expected = "
-operator|+
-name|this
-operator|+
-literal|"; actual = "
-operator|+
-name|that
-argument_list|)
-throw|;
-block|}
 block|}
 annotation|@
 name|Override
@@ -334,7 +333,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    * Is the the capacity that of a pay-on-demand table?    * @return true if the capacities are both 0.    */
+comment|/**    * Is the the capacity that of an On-Demand table?    * @return true if the capacities are both 0.    */
 DECL|method|isOnDemandTable ()
 specifier|public
 name|boolean
@@ -410,11 +409,36 @@ name|diagnostics
 operator|.
 name|get
 argument_list|(
-name|DynamoDBMetadataStore
-operator|.
 name|WRITE_CAPACITY
 argument_list|)
 argument_list|)
+argument_list|)
+return|;
+block|}
+comment|/**    * Given a throughput information from table.describe(), build    * a DDBCapacities object.    * @param throughput throughput description.    * @return the capacities    */
+DECL|method|extractCapacities ( ProvisionedThroughputDescription throughput)
+specifier|public
+specifier|static
+name|DDBCapacities
+name|extractCapacities
+parameter_list|(
+name|ProvisionedThroughputDescription
+name|throughput
+parameter_list|)
+block|{
+return|return
+operator|new
+name|DDBCapacities
+argument_list|(
+name|throughput
+operator|.
+name|getReadCapacityUnits
+argument_list|()
+argument_list|,
+name|throughput
+operator|.
+name|getWriteCapacityUnits
+argument_list|()
 argument_list|)
 return|;
 block|}
