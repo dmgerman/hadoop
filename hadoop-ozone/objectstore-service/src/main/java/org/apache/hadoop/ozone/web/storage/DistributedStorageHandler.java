@@ -3192,8 +3192,6 @@ name|keyInfo
 argument_list|,
 name|xceiverClientManager
 argument_list|,
-name|storageContainerLocationClient
-argument_list|,
 name|args
 operator|.
 name|getRequestID

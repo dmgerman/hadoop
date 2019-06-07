@@ -398,14 +398,17 @@ return|return
 name|checksumData
 return|;
 block|}
-comment|/**    * Verify that this ChecksumData matches with the input ChecksumData.    * @param that the ChecksumData to match with    * @return true if checksums match    * @throws OzoneChecksumException    */
-DECL|method|verifyChecksumDataMatches (ChecksumData that)
+comment|/**    * Verify that this ChecksumData from startIndex to endIndex matches with the    * provided ChecksumData.    * The checksum at startIndex of this ChecksumData will be matched with the    * checksum at index 0 of the provided ChecksumData, and checksum at    * (startIndex + 1) of this ChecksumData with checksum at index 1 of    * provided ChecksumData and so on.    * @param that the ChecksumData to match with    * @param startIndex index of the first checksum from this ChecksumData    *                   which will be used to compare checksums    * @return true if checksums match    * @throws OzoneChecksumException    */
+DECL|method|verifyChecksumDataMatches (ChecksumData that, int startIndex)
 specifier|public
 name|boolean
 name|verifyChecksumDataMatches
 parameter_list|(
 name|ChecksumData
 name|that
+parameter_list|,
+name|int
+name|startIndex
 parameter_list|)
 throws|throws
 name|OzoneChecksumException
@@ -455,33 +458,18 @@ literal|"checksums"
 argument_list|)
 throw|;
 block|}
-if|if
-condition|(
-name|this
-operator|.
-name|checksums
-operator|.
-name|size
-argument_list|()
-operator|!=
+name|int
+name|numChecksums
+init|=
 name|that
 operator|.
 name|checksums
 operator|.
 name|size
 argument_list|()
-condition|)
+decl_stmt|;
+try|try
 block|{
-throw|throw
-operator|new
-name|OzoneChecksumException
-argument_list|(
-literal|"Original and Computed checksumData's "
-operator|+
-literal|"has different number of checksums"
-argument_list|)
-throw|;
-block|}
 comment|// Verify that checksum matches at each index
 for|for
 control|(
@@ -492,12 +480,7 @@ literal|0
 init|;
 name|index
 operator|<
-name|this
-operator|.
-name|checksums
-operator|.
-name|size
-argument_list|()
+name|numChecksums
 condition|;
 name|index
 operator|++
@@ -514,6 +497,8 @@ name|checksums
 operator|.
 name|get
 argument_list|(
+name|startIndex
+operator|+
 name|index
 argument_list|)
 argument_list|,
@@ -537,6 +522,42 @@ name|index
 argument_list|)
 throw|;
 block|}
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|ArrayIndexOutOfBoundsException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|OzoneChecksumException
+argument_list|(
+literal|"Computed checksum has "
+operator|+
+name|numChecksums
+operator|+
+literal|" number of checksums. Original checksum has "
+operator|+
+operator|(
+name|this
+operator|.
+name|checksums
+operator|.
+name|size
+argument_list|()
+operator|-
+name|startIndex
+operator|)
+operator|+
+literal|" number of checksums "
+operator|+
+literal|"starting from index "
+operator|+
+name|startIndex
+argument_list|)
+throw|;
 block|}
 return|return
 literal|true

@@ -6351,8 +6351,6 @@ name|keyInfo
 argument_list|,
 name|xceiverClientManager
 argument_list|,
-name|storageContainerLocationClient
-argument_list|,
 name|requestId
 argument_list|,
 name|verifyChecksum

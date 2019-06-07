@@ -940,8 +940,8 @@ name|getDigest
 argument_list|()
 return|;
 block|}
-comment|/**    * Computes the ChecksumData for the input data and verifies that it    * matches with that of the input checksumData.    * @param byteString input data    * @param checksumData checksumData to match with    * @throws OzoneChecksumException is thrown if checksums do not match    */
-DECL|method|verifyChecksum ( ByteString byteString, ChecksumData checksumData)
+comment|/**    * Computes the ChecksumData for the input data and verifies that it    * matches with that of the input checksumData, starting from index    * startIndex.    * @param byteString input data    * @param checksumData checksumData to match with    * @param startIndex index of first checksum in checksumData to match with    *                   data's computed checksum.    * @throws OzoneChecksumException is thrown if checksums do not match    */
+DECL|method|verifyChecksum (ByteString byteString, ChecksumData checksumData, int startIndex)
 specifier|public
 specifier|static
 name|boolean
@@ -952,6 +952,9 @@ name|byteString
 parameter_list|,
 name|ChecksumData
 name|checksumData
+parameter_list|,
+name|int
+name|startIndex
 parameter_list|)
 throws|throws
 name|OzoneChecksumException
@@ -965,6 +968,8 @@ name|toByteArray
 argument_list|()
 argument_list|,
 name|checksumData
+argument_list|,
+name|startIndex
 argument_list|)
 return|;
 block|}
@@ -981,6 +986,37 @@ name|data
 parameter_list|,
 name|ChecksumData
 name|checksumData
+parameter_list|)
+throws|throws
+name|OzoneChecksumException
+block|{
+return|return
+name|verifyChecksum
+argument_list|(
+name|data
+argument_list|,
+name|checksumData
+argument_list|,
+literal|0
+argument_list|)
+return|;
+block|}
+comment|/**    * Computes the ChecksumData for the input data and verifies that it    * matches with that of the input checksumData.    * @param data input data    * @param checksumData checksumData to match with    * @param startIndex index of first checksum in checksumData to match with    *                   data's computed checksum.    * @throws OzoneChecksumException is thrown if checksums do not match    */
+DECL|method|verifyChecksum (byte[] data, ChecksumData checksumData, int startIndex)
+specifier|public
+specifier|static
+name|boolean
+name|verifyChecksum
+parameter_list|(
+name|byte
+index|[]
+name|data
+parameter_list|,
+name|ChecksumData
+name|checksumData
+parameter_list|,
+name|int
+name|startIndex
 parameter_list|)
 throws|throws
 name|OzoneChecksumException
@@ -1048,6 +1084,8 @@ operator|.
 name|verifyChecksumDataMatches
 argument_list|(
 name|computedChecksumData
+argument_list|,
+name|startIndex
 argument_list|)
 return|;
 block|}
