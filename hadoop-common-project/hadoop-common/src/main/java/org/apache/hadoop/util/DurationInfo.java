@@ -37,6 +37,8 @@ operator|.
 name|classification
 operator|.
 name|InterfaceAudience
+operator|.
+name|Public
 import|;
 end_import
 
@@ -51,6 +53,8 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
+operator|.
+name|Unstable
 import|;
 end_import
 
@@ -60,12 +64,8 @@ end_comment
 
 begin_class
 annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
+name|Public
 annotation|@
-name|InterfaceStability
-operator|.
 name|Unstable
 DECL|class|DurationInfo
 specifier|public
