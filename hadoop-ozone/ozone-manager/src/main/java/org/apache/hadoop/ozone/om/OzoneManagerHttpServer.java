@@ -72,6 +72,38 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConsts
+operator|.
+name|OZONE_OM_DB_CHECKPOINT_HTTP_ENDPOINT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConsts
+operator|.
+name|OZONE_OM_SERVICE_LIST_HTTP_ENDPOINT
+import|;
+end_import
+
 begin_comment
 comment|/**  * HttpServer wrapper for the OzoneManager.  */
 end_comment
@@ -108,7 +140,7 @@ name|addServlet
 argument_list|(
 literal|"serviceList"
 argument_list|,
-literal|"/serviceList"
+name|OZONE_OM_SERVICE_LIST_HTTP_ENDPOINT
 argument_list|,
 name|ServiceListJSONServlet
 operator|.
@@ -119,7 +151,7 @@ name|addServlet
 argument_list|(
 literal|"dbCheckpoint"
 argument_list|,
-literal|"/dbCheckpoint"
+name|OZONE_OM_DB_CHECKPOINT_HTTP_ENDPOINT
 argument_list|,
 name|OMDBCheckpointServlet
 operator|.

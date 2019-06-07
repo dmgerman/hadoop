@@ -1184,6 +1184,22 @@ name|HTTP_OK
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConsts
+operator|.
+name|OZONE_OM_SERVICE_LIST_HTTP_ENDPOINT
+import|;
+end_import
+
 begin_comment
 comment|/**  * Ozone Client REST protocol implementation. It uses REST protocol to  * connect to Ozone Handler that executes client calls.  */
 end_comment
@@ -1550,7 +1566,7 @@ literal|"http://"
 operator|+
 name|httpAddress
 operator|+
-literal|"/serviceList"
+name|OZONE_OM_SERVICE_LIST_HTTP_ENDPOINT
 argument_list|)
 decl_stmt|;
 name|HttpEntity

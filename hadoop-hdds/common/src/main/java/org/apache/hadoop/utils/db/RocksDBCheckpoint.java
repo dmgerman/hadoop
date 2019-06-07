@@ -132,6 +132,13 @@ name|checkpointCreationTimeTaken
 init|=
 literal|0L
 decl_stmt|;
+DECL|field|ratisSnapshotIndex
+specifier|private
+name|long
+name|ratisSnapshotIndex
+init|=
+literal|0L
+decl_stmt|;
 DECL|method|RocksDBCheckpoint (Path checkpointLocation)
 specifier|public
 name|RocksDBCheckpoint
@@ -275,6 +282,36 @@ name|toFile
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|setRatisSnapshotIndex (long omRatisSnapshotIndex)
+specifier|public
+name|void
+name|setRatisSnapshotIndex
+parameter_list|(
+name|long
+name|omRatisSnapshotIndex
+parameter_list|)
+block|{
+name|this
+operator|.
+name|ratisSnapshotIndex
+operator|=
+name|omRatisSnapshotIndex
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getRatisSnapshotIndex ()
+specifier|public
+name|long
+name|getRatisSnapshotIndex
+parameter_list|()
+block|{
+return|return
+name|ratisSnapshotIndex
+return|;
 block|}
 block|}
 end_class

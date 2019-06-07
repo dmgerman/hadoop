@@ -64,6 +64,22 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|OzoneConsts
+operator|.
+name|OZONE_OM_DB_CHECKPOINT_HTTP_ENDPOINT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|recon
 operator|.
 name|ReconConstants
@@ -598,14 +614,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|dbCheckpointEndPoint
-specifier|private
-specifier|final
-name|String
-name|dbCheckpointEndPoint
-init|=
-literal|"/dbCheckpoint"
-decl_stmt|;
 DECL|field|httpClient
 specifier|private
 specifier|final
@@ -797,7 +805,7 @@ literal|"http://"
 operator|+
 name|ozoneManagerHttpAddress
 operator|+
-name|dbCheckpointEndPoint
+name|OZONE_OM_DB_CHECKPOINT_HTTP_ENDPOINT
 expr_stmt|;
 if|if
 condition|(
@@ -810,7 +818,7 @@ literal|"https://"
 operator|+
 name|ozoneManagerHttpsAddress
 operator|+
-name|dbCheckpointEndPoint
+name|OZONE_OM_DB_CHECKPOINT_HTTP_ENDPOINT
 expr_stmt|;
 block|}
 name|boolean

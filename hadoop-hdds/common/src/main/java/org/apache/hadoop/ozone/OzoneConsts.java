@@ -404,6 +404,25 @@ name|OZONE_REQUEST
 init|=
 literal|"request"
 decl_stmt|;
+comment|// OM Http server endpoints
+DECL|field|OZONE_OM_SERVICE_LIST_HTTP_ENDPOINT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_OM_SERVICE_LIST_HTTP_ENDPOINT
+init|=
+literal|"/serviceList"
+decl_stmt|;
+DECL|field|OZONE_OM_DB_CHECKPOINT_HTTP_ENDPOINT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_OM_DB_CHECKPOINT_HTTP_ENDPOINT
+init|=
+literal|"/dbCheckpoint"
+decl_stmt|;
 comment|// Ozone File System scheme
 DECL|field|OZONE_URI_SCHEME
 specifier|public
@@ -1453,6 +1472,17 @@ name|String
 name|OM_RATIS_SNAPSHOT_INDEX
 init|=
 literal|"ratisSnapshotIndex"
+decl_stmt|;
+comment|// OM Http request parameter to be used while downloading DB checkpoint
+comment|// from OM leader to follower
+DECL|field|OM_RATIS_SNAPSHOT_BEFORE_DB_CHECKPOINT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OM_RATIS_SNAPSHOT_BEFORE_DB_CHECKPOINT
+init|=
+literal|"snapshotBeforeCheckpoint"
 decl_stmt|;
 block|}
 end_class

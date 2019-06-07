@@ -82,6 +82,21 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Set the OM Ratis snapshot index corresponding to the OM DB checkpoint.    * The snapshot index is the latest snapshot index saved by ratis    * snapshots. It is not guaranteed to be the last ratis index applied to    * the OM DB state.    * @param omRatisSnapshotIndex the saved ratis snapshot index    */
+DECL|method|setRatisSnapshotIndex (long omRatisSnapshotIndex)
+name|void
+name|setRatisSnapshotIndex
+parameter_list|(
+name|long
+name|omRatisSnapshotIndex
+parameter_list|)
+function_decl|;
+comment|/**    * Get the OM Ratis snapshot index corresponding to the OM DB checkpoint.    * The ratis snapshot index indicates upto which index is definitely    * included in the DB checkpoint. It is not guaranteed to be the last ratis    * log index applied to the DB checkpoint.    */
+DECL|method|getRatisSnapshotIndex ()
+name|long
+name|getRatisSnapshotIndex
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

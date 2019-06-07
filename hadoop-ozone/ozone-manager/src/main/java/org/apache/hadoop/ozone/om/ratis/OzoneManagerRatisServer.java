@@ -36,20 +36,6 @@ end_import
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Strings
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -264,11 +250,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdds
+name|ozone
 operator|.
-name|scm
-operator|.
-name|HddsServerUtil
+name|OmUtils
 import|;
 end_import
 
@@ -2010,6 +1994,8 @@ comment|// Set Ratis storage directory
 name|String
 name|storageDir
 init|=
+name|OmUtils
+operator|.
 name|getOMRatisDirectory
 argument_list|(
 name|conf
@@ -3141,53 +3127,6 @@ return|return
 name|this
 operator|.
 name|raftPeerId
-return|;
-block|}
-comment|/**    * Get the local directory where ratis logs will be stored.    */
-DECL|method|getOMRatisDirectory (Configuration conf)
-specifier|public
-specifier|static
-name|String
-name|getOMRatisDirectory
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-block|{
-name|String
-name|storageDir
-init|=
-name|conf
-operator|.
-name|get
-argument_list|(
-name|OMConfigKeys
-operator|.
-name|OZONE_OM_RATIS_STORAGE_DIR
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|Strings
-operator|.
-name|isNullOrEmpty
-argument_list|(
-name|storageDir
-argument_list|)
-condition|)
-block|{
-name|storageDir
-operator|=
-name|HddsServerUtil
-operator|.
-name|getDefaultRatisDirectory
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-block|}
-return|return
-name|storageDir
 return|;
 block|}
 DECL|method|getRaftGroupIdFromOmServiceId (String omServiceId)
