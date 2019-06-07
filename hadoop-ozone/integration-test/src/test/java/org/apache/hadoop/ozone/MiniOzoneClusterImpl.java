@@ -1326,8 +1326,6 @@ name|StorageContainerManager
 operator|.
 name|createSCM
 argument_list|(
-literal|null
-argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
@@ -2334,8 +2332,6 @@ name|StorageContainerManager
 operator|.
 name|createSCM
 argument_list|(
-literal|null
-argument_list|,
 name|conf
 argument_list|)
 return|;
