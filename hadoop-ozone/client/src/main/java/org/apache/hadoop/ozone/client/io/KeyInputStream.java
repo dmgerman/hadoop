@@ -327,7 +327,7 @@ literal|0
 expr_stmt|;
 block|}
 comment|/**    * For each block in keyInfo, add a BlockInputStream to blockStreams.    */
-DECL|method|getFromOmKeyInfo (OmKeyInfo keyInfo, XceiverClientManager xceiverClientManager, String requestId, boolean verifyChecksum)
+DECL|method|getFromOmKeyInfo (OmKeyInfo keyInfo, XceiverClientManager xceiverClientManager, boolean verifyChecksum)
 specifier|public
 specifier|static
 name|LengthInputStream
@@ -338,9 +338,6 @@ name|keyInfo
 parameter_list|,
 name|XceiverClientManager
 name|xceiverClientManager
-parameter_list|,
-name|String
-name|requestId
 parameter_list|,
 name|boolean
 name|verifyChecksum
@@ -380,8 +377,6 @@ name|keyLocationInfos
 argument_list|,
 name|xceiverClientManager
 argument_list|,
-name|requestId
-argument_list|,
 name|verifyChecksum
 argument_list|)
 expr_stmt|;
@@ -397,7 +392,7 @@ name|length
 argument_list|)
 return|;
 block|}
-DECL|method|initialize (String keyName, List<OmKeyLocationInfo> blockInfos, XceiverClientManager xceiverClientManager, String requestId, boolean verifyChecksum)
+DECL|method|initialize (String keyName, List<OmKeyLocationInfo> blockInfos, XceiverClientManager xceiverClientManager, boolean verifyChecksum)
 specifier|private
 specifier|synchronized
 name|void
@@ -414,9 +409,6 @@ name|blockInfos
 parameter_list|,
 name|XceiverClientManager
 name|xceiverClientManager
-parameter_list|,
-name|String
-name|requestId
 parameter_list|,
 name|boolean
 name|verifyChecksum
@@ -491,8 +483,6 @@ name|omKeyLocationInfo
 argument_list|,
 name|xceiverClientManager
 argument_list|,
-name|requestId
-argument_list|,
 name|verifyChecksum
 argument_list|)
 expr_stmt|;
@@ -521,7 +511,7 @@ name|keyLength
 expr_stmt|;
 block|}
 comment|/**    * Append another BlockInputStream to the end of the list. Note that the    * BlockInputStream is only created here and not initialized. The    * BlockInputStream is initialized when a read operation is performed on    * the block for the first time.    */
-DECL|method|addStream (OmKeyLocationInfo blockInfo, XceiverClientManager xceiverClientMngr, String clientRequestId, boolean verifyChecksum)
+DECL|method|addStream (OmKeyLocationInfo blockInfo, XceiverClientManager xceiverClientMngr, boolean verifyChecksum)
 specifier|private
 specifier|synchronized
 name|void
@@ -532,9 +522,6 @@ name|blockInfo
 parameter_list|,
 name|XceiverClientManager
 name|xceiverClientMngr
-parameter_list|,
-name|String
-name|clientRequestId
 parameter_list|,
 name|boolean
 name|verifyChecksum
@@ -568,8 +555,6 @@ name|getToken
 argument_list|()
 argument_list|,
 name|verifyChecksum
-argument_list|,
-name|clientRequestId
 argument_list|,
 name|xceiverClientMngr
 argument_list|)

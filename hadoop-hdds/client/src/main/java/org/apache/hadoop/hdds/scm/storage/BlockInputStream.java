@@ -398,12 +398,6 @@ specifier|final
 name|boolean
 name|verifyChecksum
 decl_stmt|;
-DECL|field|traceID
-specifier|private
-specifier|final
-name|String
-name|traceID
-decl_stmt|;
 DECL|field|xceiverClientManager
 specifier|private
 name|XceiverClientManager
@@ -473,7 +467,7 @@ specifier|private
 name|int
 name|chunkIndexOfPrevPosition
 decl_stmt|;
-DECL|method|BlockInputStream (BlockID blockId, long blockLen, Pipeline pipeline, Token<OzoneBlockTokenIdentifier> token, boolean verifyChecksum, String traceId, XceiverClientManager xceiverClientManager)
+DECL|method|BlockInputStream (BlockID blockId, long blockLen, Pipeline pipeline, Token<OzoneBlockTokenIdentifier> token, boolean verifyChecksum, XceiverClientManager xceiverClientManager)
 specifier|public
 name|BlockInputStream
 parameter_list|(
@@ -494,9 +488,6 @@ name|token
 parameter_list|,
 name|boolean
 name|verifyChecksum
-parameter_list|,
-name|String
-name|traceId
 parameter_list|,
 name|XceiverClientManager
 name|xceiverClientManager
@@ -531,12 +522,6 @@ operator|.
 name|verifyChecksum
 operator|=
 name|verifyChecksum
-expr_stmt|;
-name|this
-operator|.
-name|traceID
-operator|=
-name|traceId
 expr_stmt|;
 name|this
 operator|.
@@ -814,8 +799,6 @@ argument_list|(
 name|xceiverClient
 argument_list|,
 name|datanodeBlockID
-argument_list|,
-name|traceID
 argument_list|)
 decl_stmt|;
 name|chunks
@@ -877,8 +860,6 @@ argument_list|(
 name|chunkInfo
 argument_list|,
 name|blockID
-argument_list|,
-name|traceID
 argument_list|,
 name|xceiverClient
 argument_list|,

@@ -289,12 +289,6 @@ specifier|final
 name|int
 name|bytesPerChecksum
 decl_stmt|;
-DECL|field|requestId
-specifier|private
-specifier|final
-name|String
-name|requestId
-decl_stmt|;
 DECL|field|chunkSize
 specifier|private
 specifier|final
@@ -429,12 +423,6 @@ operator|.
 name|pipeline
 operator|=
 name|pipeline
-expr_stmt|;
-name|this
-operator|.
-name|requestId
-operator|=
-name|requestId
 expr_stmt|;
 name|this
 operator|.
@@ -581,8 +569,6 @@ argument_list|,
 name|xceiverClientManager
 argument_list|,
 name|pipeline
-argument_list|,
-name|requestId
 argument_list|,
 name|chunkSize
 argument_list|,
@@ -1405,16 +1391,6 @@ parameter_list|()
 block|{
 return|return
 name|pipeline
-return|;
-block|}
-DECL|method|getRequestId ()
-specifier|public
-name|String
-name|getRequestId
-parameter_list|()
-block|{
-return|return
-name|requestId
 return|;
 block|}
 DECL|method|getChunkSize ()

@@ -251,8 +251,6 @@ argument_list|,
 literal|true
 argument_list|,
 literal|null
-argument_list|,
-literal|null
 argument_list|)
 block|{
 specifier|private
@@ -526,8 +524,6 @@ argument_list|,
 literal|null
 argument_list|,
 literal|true
-argument_list|,
-literal|null
 argument_list|,
 literal|null
 argument_list|)

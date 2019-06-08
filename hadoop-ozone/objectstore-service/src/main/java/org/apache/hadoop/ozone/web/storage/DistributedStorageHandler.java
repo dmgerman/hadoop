@@ -3192,11 +3192,6 @@ name|keyInfo
 argument_list|,
 name|xceiverClientManager
 argument_list|,
-name|args
-operator|.
-name|getRequestID
-argument_list|()
-argument_list|,
 name|verifyChecksum
 argument_list|)
 return|;

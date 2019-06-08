@@ -390,16 +390,6 @@ name|Test
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|UUID
-import|;
-end_import
-
 begin_comment
 comment|/**  * Test Container calls.  */
 end_comment
@@ -563,17 +553,6 @@ operator|.
 name|GetCommittedBlockLengthResponseProto
 name|response
 decl_stmt|;
-name|String
-name|traceID
-init|=
-name|UUID
-operator|.
-name|randomUUID
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-decl_stmt|;
 name|ContainerWithPipeline
 name|container
 init|=
@@ -632,8 +611,6 @@ argument_list|(
 name|client
 argument_list|,
 name|containerID
-argument_list|,
-name|traceID
 argument_list|,
 literal|null
 argument_list|)
@@ -731,8 +708,6 @@ argument_list|(
 name|client
 argument_list|,
 name|blockID
-argument_list|,
-name|traceID
 argument_list|)
 expr_stmt|;
 comment|// make sure the block ids in the request and response are same.
@@ -790,17 +765,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|String
-name|traceID
-init|=
-name|UUID
-operator|.
-name|randomUUID
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-decl_stmt|;
 name|ContainerWithPipeline
 name|container
 init|=
@@ -854,8 +818,6 @@ name|client
 argument_list|,
 name|containerID
 argument_list|,
-name|traceID
-argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
@@ -878,8 +840,6 @@ name|client
 argument_list|,
 name|containerID
 argument_list|,
-name|traceID
-argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
@@ -894,8 +854,6 @@ argument_list|(
 name|client
 argument_list|,
 name|blockID
-argument_list|,
-name|traceID
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -952,17 +910,6 @@ name|ContainerProtos
 operator|.
 name|PutBlockResponseProto
 name|response
-decl_stmt|;
-name|String
-name|traceID
-init|=
-name|UUID
-operator|.
-name|randomUUID
-argument_list|()
-operator|.
-name|toString
-argument_list|()
 decl_stmt|;
 name|ContainerWithPipeline
 name|container
@@ -1023,8 +970,6 @@ argument_list|(
 name|client
 argument_list|,
 name|containerID
-argument_list|,
-name|traceID
 argument_list|,
 literal|null
 argument_list|)

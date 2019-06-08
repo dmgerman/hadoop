@@ -630,12 +630,6 @@ specifier|final
 name|String
 name|key
 decl_stmt|;
-DECL|field|traceID
-specifier|private
-specifier|final
-name|String
-name|traceID
-decl_stmt|;
 DECL|field|containerBlockData
 specifier|private
 specifier|final
@@ -760,13 +754,13 @@ name|DatanodeDetails
 argument_list|>
 name|failedServers
 decl_stmt|;
-comment|/**    * Creates a new BlockOutputStream.    *    * @param blockID              block ID    * @param key                  chunk key    * @param xceiverClientManager client manager that controls client    * @param pipeline             pipeline where block will be written    * @param traceID              container protocol call args    * @param chunkSize            chunk size    * @param bufferPool           pool of buffers    * @param streamBufferFlushSize flush size    * @param streamBufferMaxSize   max size of the currentBuffer    * @param watchTimeout          watch timeout    * @param checksumType          checksum type    * @param bytesPerChecksum      Bytes per checksum    */
+comment|/**    * Creates a new BlockOutputStream.    *    * @param blockID              block ID    * @param key                  chunk key    * @param xceiverClientManager client manager that controls client    * @param pipeline             pipeline where block will be written    * @param chunkSize            chunk size    * @param bufferPool           pool of buffers    * @param streamBufferFlushSize flush size    * @param streamBufferMaxSize   max size of the currentBuffer    * @param watchTimeout          watch timeout    * @param checksumType          checksum type    * @param bytesPerChecksum      Bytes per checksum    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
 literal|"parameternumber"
 argument_list|)
-DECL|method|BlockOutputStream (BlockID blockID, String key, XceiverClientManager xceiverClientManager, Pipeline pipeline, String traceID, int chunkSize, long streamBufferFlushSize, long streamBufferMaxSize, long watchTimeout, BufferPool bufferPool, ChecksumType checksumType, int bytesPerChecksum)
+DECL|method|BlockOutputStream (BlockID blockID, String key, XceiverClientManager xceiverClientManager, Pipeline pipeline, int chunkSize, long streamBufferFlushSize, long streamBufferMaxSize, long watchTimeout, BufferPool bufferPool, ChecksumType checksumType, int bytesPerChecksum)
 specifier|public
 name|BlockOutputStream
 parameter_list|(
@@ -781,9 +775,6 @@ name|xceiverClientManager
 parameter_list|,
 name|Pipeline
 name|pipeline
-parameter_list|,
-name|String
-name|traceID
 parameter_list|,
 name|int
 name|chunkSize
@@ -820,12 +811,6 @@ operator|.
 name|key
 operator|=
 name|key
-expr_stmt|;
-name|this
-operator|.
-name|traceID
-operator|=
-name|traceID
 expr_stmt|;
 name|this
 operator|.
@@ -1747,21 +1732,6 @@ argument_list|(
 name|byteBufferList
 argument_list|)
 expr_stmt|;
-name|String
-name|requestId
-init|=
-name|traceID
-operator|+
-name|ContainerProtos
-operator|.
-name|Type
-operator|.
-name|PutBlock
-operator|+
-name|chunkIndex
-operator|+
-name|blockID
-decl_stmt|;
 name|CompletableFuture
 argument_list|<
 name|ContainerProtos
@@ -1783,8 +1753,6 @@ name|containerBlockData
 operator|.
 name|build
 argument_list|()
-argument_list|,
-name|requestId
 argument_list|)
 decl_stmt|;
 name|CompletableFuture
@@ -2706,25 +2674,6 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-comment|// generate a unique requestId
-name|String
-name|requestId
-init|=
-name|traceID
-operator|+
-name|ContainerProtos
-operator|.
-name|Type
-operator|.
-name|WriteChunk
-operator|+
-name|chunkIndex
-operator|+
-name|chunkInfo
-operator|.
-name|getChunkName
-argument_list|()
-decl_stmt|;
 try|try
 block|{
 name|XceiverClientReply
@@ -2739,8 +2688,6 @@ argument_list|,
 name|blockID
 argument_list|,
 name|data
-argument_list|,
-name|requestId
 argument_list|)
 decl_stmt|;
 name|CompletableFuture

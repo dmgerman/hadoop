@@ -4159,17 +4159,6 @@ argument_list|(
 name|keyName
 argument_list|)
 expr_stmt|;
-name|String
-name|requestId
-init|=
-name|UUID
-operator|.
-name|randomUUID
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-decl_stmt|;
 name|OmKeyArgs
 name|keyArgs
 init|=
@@ -4216,8 +4205,6 @@ return|return
 name|createInputStream
 argument_list|(
 name|keyInfo
-argument_list|,
-name|requestId
 argument_list|)
 return|;
 block|}
@@ -5994,14 +5981,6 @@ return|return
 name|createInputStream
 argument_list|(
 name|keyInfo
-argument_list|,
-name|UUID
-operator|.
-name|randomUUID
-argument_list|()
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 return|;
 block|}
@@ -6326,16 +6305,13 @@ name|obj
 argument_list|)
 return|;
 block|}
-DECL|method|createInputStream (OmKeyInfo keyInfo, String requestId)
+DECL|method|createInputStream (OmKeyInfo keyInfo)
 specifier|private
 name|OzoneInputStream
 name|createInputStream
 parameter_list|(
 name|OmKeyInfo
 name|keyInfo
-parameter_list|,
-name|String
-name|requestId
 parameter_list|)
 throws|throws
 name|IOException
@@ -6350,8 +6326,6 @@ argument_list|(
 name|keyInfo
 argument_list|,
 name|xceiverClientManager
-argument_list|,
-name|requestId
 argument_list|,
 name|verifyChecksum
 argument_list|)

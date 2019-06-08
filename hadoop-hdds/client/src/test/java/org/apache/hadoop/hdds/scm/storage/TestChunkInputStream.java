@@ -387,8 +387,6 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
@@ -446,7 +444,7 @@ name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
-DECL|method|DummyChunkInputStream (ChunkInfo chunkInfo, BlockID blockId, String traceId, XceiverClientSpi xceiverClient, boolean verifyChecksum)
+DECL|method|DummyChunkInputStream (ChunkInfo chunkInfo, BlockID blockId, XceiverClientSpi xceiverClient, boolean verifyChecksum)
 name|DummyChunkInputStream
 parameter_list|(
 name|ChunkInfo
@@ -454,9 +452,6 @@ name|chunkInfo
 parameter_list|,
 name|BlockID
 name|blockId
-parameter_list|,
-name|String
-name|traceId
 parameter_list|,
 name|XceiverClientSpi
 name|xceiverClient
@@ -471,15 +466,13 @@ name|chunkInfo
 argument_list|,
 name|blockId
 argument_list|,
-name|traceId
-argument_list|,
 name|xceiverClient
 argument_list|,
 name|verifyChecksum
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|DummyChunkInputStream (ChunkInfo chunkInfo, BlockID blockId, String traceId, XceiverClientSpi xceiverClient, boolean verifyChecksum, byte[] data)
+DECL|method|DummyChunkInputStream (ChunkInfo chunkInfo, BlockID blockId, XceiverClientSpi xceiverClient, boolean verifyChecksum, byte[] data)
 specifier|public
 name|DummyChunkInputStream
 parameter_list|(
@@ -488,9 +481,6 @@ name|chunkInfo
 parameter_list|,
 name|BlockID
 name|blockId
-parameter_list|,
-name|String
-name|traceId
 parameter_list|,
 name|XceiverClientSpi
 name|xceiverClient
@@ -508,8 +498,6 @@ argument_list|(
 name|chunkInfo
 argument_list|,
 name|blockId
-argument_list|,
-name|traceId
 argument_list|,
 name|xceiverClient
 argument_list|,

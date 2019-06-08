@@ -38,20 +38,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|lang3
-operator|.
-name|RandomStringUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|hdds
@@ -906,18 +892,6 @@ name|nonExistent1
 argument_list|)
 expr_stmt|;
 comment|// However container call should succeed because of refcount on the client.
-name|String
-name|traceID1
-init|=
-literal|"trace"
-operator|+
-name|RandomStringUtils
-operator|.
-name|randomNumeric
-argument_list|(
-literal|4
-argument_list|)
-decl_stmt|;
 name|ContainerProtocolCalls
 operator|.
 name|createContainer
@@ -931,8 +905,6 @@ argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
-argument_list|,
-name|traceID1
 argument_list|,
 literal|null
 argument_list|)
@@ -968,8 +940,6 @@ argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
-argument_list|,
-name|traceID1
 argument_list|,
 literal|null
 argument_list|)
@@ -1269,18 +1239,6 @@ argument_list|)
 expr_stmt|;
 comment|// Any container operation should now fail
 name|String
-name|traceID2
-init|=
-literal|"trace"
-operator|+
-name|RandomStringUtils
-operator|.
-name|randomNumeric
-argument_list|(
-literal|4
-argument_list|)
-decl_stmt|;
-name|String
 name|expectedMessage
 init|=
 literal|"This channel is not connected."
@@ -1300,8 +1258,6 @@ argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
-argument_list|,
-name|traceID2
 argument_list|,
 literal|null
 argument_list|)

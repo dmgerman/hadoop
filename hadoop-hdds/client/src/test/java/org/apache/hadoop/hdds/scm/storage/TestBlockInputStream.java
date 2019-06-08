@@ -432,8 +432,6 @@ argument_list|,
 literal|false
 argument_list|,
 literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -616,7 +614,7 @@ name|DummyBlockInputStream
 extends|extends
 name|BlockInputStream
 block|{
-DECL|method|DummyBlockInputStream (BlockID blockId, long blockLen, Pipeline pipeline, Token<OzoneBlockTokenIdentifier> token, boolean verifyChecksum, String traceId, XceiverClientManager xceiverClientManager)
+DECL|method|DummyBlockInputStream (BlockID blockId, long blockLen, Pipeline pipeline, Token<OzoneBlockTokenIdentifier> token, boolean verifyChecksum, XceiverClientManager xceiverClientManager)
 name|DummyBlockInputStream
 parameter_list|(
 name|BlockID
@@ -637,9 +635,6 @@ parameter_list|,
 name|boolean
 name|verifyChecksum
 parameter_list|,
-name|String
-name|traceId
-parameter_list|,
 name|XceiverClientManager
 name|xceiverClientManager
 parameter_list|)
@@ -655,8 +650,6 @@ argument_list|,
 name|token
 argument_list|,
 name|verifyChecksum
-argument_list|,
-name|traceId
 argument_list|,
 name|xceiverClientManager
 argument_list|)
@@ -706,8 +699,6 @@ expr|new
 name|DummyChunkInputStream
 argument_list|(
 name|chunkInfo
-argument_list|,
-literal|null
 argument_list|,
 literal|null
 argument_list|,

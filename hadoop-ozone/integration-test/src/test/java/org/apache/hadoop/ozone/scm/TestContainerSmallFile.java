@@ -366,16 +366,6 @@ name|ExpectedException
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|UUID
-import|;
-end_import
-
 begin_comment
 comment|/**  * Test Container calls.  */
 end_comment
@@ -546,17 +536,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|String
-name|traceID
-init|=
-name|UUID
-operator|.
-name|randomUUID
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-decl_stmt|;
 name|ContainerWithPipeline
 name|container
 init|=
@@ -605,8 +584,6 @@ operator|.
 name|getContainerID
 argument_list|()
 argument_list|,
-name|traceID
-argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
@@ -638,8 +615,6 @@ literal|"data123"
 operator|.
 name|getBytes
 argument_list|()
-argument_list|,
-name|traceID
 argument_list|)
 expr_stmt|;
 name|ContainerProtos
@@ -654,8 +629,6 @@ argument_list|(
 name|client
 argument_list|,
 name|blockID
-argument_list|,
-name|traceID
 argument_list|)
 decl_stmt|;
 name|String
@@ -701,17 +674,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|String
-name|traceID
-init|=
-name|UUID
-operator|.
-name|randomUUID
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-decl_stmt|;
 name|ContainerWithPipeline
 name|container
 init|=
@@ -759,8 +721,6 @@ argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
-argument_list|,
-name|traceID
 argument_list|,
 literal|null
 argument_list|)
@@ -810,8 +770,6 @@ argument_list|(
 name|client
 argument_list|,
 name|blockID
-argument_list|,
-name|traceID
 argument_list|)
 decl_stmt|;
 name|xceiverClientManager
@@ -834,17 +792,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|String
-name|traceID
-init|=
-name|UUID
-operator|.
-name|randomUUID
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-decl_stmt|;
 name|long
 name|nonExistContainerID
 init|=
@@ -898,8 +845,6 @@ operator|.
 name|getContainerID
 argument_list|()
 argument_list|,
-name|traceID
-argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
@@ -931,8 +876,6 @@ literal|"data123"
 operator|.
 name|getBytes
 argument_list|()
-argument_list|,
-name|traceID
 argument_list|)
 expr_stmt|;
 name|thrown
@@ -969,8 +912,6 @@ name|getTestBlockID
 argument_list|(
 name|nonExistContainerID
 argument_list|)
-argument_list|,
-name|traceID
 argument_list|)
 decl_stmt|;
 name|xceiverClientManager
@@ -993,17 +934,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|String
-name|traceID
-init|=
-name|UUID
-operator|.
-name|randomUUID
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-decl_stmt|;
 name|ContainerWithPipeline
 name|container
 init|=
@@ -1053,8 +983,6 @@ operator|.
 name|getContainerID
 argument_list|()
 argument_list|,
-name|traceID
-argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
@@ -1091,8 +1019,6 @@ literal|"data123"
 operator|.
 name|getBytes
 argument_list|()
-argument_list|,
-name|traceID
 argument_list|)
 decl_stmt|;
 name|long
@@ -1128,8 +1054,6 @@ argument_list|(
 name|client
 argument_list|,
 name|blockID1
-argument_list|,
-name|traceID
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1192,8 +1116,6 @@ literal|"data123"
 operator|.
 name|getBytes
 argument_list|()
-argument_list|,
-name|traceID
 argument_list|)
 expr_stmt|;
 try|try
@@ -1215,8 +1137,6 @@ argument_list|(
 name|client
 argument_list|,
 name|blockID1
-argument_list|,
-name|traceID
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1269,8 +1189,6 @@ argument_list|(
 name|client
 argument_list|,
 name|blockID1
-argument_list|,
-name|traceID
 argument_list|)
 decl_stmt|;
 name|String

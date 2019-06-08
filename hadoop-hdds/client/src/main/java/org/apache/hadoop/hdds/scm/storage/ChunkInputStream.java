@@ -353,12 +353,6 @@ specifier|final
 name|BlockID
 name|blockID
 decl_stmt|;
-DECL|field|traceID
-specifier|private
-specifier|final
-name|String
-name|traceID
-decl_stmt|;
 DECL|field|xceiverClient
 specifier|private
 name|XceiverClientSpi
@@ -427,7 +421,7 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
-DECL|method|ChunkInputStream (ChunkInfo chunkInfo, BlockID blockId, String traceId, XceiverClientSpi xceiverClient, boolean verifyChecksum)
+DECL|method|ChunkInputStream (ChunkInfo chunkInfo, BlockID blockId, XceiverClientSpi xceiverClient, boolean verifyChecksum)
 name|ChunkInputStream
 parameter_list|(
 name|ChunkInfo
@@ -435,9 +429,6 @@ name|chunkInfo
 parameter_list|,
 name|BlockID
 name|blockId
-parameter_list|,
-name|String
-name|traceId
 parameter_list|,
 name|XceiverClientSpi
 name|xceiverClient
@@ -466,12 +457,6 @@ operator|.
 name|blockID
 operator|=
 name|blockId
-expr_stmt|;
-name|this
-operator|.
-name|traceID
-operator|=
-name|traceId
 expr_stmt|;
 name|this
 operator|.
@@ -1265,8 +1250,6 @@ argument_list|,
 name|readChunkInfo
 argument_list|,
 name|blockID
-argument_list|,
-name|traceID
 argument_list|,
 name|validators
 argument_list|)

@@ -763,8 +763,8 @@ specifier|private
 name|ContainerProtocolCalls
 parameter_list|()
 block|{   }
-comment|/**    * Calls the container protocol to get a container block.    *    * @param xceiverClient client to perform call    * @param datanodeBlockID blockID to identify container    * @param traceID container protocol call args    * @return container protocol get block response    * @throws IOException if there is an I/O error while performing the call    */
-DECL|method|getBlock (XceiverClientSpi xceiverClient, DatanodeBlockID datanodeBlockID, String traceID)
+comment|/**    * Calls the container protocol to get a container block.    *    * @param xceiverClient client to perform call    * @param datanodeBlockID blockID to identify container    * @return container protocol get block response    * @throws IOException if there is an I/O error while performing the call    */
+DECL|method|getBlock (XceiverClientSpi xceiverClient, DatanodeBlockID datanodeBlockID)
 specifier|public
 specifier|static
 name|GetBlockResponseProto
@@ -775,9 +775,6 @@ name|xceiverClient
 parameter_list|,
 name|DatanodeBlockID
 name|datanodeBlockID
-parameter_list|,
-name|String
-name|traceID
 parameter_list|)
 throws|throws
 name|IOException
@@ -834,11 +831,6 @@ name|datanodeBlockID
 operator|.
 name|getContainerID
 argument_list|()
-argument_list|)
-operator|.
-name|setTraceID
-argument_list|(
-name|traceID
 argument_list|)
 operator|.
 name|setDatanodeUuid
@@ -905,13 +897,13 @@ name|getGetBlock
 argument_list|()
 return|;
 block|}
-comment|/**    * Calls the container protocol to get the length of a committed block.    *    * @param xceiverClient client to perform call    * @param blockID blockId for the Block    * @param traceID container protocol call args    * @return container protocol getLastCommittedBlockLength response    * @throws IOException if there is an I/O error while performing the call    */
+comment|/**    * Calls the container protocol to get the length of a committed block.    *    * @param xceiverClient client to perform call    * @param blockID blockId for the Block    * @return container protocol getLastCommittedBlockLength response    * @throws IOException if there is an I/O error while performing the call    */
 specifier|public
 specifier|static
 name|ContainerProtos
 operator|.
 name|GetCommittedBlockLengthResponseProto
-DECL|method|getCommittedBlockLength ( XceiverClientSpi xceiverClient, BlockID blockID, String traceID)
+DECL|method|getCommittedBlockLength ( XceiverClientSpi xceiverClient, BlockID blockID)
 name|getCommittedBlockLength
 parameter_list|(
 name|XceiverClientSpi
@@ -919,9 +911,6 @@ name|xceiverClient
 parameter_list|,
 name|BlockID
 name|blockID
-parameter_list|,
-name|String
-name|traceID
 parameter_list|)
 throws|throws
 name|IOException
@@ -985,11 +974,6 @@ name|blockID
 operator|.
 name|getContainerID
 argument_list|()
-argument_list|)
-operator|.
-name|setTraceID
-argument_list|(
-name|traceID
 argument_list|)
 operator|.
 name|setDatanodeUuid
@@ -1063,8 +1047,8 @@ name|getGetCommittedBlockLength
 argument_list|()
 return|;
 block|}
-comment|/**    * Calls the container protocol to put a container block.    *    * @param xceiverClient client to perform call    * @param containerBlockData block data to identify container    * @param traceID container protocol call args    * @return putBlockResponse    * @throws IOException if there is an I/O error while performing the call    */
-DECL|method|putBlock ( XceiverClientSpi xceiverClient, BlockData containerBlockData, String traceID)
+comment|/**    * Calls the container protocol to put a container block.    *    * @param xceiverClient client to perform call    * @param containerBlockData block data to identify container    * @return putBlockResponse    * @throws IOException if there is an I/O error while performing the call    */
+DECL|method|putBlock ( XceiverClientSpi xceiverClient, BlockData containerBlockData)
 specifier|public
 specifier|static
 name|ContainerProtos
@@ -1077,9 +1061,6 @@ name|xceiverClient
 parameter_list|,
 name|BlockData
 name|containerBlockData
-parameter_list|,
-name|String
-name|traceID
 parameter_list|)
 throws|throws
 name|IOException
@@ -1139,11 +1120,6 @@ argument_list|()
 operator|.
 name|getContainerID
 argument_list|()
-argument_list|)
-operator|.
-name|setTraceID
-argument_list|(
-name|traceID
 argument_list|)
 operator|.
 name|setDatanodeUuid
@@ -1213,8 +1189,8 @@ name|getPutBlock
 argument_list|()
 return|;
 block|}
-comment|/**    * Calls the container protocol to put a container block.    *    * @param xceiverClient client to perform call    * @param containerBlockData block data to identify container    * @param traceID container protocol call args    * @return putBlockResponse    * @throws IOException if there is an error while performing the call    * @throws InterruptedException    * @throws ExecutionException    */
-DECL|method|putBlockAsync ( XceiverClientSpi xceiverClient, BlockData containerBlockData, String traceID)
+comment|/**    * Calls the container protocol to put a container block.    *    * @param xceiverClient client to perform call    * @param containerBlockData block data to identify container    * @return putBlockResponse    * @throws IOException if there is an error while performing the call    * @throws InterruptedException    * @throws ExecutionException    */
+DECL|method|putBlockAsync ( XceiverClientSpi xceiverClient, BlockData containerBlockData)
 specifier|public
 specifier|static
 name|XceiverClientReply
@@ -1225,9 +1201,6 @@ name|xceiverClient
 parameter_list|,
 name|BlockData
 name|containerBlockData
-parameter_list|,
-name|String
-name|traceID
 parameter_list|)
 throws|throws
 name|IOException
@@ -1293,11 +1266,6 @@ name|getContainerID
 argument_list|()
 argument_list|)
 operator|.
-name|setTraceID
-argument_list|(
-name|traceID
-argument_list|)
-operator|.
 name|setDatanodeUuid
 argument_list|(
 name|id
@@ -1354,8 +1322,8 @@ name|request
 argument_list|)
 return|;
 block|}
-comment|/**    * Calls the container protocol to read a chunk.    *    * @param xceiverClient client to perform call    * @param chunk information about chunk to read    * @param blockID ID of the block    * @param traceID container protocol call args    * @param validators functions to validate the response    * @return container protocol read chunk response    * @throws IOException if there is an I/O error while performing the call    */
-DECL|method|readChunk ( XceiverClientSpi xceiverClient, ChunkInfo chunk, BlockID blockID, String traceID, List<CheckedBiFunction> validators)
+comment|/**    * Calls the container protocol to read a chunk.    *    * @param xceiverClient client to perform call    * @param chunk information about chunk to read    * @param blockID ID of the block    * @param validators functions to validate the response    * @return container protocol read chunk response    * @throws IOException if there is an I/O error while performing the call    */
+DECL|method|readChunk ( XceiverClientSpi xceiverClient, ChunkInfo chunk, BlockID blockID, List<CheckedBiFunction> validators)
 specifier|public
 specifier|static
 name|ContainerProtos
@@ -1371,9 +1339,6 @@ name|chunk
 parameter_list|,
 name|BlockID
 name|blockID
-parameter_list|,
-name|String
-name|traceID
 parameter_list|,
 name|List
 argument_list|<
@@ -1446,11 +1411,6 @@ name|getContainerID
 argument_list|()
 argument_list|)
 operator|.
-name|setTraceID
-argument_list|(
-name|traceID
-argument_list|)
-operator|.
 name|setDatanodeUuid
 argument_list|(
 name|id
@@ -1521,8 +1481,8 @@ name|getReadChunk
 argument_list|()
 return|;
 block|}
-comment|/**    * Calls the container protocol to write a chunk.    *    * @param xceiverClient client to perform call    * @param chunk information about chunk to write    * @param blockID ID of the block    * @param data the data of the chunk to write    * @param traceID container protocol call args    * @throws IOException if there is an error while performing the call    */
-DECL|method|writeChunk (XceiverClientSpi xceiverClient, ChunkInfo chunk, BlockID blockID, ByteString data, String traceID)
+comment|/**    * Calls the container protocol to write a chunk.    *    * @param xceiverClient client to perform call    * @param chunk information about chunk to write    * @param blockID ID of the block    * @param data the data of the chunk to write    * @throws IOException if there is an error while performing the call    */
+DECL|method|writeChunk (XceiverClientSpi xceiverClient, ChunkInfo chunk, BlockID blockID, ByteString data)
 specifier|public
 specifier|static
 name|void
@@ -1539,9 +1499,6 @@ name|blockID
 parameter_list|,
 name|ByteString
 name|data
-parameter_list|,
-name|String
-name|traceID
 parameter_list|)
 throws|throws
 name|IOException
@@ -1613,11 +1570,6 @@ name|getContainerID
 argument_list|()
 argument_list|)
 operator|.
-name|setTraceID
-argument_list|(
-name|traceID
-argument_list|)
-operator|.
 name|setDatanodeUuid
 argument_list|(
 name|id
@@ -1680,8 +1632,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Calls the container protocol to write a chunk.    *    * @param xceiverClient client to perform call    * @param chunk information about chunk to write    * @param blockID ID of the block    * @param data the data of the chunk to write    * @param traceID container protocol call args    * @throws IOException if there is an I/O error while performing the call    */
-DECL|method|writeChunkAsync ( XceiverClientSpi xceiverClient, ChunkInfo chunk, BlockID blockID, ByteString data, String traceID)
+comment|/**    * Calls the container protocol to write a chunk.    *    * @param xceiverClient client to perform call    * @param chunk information about chunk to write    * @param blockID ID of the block    * @param data the data of the chunk to write    * @throws IOException if there is an I/O error while performing the call    */
+DECL|method|writeChunkAsync ( XceiverClientSpi xceiverClient, ChunkInfo chunk, BlockID blockID, ByteString data)
 specifier|public
 specifier|static
 name|XceiverClientReply
@@ -1698,9 +1650,6 @@ name|blockID
 parameter_list|,
 name|ByteString
 name|data
-parameter_list|,
-name|String
-name|traceID
 parameter_list|)
 throws|throws
 name|IOException
@@ -1776,11 +1725,6 @@ name|getContainerID
 argument_list|()
 argument_list|)
 operator|.
-name|setTraceID
-argument_list|(
-name|traceID
-argument_list|)
-operator|.
 name|setDatanodeUuid
 argument_list|(
 name|id
@@ -1841,8 +1785,8 @@ name|request
 argument_list|)
 return|;
 block|}
-comment|/**    * Allows writing a small file using single RPC. This takes the container    * name, block name and data to write sends all that data to the container    * using a single RPC. This API is designed to be used for files which are    * smaller than 1 MB.    *    * @param client - client that communicates with the container.    * @param blockID - ID of the block    * @param data - Data to be written into the container.    * @param traceID - Trace ID for logging purpose.    * @return container protocol writeSmallFile response    * @throws IOException    */
-DECL|method|writeSmallFile ( XceiverClientSpi client, BlockID blockID, byte[] data, String traceID)
+comment|/**    * Allows writing a small file using single RPC. This takes the container    * name, block name and data to write sends all that data to the container    * using a single RPC. This API is designed to be used for files which are    * smaller than 1 MB.    *    * @param client - client that communicates with the container.    * @param blockID - ID of the block    * @param data - Data to be written into the container.    * @return container protocol writeSmallFile response    * @throws IOException    */
+DECL|method|writeSmallFile ( XceiverClientSpi client, BlockID blockID, byte[] data)
 specifier|public
 specifier|static
 name|PutSmallFileResponseProto
@@ -1857,9 +1801,6 @@ parameter_list|,
 name|byte
 index|[]
 name|data
-parameter_list|,
-name|String
-name|traceID
 parameter_list|)
 throws|throws
 name|IOException
@@ -2058,11 +1999,6 @@ name|getContainerID
 argument_list|()
 argument_list|)
 operator|.
-name|setTraceID
-argument_list|(
-name|traceID
-argument_list|)
-operator|.
 name|setDatanodeUuid
 argument_list|(
 name|id
@@ -2134,8 +2070,8 @@ name|getPutSmallFile
 argument_list|()
 return|;
 block|}
-comment|/**    * createContainer call that creates a container on the datanode.    * @param client  - client    * @param containerID - ID of container    * @param traceID - traceID    * @param encodedToken - encodedToken if security is enabled    * @throws IOException    */
-DECL|method|createContainer (XceiverClientSpi client, long containerID, String traceID, String encodedToken)
+comment|/**    * createContainer call that creates a container on the datanode.    * @param client  - client    * @param containerID - ID of container    * @param encodedToken - encodedToken if security is enabled    * @throws IOException    */
+DECL|method|createContainer (XceiverClientSpi client, long containerID, String encodedToken)
 specifier|public
 specifier|static
 name|void
@@ -2146,9 +2082,6 @@ name|client
 parameter_list|,
 name|long
 name|containerID
-parameter_list|,
-name|String
-name|traceID
 parameter_list|,
 name|String
 name|encodedToken
@@ -2255,13 +2188,6 @@ argument_list|(
 name|id
 argument_list|)
 expr_stmt|;
-name|request
-operator|.
-name|setTraceID
-argument_list|(
-name|traceID
-argument_list|)
-expr_stmt|;
 name|client
 operator|.
 name|sendCommand
@@ -2276,8 +2202,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Deletes a container from a pipeline.    *    * @param client    * @param force whether or not to forcibly delete the container.    * @param traceID    * @param encodedToken - encodedToken if security is enabled    * @throws IOException    */
-DECL|method|deleteContainer (XceiverClientSpi client, long containerID, boolean force, String traceID, String encodedToken)
+comment|/**    * Deletes a container from a pipeline.    *    * @param client    * @param force whether or not to forcibly delete the container.    * @param encodedToken - encodedToken if security is enabled    * @throws IOException    */
+DECL|method|deleteContainer (XceiverClientSpi client, long containerID, boolean force, String encodedToken)
 specifier|public
 specifier|static
 name|void
@@ -2291,9 +2217,6 @@ name|containerID
 parameter_list|,
 name|boolean
 name|force
-parameter_list|,
-name|String
-name|traceID
 parameter_list|,
 name|String
 name|encodedToken
@@ -2373,13 +2296,6 @@ argument_list|)
 expr_stmt|;
 name|request
 operator|.
-name|setTraceID
-argument_list|(
-name|traceID
-argument_list|)
-expr_stmt|;
-name|request
-operator|.
 name|setDatanodeUuid
 argument_list|(
 name|id
@@ -2414,8 +2330,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Close a container.    *    * @param client    * @param containerID    * @param traceID    * @param encodedToken - encodedToken if security is enabled    * @throws IOException    */
-DECL|method|closeContainer (XceiverClientSpi client, long containerID, String traceID, String encodedToken)
+comment|/**    * Close a container.    *    * @param client    * @param containerID    * @param encodedToken - encodedToken if security is enabled    * @throws IOException    */
+DECL|method|closeContainer (XceiverClientSpi client, long containerID, String encodedToken)
 specifier|public
 specifier|static
 name|void
@@ -2426,9 +2342,6 @@ name|client
 parameter_list|,
 name|long
 name|containerID
-parameter_list|,
-name|String
-name|traceID
 parameter_list|,
 name|String
 name|encodedToken
@@ -2488,13 +2401,6 @@ argument_list|)
 expr_stmt|;
 name|request
 operator|.
-name|setTraceID
-argument_list|(
-name|traceID
-argument_list|)
-expr_stmt|;
-name|request
-operator|.
 name|setDatanodeUuid
 argument_list|(
 name|id
@@ -2529,8 +2435,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * readContainer call that gets meta data from an existing container.    *    * @param client       - client    * @param traceID      - trace ID    * @param encodedToken - encodedToken if security is enabled    * @throws IOException    */
-DECL|method|readContainer ( XceiverClientSpi client, long containerID, String traceID, String encodedToken)
+comment|/**    * readContainer call that gets meta data from an existing container.    *    * @param client       - client    * @param encodedToken - encodedToken if security is enabled    * @throws IOException    */
+DECL|method|readContainer ( XceiverClientSpi client, long containerID, String encodedToken)
 specifier|public
 specifier|static
 name|ReadContainerResponseProto
@@ -2541,9 +2447,6 @@ name|client
 parameter_list|,
 name|long
 name|containerID
-parameter_list|,
-name|String
-name|traceID
 parameter_list|,
 name|String
 name|encodedToken
@@ -2608,13 +2511,6 @@ argument_list|(
 name|id
 argument_list|)
 expr_stmt|;
-name|request
-operator|.
-name|setTraceID
-argument_list|(
-name|traceID
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|encodedToken
@@ -2653,8 +2549,8 @@ name|getReadContainer
 argument_list|()
 return|;
 block|}
-comment|/**    * Reads the data given the blockID.    *    * @param client    * @param blockID - ID of the block    * @param traceID - trace ID    * @return GetSmallFileResponseProto    * @throws IOException    */
-DECL|method|readSmallFile (XceiverClientSpi client, BlockID blockID, String traceID)
+comment|/**    * Reads the data given the blockID.    *    * @param client    * @param blockID - ID of the block    * @return GetSmallFileResponseProto    * @throws IOException    */
+DECL|method|readSmallFile (XceiverClientSpi client, BlockID blockID)
 specifier|public
 specifier|static
 name|GetSmallFileResponseProto
@@ -2665,9 +2561,6 @@ name|client
 parameter_list|,
 name|BlockID
 name|blockID
-parameter_list|,
-name|String
-name|traceID
 parameter_list|)
 throws|throws
 name|IOException
@@ -2745,11 +2638,6 @@ name|blockID
 operator|.
 name|getContainerID
 argument_list|()
-argument_list|)
-operator|.
-name|setTraceID
-argument_list|(
-name|traceID
 argument_list|)
 operator|.
 name|setDatanodeUuid

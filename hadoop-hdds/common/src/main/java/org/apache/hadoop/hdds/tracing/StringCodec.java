@@ -237,7 +237,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|trace
+name|debug
 argument_list|(
 literal|"MalformedTracerStateString: {}"
 argument_list|,
