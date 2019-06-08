@@ -7612,9 +7612,6 @@ argument_list|)
 decl_stmt|;
 name|acls
 operator|.
-name|parallelStream
-argument_list|()
-operator|.
 name|forEach
 argument_list|(
 name|a

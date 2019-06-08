@@ -3324,9 +3324,6 @@ operator|.
 name|getAclList
 argument_list|()
 operator|.
-name|parallelStream
-argument_list|()
-operator|.
 name|forEach
 argument_list|(
 name|a
