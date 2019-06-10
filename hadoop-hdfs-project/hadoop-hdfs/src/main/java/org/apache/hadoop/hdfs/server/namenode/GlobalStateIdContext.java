@@ -407,12 +407,7 @@ block|{
 name|long
 name|serverStateId
 init|=
-name|namesystem
-operator|.
-name|getFSImage
-argument_list|()
-operator|.
-name|getCorrectLastAppliedOrWrittenTxId
+name|getLastSeenStateId
 argument_list|()
 decl_stmt|;
 name|long
@@ -423,6 +418,19 @@ operator|.
 name|getStateId
 argument_list|()
 decl_stmt|;
+name|FSNamesystem
+operator|.
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Client State ID= {} and Server State ID= {}"
+argument_list|,
+name|clientStateId
+argument_list|,
+name|serverStateId
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|clientStateId

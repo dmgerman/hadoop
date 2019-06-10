@@ -12565,23 +12565,6 @@ argument_list|(
 name|stateId
 argument_list|)
 expr_stmt|;
-name|LOG
-operator|.
-name|trace
-argument_list|(
-literal|"Client State ID= {} and Server State ID= {}"
-argument_list|,
-name|call
-operator|.
-name|getClientStateId
-argument_list|()
-argument_list|,
-name|alignmentContext
-operator|.
-name|getLastSeenStateId
-argument_list|()
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 catch|catch
