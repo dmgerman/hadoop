@@ -1024,16 +1024,6 @@ block|,
 operator|new
 name|DeprecationDelta
 argument_list|(
-literal|"mapred.userlog.retain.hours"
-argument_list|,
-name|MRJobConfig
-operator|.
-name|USER_LOG_RETAIN_HOURS
-argument_list|)
-block|,
-operator|new
-name|DeprecationDelta
-argument_list|(
 literal|"mapred.task.profile.params"
 argument_list|,
 name|MRJobConfig

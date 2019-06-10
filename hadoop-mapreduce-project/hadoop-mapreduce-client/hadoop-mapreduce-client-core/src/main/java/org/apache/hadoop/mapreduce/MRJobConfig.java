@@ -911,15 +911,6 @@ name|CACHE_SYMLINK
 init|=
 literal|"mapreduce.job.cache.symlink.create"
 decl_stmt|;
-DECL|field|USER_LOG_RETAIN_HOURS
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|USER_LOG_RETAIN_HOURS
-init|=
-literal|"mapreduce.job.userlog.retain.hours"
-decl_stmt|;
 DECL|field|MAPREDUCE_JOB_USER_CLASSPATH_FIRST
 specifier|public
 specifier|static
