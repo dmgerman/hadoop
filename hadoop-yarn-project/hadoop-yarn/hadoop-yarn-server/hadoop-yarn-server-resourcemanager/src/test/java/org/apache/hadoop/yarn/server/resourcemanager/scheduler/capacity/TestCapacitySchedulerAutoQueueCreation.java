@@ -1123,6 +1123,11 @@ argument_list|,
 literal|1000
 argument_list|)
 expr_stmt|;
+name|validateContainerLimits
+argument_list|(
+name|autoCreatedLeafQueue
+argument_list|)
+expr_stmt|;
 name|assertTrue
 argument_list|(
 name|autoCreatedLeafQueue
@@ -1768,8 +1773,7 @@ block|{
 name|CapacitySchedulerConfiguration
 name|newConf
 init|=
-operator|new
-name|CapacitySchedulerConfiguration
+name|setupSchedulerConfiguration
 argument_list|()
 decl_stmt|;
 name|setupQueueConfiguration
@@ -1901,8 +1905,7 @@ block|{
 name|CapacitySchedulerConfiguration
 name|newConf
 init|=
-operator|new
-name|CapacitySchedulerConfiguration
+name|setupSchedulerConfiguration
 argument_list|()
 decl_stmt|;
 name|setupQueueConfiguration
@@ -2056,8 +2059,7 @@ block|{
 name|CapacitySchedulerConfiguration
 name|newConf
 init|=
-operator|new
-name|CapacitySchedulerConfiguration
+name|setupSchedulerConfiguration
 argument_list|()
 decl_stmt|;
 name|setupQueueConfiguration
@@ -4234,6 +4236,11 @@ argument_list|,
 literal|900
 argument_list|,
 literal|900
+argument_list|)
+expr_stmt|;
+name|validateContainerLimits
+argument_list|(
+name|user3Queue
 argument_list|)
 expr_stmt|;
 name|GuaranteedOrZeroCapacityOverTimePolicy
