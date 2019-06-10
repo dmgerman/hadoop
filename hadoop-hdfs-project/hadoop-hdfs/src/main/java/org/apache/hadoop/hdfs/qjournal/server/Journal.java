@@ -5081,7 +5081,7 @@ argument_list|)
 expr_stmt|;
 name|storage
 operator|.
-name|createPaxosDir
+name|getOrCreatePaxosDir
 argument_list|()
 expr_stmt|;
 comment|// Copy over the contents of the epoch data files to the new dir.

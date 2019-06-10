@@ -722,7 +722,7 @@ return|return
 operator|new
 name|File
 argument_list|(
-name|getPaxosDir
+name|getOrCreatePaxosDir
 argument_list|()
 argument_list|,
 name|String
@@ -734,12 +734,14 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-DECL|method|getPaxosDir ()
+DECL|method|getOrCreatePaxosDir ()
 name|File
-name|getPaxosDir
+name|getOrCreatePaxosDir
 parameter_list|()
 block|{
-return|return
+name|File
+name|paxosDir
+init|=
 operator|new
 name|File
 argument_list|(
@@ -750,6 +752,53 @@ argument_list|()
 argument_list|,
 literal|"paxos"
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|paxosDir
+operator|.
+name|exists
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Creating paxos dir: {}"
+argument_list|,
+name|paxosDir
+operator|.
+name|toPath
+argument_list|()
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+operator|!
+name|paxosDir
+operator|.
+name|mkdir
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Could not create paxos dir: {}"
+argument_list|,
+name|paxosDir
+operator|.
+name|toPath
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+return|return
+name|paxosDir
 return|;
 block|}
 DECL|method|getRoot ()
@@ -789,7 +838,7 @@ argument_list|)
 expr_stmt|;
 name|purgeMatching
 argument_list|(
-name|getPaxosDir
+name|getOrCreatePaxosDir
 argument_list|()
 argument_list|,
 name|PAXOS_DIR_PURGE_REGEXES
@@ -1004,41 +1053,12 @@ argument_list|(
 name|sd
 argument_list|)
 expr_stmt|;
-name|createPaxosDir
+name|getOrCreatePaxosDir
 argument_list|()
 expr_stmt|;
 name|analyzeStorage
 argument_list|()
 expr_stmt|;
-block|}
-DECL|method|createPaxosDir ()
-name|void
-name|createPaxosDir
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-if|if
-condition|(
-operator|!
-name|getPaxosDir
-argument_list|()
-operator|.
-name|mkdirs
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Could not create paxos dir: "
-operator|+
-name|getPaxosDir
-argument_list|()
-argument_list|)
-throw|;
-block|}
 block|}
 DECL|method|analyzeStorage ()
 name|void
