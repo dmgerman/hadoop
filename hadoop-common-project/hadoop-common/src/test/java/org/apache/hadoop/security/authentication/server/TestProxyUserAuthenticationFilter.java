@@ -496,7 +496,7 @@ name|request
 operator|.
 name|getParameter
 argument_list|(
-literal|"doAs"
+literal|"doas"
 argument_list|)
 argument_list|)
 operator|.

@@ -829,6 +829,14 @@ condition|(
 name|doAsUserFromQuery
 operator|!=
 literal|null
+operator|&&
+operator|!
+name|doAsUserFromQuery
+operator|.
+name|equals
+argument_list|(
+name|remoteUser
+argument_list|)
 condition|)
 block|{
 comment|// create and attempt to authorize a proxy user
