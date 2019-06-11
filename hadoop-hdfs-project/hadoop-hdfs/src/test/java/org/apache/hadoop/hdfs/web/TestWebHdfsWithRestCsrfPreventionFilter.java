@@ -58,6 +58,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_HTTPSERVER_FILTER_HANDLERS
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -573,6 +589,16 @@ argument_list|(
 name|DFS_WEBHDFS_REST_CSRF_ENABLED_KEY
 argument_list|,
 name|dnRestCsrf
+argument_list|)
+expr_stmt|;
+comment|// By default the datanode loads the CSRF filter handler
+name|dnConf
+operator|.
+name|set
+argument_list|(
+name|DFS_DATANODE_HTTPSERVER_FILTER_HANDLERS
+argument_list|,
+literal|"org.apache.hadoop.hdfs.server.datanode.web.RestCsrfPreventionFilterHandler"
 argument_list|)
 expr_stmt|;
 name|cluster
