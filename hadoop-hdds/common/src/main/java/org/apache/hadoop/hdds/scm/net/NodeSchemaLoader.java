@@ -206,19 +206,9 @@ begin_import
 import|import
 name|java
 operator|.
-name|net
+name|io
 operator|.
-name|URISyntaxException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|URL
+name|InputStream
 import|;
 end_import
 
@@ -574,12 +564,47 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-operator|!
 name|schemaFile
 operator|.
 name|exists
 argument_list|()
 condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Load network topology schema file "
+operator|+
+name|schemaFile
+operator|.
+name|getAbsolutePath
+argument_list|()
+argument_list|)
+expr_stmt|;
+try|try
+init|(
+name|FileInputStream
+name|inputStream
+init|=
+operator|new
+name|FileInputStream
+argument_list|(
+name|schemaFile
+argument_list|)
+init|)
+block|{
+return|return
+name|loadSchemaFromStream
+argument_list|(
+name|schemaFilePath
+argument_list|,
+name|inputStream
+argument_list|)
+return|;
+block|}
+block|}
+else|else
 block|{
 comment|// try to load with classloader
 name|ClassLoader
@@ -617,46 +642,52 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|URL
-name|url
+try|try
+init|(
+name|InputStream
+name|stream
 init|=
 name|classloader
 operator|.
-name|getResource
+name|getResourceAsStream
 argument_list|(
 name|schemaFilePath
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 if|if
 condition|(
-name|url
+name|stream
 operator|!=
 literal|null
 condition|)
 block|{
-name|schemaFile
-operator|=
-operator|new
-name|File
-argument_list|(
-name|url
+name|LOG
 operator|.
-name|toURI
-argument_list|()
+name|info
+argument_list|(
+literal|"Loading file from "
+operator|+
+name|classloader
+operator|.
+name|getResources
+argument_list|(
+name|schemaFilePath
+argument_list|)
 argument_list|)
 expr_stmt|;
+return|return
+name|loadSchemaFromStream
+argument_list|(
+name|schemaFilePath
+argument_list|,
+name|stream
+argument_list|)
+return|;
 block|}
 block|}
 block|}
-if|if
-condition|(
-operator|!
-name|schemaFile
-operator|.
-name|exists
-argument_list|()
-condition|)
-block|{
+block|}
 name|String
 name|msg
 init|=
@@ -688,18 +719,66 @@ name|msg
 argument_list|)
 throw|;
 block|}
-name|LOG
-operator|.
-name|info
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|e
+parameter_list|)
+block|{
+throw|throw
+name|e
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|ParserConfigurationException
+decl||
+name|IOException
+decl||
+name|SAXException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
 argument_list|(
-literal|"Load network topology schema file "
+literal|"Failed to load network topology node"
 operator|+
-name|schemaFile
+literal|" schema file: "
+operator|+
+name|schemaFilePath
+operator|+
+literal|" , error:"
+operator|+
+name|e
 operator|.
-name|getCanonicalPath
+name|getMessage
 argument_list|()
+argument_list|,
+name|e
 argument_list|)
-expr_stmt|;
+throw|;
+block|}
+block|}
+DECL|method|loadSchemaFromStream (String schemaFilePath, InputStream stream)
+specifier|private
+name|NodeSchemaLoadResult
+name|loadSchemaFromStream
+parameter_list|(
+name|String
+name|schemaFilePath
+parameter_list|,
+name|InputStream
+name|stream
+parameter_list|)
+throws|throws
+name|ParserConfigurationException
+throws|,
+name|SAXException
+throws|,
+name|IOException
+block|{
 if|if
 condition|(
 name|FilenameUtils
@@ -723,7 +802,7 @@ block|{
 return|return
 name|loadSchemaFromYaml
 argument_list|(
-name|schemaFile
+name|stream
 argument_list|)
 return|;
 block|}
@@ -732,61 +811,19 @@ block|{
 return|return
 name|loadSchema
 argument_list|(
-name|schemaFile
+name|stream
 argument_list|)
 return|;
 block|}
 block|}
-catch|catch
-parameter_list|(
-name|FileNotFoundException
-name|e
-parameter_list|)
-block|{
-throw|throw
-name|e
-throw|;
-block|}
-catch|catch
-parameter_list|(
-name|ParserConfigurationException
-decl||
-name|IOException
-decl||
-name|SAXException
-decl||
-name|URISyntaxException
-name|e
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|IllegalArgumentException
-argument_list|(
-literal|"Failed to load network topology node"
-operator|+
-literal|" schema file: "
-operator|+
-name|schemaFilePath
-operator|+
-literal|" , error:"
-operator|+
-name|e
-operator|.
-name|getMessage
-argument_list|()
-argument_list|)
-throw|;
-block|}
-block|}
-comment|/**    * Load network topology layer schemas from a XML configuration file.    * @param schemaFile schema file    * @return all valid node schemas defined in schema file    * @throws ParserConfigurationException ParserConfigurationException happen    * @throws IOException no such schema file    * @throws SAXException xml file has some invalid elements    * @throws IllegalArgumentException xml file content is logically invalid    */
-DECL|method|loadSchema (File schemaFile)
+comment|/**    * Load network topology layer schemas from a XML configuration file.    * @param inputStream schema file as an inputStream    * @return all valid node schemas defined in schema file    * @throws ParserConfigurationException ParserConfigurationException happen    * @throws IOException no such schema file    * @throws SAXException xml file has some invalid elements    * @throws IllegalArgumentException xml file content is logically invalid    */
+DECL|method|loadSchema (InputStream inputStream)
 specifier|private
 name|NodeSchemaLoadResult
 name|loadSchema
 parameter_list|(
-name|File
-name|schemaFile
+name|InputStream
+name|inputStream
 parameter_list|)
 throws|throws
 name|ParserConfigurationException
@@ -799,9 +836,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Loading network topology layer schema file "
-operator|+
-name|schemaFile
+literal|"Loading network topology layer schema file"
 argument_list|)
 expr_stmt|;
 comment|// Read and parse the schema file.
@@ -835,7 +870,7 @@ name|builder
 operator|.
 name|parse
 argument_list|(
-name|schemaFile
+name|inputStream
 argument_list|)
 decl_stmt|;
 name|Element
@@ -1026,13 +1061,13 @@ return|return
 name|schemaList
 return|;
 block|}
-comment|/**    * Load network topology layer schemas from a YAML configuration file.    * @param schemaFile schema file    * @return all valid node schemas defined in schema file    * @throws ParserConfigurationException ParserConfigurationException happen    * @throws IOException no such schema file    * @throws SAXException xml file has some invalid elements    * @throws IllegalArgumentException xml file content is logically invalid    */
-DECL|method|loadSchemaFromYaml (File schemaFile)
+comment|/**    * Load network topology layer schemas from a YAML configuration file.    * @param schemaFile as inputStream    * @return all valid node schemas defined in schema file    * @throws ParserConfigurationException ParserConfigurationException happen    * @throws IOException no such schema file    * @throws SAXException xml file has some invalid elements    * @throws IllegalArgumentException xml file content is logically invalid    */
+DECL|method|loadSchemaFromYaml (InputStream schemaFile)
 specifier|private
 name|NodeSchemaLoadResult
 name|loadSchemaFromYaml
 parameter_list|(
-name|File
+name|InputStream
 name|schemaFile
 parameter_list|)
 block|{
@@ -1060,32 +1095,19 @@ decl_stmt|;
 name|NodeSchema
 name|nodeTree
 decl_stmt|;
-try|try
-init|(
-name|FileInputStream
-name|fileInputStream
-init|=
-operator|new
-name|FileInputStream
-argument_list|(
-name|schemaFile
-argument_list|)
-init|)
-block|{
 name|nodeTree
 operator|=
 name|yaml
 operator|.
 name|loadAs
 argument_list|(
-name|fileInputStream
+name|schemaFile
 argument_list|,
 name|NodeSchema
 operator|.
 name|class
 argument_list|)
 expr_stmt|;
-block|}
 name|List
 argument_list|<
 name|NodeSchema
@@ -1115,12 +1137,7 @@ name|IllegalArgumentException
 argument_list|(
 literal|"First layer is not a ROOT node."
 operator|+
-literal|" schema file: "
-operator|+
-name|schemaFile
-operator|.
-name|getAbsolutePath
-argument_list|()
+literal|" schema file."
 argument_list|)
 throw|;
 block|}
@@ -1186,12 +1203,7 @@ name|IllegalArgumentException
 argument_list|(
 literal|"Leaf node in the middle of path."
 operator|+
-literal|" schema file: "
-operator|+
-name|schemaFile
-operator|.
-name|getAbsolutePath
-argument_list|()
+literal|" schema file."
 argument_list|)
 throw|;
 block|}
@@ -1213,12 +1225,7 @@ name|IllegalArgumentException
 argument_list|(
 literal|"Multiple root nodes are defined."
 operator|+
-literal|" schema file: "
-operator|+
-name|schemaFile
-operator|.
-name|getAbsolutePath
-argument_list|()
+literal|" schema file."
 argument_list|)
 throw|;
 block|}
@@ -1270,16 +1277,6 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|RuntimeException
-name|e
-parameter_list|)
-block|{
-throw|throw
-name|e
-throw|;
-block|}
-catch|catch
-parameter_list|(
 name|Exception
 name|e
 parameter_list|)
@@ -1293,9 +1290,6 @@ operator|+
 literal|" schema file: "
 operator|+
 name|schemaFile
-operator|.
-name|getAbsolutePath
-argument_list|()
 operator|+
 literal|" , error:"
 operator|+
@@ -1303,6 +1297,8 @@ name|e
 operator|.
 name|getMessage
 argument_list|()
+argument_list|,
+name|e
 argument_list|)
 throw|;
 block|}
