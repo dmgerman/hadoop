@@ -1063,6 +1063,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+break|break;
 default|default:
 name|LOG
 operator|.
