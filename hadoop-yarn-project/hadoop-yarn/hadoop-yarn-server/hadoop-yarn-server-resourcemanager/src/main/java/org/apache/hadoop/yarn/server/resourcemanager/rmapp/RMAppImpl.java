@@ -8766,6 +8766,13 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+name|app
+operator|.
+name|ranNodes
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
 comment|// Recovered apps that are completed were not added to scheduler, so no
 comment|// need to remove them from scheduler.
 if|if
