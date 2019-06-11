@@ -1251,8 +1251,7 @@ name|this
 operator|.
 name|conf
 operator|=
-operator|new
-name|YarnConfiguration
+name|initConfiguration
 argument_list|()
 expr_stmt|;
 name|this
@@ -1310,6 +1309,21 @@ argument_list|,
 literal|"token file name cannot be null"
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+annotation|@
+name|Private
+DECL|method|initConfiguration ()
+name|Configuration
+name|initConfiguration
+parameter_list|()
+block|{
+return|return
+operator|new
+name|YarnConfiguration
+argument_list|()
+return|;
 block|}
 annotation|@
 name|Private
@@ -1836,6 +1850,9 @@ operator|new
 name|File
 argument_list|(
 name|destDirPath
+operator|.
+name|getParent
+argument_list|()
 operator|.
 name|toUri
 argument_list|()
