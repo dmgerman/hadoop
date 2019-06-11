@@ -1086,12 +1086,10 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Copying from "
-operator|+
+literal|"Copying from {} to {}"
+argument_list|,
 name|nmPrivateContainerTokensPath
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|tokenDst
 argument_list|)
 expr_stmt|;
@@ -1132,12 +1130,10 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Localizer CWD set to "
-operator|+
+literal|"Localizer CWD set to {} = {}"
+argument_list|,
 name|appStorageDir
-operator|+
-literal|" = "
-operator|+
+argument_list|,
 name|localizerFc
 operator|.
 name|getWorkingDirectory
@@ -1685,11 +1681,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Container "
-operator|+
+literal|"Container {} pid file not set. Returning terminated error"
+argument_list|,
 name|containerIdStr
-operator|+
-literal|" pid file not set. Returning terminated error"
 argument_list|)
 expr_stmt|;
 return|return
@@ -1793,11 +1787,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Container "
+literal|"Container {} was marked as inactive. "
 operator|+
+literal|"Returning terminated error"
+argument_list|,
 name|containerIdStr
-operator|+
-literal|" was marked as inactive. Returning terminated error"
 argument_list|)
 expr_stmt|;
 return|return
@@ -1840,12 +1834,10 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exit code from container "
-operator|+
+literal|"Exit code from container {} is : {}"
+argument_list|,
 name|containerId
-operator|+
-literal|" is : "
-operator|+
+argument_list|,
 name|exitCode
 argument_list|)
 expr_stmt|;
@@ -1877,12 +1869,12 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception from container-launch with container ID: "
+literal|"Exception from container-launch with container ID: {}"
 operator|+
+literal|" and exit code: {}"
+argument_list|,
 name|containerId
-operator|+
-literal|" and exit code: "
-operator|+
+argument_list|,
 name|exitCode
 argument_list|,
 name|e
@@ -2156,8 +2148,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"launchContainer: "
-operator|+
+literal|"launchContainer: {}"
+argument_list|,
 name|Arrays
 operator|.
 name|toString
@@ -3059,8 +3051,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Deleting absolute path : "
-operator|+
+literal|"Deleting absolute path : {}"
+argument_list|,
 name|subDir
 argument_list|)
 expr_stmt|;
@@ -3082,11 +3074,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"delete returned false for path: ["
-operator|+
+literal|"delete returned false for path: [{}]"
+argument_list|,
 name|subDir
-operator|+
-literal|"]"
 argument_list|)
 expr_stmt|;
 block|}
@@ -3121,8 +3111,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Deleting path : "
-operator|+
+literal|"Deleting path : {}"
+argument_list|,
 name|del
 argument_list|)
 expr_stmt|;
@@ -3145,11 +3135,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"delete returned false for path: ["
-operator|+
+literal|"delete returned false for path: [{}]"
+argument_list|,
 name|del
-operator|+
-literal|"]"
 argument_list|)
 expr_stmt|;
 block|}
@@ -3476,12 +3464,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unable to get Free Space for "
-operator|+
+literal|"Unable to get Free Space for {}"
+argument_list|,
 name|curBase
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|e
 argument_list|)
@@ -3759,8 +3744,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unable to create the user directory : "
-operator|+
+literal|"Unable to create the user directory : {}"
+argument_list|,
 name|localDir
 argument_list|,
 name|e
@@ -3813,8 +3798,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Initializing user "
-operator|+
+literal|"Initializing user {}"
+argument_list|,
 name|user
 argument_list|)
 expr_stmt|;
@@ -3903,8 +3888,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unable to create app cache directory : "
-operator|+
+literal|"Unable to create app cache directory : {}"
+argument_list|,
 name|appDir
 argument_list|,
 name|e
@@ -3951,8 +3936,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unable to create file cache directory : "
-operator|+
+literal|"Unable to create file cache directory : {}"
+argument_list|,
 name|distDir
 argument_list|,
 name|e
@@ -4084,12 +4069,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unable to create app directory "
-operator|+
+literal|"Unable to create app directory {}"
+argument_list|,
 name|fullAppDir
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|e
 argument_list|)
@@ -4197,8 +4179,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unable to create the app-log directory : "
-operator|+
+literal|"Unable to create the app-log directory : {}"
+argument_list|,
 name|appLogDir
 argument_list|,
 name|e
@@ -4323,8 +4305,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unable to create the container-log directory : "
-operator|+
+literal|"Unable to create the container-log directory : {}"
+argument_list|,
 name|appLogDir
 argument_list|,
 name|e

@@ -1268,9 +1268,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
+literal|"{} is not active, returning terminated error"
+argument_list|,
 name|containerId
-operator|+
-literal|" is not active, returning terminated error"
 argument_list|)
 expr_stmt|;
 return|return
@@ -1313,12 +1313,10 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Reacquiring "
-operator|+
+literal|"Reacquiring {} with pid {}"
+argument_list|,
 name|containerId
-operator|+
-literal|" with pid "
-operator|+
+argument_list|,
 name|pid
 argument_list|)
 expr_stmt|;
@@ -1425,9 +1423,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+literal|"{} was deactivated"
+argument_list|,
 name|containerId
-operator|+
-literal|" was deactivated"
 argument_list|)
 expr_stmt|;
 return|return
@@ -2903,8 +2901,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Unable to get Local hostname and ip for "
-operator|+
+literal|"Unable to get Local hostname and ip for {}"
+argument_list|,
 name|container
 operator|.
 name|getContainerId
@@ -2968,12 +2966,12 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
+literal|"{} doesn't support pausing."
+argument_list|,
 name|container
 operator|.
 name|getContainerId
 argument_list|()
-operator|+
-literal|" doesn't support pausing."
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -2996,12 +2994,12 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
+literal|"{} doesn't support resume."
+argument_list|,
 name|container
 operator|.
 name|getContainerId
 argument_list|()
-operator|+
-literal|" doesn't support resume."
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -3176,8 +3174,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Got exception reading pid from pid-file "
-operator|+
+literal|"Got exception reading pid from pid-file {}"
+argument_list|,
 name|pidFile
 argument_list|,
 name|e

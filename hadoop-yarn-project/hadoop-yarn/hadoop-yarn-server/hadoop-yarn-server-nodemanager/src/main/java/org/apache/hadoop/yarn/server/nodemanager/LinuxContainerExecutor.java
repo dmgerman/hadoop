@@ -1433,11 +1433,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
+literal|"{}: impersonation without authentication enabled"
+argument_list|,
 name|YarnConfiguration
 operator|.
 name|NM_NONSECURE_MODE_LIMIT_USERS
-operator|+
-literal|": impersonation without authentication enabled"
 argument_list|)
 expr_stmt|;
 block|}
@@ -1800,8 +1800,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exit code from container executor initialization is : "
-operator|+
+literal|"Exit code from container executor initialization is : {}"
+argument_list|,
 name|exitCode
 argument_list|,
 name|e
@@ -2351,12 +2351,10 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exit code from container "
-operator|+
+literal|"Exit code from container {} startLocalizer is : {}"
+argument_list|,
 name|locId
-operator|+
-literal|" startLocalizer is : "
-operator|+
+argument_list|,
 name|exitCode
 argument_list|,
 name|e
@@ -2926,8 +2924,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"PrivilegedOperation type unsupported in launch: "
-operator|+
+literal|"PrivilegedOperation type unsupported in launch: {}"
+argument_list|,
 name|op
 operator|.
 name|getOperationType
@@ -3176,12 +3174,10 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exit code from container "
-operator|+
+literal|"Exit code from container {} is : {}"
+argument_list|,
 name|containerId
-operator|+
-literal|" is : "
-operator|+
+argument_list|,
 name|exitCode
 argument_list|)
 expr_stmt|;
@@ -3217,12 +3213,12 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception from container-launch with container ID: "
+literal|"Exception from container-launch with container ID: {} "
 operator|+
+literal|"and exit code: {}"
+argument_list|,
 name|containerId
-operator|+
-literal|" and exit code: "
-operator|+
+argument_list|,
 name|exitCode
 argument_list|,
 name|e
@@ -3850,12 +3846,10 @@ name|warn
 argument_list|(
 literal|"ResourceHandlerChain.reacquireContainer failed for "
 operator|+
-literal|"containerId: "
-operator|+
+literal|"containerId: {} Exception: "
+argument_list|,
 name|containerId
-operator|+
-literal|" Exception: "
-operator|+
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
@@ -4032,16 +4026,12 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Error in signalling container "
-operator|+
+literal|"Error in signalling container {} with {}; exit = {}"
+argument_list|,
 name|pid
-operator|+
-literal|" with "
-operator|+
+argument_list|,
 name|signal
-operator|+
-literal|"; exit = "
-operator|+
+argument_list|,
 name|retCode
 argument_list|,
 name|e
@@ -4191,18 +4181,13 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Error in reaping container "
-operator|+
+literal|"Error in reaping container {} exit = {}"
+argument_list|,
 name|container
 operator|.
 name|getContainerId
 argument_list|()
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|" exit = "
-operator|+
+argument_list|,
 name|retCode
 argument_list|,
 name|e
@@ -4317,12 +4302,10 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Error in executing container interactive shell"
-operator|+
+literal|"Error in executing container interactive shell {} exit = {}"
+argument_list|,
 name|ctx
-operator|+
-literal|" exit = "
-operator|+
+argument_list|,
 name|retCode
 argument_list|,
 name|e
@@ -4505,8 +4488,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Deleting absolute path : "
-operator|+
+literal|"Deleting absolute path : {}"
+argument_list|,
 name|dir
 argument_list|)
 expr_stmt|;
@@ -4549,8 +4532,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Deleting path : "
-operator|+
+literal|"Deleting path : {}"
+argument_list|,
 name|del
 argument_list|)
 expr_stmt|;
@@ -4623,8 +4606,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"DeleteAsUser for "
-operator|+
+literal|"DeleteAsUser for {} returned with exit code: {}"
+argument_list|,
 name|StringUtils
 operator|.
 name|join
@@ -4633,9 +4616,7 @@ literal|" "
 argument_list|,
 name|pathsToDelete
 argument_list|)
-operator|+
-literal|" returned with exit code: "
-operator|+
+argument_list|,
 name|exitCode
 argument_list|,
 name|e
@@ -4819,12 +4800,10 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"ListAsUser for "
-operator|+
+literal|"ListAsUser for {} returned with exit code: {}"
+argument_list|,
 name|dir
-operator|+
-literal|" returned with exit code: "
-operator|+
+argument_list|,
 name|e
 operator|.
 name|getExitCode
@@ -5111,8 +5090,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Removing Docker container : "
-operator|+
+literal|"Removing Docker container : {}"
+argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
@@ -5159,8 +5138,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unable to remove docker container: "
-operator|+
+literal|"Unable to remove docker container: {}"
+argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
@@ -5314,12 +5293,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unable to delete "
-operator|+
+literal|"Unable to delete {}"
+argument_list|,
 name|sysFSPath
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
