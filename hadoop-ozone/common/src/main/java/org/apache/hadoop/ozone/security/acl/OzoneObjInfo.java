@@ -69,7 +69,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Class representing an ozone object.  */
+comment|/**  * Class representing an ozone object.  * It can be a volume with non-null volumeName (bucketName=null& name=null)  * or a bucket with non-null volumeName and bucketName (name=null)  * or a key with non-null volumeName, bucketName and key name  * (via getKeyName)  * or a prefix with non-null volumeName, bucketName and prefix name  * (via getPrefixName)  */
 end_comment
 
 begin_class
@@ -93,13 +93,14 @@ specifier|final
 name|String
 name|bucketName
 decl_stmt|;
-DECL|field|keyName
+DECL|field|name
 specifier|private
 specifier|final
 name|String
-name|keyName
+name|name
 decl_stmt|;
-DECL|method|OzoneObjInfo (ResourceType resType, StoreType storeType, String volumeName, String bucketName, String keyName)
+comment|/**    *    * @param resType    * @param storeType    * @param volumeName    * @param bucketName    * @param name - keyName/PrefixName    */
+DECL|method|OzoneObjInfo (ResourceType resType, StoreType storeType, String volumeName, String bucketName, String name)
 specifier|private
 name|OzoneObjInfo
 parameter_list|(
@@ -116,7 +117,7 @@ name|String
 name|bucketName
 parameter_list|,
 name|String
-name|keyName
+name|name
 parameter_list|)
 block|{
 name|super
@@ -140,9 +141,9 @@ name|bucketName
 expr_stmt|;
 name|this
 operator|.
-name|keyName
+name|name
 operator|=
-name|keyName
+name|name
 expr_stmt|;
 block|}
 annotation|@
@@ -163,6 +164,8 @@ case|case
 name|VOLUME
 case|:
 return|return
+name|OZONE_URI_DELIMITER
+operator|+
 name|getVolumeName
 argument_list|()
 return|;
@@ -170,6 +173,8 @@ case|case
 name|BUCKET
 case|:
 return|return
+name|OZONE_URI_DELIMITER
+operator|+
 name|getVolumeName
 argument_list|()
 operator|+
@@ -182,6 +187,8 @@ case|case
 name|KEY
 case|:
 return|return
+name|OZONE_URI_DELIMITER
+operator|+
 name|getVolumeName
 argument_list|()
 operator|+
@@ -193,6 +200,25 @@ operator|+
 name|OZONE_URI_DELIMITER
 operator|+
 name|getKeyName
+argument_list|()
+return|;
+case|case
+name|PREFIX
+case|:
+return|return
+name|OZONE_URI_DELIMITER
+operator|+
+name|getVolumeName
+argument_list|()
+operator|+
+name|OZONE_URI_DELIMITER
+operator|+
+name|getBucketName
+argument_list|()
+operator|+
+name|OZONE_URI_DELIMITER
+operator|+
+name|getPrefixName
 argument_list|()
 return|;
 default|default:
@@ -243,7 +269,19 @@ name|getKeyName
 parameter_list|()
 block|{
 return|return
-name|keyName
+name|name
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getPrefixName ()
+specifier|public
+name|String
+name|getPrefixName
+parameter_list|()
+block|{
+return|return
+name|name
 return|;
 block|}
 DECL|method|fromProtobuf (OzoneManagerProtocolProtos.OzoneObj proto)
@@ -376,7 +414,7 @@ name|IllegalArgumentException
 argument_list|(
 literal|"Unexpected argument for "
 operator|+
-literal|"Ozone key. Path:"
+literal|"Ozone bucket. Path:"
 operator|+
 name|proto
 operator|.
@@ -464,6 +502,64 @@ index|]
 argument_list|)
 expr_stmt|;
 break|break;
+case|case
+name|PREFIX
+case|:
+if|if
+condition|(
+name|tokens
+operator|.
+name|length
+operator|<
+literal|3
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Unexpected argument for "
+operator|+
+literal|"Ozone Prefix. Path:"
+operator|+
+name|proto
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
+throw|;
+block|}
+name|builder
+operator|.
+name|setVolumeName
+argument_list|(
+name|tokens
+index|[
+literal|0
+index|]
+argument_list|)
+expr_stmt|;
+name|builder
+operator|.
+name|setBucketName
+argument_list|(
+name|tokens
+index|[
+literal|1
+index|]
+argument_list|)
+expr_stmt|;
+name|builder
+operator|.
+name|setPrefixName
+argument_list|(
+name|tokens
+index|[
+literal|2
+index|]
+argument_list|)
+expr_stmt|;
+break|break;
 default|default:
 throw|throw
 operator|new
@@ -518,10 +614,10 @@ specifier|private
 name|String
 name|bucketName
 decl_stmt|;
-DECL|field|keyName
+DECL|field|name
 specifier|private
 name|String
-name|keyName
+name|name
 decl_stmt|;
 DECL|method|newBuilder ()
 specifier|public
@@ -627,9 +723,28 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|keyName
+name|name
 operator|=
 name|key
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|setPrefixName (String prefix)
+specifier|public
+name|Builder
+name|setPrefixName
+parameter_list|(
+name|String
+name|prefix
+parameter_list|)
+block|{
+name|this
+operator|.
+name|name
+operator|=
+name|prefix
 expr_stmt|;
 return|return
 name|this
@@ -653,7 +768,7 @@ name|volumeName
 argument_list|,
 name|bucketName
 argument_list|,
-name|keyName
+name|name
 argument_list|)
 return|;
 block|}

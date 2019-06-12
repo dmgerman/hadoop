@@ -306,6 +306,15 @@ name|String
 name|getKeyName
 parameter_list|()
 function_decl|;
+comment|/**    * Get PrefixName.    * A prefix name is like a key name under the bucket but    * are mainly used for ACL for now and persisted into a separate prefix table.    *    * @return prefix name.    */
+DECL|method|getPrefixName ()
+specifier|public
+specifier|abstract
+name|String
+name|getPrefixName
+parameter_list|()
+function_decl|;
+comment|/**    * Get full path of a key or prefix including volume and bucket.    * @return full path of a key or prefix.    */
 DECL|method|getPath ()
 specifier|public
 specifier|abstract
@@ -338,14 +347,27 @@ name|OzoneConsts
 operator|.
 name|KEY
 parameter_list|)
-constructor_decl|;
+operator|,
+DECL|enumConstant|PREFIX
+constructor|PREFIX(OzoneConsts.PREFIX
+block|)
+class|;
+end_class
+
+begin_comment
 comment|/**      * String value for this Enum.      */
+end_comment
+
+begin_decl_stmt
 DECL|field|value
 specifier|private
 specifier|final
 name|String
 name|value
 decl_stmt|;
+end_decl_stmt
+
+begin_function
 annotation|@
 name|Override
 DECL|method|toString ()
@@ -358,28 +380,30 @@ return|return
 name|value
 return|;
 block|}
+end_function
+
+begin_expr_stmt
 DECL|method|ResourceType (String resType)
 name|ResourceType
-parameter_list|(
+argument_list|(
 name|String
 name|resType
-parameter_list|)
+argument_list|)
 block|{
 name|value
 operator|=
 name|resType
-expr_stmt|;
-block|}
-block|}
-end_class
+block|;     }
+end_expr_stmt
 
 begin_comment
+unit|}
 comment|/**    * Ozone Objects supported for ACL.    */
 end_comment
 
 begin_enum
 DECL|enum|StoreType
-specifier|public
+unit|public
 enum|enum
 name|StoreType
 block|{

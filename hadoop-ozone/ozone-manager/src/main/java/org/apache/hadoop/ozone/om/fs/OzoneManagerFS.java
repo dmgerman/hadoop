@@ -32,6 +32,22 @@ name|ozone
 operator|.
 name|om
 operator|.
+name|IOzoneAcl
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
 name|helpers
 operator|.
 name|OmKeyArgs
@@ -121,6 +137,8 @@ DECL|interface|OzoneManagerFS
 specifier|public
 interface|interface
 name|OzoneManagerFS
+extends|extends
+name|IOzoneAcl
 block|{
 DECL|method|getFileStatus (OmKeyArgs args)
 name|OzoneFileStatus

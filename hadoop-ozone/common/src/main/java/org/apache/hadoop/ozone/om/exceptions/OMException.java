@@ -345,8 +345,11 @@ block|,
 comment|// Error codes used during acl validation
 DECL|enumConstant|TIMEOUT
 name|TIMEOUT
+block|,
 comment|// Error codes used during acl validation
-block|}
+DECL|enumConstant|PREFIX_NOT_FOUND
+name|PREFIX_NOT_FOUND
+block|,    }
 block|}
 end_class
 
