@@ -2426,6 +2426,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|clusterMap
+operator|=
+operator|new
+name|NetworkTopologyImpl
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|configurator
@@ -2464,14 +2472,6 @@ name|eventQueue
 argument_list|)
 expr_stmt|;
 block|}
-name|clusterMap
-operator|=
-operator|new
-name|NetworkTopologyImpl
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 name|ContainerPlacementPolicy
 name|containerPlacementPolicy
 init|=
@@ -4832,6 +4832,19 @@ parameter_list|()
 block|{
 return|return
 name|scmMetadataStore
+return|;
+block|}
+comment|/**    * Returns the SCM network topology cluster.    * @return NetworkTopology    */
+DECL|method|getClusterMap ()
+specifier|public
+name|NetworkTopology
+name|getClusterMap
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|clusterMap
 return|;
 block|}
 block|}

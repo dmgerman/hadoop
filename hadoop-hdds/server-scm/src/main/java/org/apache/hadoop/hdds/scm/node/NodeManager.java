@@ -498,6 +498,15 @@ name|UUID
 name|dnID
 parameter_list|)
 function_decl|;
+comment|/**    * Given datanode host address, returns the DatanodeDetails for the    * node.    *    * @param address node host address    * @return the given datanode, or null if not found    */
+DECL|method|getNode (String address)
+name|DatanodeDetails
+name|getNode
+parameter_list|(
+name|String
+name|address
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

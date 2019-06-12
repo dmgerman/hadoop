@@ -2140,6 +2140,21 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getNode (String address)
+specifier|public
+name|DatanodeDetails
+name|getNode
+parameter_list|(
+name|String
+name|address
+parameter_list|)
+block|{
+return|return
+literal|null
+return|;
+block|}
 comment|/**    * A class to declare some values for the nodes so that our tests    * won't fail.    */
 DECL|class|NodeData
 specifier|private

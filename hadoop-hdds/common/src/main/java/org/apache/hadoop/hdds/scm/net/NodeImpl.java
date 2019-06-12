@@ -89,21 +89,18 @@ block|{
 comment|// host:port#
 DECL|field|name
 specifier|private
-specifier|final
 name|String
 name|name
 decl_stmt|;
 comment|// string representation of this node's location, such as /dc1/rack1
 DECL|field|location
 specifier|private
-specifier|final
 name|String
 name|location
 decl_stmt|;
 comment|// location + "/" + name
 DECL|field|path
 specifier|private
-specifier|final
 name|String
 name|path
 decl_stmt|;
@@ -198,32 +195,8 @@ name|this
 operator|.
 name|path
 operator|=
-name|this
-operator|.
-name|location
-operator|.
-name|equals
-argument_list|(
-name|PATH_SEPARATOR_STR
-argument_list|)
-condition|?
-name|this
-operator|.
-name|location
-operator|+
-name|this
-operator|.
-name|name
-else|:
-name|this
-operator|.
-name|location
-operator|+
-name|PATH_SEPARATOR_STR
-operator|+
-name|this
-operator|.
-name|name
+name|getPath
+argument_list|()
 expr_stmt|;
 name|this
 operator|.
@@ -286,6 +259,30 @@ return|return
 name|name
 return|;
 block|}
+comment|/**    * Set this node's name, can be hostname or Ipaddress.    * @param networkName it's network name    */
+DECL|method|setNetworkName (String networkName)
+specifier|public
+name|void
+name|setNetworkName
+parameter_list|(
+name|String
+name|networkName
+parameter_list|)
+block|{
+name|this
+operator|.
+name|name
+operator|=
+name|networkName
+expr_stmt|;
+name|this
+operator|.
+name|path
+operator|=
+name|getPath
+argument_list|()
+expr_stmt|;
+block|}
 comment|/**    * @return this node's network location    */
 DECL|method|getNetworkLocation ()
 specifier|public
@@ -296,6 +293,32 @@ block|{
 return|return
 name|location
 return|;
+block|}
+comment|/**    * Set this node's network location.    * @param networkLocation it's network location    */
+annotation|@
+name|Override
+DECL|method|setNetworkLocation (String networkLocation)
+specifier|public
+name|void
+name|setNetworkLocation
+parameter_list|(
+name|String
+name|networkLocation
+parameter_list|)
+block|{
+name|this
+operator|.
+name|location
+operator|=
+name|networkLocation
+expr_stmt|;
+name|this
+operator|.
+name|path
+operator|=
+name|getPath
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * @return this node's full path in network topology. It's the concatenation    * of location and name.    */
 DECL|method|getNetworkFullPath ()
@@ -564,6 +587,41 @@ block|{
 return|return
 name|getNetworkFullPath
 argument_list|()
+return|;
+block|}
+DECL|method|getPath ()
+specifier|private
+name|String
+name|getPath
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|location
+operator|.
+name|equals
+argument_list|(
+name|PATH_SEPARATOR_STR
+argument_list|)
+condition|?
+name|this
+operator|.
+name|location
+operator|+
+name|this
+operator|.
+name|name
+else|:
+name|this
+operator|.
+name|location
+operator|+
+name|PATH_SEPARATOR_STR
+operator|+
+name|this
+operator|.
+name|name
 return|;
 block|}
 block|}

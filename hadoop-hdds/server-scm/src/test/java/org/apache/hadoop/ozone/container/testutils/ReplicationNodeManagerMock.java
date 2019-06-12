@@ -954,6 +954,21 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getNode (String address)
+specifier|public
+name|DatanodeDetails
+name|getNode
+parameter_list|(
+name|String
+name|address
+parameter_list|)
+block|{
+return|return
+literal|null
+return|;
+block|}
 block|}
 end_class
 

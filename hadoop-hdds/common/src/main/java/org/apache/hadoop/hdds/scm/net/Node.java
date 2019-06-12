@@ -36,11 +36,29 @@ name|String
 name|getNetworkLocation
 parameter_list|()
 function_decl|;
+comment|/**    * Set this node's network location.    * @param location it's network location    */
+DECL|method|setNetworkLocation (String location)
+name|void
+name|setNetworkLocation
+parameter_list|(
+name|String
+name|location
+parameter_list|)
+function_decl|;
 comment|/** @return this node's self name in network topology. This should be node's    * IP or hostname.    * */
 DECL|method|getNetworkName ()
 name|String
 name|getNetworkName
 parameter_list|()
+function_decl|;
+comment|/**    * Set this node's name, can be hostname or Ipaddress.    * @param name it's network name    */
+DECL|method|setNetworkName (String name)
+name|void
+name|setNetworkName
+parameter_list|(
+name|String
+name|name
+parameter_list|)
 function_decl|;
 comment|/** @return this node's full path in network topology. It's the concatenation    *  of location and name.    * */
 DECL|method|getNetworkFullPath ()

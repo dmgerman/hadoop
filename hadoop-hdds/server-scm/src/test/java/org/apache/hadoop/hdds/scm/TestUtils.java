@@ -926,7 +926,7 @@ return|;
 block|}
 comment|/**    * Creates DatanodeDetails with the given information.    *    * @param uuid      Datanode's UUID    * @param hostname  hostname of Datanode    * @param ipAddress ip address of Datanode    *    * @return DatanodeDetails    */
 DECL|method|createDatanodeDetails (String uuid, String hostname, String ipAddress, String networkLocation)
-specifier|private
+specifier|public
 specifier|static
 name|DatanodeDetails
 name|createDatanodeDetails
