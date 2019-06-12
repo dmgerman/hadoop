@@ -303,7 +303,7 @@ name|tokens
 init|=
 name|StringUtils
 operator|.
-name|splitPreserveAllTokens
+name|split
 argument_list|(
 name|proto
 operator|.
@@ -311,6 +311,8 @@ name|getPath
 argument_list|()
 argument_list|,
 name|OZONE_URI_DELIMITER
+argument_list|,
+literal|3
 argument_list|)
 decl_stmt|;
 if|if
@@ -412,7 +414,7 @@ condition|(
 name|tokens
 operator|.
 name|length
-operator|!=
+operator|<
 literal|3
 condition|)
 block|{
