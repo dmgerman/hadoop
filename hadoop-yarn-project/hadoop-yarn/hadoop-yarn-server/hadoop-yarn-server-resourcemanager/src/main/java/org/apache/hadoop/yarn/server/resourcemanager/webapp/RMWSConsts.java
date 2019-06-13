@@ -189,7 +189,7 @@ specifier|final
 name|String
 name|SCHEDULER_APP_ACTIVITIES
 init|=
-literal|"/scheduler/app-activities"
+literal|"/scheduler/app-activities/{appid}"
 decl_stmt|;
 comment|/** Path for {@code RMWebServiceProtocol#getAppStatistics}. */
 DECL|field|APP_STATISTICS
@@ -852,6 +852,24 @@ name|COMMAND
 init|=
 literal|"command"
 decl_stmt|;
+DECL|field|ACTIONS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ACTIONS
+init|=
+literal|"actions"
+decl_stmt|;
+DECL|field|SUMMARIZE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SUMMARIZE
+init|=
+literal|"summarize"
+decl_stmt|;
 DECL|method|RMWSConsts ()
 specifier|private
 name|RMWSConsts
@@ -867,6 +885,18 @@ name|ActivitiesGroupBy
 block|{
 DECL|enumConstant|DIAGNOSTIC
 name|DIAGNOSTIC
+block|}
+comment|/**    * Defines the required action of app activities:    * REFRESH means to turn on activities recording for the required app,    * GET means the required app activities should be involved in response.    */
+DECL|enum|AppActivitiesRequiredAction
+specifier|public
+enum|enum
+name|AppActivitiesRequiredAction
+block|{
+DECL|enumConstant|REFRESH
+DECL|enumConstant|GET
+name|REFRESH
+block|,
+name|GET
 block|}
 block|}
 end_class

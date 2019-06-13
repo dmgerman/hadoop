@@ -422,26 +422,12 @@ return|;
 block|}
 DECL|method|getPriority ()
 specifier|public
-name|String
+name|Priority
 name|getPriority
 parameter_list|()
 block|{
-if|if
-condition|(
-name|priority
-operator|==
-literal|null
-condition|)
-block|{
-return|return
-literal|null
-return|;
-block|}
 return|return
 name|priority
-operator|.
-name|toString
-argument_list|()
 return|;
 block|}
 DECL|method|getContainerId ()
@@ -647,6 +633,25 @@ expr_stmt|;
 return|return
 name|appAllocation
 return|;
+block|}
+DECL|method|setAllocationAttempts (List<ActivityNode> allocationAttempts)
+specifier|public
+name|void
+name|setAllocationAttempts
+parameter_list|(
+name|List
+argument_list|<
+name|ActivityNode
+argument_list|>
+name|allocationAttempts
+parameter_list|)
+block|{
+name|this
+operator|.
+name|allocationAttempts
+operator|=
+name|allocationAttempts
+expr_stmt|;
 block|}
 block|}
 end_class

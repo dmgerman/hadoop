@@ -1250,6 +1250,28 @@ name|Singleton
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|webapp
+operator|.
+name|RMWebServices
+operator|.
+name|DEFAULT_SUMMARIZE
+import|;
+end_import
+
 begin_comment
 comment|/**  * RouterWebServices is a service that runs on each router that can be used to  * intercept and inspect {@link RMWebServiceProtocol} messages from client to  * the cluster resource manager. It listens {@link RMWebServiceProtocol} REST  * messages from the client and creates a request intercepting pipeline instance  * for each client. The pipeline is a chain of {@link RESTRequestInterceptor}  * instances that can inspect and modify the request/response as needed. The  * main difference with AMRMProxyService is the protocol they implement.  **/
 end_comment
@@ -3017,7 +3039,7 @@ block|}
 argument_list|)
 annotation|@
 name|Override
-DECL|method|getAppActivities (@ontext HttpServletRequest hsr, @QueryParam(RMWSConsts.APP_ID) String appId, @QueryParam(RMWSConsts.MAX_TIME) String time, @QueryParam(RMWSConsts.REQUEST_PRIORITIES) Set<String> requestPriorities, @QueryParam(RMWSConsts.ALLOCATION_REQUEST_IDS) Set<String> allocationRequestIds, @QueryParam(RMWSConsts.GROUP_BY) String groupBy)
+DECL|method|getAppActivities (@ontext HttpServletRequest hsr, @QueryParam(RMWSConsts.APP_ID) String appId, @QueryParam(RMWSConsts.MAX_TIME) String time, @QueryParam(RMWSConsts.REQUEST_PRIORITIES) Set<String> requestPriorities, @QueryParam(RMWSConsts.ALLOCATION_REQUEST_IDS) Set<String> allocationRequestIds, @QueryParam(RMWSConsts.GROUP_BY) String groupBy, @QueryParam(RMWSConsts.LIMIT) String limit, @QueryParam(RMWSConsts.ACTIONS) Set<String> actions, @QueryParam(RMWSConsts.SUMMARIZE) @DefaultValue(DEFAULT_SUMMARIZE) boolean summarize)
 specifier|public
 name|AppActivitiesInfo
 name|getAppActivities
@@ -3082,6 +3104,44 @@ name|GROUP_BY
 argument_list|)
 name|String
 name|groupBy
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+name|RMWSConsts
+operator|.
+name|LIMIT
+argument_list|)
+name|String
+name|limit
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+name|RMWSConsts
+operator|.
+name|ACTIONS
+argument_list|)
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|actions
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+name|RMWSConsts
+operator|.
+name|SUMMARIZE
+argument_list|)
+annotation|@
+name|DefaultValue
+argument_list|(
+name|DEFAULT_SUMMARIZE
+argument_list|)
+name|boolean
+name|summarize
 parameter_list|)
 block|{
 name|init
@@ -3114,6 +3174,12 @@ argument_list|,
 name|allocationRequestIds
 argument_list|,
 name|groupBy
+argument_list|,
+name|limit
+argument_list|,
+name|actions
+argument_list|,
+name|summarize
 argument_list|)
 return|;
 block|}

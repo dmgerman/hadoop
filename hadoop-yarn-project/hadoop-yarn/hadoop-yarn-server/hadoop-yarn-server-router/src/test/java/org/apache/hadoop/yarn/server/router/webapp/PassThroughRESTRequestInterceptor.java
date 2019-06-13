@@ -1318,7 +1318,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getAppActivities (HttpServletRequest hsr, String appId, String time, Set<String> requestPriorities, Set<String> allocationRequestIds, String groupBy)
+DECL|method|getAppActivities (HttpServletRequest hsr, String appId, String time, Set<String> requestPriorities, Set<String> allocationRequestIds, String groupBy, String limit, Set<String> actions, boolean summarize)
 specifier|public
 name|AppActivitiesInfo
 name|getAppActivities
@@ -1346,6 +1346,18 @@ name|allocationRequestIds
 parameter_list|,
 name|String
 name|groupBy
+parameter_list|,
+name|String
+name|limit
+parameter_list|,
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|actions
+parameter_list|,
+name|boolean
+name|summarize
 parameter_list|)
 block|{
 return|return
@@ -1365,6 +1377,12 @@ argument_list|,
 name|allocationRequestIds
 argument_list|,
 name|groupBy
+argument_list|,
+name|limit
+argument_list|,
+name|actions
+argument_list|,
+name|summarize
 argument_list|)
 return|;
 block|}
