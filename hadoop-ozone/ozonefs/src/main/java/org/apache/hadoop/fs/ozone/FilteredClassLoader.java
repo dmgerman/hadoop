@@ -58,6 +58,20 @@ name|Set
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * Class loader which delegates the loading only for the selected class.  *  *<p>  * By default java classloader delegates first all the class loading to the  * parent, and loads the class only if it's not found in the class.  *<p>  * This simple class loader do the opposit. Everything is loaded with this  * class loader without delegation _except_ the few classes which are defined  * in the constructor.  *<p>  * With this method we can use two separated class loader (the original main  * classloader and instance of this which loaded separated classes, but the  * few selected classes are shared between the two class loaders.  *<p>  * With this approach it's possible to use any older hadoop version  * (main classloader) together with ozonefs (instance of this classloader) as  * only the selected classes are selected between the class loaders.  */
 end_comment
@@ -161,6 +175,23 @@ operator|.
 name|add
 argument_list|(
 literal|"org.apache.hadoop.fs.Seekable"
+argument_list|)
+expr_stmt|;
+name|delegatedClasses
+operator|.
+name|addAll
+argument_list|(
+name|StringUtils
+operator|.
+name|getTrimmedStringCollection
+argument_list|(
+name|System
+operator|.
+name|getenv
+argument_list|(
+literal|"HADOOP_OZONE_DELEGATED_CLASSES"
+argument_list|)
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|this
