@@ -30,6 +30,26 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Iterator
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -267,6 +287,37 @@ operator|new
 name|NotImplementedException
 argument_list|(
 literal|"cleanupCache is not implemented"
+argument_list|)
+throw|;
+block|}
+comment|/**    * Return cache iterator maintained for this table.    */
+specifier|default
+name|Iterator
+argument_list|<
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|CacheKey
+argument_list|<
+name|KEY
+argument_list|>
+argument_list|,
+name|CacheValue
+argument_list|<
+name|VALUE
+argument_list|>
+argument_list|>
+argument_list|>
+DECL|method|cacheIterator ()
+name|cacheIterator
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|NotImplementedException
+argument_list|(
+literal|"cacheIterator is not implemented"
 argument_list|)
 throw|;
 block|}

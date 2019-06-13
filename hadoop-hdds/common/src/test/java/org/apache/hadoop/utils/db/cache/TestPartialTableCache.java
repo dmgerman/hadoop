@@ -247,7 +247,7 @@ argument_list|)
 argument_list|)
 argument_list|)
 operator|.
-name|getValue
+name|getCacheValue
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -303,7 +303,7 @@ argument_list|)
 argument_list|)
 argument_list|)
 operator|.
-name|getValue
+name|getCacheValue
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -473,7 +473,7 @@ argument_list|)
 argument_list|)
 argument_list|)
 operator|.
-name|getValue
+name|getCacheValue
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -584,7 +584,7 @@ argument_list|)
 argument_list|)
 argument_list|)
 operator|.
-name|getValue
+name|getCacheValue
 argument_list|()
 argument_list|)
 expr_stmt|;

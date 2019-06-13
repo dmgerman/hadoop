@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.om.response.bucket
+DECL|package|org.apache.hadoop.ozone.om.response.volume
 package|package
 name|org
 operator|.
@@ -18,19 +18,9 @@ name|om
 operator|.
 name|response
 operator|.
-name|bucket
+name|volume
 package|;
 end_package
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
 
 begin_import
 import|import
@@ -62,7 +52,7 @@ name|om
 operator|.
 name|helpers
 operator|.
-name|OmBucketInfo
+name|OmVolumeArgs
 import|;
 end_import
 
@@ -138,31 +128,39 @@ name|BatchOperation
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
 begin_comment
-comment|/**  * Response for CreateBucket request.  */
+comment|/**  * Response for set quota request.  */
 end_comment
 
 begin_class
-DECL|class|OMBucketCreateResponse
+DECL|class|OMVolumeSetQuotaResponse
 specifier|public
-specifier|final
 class|class
-name|OMBucketCreateResponse
+name|OMVolumeSetQuotaResponse
 extends|extends
 name|OMClientResponse
 block|{
-DECL|field|omBucketInfo
+DECL|field|omVolumeArgs
 specifier|private
-specifier|final
-name|OmBucketInfo
-name|omBucketInfo
+name|OmVolumeArgs
+name|omVolumeArgs
 decl_stmt|;
-DECL|method|OMBucketCreateResponse (OmBucketInfo omBucketInfo, OMResponse omResponse)
+DECL|method|OMVolumeSetQuotaResponse (OmVolumeArgs omVolumeArgs, OMResponse omResponse)
 specifier|public
-name|OMBucketCreateResponse
+name|OMVolumeSetQuotaResponse
 parameter_list|(
-name|OmBucketInfo
-name|omBucketInfo
+name|OmVolumeArgs
+name|omVolumeArgs
 parameter_list|,
 name|OMResponse
 name|omResponse
@@ -175,9 +173,9 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|omBucketInfo
+name|omVolumeArgs
 operator|=
-name|omBucketInfo
+name|omVolumeArgs
 expr_stmt|;
 block|}
 annotation|@
@@ -213,49 +211,29 @@ operator|.
 name|OK
 condition|)
 block|{
-name|String
-name|dbBucketKey
-init|=
 name|omMetadataManager
 operator|.
-name|getBucketKey
-argument_list|(
-name|omBucketInfo
-operator|.
-name|getVolumeName
-argument_list|()
-argument_list|,
-name|omBucketInfo
-operator|.
-name|getBucketName
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|omMetadataManager
-operator|.
-name|getBucketTable
+name|getVolumeTable
 argument_list|()
 operator|.
 name|putWithBatch
 argument_list|(
 name|batchOperation
 argument_list|,
-name|dbBucketKey
+name|omMetadataManager
+operator|.
+name|getVolumeKey
+argument_list|(
+name|omVolumeArgs
+operator|.
+name|getVolume
+argument_list|()
+argument_list|)
 argument_list|,
-name|omBucketInfo
+name|omVolumeArgs
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-DECL|method|getOmBucketInfo ()
-specifier|public
-name|OmBucketInfo
-name|getOmBucketInfo
-parameter_list|()
-block|{
-return|return
-name|omBucketInfo
-return|;
 block|}
 block|}
 end_class

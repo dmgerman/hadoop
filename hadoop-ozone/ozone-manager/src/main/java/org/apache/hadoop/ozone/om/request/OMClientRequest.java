@@ -357,7 +357,6 @@ name|RequestAuditor
 block|{
 DECL|field|omRequest
 specifier|private
-specifier|final
 name|OMRequest
 name|omRequest
 decl_stmt|;
@@ -395,7 +394,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-return|return
+name|omRequest
+operator|=
 name|getOmRequest
 argument_list|()
 operator|.
@@ -410,6 +410,9 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
+expr_stmt|;
+return|return
+name|omRequest
 return|;
 block|}
 comment|/**    * Validate the OMRequest and update the cache.    * This step should verify that the request can be executed, perform    * any authorization steps and update the in-memory cache.     * This step does not persist the changes to the database.    *    * @return the response that will be returned to the client.    */

@@ -89,10 +89,10 @@ operator|=
 name|epoch
 expr_stmt|;
 block|}
-DECL|method|getValue ()
+DECL|method|getCacheValue ()
 specifier|public
 name|VALUE
-name|getValue
+name|getCacheValue
 parameter_list|()
 block|{
 return|return

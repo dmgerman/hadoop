@@ -645,13 +645,33 @@ name|long
 name|lastRatisTransactionIndex
 parameter_list|)
 block|{
-comment|// As now only bucket transactions are handled only called cleanupCache
-comment|// on bucketTable.
+comment|// As now only volume and bucket transactions are handled only called
+comment|// cleanupCache on bucketTable.
 comment|// TODO: After supporting all write operations we need to call
 comment|//  cleanupCache on the tables only when buffer has entries for that table.
 name|omMetadataManager
 operator|.
 name|getBucketTable
+argument_list|()
+operator|.
+name|cleanupCache
+argument_list|(
+name|lastRatisTransactionIndex
+argument_list|)
+expr_stmt|;
+name|omMetadataManager
+operator|.
+name|getVolumeTable
+argument_list|()
+operator|.
+name|cleanupCache
+argument_list|(
+name|lastRatisTransactionIndex
+argument_list|)
+expr_stmt|;
+name|omMetadataManager
+operator|.
+name|getUserTable
 argument_list|()
 operator|.
 name|cleanupCache

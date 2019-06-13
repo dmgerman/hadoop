@@ -2768,6 +2768,42 @@ name|ozone
 operator|.
 name|om
 operator|.
+name|OMConfigKeys
+operator|.
+name|OZONE_OM_USER_MAX_VOLUME
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|OMConfigKeys
+operator|.
+name|OZONE_OM_USER_MAX_VOLUME_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
 name|exceptions
 operator|.
 name|OMException
@@ -3265,6 +3301,13 @@ name|CommonConfigurationKeysPublic
 operator|.
 name|HADOOP_SECURITY_KEY_PROVIDER_PATH
 decl_stmt|;
+comment|// Adding parameters needed for VolumeRequests here, so that during request
+comment|// execution, we can get from ozoneManager.
+DECL|field|maxUserVolumeCount
+specifier|private
+name|long
+name|maxUserVolumeCount
+decl_stmt|;
 DECL|method|OzoneManager (OzoneConfiguration conf)
 specifier|private
 name|OzoneManager
@@ -3294,6 +3337,34 @@ expr_stmt|;
 name|configuration
 operator|=
 name|conf
+expr_stmt|;
+name|this
+operator|.
+name|maxUserVolumeCount
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|OZONE_OM_USER_MAX_VOLUME
+argument_list|,
+name|OZONE_OM_USER_MAX_VOLUME_DEFAULT
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|this
+operator|.
+name|maxUserVolumeCount
+operator|>
+literal|0
+argument_list|,
+name|OZONE_OM_USER_MAX_VOLUME
+operator|+
+literal|" value should be greater than zero"
+argument_list|)
 expr_stmt|;
 name|omStorage
 operator|=
@@ -16848,14 +16919,15 @@ return|return
 literal|null
 return|;
 block|}
-DECL|method|getOmMetrics ()
+comment|/**    * Return maximum volumes count per user.    * @return maxUserVolumeCount    */
+DECL|method|getMaxUserVolumeCount ()
 specifier|public
-name|OMMetrics
-name|getOmMetrics
+name|long
+name|getMaxUserVolumeCount
 parameter_list|()
 block|{
 return|return
-name|metrics
+name|maxUserVolumeCount
 return|;
 block|}
 block|}

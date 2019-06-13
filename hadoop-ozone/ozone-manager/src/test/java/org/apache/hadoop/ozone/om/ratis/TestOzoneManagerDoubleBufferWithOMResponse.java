@@ -254,6 +254,8 @@ name|om
 operator|.
 name|response
 operator|.
+name|volume
+operator|.
 name|OMVolumeCreateResponse
 import|;
 end_import

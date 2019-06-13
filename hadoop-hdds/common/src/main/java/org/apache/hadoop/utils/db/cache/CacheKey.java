@@ -73,10 +73,10 @@ operator|=
 name|key
 expr_stmt|;
 block|}
-DECL|method|getKey ()
+DECL|method|getCacheKey ()
 specifier|public
 name|KEY
-name|getKey
+name|getCacheKey
 parameter_list|()
 block|{
 return|return

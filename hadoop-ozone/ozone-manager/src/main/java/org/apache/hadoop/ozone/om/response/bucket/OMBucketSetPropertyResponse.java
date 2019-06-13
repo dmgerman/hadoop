@@ -194,6 +194,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// For OmResponse with failure, this should do nothing. This method is
+comment|// not called in failure scenario in OM code.
 if|if
 condition|(
 name|getOMResponse

@@ -52,6 +52,26 @@ name|Evolving
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Iterator
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
 begin_comment
 comment|/**  * Cache used for RocksDB tables.  * @param<CACHEKEY>  * @param<CACHEVALUE>  */
 end_comment
@@ -109,6 +129,22 @@ comment|/**    * Return the size of the cache.    * @return size    */
 DECL|method|size ()
 name|int
 name|size
+parameter_list|()
+function_decl|;
+comment|/**    * Return an iterator for the cache.    * @return iterator of the underlying cache for the table.    */
+DECL|method|iterator ()
+name|Iterator
+argument_list|<
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|CACHEKEY
+argument_list|,
+name|CACHEVALUE
+argument_list|>
+argument_list|>
+name|iterator
 parameter_list|()
 function_decl|;
 block|}
