@@ -835,16 +835,27 @@ argument_list|,
 name|event1Completed
 argument_list|)
 expr_stmt|;
+comment|//lease manager timeout = 2000L
 name|Thread
 operator|.
 name|sleep
 argument_list|(
-literal|2200L
+literal|3
+operator|*
+literal|2000L
+argument_list|)
+expr_stmt|;
+name|queue
+operator|.
+name|processAll
+argument_list|(
+literal|2000L
 argument_list|)
 expr_stmt|;
 comment|//until now: 3 in-progress activities are tracked with three
 comment|// UnderreplicatedEvents. The first one is completed, the remaining two
-comment|// are timed out (as the timeout -- defined in the leasmanager -- is 2000ms.
+comment|// are timed out (as the timeout -- defined in the lease manager -- is
+comment|// 2000ms).
 name|EventWatcherMetrics
 name|metrics
 init|=
@@ -869,12 +880,22 @@ name|value
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|//one is finished. doesn't need to be resent
+comment|//completed + timed out = all messages
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|1
+literal|"number of timed out and completed messages should be the same as the"
+operator|+
+literal|" all messages"
+argument_list|,
+name|metrics
+operator|.
+name|getTrackedEvents
+argument_list|()
+operator|.
+name|value
+argument_list|()
 argument_list|,
 name|metrics
 operator|.
@@ -883,14 +904,22 @@ argument_list|()
 operator|.
 name|value
 argument_list|()
+operator|+
+name|metrics
+operator|.
+name|getTimedOutEvents
+argument_list|()
+operator|.
+name|value
+argument_list|()
 argument_list|)
 expr_stmt|;
-comment|//Other two are timed out and resent
+comment|//_at least_ two are timed out.
 name|Assert
 operator|.
-name|assertEquals
+name|assertTrue
 argument_list|(
-literal|2
+literal|"At least two events should be timed out."
 argument_list|,
 name|metrics
 operator|.
@@ -899,6 +928,8 @@ argument_list|()
 operator|.
 name|value
 argument_list|()
+operator|>=
+literal|2
 argument_list|)
 expr_stmt|;
 name|DefaultMetricsSystem

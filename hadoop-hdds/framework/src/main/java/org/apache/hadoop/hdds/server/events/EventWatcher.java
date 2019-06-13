@@ -753,11 +753,6 @@ parameter_list|)
 throws|throws
 name|LeaseNotFoundException
 block|{
-name|metrics
-operator|.
-name|incrementCompletedEvents
-argument_list|()
-expr_stmt|;
 name|long
 name|id
 init|=
@@ -783,12 +778,20 @@ argument_list|(
 name|id
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
 name|trackedEvents
 operator|.
 name|remove
 argument_list|(
 name|payload
 argument_list|)
+condition|)
+block|{
+name|metrics
+operator|.
+name|incrementCompletedEvents
+argument_list|()
 expr_stmt|;
 name|long
 name|originalTime
@@ -819,6 +822,7 @@ argument_list|,
 name|payload
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|handleTimeout (EventPublisher publisher, long identifier)
 specifier|private
