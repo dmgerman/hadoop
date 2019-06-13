@@ -964,7 +964,7 @@ condition|(
 operator|!
 name|hddsRootDir
 operator|.
-name|mkdir
+name|mkdirs
 argument_list|()
 condition|)
 block|{

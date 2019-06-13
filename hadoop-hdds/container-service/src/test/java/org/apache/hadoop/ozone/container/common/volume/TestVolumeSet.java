@@ -1276,8 +1276,10 @@ argument_list|,
 name|ozoneConfig
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
+literal|1
+argument_list|,
 name|volSet
 operator|.
 name|getFailedVolumesList
@@ -1285,8 +1287,6 @@ argument_list|()
 operator|.
 name|size
 argument_list|()
-operator|==
-literal|1
 argument_list|)
 expr_stmt|;
 name|assertEquals
