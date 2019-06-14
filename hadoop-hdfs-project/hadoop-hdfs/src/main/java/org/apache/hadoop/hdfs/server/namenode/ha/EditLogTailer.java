@@ -2044,9 +2044,12 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Edit log tailer interrupted"
+literal|"Edit log tailer interrupted: {}"
 argument_list|,
 name|e
+operator|.
+name|getMessage
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
