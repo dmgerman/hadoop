@@ -260,7 +260,7 @@ name|timelineservice
 operator|.
 name|storage
 operator|.
-name|HBaseTimelineReaderImpl
+name|HBaseStorageMonitor
 operator|.
 name|DATA_TO_RETRIEVE
 import|;
@@ -282,7 +282,7 @@ name|timelineservice
 operator|.
 name|storage
 operator|.
-name|HBaseTimelineReaderImpl
+name|HBaseStorageMonitor
 operator|.
 name|MONITOR_FILTERS
 import|;
