@@ -1051,6 +1051,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+block|}
 else|else
 block|{
 name|defaultInitializers
@@ -1065,7 +1066,6 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 name|defaultInitializers
 operator|.
