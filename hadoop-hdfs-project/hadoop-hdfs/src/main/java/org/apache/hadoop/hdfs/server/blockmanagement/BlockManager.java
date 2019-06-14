@@ -2269,7 +2269,7 @@ name|float
 name|blocksInvalidateWorkPct
 decl_stmt|;
 DECL|field|blocksReplWorkMultiplier
-specifier|final
+specifier|private
 name|int
 name|blocksReplWorkMultiplier
 decl_stmt|;
@@ -4746,7 +4746,7 @@ literal|""
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** @return maxReplicationStreams */
+comment|/** Returns the current setting for maxReplicationStreams, which is set by    *  {@code DFSConfigKeys.DFS_NAMENODE_REPLICATION_MAX_STREAMS_KEY}.    *    *  @return maxReplicationStreams    */
 DECL|method|getMaxReplicationStreams ()
 specifier|public
 name|int
@@ -4756,6 +4756,135 @@ block|{
 return|return
 name|maxReplicationStreams
 return|;
+block|}
+DECL|method|ensurePositiveInt (int val, String key)
+specifier|static
+specifier|private
+name|void
+name|ensurePositiveInt
+parameter_list|(
+name|int
+name|val
+parameter_list|,
+name|String
+name|key
+parameter_list|)
+block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+operator|(
+name|val
+operator|>
+literal|0
+operator|)
+argument_list|,
+name|key
+operator|+
+literal|" = '"
+operator|+
+name|val
+operator|+
+literal|"' is invalid. "
+operator|+
+literal|"It should be a positive, non-zero integer value."
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Updates the value used for maxReplicationStreams, which is set by    * {@code DFSConfigKeys.DFS_NAMENODE_REPLICATION_MAX_STREAMS_KEY} initially.    *    * @param newVal - Must be a positive non-zero integer.    */
+DECL|method|setMaxReplicationStreams (int newVal)
+specifier|public
+name|void
+name|setMaxReplicationStreams
+parameter_list|(
+name|int
+name|newVal
+parameter_list|)
+block|{
+name|ensurePositiveInt
+argument_list|(
+name|newVal
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_REPLICATION_MAX_STREAMS_KEY
+argument_list|)
+expr_stmt|;
+name|maxReplicationStreams
+operator|=
+name|newVal
+expr_stmt|;
+block|}
+comment|/** Returns the current setting for maxReplicationStreamsHardLimit, set by    * {@code DFSConfigKeys.DFS_NAMENODE_REPLICATION_STREAMS_HARD_LIMIT_KEY}.    *    *  @return maxReplicationStreamsHardLimit    */
+DECL|method|getReplicationStreamsHardLimit ()
+specifier|public
+name|int
+name|getReplicationStreamsHardLimit
+parameter_list|()
+block|{
+return|return
+name|replicationStreamsHardLimit
+return|;
+block|}
+comment|/**    * Updates the value used for replicationStreamsHardLimit, which is set by    * {@code DFSConfigKeys.DFS_NAMENODE_REPLICATION_STREAMS_HARD_LIMIT_KEY}    * initially.    *    * @param newVal - Must be a positive non-zero integer.    */
+DECL|method|setReplicationStreamsHardLimit (int newVal)
+specifier|public
+name|void
+name|setReplicationStreamsHardLimit
+parameter_list|(
+name|int
+name|newVal
+parameter_list|)
+block|{
+name|ensurePositiveInt
+argument_list|(
+name|newVal
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_REPLICATION_STREAMS_HARD_LIMIT_KEY
+argument_list|)
+expr_stmt|;
+name|replicationStreamsHardLimit
+operator|=
+name|newVal
+expr_stmt|;
+block|}
+comment|/** Returns the current setting for blocksReplWorkMultiplier, set by    * {@code DFSConfigKeys.    *     DFS_NAMENODE_REPLICATION_WORK_MULTIPLIER_PER_ITERATION}.    *    *  @return maxReplicationStreamsHardLimit    */
+DECL|method|getBlocksReplWorkMultiplier ()
+specifier|public
+name|int
+name|getBlocksReplWorkMultiplier
+parameter_list|()
+block|{
+return|return
+name|blocksReplWorkMultiplier
+return|;
+block|}
+comment|/**    * Updates the value used for blocksReplWorkMultiplier, set by    * {@code DFSConfigKeys.    *     DFS_NAMENODE_REPLICATION_WORK_MULTIPLIER_PER_ITERATION} initially.    * @param newVal - Must be a positive non-zero integer.    */
+DECL|method|setBlocksReplWorkMultiplier (int newVal)
+specifier|public
+name|void
+name|setBlocksReplWorkMultiplier
+parameter_list|(
+name|int
+name|newVal
+parameter_list|)
+block|{
+name|ensurePositiveInt
+argument_list|(
+name|newVal
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_REPLICATION_WORK_MULTIPLIER_PER_ITERATION
+argument_list|)
+expr_stmt|;
+name|blocksReplWorkMultiplier
+operator|=
+name|newVal
+expr_stmt|;
 block|}
 DECL|method|getDefaultStorageNum (BlockInfo block)
 specifier|public
