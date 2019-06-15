@@ -280,12 +280,21 @@ specifier|volatile
 name|boolean
 name|isRunning
 decl_stmt|;
-DECL|method|OzoneManagerDoubleBuffer (OMMetadataManager omMetadataManager)
+DECL|field|ozoneManagerRatisSnapShot
+specifier|private
+specifier|final
+name|OzoneManagerRatisSnapshot
+name|ozoneManagerRatisSnapShot
+decl_stmt|;
+DECL|method|OzoneManagerDoubleBuffer (OMMetadataManager omMetadataManager, OzoneManagerRatisSnapshot ozoneManagerRatisSnapShot)
 specifier|public
 name|OzoneManagerDoubleBuffer
 parameter_list|(
 name|OMMetadataManager
 name|omMetadataManager
+parameter_list|,
+name|OzoneManagerRatisSnapshot
+name|ozoneManagerRatisSnapShot
 parameter_list|)
 block|{
 name|this
@@ -311,6 +320,12 @@ operator|.
 name|omMetadataManager
 operator|=
 name|omMetadataManager
+expr_stmt|;
+name|this
+operator|.
+name|ozoneManagerRatisSnapShot
+operator|=
+name|ozoneManagerRatisSnapShot
 expr_stmt|;
 name|isRunning
 operator|=
@@ -501,7 +516,17 @@ argument_list|(
 name|lastRatisTransactionIndex
 argument_list|)
 expr_stmt|;
-comment|// TODO: update the last updated index in OzoneManagerStateMachine.
+comment|// TODO: Need to revisit this logic, once we have multiple
+comment|//  executors for volume/bucket request handling. As for now
+comment|//  transactions are serialized this should be fine.
+comment|// update the last updated index in OzoneManagerStateMachine.
+name|ozoneManagerRatisSnapShot
+operator|.
+name|updateLastAppliedIndex
+argument_list|(
+name|lastRatisTransactionIndex
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 catch|catch

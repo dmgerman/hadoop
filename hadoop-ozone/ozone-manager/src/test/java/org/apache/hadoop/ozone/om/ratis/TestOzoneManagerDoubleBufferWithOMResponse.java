@@ -501,6 +501,16 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
+DECL|field|ozoneManagerRatisSnapshot
+specifier|private
+name|OzoneManagerRatisSnapshot
+name|ozoneManagerRatisSnapshot
+decl_stmt|;
+DECL|field|lastAppliedIndex
+specifier|private
+name|long
+name|lastAppliedIndex
+decl_stmt|;
 annotation|@
 name|Rule
 DECL|field|folder
@@ -552,12 +562,25 @@ argument_list|(
 name|configuration
 argument_list|)
 expr_stmt|;
+name|ozoneManagerRatisSnapshot
+operator|=
+name|index
+lambda|->
+block|{
+name|lastAppliedIndex
+operator|=
+name|index
+expr_stmt|;
+block|}
+expr_stmt|;
 name|doubleBuffer
 operator|=
 operator|new
 name|OzoneManagerDoubleBuffer
 argument_list|(
 name|omMetadataManager
+argument_list|,
+name|ozoneManagerRatisSnapshot
 argument_list|)
 expr_stmt|;
 block|}
@@ -784,6 +807,20 @@ expr_stmt|;
 name|checkDeletedBuckets
 argument_list|(
 name|deleteBucketQueue
+argument_list|)
+expr_stmt|;
+comment|// Check lastAppliedIndex is updated correctly or not.
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|bucketCount
+operator|+
+name|deleteCount
+operator|+
+literal|1
+argument_list|,
+name|lastAppliedIndex
 argument_list|)
 expr_stmt|;
 block|}
@@ -1027,6 +1064,20 @@ expr_stmt|;
 name|checkDeletedBuckets
 argument_list|(
 name|deleteBucketQueue
+argument_list|)
+expr_stmt|;
+comment|// Check lastAppliedIndex is updated correctly or not.
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|bucketCount
+operator|+
+name|deleteCount
+operator|+
+literal|2
+argument_list|,
+name|lastAppliedIndex
 argument_list|)
 expr_stmt|;
 block|}
@@ -1488,6 +1539,14 @@ name|Exception
 block|{
 try|try
 block|{
+comment|// Reset transaction id.
+name|trxId
+operator|.
+name|set
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
 comment|// Calling setup and stop here because this method is called from a
 comment|// single test multiple times.
 name|setup
@@ -1609,6 +1668,22 @@ name|getFlushIterations
 argument_list|()
 operator|>
 literal|0
+argument_list|)
+expr_stmt|;
+comment|// Check lastAppliedIndex is updated correctly or not.
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+operator|(
+name|bucketCount
+operator|+
+literal|1
+operator|)
+operator|*
+name|iterations
+argument_list|,
+name|lastAppliedIndex
 argument_list|)
 expr_stmt|;
 block|}

@@ -582,6 +582,10 @@ name|ozoneManager
 operator|.
 name|getMetadataManager
 argument_list|()
+argument_list|,
+name|this
+operator|::
+name|updateLastAppliedIndex
 argument_list|)
 expr_stmt|;
 name|this
@@ -1701,6 +1705,27 @@ argument_list|(
 name|response
 argument_list|)
 return|;
+block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"HiddenField"
+argument_list|)
+DECL|method|updateLastAppliedIndex (long lastAppliedIndex)
+specifier|public
+name|void
+name|updateLastAppliedIndex
+parameter_list|(
+name|long
+name|lastAppliedIndex
+parameter_list|)
+block|{
+name|this
+operator|.
+name|lastAppliedIndex
+operator|=
+name|lastAppliedIndex
+expr_stmt|;
 block|}
 comment|/**    * Submits read request to OM and returns the response Message.    * @param request OMRequest    * @return response from OM    * @throws ServiceException    */
 DECL|method|queryCommand (OMRequest request)
