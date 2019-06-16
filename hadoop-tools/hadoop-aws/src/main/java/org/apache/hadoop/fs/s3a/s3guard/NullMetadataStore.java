@@ -152,13 +152,16 @@ name|IOException
 block|{   }
 annotation|@
 name|Override
-DECL|method|delete (Path path)
+DECL|method|delete (Path path, ITtlTimeProvider ttlTimeProvider)
 specifier|public
 name|void
 name|delete
 parameter_list|(
 name|Path
 name|path
+parameter_list|,
+name|ITtlTimeProvider
+name|ttlTimeProvider
 parameter_list|)
 throws|throws
 name|IOException
@@ -178,13 +181,16 @@ name|IOException
 block|{   }
 annotation|@
 name|Override
-DECL|method|deleteSubtree (Path path)
+DECL|method|deleteSubtree (Path path, ITtlTimeProvider ttlTimeProvider)
 specifier|public
 name|void
 name|deleteSubtree
 parameter_list|(
 name|Path
 name|path
+parameter_list|,
+name|ITtlTimeProvider
+name|ttlTimeProvider
 parameter_list|)
 throws|throws
 name|IOException
@@ -245,7 +251,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|move (Collection<Path> pathsToDelete, Collection<PathMetadata> pathsToCreate)
+DECL|method|move (Collection<Path> pathsToDelete, Collection<PathMetadata> pathsToCreate, ITtlTimeProvider ttlTimeProvider)
 specifier|public
 name|void
 name|move
@@ -261,6 +267,9 @@ argument_list|<
 name|PathMetadata
 argument_list|>
 name|pathsToCreate
+parameter_list|,
+name|ITtlTimeProvider
+name|ttlTimeProvider
 parameter_list|)
 throws|throws
 name|IOException
@@ -319,24 +328,30 @@ name|IOException
 block|{   }
 annotation|@
 name|Override
-DECL|method|prune (long modTime)
+DECL|method|prune (PruneMode pruneMode, long cutoff)
 specifier|public
 name|void
 name|prune
 parameter_list|(
+name|PruneMode
+name|pruneMode
+parameter_list|,
 name|long
-name|modTime
+name|cutoff
 parameter_list|)
 block|{   }
 annotation|@
 name|Override
-DECL|method|prune (long modTime, String keyPrefix)
+DECL|method|prune (PruneMode pruneMode, long cutoff, String keyPrefix)
 specifier|public
 name|void
 name|prune
 parameter_list|(
+name|PruneMode
+name|pruneMode
+parameter_list|,
 name|long
-name|modTime
+name|cutoff
 parameter_list|,
 name|String
 name|keyPrefix

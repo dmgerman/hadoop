@@ -1229,6 +1229,42 @@ name|fileSystem
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|getPathStringForPrune (String path)
+annotation|@
+name|Override
+specifier|protected
+name|String
+name|getPathStringForPrune
+parameter_list|(
+name|String
+name|path
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+name|String
+name|b
+init|=
+name|getTestBucketName
+argument_list|(
+name|getContract
+argument_list|()
+operator|.
+name|getFileSystem
+argument_list|()
+operator|.
+name|getConf
+argument_list|()
+argument_list|)
+decl_stmt|;
+return|return
+literal|"/"
+operator|+
+name|b
+operator|+
+literal|"/dir2"
+return|;
+block|}
 comment|/**    * Each contract has its own S3AFileSystem and DynamoDBMetadataStore objects.    */
 DECL|class|DynamoDBMSContract
 specifier|private
@@ -2252,6 +2288,9 @@ argument_list|(
 name|pathsToDelete
 argument_list|,
 name|newMetas
+argument_list|,
+name|getTtlTimeProvider
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -3202,6 +3241,9 @@ argument_list|(
 name|fullSourcePaths
 argument_list|,
 name|pathsToCreate
+argument_list|,
+name|getTtlTimeProvider
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// assert that all the ancestors should have been populated automatically

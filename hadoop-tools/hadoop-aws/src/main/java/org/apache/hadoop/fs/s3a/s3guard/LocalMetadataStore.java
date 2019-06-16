@@ -552,13 +552,16 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|delete (Path p)
+DECL|method|delete (Path p, ITtlTimeProvider ttlTimeProvider)
 specifier|public
 name|void
 name|delete
 parameter_list|(
 name|Path
 name|p
+parameter_list|,
+name|ITtlTimeProvider
+name|ttlTimeProvider
 parameter_list|)
 throws|throws
 name|IOException
@@ -570,6 +573,8 @@ argument_list|,
 literal|false
 argument_list|,
 literal|true
+argument_list|,
+name|ttlTimeProvider
 argument_list|)
 expr_stmt|;
 block|}
@@ -593,18 +598,23 @@ argument_list|,
 literal|false
 argument_list|,
 literal|false
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|deleteSubtree (Path path)
+DECL|method|deleteSubtree (Path path, ITtlTimeProvider ttlTimeProvider)
 specifier|public
 name|void
 name|deleteSubtree
 parameter_list|(
 name|Path
 name|path
+parameter_list|,
+name|ITtlTimeProvider
+name|ttlTimeProvider
 parameter_list|)
 throws|throws
 name|IOException
@@ -616,10 +626,12 @@ argument_list|,
 literal|true
 argument_list|,
 literal|true
+argument_list|,
+name|ttlTimeProvider
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|doDelete (Path p, boolean recursive, boolean tombstone)
+DECL|method|doDelete (Path p, boolean recursive, boolean tombstone, ITtlTimeProvider ttlTimeProvider)
 specifier|private
 specifier|synchronized
 name|void
@@ -633,6 +645,9 @@ name|recursive
 parameter_list|,
 name|boolean
 name|tombstone
+parameter_list|,
+name|ITtlTimeProvider
+name|ttlTimeProvider
 parameter_list|)
 block|{
 name|Path
@@ -649,6 +664,8 @@ argument_list|(
 name|path
 argument_list|,
 name|tombstone
+argument_list|,
+name|ttlTimeProvider
 argument_list|)
 expr_stmt|;
 if|if
@@ -664,6 +681,8 @@ argument_list|,
 name|localCache
 argument_list|,
 name|tombstone
+argument_list|,
+name|ttlTimeProvider
 argument_list|)
 expr_stmt|;
 block|}
@@ -894,7 +913,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|move (Collection<Path> pathsToDelete, Collection<PathMetadata> pathsToCreate)
+DECL|method|move (Collection<Path> pathsToDelete, Collection<PathMetadata> pathsToCreate, ITtlTimeProvider ttlTimeProvider)
 specifier|public
 name|void
 name|move
@@ -910,6 +929,9 @@ argument_list|<
 name|PathMetadata
 argument_list|>
 name|pathsToCreate
+parameter_list|,
+name|ITtlTimeProvider
+name|ttlTimeProvider
 parameter_list|)
 throws|throws
 name|IOException
@@ -987,6 +1009,8 @@ expr_stmt|;
 name|delete
 argument_list|(
 name|meta
+argument_list|,
+name|ttlTimeProvider
 argument_list|)
 expr_stmt|;
 block|}
@@ -1508,20 +1532,25 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|prune (long modTime)
+DECL|method|prune (PruneMode pruneMode, long cutoff)
 specifier|public
 name|void
 name|prune
 parameter_list|(
+name|PruneMode
+name|pruneMode
+parameter_list|,
 name|long
-name|modTime
+name|cutoff
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 name|prune
 argument_list|(
-name|modTime
+name|pruneMode
+argument_list|,
+name|cutoff
 argument_list|,
 literal|""
 argument_list|)
@@ -1529,14 +1558,17 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|prune (long modTime, String keyPrefix)
+DECL|method|prune (PruneMode pruneMode, long cutoff, String keyPrefix)
 specifier|public
 specifier|synchronized
 name|void
 name|prune
 parameter_list|(
+name|PruneMode
+name|pruneMode
+parameter_list|,
 name|long
-name|modTime
+name|cutoff
 parameter_list|,
 name|String
 name|keyPrefix
@@ -1574,6 +1606,8 @@ name|entry
 lambda|->
 name|expired
 argument_list|(
+name|pruneMode
+argument_list|,
 name|entry
 operator|.
 name|getValue
@@ -1581,11 +1615,8 @@ argument_list|()
 operator|.
 name|getFileMeta
 argument_list|()
-operator|.
-name|getFileStatus
-argument_list|()
 argument_list|,
-name|modTime
+name|cutoff
 argument_list|,
 name|keyPrefix
 argument_list|)
@@ -1685,22 +1716,16 @@ operator|:
 name|oldChildren
 operator|)
 block|{
-name|FileStatus
-name|status
-operator|=
-name|child
-operator|.
-name|getFileStatus
-argument_list|()
-block|;
 if|if
 condition|(
 operator|!
 name|expired
 argument_list|(
-name|status
+name|pruneMode
 argument_list|,
-name|modTime
+name|child
+argument_list|,
+name|cutoff
 argument_list|,
 name|keyPrefix
 argument_list|)
@@ -1715,6 +1740,45 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+name|removeAuthoritativeFromParent
+parameter_list|(
+name|path
+parameter_list|,
+name|oldChildren
+parameter_list|,
+name|newChildren
+parameter_list|)
+constructor_decl|;
+block|}
+end_class
+
+begin_empty_stmt
+unit|)
+empty_stmt|;
+end_empty_stmt
+
+begin_function
+unit|}    private
+DECL|method|removeAuthoritativeFromParent (Path path, Collection<PathMetadata> oldChildren, Collection<PathMetadata> newChildren)
+name|void
+name|removeAuthoritativeFromParent
+parameter_list|(
+name|Path
+name|path
+parameter_list|,
+name|Collection
+argument_list|<
+name|PathMetadata
+argument_list|>
+name|oldChildren
+parameter_list|,
+name|Collection
+argument_list|<
+name|PathMetadata
+argument_list|>
+name|newChildren
+parameter_list|)
+block|{
 if|if
 condition|(
 name|newChildren
@@ -1792,32 +1856,39 @@ block|}
 block|}
 block|}
 block|}
-end_class
-
-begin_empty_stmt
-unit|)
-empty_stmt|;
-end_empty_stmt
+end_function
 
 begin_function
-unit|}    private
-DECL|method|expired (FileStatus status, long expiry, String keyPrefix)
+DECL|method|expired (PruneMode pruneMode, PathMetadata metadata, long cutoff, String keyPrefix)
+specifier|private
 name|boolean
 name|expired
 parameter_list|(
-name|FileStatus
-name|status
+name|PruneMode
+name|pruneMode
+parameter_list|,
+name|PathMetadata
+name|metadata
 parameter_list|,
 name|long
-name|expiry
+name|cutoff
 parameter_list|,
 name|String
 name|keyPrefix
 parameter_list|)
 block|{
-comment|// remove the protocol from path string to be able to compare
-name|String
-name|bucket
+specifier|final
+name|S3AFileStatus
+name|status
+init|=
+name|metadata
+operator|.
+name|getFileStatus
+argument_list|()
+decl_stmt|;
+specifier|final
+name|URI
+name|statusUri
 init|=
 name|status
 operator|.
@@ -1826,6 +1897,12 @@ argument_list|()
 operator|.
 name|toUri
 argument_list|()
+decl_stmt|;
+comment|// remove the protocol from path string to be able to compare
+name|String
+name|bucket
+init|=
+name|statusUri
 operator|.
 name|getHost
 argument_list|()
@@ -1869,27 +1946,33 @@ comment|// if there's no bucket in the path the pathToParentKey will fail, so
 comment|// this is the fallback to get the path from status
 name|statusTranslatedPath
 operator|=
-name|status
-operator|.
-name|getPath
-argument_list|()
-operator|.
-name|toUri
-argument_list|()
+name|statusUri
 operator|.
 name|getPath
 argument_list|()
 expr_stmt|;
 block|}
+name|boolean
+name|expired
+decl_stmt|;
+switch|switch
+condition|(
+name|pruneMode
+condition|)
+block|{
+case|case
+name|ALL_BY_MODTIME
+case|:
 comment|// Note: S3 doesn't track modification time on directories, so for
 comment|// consistency with the DynamoDB implementation we ignore that here
-return|return
+name|expired
+operator|=
 name|status
 operator|.
 name|getModificationTime
 argument_list|()
 operator|<
-name|expiry
+name|cutoff
 operator|&&
 operator|!
 name|status
@@ -1903,6 +1986,46 @@ name|startsWith
 argument_list|(
 name|keyPrefix
 argument_list|)
+expr_stmt|;
+break|break;
+case|case
+name|TOMBSTONES_BY_LASTUPDATED
+case|:
+name|expired
+operator|=
+name|metadata
+operator|.
+name|getLastUpdated
+argument_list|()
+operator|<
+name|cutoff
+operator|&&
+name|metadata
+operator|.
+name|isDeleted
+argument_list|()
+operator|&&
+name|statusTranslatedPath
+operator|.
+name|startsWith
+argument_list|(
+name|keyPrefix
+argument_list|)
+expr_stmt|;
+break|break;
+default|default:
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Unsupported prune mode: "
+operator|+
+name|pruneMode
+argument_list|)
+throw|;
+block|}
+return|return
+name|expired
 return|;
 block|}
 end_function
@@ -1910,7 +2033,7 @@ end_function
 begin_function
 annotation|@
 name|VisibleForTesting
-DECL|method|deleteEntryByAncestor (Path ancestor, Cache<Path, LocalMetadataEntry> cache, boolean tombstone)
+DECL|method|deleteEntryByAncestor (Path ancestor, Cache<Path, LocalMetadataEntry> cache, boolean tombstone, ITtlTimeProvider ttlTimeProvider)
 specifier|static
 name|void
 name|deleteEntryByAncestor
@@ -1928,6 +2051,9 @@ name|cache
 parameter_list|,
 name|boolean
 name|tombstone
+parameter_list|,
+name|ITtlTimeProvider
+name|ttlTimeProvider
 parameter_list|)
 block|{
 name|cache
@@ -2002,16 +2128,32 @@ name|hasPathMeta
 argument_list|()
 condition|)
 block|{
-name|meta
-operator|.
-name|setPathMetadata
-argument_list|(
+specifier|final
+name|PathMetadata
+name|pmTombstone
+init|=
 name|PathMetadata
 operator|.
 name|tombstone
 argument_list|(
 name|path
 argument_list|)
+decl_stmt|;
+name|pmTombstone
+operator|.
+name|setLastUpdated
+argument_list|(
+name|ttlTimeProvider
+operator|.
+name|getNow
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|meta
+operator|.
+name|setPathMetadata
+argument_list|(
+name|pmTombstone
 argument_list|)
 expr_stmt|;
 block|}
@@ -2100,7 +2242,7 @@ comment|/**    * Update fileCache and dirCache to reflect deletion of file 'f'. 
 end_comment
 
 begin_function
-DECL|method|deleteCacheEntries (Path path, boolean tombstone)
+DECL|method|deleteCacheEntries (Path path, boolean tombstone, ITtlTimeProvider ttlTimeProvider)
 specifier|private
 name|void
 name|deleteCacheEntries
@@ -2110,6 +2252,9 @@ name|path
 parameter_list|,
 name|boolean
 name|tombstone
+parameter_list|,
+name|ITtlTimeProvider
+name|ttlTimeProvider
 parameter_list|)
 block|{
 name|LocalMetadataEntry
@@ -2175,6 +2320,16 @@ argument_list|(
 name|path
 argument_list|)
 decl_stmt|;
+name|pmd
+operator|.
+name|setLastUpdated
+argument_list|(
+name|ttlTimeProvider
+operator|.
+name|getNow
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|entry
 operator|.
 name|setPathMetadata
@@ -2295,6 +2450,16 @@ operator|.
 name|markDeleted
 argument_list|(
 name|path
+argument_list|)
+expr_stmt|;
+name|dir
+operator|.
+name|setLastUpdated
+argument_list|(
+name|ttlTimeProvider
+operator|.
+name|getNow
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

@@ -1269,7 +1269,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * DynamoDBMetadataStore is a {@link MetadataStore} that persists  * file system metadata to DynamoDB.  *  * The current implementation uses a schema consisting of a single table.  The  * name of the table can be configured by config key  * {@link org.apache.hadoop.fs.s3a.Constants#S3GUARD_DDB_TABLE_NAME_KEY}.  * By default, it matches the name of the S3 bucket.  Each item in the table  * represents a single directory or file.  Its path is split into separate table  * attributes:  *<ul>  *<li> parent (absolute path of the parent, with bucket name inserted as  * first path component).</li>  *<li> child (path of that specific child, relative to parent).</li>  *<li> optional boolean attribute tracking whether the path is a directory.  *      Absence or a false value indicates the path is a file.</li>  *<li> optional long attribute revealing modification time of file.  *      This attribute is meaningful only to file items.</li>  *<li> optional long attribute revealing file length.  *      This attribute is meaningful only to file items.</li>  *<li> optional long attribute revealing block size of the file.  *      This attribute is meaningful only to file items.</li>  *<li> optional string attribute tracking the s3 eTag of the file.  *      May be absent if the metadata was entered with a version of S3Guard  *      before this was tracked.  *      This attribute is meaningful only to file items.</li>   *<li> optional string attribute tracking the s3 versionId of the file.  *      May be absent if the metadata was entered with a version of S3Guard  *      before this was tracked.  *      This attribute is meaningful only to file items.</li>  *</ul>  *  * The DynamoDB partition key is the parent, and the range key is the child.  *  * To allow multiple buckets to share the same DynamoDB table, the bucket  * name is treated as the root directory.  *  * For example, assume the consistent store contains metadata representing this  * file system structure:  *  *<pre>  * s3a://bucket/dir1  * |-- dir2  * |   |-- file1  * |   `-- file2  * `-- dir3  *     |-- dir4  *     |   `-- file3  *     |-- dir5  *     |   `-- file4  *     `-- dir6  *</pre>  *  * This is persisted to a single DynamoDB table as:  *  *<pre>  * ====================================================================================  * | parent                 | child | is_dir | mod_time | len | etag | ver_id |  ...  |  * ====================================================================================  * | /bucket                | dir1  | true   |          |     |      |        |       |  * | /bucket/dir1           | dir2  | true   |          |     |      |        |       |  * | /bucket/dir1           | dir3  | true   |          |     |      |        |       |  * | /bucket/dir1/dir2      | file1 |        |   100    | 111 | abc  |  mno   |       |  * | /bucket/dir1/dir2      | file2 |        |   200    | 222 | def  |  pqr   |       |  * | /bucket/dir1/dir3      | dir4  | true   |          |     |      |        |       |  * | /bucket/dir1/dir3      | dir5  | true   |          |     |      |        |       |  * | /bucket/dir1/dir3/dir4 | file3 |        |   300    | 333 | ghi  |  stu   |       |  * | /bucket/dir1/dir3/dir5 | file4 |        |   400    | 444 | jkl  |  vwx   |       |  * | /bucket/dir1/dir3      | dir6  | true   |          |     |      |        |       |  * ====================================================================================  *</pre>  *  * This choice of schema is efficient for read access patterns.  * {@link #get(Path)} can be served from a single item lookup.  * {@link #listChildren(Path)} can be served from a query against all rows  * matching the parent (the partition key) and the returned list is guaranteed  * to be sorted by child (the range key).  Tracking whether or not a path is a  * directory helps prevent unnecessary queries during traversal of an entire  * sub-tree.  *  * Some mutating operations, notably {@link #deleteSubtree(Path)} and  * {@link #move(Collection, Collection)}, are less efficient with this schema.  * They require mutating multiple items in the DynamoDB table.  *  * By default, DynamoDB access is performed within the same AWS region as  * the S3 bucket that hosts the S3A instance.  During initialization, it checks  * the location of the S3 bucket and creates a DynamoDB client connected to the  * same region. The region may also be set explicitly by setting the config  * parameter {@code fs.s3a.s3guard.ddb.region} to the corresponding region.  */
+comment|/**  * DynamoDBMetadataStore is a {@link MetadataStore} that persists  * file system metadata to DynamoDB.  *  * The current implementation uses a schema consisting of a single table.  The  * name of the table can be configured by config key  * {@link org.apache.hadoop.fs.s3a.Constants#S3GUARD_DDB_TABLE_NAME_KEY}.  * By default, it matches the name of the S3 bucket.  Each item in the table  * represents a single directory or file.  Its path is split into separate table  * attributes:  *<ul>  *<li> parent (absolute path of the parent, with bucket name inserted as  * first path component).</li>  *<li> child (path of that specific child, relative to parent).</li>  *<li> optional boolean attribute tracking whether the path is a directory.  *      Absence or a false value indicates the path is a file.</li>  *<li> optional long attribute revealing modification time of file.  *      This attribute is meaningful only to file items.</li>  *<li> optional long attribute revealing file length.  *      This attribute is meaningful only to file items.</li>  *<li> optional long attribute revealing block size of the file.  *      This attribute is meaningful only to file items.</li>  *<li> optional string attribute tracking the s3 eTag of the file.  *      May be absent if the metadata was entered with a version of S3Guard  *      before this was tracked.  *      This attribute is meaningful only to file items.</li>   *<li> optional string attribute tracking the s3 versionId of the file.  *      May be absent if the metadata was entered with a version of S3Guard  *      before this was tracked.  *      This attribute is meaningful only to file items.</li>  *</ul>  *  * The DynamoDB partition key is the parent, and the range key is the child.  *  * To allow multiple buckets to share the same DynamoDB table, the bucket  * name is treated as the root directory.  *  * For example, assume the consistent store contains metadata representing this  * file system structure:  *  *<pre>  * s3a://bucket/dir1  * |-- dir2  * |   |-- file1  * |   `-- file2  * `-- dir3  *     |-- dir4  *     |   `-- file3  *     |-- dir5  *     |   `-- file4  *     `-- dir6  *</pre>  *  * This is persisted to a single DynamoDB table as:  *  *<pre>  * ====================================================================================  * | parent                 | child | is_dir | mod_time | len | etag | ver_id |  ...  |  * ====================================================================================  * | /bucket                | dir1  | true   |          |     |      |        |       |  * | /bucket/dir1           | dir2  | true   |          |     |      |        |       |  * | /bucket/dir1           | dir3  | true   |          |     |      |        |       |  * | /bucket/dir1/dir2      | file1 |        |   100    | 111 | abc  |  mno   |       |  * | /bucket/dir1/dir2      | file2 |        |   200    | 222 | def  |  pqr   |       |  * | /bucket/dir1/dir3      | dir4  | true   |          |     |      |        |       |  * | /bucket/dir1/dir3      | dir5  | true   |          |     |      |        |       |  * | /bucket/dir1/dir3/dir4 | file3 |        |   300    | 333 | ghi  |  stu   |       |  * | /bucket/dir1/dir3/dir5 | file4 |        |   400    | 444 | jkl  |  vwx   |       |  * | /bucket/dir1/dir3      | dir6  | true   |          |     |      |        |       |  * ====================================================================================  *</pre>  *  * This choice of schema is efficient for read access patterns.  * {@link #get(Path)} can be served from a single item lookup.  * {@link #listChildren(Path)} can be served from a query against all rows  * matching the parent (the partition key) and the returned list is guaranteed  * to be sorted by child (the range key).  Tracking whether or not a path is a  * directory helps prevent unnecessary queries during traversal of an entire  * sub-tree.  *  * Some mutating operations, notably  * {@link MetadataStore#deleteSubtree(Path, ITtlTimeProvider)} and  * {@link MetadataStore#move(Collection, Collection, ITtlTimeProvider)},  * are less efficient with this schema.  * They require mutating multiple items in the DynamoDB table.  *  * By default, DynamoDB access is performed within the same AWS region as  * the S3 bucket that hosts the S3A instance.  During initialization, it checks  * the location of the S3 bucket and creates a DynamoDB client connected to the  * same region. The region may also be set explicitly by setting the config  * parameter {@code fs.s3a.s3guard.ddb.region} to the corresponding region.  */
 end_comment
 
 begin_class
@@ -2189,13 +2189,16 @@ annotation|@
 name|Retries
 operator|.
 name|RetryTranslated
-DECL|method|delete (Path path)
+DECL|method|delete (Path path, ITtlTimeProvider ttlTimeProvider)
 specifier|public
 name|void
 name|delete
 parameter_list|(
 name|Path
 name|path
+parameter_list|,
+name|ITtlTimeProvider
+name|ttlTimeProvider
 parameter_list|)
 throws|throws
 name|IOException
@@ -2205,6 +2208,8 @@ argument_list|(
 name|path
 argument_list|,
 literal|true
+argument_list|,
+name|ttlTimeProvider
 argument_list|)
 expr_stmt|;
 block|}
@@ -2230,15 +2235,17 @@ argument_list|(
 name|path
 argument_list|,
 literal|false
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Inner delete option, action based on the {@code tombstone} flag.    * No tombstone: delete the entry. Tombstone: create a tombstone entry.    * There is no check as to whether the entry exists in the table first.    * @param path path to delete    * @param tombstone flag to create a tombstone marker    * @throws IOException I/O error.    */
+comment|/**    * Inner delete option, action based on the {@code tombstone} flag.    * No tombstone: delete the entry. Tombstone: create a tombstone entry.    * There is no check as to whether the entry exists in the table first.    * @param path path to delete    * @param tombstone flag to create a tombstone marker    * @param ttlTimeProvider The time provider to set last_updated. Must not    *                        be null if tombstone is true.    * @throws IOException I/O error.    */
 annotation|@
 name|Retries
 operator|.
 name|RetryTranslated
-DECL|method|innerDelete (final Path path, boolean tombstone)
+DECL|method|innerDelete (final Path path, boolean tombstone, ITtlTimeProvider ttlTimeProvider)
 specifier|private
 name|void
 name|innerDelete
@@ -2249,6 +2256,9 @@ name|path
 parameter_list|,
 name|boolean
 name|tombstone
+parameter_list|,
+name|ITtlTimeProvider
+name|ttlTimeProvider
 parameter_list|)
 throws|throws
 name|IOException
@@ -2303,6 +2313,41 @@ condition|(
 name|tombstone
 condition|)
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|ttlTimeProvider
+operator|!=
+literal|null
+argument_list|,
+literal|"ttlTimeProvider "
+operator|+
+literal|"must not be null"
+argument_list|)
+expr_stmt|;
+specifier|final
+name|PathMetadata
+name|pmTombstone
+init|=
+name|PathMetadata
+operator|.
+name|tombstone
+argument_list|(
+name|path
+argument_list|)
+decl_stmt|;
+comment|// update the last updated field of record when putting a tombstone
+name|pmTombstone
+operator|.
+name|setLastUpdated
+argument_list|(
+name|ttlTimeProvider
+operator|.
+name|getNow
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|Item
 name|item
 init|=
@@ -2313,12 +2358,7 @@ argument_list|(
 operator|new
 name|DDBPathMetadata
 argument_list|(
-name|PathMetadata
-operator|.
-name|tombstone
-argument_list|(
-name|path
-argument_list|)
+name|pmTombstone
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -2387,13 +2427,16 @@ annotation|@
 name|Retries
 operator|.
 name|RetryTranslated
-DECL|method|deleteSubtree (Path path)
+DECL|method|deleteSubtree (Path path, ITtlTimeProvider ttlTimeProvider)
 specifier|public
 name|void
 name|deleteSubtree
 parameter_list|(
 name|Path
 name|path
+parameter_list|,
+name|ITtlTimeProvider
+name|ttlTimeProvider
 parameter_list|)
 throws|throws
 name|IOException
@@ -2479,6 +2522,8 @@ name|getPath
 argument_list|()
 argument_list|,
 literal|true
+argument_list|,
+name|ttlTimeProvider
 argument_list|)
 expr_stmt|;
 block|}
@@ -3313,7 +3358,7 @@ annotation|@
 name|Retries
 operator|.
 name|RetryTranslated
-DECL|method|move (Collection<Path> pathsToDelete, Collection<PathMetadata> pathsToCreate)
+DECL|method|move (Collection<Path> pathsToDelete, Collection<PathMetadata> pathsToCreate, ITtlTimeProvider ttlTimeProvider)
 specifier|public
 name|void
 name|move
@@ -3329,6 +3374,9 @@ argument_list|<
 name|PathMetadata
 argument_list|>
 name|pathsToCreate
+parameter_list|,
+name|ITtlTimeProvider
+name|ttlTimeProvider
 parameter_list|)
 throws|throws
 name|IOException
@@ -3444,6 +3492,40 @@ range|:
 name|pathsToDelete
 control|)
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|ttlTimeProvider
+operator|!=
+literal|null
+argument_list|,
+literal|"ttlTimeProvider"
+operator|+
+literal|" must not be null"
+argument_list|)
+expr_stmt|;
+specifier|final
+name|PathMetadata
+name|pmTombstone
+init|=
+name|PathMetadata
+operator|.
+name|tombstone
+argument_list|(
+name|meta
+argument_list|)
+decl_stmt|;
+name|pmTombstone
+operator|.
+name|setLastUpdated
+argument_list|(
+name|ttlTimeProvider
+operator|.
+name|getNow
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|newItems
 operator|.
 name|add
@@ -3451,12 +3533,7 @@ argument_list|(
 operator|new
 name|DDBPathMetadata
 argument_list|(
-name|PathMetadata
-operator|.
-name|tombstone
-argument_list|(
-name|meta
-argument_list|)
+name|pmTombstone
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4706,7 +4783,7 @@ annotation|@
 name|Retries
 operator|.
 name|RetryTranslated
-DECL|method|expiredFiles (long modTime, String keyPrefix)
+DECL|method|expiredFiles (PruneMode pruneMode, long cutoff, String keyPrefix)
 specifier|private
 name|ItemCollection
 argument_list|<
@@ -4714,8 +4791,11 @@ name|ScanOutcome
 argument_list|>
 name|expiredFiles
 parameter_list|(
+name|PruneMode
+name|pruneMode
+parameter_list|,
 name|long
-name|modTime
+name|cutoff
 parameter_list|,
 name|String
 name|keyPrefix
@@ -4725,17 +4805,31 @@ name|IOException
 block|{
 name|String
 name|filterExpression
-init|=
-literal|"mod_time< :mod_time and begins_with(parent, :parent)"
 decl_stmt|;
 name|String
 name|projectionExpression
-init|=
-literal|"parent,child"
 decl_stmt|;
 name|ValueMap
 name|map
-init|=
+decl_stmt|;
+switch|switch
+condition|(
+name|pruneMode
+condition|)
+block|{
+case|case
+name|ALL_BY_MODTIME
+case|:
+name|filterExpression
+operator|=
+literal|"mod_time< :mod_time and begins_with(parent, :parent)"
+expr_stmt|;
+name|projectionExpression
+operator|=
+literal|"parent,child"
+expr_stmt|;
+name|map
+operator|=
 operator|new
 name|ValueMap
 argument_list|()
@@ -4744,7 +4838,7 @@ name|withLong
 argument_list|(
 literal|":mod_time"
 argument_list|,
-name|modTime
+name|cutoff
 argument_list|)
 operator|.
 name|withString
@@ -4753,7 +4847,60 @@ literal|":parent"
 argument_list|,
 name|keyPrefix
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+break|break;
+case|case
+name|TOMBSTONES_BY_LASTUPDATED
+case|:
+name|filterExpression
+operator|=
+literal|"last_updated< :last_updated and begins_with(parent, :parent) "
+operator|+
+literal|"and is_deleted = :is_deleted"
+expr_stmt|;
+name|projectionExpression
+operator|=
+literal|"parent,child"
+expr_stmt|;
+name|map
+operator|=
+operator|new
+name|ValueMap
+argument_list|()
+operator|.
+name|withLong
+argument_list|(
+literal|":last_updated"
+argument_list|,
+name|cutoff
+argument_list|)
+operator|.
+name|withString
+argument_list|(
+literal|":parent"
+argument_list|,
+name|keyPrefix
+argument_list|)
+operator|.
+name|withBoolean
+argument_list|(
+literal|":is_deleted"
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+break|break;
+default|default:
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Unsupported prune mode: "
+operator|+
+name|pruneMode
+argument_list|)
+throw|;
+block|}
 return|return
 name|readOp
 operator|.
@@ -4788,42 +4935,86 @@ annotation|@
 name|Retries
 operator|.
 name|RetryTranslated
-DECL|method|prune (long modTime)
+DECL|method|prune (PruneMode pruneMode, long cutoff)
 specifier|public
 name|void
 name|prune
 parameter_list|(
+name|PruneMode
+name|pruneMode
+parameter_list|,
 name|long
-name|modTime
+name|cutoff
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 name|prune
 argument_list|(
-name|modTime
+name|pruneMode
+argument_list|,
+name|cutoff
 argument_list|,
 literal|"/"
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Prune files, in batches. There's a sleep between each batch.    * @param modTime Oldest modification time to allow    * @param keyPrefix The prefix for the keys that should be removed    * @throws IOException Any IO/DDB failure.    * @throws InterruptedIOException if the prune was interrupted    */
+comment|/**    * Prune files, in batches. There's a sleep between each batch.    *    * @param pruneMode The mode of operation for the prune For details see    *                  {@link MetadataStore#prune(PruneMode, long)}    * @param cutoff Oldest modification time to allow    * @param keyPrefix The prefix for the keys that should be removed    * @throws IOException Any IO/DDB failure.    * @throws InterruptedIOException if the prune was interrupted    */
 annotation|@
 name|Override
 annotation|@
 name|Retries
 operator|.
 name|RetryTranslated
-DECL|method|prune (long modTime, String keyPrefix)
+DECL|method|prune (PruneMode pruneMode, long cutoff, String keyPrefix)
 specifier|public
 name|void
 name|prune
 parameter_list|(
+name|PruneMode
+name|pruneMode
+parameter_list|,
 name|long
-name|modTime
+name|cutoff
 parameter_list|,
 name|String
 name|keyPrefix
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+specifier|final
+name|ItemCollection
+argument_list|<
+name|ScanOutcome
+argument_list|>
+name|items
+init|=
+name|expiredFiles
+argument_list|(
+name|pruneMode
+argument_list|,
+name|cutoff
+argument_list|,
+name|keyPrefix
+argument_list|)
+decl_stmt|;
+name|innerPrune
+argument_list|(
+name|items
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|innerPrune (ItemCollection<ScanOutcome> items)
+specifier|private
+name|void
+name|innerPrune
+parameter_list|(
+name|ItemCollection
+argument_list|<
+name|ScanOutcome
+argument_list|>
+name|items
 parameter_list|)
 throws|throws
 name|IOException
@@ -4880,12 +5071,7 @@ control|(
 name|Item
 name|item
 range|:
-name|expiredFiles
-argument_list|(
-name|modTime
-argument_list|,
-name|keyPrefix
-argument_list|)
+name|items
 control|)
 block|{
 name|DDBPathMetadata

@@ -134,6 +134,23 @@ return|return
 literal|true
 return|;
 block|}
+DECL|method|getPathStringForPrune (String path)
+annotation|@
+name|Override
+specifier|protected
+name|String
+name|getPathStringForPrune
+parameter_list|(
+name|String
+name|path
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+return|return
+name|path
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|createContract ()

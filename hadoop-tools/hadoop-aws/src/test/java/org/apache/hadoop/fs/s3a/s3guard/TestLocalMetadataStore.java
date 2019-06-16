@@ -330,6 +330,23 @@ name|conf
 argument_list|)
 return|;
 block|}
+DECL|method|getPathStringForPrune (String path)
+annotation|@
+name|Override
+specifier|protected
+name|String
+name|getPathStringForPrune
+parameter_list|(
+name|String
+name|path
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+return|return
+name|path
+return|;
+block|}
 annotation|@
 name|Test
 DECL|method|testClearByAncestor ()
@@ -925,6 +942,9 @@ argument_list|,
 name|cache
 argument_list|,
 literal|true
+argument_list|,
+name|getTtlTimeProvider
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertEquals

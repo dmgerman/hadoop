@@ -204,18 +204,21 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Deletes exactly one path, leaving a tombstone to prevent lingering,    * inconsistent copies of it from being listed.    *    * @param path the path to delete    * @throws IOException if there is an error    */
-DECL|method|delete (Path path)
+comment|/**    * Deletes exactly one path, leaving a tombstone to prevent lingering,    * inconsistent copies of it from being listed.    *    * Deleting an entry with a tombstone needs a    * {@link org.apache.hadoop.fs.s3a.s3guard.S3Guard.TtlTimeProvider} because    * the lastUpdated field of the record has to be updated to<pre>now</pre>.    *    * @param path the path to delete    * @param ttlTimeProvider the time provider to set last_updated. Must not    *                        be null.    * @throws IOException if there is an error    */
+DECL|method|delete (Path path, ITtlTimeProvider ttlTimeProvider)
 name|void
 name|delete
 parameter_list|(
 name|Path
 name|path
+parameter_list|,
+name|ITtlTimeProvider
+name|ttlTimeProvider
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Removes the record of exactly one path.  Does not leave a tombstone (see    * {@link MetadataStore#delete(Path)}. It is currently intended for testing    * only, and a need to use it as part of normal FileSystem usage is not    * anticipated.    *    * @param path the path to delete    * @throws IOException if there is an error    */
+comment|/**    * Removes the record of exactly one path.  Does not leave a tombstone (see    * {@link MetadataStore#delete(Path, ITtlTimeProvider)}. It is currently    * intended for testing only, and a need to use it as part of normal    * FileSystem usage is not anticipated.    *    * @param path the path to delete    * @throws IOException if there is an error    */
 annotation|@
 name|VisibleForTesting
 DECL|method|forgetMetadata (Path path)
@@ -228,13 +231,16 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Deletes the entire sub-tree rooted at the given path, leaving tombstones    * to prevent lingering, inconsistent copies of it from being listed.    *    * In addition to affecting future calls to {@link #get(Path)},    * implementations must also update any stored {@code DirListingMetadata}    * objects which track the parent of this file.    *    * @param path the root of the sub-tree to delete    * @throws IOException if there is an error    */
-DECL|method|deleteSubtree (Path path)
+comment|/**    * Deletes the entire sub-tree rooted at the given path, leaving tombstones    * to prevent lingering, inconsistent copies of it from being listed.    *    * In addition to affecting future calls to {@link #get(Path)},    * implementations must also update any stored {@code DirListingMetadata}    * objects which track the parent of this file.    *    * Deleting a subtree with a tombstone needs a    * {@link org.apache.hadoop.fs.s3a.s3guard.S3Guard.TtlTimeProvider} because    * the lastUpdated field of all records have to be updated to<pre>now</pre>.    *    * @param path the root of the sub-tree to delete    * @param ttlTimeProvider the time provider to set last_updated. Must not    *                        be null.    * @throws IOException if there is an error    */
+DECL|method|deleteSubtree (Path path, ITtlTimeProvider ttlTimeProvider)
 name|void
 name|deleteSubtree
 parameter_list|(
 name|Path
 name|path
+parameter_list|,
+name|ITtlTimeProvider
+name|ttlTimeProvider
 parameter_list|)
 throws|throws
 name|IOException
@@ -275,8 +281,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Record the effects of a {@link FileSystem#rename(Path, Path)} in the    * MetadataStore.  Clients provide explicit enumeration of the affected    * paths (recursively), before and after the rename.    *    * This operation is not atomic, unless specific implementations claim    * otherwise.    *    * On the need to provide an enumeration of directory trees instead of just    * source and destination paths:    * Since a MetadataStore does not have to track all metadata for the    * underlying storage system, and a new MetadataStore may be created on an    * existing underlying filesystem, this move() may be the first time the    * MetadataStore sees the affected paths.  Therefore, simply providing src    * and destination paths may not be enough to record the deletions (under    * src path) and creations (at destination) that are happening during the    * rename().    *    * @param pathsToDelete Collection of all paths that were removed from the    *                      source directory tree of the move.    * @param pathsToCreate Collection of all PathMetadata for the new paths    *                      that were created at the destination of the rename    *                      ().    * @throws IOException if there is an error    */
-DECL|method|move (Collection<Path> pathsToDelete, Collection<PathMetadata> pathsToCreate)
+comment|/**    * Record the effects of a {@link FileSystem#rename(Path, Path)} in the    * MetadataStore.  Clients provide explicit enumeration of the affected    * paths (recursively), before and after the rename.    *    * This operation is not atomic, unless specific implementations claim    * otherwise.    *    * On the need to provide an enumeration of directory trees instead of just    * source and destination paths:    * Since a MetadataStore does not have to track all metadata for the    * underlying storage system, and a new MetadataStore may be created on an    * existing underlying filesystem, this move() may be the first time the    * MetadataStore sees the affected paths.  Therefore, simply providing src    * and destination paths may not be enough to record the deletions (under    * src path) and creations (at destination) that are happening during the    * rename().    *    * @param pathsToDelete Collection of all paths that were removed from the    *                      source directory tree of the move.    * @param pathsToCreate Collection of all PathMetadata for the new paths    *                      that were created at the destination of the rename    *                      ().    * @param ttlTimeProvider the time provider to set last_updated. Must not    *                        be null.    * @throws IOException if there is an error    */
+DECL|method|move (Collection<Path> pathsToDelete, Collection<PathMetadata> pathsToCreate, ITtlTimeProvider ttlTimeProvider)
 name|void
 name|move
 parameter_list|(
@@ -291,6 +297,9 @@ argument_list|<
 name|PathMetadata
 argument_list|>
 name|pathsToCreate
+parameter_list|,
+name|ITtlTimeProvider
+name|ttlTimeProvider
 parameter_list|)
 throws|throws
 name|IOException
@@ -341,26 +350,32 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Clear any metadata older than a specified time from the repository.    * Implementations MUST clear file metadata, and MAY clear directory metadata    * (s3a itself does not track modification time for directories).    * Implementations may also choose to throw UnsupportedOperationException    * istead. Note that modification times should be in UTC, as returned by    * System.currentTimeMillis at the time of modification.    *    * @param modTime Oldest modification time to allow    * @throws IOException if there is an error    * @throws UnsupportedOperationException if not implemented    */
-DECL|method|prune (long modTime)
+comment|/**    * Prune method with two modes of operation:    *<ul>    *<li>    *    {@link PruneMode#ALL_BY_MODTIME}    *    Clear any metadata older than a specified mod_time from the store.    *    Note that this modification time is the S3 modification time from the    *    object's metadata - from the object store.    *    Implementations MUST clear file metadata, and MAY clear directory    *    metadata (s3a itself does not track modification time for directories).    *    Implementations may also choose to throw UnsupportedOperationException    *    instead. Note that modification times must be in UTC, as returned by    *    System.currentTimeMillis at the time of modification.    *</li>    *</ul>    *    *<ul>    *<li>    *    {@link PruneMode#TOMBSTONES_BY_LASTUPDATED}    *    Clear any tombstone updated earlier than a specified time from the    *    store. Note that this last_updated is the time when the metadata    *    entry was last updated and maintained by the metadata store.    *    Implementations MUST clear file metadata, and MAY clear directory    *    metadata (s3a itself does not track modification time for directories).    *    Implementations may also choose to throw UnsupportedOperationException    *    instead. Note that last_updated must be in UTC, as returned by    *    System.currentTimeMillis at the time of modification.    *</li>    *</ul>    *    * @param pruneMode    * @param cutoff Oldest time to allow (UTC)    * @throws IOException if there is an error    * @throws UnsupportedOperationException if not implemented    */
+DECL|method|prune (PruneMode pruneMode, long cutoff)
 name|void
 name|prune
 parameter_list|(
+name|PruneMode
+name|pruneMode
+parameter_list|,
 name|long
-name|modTime
+name|cutoff
 parameter_list|)
 throws|throws
 name|IOException
 throws|,
 name|UnsupportedOperationException
 function_decl|;
-comment|/**    * Same as {@link MetadataStore#prune(long)}, but with an additional    * keyPrefix parameter to filter the pruned keys with a prefix.    *    * @param modTime Oldest modification time to allow    * @param keyPrefix The prefix for the keys that should be removed    * @throws IOException if there is an error    * @throws UnsupportedOperationException if not implemented    */
-DECL|method|prune (long modTime, String keyPrefix)
+comment|/**    * Same as {@link MetadataStore#prune(PruneMode, long)}, but with an    * additional keyPrefix parameter to filter the pruned keys with a prefix.    *    * @param pruneMode    * @param cutoff Oldest time to allow (UTC)    * @param keyPrefix The prefix for the keys that should be removed    * @throws IOException if there is an error    * @throws UnsupportedOperationException if not implemented    */
+DECL|method|prune (PruneMode pruneMode, long cutoff, String keyPrefix)
 name|void
 name|prune
 parameter_list|(
+name|PruneMode
+name|pruneMode
+parameter_list|,
 name|long
-name|modTime
+name|cutoff
 parameter_list|,
 name|String
 name|keyPrefix
@@ -399,6 +414,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Modes of operation for prune.    * For details see {@link MetadataStore#prune(PruneMode, long)}    */
+DECL|enum|PruneMode
+enum|enum
+name|PruneMode
+block|{
+DECL|enumConstant|ALL_BY_MODTIME
+name|ALL_BY_MODTIME
+block|,
+DECL|enumConstant|TOMBSTONES_BY_LASTUPDATED
+name|TOMBSTONES_BY_LASTUPDATED
+block|}
 block|}
 end_interface
 

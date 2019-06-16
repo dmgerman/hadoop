@@ -1423,7 +1423,10 @@ operator|.
 name|getUsername
 argument_list|()
 argument_list|,
-literal|null
+name|summary
+operator|.
+name|getETag
+argument_list|()
 argument_list|,
 literal|null
 argument_list|)

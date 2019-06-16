@@ -1530,6 +1530,12 @@ name|ms
 operator|.
 name|prune
 argument_list|(
+name|MetadataStore
+operator|.
+name|PruneMode
+operator|.
+name|ALL_BY_MODTIME
+argument_list|,
 name|Long
 operator|.
 name|MAX_VALUE

@@ -946,21 +946,22 @@ init|=
 literal|false
 decl_stmt|;
 comment|/**    * How long a directory listing in the MS is considered as authoritative.    */
-DECL|field|METADATASTORE_AUTHORITATIVE_DIR_TTL
+DECL|field|METADATASTORE_METADATA_TTL
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|METADATASTORE_AUTHORITATIVE_DIR_TTL
+name|METADATASTORE_METADATA_TTL
 init|=
-literal|"fs.s3a.metadatastore.authoritative.dir.ttl"
+literal|"fs.s3a.metadatastore.metadata.ttl"
 decl_stmt|;
-DECL|field|DEFAULT_METADATASTORE_AUTHORITATIVE_DIR_TTL
+comment|/**    * Default TTL in milliseconds: 15 minutes.    */
+DECL|field|DEFAULT_METADATASTORE_METADATA_TTL
 specifier|public
 specifier|static
 specifier|final
 name|long
-name|DEFAULT_METADATASTORE_AUTHORITATIVE_DIR_TTL
+name|DEFAULT_METADATASTORE_METADATA_TTL
 init|=
 name|TimeUnit
 operator|.
@@ -968,7 +969,7 @@ name|MINUTES
 operator|.
 name|toMillis
 argument_list|(
-literal|60
+literal|15
 argument_list|)
 decl_stmt|;
 comment|/** read ahead buffer size to prevent connection re-establishments. */
