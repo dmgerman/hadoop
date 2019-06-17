@@ -680,6 +680,13 @@ operator|new
 name|ReadOptions
 argument_list|()
 decl_stmt|;
+name|readOptions
+operator|.
+name|setFillCache
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
 return|return
 operator|new
 name|RDBStoreIterator
