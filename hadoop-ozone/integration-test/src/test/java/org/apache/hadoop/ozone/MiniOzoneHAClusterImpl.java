@@ -963,8 +963,6 @@ name|OzoneManager
 operator|.
 name|createOm
 argument_list|(
-literal|null
-argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;

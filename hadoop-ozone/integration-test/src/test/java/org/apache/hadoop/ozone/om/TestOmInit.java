@@ -124,6 +124,24 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|authentication
+operator|.
+name|client
+operator|.
+name|AuthenticationException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|AfterClass
@@ -446,7 +464,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Tests the OM Initialization.    * @throws IOException    */
+comment|/**    * Tests the OM Initialization.    * @throws IOException, AuthenticationException    */
 annotation|@
 name|Test
 DECL|method|testOmInitAgain ()
@@ -456,6 +474,8 @@ name|testOmInitAgain
 parameter_list|()
 throws|throws
 name|IOException
+throws|,
+name|AuthenticationException
 block|{
 comment|// Stop the Ozone Manager
 name|cluster
