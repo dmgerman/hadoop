@@ -1318,7 +1318,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Checks whether a block is sufficiently replicated/stored for    * DECOMMISSION_INPROGRESS or ENTERING_MAINTENANCE datanodes. For replicated    * blocks or striped blocks, full-strength replication or storage is not    * always necessary, hence "sufficient".    * @return true if sufficient, else false.    */
-DECL|method|isSufficient (BlockInfo block, BlockCollection bc, NumberReplicas numberReplicas, boolean isDecommission)
+DECL|method|isSufficient (BlockInfo block, BlockCollection bc, NumberReplicas numberReplicas, boolean isDecommission, boolean isMaintenance)
 specifier|private
 name|boolean
 name|isSufficient
@@ -1334,6 +1334,9 @@ name|numberReplicas
 parameter_list|,
 name|boolean
 name|isDecommission
+parameter_list|,
+name|boolean
+name|isMaintenance
 parameter_list|)
 block|{
 if|if
@@ -1508,6 +1511,22 @@ literal|true
 return|;
 block|}
 block|}
+block|}
+if|if
+condition|(
+name|isMaintenance
+operator|&&
+name|numLive
+operator|>=
+name|blockManager
+operator|.
+name|getMinReplicationToBeInMaintenance
+argument_list|()
+condition|)
+block|{
+return|return
+literal|true
+return|;
 block|}
 return|return
 literal|false
@@ -2761,6 +2780,14 @@ name|isDecommissionInProgress
 argument_list|()
 decl_stmt|;
 name|boolean
+name|isMaintenance
+init|=
+name|datanode
+operator|.
+name|isEnteringMaintenance
+argument_list|()
+decl_stmt|;
+name|boolean
 name|neededReconstruction
 init|=
 name|isDecommission
@@ -2862,6 +2889,8 @@ argument_list|,
 name|num
 argument_list|,
 name|isDecommission
+argument_list|,
+name|isMaintenance
 argument_list|)
 condition|)
 block|{

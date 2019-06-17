@@ -2063,6 +2063,11 @@ argument_list|(
 literal|4
 argument_list|)
 expr_stmt|;
+name|testExpectedReplication
+argument_list|(
+literal|10
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|testExpectedReplication (int replicationFactor)
 specifier|private
