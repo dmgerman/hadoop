@@ -2462,13 +2462,10 @@ argument_list|(
 name|conf
 argument_list|,
 name|scmStorageConfig
-operator|.
-name|getClusterID
-argument_list|()
-argument_list|,
-name|this
 argument_list|,
 name|eventQueue
+argument_list|,
+name|clusterMap
 argument_list|)
 expr_stmt|;
 block|}

@@ -234,7 +234,7 @@ name|scm
 operator|.
 name|server
 operator|.
-name|StorageContainerManager
+name|SCMStorageConfig
 import|;
 end_import
 
@@ -790,12 +790,6 @@ specifier|final
 name|NodeStateManager
 name|nodeStateManager
 decl_stmt|;
-DECL|field|clusterID
-specifier|private
-specifier|final
-name|String
-name|clusterID
-decl_stmt|;
 DECL|field|version
 specifier|private
 specifier|final
@@ -820,11 +814,11 @@ specifier|private
 name|ObjectName
 name|nmInfoBean
 decl_stmt|;
-DECL|field|scmManager
+DECL|field|scmStorageConfig
 specifier|private
 specifier|final
-name|StorageContainerManager
-name|scmManager
+name|SCMStorageConfig
+name|scmStorageConfig
 decl_stmt|;
 DECL|field|clusterMap
 specifier|private
@@ -845,24 +839,22 @@ name|boolean
 name|useHostname
 decl_stmt|;
 comment|/**    * Constructs SCM machine Manager.    */
-DECL|method|SCMNodeManager (OzoneConfiguration conf, String clusterID, StorageContainerManager scmManager, EventPublisher eventPublisher)
+DECL|method|SCMNodeManager (OzoneConfiguration conf, SCMStorageConfig scmStorageConfig, EventPublisher eventPublisher, NetworkTopology networkTopology)
 specifier|public
 name|SCMNodeManager
 parameter_list|(
 name|OzoneConfiguration
 name|conf
 parameter_list|,
-name|String
-name|clusterID
-parameter_list|,
-name|StorageContainerManager
-name|scmManager
+name|SCMStorageConfig
+name|scmStorageConfig
 parameter_list|,
 name|EventPublisher
 name|eventPublisher
+parameter_list|,
+name|NetworkTopology
+name|networkTopology
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|this
 operator|.
@@ -875,12 +867,6 @@ name|conf
 argument_list|,
 name|eventPublisher
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|clusterID
-operator|=
-name|clusterID
 expr_stmt|;
 name|this
 operator|.
@@ -901,9 +887,9 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|scmManager
+name|scmStorageConfig
 operator|=
-name|scmManager
+name|scmStorageConfig
 expr_stmt|;
 name|LOG
 operator|.
@@ -930,10 +916,7 @@ name|this
 operator|.
 name|clusterMap
 operator|=
-name|scmManager
-operator|.
-name|getClusterMap
-argument_list|()
+name|networkTopology
 expr_stmt|;
 name|Class
 argument_list|<
@@ -1261,10 +1244,7 @@ name|SCM_ID
 argument_list|,
 name|this
 operator|.
-name|scmManager
-operator|.
-name|getScmStorageConfig
-argument_list|()
+name|scmStorageConfig
 operator|.
 name|getScmId
 argument_list|()
@@ -1278,10 +1258,7 @@ name|CLUSTER_ID
 argument_list|,
 name|this
 operator|.
-name|scmManager
-operator|.
-name|getScmStorageConfig
-argument_list|()
+name|scmStorageConfig
 operator|.
 name|getClusterID
 argument_list|()
@@ -1491,7 +1468,10 @@ name|setClusterID
 argument_list|(
 name|this
 operator|.
-name|clusterID
+name|scmStorageConfig
+operator|.
+name|getClusterID
+argument_list|()
 argument_list|)
 operator|.
 name|setHostname
