@@ -1714,7 +1714,11 @@ name|closedFiles
 operator|.
 name|contains
 argument_list|(
+operator|new
+name|Path
+argument_list|(
 name|filePath
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
