@@ -7157,7 +7157,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|error
+name|info
 argument_list|(
 literal|"Can't get postOpDirAttr for dirFileId: {}"
 argument_list|,
