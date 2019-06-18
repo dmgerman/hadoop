@@ -2221,6 +2221,12 @@ argument_list|()
 decl_stmt|;
 try|try
 block|{
+comment|// Initialize uninitialized process trees
+name|initializeProcessTrees
+argument_list|(
+name|entry
+argument_list|)
+expr_stmt|;
 name|String
 name|pId
 init|=
@@ -2229,12 +2235,6 @@ operator|.
 name|getPID
 argument_list|()
 decl_stmt|;
-comment|// Initialize uninitialized process trees
-name|initializeProcessTrees
-argument_list|(
-name|entry
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|pId
