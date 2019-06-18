@@ -383,6 +383,17 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|OMConfigKeys
+operator|.
+name|OZONE_OM_RATIS_ENABLE_KEY
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 name|cluster
 operator|=
 operator|(
