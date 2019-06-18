@@ -2403,6 +2403,42 @@ block|}
 block|}
 annotation|@
 name|Test
+DECL|method|testReserved ()
+specifier|public
+name|void
+name|testReserved
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+for|for
+control|(
+name|FsVolumeSpi
+name|vol
+range|:
+name|providedVolumes
+control|)
+block|{
+comment|// the reserved space for provided volumes should be 0.
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
+operator|(
+operator|(
+name|FsVolumeImpl
+operator|)
+name|vol
+operator|)
+operator|.
+name|getReserved
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Test
 DECL|method|testProvidedVolumeImpl ()
 specifier|public
 name|void
