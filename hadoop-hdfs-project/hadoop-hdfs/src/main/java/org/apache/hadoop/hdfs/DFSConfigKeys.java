@@ -6393,6 +6393,24 @@ name|DFS_HA_ZKFC_NN_HTTP_TIMEOUT_KEY_DEFAULT
 init|=
 literal|20000
 decl_stmt|;
+DECL|field|DFS_HA_NN_NOT_BECOME_ACTIVE_IN_SAFEMODE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_HA_NN_NOT_BECOME_ACTIVE_IN_SAFEMODE
+init|=
+literal|"dfs.ha.nn.not-become-active-in-safemode"
+decl_stmt|;
+DECL|field|DFS_HA_NN_NOT_BECOME_ACTIVE_IN_SAFEMODE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_HA_NN_NOT_BECOME_ACTIVE_IN_SAFEMODE_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 comment|// Security-related configs
 DECL|field|DFS_ENCRYPT_DATA_TRANSFER_KEY
 specifier|public
