@@ -66,16 +66,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|LinkedHashMap
 import|;
 end_import
@@ -611,7 +601,7 @@ argument_list|>
 name|prefixes
 init|=
 operator|new
-name|HashMap
+name|LinkedHashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
@@ -751,7 +741,7 @@ return|return
 name|prefixes
 return|;
 block|}
-comment|/**    * Iterate the DB to construct a Map of containerID -> containerMetadata.    *    * @return Map of containerID -> containerMetadata.    * @throws IOException    */
+comment|/**    * Get all the containers.    *    * @return Map of containerID -> containerMetadata.    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|getContainers ()
@@ -764,6 +754,34 @@ name|ContainerMetadata
 argument_list|>
 name|getContainers
 parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// Set a negative limit to get all the containers.
+return|return
+name|getContainers
+argument_list|(
+operator|-
+literal|1
+argument_list|)
+return|;
+block|}
+comment|/**    * Iterate the DB to construct a Map of containerID -> containerMetadata    * only for the given limit.    *    * Return all the containers if limit< 0.    *    * @return Map of containerID -> containerMetadata.    * @throws IOException    */
+annotation|@
+name|Override
+DECL|method|getContainers (int limit)
+specifier|public
+name|Map
+argument_list|<
+name|Long
+argument_list|,
+name|ContainerMetadata
+argument_list|>
+name|getContainers
+parameter_list|(
+name|int
+name|limit
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -840,6 +858,28 @@ operator|.
 name|getValue
 argument_list|()
 decl_stmt|;
+comment|// break the loop if limit has been reached
+comment|// and one more new entity needs to be added to the containers map
+if|if
+condition|(
+name|containers
+operator|.
+name|size
+argument_list|()
+operator|==
+name|limit
+operator|&&
+operator|!
+name|containers
+operator|.
+name|containsKey
+argument_list|(
+name|containerID
+argument_list|)
+condition|)
+block|{
+break|break;
+block|}
 comment|// initialize containerMetadata with 0 as number of keys.
 name|containers
 operator|.

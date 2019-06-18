@@ -66,7 +66,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
+name|LinkedHashMap
 import|;
 end_import
 
@@ -130,6 +130,18 @@ name|ws
 operator|.
 name|rs
 operator|.
+name|DefaultValue
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|ws
+operator|.
+name|rs
+operator|.
 name|GET
 import|;
 end_import
@@ -167,6 +179,18 @@ operator|.
 name|rs
 operator|.
 name|Produces
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|ws
+operator|.
+name|rs
+operator|.
+name|QueryParam
 import|;
 end_import
 
@@ -457,11 +481,24 @@ decl_stmt|;
 comment|/**    * Return @{@link org.apache.hadoop.ozone.recon.api.types.ContainerMetadata}    * for all the containers.    *    * @return {@link Response}    */
 annotation|@
 name|GET
-DECL|method|getContainers ()
+DECL|method|getContainers ( @efaultValueR) @ueryParamR) int limit)
 specifier|public
 name|Response
 name|getContainers
-parameter_list|()
+parameter_list|(
+annotation|@
+name|DefaultValue
+argument_list|(
+literal|"-1"
+argument_list|)
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"limit"
+argument_list|)
+name|int
+name|limit
+parameter_list|)
 block|{
 name|Map
 argument_list|<
@@ -478,7 +515,9 @@ operator|=
 name|containerDBServiceProvider
 operator|.
 name|getContainers
-argument_list|()
+argument_list|(
+name|limit
+argument_list|)
 expr_stmt|;
 block|}
 catch|catch
@@ -524,7 +563,7 @@ name|Path
 argument_list|(
 literal|"/{id}"
 argument_list|)
-DECL|method|getKeysForContainer (@athParamR) Long containerId)
+DECL|method|getKeysForContainer ( @athParamR) Long containerId, @DefaultValue(R) @QueryParam(R) int limit)
 specifier|public
 name|Response
 name|getKeysForContainer
@@ -536,6 +575,19 @@ literal|"id"
 argument_list|)
 name|Long
 name|containerId
+parameter_list|,
+annotation|@
+name|DefaultValue
+argument_list|(
+literal|"-1"
+argument_list|)
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"limit"
+argument_list|)
+name|int
+name|limit
 parameter_list|)
 block|{
 name|Map
@@ -547,7 +599,7 @@ argument_list|>
 name|keyMetadataMap
 init|=
 operator|new
-name|HashMap
+name|LinkedHashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
@@ -809,6 +861,19 @@ expr_stmt|;
 block|}
 else|else
 block|{
+comment|// break the for loop if limit has been reached
+if|if
+condition|(
+name|keyMetadataMap
+operator|.
+name|size
+argument_list|()
+operator|==
+name|limit
+condition|)
+block|{
+break|break;
+block|}
 name|KeyMetadata
 name|keyMetadata
 init|=

@@ -181,7 +181,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get a Map of containerID, containerMetadata of all Containers.    *    * @return Map of containerID -> containerMetadata.    * @throws IOException    */
+comment|/**    * Get a Map of containerID, containerMetadata of all the Containers.    *    * @return Map of containerID -> containerMetadata.    * @throws IOException    */
 DECL|method|getContainers ()
 name|Map
 argument_list|<
@@ -191,6 +191,22 @@ name|ContainerMetadata
 argument_list|>
 name|getContainers
 parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Get a Map of containerID, containerMetadata of Containers only for the    * given limit. If the limit is -1 or any integer<0, then return all    * the containers without any limit.    *    * @return Map of containerID -> containerMetadata.    * @throws IOException    */
+DECL|method|getContainers (int limit)
+name|Map
+argument_list|<
+name|Long
+argument_list|,
+name|ContainerMetadata
+argument_list|>
+name|getContainers
+parameter_list|(
+name|int
+name|limit
+parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
