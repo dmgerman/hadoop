@@ -4741,7 +4741,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Unable to close file because the last block"
+literal|"Unable to close file because the last block "
 operator|+
 name|last
 operator|+
