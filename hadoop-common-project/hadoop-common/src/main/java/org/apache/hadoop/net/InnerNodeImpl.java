@@ -153,7 +153,7 @@ specifier|protected
 name|int
 name|numOfLeaves
 decl_stmt|;
-comment|/** Construct an InnerNode from a path-like string */
+comment|/** Construct an InnerNode from a path-like string. */
 DECL|method|InnerNodeImpl (String path)
 specifier|protected
 name|InnerNodeImpl
@@ -168,7 +168,7 @@ name|path
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Construct an InnerNode    * from its name, its network location, its parent, and its level */
+comment|/** Construct an InnerNode    * from its name, its network location, its parent, and its level. */
 DECL|method|InnerNodeImpl (String name, String location, InnerNode parent, int level)
 specifier|protected
 name|InnerNodeImpl
@@ -213,7 +213,7 @@ return|return
 name|children
 return|;
 block|}
-comment|/** @return the number of children this node has */
+comment|/** @return the number of children this node has. */
 DECL|method|getNumOfChildren ()
 name|int
 name|getNumOfChildren
@@ -226,7 +226,7 @@ name|size
 argument_list|()
 return|;
 block|}
-comment|/** Judge if this node represents a rack    * @return true if it has no child or its children are not InnerNodes    */
+comment|/** Judge if this node represents a rack.    * @return true if it has no child or its children are not InnerNodes    */
 DECL|method|isRack ()
 specifier|public
 name|boolean
@@ -270,7 +270,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/** Judge if this node is an ancestor of node<i>n</i>    *    * @param n a node    * @return true if this node is an ancestor of<i>n</i>    */
+comment|/** Judge if this node is an ancestor of node<i>n</i>.    *    * @param n a node    * @return true if this node is an ancestor of<i>n</i>    */
 DECL|method|isAncestor (Node n)
 specifier|public
 name|boolean
@@ -317,7 +317,7 @@ name|PATH_SEPARATOR_STR
 argument_list|)
 return|;
 block|}
-comment|/** Judge if this node is the parent of node<i>n</i>    *    * @param n a node    * @return true if this node is the parent of<i>n</i>    */
+comment|/** Judge if this node is the parent of node<i>n</i>.    *    * @param n a node    * @return true if this node is the parent of<i>n</i>    */
 DECL|method|isParent (Node n)
 specifier|public
 name|boolean
@@ -431,6 +431,7 @@ operator|!=
 operator|-
 literal|1
 condition|)
+block|{
 name|name
 operator|=
 name|name
@@ -442,6 +443,7 @@ argument_list|,
 name|index
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|name
 return|;
@@ -1018,9 +1020,11 @@ argument_list|()
 operator|==
 literal|0
 condition|)
+block|{
 return|return
 name|this
 return|;
+block|}
 name|String
 index|[]
 name|path
@@ -1035,7 +1039,7 @@ literal|2
 argument_list|)
 decl_stmt|;
 name|Node
-name|childnode
+name|childNode
 init|=
 name|childrenMap
 operator|.
@@ -1049,28 +1053,25 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|childnode
+name|childNode
 operator|==
 literal|null
-condition|)
-return|return
-literal|null
-return|;
-comment|// non-existing node
-if|if
-condition|(
+operator|||
 name|path
 operator|.
 name|length
 operator|==
 literal|1
 condition|)
+block|{
 return|return
-name|childnode
+name|childNode
 return|;
+block|}
+elseif|else
 if|if
 condition|(
-name|childnode
+name|childNode
 operator|instanceof
 name|InnerNode
 condition|)
@@ -1080,7 +1081,7 @@ operator|(
 operator|(
 name|InnerNode
 operator|)
-name|childnode
+name|childNode
 operator|)
 operator|.
 name|getLoc
@@ -1122,10 +1123,6 @@ comment|// check if the excluded node a leaf
 name|boolean
 name|isLeaf
 init|=
-name|excludedNode
-operator|==
-literal|null
-operator|||
 operator|!
 operator|(
 name|excludedNode
