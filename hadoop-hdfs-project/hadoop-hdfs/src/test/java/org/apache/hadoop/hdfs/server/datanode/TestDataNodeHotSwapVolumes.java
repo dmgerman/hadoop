@@ -2991,7 +2991,7 @@ name|abs
 argument_list|(
 name|maxNumBlocks
 operator|-
-name|maxNumBlocks
+name|minNumBlocks
 argument_list|)
 operator|<=
 literal|1
