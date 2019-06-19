@@ -28,6 +28,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|base
 operator|.
 name|Preconditions
@@ -390,6 +404,18 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|ScheduledFuture
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|TimeUnit
 import|;
 end_import
@@ -587,6 +613,33 @@ specifier|final
 name|long
 name|deadNodeIntervalMs
 decl_stmt|;
+comment|/**    * The future is used to pause/unpause the scheduled checks.    */
+DECL|field|healthCheckFuture
+specifier|private
+name|ScheduledFuture
+argument_list|<
+name|?
+argument_list|>
+name|healthCheckFuture
+decl_stmt|;
+comment|/**    * Test utility - tracks if health check has been paused (unit tests).    */
+DECL|field|checkPaused
+specifier|private
+name|boolean
+name|checkPaused
+decl_stmt|;
+comment|/**    * timestamp of the latest heartbeat check process.    */
+DECL|field|lastHealthCheck
+specifier|private
+name|long
+name|lastHealthCheck
+decl_stmt|;
+comment|/**    * number of times the heart beat check was skipped.    */
+DECL|field|skippedHealthChecks
+specifier|private
+name|long
+name|skippedHealthChecks
+decl_stmt|;
 comment|/**    * Constructs a NodeStateManager instance with the given configuration.    *    * @param conf Configuration    */
 DECL|method|NodeStateManager (Configuration conf, EventPublisher eventPublisher)
 specifier|public
@@ -752,20 +805,17 @@ name|build
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|//BUG:BUG TODO: The return value is ignored, if an exception is thrown in
-comment|// the executing funtion, it will be ignored.
-name|executorService
-operator|.
-name|schedule
-argument_list|(
-name|this
-argument_list|,
-name|heartbeatCheckerIntervalMs
-argument_list|,
-name|TimeUnit
-operator|.
-name|MILLISECONDS
-argument_list|)
+name|skippedHealthChecks
+operator|=
+literal|0
+expr_stmt|;
+name|checkPaused
+operator|=
+literal|false
+expr_stmt|;
+comment|// accessed only from test functions
+name|scheduleNextHealthCheck
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Populates state2event map.    */
@@ -1476,6 +1526,64 @@ name|void
 name|run
 parameter_list|()
 block|{
+if|if
+condition|(
+name|shouldSkipCheck
+argument_list|()
+condition|)
+block|{
+name|skippedHealthChecks
+operator|++
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Detected long delay in scheduling HB processing thread. "
+operator|+
+literal|"Skipping heartbeat checks for one iteration."
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|checkNodesHealth
+argument_list|()
+expr_stmt|;
+block|}
+comment|// we purposefully make this non-deterministic. Instead of using a
+comment|// scheduleAtFixedFrequency  we will just go to sleep
+comment|// and wake up at the next rendezvous point, which is currentTime +
+comment|// heartbeatCheckerIntervalMs. This leads to the issue that we are now
+comment|// heart beating not at a fixed cadence, but clock tick + time taken to
+comment|// work.
+comment|//
+comment|// This time taken to work can skew the heartbeat processor thread.
+comment|// The reason why we don't care is because of the following reasons.
+comment|//
+comment|// 1. checkerInterval is general many magnitudes faster than datanode HB
+comment|// frequency.
+comment|//
+comment|// 2. if we have too much nodes, the SCM would be doing only HB
+comment|// processing, this could lead to SCM's CPU starvation. With this
+comment|// approach we always guarantee that  HB thread sleeps for a little while.
+comment|//
+comment|// 3. It is possible that we will never finish processing the HB's in the
+comment|// thread. But that means we have a mis-configured system. We will warn
+comment|// the users by logging that information.
+comment|//
+comment|// 4. And the most important reason, heartbeats are not blocked even if
+comment|// this thread does not run, they will go into the processing queue.
+name|scheduleNextHealthCheck
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|checkNodesHealth ()
+specifier|private
+name|void
+name|checkNodesHealth
+parameter_list|()
+block|{
 comment|/*      *      *          staleNodeDeadline                healthyNodeDeadline      *                 |                                  |      *      Dead       |             Stale                |     Healthy      *      Node       |             Node                 |     Node      *      Window     |             Window               |     Window      * ----------------+----------------------------------+------------------->      *>>-->> time-line>>-->>      *      * Here is the logic of computing the health of a node. âââââ* âââââ*â1. We get the current time and look back that the time âââââ*â   when we got a heartbeat from a node. âââââ*â âââââ*â2. If the last heartbeat was within the window of healthy node we mark âââââ*â   it as healthy. âââââ*â âââââ*â3. If the last HB Time stamp is longer and falls within the window of âââââ*â   Stale Node time, we will mark it as Stale. âââââ*â âââââ*â4. If the last HB time is older than the Stale Window, then the node is âââââ*    marked as dead.      *      * The Processing starts from current time and looks backwards in time.      */
 name|long
 name|processingStartTime
@@ -1744,29 +1852,13 @@ name|heartbeatCheckerIntervalMs
 argument_list|)
 expr_stmt|;
 block|}
-comment|// we purposefully make this non-deterministic. Instead of using a
-comment|// scheduleAtFixedFrequency  we will just go to sleep
-comment|// and wake up at the next rendezvous point, which is currentTime +
-comment|// heartbeatCheckerIntervalMs. This leads to the issue that we are now
-comment|// heart beating not at a fixed cadence, but clock tick + time taken to
-comment|// work.
-comment|//
-comment|// This time taken to work can skew the heartbeat processor thread.
-comment|// The reason why we don't care is because of the following reasons.
-comment|//
-comment|// 1. checkerInterval is general many magnitudes faster than datanode HB
-comment|// frequency.
-comment|//
-comment|// 2. if we have too much nodes, the SCM would be doing only HB
-comment|// processing, this could lead to SCM's CPU starvation. With this
-comment|// approach we always guarantee that  HB thread sleeps for a little while.
-comment|//
-comment|// 3. It is possible that we will never finish processing the HB's in the
-comment|// thread. But that means we have a mis-configured system. We will warn
-comment|// the users by logging that information.
-comment|//
-comment|// 4. And the most important reason, heartbeats are not blocked even if
-comment|// this thread does not run, they will go into the processing queue.
+block|}
+DECL|method|scheduleNextHealthCheck ()
+specifier|private
+name|void
+name|scheduleNextHealthCheck
+parameter_list|()
+block|{
 if|if
 condition|(
 operator|!
@@ -1787,6 +1879,8 @@ condition|)
 block|{
 comment|//BUGBUG: The return future needs to checked here to make sure the
 comment|// exceptions are handled correctly.
+name|healthCheckFuture
+operator|=
 name|executorService
 operator|.
 name|schedule
@@ -1805,7 +1899,7 @@ else|else
 block|{
 name|LOG
 operator|.
-name|info
+name|warn
 argument_list|(
 literal|"Current Thread is interrupted, shutting down HB processing "
 operator|+
@@ -1813,6 +1907,52 @@ literal|"thread for Node Manager."
 argument_list|)
 expr_stmt|;
 block|}
+name|lastHealthCheck
+operator|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * if the time since last check exceeds the stale|dead node interval, skip.    * such long delays might be caused by a JVM pause. SCM cannot make reliable    * conclusions about datanode health in such situations.    * @return : true indicates skip HB checks    */
+DECL|method|shouldSkipCheck ()
+specifier|private
+name|boolean
+name|shouldSkipCheck
+parameter_list|()
+block|{
+name|long
+name|currentTime
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+decl_stmt|;
+name|long
+name|minInterval
+init|=
+name|Math
+operator|.
+name|min
+argument_list|(
+name|staleNodeIntervalMs
+argument_list|,
+name|deadNodeIntervalMs
+argument_list|)
+decl_stmt|;
+return|return
+operator|(
+operator|(
+name|currentTime
+operator|-
+name|lastHealthCheck
+operator|)
+operator|>=
+name|minInterval
+operator|)
+return|;
 block|}
 comment|/**    * Updates the node state if the condition satisfies.    *    * @param node DatanodeInfo    * @param condition condition to check    * @param state current state of node    * @param lifeCycleEvent NodeLifeCycleEvent to be applied if condition    *                       matches    *    * @throws NodeNotFoundException if the node is not present    */
 DECL|method|updateNodeState (DatanodeInfo node, Predicate<Long> condition, NodeState state, NodeLifeCycleEvent lifeCycleEvent)
@@ -2009,6 +2149,126 @@ name|interrupt
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+comment|/**    * Test Utility : return number of times heartbeat check was skipped.    * @return : count of times HB process was skipped    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getSkippedHealthChecks ()
+name|long
+name|getSkippedHealthChecks
+parameter_list|()
+block|{
+return|return
+name|skippedHealthChecks
+return|;
+block|}
+comment|/**    * Test Utility : Pause the periodic node hb check.    * @return ScheduledFuture for the scheduled check that got cancelled.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|pause ()
+name|ScheduledFuture
+name|pause
+parameter_list|()
+block|{
+if|if
+condition|(
+name|executorService
+operator|.
+name|isShutdown
+argument_list|()
+operator|||
+name|checkPaused
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+name|checkPaused
+operator|=
+name|healthCheckFuture
+operator|.
+name|cancel
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+return|return
+name|healthCheckFuture
+return|;
+block|}
+comment|/**    * Test utility : unpause the periodic node hb check.    * @return ScheduledFuture for the next scheduled check    */
+annotation|@
+name|VisibleForTesting
+DECL|method|unpause ()
+name|ScheduledFuture
+name|unpause
+parameter_list|()
+block|{
+if|if
+condition|(
+name|executorService
+operator|.
+name|isShutdown
+argument_list|()
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+if|if
+condition|(
+name|checkPaused
+condition|)
+block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+operator|(
+operator|(
+name|healthCheckFuture
+operator|==
+literal|null
+operator|)
+operator|||
+name|healthCheckFuture
+operator|.
+name|isCancelled
+argument_list|()
+operator|||
+name|healthCheckFuture
+operator|.
+name|isDone
+argument_list|()
+operator|)
+argument_list|)
+expr_stmt|;
+name|checkPaused
+operator|=
+literal|false
+expr_stmt|;
+comment|/**        * We do not call scheduleNextHealthCheck because we are        * not updating the lastHealthCheck timestamp.        */
+name|healthCheckFuture
+operator|=
+name|executorService
+operator|.
+name|schedule
+argument_list|(
+name|this
+argument_list|,
+name|heartbeatCheckerIntervalMs
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|healthCheckFuture
+return|;
 block|}
 block|}
 end_class

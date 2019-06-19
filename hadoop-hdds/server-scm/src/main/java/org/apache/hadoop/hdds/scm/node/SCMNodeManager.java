@@ -28,6 +28,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|base
 operator|.
 name|Preconditions
@@ -741,6 +755,18 @@ operator|.
 name|util
 operator|.
 name|UUID
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ScheduledFuture
 import|;
 end_import
 
@@ -2723,6 +2749,51 @@ return|return
 literal|null
 return|;
 block|}
+block|}
+comment|/**    * Test utility to stop heartbeat check process.    * @return ScheduledFuture of next scheduled check that got cancelled.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|pauseHealthCheck ()
+name|ScheduledFuture
+name|pauseHealthCheck
+parameter_list|()
+block|{
+return|return
+name|nodeStateManager
+operator|.
+name|pause
+argument_list|()
+return|;
+block|}
+comment|/**    * Test utility to resume the paused heartbeat check process.    * @return ScheduledFuture of the next scheduled check    */
+annotation|@
+name|VisibleForTesting
+DECL|method|unpauseHealthCheck ()
+name|ScheduledFuture
+name|unpauseHealthCheck
+parameter_list|()
+block|{
+return|return
+name|nodeStateManager
+operator|.
+name|unpause
+argument_list|()
+return|;
+block|}
+comment|/**    * Test utility to get the count of skipped heartbeat check iterations.    * @return count of skipped heartbeat check iterations    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getSkippedHealthChecks ()
+name|long
+name|getSkippedHealthChecks
+parameter_list|()
+block|{
+return|return
+name|nodeStateManager
+operator|.
+name|getSkippedHealthChecks
+argument_list|()
+return|;
 block|}
 block|}
 end_class
