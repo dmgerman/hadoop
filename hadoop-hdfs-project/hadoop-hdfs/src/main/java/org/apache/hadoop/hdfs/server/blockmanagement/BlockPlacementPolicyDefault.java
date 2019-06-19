@@ -1122,28 +1122,19 @@ name|NotEnoughReplicasException
 name|nr
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Failed to choose with favored nodes (="
+literal|"Failed to choose with favored nodes (={}), disregard favored"
 operator|+
+literal|" nodes hint and retry."
+argument_list|,
 name|favoredNodes
-operator|+
-literal|"), disregard favored nodes hint and retry."
 argument_list|,
 name|nr
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Fall back to regular block placement disregarding favored nodes hint
 return|return
 name|chooseTarget
@@ -2126,24 +2117,15 @@ name|requiredStorageTypes
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"storageTypes="
-operator|+
+literal|"storageTypes={}"
+argument_list|,
 name|storageTypes
 argument_list|)
 expr_stmt|;
-block|}
 try|try
 block|{
 if|if
@@ -2239,14 +2221,6 @@ name|newBlock
 operator|+
 literal|")"
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|trace
@@ -2256,9 +2230,6 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
 name|LOG
 operator|.
 name|warn
@@ -2273,7 +2244,6 @@ name|getMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|avoidStaleNodes
@@ -3307,28 +3277,19 @@ argument_list|)
 return|;
 block|}
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Failed to choose from local rack (location = "
+literal|"Failed to choose from local rack (location = {}); the second"
 operator|+
+literal|" replica is not found, retry choosing randomly"
+argument_list|,
 name|localRack
-operator|+
-literal|"); the second replica is not found, retry choosing randomly"
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-block|}
 comment|//the second replica is not found, randomly choose one from the network
 return|return
 name|chooseRandom
@@ -3428,29 +3389,20 @@ name|NotEnoughReplicasException
 name|e
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Failed to choose from the next rack (location = "
+literal|"Failed to choose from the next rack (location = {}), "
 operator|+
+literal|"retry choosing randomly"
+argument_list|,
 name|nextRack
-operator|+
-literal|"), retry choosing randomly"
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-block|}
-comment|//otherwise randomly choose one from the network
+comment|// otherwise randomly choose one from the network
 return|return
 name|chooseRandom
 argument_list|(
@@ -3885,10 +3837,6 @@ name|LOG
 operator|.
 name|isDebugEnabled
 argument_list|()
-operator|&&
-name|builder
-operator|!=
-literal|null
 condition|)
 block|{
 name|builder
@@ -4086,10 +4034,6 @@ name|LOG
 operator|.
 name|isDebugEnabled
 argument_list|()
-operator|&&
-name|builder
-operator|!=
-literal|null
 condition|)
 block|{
 name|builder
@@ -4129,10 +4073,6 @@ name|LOG
 operator|.
 name|isDebugEnabled
 argument_list|()
-operator|&&
-name|builder
-operator|!=
-literal|null
 condition|)
 block|{
 name|detail
@@ -4210,7 +4150,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Not enough replicas was chosen. Reason:{}"
+literal|"Not enough replicas was chosen. Reason: {}"
 argument_list|,
 name|reasonMap
 argument_list|)
@@ -5498,21 +5438,13 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"No excess replica can be found. excessTypes: {}."
+literal|"No excess replica can be found. excessTypes: {}. "
 operator|+
-literal|" moreThanOne: {}. exactlyOne: {}."
+literal|"moreThanOne: {}. exactlyOne: {}."
 argument_list|,
 name|excessTypes
 argument_list|,
@@ -5521,7 +5453,6 @@ argument_list|,
 name|exactlyOne
 argument_list|)
 expr_stmt|;
-block|}
 break|break;
 block|}
 comment|// adjust rackmap, moreThanOne, and exactlyOne
