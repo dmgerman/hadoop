@@ -290,7 +290,7 @@ parameter_list|)
 throws|throws
 name|ServiceFailedException
 function_decl|;
-comment|/**    * Method to be overridden by subclasses to prepare to exit a state.    * This method is called<em>without</em> the context being locked.    * This is used by the standby state to cancel any checkpoints    * that are going on. It can also be used to check any preconditions    * for the state transition.    *     * This method should not make any destructuve changes to the state    * (eg stopping threads) since {@link #prepareToEnterState(HAContext)}    * may subsequently cancel the state transition.    * @param context HA context    * @throws ServiceFailedException on precondition failure    */
+comment|/**    * Method to be overridden by subclasses to prepare to exit a state.    * This method is called<em>without</em> the context being locked.    * This is used by the standby state to cancel any checkpoints    * that are going on. It can also be used to check any preconditions    * for the state transition.    *     * This method should not make any destructive changes to the state    * (eg stopping threads) since {@link #prepareToEnterState(HAContext)}    * may subsequently cancel the state transition.    * @param context HA context    * @throws ServiceFailedException on precondition failure    */
 DECL|method|prepareToExitState (final HAContext context)
 specifier|public
 name|void
@@ -339,14 +339,14 @@ operator|==
 name|s
 condition|)
 block|{
-comment|// Aleady in the new state
+comment|// Already in the new state
 return|return;
 block|}
 throw|throw
 operator|new
 name|ServiceFailedException
 argument_list|(
-literal|"Transtion from state "
+literal|"Transition from state "
 operator|+
 name|this
 operator|+
