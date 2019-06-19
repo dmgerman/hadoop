@@ -676,6 +676,17 @@ argument_list|)
 return|;
 block|}
 comment|/**    * This exception class contains the http error code,    * requestId and error message, it is thrown when AzureADAuthenticator    * failed to get the Azure Active Directory token.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+argument_list|(
+literal|"authorization-subsystems"
+argument_list|)
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
 DECL|class|HttpException
 specifier|public
 specifier|static
@@ -741,6 +752,7 @@ name|requestId
 return|;
 block|}
 DECL|method|HttpException ( final int httpErrorCode, final String requestId, final String message, final String url, final String contentType, final String body)
+specifier|protected
 name|HttpException
 parameter_list|(
 specifier|final
