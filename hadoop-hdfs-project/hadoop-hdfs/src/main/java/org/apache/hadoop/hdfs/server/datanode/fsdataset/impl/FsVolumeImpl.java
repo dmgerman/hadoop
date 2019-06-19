@@ -7007,9 +7007,6 @@ decl_stmt|;
 name|verifyFileLocation
 argument_list|(
 name|file
-operator|.
-name|getParentFile
-argument_list|()
 argument_list|,
 name|bpFinalizedDir
 argument_list|,
