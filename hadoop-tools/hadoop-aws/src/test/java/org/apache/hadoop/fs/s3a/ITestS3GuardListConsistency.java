@@ -364,6 +364,22 @@ name|*
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|LambdaTestUtils
+operator|.
+name|intercept
+import|;
+end_import
+
 begin_comment
 comment|/**  * Test S3Guard list consistency feature by injecting delayed listObjects()  * visibility via {@link InconsistentAmazonS3Client}.  *  * Tests here generally:  * 1. Use the inconsistency injection mentioned above.  * 2. Only run when S3Guard is enabled.  */
 end_comment
@@ -1429,14 +1445,22 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
-try|try
-block|{
-name|RemoteIterator
-argument_list|<
-name|S3ALocatedFileStatus
-argument_list|>
-name|old
-init|=
+name|intercept
+argument_list|(
+name|FileNotFoundException
+operator|.
+name|class
+argument_list|,
+literal|""
+argument_list|,
+literal|"Recently renamed dir should not be visible"
+argument_list|,
+parameter_list|()
+lambda|->
+name|S3AUtils
+operator|.
+name|mapLocatedFiles
+argument_list|(
 name|fs
 operator|.
 name|listFilesAndEmptyDirectories
@@ -1448,21 +1472,13 @@ argument_list|)
 argument_list|,
 literal|true
 argument_list|)
-decl_stmt|;
-name|fail
-argument_list|(
-literal|"Recently renamed dir should not be visible"
+argument_list|,
+name|FileStatus
+operator|::
+name|getPath
+argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|FileNotFoundException
-name|e
-parameter_list|)
-block|{
-comment|// expected
-block|}
 block|}
 annotation|@
 name|Test

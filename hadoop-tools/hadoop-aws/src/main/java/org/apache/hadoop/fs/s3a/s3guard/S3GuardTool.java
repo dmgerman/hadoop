@@ -22,6 +22,16 @@ end_package
 
 begin_import
 import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nullable
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -579,6 +589,24 @@ operator|.
 name|Invoker
 operator|.
 name|LOG_EVENT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3AUtils
+operator|.
+name|clearBucketOption
 import|;
 end_import
 
@@ -3201,12 +3229,40 @@ argument_list|,
 literal|"Metadata Store is not initialized"
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|getStore
 argument_list|()
 operator|.
 name|destroy
 argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|TableDeleteTimeoutException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"The table is been deleted but it is still (briefly)"
+operator|+
+literal|" listed as present in AWS"
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Timeout waiting for table disappearing"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 name|println
 argument_list|(
 name|out
@@ -3347,14 +3403,19 @@ return|return
 name|USAGE
 return|;
 block|}
-comment|/**      * Put parents into MS and cache if the parents are not presented.      *      * @param f the file or an empty directory.      * @throws IOException on I/O errors.      */
-DECL|method|putParentsIfNotPresent (FileStatus f)
+comment|/**      * Put parents into MS and cache if the parents are not presented.      *      * @param f the file or an empty directory.      * @param operationState store's bulk update state.      * @throws IOException on I/O errors.      */
+DECL|method|putParentsIfNotPresent (FileStatus f, @Nullable BulkOperationState operationState)
 specifier|private
 name|void
 name|putParentsIfNotPresent
 parameter_list|(
 name|FileStatus
 name|f
+parameter_list|,
+annotation|@
+name|Nullable
+name|BulkOperationState
+name|operationState
 parameter_list|)
 throws|throws
 name|IOException
@@ -3429,6 +3490,8 @@ argument_list|()
 operator|.
 name|getTtlTimeProvider
 argument_list|()
+argument_list|,
+name|operationState
 argument_list|)
 expr_stmt|;
 name|dirCache
@@ -3469,6 +3532,26 @@ name|isDirectory
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|BulkOperationState
+name|operationState
+init|=
+name|getStore
+argument_list|()
+operator|.
+name|initiateBulkWrite
+argument_list|(
+name|BulkOperationState
+operator|.
+name|OperationType
+operator|.
+name|Put
+argument_list|,
+name|status
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
+decl_stmt|;
 name|RemoteIterator
 argument_list|<
 name|S3ALocatedFileStatus
@@ -3595,6 +3678,8 @@ block|}
 name|putParentsIfNotPresent
 argument_list|(
 name|child
+argument_list|,
+name|operationState
 argument_list|)
 expr_stmt|;
 name|S3Guard
@@ -3615,6 +3700,8 @@ argument_list|()
 operator|.
 name|getTtlTimeProvider
 argument_list|()
+argument_list|,
+name|operationState
 argument_list|)
 expr_stmt|;
 name|items
@@ -3792,6 +3879,8 @@ operator|.
 name|put
 argument_list|(
 name|meta
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -5418,8 +5507,22 @@ init|=
 name|getCommandFormat
 argument_list|()
 decl_stmt|;
+name|URI
+name|fsURI
+init|=
+name|toUri
+argument_list|(
+name|s3Path
+argument_list|)
+decl_stmt|;
 comment|// check if UNGUARDED_FLAG is passed and use NullMetadataStore in
 comment|// config to avoid side effects like creating the table if not exists
+name|Configuration
+name|unguardedConf
+init|=
+name|getConf
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|commands
@@ -5442,8 +5545,19 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|getConf
+name|clearBucketOption
+argument_list|(
+name|unguardedConf
+argument_list|,
+name|fsURI
+operator|.
+name|getHost
 argument_list|()
+argument_list|,
+name|S3_METADATA_STORE_IMPL
+argument_list|)
+expr_stmt|;
+name|unguardedConf
 operator|.
 name|set
 argument_list|(
@@ -5463,13 +5577,9 @@ name|FileSystem
 operator|.
 name|newInstance
 argument_list|(
-name|toUri
-argument_list|(
-name|s3Path
-argument_list|)
+name|fsURI
 argument_list|,
-name|getConf
-argument_list|()
+name|unguardedConf
 argument_list|)
 decl_stmt|;
 name|setFilesystem

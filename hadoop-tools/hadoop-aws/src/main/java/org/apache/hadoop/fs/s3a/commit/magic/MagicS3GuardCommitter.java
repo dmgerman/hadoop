@@ -658,6 +658,24 @@ name|getOutputPath
 argument_list|()
 argument_list|)
 decl_stmt|;
+try|try
+init|(
+name|DurationInfo
+name|ignored
+init|=
+operator|new
+name|DurationInfo
+argument_list|(
+name|LOG
+argument_list|,
+literal|true
+argument_list|,
+literal|"Deleting magic directory %s"
+argument_list|,
+name|path
+argument_list|)
+init|)
+block|{
 name|Invoker
 operator|.
 name|ignoreIOExceptions
@@ -684,6 +702,7 @@ literal|true
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override

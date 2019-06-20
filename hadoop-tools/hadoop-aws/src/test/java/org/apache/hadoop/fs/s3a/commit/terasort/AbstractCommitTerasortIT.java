@@ -1144,6 +1144,27 @@ name|empty
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
+DECL|method|test_200_directory_deletion ()
+specifier|public
+name|void
+name|test_200_directory_deletion
+parameter_list|()
+throws|throws
+name|Throwable
+block|{
+name|getFileSystem
+argument_list|()
+operator|.
+name|delete
+argument_list|(
+name|terasortPath
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

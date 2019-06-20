@@ -292,6 +292,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|s3guard
+operator|.
+name|BulkOperationState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|Progressable
@@ -796,7 +814,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|finishedWrite (String key, long length, String eTag, String versionId)
+DECL|method|finishedWrite (String key, long length, String eTag, String versionId, BulkOperationState operationState)
 name|void
 name|finishedWrite
 parameter_list|(
@@ -811,6 +829,9 @@ name|eTag
 parameter_list|,
 name|String
 name|versionId
+parameter_list|,
+name|BulkOperationState
+name|operationState
 parameter_list|)
 block|{    }
 annotation|@

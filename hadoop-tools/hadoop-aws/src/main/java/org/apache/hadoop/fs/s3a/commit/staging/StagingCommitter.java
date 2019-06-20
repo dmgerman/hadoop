@@ -302,6 +302,24 @@ name|s3a
 operator|.
 name|commit
 operator|.
+name|CommitOperations
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|commit
+operator|.
 name|InternalCommitterConstants
 import|;
 end_import
@@ -2896,6 +2914,23 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+try|try
+init|(
+name|CommitOperations
+operator|.
+name|CommitContext
+name|commitContext
+init|=
+name|initiateCommitOperation
+argument_list|()
+init|;               DurationInfo ignored = new DurationInfo(LOG
+operator|,
+init|"Aborting %s uploads"
+operator|,
+init|commits.size()
+block|)
+block|)
+block|{
 name|Tasks
 operator|.
 name|foreach
@@ -2908,17 +2943,12 @@ argument_list|()
 operator|.
 name|run
 argument_list|(
-name|commit
-lambda|->
-name|getCommitOperations
-argument_list|()
-operator|.
+name|commitContext
+operator|::
 name|abortSingleCommit
-argument_list|(
-name|commit
-argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 name|deleteTaskAttemptPathQuietly
 argument_list|(
 name|context
@@ -2938,6 +2968,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+end_class
+
+begin_expr_stmt
 name|LOG
 operator|.
 name|debug
@@ -2945,6 +2978,9 @@ argument_list|(
 literal|"Committing wrapped task"
 argument_list|)
 expr_stmt|;
+end_expr_stmt
+
+begin_expr_stmt
 name|wrappedCommitter
 operator|.
 name|commitTask
@@ -2952,6 +2988,9 @@ argument_list|(
 name|context
 argument_list|)
 expr_stmt|;
+end_expr_stmt
+
+begin_expr_stmt
 name|LOG
 operator|.
 name|debug
@@ -2961,6 +3000,9 @@ argument_list|,
 name|attemptPath
 argument_list|)
 expr_stmt|;
+end_expr_stmt
+
+begin_expr_stmt
 name|attemptFS
 operator|.
 name|delete
@@ -2970,15 +3012,24 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+end_expr_stmt
+
+begin_return
 return|return
 name|commits
 operator|.
 name|size
 argument_list|()
 return|;
-block|}
+end_return
+
+begin_comment
+unit|}
 comment|/**    * Abort the task.    * The API specifies that the task has not yet been committed, so there are    * no uploads that need to be cancelled.    * Accordingly just delete files on the local FS, and call abortTask in    * the wrapped committer.    *<b>Important: this may be called in the AM after a container failure.</b>    * When that occurs and the failed container was on a different host in the    * cluster, the local files will not be deleted.    * @param context task context    * @throws IOException any failure    */
-annotation|@
+end_comment
+
+begin_function
+unit|@
 name|Override
 DECL|method|abortTask (TaskAttemptContext context)
 specifier|public
@@ -3058,7 +3109,13 @@ name|e
 throw|;
 block|}
 block|}
+end_function
+
+begin_comment
 comment|/**    * Get the work path for a task.    * @param context job/task complex    * @param uuid UUID    * @return a path    * @throws IOException failure to build the path    */
+end_comment
+
+begin_function
 DECL|method|taskAttemptWorkingPath (TaskAttemptContext context, String uuid)
 specifier|private
 specifier|static
@@ -3098,7 +3155,13 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Delete the working path of a task; no-op if there is none, that    * is: this is a job.    * @param context job/task context    */
+end_comment
+
+begin_function
 DECL|method|deleteTaskWorkingPathQuietly (JobContext context)
 specifier|protected
 name|void
@@ -3157,7 +3220,13 @@ block|}
 argument_list|)
 expr_stmt|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Get the key of the destination "directory" of the job/task.    * @param context job context    * @return key to write to    */
+end_comment
+
+begin_function
 DECL|method|getS3KeyPrefix (JobContext context)
 specifier|private
 name|String
@@ -3171,7 +3240,13 @@ return|return
 name|s3KeyPrefix
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * A UUID for this upload, as calculated with.    * {@link #getUploadUUID(Configuration, String)}    * @return the UUID for files    */
+end_comment
+
+begin_function
 DECL|method|getUUID ()
 specifier|protected
 name|String
@@ -3182,7 +3257,13 @@ return|return
 name|uuid
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Returns the {@link ConflictResolution} mode for this commit.    *    * @param context the JobContext for this commit    * @param fsConf filesystem config    * @return the ConflictResolution mode    */
+end_comment
+
+begin_function
 DECL|method|getConflictResolutionMode ( JobContext context, Configuration fsConf)
 specifier|public
 specifier|final
@@ -3224,7 +3305,13 @@ return|return
 name|conflictResolution
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Generate a {@link PathExistsException} because the destination exists.    * Lists some of the child entries first, to help diagnose the problem.    * @param path path which exists    * @param description description (usually task/job ID)    * @return an exception to throw    */
+end_comment
+
+begin_function
 DECL|method|failDestinationExists (final Path path, final String description)
 specifier|protected
 name|PathExistsException
@@ -3391,7 +3478,13 @@ name|E_DEST_EXISTS
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Get the conflict mode option string.    * @param context context with the config    * @param fsConf filesystem config    * @return the trimmed configuration option, upper case.    */
+end_comment
+
+begin_function
 DECL|method|getConfictModeOption (JobContext context, Configuration fsConf)
 specifier|public
 specifier|static
@@ -3425,8 +3518,8 @@ name|ENGLISH
 argument_list|)
 return|;
 block|}
-block|}
-end_class
+end_function
 
+unit|}
 end_unit
 

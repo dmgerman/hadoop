@@ -2291,6 +2291,24 @@ argument_list|(
 literal|"Matched CLI output: {} {} {} {}"
 argument_list|,
 name|fields
+index|[
+literal|0
+index|]
+argument_list|,
+name|fields
+index|[
+literal|1
+index|]
+argument_list|,
+name|fields
+index|[
+literal|2
+index|]
+argument_list|,
+name|fields
+index|[
+literal|3
+index|]
 argument_list|)
 expr_stmt|;
 name|assertEquals

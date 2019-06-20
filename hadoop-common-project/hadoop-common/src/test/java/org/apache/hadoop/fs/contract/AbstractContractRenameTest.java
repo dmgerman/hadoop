@@ -1381,7 +1381,7 @@ expr_stmt|;
 block|}
 comment|/**    * Validate that the nested path and its ancestors should have been moved.    *    * @param src the source root to move    * @param dst the destination root to move    * @param nestedPath the nested path to move    */
 DECL|method|validateAncestorsMoved (Path src, Path dst, String nestedPath)
-specifier|private
+specifier|protected
 name|void
 name|validateAncestorsMoved
 parameter_list|(

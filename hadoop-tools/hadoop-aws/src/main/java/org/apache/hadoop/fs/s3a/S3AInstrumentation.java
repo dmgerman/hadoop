@@ -817,6 +817,12 @@ name|S3GUARD_METADATASTORE_PUT_PATH_REQUEST
 block|,
 name|S3GUARD_METADATASTORE_INITIALIZATION
 block|,
+name|S3GUARD_METADATASTORE_RECORD_DELETES
+block|,
+name|S3GUARD_METADATASTORE_RECORD_READS
+block|,
+name|S3GUARD_METADATASTORE_RECORD_WRITES
+block|,
 name|S3GUARD_METADATASTORE_RETRY
 block|,
 name|S3GUARD_METADATASTORE_THROTTLED
@@ -824,6 +830,8 @@ block|,
 name|STORE_IO_THROTTLED
 block|,
 name|DELEGATION_TOKENS_ISSUED
+block|,
+name|FILES_DELETE_REJECTED
 block|}
 decl_stmt|;
 DECL|field|GAUGES_TO_CREATE
@@ -4288,6 +4296,60 @@ name|retrying
 parameter_list|()
 block|{
 comment|// counters are incremented by owner.
+block|}
+comment|/**      * Records have been read.      * @param count the number of records read      */
+DECL|method|recordsDeleted (int count)
+specifier|public
+name|void
+name|recordsDeleted
+parameter_list|(
+name|int
+name|count
+parameter_list|)
+block|{
+name|incrementCounter
+argument_list|(
+name|S3GUARD_METADATASTORE_RECORD_DELETES
+argument_list|,
+name|count
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**      * Records have been read.      * @param count the number of records read      */
+DECL|method|recordsRead (int count)
+specifier|public
+name|void
+name|recordsRead
+parameter_list|(
+name|int
+name|count
+parameter_list|)
+block|{
+name|incrementCounter
+argument_list|(
+name|S3GUARD_METADATASTORE_RECORD_READS
+argument_list|,
+name|count
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**      * records have been written (including deleted).      * @param count number of records written.      */
+DECL|method|recordsWritten (int count)
+specifier|public
+name|void
+name|recordsWritten
+parameter_list|(
+name|int
+name|count
+parameter_list|)
+block|{
+name|incrementCounter
+argument_list|(
+name|S3GUARD_METADATASTORE_RECORD_WRITES
+argument_list|,
+name|count
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Instrumentation exported to S3Guard Committers.    */

@@ -22,6 +22,16 @@ end_package
 
 begin_import
 import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nullable
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -162,6 +172,40 @@ name|RetryTranslated
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3AFileStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|impl
+operator|.
+name|StoreContext
+import|;
+end_import
+
 begin_comment
 comment|/**  * {@code MetadataStore} defines the set of operations that any metadata store  * implementation must provide.  Note that all {@link Path} objects provided  * to methods must be absolute, not relative paths.  * Implementations must implement any retries needed internally, such that  * transient errors are generally recovered from without throwing exceptions  * from this API.  */
 end_comment
@@ -281,17 +325,44 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Record the effects of a {@link FileSystem#rename(Path, Path)} in the    * MetadataStore.  Clients provide explicit enumeration of the affected    * paths (recursively), before and after the rename.    *    * This operation is not atomic, unless specific implementations claim    * otherwise.    *    * On the need to provide an enumeration of directory trees instead of just    * source and destination paths:    * Since a MetadataStore does not have to track all metadata for the    * underlying storage system, and a new MetadataStore may be created on an    * existing underlying filesystem, this move() may be the first time the    * MetadataStore sees the affected paths.  Therefore, simply providing src    * and destination paths may not be enough to record the deletions (under    * src path) and creations (at destination) that are happening during the    * rename().    *    * @param pathsToDelete Collection of all paths that were removed from the    *                      source directory tree of the move.    * @param pathsToCreate Collection of all PathMetadata for the new paths    *                      that were created at the destination of the rename    *                      ().    * @param ttlTimeProvider the time provider to set last_updated. Must not    *                        be null.    * @throws IOException if there is an error    */
-DECL|method|move (Collection<Path> pathsToDelete, Collection<PathMetadata> pathsToCreate, ITtlTimeProvider ttlTimeProvider)
+comment|/**    * This adds all new ancestors of a path as directories.    *<p>    * Important: to propagate TTL information, any new ancestors added    * must have their last updated timestamps set through    * {@link S3Guard#patchLastUpdated(Collection, ITtlTimeProvider)}.    * @param qualifiedPath path to update    * @param timeProvider time provider for timestamps    * @param operationState (nullable) operational state for a bulk update    * @throws IOException failure    */
+annotation|@
+name|RetryTranslated
+DECL|method|addAncestors ( Path qualifiedPath, @Nullable ITtlTimeProvider timeProvider, @Nullable BulkOperationState operationState)
+name|void
+name|addAncestors
+parameter_list|(
+name|Path
+name|qualifiedPath
+parameter_list|,
+annotation|@
+name|Nullable
+name|ITtlTimeProvider
+name|timeProvider
+parameter_list|,
+annotation|@
+name|Nullable
+name|BulkOperationState
+name|operationState
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Record the effects of a {@link FileSystem#rename(Path, Path)} in the    * MetadataStore.  Clients provide explicit enumeration of the affected    * paths (recursively), before and after the rename.    *    * This operation is not atomic, unless specific implementations claim    * otherwise.    *    * On the need to provide an enumeration of directory trees instead of just    * source and destination paths:    * Since a MetadataStore does not have to track all metadata for the    * underlying storage system, and a new MetadataStore may be created on an    * existing underlying filesystem, this move() may be the first time the    * MetadataStore sees the affected paths.  Therefore, simply providing src    * and destination paths may not be enough to record the deletions (under    * src path) and creations (at destination) that are happening during the    * rename().    *    * @param pathsToDelete Collection of all paths that were removed from the    *                      source directory tree of the move.    * @param pathsToCreate Collection of all PathMetadata for the new paths    *                      that were created at the destination of the rename().    * @param ttlTimeProvider the time provider to set last_updated. Must not    *                        be null.    * @param operationState     Any ongoing state supplied to the rename tracker    *                      which is to be passed in with each move operation.    * @throws IOException if there is an error    */
+DECL|method|move ( @ullable Collection<Path> pathsToDelete, @Nullable Collection<PathMetadata> pathsToCreate, ITtlTimeProvider ttlTimeProvider, @Nullable BulkOperationState operationState)
 name|void
 name|move
 parameter_list|(
+annotation|@
+name|Nullable
 name|Collection
 argument_list|<
 name|Path
 argument_list|>
 name|pathsToDelete
 parameter_list|,
+annotation|@
+name|Nullable
 name|Collection
 argument_list|<
 name|PathMetadata
@@ -300,6 +371,11 @@ name|pathsToCreate
 parameter_list|,
 name|ITtlTimeProvider
 name|ttlTimeProvider
+parameter_list|,
+annotation|@
+name|Nullable
+name|BulkOperationState
+name|operationState
 parameter_list|)
 throws|throws
 name|IOException
@@ -317,27 +393,57 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Saves metadata for any number of paths.    *    * Semantics are otherwise the same as single-path puts.    *    * @param metas the metadata to save    * @throws IOException if there is an error    */
-DECL|method|put (Collection<PathMetadata> metas)
+comment|/**    * Saves metadata for exactly one path, potentially    * using any bulk operation state to eliminate duplicate work.    *    * Implementations may pre-create all the path's ancestors automatically.    * Implementations must update any {@code DirListingMetadata} objects which    * track the immediate parent of this file.    *    * @param meta the metadata to save    * @param operationState operational state for a bulk update    * @throws IOException if there is an error    */
+annotation|@
+name|RetryTranslated
+DECL|method|put (PathMetadata meta, @Nullable BulkOperationState operationState)
+name|void
+name|put
+parameter_list|(
+name|PathMetadata
+name|meta
+parameter_list|,
+annotation|@
+name|Nullable
+name|BulkOperationState
+name|operationState
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Saves metadata for any number of paths.    *    * Semantics are otherwise the same as single-path puts.    *    * @param metas the metadata to save    * @param operationState (nullable) operational state for a bulk update    * @throws IOException if there is an error    */
+DECL|method|put (Collection<? extends PathMetadata> metas, @Nullable BulkOperationState operationState)
 name|void
 name|put
 parameter_list|(
 name|Collection
 argument_list|<
+name|?
+extends|extends
 name|PathMetadata
 argument_list|>
 name|metas
+parameter_list|,
+annotation|@
+name|Nullable
+name|BulkOperationState
+name|operationState
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Save directory listing metadata. Callers may save a partial directory    * listing for a given path, or may store a complete and authoritative copy    * of the directory listing.  {@code MetadataStore} implementations may    * subsequently keep track of all modifications to the directory contents at    * this path, and return authoritative results from subsequent calls to    * {@link #listChildren(Path)}. See {@link DirListingMetadata}.    *    * Any authoritative results returned are only authoritative for the scope    * of the {@code MetadataStore}:  A per-process {@code MetadataStore}, for    * example, would only show results visible to that process, potentially    * missing metadata updates (create, delete) made to the same path by    * another process.    *    * @param meta Directory listing metadata.    * @throws IOException if there is an error    */
-DECL|method|put (DirListingMetadata meta)
+comment|/**    * Save directory listing metadata. Callers may save a partial directory    * listing for a given path, or may store a complete and authoritative copy    * of the directory listing.  {@code MetadataStore} implementations may    * subsequently keep track of all modifications to the directory contents at    * this path, and return authoritative results from subsequent calls to    * {@link #listChildren(Path)}. See {@link DirListingMetadata}.    *    * Any authoritative results returned are only authoritative for the scope    * of the {@code MetadataStore}:  A per-process {@code MetadataStore}, for    * example, would only show results visible to that process, potentially    * missing metadata updates (create, delete) made to the same path by    * another process.    *    * @param meta Directory listing metadata.    * @param operationState operational state for a bulk update    * @throws IOException if there is an error    */
+DECL|method|put (DirListingMetadata meta, @Nullable BulkOperationState operationState)
 name|void
 name|put
 parameter_list|(
 name|DirListingMetadata
 name|meta
+parameter_list|,
+annotation|@
+name|Nullable
+name|BulkOperationState
+name|operationState
 parameter_list|)
 throws|throws
 name|IOException
@@ -424,6 +530,47 @@ name|ALL_BY_MODTIME
 block|,
 DECL|enumConstant|TOMBSTONES_BY_LASTUPDATED
 name|TOMBSTONES_BY_LASTUPDATED
+block|}
+comment|/**    * Start a rename operation.    *    * @param storeContext store context.    * @param source source path    * @param sourceStatus status of the source file/dir    * @param dest destination path.    * @return the rename tracker    * @throws IOException Failure.    */
+DECL|method|initiateRenameOperation ( StoreContext storeContext, Path source, S3AFileStatus sourceStatus, Path dest)
+name|RenameTracker
+name|initiateRenameOperation
+parameter_list|(
+name|StoreContext
+name|storeContext
+parameter_list|,
+name|Path
+name|source
+parameter_list|,
+name|S3AFileStatus
+name|sourceStatus
+parameter_list|,
+name|Path
+name|dest
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Initiate a bulk update and create an operation state for it.    * This may then be passed into put operations.    * @param operation the type of the operation.    * @param dest path under which updates will be explicitly put.    * @return null or a store-specific state to pass into the put operations.    * @throws IOException failure    */
+DECL|method|initiateBulkWrite ( BulkOperationState.OperationType operation, Path dest)
+specifier|default
+name|BulkOperationState
+name|initiateBulkWrite
+parameter_list|(
+name|BulkOperationState
+operator|.
+name|OperationType
+name|operation
+parameter_list|,
+name|Path
+name|dest
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+literal|null
+return|;
 block|}
 block|}
 end_interface

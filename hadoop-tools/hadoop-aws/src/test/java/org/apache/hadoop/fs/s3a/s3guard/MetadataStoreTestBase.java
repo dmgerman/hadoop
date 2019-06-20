@@ -92,15 +92,15 @@ end_import
 
 begin_import
 import|import
-name|com
+name|org
 operator|.
-name|google
+name|assertj
 operator|.
-name|common
+name|core
 operator|.
-name|collect
+name|api
 operator|.
-name|Sets
+name|Assertions
 import|;
 end_import
 
@@ -309,6 +309,22 @@ operator|.
 name|test
 operator|.
 name|HadoopTestBase
+import|;
+end_import
+
+begin_import
+import|import static
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+operator|.
+name|checkNotNull
 import|;
 end_import
 
@@ -633,6 +649,40 @@ literal|null
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Describe a test in the logs.    * @param text text to print    * @param args arguments to format in the printing    */
+DECL|method|describe (String text, Object... args)
+specifier|protected
+name|void
+name|describe
+parameter_list|(
+name|String
+name|text
+parameter_list|,
+name|Object
+modifier|...
+name|args
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"\n\n{}: {}\n"
+argument_list|,
+name|getMethodName
+argument_list|()
+argument_list|,
+name|String
+operator|.
+name|format
+argument_list|(
+name|text
+argument_list|,
+name|args
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Helper function for verifying DescendantsIterator and    * MetadataStoreListFilesIterator behavior.    * @param createNodes List of paths to create    * @param checkNodes List of paths that the iterator should return    */
 DECL|method|doTestDescendantsIterator ( Class implementation, String[] createNodes, String[] checkNodes)
 specifier|private
@@ -706,6 +756,8 @@ name|PathMetadata
 argument_list|(
 name|status
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -845,16 +897,21 @@ name|allowMissing
 argument_list|()
 condition|)
 block|{
-name|assertEquals
-argument_list|(
-name|Sets
+name|Assertions
 operator|.
-name|newHashSet
+name|assertThat
+argument_list|(
+name|actual
+argument_list|)
+operator|.
+name|as
+argument_list|(
+literal|"files listed through DescendantsIterator"
+argument_list|)
+operator|.
+name|containsExactlyInAnyOrder
 argument_list|(
 name|checkNodes
-argument_list|)
-argument_list|,
-name|actual
 argument_list|)
 expr_stmt|;
 block|}
@@ -1018,6 +1075,8 @@ argument_list|,
 literal|100
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|assertEmptyDirs
@@ -1081,6 +1140,8 @@ argument_list|(
 literal|"/da1/db1"
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|/* If we had putNew(), and used it above, this would be empty again. */
@@ -1113,6 +1174,8 @@ argument_list|,
 literal|100
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|ms
@@ -1129,6 +1192,8 @@ argument_list|,
 literal|200
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|assertDirectorySize
@@ -1231,6 +1296,8 @@ argument_list|,
 literal|100
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|ms
@@ -1245,6 +1312,8 @@ argument_list|(
 name|dirPath
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|PathMetadata
@@ -1301,6 +1370,8 @@ argument_list|,
 literal|false
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|meta
@@ -1370,6 +1441,8 @@ argument_list|,
 literal|100
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|DirListingMetadata
@@ -1410,56 +1483,52 @@ name|isAuthoritative
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertNotNull
-argument_list|(
-literal|"have root dir file listing"
-argument_list|,
+specifier|final
+name|Collection
+argument_list|<
+name|PathMetadata
+argument_list|>
+name|listing
+init|=
 name|dir
 operator|.
 name|getListing
 argument_list|()
-argument_list|)
-expr_stmt|;
-name|assertEquals
+decl_stmt|;
+name|Assertions
+operator|.
+name|assertThat
 argument_list|(
-literal|"One file in root dir"
-argument_list|,
-literal|1
-argument_list|,
-name|dir
-operator|.
-name|getListing
-argument_list|()
-operator|.
-name|size
-argument_list|()
+name|listing
 argument_list|)
-expr_stmt|;
-name|assertEquals
+operator|.
+name|describedAs
 argument_list|(
-literal|"file1 in root dir"
-argument_list|,
-name|strToPath
-argument_list|(
-literal|"/file1"
+literal|"Root dir listing"
 argument_list|)
-argument_list|,
-name|dir
 operator|.
-name|getListing
+name|isNotNull
 argument_list|()
 operator|.
-name|iterator
-argument_list|()
-operator|.
-name|next
-argument_list|()
+name|extracting
+argument_list|(
+name|p
+lambda|->
+name|p
 operator|.
 name|getFileStatus
 argument_list|()
 operator|.
 name|getPath
 argument_list|()
+argument_list|)
+operator|.
+name|containsExactly
+argument_list|(
+name|strToPath
+argument_list|(
+literal|"/file1"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1614,6 +1683,8 @@ argument_list|,
 literal|100
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 if|if
@@ -1833,6 +1904,8 @@ argument_list|,
 literal|100
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|ms
@@ -1851,6 +1924,8 @@ argument_list|,
 literal|100
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|PathMetadata
@@ -1933,6 +2008,8 @@ argument_list|,
 literal|100
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|ms
@@ -1947,6 +2024,8 @@ argument_list|(
 name|dirPath
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|PathMetadata
@@ -2541,6 +2620,8 @@ operator|.
 name|put
 argument_list|(
 name|dirMeta
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|dirMeta
@@ -2884,6 +2965,8 @@ argument_list|,
 name|destMetas
 argument_list|,
 name|ttlTimeProvider
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// Assert src is no longer there
@@ -3130,6 +3213,8 @@ argument_list|,
 literal|100
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|meta
@@ -3253,6 +3338,8 @@ argument_list|,
 name|oldTime
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|DirListingMetadata
@@ -3325,6 +3412,8 @@ argument_list|,
 name|newTime
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|DirListingMetadata
@@ -3463,6 +3552,8 @@ argument_list|,
 name|oldTime
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// It's possible for the Local implementation to get from the old
@@ -3602,6 +3693,8 @@ name|FALSE
 argument_list|,
 literal|false
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|ms
@@ -3635,6 +3728,8 @@ name|FALSE
 argument_list|,
 literal|false
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// set parent dir as authoritative
@@ -3670,6 +3765,8 @@ operator|.
 name|put
 argument_list|(
 name|parentDirMd
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -3841,6 +3938,8 @@ name|FALSE
 argument_list|,
 literal|false
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|ms
@@ -3874,6 +3973,8 @@ name|FALSE
 argument_list|,
 literal|false
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 if|if
@@ -3909,6 +4010,8 @@ operator|.
 name|put
 argument_list|(
 name|parentDirMd
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// prune the ms
@@ -4085,6 +4188,8 @@ operator|.
 name|put
 argument_list|(
 name|dirMeta
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 if|if
@@ -4196,6 +4301,8 @@ operator|.
 name|put
 argument_list|(
 name|pm
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 if|if
@@ -4923,6 +5030,8 @@ argument_list|,
 literal|100
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|ms
@@ -4939,6 +5048,8 @@ argument_list|,
 literal|100
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -5023,18 +5134,26 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-name|assertEquals
+name|Assertions
+operator|.
+name|assertThat
 argument_list|(
-literal|"Same set of files"
-argument_list|,
-name|b
-argument_list|,
 name|a
+argument_list|)
+operator|.
+name|as
+argument_list|(
+literal|"Directory Listing"
+argument_list|)
+operator|.
+name|containsExactlyInAnyOrderElementsOf
+argument_list|(
+name|b
 argument_list|)
 expr_stmt|;
 block|}
 DECL|method|putListStatusFiles (String dirPath, boolean authoritative, String... filenames)
-specifier|private
+specifier|protected
 name|void
 name|putListStatusFiles
 parameter_list|(
@@ -5112,11 +5231,13 @@ operator|.
 name|put
 argument_list|(
 name|dirMeta
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
 DECL|method|createNewDirs (String... dirs)
-specifier|private
+specifier|protected
 name|void
 name|createNewDirs
 parameter_list|(
@@ -5147,6 +5268,8 @@ argument_list|(
 name|pathStr
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -5215,14 +5338,10 @@ operator|.
 name|withoutTombstones
 argument_list|()
 expr_stmt|;
-name|assertEquals
+name|Assertions
+operator|.
+name|assertThat
 argument_list|(
-literal|"Number of entries in dir "
-operator|+
-name|pathStr
-argument_list|,
-name|size
-argument_list|,
 name|nonDeleted
 argument_list|(
 name|dirMeta
@@ -5230,9 +5349,18 @@ operator|.
 name|getListing
 argument_list|()
 argument_list|)
+argument_list|)
 operator|.
+name|as
+argument_list|(
+literal|"files in directory %s"
+argument_list|,
+name|pathStr
+argument_list|)
+operator|.
+name|hasSize
+argument_list|(
 name|size
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -5294,11 +5422,12 @@ return|return
 name|currentStatuses
 return|;
 block|}
-DECL|method|assertDeleted (String pathStr)
-specifier|private
-name|void
-name|assertDeleted
+DECL|method|get (final String pathStr)
+specifier|protected
+name|PathMetadata
+name|get
 parameter_list|(
+specifier|final
 name|String
 name|pathStr
 parameter_list|)
@@ -5313,14 +5442,58 @@ argument_list|(
 name|pathStr
 argument_list|)
 decl_stmt|;
-name|PathMetadata
-name|meta
-init|=
+return|return
 name|ms
 operator|.
 name|get
 argument_list|(
 name|path
+argument_list|)
+return|;
+block|}
+DECL|method|getNonNull (final String pathStr)
+specifier|protected
+name|PathMetadata
+name|getNonNull
+parameter_list|(
+specifier|final
+name|String
+name|pathStr
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|checkNotNull
+argument_list|(
+name|get
+argument_list|(
+name|pathStr
+argument_list|)
+argument_list|,
+literal|"No metastore entry for %s"
+argument_list|,
+name|pathStr
+argument_list|)
+return|;
+block|}
+DECL|method|assertDeleted (String pathStr)
+specifier|protected
+name|void
+name|assertDeleted
+parameter_list|(
+name|String
+name|pathStr
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|PathMetadata
+name|meta
+init|=
+name|get
+argument_list|(
+name|pathStr
 argument_list|)
 decl_stmt|;
 name|boolean
@@ -5340,7 +5513,9 @@ name|assertFalse
 argument_list|(
 name|pathStr
 operator|+
-literal|" should not be cached."
+literal|" should not be cached: "
+operator|+
+name|meta
 argument_list|,
 name|cached
 argument_list|)
@@ -5357,49 +5532,138 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|Path
-name|path
+name|verifyCached
+argument_list|(
+name|pathStr
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Get an entry which must exist and not be deleted.    * @param pathStr path    * @return the entry    * @throws IOException IO failure.    */
+DECL|method|verifyCached (final String pathStr)
+specifier|protected
+name|PathMetadata
+name|verifyCached
+parameter_list|(
+specifier|final
+name|String
+name|pathStr
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|PathMetadata
+name|meta
 init|=
-name|strToPath
+name|getNonNull
 argument_list|(
 name|pathStr
 argument_list|)
 decl_stmt|;
-name|PathMetadata
-name|meta
-init|=
-name|ms
-operator|.
-name|get
+name|assertFalse
 argument_list|(
-name|path
-argument_list|)
-decl_stmt|;
-name|boolean
-name|cached
-init|=
+name|pathStr
+operator|+
+literal|" was found but marked deleted: "
+operator|+
 name|meta
-operator|!=
-literal|null
-operator|&&
-operator|!
+argument_list|,
 name|meta
 operator|.
 name|isDeleted
 argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|meta
+return|;
+block|}
+comment|/**    * Get an entry which must be a file.    * @param pathStr path    * @return the entry    * @throws IOException IO failure.    */
+DECL|method|getFile (final String pathStr)
+specifier|protected
+name|PathMetadata
+name|getFile
+parameter_list|(
+specifier|final
+name|String
+name|pathStr
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|PathMetadata
+name|meta
+init|=
+name|verifyCached
+argument_list|(
+name|pathStr
+argument_list|)
+decl_stmt|;
+name|assertFalse
+argument_list|(
+name|pathStr
+operator|+
+literal|" is not a file: "
+operator|+
+name|meta
+argument_list|,
+name|meta
+operator|.
+name|getFileStatus
+argument_list|()
+operator|.
+name|isDirectory
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|meta
+return|;
+block|}
+comment|/**    * Get an entry which must be a directory.    * @param pathStr path    * @return the entry    * @throws IOException IO failure.    */
+DECL|method|getDirectory (final String pathStr)
+specifier|protected
+name|PathMetadata
+name|getDirectory
+parameter_list|(
+specifier|final
+name|String
+name|pathStr
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|PathMetadata
+name|meta
+init|=
+name|verifyCached
+argument_list|(
+name|pathStr
+argument_list|)
 decl_stmt|;
 name|assertTrue
 argument_list|(
 name|pathStr
 operator|+
-literal|" should be cached."
+literal|" is not a directory: "
+operator|+
+name|meta
 argument_list|,
-name|cached
+name|meta
+operator|.
+name|getFileStatus
+argument_list|()
+operator|.
+name|isDirectory
+argument_list|()
 argument_list|)
 expr_stmt|;
+return|return
+name|meta
+return|;
 block|}
 comment|/**    * Convenience to create a fully qualified Path from string.    */
 DECL|method|strToPath (String p)
+specifier|protected
 name|Path
 name|strToPath
 parameter_list|(
@@ -5419,12 +5683,18 @@ argument_list|(
 name|p
 argument_list|)
 decl_stmt|;
-assert|assert
+name|assertTrue
+argument_list|(
+literal|"Non-absolute path: "
+operator|+
+name|path
+argument_list|,
 name|path
 operator|.
 name|isAbsolute
 argument_list|()
-assert|;
+argument_list|)
+expr_stmt|;
 return|return
 name|path
 operator|.
@@ -5443,7 +5713,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|assertEmptyDirectory (String pathStr)
-specifier|private
+specifier|protected
 name|void
 name|assertEmptyDirectory
 parameter_list|(
@@ -5461,8 +5731,8 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|assertEmptyDirs (String ....dirs)
-specifier|private
+DECL|method|assertEmptyDirs (String...dirs)
+specifier|protected
 name|void
 name|assertEmptyDirs
 parameter_list|(
@@ -5489,6 +5759,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|basicFileStatus (Path path, int size, boolean isDir)
+specifier|protected
 name|S3AFileStatus
 name|basicFileStatus
 parameter_list|(
@@ -5518,6 +5789,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|basicFileStatus (int size, boolean isDir, long blockSize, long modificationTime, Path path)
+specifier|protected
 name|S3AFileStatus
 name|basicFileStatus
 parameter_list|(
@@ -5635,15 +5907,15 @@ name|BLOCK_SIZE
 argument_list|,
 name|OWNER
 argument_list|,
-literal|null
+literal|"etag"
 argument_list|,
-literal|null
+literal|"version"
 argument_list|)
 return|;
 block|}
 block|}
 DECL|method|makeFileStatus (String pathStr, int size)
-specifier|private
+specifier|protected
 name|S3AFileStatus
 name|makeFileStatus
 parameter_list|(
@@ -5668,7 +5940,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|makeFileStatus (String pathStr, int size, long newModTime)
-specifier|private
+specifier|protected
 name|S3AFileStatus
 name|makeFileStatus
 parameter_list|(
@@ -5701,6 +5973,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|verifyFileStatus (FileStatus status, long size)
+specifier|protected
 name|void
 name|verifyFileStatus
 parameter_list|(
@@ -5726,7 +5999,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|makeDirStatus (String pathStr)
-specifier|private
+specifier|protected
 name|S3AFileStatus
 name|makeDirStatus
 parameter_list|(
@@ -5754,6 +6027,7 @@ return|;
 block|}
 comment|/**    * Verify the directory file status. Subclass may verify additional fields.    */
 DECL|method|verifyDirStatus (S3AFileStatus status)
+specifier|protected
 name|void
 name|verifyDirStatus
 parameter_list|(
@@ -5825,6 +6099,150 @@ parameter_list|()
 block|{
 return|return
 name|ttlTimeProvider
+return|;
+block|}
+comment|/**    * Put a file to the shared DDB table.    * @param key key    * @param time timestamp.    * @param operationState ongoing state    * @return the entry    * @throws IOException IO failure    */
+DECL|method|putFile ( final String key, final long time, BulkOperationState operationState)
+specifier|protected
+name|PathMetadata
+name|putFile
+parameter_list|(
+specifier|final
+name|String
+name|key
+parameter_list|,
+specifier|final
+name|long
+name|time
+parameter_list|,
+name|BulkOperationState
+name|operationState
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|PathMetadata
+name|meta
+init|=
+operator|new
+name|PathMetadata
+argument_list|(
+name|makeFileStatus
+argument_list|(
+name|key
+argument_list|,
+literal|1
+argument_list|,
+name|time
+argument_list|)
+argument_list|)
+decl_stmt|;
+name|ms
+operator|.
+name|put
+argument_list|(
+name|meta
+argument_list|,
+name|operationState
+argument_list|)
+expr_stmt|;
+return|return
+name|meta
+return|;
+block|}
+comment|/**    * Put a tombstone to the shared DDB table.    * @param key key    * @param time timestamp.    * @param operationState ongoing state    * @return the entry    * @throws IOException IO failure    */
+DECL|method|putTombstone ( final String key, final long time, BulkOperationState operationState)
+specifier|protected
+name|PathMetadata
+name|putTombstone
+parameter_list|(
+specifier|final
+name|String
+name|key
+parameter_list|,
+specifier|final
+name|long
+name|time
+parameter_list|,
+name|BulkOperationState
+name|operationState
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|PathMetadata
+name|meta
+init|=
+name|tombstone
+argument_list|(
+name|strToPath
+argument_list|(
+name|key
+argument_list|)
+argument_list|,
+name|time
+argument_list|)
+decl_stmt|;
+name|ms
+operator|.
+name|put
+argument_list|(
+name|meta
+argument_list|,
+name|operationState
+argument_list|)
+expr_stmt|;
+return|return
+name|meta
+return|;
+block|}
+comment|/**    * Create a tombstone from the timestamp.    * @param path path to tombstone    * @param time timestamp.    * @return the entry.    */
+DECL|method|tombstone (Path path, long time)
+specifier|public
+specifier|static
+name|PathMetadata
+name|tombstone
+parameter_list|(
+name|Path
+name|path
+parameter_list|,
+name|long
+name|time
+parameter_list|)
+block|{
+name|S3AFileStatus
+name|s3aStatus
+init|=
+operator|new
+name|S3AFileStatus
+argument_list|(
+literal|0
+argument_list|,
+name|time
+argument_list|,
+name|path
+argument_list|,
+literal|0
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|)
+decl_stmt|;
+return|return
+operator|new
+name|PathMetadata
+argument_list|(
+name|s3aStatus
+argument_list|,
+name|Tristate
+operator|.
+name|UNKNOWN
+argument_list|,
+literal|true
+argument_list|)
 return|;
 block|}
 block|}

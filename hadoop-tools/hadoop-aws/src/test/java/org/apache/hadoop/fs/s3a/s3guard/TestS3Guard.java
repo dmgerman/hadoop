@@ -511,6 +511,8 @@ argument_list|,
 name|dlm
 argument_list|,
 name|timeProvider
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// assert
@@ -554,6 +556,8 @@ operator|.
 name|put
 argument_list|(
 name|dlm
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -647,6 +651,8 @@ argument_list|,
 name|pm
 argument_list|,
 name|timeProvider
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// assert
@@ -690,6 +696,8 @@ operator|.
 name|put
 argument_list|(
 name|pm
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -812,6 +820,8 @@ argument_list|,
 name|pmCollection
 argument_list|,
 name|timeProvider
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// assert
@@ -858,6 +868,8 @@ operator|.
 name|put
 argument_list|(
 name|pmCollection
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}

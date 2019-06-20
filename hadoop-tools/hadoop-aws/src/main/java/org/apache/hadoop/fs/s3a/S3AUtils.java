@@ -776,6 +776,26 @@ name|*
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|impl
+operator|.
+name|MultiObjectDeleteSupport
+operator|.
+name|translateDeleteException
+import|;
+end_import
+
 begin_comment
 comment|/**  * Utility methods for S3A code.  */
 end_comment
@@ -1455,7 +1475,7 @@ condition|)
 block|{
 comment|// failure during a bulk delete
 return|return
-name|translateMultiObjectDeleteException
+name|translateDeleteException
 argument_list|(
 name|message
 argument_list|,
@@ -1982,171 +2002,6 @@ block|}
 return|return
 name|result
 return|;
-block|}
-comment|/**    * A MultiObjectDeleteException is raised if one or more delete objects    * listed in a bulk DELETE operation failed.    * The top-level exception is therefore just "something wasn't deleted",    * but doesn't include the what or the why.    * This translation will extract an AccessDeniedException if that's one of    * the causes, otherwise grabs the status code and uses it in the    * returned exception.    * @param message text for the exception    * @param ex exception to translate    * @return an IOE with more detail.    */
-DECL|method|translateMultiObjectDeleteException (String message, MultiObjectDeleteException ex)
-specifier|public
-specifier|static
-name|IOException
-name|translateMultiObjectDeleteException
-parameter_list|(
-name|String
-name|message
-parameter_list|,
-name|MultiObjectDeleteException
-name|ex
-parameter_list|)
-block|{
-name|List
-argument_list|<
-name|String
-argument_list|>
-name|keys
-decl_stmt|;
-name|StringBuffer
-name|result
-init|=
-operator|new
-name|StringBuffer
-argument_list|(
-name|ex
-operator|.
-name|getErrors
-argument_list|()
-operator|.
-name|size
-argument_list|()
-operator|*
-literal|100
-argument_list|)
-decl_stmt|;
-name|result
-operator|.
-name|append
-argument_list|(
-name|message
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|": "
-argument_list|)
-expr_stmt|;
-name|String
-name|exitCode
-init|=
-literal|""
-decl_stmt|;
-for|for
-control|(
-name|MultiObjectDeleteException
-operator|.
-name|DeleteError
-name|error
-range|:
-name|ex
-operator|.
-name|getErrors
-argument_list|()
-control|)
-block|{
-name|String
-name|code
-init|=
-name|error
-operator|.
-name|getCode
-argument_list|()
-decl_stmt|;
-name|result
-operator|.
-name|append
-argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"%s: %s: %s%n"
-argument_list|,
-name|code
-argument_list|,
-name|error
-operator|.
-name|getKey
-argument_list|()
-argument_list|,
-name|error
-operator|.
-name|getMessage
-argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|exitCode
-operator|.
-name|isEmpty
-argument_list|()
-operator|||
-literal|"AccessDenied"
-operator|.
-name|equals
-argument_list|(
-name|code
-argument_list|)
-condition|)
-block|{
-name|exitCode
-operator|=
-name|code
-expr_stmt|;
-block|}
-block|}
-if|if
-condition|(
-literal|"AccessDenied"
-operator|.
-name|equals
-argument_list|(
-name|exitCode
-argument_list|)
-condition|)
-block|{
-return|return
-operator|(
-name|IOException
-operator|)
-operator|new
-name|AccessDeniedException
-argument_list|(
-name|result
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-operator|.
-name|initCause
-argument_list|(
-name|ex
-argument_list|)
-return|;
-block|}
-else|else
-block|{
-return|return
-operator|new
-name|AWSS3IOException
-argument_list|(
-name|result
-operator|.
-name|toString
-argument_list|()
-argument_list|,
-name|ex
-argument_list|)
-return|;
-block|}
 block|}
 comment|/**    * Get low level details of an amazon exception for logging; multi-line.    * @param e exception    * @return string details    */
 DECL|method|stringify (AmazonServiceException e)
@@ -3922,6 +3777,7 @@ return|;
 block|}
 comment|/**    * Get a integer option>= the minimum allowed value.    * @param conf configuration    * @param key key to look up    * @param defVal default value    * @param min minimum value    * @return the value    * @throws IllegalArgumentException if the value is below the minimum    */
 DECL|method|intOption (Configuration conf, String key, int defVal, int min)
+specifier|public
 specifier|static
 name|int
 name|intOption
@@ -3990,6 +3846,7 @@ return|;
 block|}
 comment|/**    * Get a long option>= the minimum allowed value.    * @param conf configuration    * @param key key to look up    * @param defVal default value    * @param min minimum value    * @return the value    * @throws IllegalArgumentException if the value is below the minimum    */
 DECL|method|longOption (Configuration conf, String key, long defVal, long min)
+specifier|public
 specifier|static
 name|long
 name|longOption
@@ -5377,7 +5234,7 @@ name|IOException
 function_decl|;
 block|}
 comment|/**    * Apply an operation to every {@link LocatedFileStatus} in a remote    * iterator.    * @param iterator iterator from a list    * @param eval closure to evaluate    * @return the number of files processed    * @throws IOException anything in the closure, or iteration logic.    */
-DECL|method|applyLocatedFiles ( RemoteIterator<LocatedFileStatus> iterator, CallOnLocatedFileStatus eval)
+DECL|method|applyLocatedFiles ( RemoteIterator<? extends LocatedFileStatus> iterator, CallOnLocatedFileStatus eval)
 specifier|public
 specifier|static
 name|long
@@ -5385,6 +5242,8 @@ name|applyLocatedFiles
 parameter_list|(
 name|RemoteIterator
 argument_list|<
+name|?
+extends|extends
 name|LocatedFileStatus
 argument_list|>
 name|iterator
@@ -5427,7 +5286,7 @@ name|count
 return|;
 block|}
 comment|/**    * Map an operation to every {@link LocatedFileStatus} in a remote    * iterator, returning a list of the results.    * @param<T> return type of map    * @param iterator iterator from a list    * @param eval closure to evaluate    * @return the list of mapped results.    * @throws IOException anything in the closure, or iteration logic.    */
-DECL|method|mapLocatedFiles ( RemoteIterator<LocatedFileStatus> iterator, LocatedFileStatusMap<T> eval)
+DECL|method|mapLocatedFiles ( RemoteIterator<? extends LocatedFileStatus> iterator, LocatedFileStatusMap<T> eval)
 specifier|public
 specifier|static
 parameter_list|<
@@ -5441,6 +5300,8 @@ name|mapLocatedFiles
 parameter_list|(
 name|RemoteIterator
 argument_list|<
+name|?
+extends|extends
 name|LocatedFileStatus
 argument_list|>
 name|iterator

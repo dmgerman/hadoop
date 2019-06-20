@@ -163,10 +163,10 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|terminateCluster
+argument_list|(
 name|clusterBinding
-operator|.
-name|terminate
-argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@

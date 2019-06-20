@@ -359,7 +359,10 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Evolving
+annotation|@
+name|VisibleForTesting
 DECL|class|PathMetadataDynamoDBTranslation
+specifier|public
 specifier|final
 class|class
 name|PathMetadataDynamoDBTranslation
@@ -1390,7 +1393,10 @@ argument_list|)
 return|;
 block|}
 comment|/**    * e.g. {@code pathToParentKey(s3a://bucket/path/a) -> /bucket/path/a}    * @param path path to convert    * @return string for parent key    */
+annotation|@
+name|VisibleForTesting
 DECL|method|pathToParentKey (Path path)
+specifier|public
 specifier|static
 name|String
 name|pathToParentKey
@@ -1613,7 +1619,8 @@ specifier|private
 name|PathMetadataDynamoDBTranslation
 parameter_list|()
 block|{   }
-DECL|method|pathMetaToDDBPathMeta ( Collection<PathMetadata> pathMetadatas)
+comment|/**    * Convert a collection of metadata entries to a list    * of DDBPathMetadata entries.    * If the sources are already DDBPathMetadata instances, they    * are copied directly into the new list, otherwise new    * instances are created.    * @param pathMetadatas source data    * @return the converted list.    */
+DECL|method|pathMetaToDDBPathMeta ( Collection<? extends PathMetadata> pathMetadatas)
 specifier|static
 name|List
 argument_list|<
@@ -1623,6 +1630,8 @@ name|pathMetaToDDBPathMeta
 parameter_list|(
 name|Collection
 argument_list|<
+name|?
+extends|extends
 name|PathMetadata
 argument_list|>
 name|pathMetadatas
@@ -1638,6 +1647,17 @@ name|map
 argument_list|(
 name|p
 lambda|->
+operator|(
+name|p
+operator|instanceof
+name|DDBPathMetadata
+operator|)
+condition|?
+operator|(
+name|DDBPathMetadata
+operator|)
+name|p
+else|:
 operator|new
 name|DDBPathMetadata
 argument_list|(

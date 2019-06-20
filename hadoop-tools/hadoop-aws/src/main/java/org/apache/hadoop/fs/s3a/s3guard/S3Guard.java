@@ -350,22 +350,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
-operator|.
-name|s3a
-operator|.
-name|Tristate
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|ReflectionUtils
@@ -792,6 +776,9 @@ name|debug
 argument_list|(
 literal|"Metastore option source {}"
 argument_list|,
+operator|(
+name|Object
+operator|)
 name|conf
 operator|.
 name|getPropertySources
@@ -852,6 +839,55 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+return|return
+name|putAndReturn
+argument_list|(
+name|ms
+argument_list|,
+name|status
+argument_list|,
+name|instrumentation
+argument_list|,
+name|timeProvider
+argument_list|,
+literal|null
+argument_list|)
+return|;
+block|}
+comment|/**    * Helper function which puts a given S3AFileStatus into the MetadataStore and    * returns the same S3AFileStatus. Instrumentation monitors the put operation.    * @param ms MetadataStore to {@code put()} into.    * @param status status to store    * @param instrumentation instrumentation of the s3a file system    * @param timeProvider Time provider to use when writing entries    * @param operationState possibly-null metastore state tracker.    * @return The same status as passed in    * @throws IOException if metadata store update failed    */
+annotation|@
+name|RetryTranslated
+DECL|method|putAndReturn ( final MetadataStore ms, final S3AFileStatus status, final S3AInstrumentation instrumentation, final ITtlTimeProvider timeProvider, @Nullable final BulkOperationState operationState)
+specifier|public
+specifier|static
+name|S3AFileStatus
+name|putAndReturn
+parameter_list|(
+specifier|final
+name|MetadataStore
+name|ms
+parameter_list|,
+specifier|final
+name|S3AFileStatus
+name|status
+parameter_list|,
+specifier|final
+name|S3AInstrumentation
+name|instrumentation
+parameter_list|,
+specifier|final
+name|ITtlTimeProvider
+name|timeProvider
+parameter_list|,
+annotation|@
+name|Nullable
+specifier|final
+name|BulkOperationState
+name|operationState
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|long
 name|startTimeNano
 init|=
@@ -860,8 +896,8 @@ operator|.
 name|nanoTime
 argument_list|()
 decl_stmt|;
-name|S3Guard
-operator|.
+try|try
+block|{
 name|putWithTtl
 argument_list|(
 name|ms
@@ -873,8 +909,13 @@ name|status
 argument_list|)
 argument_list|,
 name|timeProvider
+argument_list|,
+name|operationState
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
 name|instrumentation
 operator|.
 name|addValueToQuantiles
@@ -900,9 +941,81 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|status
 return|;
+block|}
+comment|/**    * Initiate a bulk write and create an operation state for it.    * This may then be passed into put operations.    * @param metastore store    * @param operation the type of the operation.    * @param path path under which updates will be explicitly put.    * @return a store-specific state to pass into the put operations, or null    * @throws IOException failure    */
+DECL|method|initiateBulkWrite ( @ullable final MetadataStore metastore, final BulkOperationState.OperationType operation, final Path path)
+specifier|public
+specifier|static
+name|BulkOperationState
+name|initiateBulkWrite
+parameter_list|(
+annotation|@
+name|Nullable
+specifier|final
+name|MetadataStore
+name|metastore
+parameter_list|,
+specifier|final
+name|BulkOperationState
+operator|.
+name|OperationType
+name|operation
+parameter_list|,
+specifier|final
+name|Path
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|operation
+operator|!=
+name|BulkOperationState
+operator|.
+name|OperationType
+operator|.
+name|Rename
+argument_list|,
+literal|"Rename operations cannot be started through initiateBulkWrite"
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|metastore
+operator|==
+literal|null
+operator|||
+name|isNullMetadataStore
+argument_list|(
+name|metastore
+argument_list|)
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+else|else
+block|{
+return|return
+name|metastore
+operator|.
+name|initiateBulkWrite
+argument_list|(
+name|operation
+argument_list|,
+name|path
+argument_list|)
+return|;
+block|}
 block|}
 comment|/**    * Convert the data of a directory listing to an array of {@link FileStatus}    * entries. Tombstones are filtered out at this point. If the listing is null    * an empty array is returned.    * @param dirMeta directory listing -may be null    * @return a possibly-empty array of file status entries    */
 DECL|method|dirMetaToStatuses (DirListingMetadata dirMeta)
@@ -1217,6 +1330,8 @@ name|s
 argument_list|)
 argument_list|,
 name|timeProvider
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -1285,6 +1400,8 @@ argument_list|,
 name|dirMeta
 argument_list|,
 name|timeProvider
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -1314,7 +1431,7 @@ name|NullMetadataStore
 operator|)
 return|;
 block|}
-comment|/**    * Update MetadataStore to reflect creation of the given  directories.    *    * If an IOException is raised while trying to update the entry, this    * operation catches the exception, swallows it and returns.    *    * @deprecated this is no longer called by {@code S3AFilesystem.innerMkDirs}.    * See: HADOOP-15079 (January 2018).    * It is currently retained because of its discussion in the method on    * atomicity and in case we need to reinstate it or adapt the current    * process of directory marker creation.    * But it is not being tested and so may age with time...consider    * deleting it in future if it's clear there's no need for it.    * @param ms    MetadataStore to update.    * @param dirs  null, or an ordered list of directories from leaf to root.    *              E.g. if /a/ exists, and  mkdirs(/a/b/c/d) is called, this    *              list will contain [/a/b/c/d, /a/b/c, /a/b].   /a/b/c/d is    *              an empty, dir, and the other dirs only contain their child    *              dir.    * @param owner Hadoop user name.    * @param authoritative Whether to mark new directories as authoritative.    * @param timeProvider Time provider for testing.    */
+comment|/**    * Update MetadataStore to reflect creation of the given  directories.    *    * If an IOException is raised while trying to update the entry, this    * operation catches the exception, swallows it and returns.    *    * @deprecated this is no longer called by {@code S3AFilesystem.innerMkDirs}.    * See: HADOOP-15079 (January 2018).    * It is currently retained because of its discussion in the method on    * atomicity and in case we need to reinstate it or adapt the current    * process of directory marker creation.    * But it is not being tested and so may age with time...consider    * deleting it in future if it's clear there's no need for it.    * @param ms    MetadataStore to update.    * @param dirs  null, or an ordered list of directories from leaf to root.    *              E.g. if /a/ exists, and  mkdirs(/a/b/c/d) is called, this    *              list will contain [/a/b/c/d, /a/b/c, /a/b].   /a/b/c/d is    *              an empty, dir, and the other dirs only contain their child    *              dir.    * @param owner Hadoop user name.    * @param authoritative Whether to mark new directories as authoritative.    * @param timeProvider Time provider.    */
 annotation|@
 name|Deprecated
 annotation|@
@@ -1517,6 +1634,8 @@ argument_list|,
 name|dirMeta
 argument_list|,
 name|timeProvider
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -1546,6 +1665,8 @@ argument_list|,
 name|pathMetas
 argument_list|,
 name|timeProvider
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -1740,7 +1861,7 @@ name|dstStatus
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Helper method that records the move of all ancestors of a path.    *    * In S3A, an optimization is to delete unnecessary fake directory objects if    * the directory is non-empty. In that case, for a nested child to move, S3A    * is not listing and thus moving all its ancestors (up to source root). So we    * take care of those inferred directories of this path explicitly.    *    * As {@link #addMoveFile} and {@link #addMoveDir}, this method adds resulting    * metadata to the supplied lists. It does not store in MetadataStore.    *    * @param ms MetadataStore, no-op if it is NullMetadataStore    * @param srcPaths stores the source path here    * @param dstMetas stores destination metadata here    * @param srcRoot source root up to which (exclusive) should we add ancestors    * @param srcPath source path of the child to add ancestors    * @param dstPath destination path of the child to add ancestors    * @param owner Hadoop user name    */
+comment|/**    * Helper method that records the move of all ancestors of a path.    *    * In S3A, an optimization is to delete unnecessary fake directory objects if    * the directory is non-empty. In that case, for a nested child to move, S3A    * is not listing and thus moving all its ancestors (up to source root). So we    * take care of those inferred directories of this path explicitly.    *    * As {@link #addMoveFile} and {@link #addMoveDir}, this method adds resulting    * metadata to the supplied lists. It does not update the MetadataStore.    *    * @param ms MetadataStore, no-op if it is NullMetadataStore    * @param srcPaths stores the source path here    * @param dstMetas stores destination metadata here    * @param srcRoot source root up to which (exclusive) should we add ancestors    * @param srcPath source path of the child to add ancestors    * @param dstPath destination path of the child to add ancestors    * @param owner Hadoop user name    */
 DECL|method|addMoveAncestors (MetadataStore ms, Collection<Path> srcPaths, Collection<PathMetadata> dstMetas, Path srcRoot, Path srcPath, Path dstPath, String owner)
 specifier|public
 specifier|static
@@ -1904,139 +2025,51 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|addAncestors (MetadataStore metadataStore, Path qualifiedPath, String username, ITtlTimeProvider timeProvider)
+comment|/**    * This adds all new ancestors of a path as directories.    * This forwards to    * {@link MetadataStore#addAncestors(Path, ITtlTimeProvider, BulkOperationState)}.    *<p>    * Originally it implemented the logic to probe for an add ancestors,    * but with the addition of a store-specific bulk operation state    * it became unworkable.    *    * @param metadataStore store    * @param qualifiedPath path to update    * @param operationState (nullable) operational state for a bulk update    * @throws IOException failure    */
+annotation|@
+name|Retries
+operator|.
+name|RetryTranslated
+DECL|method|addAncestors ( final MetadataStore metadataStore, final Path qualifiedPath, final ITtlTimeProvider timeProvider, @Nullable final BulkOperationState operationState)
 specifier|public
 specifier|static
 name|void
 name|addAncestors
 parameter_list|(
+specifier|final
 name|MetadataStore
 name|metadataStore
 parameter_list|,
+specifier|final
 name|Path
 name|qualifiedPath
 parameter_list|,
-name|String
-name|username
-parameter_list|,
+specifier|final
 name|ITtlTimeProvider
 name|timeProvider
+parameter_list|,
+annotation|@
+name|Nullable
+specifier|final
+name|BulkOperationState
+name|operationState
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|Collection
-argument_list|<
-name|PathMetadata
-argument_list|>
-name|newDirs
-init|=
-operator|new
-name|ArrayList
-argument_list|<>
-argument_list|()
-decl_stmt|;
-name|Path
-name|parent
-init|=
+name|metadataStore
+operator|.
+name|addAncestors
+argument_list|(
 name|qualifiedPath
-operator|.
-name|getParent
-argument_list|()
-decl_stmt|;
-while|while
-condition|(
-operator|!
-name|parent
-operator|.
-name|isRoot
-argument_list|()
-condition|)
-block|{
-name|PathMetadata
-name|directory
-init|=
-name|metadataStore
-operator|.
-name|get
-argument_list|(
-name|parent
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|directory
-operator|==
-literal|null
-operator|||
-name|directory
-operator|.
-name|isDeleted
-argument_list|()
-condition|)
-block|{
-name|S3AFileStatus
-name|s3aStatus
-init|=
-operator|new
-name|S3AFileStatus
-argument_list|(
-name|Tristate
-operator|.
-name|FALSE
-argument_list|,
-name|parent
-argument_list|,
-name|username
-argument_list|)
-decl_stmt|;
-name|PathMetadata
-name|meta
-init|=
-operator|new
-name|PathMetadata
-argument_list|(
-name|s3aStatus
-argument_list|,
-name|Tristate
-operator|.
-name|FALSE
-argument_list|,
-literal|false
-argument_list|)
-decl_stmt|;
-name|newDirs
-operator|.
-name|add
-argument_list|(
-name|meta
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-break|break;
-block|}
-name|parent
-operator|=
-name|parent
-operator|.
-name|getParent
-argument_list|()
-expr_stmt|;
-block|}
-name|S3Guard
-operator|.
-name|putWithTtl
-argument_list|(
-name|metadataStore
-argument_list|,
-name|newDirs
 argument_list|,
 name|timeProvider
+argument_list|,
+name|operationState
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Add the fact that a file was moved from a source path to a destination.    * @param srcPaths collection of source paths to update    * @param dstMetas collection of destination meta data entries to update.    * @param srcPath path of the source file.    * @param dstStatus status of the source file after it was copied.    */
 DECL|method|addMoveStatus (Collection<Path> srcPaths, Collection<PathMetadata> dstMetas, Path srcPath, S3AFileStatus dstStatus)
 specifier|private
 specifier|static
@@ -2362,7 +2395,8 @@ argument_list|()
 return|;
 block|}
 block|}
-DECL|method|putWithTtl (MetadataStore ms, DirListingMetadata dirMeta, ITtlTimeProvider timeProvider)
+comment|/**    * Put a directory entry, setting the updated timestamp of the    * directory and its children.    * @param ms metastore    * @param dirMeta directory    * @param timeProvider nullable time provider    * @throws IOException failure.    */
+DECL|method|putWithTtl (MetadataStore ms, DirListingMetadata dirMeta, final ITtlTimeProvider timeProvider, @Nullable final BulkOperationState operationState)
 specifier|public
 specifier|static
 name|void
@@ -2374,20 +2408,32 @@ parameter_list|,
 name|DirListingMetadata
 name|dirMeta
 parameter_list|,
+specifier|final
 name|ITtlTimeProvider
 name|timeProvider
+parameter_list|,
+annotation|@
+name|Nullable
+specifier|final
+name|BulkOperationState
+name|operationState
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|dirMeta
-operator|.
-name|setLastUpdated
-argument_list|(
+name|long
+name|now
+init|=
 name|timeProvider
 operator|.
 name|getNow
 argument_list|()
+decl_stmt|;
+name|dirMeta
+operator|.
+name|setLastUpdated
+argument_list|(
+name|now
 argument_list|)
 expr_stmt|;
 name|dirMeta
@@ -2403,10 +2449,7 @@ name|pm
 operator|.
 name|setLastUpdated
 argument_list|(
-name|timeProvider
-operator|.
-name|getNow
-argument_list|()
+name|now
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2415,10 +2458,13 @@ operator|.
 name|put
 argument_list|(
 name|dirMeta
+argument_list|,
+name|operationState
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|putWithTtl (MetadataStore ms, PathMetadata fileMeta, @Nullable ITtlTimeProvider timeProvider)
+comment|/**    * Put an entry, using the time provider to set its timestamp.    * @param ms metastore    * @param fileMeta entry to write    * @param timeProvider nullable time provider    * @param operationState nullable state for a bulk update    * @throws IOException failure.    */
+DECL|method|putWithTtl (MetadataStore ms, PathMetadata fileMeta, @Nullable ITtlTimeProvider timeProvider, @Nullable final BulkOperationState operationState)
 specifier|public
 specifier|static
 name|void
@@ -2434,6 +2480,12 @@ annotation|@
 name|Nullable
 name|ITtlTimeProvider
 name|timeProvider
+parameter_list|,
+annotation|@
+name|Nullable
+specifier|final
+name|BulkOperationState
+name|operationState
 parameter_list|)
 throws|throws
 name|IOException
@@ -2473,10 +2525,13 @@ operator|.
 name|put
 argument_list|(
 name|fileMeta
+argument_list|,
+name|operationState
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|putWithTtl (MetadataStore ms, Collection<PathMetadata> fileMetas, @Nullable ITtlTimeProvider timeProvider)
+comment|/**    * Put entries, using the time provider to set their timestamp.    * @param ms metastore    * @param fileMetas file metadata entries.    * @param timeProvider nullable time provider    * @param operationState nullable state for a bulk update    * @throws IOException failure.    */
+DECL|method|putWithTtl (MetadataStore ms, Collection<? extends PathMetadata> fileMetas, @Nullable ITtlTimeProvider timeProvider, @Nullable final BulkOperationState operationState)
 specifier|public
 specifier|static
 name|void
@@ -2487,6 +2542,8 @@ name|ms
 parameter_list|,
 name|Collection
 argument_list|<
+name|?
+extends|extends
 name|PathMetadata
 argument_list|>
 name|fileMetas
@@ -2495,9 +2552,54 @@ annotation|@
 name|Nullable
 name|ITtlTimeProvider
 name|timeProvider
+parameter_list|,
+annotation|@
+name|Nullable
+specifier|final
+name|BulkOperationState
+name|operationState
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+name|patchLastUpdated
+argument_list|(
+name|fileMetas
+argument_list|,
+name|timeProvider
+argument_list|)
+expr_stmt|;
+name|ms
+operator|.
+name|put
+argument_list|(
+name|fileMetas
+argument_list|,
+name|operationState
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Patch any collection of metadata entries with the timestamp    * of a time provider.    * This<i>MUST</i> be used when creating new entries for directories.    * @param fileMetas file metadata entries.    * @param timeProvider nullable time provider    */
+DECL|method|patchLastUpdated ( final Collection<? extends PathMetadata> fileMetas, @Nullable final ITtlTimeProvider timeProvider)
+specifier|static
+name|void
+name|patchLastUpdated
+parameter_list|(
+specifier|final
+name|Collection
+argument_list|<
+name|?
+extends|extends
+name|PathMetadata
+argument_list|>
+name|fileMetas
+parameter_list|,
+annotation|@
+name|Nullable
+specifier|final
+name|ITtlTimeProvider
+name|timeProvider
+parameter_list|)
 block|{
 if|if
 condition|(
@@ -2542,14 +2644,8 @@ name|fileMetas
 argument_list|)
 expr_stmt|;
 block|}
-name|ms
-operator|.
-name|put
-argument_list|(
-name|fileMetas
-argument_list|)
-expr_stmt|;
 block|}
+comment|/**    * Get a path entry provided it is not considered expired.    * @param ms metastore    * @param path path to look up.    * @param timeProvider nullable time provider    * @return the metadata or null if there as no entry.    * @throws IOException failure.    */
 DECL|method|getWithTtl (MetadataStore ms, Path path, @Nullable ITtlTimeProvider timeProvider)
 specifier|public
 specifier|static
@@ -2615,7 +2711,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-comment|// Special case: the pathmetadata's last updated is 0. This can happen
+comment|// Special case: the path metadata's last updated is 0. This can happen
 comment|// eg. with an old db using this implementation
 if|if
 condition|(
@@ -2634,6 +2730,8 @@ argument_list|(
 literal|"PathMetadata TTL for {} is 0, so it will be returned as "
 operator|+
 literal|"not expired."
+argument_list|,
+name|path
 argument_list|)
 expr_stmt|;
 return|return
@@ -2680,6 +2778,7 @@ return|return
 literal|null
 return|;
 block|}
+comment|/**    * List children; mark the result as non-auth if the TTL has expired.    * @param ms metastore    * @param path path to look up.    * @param timeProvider nullable time provider    * @return the listing of entries under a path, or null if there as no entry.    * @throws IOException failure.    */
 DECL|method|listChildrenWithTtl (MetadataStore ms, Path path, @Nullable ITtlTimeProvider timeProvider)
 specifier|public
 specifier|static

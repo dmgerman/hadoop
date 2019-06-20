@@ -22,6 +22,26 @@ end_package
 
 begin_import
 import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nullable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|Closeable
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -77,20 +97,6 @@ operator|.
 name|util
 operator|.
 name|Map
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|atomic
-operator|.
-name|AtomicInteger
 import|;
 end_import
 
@@ -427,6 +433,52 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|s3guard
+operator|.
+name|BulkOperationState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|IOUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|DurationInfo
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -707,14 +759,19 @@ return|return
 name|statistics
 return|;
 block|}
-comment|/**    * Commit the operation, throwing an exception on any failure.    * @param commit commit to execute    * @throws IOException on a failure    */
-DECL|method|commitOrFail (SinglePendingCommit commit)
-specifier|public
+comment|/**    * Commit the operation, throwing an exception on any failure.    * @param commit commit to execute    * @param operationState S3Guard state of ongoing operation.    * @throws IOException on a failure    */
+DECL|method|commitOrFail ( final SinglePendingCommit commit, final BulkOperationState operationState)
+specifier|private
 name|void
 name|commitOrFail
 parameter_list|(
+specifier|final
 name|SinglePendingCommit
 name|commit
+parameter_list|,
+specifier|final
+name|BulkOperationState
+name|operationState
 parameter_list|)
 throws|throws
 name|IOException
@@ -727,23 +784,31 @@ name|commit
 operator|.
 name|getFilename
 argument_list|()
+argument_list|,
+name|operationState
 argument_list|)
 operator|.
 name|maybeRethrow
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Commit a single pending commit; exceptions are caught    * and converted to an outcome.    * @param commit entry to commit    * @param origin origin path/string for outcome text    * @return the outcome    */
-DECL|method|commit (SinglePendingCommit commit, String origin)
-specifier|public
+comment|/**    * Commit a single pending commit; exceptions are caught    * and converted to an outcome.    * @param commit entry to commit    * @param origin origin path/string for outcome text    * @param operationState S3Guard state of ongoing operation.    * @return the outcome    */
+DECL|method|commit ( final SinglePendingCommit commit, final String origin, final BulkOperationState operationState)
+specifier|private
 name|MaybeIOE
 name|commit
 parameter_list|(
+specifier|final
 name|SinglePendingCommit
 name|commit
 parameter_list|,
+specifier|final
 name|String
 name|origin
+parameter_list|,
+specifier|final
+name|BulkOperationState
+name|operationState
 parameter_list|)
 block|{
 name|LOG
@@ -783,6 +848,8 @@ init|=
 name|innerCommit
 argument_list|(
 name|commit
+argument_list|,
+name|operationState
 argument_list|)
 decl_stmt|;
 name|LOG
@@ -913,14 +980,19 @@ return|return
 name|outcome
 return|;
 block|}
-comment|/**    * Inner commit operation.    * @param commit entry to commit    * @return bytes committed.    * @throws IOException failure    */
-DECL|method|innerCommit (SinglePendingCommit commit)
+comment|/**    * Inner commit operation.    * @param commit entry to commit    * @param operationState S3Guard state of ongoing operation.    * @return bytes committed.    * @throws IOException failure    */
+DECL|method|innerCommit ( final SinglePendingCommit commit, final BulkOperationState operationState)
 specifier|private
 name|long
 name|innerCommit
 parameter_list|(
+specifier|final
 name|SinglePendingCommit
 name|commit
+parameter_list|,
+specifier|final
+name|BulkOperationState
+name|operationState
 parameter_list|)
 throws|throws
 name|IOException
@@ -928,7 +1000,7 @@ block|{
 comment|// finalize the commit
 name|writeOperations
 operator|.
-name|completeMPUwithRetries
+name|commitUpload
 argument_list|(
 name|commit
 operator|.
@@ -953,11 +1025,7 @@ operator|.
 name|getLength
 argument_list|()
 argument_list|,
-operator|new
-name|AtomicInteger
-argument_list|(
-literal|0
-argument_list|)
+name|operationState
 argument_list|)
 expr_stmt|;
 return|return
@@ -1183,7 +1251,7 @@ return|;
 block|}
 comment|/**    * Abort the multipart commit supplied. This is the lower level operation    * which doesn't generate an outcome, instead raising an exception.    * @param commit pending commit to abort    * @throws FileNotFoundException if the abort ID is unknown    * @throws IOException on any failure    */
 DECL|method|abortSingleCommit (SinglePendingCommit commit)
-specifier|public
+specifier|private
 name|void
 name|abortSingleCommit
 parameter_list|(
@@ -1251,7 +1319,7 @@ expr_stmt|;
 block|}
 comment|/**    * Create an {@code AbortMultipartUpload} request and POST it to S3,    * incrementing statistics afterwards.    * @param destKey destination key    * @param uploadId upload to cancel    * @throws FileNotFoundException if the abort ID is unknown    * @throws IOException on any failure    */
 DECL|method|abortMultipartCommit (String destKey, String uploadId)
-specifier|public
+specifier|private
 name|void
 name|abortMultipartCommit
 parameter_list|(
@@ -1748,6 +1816,22 @@ argument_list|,
 name|successData
 argument_list|)
 expr_stmt|;
+try|try
+init|(
+name|DurationInfo
+name|ignored
+init|=
+operator|new
+name|DurationInfo
+argument_list|(
+name|LOG
+argument_list|,
+literal|"Writing success file %s"
+argument_list|,
+name|markerPath
+argument_list|)
+init|)
+block|{
 name|successData
 operator|.
 name|save
@@ -1759,6 +1843,7 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Revert a pending commit by deleting the destination.    * @param commit pending commit    * @throws IOException failure    */
 DECL|method|revertCommit (SinglePendingCommit commit)
@@ -1774,7 +1859,7 @@ name|IOException
 block|{
 name|LOG
 operator|.
-name|warn
+name|info
 argument_list|(
 literal|"Revert {}"
 argument_list|,
@@ -2279,6 +2364,258 @@ argument_list|(
 name|success
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Begin the final commit.    * @param path path for all work.    * @return the commit context to pass in.    * @throws IOException failure.    */
+DECL|method|initiateCommitOperation (Path path)
+specifier|public
+name|CommitContext
+name|initiateCommitOperation
+parameter_list|(
+name|Path
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+operator|new
+name|CommitContext
+argument_list|(
+name|writeOperations
+operator|.
+name|initiateCommitOperation
+argument_list|(
+name|path
+argument_list|)
+argument_list|)
+return|;
+block|}
+comment|/**    * Commit context.    *    * It is used to manage the final commit sequence where files become    * visible. It contains a {@link BulkOperationState} field, which, if    * there is a metastore, will be requested from the store so that it    * can track multiple creation operations within the same overall operation.    * This will be null if there is no metastore, or the store chooses not    * to provide one.    *    * This can only be created through {@link #initiateCommitOperation(Path)}.    *    * Once the commit operation has completed, it must be closed.    * It must not be reused.    */
+DECL|class|CommitContext
+specifier|public
+specifier|final
+class|class
+name|CommitContext
+implements|implements
+name|Closeable
+block|{
+comment|/**      * State of any metastore.      */
+DECL|field|operationState
+specifier|private
+specifier|final
+name|BulkOperationState
+name|operationState
+decl_stmt|;
+comment|/**      * Create.      * @param operationState any S3Guard bulk state.      */
+DECL|method|CommitContext (@ullable final BulkOperationState operationState)
+specifier|private
+name|CommitContext
+parameter_list|(
+annotation|@
+name|Nullable
+specifier|final
+name|BulkOperationState
+name|operationState
+parameter_list|)
+block|{
+name|this
+operator|.
+name|operationState
+operator|=
+name|operationState
+expr_stmt|;
+block|}
+comment|/**      * Commit the operation, throwing an exception on any failure.      * See {@link CommitOperations#commitOrFail(SinglePendingCommit, BulkOperationState)}.      * @param commit commit to execute      * @throws IOException on a failure      */
+DECL|method|commitOrFail (SinglePendingCommit commit)
+specifier|public
+name|void
+name|commitOrFail
+parameter_list|(
+name|SinglePendingCommit
+name|commit
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|CommitOperations
+operator|.
+name|this
+operator|.
+name|commitOrFail
+argument_list|(
+name|commit
+argument_list|,
+name|operationState
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**      * Commit a single pending commit; exceptions are caught      * and converted to an outcome.      * See {@link CommitOperations#commit(SinglePendingCommit, String, BulkOperationState)}.      * @param commit entry to commit      * @param origin origin path/string for outcome text      * @return the outcome      */
+DECL|method|commit (SinglePendingCommit commit, String origin)
+specifier|public
+name|MaybeIOE
+name|commit
+parameter_list|(
+name|SinglePendingCommit
+name|commit
+parameter_list|,
+name|String
+name|origin
+parameter_list|)
+block|{
+return|return
+name|CommitOperations
+operator|.
+name|this
+operator|.
+name|commit
+argument_list|(
+name|commit
+argument_list|,
+name|origin
+argument_list|,
+name|operationState
+argument_list|)
+return|;
+block|}
+comment|/**      * See {@link CommitOperations#abortSingleCommit(SinglePendingCommit)}.      * @param commit pending commit to abort      * @throws FileNotFoundException if the abort ID is unknown      * @throws IOException on any failure      */
+DECL|method|abortSingleCommit (final SinglePendingCommit commit)
+specifier|public
+name|void
+name|abortSingleCommit
+parameter_list|(
+specifier|final
+name|SinglePendingCommit
+name|commit
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|CommitOperations
+operator|.
+name|this
+operator|.
+name|abortSingleCommit
+argument_list|(
+name|commit
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**      * See {@link CommitOperations#revertCommit(SinglePendingCommit)}.      * @param commit pending commit      * @throws IOException failure      */
+DECL|method|revertCommit (final SinglePendingCommit commit)
+specifier|public
+name|void
+name|revertCommit
+parameter_list|(
+specifier|final
+name|SinglePendingCommit
+name|commit
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|CommitOperations
+operator|.
+name|this
+operator|.
+name|revertCommit
+argument_list|(
+name|commit
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**      * See {@link CommitOperations#abortMultipartCommit(String, String)}..      * @param destKey destination key      * @param uploadId upload to cancel      * @throws FileNotFoundException if the abort ID is unknown      * @throws IOException on any failure      */
+DECL|method|abortMultipartCommit ( final String destKey, final String uploadId)
+specifier|public
+name|void
+name|abortMultipartCommit
+parameter_list|(
+specifier|final
+name|String
+name|destKey
+parameter_list|,
+specifier|final
+name|String
+name|uploadId
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|CommitOperations
+operator|.
+name|this
+operator|.
+name|abortMultipartCommit
+argument_list|(
+name|destKey
+argument_list|,
+name|uploadId
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|IOUtils
+operator|.
+name|cleanupWithLogger
+argument_list|(
+name|LOG
+argument_list|,
+name|operationState
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+specifier|final
+name|StringBuilder
+name|sb
+init|=
+operator|new
+name|StringBuilder
+argument_list|(
+literal|"CommitContext{"
+argument_list|)
+decl_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"operationState="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|operationState
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|'}'
+argument_list|)
+expr_stmt|;
+return|return
+name|sb
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
 block|}
 comment|/**    * A holder for a possible IOException; the call {@link #maybeRethrow()}    * will throw any exception passed into the constructor, and be a no-op    * if none was.    *    * Why isn't a Java 8 optional used here? The main benefit would be that    * {@link #maybeRethrow()} could be done as a map(), but because Java doesn't    * allow checked exceptions in a map, the following code is invalid    *<pre>    *   exception.map((e) -&gt; {throw e;}    *</pre>    * As a result, the code to work with exceptions would be almost as convoluted    * as the original.    */
 DECL|class|MaybeIOE

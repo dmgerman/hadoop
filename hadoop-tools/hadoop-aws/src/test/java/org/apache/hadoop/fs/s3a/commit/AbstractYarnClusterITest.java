@@ -351,7 +351,7 @@ specifier|final
 name|int
 name|SCALE_TEST_FILE_COUNT
 init|=
-literal|20
+literal|50
 decl_stmt|;
 DECL|field|SCALE_TEST_KEYS
 specifier|public
@@ -574,6 +574,30 @@ argument_list|,
 name|yarnCluster
 argument_list|)
 return|;
+block|}
+DECL|method|terminateCluster (ClusterBinding clusterBinding)
+specifier|protected
+specifier|static
+name|void
+name|terminateCluster
+parameter_list|(
+name|ClusterBinding
+name|clusterBinding
+parameter_list|)
+block|{
+if|if
+condition|(
+name|clusterBinding
+operator|!=
+literal|null
+condition|)
+block|{
+name|clusterBinding
+operator|.
+name|terminate
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Get the cluster binding for this subclass    * @return    */
 DECL|method|getClusterBinding ()

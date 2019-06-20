@@ -112,6 +112,14 @@ argument_list|,
 literal|"Total number of files deleted from the object store."
 argument_list|)
 block|,
+DECL|enumConstant|FILES_DELETE_REJECTED
+name|FILES_DELETE_REJECTED
+argument_list|(
+literal|"files_delete_rejected"
+argument_list|,
+literal|"Total number of files whose delete request was rejected"
+argument_list|)
+block|,
 DECL|enumConstant|FAKE_DIRECTORIES_CREATED
 name|FAKE_DIRECTORIES_CREATED
 argument_list|(
@@ -746,6 +754,30 @@ argument_list|(
 literal|"s3guard_metadatastore_initialization"
 argument_list|,
 literal|"S3Guard metadata store initialization times"
+argument_list|)
+block|,
+DECL|enumConstant|S3GUARD_METADATASTORE_RECORD_DELETES
+name|S3GUARD_METADATASTORE_RECORD_DELETES
+argument_list|(
+literal|"s3guard_metadatastore_record_deletes"
+argument_list|,
+literal|"S3Guard metadata store records deleted"
+argument_list|)
+block|,
+DECL|enumConstant|S3GUARD_METADATASTORE_RECORD_READS
+name|S3GUARD_METADATASTORE_RECORD_READS
+argument_list|(
+literal|"s3guard_metadatastore_record_reads"
+argument_list|,
+literal|"S3Guard metadata store records read"
+argument_list|)
+block|,
+DECL|enumConstant|S3GUARD_METADATASTORE_RECORD_WRITES
+name|S3GUARD_METADATASTORE_RECORD_WRITES
+argument_list|(
+literal|"s3guard_metadatastore_record_writes"
+argument_list|,
+literal|"S3Guard metadata store records written"
 argument_list|)
 block|,
 DECL|enumConstant|S3GUARD_METADATASTORE_RETRY

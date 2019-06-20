@@ -267,6 +267,25 @@ name|SimpleAWSCredentialsProvider
 operator|.
 name|NAME
 decl_stmt|;
+comment|// the maximum number of tasks cached if all threads are already uploading
+DECL|field|MAX_TOTAL_TASKS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MAX_TOTAL_TASKS
+init|=
+literal|"fs.s3a.max.total.tasks"
+decl_stmt|;
+DECL|field|DEFAULT_MAX_TOTAL_TASKS
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_MAX_TOTAL_TASKS
+init|=
+literal|32
+decl_stmt|;
 comment|// number of simultaneous connections to s3
 DECL|field|MAXIMUM_CONNECTIONS
 specifier|public
@@ -284,7 +303,7 @@ specifier|final
 name|int
 name|DEFAULT_MAXIMUM_CONNECTIONS
 init|=
-literal|15
+literal|48
 decl_stmt|;
 comment|// connect to s3 over ssl?
 DECL|field|SECURE_CONNECTIONS
@@ -536,25 +555,6 @@ name|DEFAULT_KEEPALIVE_TIME
 init|=
 literal|60
 decl_stmt|;
-comment|// the maximum number of tasks cached if all threads are already uploading
-DECL|field|MAX_TOTAL_TASKS
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|MAX_TOTAL_TASKS
-init|=
-literal|"fs.s3a.max.total.tasks"
-decl_stmt|;
-DECL|field|DEFAULT_MAX_TOTAL_TASKS
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|DEFAULT_MAX_TOTAL_TASKS
-init|=
-literal|5
-decl_stmt|;
 comment|// size of each of or multipart pieces in bytes
 DECL|field|MULTIPART_SIZE
 specifier|public
@@ -759,6 +759,26 @@ name|int
 name|DEFAULT_FAST_UPLOAD_ACTIVE_BLOCKS
 init|=
 literal|4
+decl_stmt|;
+comment|/**    * The capacity of executor queues for operations other than block    * upload, where {@link #FAST_UPLOAD_ACTIVE_BLOCKS} is used instead.    * This should be less than {@link #MAX_THREADS} for fair    * submission.    * Value: {@value}.    */
+DECL|field|EXECUTOR_CAPACITY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|EXECUTOR_CAPACITY
+init|=
+literal|"fs.s3a.executor.capacity"
+decl_stmt|;
+comment|/**    * The capacity of executor queues for operations other than block    * upload, where {@link #FAST_UPLOAD_ACTIVE_BLOCKS} is used instead.    * Value: {@value}    */
+DECL|field|DEFAULT_EXECUTOR_CAPACITY
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_EXECUTOR_CAPACITY
+init|=
+literal|16
 decl_stmt|;
 comment|// Private | PublicRead | PublicReadWrite | AuthenticatedRead |
 comment|// LogDeliveryWrite | BucketOwnerRead | BucketOwnerFullControl

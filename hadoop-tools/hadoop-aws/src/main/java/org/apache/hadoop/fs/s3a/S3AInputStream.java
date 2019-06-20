@@ -546,8 +546,8 @@ specifier|final
 name|ChangeTracker
 name|changeTracker
 decl_stmt|;
-comment|/**    * Create the stream.    * This does not attempt to open it; that is only done on the first    * actual read() operation.    * @param ctx operation context    * @param s3Attributes object attributes from a HEAD request    * @param contentLength length of content    * @param client S3 client to use    */
-DECL|method|S3AInputStream (S3AReadOpContext ctx, S3ObjectAttributes s3Attributes, long contentLength, AmazonS3 client)
+comment|/**    * Create the stream.    * This does not attempt to open it; that is only done on the first    * actual read() operation.    * @param ctx operation context    * @param s3Attributes object attributes    * @param client S3 client to use    */
+DECL|method|S3AInputStream (S3AReadOpContext ctx, S3ObjectAttributes s3Attributes, AmazonS3 client)
 specifier|public
 name|S3AInputStream
 parameter_list|(
@@ -556,9 +556,6 @@ name|ctx
 parameter_list|,
 name|S3ObjectAttributes
 name|s3Attributes
-parameter_list|,
-name|long
-name|contentLength
 parameter_list|,
 name|AmazonS3
 name|client
@@ -594,11 +591,19 @@ argument_list|,
 literal|"No Key"
 argument_list|)
 expr_stmt|;
+name|long
+name|l
+init|=
+name|s3Attributes
+operator|.
+name|getLen
+argument_list|()
+decl_stmt|;
 name|Preconditions
 operator|.
 name|checkArgument
 argument_list|(
-name|contentLength
+name|l
 operator|>=
 literal|0
 argument_list|,
@@ -647,7 +652,7 @@ name|this
 operator|.
 name|contentLength
 operator|=
-name|contentLength
+name|l
 expr_stmt|;
 name|this
 operator|.
