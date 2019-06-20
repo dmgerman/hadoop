@@ -3064,6 +3064,7 @@ name|readahead
 return|;
 block|}
 block|}
+comment|/**    * Closes the underlying S3 stream, and merges the {@link #streamStatistics}    * instance associated with the stream.    */
 annotation|@
 name|Override
 DECL|method|unbuffer ()
@@ -3072,6 +3073,8 @@ specifier|synchronized
 name|void
 name|unbuffer
 parameter_list|()
+block|{
+try|try
 block|{
 name|closeStream
 argument_list|(
@@ -3082,6 +3085,17 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|streamStatistics
+operator|.
+name|merge
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
