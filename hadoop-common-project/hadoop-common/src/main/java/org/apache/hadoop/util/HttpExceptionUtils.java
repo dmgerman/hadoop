@@ -781,7 +781,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"HTTP status [%d], exception [%s], message [%s] "
+literal|"HTTP status [%d], exception [%s], message [%s], URL [%s]"
 argument_list|,
 name|conn
 operator|.
@@ -791,6 +791,11 @@ argument_list|,
 name|exClass
 argument_list|,
 name|exMsg
+argument_list|,
+name|conn
+operator|.
+name|getURL
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -823,7 +828,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"HTTP status [%d], message [%s]"
+literal|"HTTP status [%d], message [%s], URL [%s]"
 argument_list|,
 name|conn
 operator|.
@@ -831,6 +836,11 @@ name|getResponseCode
 argument_list|()
 argument_list|,
 name|msg
+argument_list|,
+name|conn
+operator|.
+name|getURL
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -851,7 +861,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"HTTP status [%d], message [%s]"
+literal|"HTTP status [%d], message [%s], URL [%s], exception [%s]"
 argument_list|,
 name|conn
 operator|.
@@ -862,7 +872,19 @@ name|conn
 operator|.
 name|getResponseMessage
 argument_list|()
+argument_list|,
+name|conn
+operator|.
+name|getURL
+argument_list|()
+argument_list|,
+name|ex
+operator|.
+name|toString
+argument_list|()
 argument_list|)
+argument_list|,
+name|ex
 argument_list|)
 expr_stmt|;
 block|}
