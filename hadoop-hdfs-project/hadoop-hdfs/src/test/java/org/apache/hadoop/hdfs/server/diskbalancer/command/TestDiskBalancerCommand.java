@@ -360,6 +360,18 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|HadoopIllegalArgumentException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -1906,6 +1918,50 @@ decl_stmt|;
 return|return
 name|planFileFullName
 return|;
+block|}
+comment|/* test exception on invalid arguments */
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
+DECL|method|testExceptionOnInvalidArguments ()
+specifier|public
+name|void
+name|testExceptionOnInvalidArguments
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+specifier|final
+name|String
+name|cmdLine
+init|=
+literal|"hdfs diskbalancer random1 -report random2 random3"
+decl_stmt|;
+name|thrown
+operator|.
+name|expect
+argument_list|(
+name|HadoopIllegalArgumentException
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+name|thrown
+operator|.
+name|expectMessage
+argument_list|(
+literal|"Invalid or extra Arguments: [random1, random2, random3]"
+argument_list|)
+expr_stmt|;
+name|runCommand
+argument_list|(
+name|cmdLine
+argument_list|)
+expr_stmt|;
 block|}
 comment|/* test basic report */
 annotation|@
