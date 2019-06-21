@@ -563,6 +563,19 @@ literal|1
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|when
+argument_list|(
+name|appSchedulingInfo
+operator|.
+name|getDefaultNodeLabelExpression
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+literal|"y"
+argument_list|)
+expr_stmt|;
 comment|// stub RMContext
 name|rmContext
 operator|=
@@ -1065,11 +1078,12 @@ name|build
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Node partition is unspecified, use the default node label expression y
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|""
+literal|"y"
 argument_list|,
 name|allocator
 operator|.
@@ -1166,7 +1180,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|""
+literal|"y"
 argument_list|,
 name|allocator
 operator|.

@@ -3578,6 +3578,40 @@ return|return
 name|applicationSchedulingEnvs
 return|;
 block|}
+comment|/**    * Get the defaultNodeLabelExpression for the application's current queue.    *    * @return defaultNodeLabelExpression    */
+DECL|method|getDefaultNodeLabelExpression ()
+specifier|public
+name|String
+name|getDefaultNodeLabelExpression
+parameter_list|()
+block|{
+try|try
+block|{
+name|this
+operator|.
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+return|return
+name|queue
+operator|.
+name|getDefaultNodeLabelExpression
+argument_list|()
+return|;
+block|}
+finally|finally
+block|{
+name|this
+operator|.
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 block|}
 end_class
 
