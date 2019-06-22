@@ -3089,7 +3089,7 @@ name|TIME
 argument_list|,
 name|defaultValue
 operator|=
-literal|"3s"
+literal|"300s"
 argument_list|,
 name|tags
 operator|=
