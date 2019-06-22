@@ -284,7 +284,6 @@ block|}
 block|}
 DECL|method|removeService (Service service)
 specifier|protected
-specifier|synchronized
 name|boolean
 name|removeService
 parameter_list|(
@@ -292,6 +291,18 @@ name|Service
 name|service
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Removing service {}"
+argument_list|,
+name|service
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
 synchronized|synchronized
 init|(
 name|serviceList
