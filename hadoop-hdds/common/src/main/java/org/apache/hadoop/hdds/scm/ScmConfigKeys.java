@@ -281,7 +281,7 @@ specifier|final
 name|String
 name|DFS_CONTAINER_RATIS_SEGMENT_SIZE_DEFAULT
 init|=
-literal|"16KB"
+literal|"1MB"
 decl_stmt|;
 DECL|field|DFS_CONTAINER_RATIS_SEGMENT_PREALLOCATED_SIZE_KEY
 specifier|public
