@@ -1370,6 +1370,25 @@ name|DNSDomainNameResolver
 operator|.
 name|class
 decl_stmt|;
+comment|/*    *  Ignore KMS default URI returned from NameNode.    *  When set to true, kms uri is searched in the following order:    *  1. If there is a mapping in Credential's secrets map for namenode uri.    *  2. Fallback to local conf.    *  If client choose to ignore KMS uri provided by NameNode then client    *  should set KMS URI using 'hadoop.security.key.provider.path' to access    *  the right KMS for encrypted files.    * */
+DECL|field|DFS_CLIENT_IGNORE_NAMENODE_DEFAULT_KMS_URI
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_CLIENT_IGNORE_NAMENODE_DEFAULT_KMS_URI
+init|=
+literal|"dfs.client.ignore.namenode.default.kms.uri"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+DECL|field|DFS_CLIENT_IGNORE_NAMENODE_DEFAULT_KMS_URI_DEFAULT
+name|DFS_CLIENT_IGNORE_NAMENODE_DEFAULT_KMS_URI_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 block|}
 end_class
 
