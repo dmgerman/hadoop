@@ -3608,16 +3608,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
-name|block
+literal|null
 return|;
 block|}
-if|if
-condition|(
-name|block
-operator|!=
-literal|null
-condition|)
-block|{
 comment|// A valid block is a finalized block, we iterate until we get
 comment|// finalized blocks
 if|if
@@ -3652,22 +3645,6 @@ block|{
 return|return
 name|block
 return|;
-block|}
-block|}
-else|else
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"There are no blocks in the blockPool {}"
-argument_list|,
-name|iter
-operator|.
-name|getBlockPoolId
-argument_list|()
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 catch|catch
