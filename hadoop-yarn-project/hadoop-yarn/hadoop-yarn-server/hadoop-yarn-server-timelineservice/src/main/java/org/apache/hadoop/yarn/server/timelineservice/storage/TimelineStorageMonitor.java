@@ -356,19 +356,6 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|isStorageDown ()
-specifier|public
-name|boolean
-name|isStorageDown
-parameter_list|()
-block|{
-return|return
-name|storageDown
-operator|.
-name|get
-argument_list|()
-return|;
-block|}
 DECL|class|MonitorThread
 specifier|private
 class|class

@@ -482,19 +482,6 @@ name|serviceStop
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|isHBaseDown ()
-specifier|public
-name|boolean
-name|isHBaseDown
-parameter_list|()
-block|{
-return|return
-name|storageMonitor
-operator|.
-name|isStorageDown
-argument_list|()
-return|;
-block|}
 annotation|@
 name|Override
 DECL|method|getEntity (TimelineReaderContext context, TimelineDataToRetrieve dataToRetrieve)
@@ -640,15 +627,13 @@ name|TimelineHealth
 name|getHealthStatus
 parameter_list|()
 block|{
-if|if
-condition|(
-operator|!
-name|this
-operator|.
-name|isHBaseDown
-argument_list|()
-condition|)
+try|try
 block|{
+name|storageMonitor
+operator|.
+name|checkStorageIsUp
+argument_list|()
+expr_stmt|;
 return|return
 operator|new
 name|TimelineHealth
@@ -663,7 +648,11 @@ literal|""
 argument_list|)
 return|;
 block|}
-else|else
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
 block|{
 return|return
 operator|new
@@ -679,6 +668,16 @@ literal|"HBase connection is down"
 argument_list|)
 return|;
 block|}
+block|}
+DECL|method|getTimelineStorageMonitor ()
+specifier|protected
+name|TimelineStorageMonitor
+name|getTimelineStorageMonitor
+parameter_list|()
+block|{
+return|return
+name|storageMonitor
+return|;
 block|}
 block|}
 end_class
