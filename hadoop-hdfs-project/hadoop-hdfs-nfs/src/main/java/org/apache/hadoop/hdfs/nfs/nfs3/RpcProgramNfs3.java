@@ -11787,7 +11787,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|error
+name|info
 argument_list|(
 literal|"Can't get file attributes for fileId: {}"
 argument_list|,
@@ -11907,7 +11907,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|error
+name|info
 argument_list|(
 literal|"Can't get file attributes for fileId: {}"
 argument_list|,
