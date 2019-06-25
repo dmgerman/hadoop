@@ -319,14 +319,24 @@ block|{
 comment|// Someone is releasing a lock which was never acquired. Log and return.
 name|LOG
 operator|.
-name|warn
+name|error
 argument_list|(
 literal|"Trying to release the lock on {}, which was never acquired."
 argument_list|,
 name|resource
 argument_list|)
 expr_stmt|;
-return|return;
+throw|throw
+operator|new
+name|IllegalMonitorStateException
+argument_list|(
+literal|"Releasing lock on resource "
+operator|+
+name|resource
+operator|+
+literal|" without acquiring lock"
+argument_list|)
+throw|;
 block|}
 name|lock
 operator|.
