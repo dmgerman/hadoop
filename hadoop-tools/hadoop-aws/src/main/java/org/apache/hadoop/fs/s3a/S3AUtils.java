@@ -3775,7 +3775,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    * Get a integer option>= the minimum allowed value.    * @param conf configuration    * @param key key to look up    * @param defVal default value    * @param min minimum value    * @return the value    * @throws IllegalArgumentException if the value is below the minimum    */
+comment|/**    * Get a integer option&gt;= the minimum allowed value.    * @param conf configuration    * @param key key to look up    * @param defVal default value    * @param min minimum value    * @return the value    * @throws IllegalArgumentException if the value is below the minimum    */
 DECL|method|intOption (Configuration conf, String key, int defVal, int min)
 specifier|public
 specifier|static
@@ -3844,7 +3844,7 @@ return|return
 name|v
 return|;
 block|}
-comment|/**    * Get a long option>= the minimum allowed value.    * @param conf configuration    * @param key key to look up    * @param defVal default value    * @param min minimum value    * @return the value    * @throws IllegalArgumentException if the value is below the minimum    */
+comment|/**    * Get a long option&gt;= the minimum allowed value.    * @param conf configuration    * @param key key to look up    * @param defVal default value    * @param min minimum value    * @return the value    * @throws IllegalArgumentException if the value is below the minimum    */
 DECL|method|longOption (Configuration conf, String key, long defVal, long min)
 specifier|public
 specifier|static
