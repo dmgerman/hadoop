@@ -493,7 +493,23 @@ name|IOException
 block|{
 try|try
 block|{
+comment|// RocksDB#keyMayExist
+comment|// If the key definitely does not exist in the database, then this
+comment|// method returns false, else true.
 return|return
+name|db
+operator|.
+name|keyMayExist
+argument_list|(
+name|handle
+argument_list|,
+name|key
+argument_list|,
+operator|new
+name|StringBuilder
+argument_list|()
+argument_list|)
+operator|&&
 name|db
 operator|.
 name|get
