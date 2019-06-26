@@ -718,6 +718,7 @@ name|ResourceCalculatorProcessTree
 argument_list|>
 name|processTreeClass
 decl_stmt|;
+comment|/** Maximum virtual memory in bytes. */
 DECL|field|maxVmemAllottedForContainers
 specifier|private
 name|long
@@ -725,6 +726,7 @@ name|maxVmemAllottedForContainers
 init|=
 name|UNKNOWN_MEMORY_LIMIT
 decl_stmt|;
+comment|/** Maximum physical memory in bytes. */
 DECL|field|maxPmemAllottedForContainers
 specifier|private
 name|long
@@ -1040,12 +1042,8 @@ name|this
 operator|.
 name|conf
 argument_list|)
-operator|*
-literal|1024
-operator|*
-literal|1024L
 decl_stmt|;
-name|long
+name|int
 name|configuredVCoresForContainers
 init|=
 name|NodeManagerHardwareUtils
@@ -1061,21 +1059,6 @@ operator|.
 name|conf
 argument_list|)
 decl_stmt|;
-comment|// Setting these irrespective of whether checks are enabled. Required in
-comment|// the UI.
-comment|// ///////// Physical memory configuration //////
-name|this
-operator|.
-name|maxPmemAllottedForContainers
-operator|=
-name|configuredPMemForContainers
-expr_stmt|;
-name|this
-operator|.
-name|maxVCoresAllottedForContainers
-operator|=
-name|configuredVCoresForContainers
-expr_stmt|;
 comment|// ///////// Virtual memory configuration //////
 name|vmemRatio
 operator|=
@@ -1109,17 +1092,23 @@ operator|+
 literal|" should be at least 1.0"
 argument_list|)
 expr_stmt|;
-name|this
+comment|// Setting these irrespective of whether checks are enabled.
+comment|// Required in the UI.
+name|Resource
+name|resourcesForContainers
+init|=
+name|Resource
 operator|.
-name|maxVmemAllottedForContainers
-operator|=
-call|(
-name|long
-call|)
+name|newInstance
 argument_list|(
-name|vmemRatio
-operator|*
 name|configuredPMemForContainers
+argument_list|,
+name|configuredVCoresForContainers
+argument_list|)
+decl_stmt|;
+name|setAllocatedResourcesForContainers
+argument_list|(
+name|resourcesForContainers
 argument_list|)
 expr_stmt|;
 name|pmemCheckEnabled
@@ -3809,6 +3798,63 @@ operator|.
 name|maxVCoresAllottedForContainers
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|setAllocatedResourcesForContainers (final Resource resource)
+specifier|public
+name|void
+name|setAllocatedResourcesForContainers
+parameter_list|(
+specifier|final
+name|Resource
+name|resource
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Setting the resources allocated to containers to {}"
+argument_list|,
+name|resource
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|maxVCoresAllottedForContainers
+operator|=
+name|resource
+operator|.
+name|getVirtualCores
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|maxPmemAllottedForContainers
+operator|=
+name|convertMBytesToBytes
+argument_list|(
+name|resource
+operator|.
+name|getMemorySize
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|maxVmemAllottedForContainers
+operator|=
+call|(
+name|long
+call|)
+argument_list|(
+name|getVmemRatio
+argument_list|()
+operator|*
+name|maxPmemAllottedForContainers
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Is the total virtual memory check enabled?    *    * @return true if total virtual memory check is enabled.    */
 annotation|@
 name|Override
@@ -4042,20 +4088,24 @@ argument_list|(
 name|monitoringEvent
 argument_list|)
 expr_stmt|;
-name|long
-name|pmemLimit
+name|Resource
+name|resource
 init|=
 name|changeEvent
 operator|.
 name|getResource
 argument_list|()
+decl_stmt|;
+name|long
+name|pmemLimit
+init|=
+name|convertMBytesToBytes
+argument_list|(
+name|resource
 operator|.
 name|getMemorySize
 argument_list|()
-operator|*
-literal|1024L
-operator|*
-literal|1024L
+argument_list|)
 decl_stmt|;
 name|long
 name|vmemLimit
@@ -4072,10 +4122,7 @@ decl_stmt|;
 name|int
 name|cpuVcores
 init|=
-name|changeEvent
-operator|.
-name|getResource
-argument_list|()
+name|resource
 operator|.
 name|getVirtualCores
 argument_list|()
@@ -4193,6 +4240,25 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Convert MegaBytes to Bytes.    * @param mb MegaBytes (MB).    * @return Bytes representing the input MB.    */
+DECL|method|convertMBytesToBytes (long mb)
+specifier|private
+specifier|static
+name|long
+name|convertMBytesToBytes
+parameter_list|(
+name|long
+name|mb
+parameter_list|)
+block|{
+return|return
+name|mb
+operator|*
+literal|1024L
+operator|*
+literal|1024L
+return|;
 block|}
 block|}
 end_class

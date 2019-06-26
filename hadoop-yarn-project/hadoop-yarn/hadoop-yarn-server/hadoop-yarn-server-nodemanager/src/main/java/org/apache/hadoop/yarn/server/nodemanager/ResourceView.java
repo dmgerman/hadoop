@@ -26,6 +26,7 @@ specifier|public
 interface|interface
 name|ResourceView
 block|{
+comment|/**    * Get virtual memory allocated to the containers.    * @return Virtual memory in bytes.    */
 DECL|method|getVmemAllocatedForContainers ()
 name|long
 name|getVmemAllocatedForContainers
@@ -36,6 +37,7 @@ name|boolean
 name|isVmemCheckEnabled
 parameter_list|()
 function_decl|;
+comment|/**    * Get physical memory allocated to the containers.    * @return Physical memory in bytes.    */
 DECL|method|getPmemAllocatedForContainers ()
 name|long
 name|getPmemAllocatedForContainers

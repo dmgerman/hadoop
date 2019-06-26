@@ -267,6 +267,15 @@ name|vCores
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Set the allocated resources for containers.    * @param resource Resources allocated for the containers.    */
+DECL|method|setAllocatedResourcesForContainers (Resource resource)
+name|void
+name|setAllocatedResourcesForContainers
+parameter_list|(
+name|Resource
+name|resource
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

@@ -3591,6 +3591,27 @@ name|totalResource
 operator|=
 name|resource
 expr_stmt|;
+comment|// Update the containers monitor
+name|ContainersMonitor
+name|containersMonitor
+init|=
+name|this
+operator|.
+name|context
+operator|.
+name|getContainerManager
+argument_list|()
+operator|.
+name|getContainersMonitor
+argument_list|()
+decl_stmt|;
+name|containersMonitor
+operator|.
+name|setAllocatedResourcesForContainers
+argument_list|(
+name|totalResource
+argument_list|)
+expr_stmt|;
 block|}
 comment|// Iterate through the NMContext and clone and get all the containers'
 comment|// statuses. If it's a completed container, add into the
