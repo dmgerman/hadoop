@@ -838,6 +838,15 @@ name|OM_S3_SECRET
 init|=
 literal|"S3Secret:"
 decl_stmt|;
+DECL|field|OM_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OM_PREFIX
+init|=
+literal|"Prefix:"
+decl_stmt|;
 comment|/**    *   Max chunk size limit.    */
 DECL|field|OZONE_SCM_CHUNK_MAX_SIZE
 specifier|public

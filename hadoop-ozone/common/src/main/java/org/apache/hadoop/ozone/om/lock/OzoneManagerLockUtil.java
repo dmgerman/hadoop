@@ -48,6 +48,22 @@ name|ozone
 operator|.
 name|OzoneConsts
 operator|.
+name|OM_PREFIX
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConsts
+operator|.
 name|OM_S3_PREFIX
 import|;
 end_import
@@ -90,7 +106,6 @@ end_comment
 
 begin_class
 DECL|class|OzoneManagerLockUtil
-specifier|public
 specifier|final
 class|class
 name|OzoneManagerLockUtil
@@ -200,7 +215,7 @@ name|PREFIX
 condition|)
 block|{
 return|return
-name|OM_S3_PREFIX
+name|OM_PREFIX
 operator|+
 name|resourceName
 return|;
