@@ -972,6 +972,22 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+DECL|method|stop ()
+specifier|public
+name|void
+name|stop
+parameter_list|()
+block|{
+name|pollTimer
+operator|.
+name|cancel
+argument_list|()
+expr_stmt|;
+name|pollTimer
+operator|=
+literal|null
+expr_stmt|;
+block|}
 comment|/**    * Status about a specific decommissioning node.    *    */
 DECL|enum|DecommissioningNodeStatus
 specifier|public
