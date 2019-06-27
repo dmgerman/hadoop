@@ -274,13 +274,6 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|cluster
-operator|.
-name|addRouterOverrides
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 comment|// Start routers with only an RPC service
 name|cluster
 operator|.

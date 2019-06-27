@@ -1533,7 +1533,7 @@ name|DFS_ROUTER_CLIENT_MOUNT_TIME_OUT_DEFAULT
 argument_list|,
 name|TimeUnit
 operator|.
-name|SECONDS
+name|MILLISECONDS
 argument_list|)
 expr_stmt|;
 comment|// User and group for reporting
