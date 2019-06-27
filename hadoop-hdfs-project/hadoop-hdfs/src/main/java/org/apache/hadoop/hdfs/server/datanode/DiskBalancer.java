@@ -3599,7 +3599,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"NextBlock call returned null.No valid block to copy. {}"
+literal|"NextBlock call returned null. No valid block to copy. {}"
 argument_list|,
 name|item
 operator|.

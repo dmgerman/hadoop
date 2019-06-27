@@ -2291,8 +2291,7 @@ operator|.
 name|verifyPlanExectionDone
 argument_list|()
 expr_stmt|;
-comment|//Because here we have one nameservice empty, don't check
-comment|// blockPoolCount.
+comment|// Because here we have one nameservice empty, don't check blockPoolCount.
 name|dataMover
 operator|.
 name|verifyAllVolumesHaveData
@@ -2303,20 +2302,27 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
+name|String
+name|logOut
+init|=
 name|logCapturer
 operator|.
 name|getOutput
 argument_list|()
+decl_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+literal|"Wrong log: "
+operator|+
+name|logOut
+argument_list|,
+name|logOut
 operator|.
 name|contains
 argument_list|(
-literal|"There are no "
-operator|+
-literal|"blocks in the blockPool"
+literal|"NextBlock call returned null. No valid block to copy."
 argument_list|)
 argument_list|)
 expr_stmt|;
