@@ -2658,7 +2658,7 @@ argument_list|(
 name|i
 argument_list|)
 operator|.
-name|getOMNodId
+name|getOMNodeId
 argument_list|()
 argument_list|,
 name|omClientProxyExists
@@ -3118,7 +3118,7 @@ name|performFailoverIfRequired
 argument_list|(
 name|ozoneManager
 operator|.
-name|getOMNodId
+name|getOMNodeId
 argument_list|()
 argument_list|)
 expr_stmt|;

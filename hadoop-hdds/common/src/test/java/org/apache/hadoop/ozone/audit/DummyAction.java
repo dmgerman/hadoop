@@ -36,9 +36,6 @@ block|,
 DECL|enumConstant|CREATE_BUCKET
 name|CREATE_BUCKET
 block|,
-DECL|enumConstant|CREATE_KEY
-name|CREATE_KEY
-block|,
 DECL|enumConstant|READ_VOLUME
 name|READ_VOLUME
 block|,

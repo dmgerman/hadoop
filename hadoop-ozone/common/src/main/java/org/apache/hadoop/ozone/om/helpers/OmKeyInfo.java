@@ -709,8 +709,8 @@ name|locationInfoList
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Append a set of blocks to the latest version. Note that these blocks are    * part of the latest version, not a new version.    *    * @param newLocationList the list of new blocks to be added.    * @throws IOException    */
-DECL|method|appendNewBlocks ( List<OmKeyLocationInfo> newLocationList)
+comment|/**    * Append a set of blocks to the latest version. Note that these blocks are    * part of the latest version, not a new version.    *    * @param newLocationList the list of new blocks to be added.    * @param updateTime if true, will update modification time.    * @throws IOException    */
+DECL|method|appendNewBlocks ( List<OmKeyLocationInfo> newLocationList, boolean updateTime)
 specifier|public
 specifier|synchronized
 name|void
@@ -721,6 +721,9 @@ argument_list|<
 name|OmKeyLocationInfo
 argument_list|>
 name|newLocationList
+parameter_list|,
+name|boolean
+name|updateTime
 parameter_list|)
 throws|throws
 name|IOException
@@ -765,6 +768,11 @@ argument_list|(
 name|newLocationList
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|updateTime
+condition|)
+block|{
 name|setModificationTime
 argument_list|(
 name|Time
@@ -774,8 +782,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Add a new set of blocks. The new blocks will be added as appending a new    * version to the all version list.    *    * @param newLocationList the list of new blocks to be added.    * @throws IOException    */
-DECL|method|addNewVersion ( List<OmKeyLocationInfo> newLocationList)
+block|}
+comment|/**    * Add a new set of blocks. The new blocks will be added as appending a new    * version to the all version list.    *    * @param newLocationList the list of new blocks to be added.    * @param updateTime - if true, updates modification time.    * @throws IOException    */
+DECL|method|addNewVersion ( List<OmKeyLocationInfo> newLocationList, boolean updateTime)
 specifier|public
 specifier|synchronized
 name|long
@@ -786,6 +795,9 @@ argument_list|<
 name|OmKeyLocationInfo
 argument_list|>
 name|newLocationList
+parameter_list|,
+name|boolean
+name|updateTime
 parameter_list|)
 throws|throws
 name|IOException
@@ -866,6 +878,11 @@ name|getVersion
 argument_list|()
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|updateTime
+condition|)
+block|{
 name|setModificationTime
 argument_list|(
 name|Time
@@ -874,6 +891,7 @@ name|now
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|latestVersionNum
 return|;

@@ -519,7 +519,7 @@ literal|"Stopping the OzoneManager "
 operator|+
 name|ozoneManager
 operator|.
-name|getOMNodId
+name|getOMNodeId
 argument_list|()
 argument_list|)
 expr_stmt|;

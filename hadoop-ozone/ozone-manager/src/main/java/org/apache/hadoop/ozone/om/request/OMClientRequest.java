@@ -441,7 +441,7 @@ return|return
 name|omRequest
 return|;
 block|}
-comment|/**    * Get User information from the OMRequest.    * @return User Info.    */
+comment|/**    * Get User information which needs to be set in the OMRequest object.    * @return User Info.    */
 DECL|method|getUserInfo ()
 specifier|public
 name|OzoneManagerProtocolProtos

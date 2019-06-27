@@ -2348,6 +2348,8 @@ name|singletonList
 argument_list|(
 name|omKeyLocationInfo
 argument_list|)
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|keyInfo
@@ -2521,6 +2523,8 @@ operator|.
 name|appendNewBlocks
 argument_list|(
 name|locationInfos
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|keyInfo
@@ -3415,6 +3419,8 @@ operator|.
 name|appendNewBlocks
 argument_list|(
 name|locationInfos
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -3528,6 +3534,8 @@ operator|.
 name|addNewVersion
 argument_list|(
 name|locations
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|keyInfo
@@ -4177,9 +4185,13 @@ throw|throw
 operator|new
 name|OMException
 argument_list|(
-literal|"Commit a key without corresponding entry "
+literal|"Failed to commit key, as "
 operator|+
-name|objectKey
+name|openKey
+operator|+
+literal|"entry "
+operator|+
+literal|"is not found in the openKey table"
 argument_list|,
 name|KEY_NOT_FOUND
 argument_list|)

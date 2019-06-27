@@ -462,6 +462,14 @@ block|}
 else|else
 block|{
 comment|// PreExecute if needed.
+if|if
+condition|(
+name|omRatisServer
+operator|.
+name|isLeader
+argument_list|()
+condition|)
+block|{
 try|try
 block|{
 name|OMClientRequest
@@ -514,6 +522,19 @@ argument_list|(
 name|request
 argument_list|)
 return|;
+block|}
+else|else
+block|{
+comment|// throw not leader exception. This is being done, so to avoid
+comment|// unnecessary execution of preExecute on follower OM's. This
+comment|// will be helpful in the case like where we we reduce the
+comment|// chance of allocate blocks on follower OM's. Right now our
+comment|// leader status is updated every 1 second.
+throw|throw
+name|createNotLeaderException
+argument_list|()
+throw|;
+block|}
 block|}
 block|}
 else|else
@@ -696,6 +717,18 @@ return|;
 block|}
 else|else
 block|{
+throw|throw
+name|createNotLeaderException
+argument_list|()
+throw|;
+block|}
+block|}
+DECL|method|createNotLeaderException ()
+specifier|private
+name|ServiceException
+name|createNotLeaderException
+parameter_list|()
+block|{
 name|RaftPeerId
 name|raftPeerId
 init|=
@@ -776,14 +809,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-throw|throw
+return|return
 operator|new
 name|ServiceException
 argument_list|(
 name|notLeaderException
 argument_list|)
-throw|;
-block|}
+return|;
 block|}
 comment|/**    * Submits request directly to OM.    */
 DECL|method|submitRequestDirectlyToOM (OMRequest request)

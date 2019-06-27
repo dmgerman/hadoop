@@ -763,6 +763,39 @@ argument_list|(
 name|lastRatisTransactionIndex
 argument_list|)
 expr_stmt|;
+comment|//TODO: Optimization we can do here is for key transactions we can only
+comment|// cleanup cache when it is key commit transaction. In this way all
+comment|// intermediate transactions for a key will be read from in-memory cache.
+name|omMetadataManager
+operator|.
+name|getOpenKeyTable
+argument_list|()
+operator|.
+name|cleanupCache
+argument_list|(
+name|lastRatisTransactionIndex
+argument_list|)
+expr_stmt|;
+name|omMetadataManager
+operator|.
+name|getKeyTable
+argument_list|()
+operator|.
+name|cleanupCache
+argument_list|(
+name|lastRatisTransactionIndex
+argument_list|)
+expr_stmt|;
+name|omMetadataManager
+operator|.
+name|getDeletedTable
+argument_list|()
+operator|.
+name|cleanupCache
+argument_list|(
+name|lastRatisTransactionIndex
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Update OzoneManagerDoubleBuffer metrics values.    * @param flushedTransactionsSize    */
 DECL|method|updateMetrics ( long flushedTransactionsSize)

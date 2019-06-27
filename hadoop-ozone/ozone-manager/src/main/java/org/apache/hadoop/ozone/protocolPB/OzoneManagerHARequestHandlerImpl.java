@@ -614,6 +614,21 @@ case|:
 case|case
 name|SetBucketProperty
 case|:
+case|case
+name|AllocateBlock
+case|:
+case|case
+name|CreateKey
+case|:
+case|case
+name|CommitKey
+case|:
+case|case
+name|DeleteKey
+case|:
+case|case
+name|RenameKey
+case|:
 comment|//TODO: We don't need to pass transactionID, this will be removed when
 comment|// complete write requests is changed to new model. And also we can
 comment|// return OMClientResponse, then adding to doubleBuffer can be taken

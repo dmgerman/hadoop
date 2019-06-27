@@ -272,6 +272,30 @@ literal|"addCacheEntry is not implemented"
 argument_list|)
 throw|;
 block|}
+comment|/**    * Get the cache value from table cache.    * @param cacheKey    */
+DECL|method|getCacheValue (CacheKey<KEY> cacheKey)
+specifier|default
+name|CacheValue
+argument_list|<
+name|VALUE
+argument_list|>
+name|getCacheValue
+parameter_list|(
+name|CacheKey
+argument_list|<
+name|KEY
+argument_list|>
+name|cacheKey
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|NotImplementedException
+argument_list|(
+literal|"getCacheValue is not implemented"
+argument_list|)
+throw|;
+block|}
 comment|/**    * Removes all the entries from the table cache which are having epoch value    * less    * than or equal to specified epoch value.    * @param epoch    */
 DECL|method|cleanupCache (long epoch)
 specifier|default

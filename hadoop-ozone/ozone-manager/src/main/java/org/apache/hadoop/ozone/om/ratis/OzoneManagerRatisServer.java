@@ -2929,16 +2929,37 @@ operator|.
 name|getId
 argument_list|()
 decl_stmt|;
+comment|// There may be a chance, here we get leaderNodeId as null. For
+comment|// example, in 3 node OM Ratis, if 2 OM nodes are down, there will
+comment|// be no leader.
 name|RaftPeerId
 name|leaderPeerId
 init|=
+literal|null
+decl_stmt|;
+if|if
+condition|(
+name|leaderNodeId
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|leaderNodeId
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|leaderPeerId
+operator|=
 name|RaftPeerId
 operator|.
 name|valueOf
 argument_list|(
 name|leaderNodeId
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
 name|setServerRole
 argument_list|(
 name|thisNodeRole

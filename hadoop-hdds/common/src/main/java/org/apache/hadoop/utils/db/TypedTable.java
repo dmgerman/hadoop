@@ -722,6 +722,32 @@ name|cacheValue
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|getCacheValue (CacheKey<KEY> cacheKey)
+specifier|public
+name|CacheValue
+argument_list|<
+name|VALUE
+argument_list|>
+name|getCacheValue
+parameter_list|(
+name|CacheKey
+argument_list|<
+name|KEY
+argument_list|>
+name|cacheKey
+parameter_list|)
+block|{
+return|return
+name|cache
+operator|.
+name|get
+argument_list|(
+name|cacheKey
+argument_list|)
+return|;
+block|}
 DECL|method|cacheIterator ()
 specifier|public
 name|Iterator

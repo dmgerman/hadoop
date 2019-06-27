@@ -52,9 +52,6 @@ block|,
 DECL|enumConstant|CREATE_BUCKET
 name|CREATE_BUCKET
 block|,
-DECL|enumConstant|CREATE_KEY
-name|CREATE_KEY
-block|,
 DECL|enumConstant|DELETE_VOLUME
 name|DELETE_VOLUME
 block|,

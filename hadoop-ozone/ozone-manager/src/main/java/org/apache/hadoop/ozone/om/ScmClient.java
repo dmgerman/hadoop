@@ -66,11 +66,13 @@ name|ScmClient
 block|{
 DECL|field|blockClient
 specifier|private
+specifier|final
 name|ScmBlockLocationProtocol
 name|blockClient
 decl_stmt|;
 DECL|field|containerClient
 specifier|private
+specifier|final
 name|StorageContainerLocationProtocol
 name|containerClient
 decl_stmt|;
@@ -98,6 +100,7 @@ name|blockClient
 expr_stmt|;
 block|}
 DECL|method|getBlockClient ()
+specifier|public
 name|ScmBlockLocationProtocol
 name|getBlockClient
 parameter_list|()
