@@ -314,7 +314,7 @@ name|linux
 operator|.
 name|runtime
 operator|.
-name|DockerLinuxContainerRuntime
+name|OCIContainerRuntime
 import|;
 end_import
 
@@ -701,9 +701,9 @@ expr_stmt|;
 if|if
 condition|(
 operator|!
-name|DockerLinuxContainerRuntime
+name|OCIContainerRuntime
 operator|.
-name|isDockerContainerRequested
+name|isOCICompliantContainerRequested
 argument_list|(
 name|nmContext
 operator|.

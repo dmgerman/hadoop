@@ -568,6 +568,30 @@ name|linux
 operator|.
 name|runtime
 operator|.
+name|OCIContainerRuntime
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|linux
+operator|.
+name|runtime
+operator|.
 name|docker
 operator|.
 name|DockerCommandExecutor
@@ -995,7 +1019,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>This class provides {@link Container} execution using a native  * {@code container-executor} binary. By using a helper written it native code,  * this class is able to do several things that the  * {@link DefaultContainerExecutor} cannot, such as execution of applications  * as the applications' owners, provide localization that takes advantage of  * mapping the application owner to a UID on the execution host, resource  * management through Linux CGROUPS, and Docker support.</p>  *  *<p>If {@code hadoop.security.authentication} is set to {@code simple},  * then the  * {@code yarn.nodemanager.linux-container-executor.nonsecure-mode.limit-users}  * property will determine whether the {@code LinuxContainerExecutor} runs  * processes as the application owner or as the default user, as set in the  * {@code yarn.nodemanager.linux-container-executor.nonsecure-mode.local-user}  * property.</p>  *  *<p>The {@code LinuxContainerExecutor} will manage applications through an  * appropriate {@link LinuxContainerRuntime} instance. This class uses a  * {@link DelegatingLinuxContainerRuntime} instance, which will delegate calls  * to either a {@link DefaultLinuxContainerRuntime} instance or a  * {@link DockerLinuxContainerRuntime} instance, depending on the job's  * configuration.</p>  *  * @see LinuxContainerRuntime  * @see DelegatingLinuxContainerRuntime  * @see DefaultLinuxContainerRuntime  * @see DockerLinuxContainerRuntime  * @see DockerLinuxContainerRuntime#isDockerContainerRequested  */
+comment|/**  *<p>This class provides {@link Container} execution using a native  * {@code container-executor} binary. By using a helper written it native code,  * this class is able to do several things that the  * {@link DefaultContainerExecutor} cannot, such as execution of applications  * as the applications' owners, provide localization that takes advantage of  * mapping the application owner to a UID on the execution host, resource  * management through Linux CGROUPS, and Docker support.</p>  *  *<p>If {@code hadoop.security.authentication} is set to {@code simple},  * then the  * {@code yarn.nodemanager.linux-container-executor.nonsecure-mode.limit-users}  * property will determine whether the {@code LinuxContainerExecutor} runs  * processes as the application owner or as the default user, as set in the  * {@code yarn.nodemanager.linux-container-executor.nonsecure-mode.local-user}  * property.</p>  *  *<p>The {@code LinuxContainerExecutor} will manage applications through an  * appropriate {@link LinuxContainerRuntime} instance. This class uses a  * {@link DelegatingLinuxContainerRuntime} instance, which will delegate calls  * to either a {@link DefaultLinuxContainerRuntime} instance or a  * {@link OCIContainerRuntime} instance, depending on the job's  * configuration.</p>  *  * @see LinuxContainerRuntime  * @see DelegatingLinuxContainerRuntime  * @see DefaultLinuxContainerRuntime  * @see DockerLinuxContainerRuntime  * @see OCIContainerRuntime#isOCICompliantContainerRequested  */
 end_comment
 
 begin_class

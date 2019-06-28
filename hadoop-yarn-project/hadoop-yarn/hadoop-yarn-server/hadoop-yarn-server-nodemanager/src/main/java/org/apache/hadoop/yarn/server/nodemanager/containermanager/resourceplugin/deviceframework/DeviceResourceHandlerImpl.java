@@ -398,7 +398,7 @@ name|linux
 operator|.
 name|runtime
 operator|.
-name|DockerLinuxContainerRuntime
+name|OCIContainerRuntime
 import|;
 end_import
 
@@ -947,9 +947,9 @@ comment|// non-Docker, use cgroups to do isolation
 if|if
 condition|(
 operator|!
-name|DockerLinuxContainerRuntime
+name|OCIContainerRuntime
 operator|.
-name|isDockerContainerRequested
+name|isOCICompliantContainerRequested
 argument_list|(
 name|nmContext
 operator|.
