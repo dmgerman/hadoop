@@ -325,7 +325,7 @@ name|OzoneManagerLock
 operator|.
 name|Resource
 operator|.
-name|USER
+name|USER_LOCK
 operator|||
 name|resource
 operator|==
@@ -333,7 +333,7 @@ name|OzoneManagerLock
 operator|.
 name|Resource
 operator|.
-name|S3_SECRET
+name|S3_SECRET_LOCK
 operator|||
 name|resource
 operator|==
@@ -341,7 +341,7 @@ name|OzoneManagerLock
 operator|.
 name|Resource
 operator|.
-name|PREFIX
+name|PREFIX_LOCK
 condition|)
 block|{
 name|lock
@@ -1115,7 +1115,7 @@ name|OzoneManagerLock
 operator|.
 name|Resource
 operator|.
-name|USER
+name|USER_LOCK
 argument_list|,
 literal|"user3"
 argument_list|)
@@ -1176,18 +1176,12 @@ block|{
 if|if
 condition|(
 name|resource
-operator|.
-name|getName
-argument_list|()
 operator|==
 name|OzoneManagerLock
 operator|.
 name|Resource
 operator|.
-name|BUCKET
-operator|.
-name|getName
-argument_list|()
+name|BUCKET_LOCK
 condition|)
 block|{
 return|return
@@ -1399,7 +1393,9 @@ block|{
 name|String
 name|message
 init|=
-literal|"cannot acquire USER lock while holding [USER] lock(s)."
+literal|"cannot acquire USER_LOCK lock while holding "
+operator|+
+literal|"[USER_LOCK] lock(s)."
 decl_stmt|;
 name|Assert
 operator|.
@@ -1459,7 +1455,7 @@ name|OzoneManagerLock
 operator|.
 name|Resource
 operator|.
-name|USER
+name|USER_LOCK
 argument_list|,
 literal|"user3"
 argument_list|)
@@ -1490,7 +1486,9 @@ block|{
 name|String
 name|message
 init|=
-literal|"cannot acquire USER lock while holding [USER] lock(s)."
+literal|"cannot acquire USER_LOCK lock while holding "
+operator|+
+literal|"[USER_LOCK] lock(s)."
 decl_stmt|;
 name|Assert
 operator|.
@@ -1521,7 +1519,7 @@ name|OzoneManagerLock
 operator|.
 name|Resource
 operator|.
-name|USER
+name|USER_LOCK
 argument_list|,
 literal|"user3"
 argument_list|)
@@ -1565,7 +1563,7 @@ name|OzoneManagerLock
 operator|.
 name|Resource
 operator|.
-name|USER
+name|USER_LOCK
 argument_list|,
 literal|"user3"
 argument_list|)
@@ -1585,7 +1583,9 @@ block|{
 name|String
 name|message
 init|=
-literal|"cannot acquire USER lock while holding [USER] lock(s)."
+literal|"cannot acquire USER_LOCK lock while holding "
+operator|+
+literal|"[USER_LOCK] lock(s)."
 decl_stmt|;
 name|Assert
 operator|.

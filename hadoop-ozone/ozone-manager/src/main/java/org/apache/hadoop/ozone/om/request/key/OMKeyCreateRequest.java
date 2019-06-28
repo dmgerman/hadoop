@@ -630,6 +630,28 @@ name|CacheValue
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|lock
+operator|.
+name|OzoneManagerLock
+operator|.
+name|Resource
+operator|.
+name|BUCKET_LOCK
+import|;
+end_import
+
 begin_comment
 comment|/**  * Handles CreateKey request.  */
 end_comment
@@ -1333,8 +1355,10 @@ operator|.
 name|getLock
 argument_list|()
 operator|.
-name|acquireBucketLock
+name|acquireLock
 argument_list|(
+name|BUCKET_LOCK
+argument_list|,
 name|volumeName
 argument_list|,
 name|bucketName
@@ -1430,8 +1454,10 @@ operator|.
 name|getLock
 argument_list|()
 operator|.
-name|releaseBucketLock
+name|releaseLock
 argument_list|(
+name|BUCKET_LOCK
+argument_list|,
 name|volumeName
 argument_list|,
 name|bucketName

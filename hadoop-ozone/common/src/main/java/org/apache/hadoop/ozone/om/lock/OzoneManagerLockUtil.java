@@ -139,7 +139,7 @@ name|OzoneManagerLock
 operator|.
 name|Resource
 operator|.
-name|S3_BUCKET
+name|S3_BUCKET_LOCK
 condition|)
 block|{
 return|return
@@ -157,7 +157,7 @@ name|OzoneManagerLock
 operator|.
 name|Resource
 operator|.
-name|VOLUME
+name|VOLUME_LOCK
 condition|)
 block|{
 return|return
@@ -175,7 +175,7 @@ name|OzoneManagerLock
 operator|.
 name|Resource
 operator|.
-name|USER
+name|USER_LOCK
 condition|)
 block|{
 return|return
@@ -193,7 +193,7 @@ name|OzoneManagerLock
 operator|.
 name|Resource
 operator|.
-name|S3_SECRET
+name|S3_SECRET_LOCK
 condition|)
 block|{
 return|return
@@ -211,7 +211,7 @@ name|OzoneManagerLock
 operator|.
 name|Resource
 operator|.
-name|PREFIX
+name|PREFIX_LOCK
 condition|)
 block|{
 return|return

@@ -466,6 +466,28 @@ name|CacheValue
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|lock
+operator|.
+name|OzoneManagerLock
+operator|.
+name|Resource
+operator|.
+name|VOLUME_LOCK
+import|;
+end_import
+
 begin_comment
 comment|/**  * Handles set Quota request for volume.  */
 end_comment
@@ -810,8 +832,10 @@ operator|.
 name|getLock
 argument_list|()
 operator|.
-name|acquireVolumeLock
+name|acquireLock
 argument_list|(
+name|VOLUME_LOCK
+argument_list|,
 name|volume
 argument_list|)
 expr_stmt|;
@@ -926,8 +950,10 @@ operator|.
 name|getLock
 argument_list|()
 operator|.
-name|releaseVolumeLock
+name|releaseLock
 argument_list|(
+name|VOLUME_LOCK
+argument_list|,
 name|volume
 argument_list|)
 expr_stmt|;

@@ -170,10 +170,10 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Acquire lock on resource.    *    * For S3_Bucket, VOLUME, BUCKET type resource, same thread acquiring lock    * again is allowed.    *    * For USER, PREFIX, S3_SECRET type resource, same thread acquiring lock    * again is not allowed.    *    * Special Note for UserLock: Single thread can acquire single user lock/    * multi user lock. But not both at the same time.    * @param resource - Type of the resource.    * @param resources - Resource names on which user want to acquire lock.    * For Resource type bucket, first param should be volume, second param    * should be bucket name. For remaining all resource only one param should    * be passed.    */
+comment|/**    * Acquire lock on resource.    *    * For S3_BUCKET_LOCK, VOLUME_LOCK, BUCKET_LOCK type resource, same    * thread acquiring lock again is allowed.    *    * For USER_LOCK, PREFIX_LOCK, S3_SECRET_LOCK type resource, same thread    * acquiring lock again is not allowed.    *    * Special Note for USER_LOCK: Single thread can acquire single user lock/    * multi user lock. But not both at the same time.    * @param resource - Type of the resource.    * @param resources - Resource names on which user want to acquire lock.    * For Resource type BUCKET_LOCK, first param should be volume, second param    * should be bucket name. For remaining all resource only one param should    * be passed.    */
 DECL|method|acquireLock (Resource resource, String... resources)
 specifier|public
-name|void
+name|boolean
 name|acquireLock
 parameter_list|(
 name|Resource
@@ -268,6 +268,9 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+return|return
+literal|true
+return|;
 block|}
 block|}
 comment|/**    * Generate resource name to be locked.    * @param resource    * @param resources    */
@@ -296,7 +299,7 @@ name|resource
 operator|!=
 name|Resource
 operator|.
-name|BUCKET
+name|BUCKET_LOCK
 condition|)
 block|{
 return|return
@@ -326,7 +329,7 @@ name|resource
 operator|==
 name|Resource
 operator|.
-name|BUCKET
+name|BUCKET_LOCK
 condition|)
 block|{
 return|return
@@ -466,7 +469,7 @@ block|}
 comment|/**    * Acquire lock on multiple users.    * @param firstUser    * @param secondUser    */
 DECL|method|acquireMultiUserLock (String firstUser, String secondUser)
 specifier|public
-name|void
+name|boolean
 name|acquireMultiUserLock
 parameter_list|(
 name|String
@@ -481,7 +484,7 @@ name|resource
 init|=
 name|Resource
 operator|.
-name|USER
+name|USER_LOCK
 decl_stmt|;
 name|firstUser
 operator|=
@@ -671,6 +674,9 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+return|return
+literal|true
+return|;
 block|}
 block|}
 comment|/**    * Release lock on multiple users.    * @param firstUser    * @param secondUser    */
@@ -691,7 +697,7 @@ name|resource
 init|=
 name|Resource
 operator|.
-name|USER
+name|USER_LOCK
 decl_stmt|;
 name|firstUser
 operator|=
@@ -809,7 +815,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Release lock on resource.    * @param resource - Type of the resource.    * @param resources - Resource names on which user want to acquire lock.    * For Resource type bucket, first param should be volume, second param    * should be bucket name. For remaining all resource only one param should    * be passed.    */
+comment|/**    * Release lock on resource.    * @param resource - Type of the resource.    * @param resources - Resource names on which user want to acquire lock.    * For Resource type BUCKET_LOCK, first param should be volume, second param    * should be bucket name. For remaining all resource only one param should    * be passed.    */
 DECL|method|releaseLock (Resource resource, String... resources)
 specifier|public
 name|void
@@ -884,80 +890,80 @@ enum|enum
 name|Resource
 block|{
 comment|// For S3 Bucket need to allow only for S3, that should be means only 1.
-DECL|enumConstant|S3_BUCKET
-name|S3_BUCKET
+DECL|enumConstant|S3_BUCKET_LOCK
+name|S3_BUCKET_LOCK
 argument_list|(
 operator|(
 name|byte
 operator|)
 literal|0
 argument_list|,
-literal|"S3_BUCKET"
+literal|"S3_BUCKET_LOCK"
 argument_list|)
 block|,
 comment|// = 1
 comment|// For volume need to allow both s3 bucket and volume. 01 + 10 = 11 (3)
-DECL|enumConstant|VOLUME
-name|VOLUME
+DECL|enumConstant|VOLUME_LOCK
+name|VOLUME_LOCK
 argument_list|(
 operator|(
 name|byte
 operator|)
 literal|1
 argument_list|,
-literal|"VOLUME"
+literal|"VOLUME_LOCK"
 argument_list|)
 block|,
 comment|// = 2
 comment|// For bucket we need to allow both s3 bucket, volume and bucket. Which
 comment|// is equal to 100 + 010 + 001 = 111 = 4 + 2 + 1 = 7
-DECL|enumConstant|BUCKET
-name|BUCKET
+DECL|enumConstant|BUCKET_LOCK
+name|BUCKET_LOCK
 argument_list|(
 operator|(
 name|byte
 operator|)
 literal|2
 argument_list|,
-literal|"BUCKET"
+literal|"BUCKET_LOCK"
 argument_list|)
 block|,
 comment|// = 4
 comment|// For user we need to allow s3 bucket, volume, bucket and user lock.
 comment|// Which is 8  4 + 2 + 1 = 15
-DECL|enumConstant|USER
-name|USER
+DECL|enumConstant|USER_LOCK
+name|USER_LOCK
 argument_list|(
 operator|(
 name|byte
 operator|)
 literal|3
 argument_list|,
-literal|"USER"
+literal|"USER_LOCK"
 argument_list|)
 block|,
 comment|// 15
-DECL|enumConstant|S3_SECRET
-name|S3_SECRET
+DECL|enumConstant|S3_SECRET_LOCK
+name|S3_SECRET_LOCK
 argument_list|(
 operator|(
 name|byte
 operator|)
 literal|4
 argument_list|,
-literal|"S3_SECRET"
+literal|"S3_SECRET_LOCK"
 argument_list|)
 block|,
 comment|// 31
-DECL|enumConstant|PREFIX
-name|PREFIX
+DECL|enumConstant|PREFIX_LOCK
+name|PREFIX_LOCK
 argument_list|(
 operator|(
 name|byte
 operator|)
 literal|5
 argument_list|,
-literal|"PREFIX"
+literal|"PREFIX_LOCK"
 argument_list|)
 block|;
 comment|//63
@@ -1055,46 +1061,46 @@ name|short
 name|lockSetVal
 parameter_list|)
 block|{
-comment|// For USER, S3_SECRET and  PREFIX we shall not allow re-acquire locks at
-comment|// from single thread. 2nd condition is we have acquired one of these
-comment|// locks, but after that trying to acquire a lock with less than equal of
-comment|// lockLevel, we should disallow.
+comment|// For USER_LOCK, S3_SECRET_LOCK and  PREFIX_LOCK we shall not allow
+comment|// re-acquire locks from single thread. 2nd condition is we have
+comment|// acquired one of these locks, but after that trying to acquire a lock
+comment|// with less than equal of lockLevel, we should disallow.
 if|if
 condition|(
 operator|(
 operator|(
-name|USER
+name|USER_LOCK
 operator|.
 name|setMask
 operator|&
 name|lockSetVal
 operator|)
 operator|==
-name|USER
+name|USER_LOCK
 operator|.
 name|setMask
 operator|||
 operator|(
-name|S3_SECRET
+name|S3_SECRET_LOCK
 operator|.
 name|setMask
 operator|&
 name|lockSetVal
 operator|)
 operator|==
-name|S3_SECRET
+name|S3_SECRET_LOCK
 operator|.
 name|setMask
 operator|||
 operator|(
-name|PREFIX
+name|PREFIX_LOCK
 operator|.
 name|setMask
 operator|&
 name|lockSetVal
 operator|)
 operator|==
-name|PREFIX
+name|PREFIX_LOCK
 operator|.
 name|setMask
 operator|)
