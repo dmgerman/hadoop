@@ -13014,7 +13014,7 @@ name|int
 DECL|field|DEFAULT_RM_ACTIVITIES_MANAGER_APP_ACTIVITIES_MAX_QUEUE_LENGTH
 name|DEFAULT_RM_ACTIVITIES_MANAGER_APP_ACTIVITIES_MAX_QUEUE_LENGTH
 init|=
-literal|1000
+literal|100
 decl_stmt|;
 DECL|method|YarnConfiguration ()
 specifier|public

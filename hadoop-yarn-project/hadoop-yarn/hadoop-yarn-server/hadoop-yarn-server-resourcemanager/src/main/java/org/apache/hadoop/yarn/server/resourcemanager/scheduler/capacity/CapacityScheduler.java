@@ -16309,6 +16309,35 @@ name|destroy
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|isMultiNodePlacementEnabled ()
+specifier|public
+name|boolean
+name|isMultiNodePlacementEnabled
+parameter_list|()
+block|{
+return|return
+name|multiNodePlacementEnabled
+return|;
+block|}
+DECL|method|getNumAsyncSchedulerThreads ()
+specifier|public
+name|int
+name|getNumAsyncSchedulerThreads
+parameter_list|()
+block|{
+return|return
+name|asyncSchedulerThreads
+operator|==
+literal|null
+condition|?
+literal|0
+else|:
+name|asyncSchedulerThreads
+operator|.
+name|size
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 
