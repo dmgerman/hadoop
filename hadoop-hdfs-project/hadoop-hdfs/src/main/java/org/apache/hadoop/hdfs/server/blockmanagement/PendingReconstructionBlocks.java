@@ -522,11 +522,17 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
+synchronized|synchronized
+init|(
+name|timedOutItems
+init|)
+block|{
 name|timedOutItems
 operator|.
 name|clear
 argument_list|()
 expr_stmt|;
+block|}
 name|timedOutCount
 operator|=
 literal|0L
