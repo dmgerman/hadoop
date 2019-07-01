@@ -240,6 +240,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|lang3
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|ozone
@@ -426,6 +440,60 @@ name|LoggerFactory
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|recon
+operator|.
+name|ReconConstants
+operator|.
+name|FETCH_ALL
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|recon
+operator|.
+name|ReconConstants
+operator|.
+name|RECON_QUERY_LIMIT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|recon
+operator|.
+name|ReconConstants
+operator|.
+name|RECON_QUERY_PREVKEY
+import|;
+end_import
+
 begin_comment
 comment|/**  * Endpoint for querying keys that belong to a container.  */
 end_comment
@@ -478,10 +546,10 @@ specifier|private
 name|ReconOMMetadataManager
 name|omMetadataManager
 decl_stmt|;
-comment|/**    * Return @{@link org.apache.hadoop.ozone.recon.api.types.ContainerMetadata}    * for all the containers.    *    * @return {@link Response}    */
+comment|/**    * Return @{@link org.apache.hadoop.ozone.recon.api.types.ContainerMetadata}    * for the containers starting from the given "prev-key" query param for the    * given "limit". The given "prev-key" is skipped from the results returned.    *    * @param limit max no. of containers to get.    * @param prevKey the containerID after which results are returned.    * @return {@link Response}    */
 annotation|@
 name|GET
-DECL|method|getContainers ( @efaultValueR) @ueryParamR) int limit)
+DECL|method|getContainers ( @efaultValueFETCH_ALL) @ueryParamRECON_QUERY_LIMIT) int limit, @DefaultValue(R) @QueryParam(RECON_QUERY_PREVKEY) long prevKey)
 specifier|public
 name|Response
 name|getContainers
@@ -489,15 +557,28 @@ parameter_list|(
 annotation|@
 name|DefaultValue
 argument_list|(
-literal|"-1"
+name|FETCH_ALL
 argument_list|)
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"limit"
+name|RECON_QUERY_LIMIT
 argument_list|)
 name|int
 name|limit
+parameter_list|,
+annotation|@
+name|DefaultValue
+argument_list|(
+literal|"0"
+argument_list|)
+annotation|@
+name|QueryParam
+argument_list|(
+name|RECON_QUERY_PREVKEY
+argument_list|)
+name|long
+name|prevKey
 parameter_list|)
 block|{
 name|Map
@@ -517,6 +598,8 @@ operator|.
 name|getContainers
 argument_list|(
 name|limit
+argument_list|,
+name|prevKey
 argument_list|)
 expr_stmt|;
 block|}
@@ -555,7 +638,7 @@ name|build
 argument_list|()
 return|;
 block|}
-comment|/**    * Return @{@link org.apache.hadoop.ozone.recon.api.types.KeyMetadata} for    * all keys that belong to the container identified by the id param.    *    * @param containerId Container Id    * @return {@link Response}    */
+comment|/**    * Return @{@link org.apache.hadoop.ozone.recon.api.types.KeyMetadata} for    * all keys that belong to the container identified by the id param    * starting from the given "prev-key" query param for the given "limit".    * The given prevKeyPrefix is skipped from the results returned.    *    * @param containerID the given containerID.    * @param limit max no. of keys to get.    * @param prevKeyPrefix the key prefix after which results are returned.    * @return {@link Response}    */
 annotation|@
 name|GET
 annotation|@
@@ -563,7 +646,7 @@ name|Path
 argument_list|(
 literal|"/{id}"
 argument_list|)
-DECL|method|getKeysForContainer ( @athParamR) Long containerId, @DefaultValue(R) @QueryParam(R) int limit)
+DECL|method|getKeysForContainer ( @athParamR) Long containerID, @DefaultValue(FETCH_ALL) @QueryParam(RECON_QUERY_LIMIT) int limit, @DefaultValue(StringUtils.EMPTY) @QueryParam(RECON_QUERY_PREVKEY) String prevKeyPrefix)
 specifier|public
 name|Response
 name|getKeysForContainer
@@ -574,20 +657,35 @@ argument_list|(
 literal|"id"
 argument_list|)
 name|Long
-name|containerId
+name|containerID
 parameter_list|,
 annotation|@
 name|DefaultValue
 argument_list|(
-literal|"-1"
+name|FETCH_ALL
 argument_list|)
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"limit"
+name|RECON_QUERY_LIMIT
 argument_list|)
 name|int
 name|limit
+parameter_list|,
+annotation|@
+name|DefaultValue
+argument_list|(
+name|StringUtils
+operator|.
+name|EMPTY
+argument_list|)
+annotation|@
+name|QueryParam
+argument_list|(
+name|RECON_QUERY_PREVKEY
+argument_list|)
+name|String
+name|prevKeyPrefix
 parameter_list|)
 block|{
 name|Map
@@ -617,7 +715,9 @@ name|containerDBServiceProvider
 operator|.
 name|getKeyPrefixesForContainer
 argument_list|(
-name|containerId
+name|containerID
+argument_list|,
+name|prevKeyPrefix
 argument_list|)
 decl_stmt|;
 comment|// Get set of Container-Key mappings for given containerId.
@@ -742,7 +842,7 @@ operator|.
 name|getContainerID
 argument_list|()
 operator|==
-name|containerId
+name|containerID
 argument_list|)
 operator|.
 name|collect

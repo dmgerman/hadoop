@@ -166,7 +166,7 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Get the stored key prefixes for the given containerId.    *    * @param containerId the given containerId.    * @return Map of Key prefix -> count.    */
-DECL|method|getKeyPrefixesForContainer (long containerId)
+DECL|method|getKeyPrefixesForContainer ( long containerId)
 name|Map
 argument_list|<
 name|ContainerKeyPrefix
@@ -181,21 +181,27 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get a Map of containerID, containerMetadata of all the Containers.    *    * @return Map of containerID -> containerMetadata.    * @throws IOException    */
-DECL|method|getContainers ()
+comment|/**    * Get the stored key prefixes for the given containerId starting    * after the given keyPrefix.    *    * @param containerId the given containerId.    * @param prevKeyPrefix the key prefix to seek to and start scanning.    * @return Map of Key prefix -> count.    */
+DECL|method|getKeyPrefixesForContainer ( long containerId, String prevKeyPrefix)
 name|Map
 argument_list|<
-name|Long
+name|ContainerKeyPrefix
 argument_list|,
-name|ContainerMetadata
+name|Integer
 argument_list|>
-name|getContainers
-parameter_list|()
+name|getKeyPrefixesForContainer
+parameter_list|(
+name|long
+name|containerId
+parameter_list|,
+name|String
+name|prevKeyPrefix
+parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get a Map of containerID, containerMetadata of Containers only for the    * given limit. If the limit is -1 or any integer<0, then return all    * the containers without any limit.    *    * @return Map of containerID -> containerMetadata.    * @throws IOException    */
-DECL|method|getContainers (int limit)
+comment|/**    * Get a Map of containerID, containerMetadata of Containers only for the    * given limit. If the limit is -1 or any integer<0, then return all    * the containers without any limit.    *    * @param limit the no. of containers to fetch.    * @param prevContainer containerID after which the results are returned.    * @return Map of containerID -> containerMetadata.    * @throws IOException    */
+DECL|method|getContainers (int limit, long prevContainer)
 name|Map
 argument_list|<
 name|Long
@@ -206,6 +212,9 @@ name|getContainers
 parameter_list|(
 name|int
 name|limit
+parameter_list|,
+name|long
+name|prevContainer
 parameter_list|)
 throws|throws
 name|IOException
@@ -221,13 +230,11 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get iterator to the entire container DB.    * @return TableIterator    * @throws IOException exception    */
+comment|/**    * Get iterator to the entire container DB.    * @return TableIterator    */
 DECL|method|getContainerTableIterator ()
 name|TableIterator
 name|getContainerTableIterator
 parameter_list|()
-throws|throws
-name|IOException
 function_decl|;
 block|}
 end_interface
