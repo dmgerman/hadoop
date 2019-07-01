@@ -158,8 +158,8 @@ specifier|public
 enum|enum
 name|ResultCodes
 block|{
-DECL|enumConstant|SUCCEESS
-name|SUCCEESS
+DECL|enumConstant|OK
+name|OK
 block|,
 DECL|enumConstant|FAILED_TO_LOAD_NODEPOOL
 name|FAILED_TO_LOAD_NODEPOOL
@@ -235,6 +235,12 @@ name|FAILED_TO_FIND_ACTIVE_PIPELINE
 block|,
 DECL|enumConstant|FAILED_TO_INIT_CONTAINER_PLACEMENT_POLICY
 name|FAILED_TO_INIT_CONTAINER_PLACEMENT_POLICY
+block|,
+DECL|enumConstant|FAILED_TO_ALLOCATE_ENOUGH_BLOCKS
+name|FAILED_TO_ALLOCATE_ENOUGH_BLOCKS
+block|,
+DECL|enumConstant|INTERNAL_ERROR
+name|INTERNAL_ERROR
 block|}
 block|}
 end_class

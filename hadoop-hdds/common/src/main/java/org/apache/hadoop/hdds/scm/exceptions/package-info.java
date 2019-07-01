@@ -21,7 +21,7 @@ package|;
 end_package
 
 begin_comment
-comment|// Exceptions thrown by SCM.
+comment|/**  Exception objects for the SCM Server.  */
 end_comment
 
 end_unit
