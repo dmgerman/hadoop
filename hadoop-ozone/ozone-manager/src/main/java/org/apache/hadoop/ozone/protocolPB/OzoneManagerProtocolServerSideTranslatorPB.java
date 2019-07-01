@@ -461,7 +461,6 @@ return|;
 block|}
 else|else
 block|{
-comment|// PreExecute if needed.
 if|if
 condition|(
 name|omRatisServer
