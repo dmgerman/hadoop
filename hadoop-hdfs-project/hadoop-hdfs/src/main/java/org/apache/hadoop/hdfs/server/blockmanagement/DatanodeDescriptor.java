@@ -2027,6 +2027,15 @@ block|{
 name|DatanodeStorageInfo
 name|storage
 init|=
+literal|null
+decl_stmt|;
+synchronized|synchronized
+init|(
+name|storageMap
+init|)
+block|{
+name|storage
+operator|=
 name|storageMap
 operator|.
 name|get
@@ -2039,7 +2048,8 @@ operator|.
 name|getStorageID
 argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|checkFailedStorages
