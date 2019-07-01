@@ -419,6 +419,25 @@ name|DFS_CONTAINER_RATIS_LOG_APPENDER_QUEUE_BYTE_LIMIT_DEFAULT
 init|=
 literal|"32MB"
 decl_stmt|;
+DECL|field|DFS_CONTAINER_RATIS_LOG_PURGE_GAP
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_CONTAINER_RATIS_LOG_PURGE_GAP
+init|=
+literal|"dfs.container.ratis.log.purge.gap"
+decl_stmt|;
+comment|// TODO: Set to 1024 once RATIS issue around purge is fixed.
+DECL|field|DFS_CONTAINER_RATIS_LOG_PURGE_GAP_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DFS_CONTAINER_RATIS_LOG_PURGE_GAP_DEFAULT
+init|=
+literal|1000000000
+decl_stmt|;
 comment|// expiry interval stateMachineData cache entry inside containerStateMachine
 specifier|public
 specifier|static
@@ -607,7 +626,7 @@ specifier|final
 name|long
 name|DFS_RATIS_SNAPSHOT_THRESHOLD_DEFAULT
 init|=
-literal|10000
+literal|100000
 decl_stmt|;
 DECL|field|DFS_RATIS_SERVER_FAILURE_DURATION_KEY
 specifier|public
