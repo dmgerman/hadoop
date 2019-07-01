@@ -1502,6 +1502,24 @@ name|OM_RATIS_SNAPSHOT_BEFORE_DB_CHECKPOINT
 init|=
 literal|"snapshotBeforeCheckpoint"
 decl_stmt|;
+DECL|field|JAVA_TMP_DIR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|JAVA_TMP_DIR
+init|=
+literal|"java.io.tmpdir"
+decl_stmt|;
+DECL|field|LOCALHOST
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|LOCALHOST
+init|=
+literal|"localhost"
+decl_stmt|;
 block|}
 end_class
 
