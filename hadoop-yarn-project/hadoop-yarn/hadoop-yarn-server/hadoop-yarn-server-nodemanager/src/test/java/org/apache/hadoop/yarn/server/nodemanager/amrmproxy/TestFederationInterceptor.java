@@ -4400,6 +4400,16 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
+name|assertNotNull
+argument_list|(
+name|response
+operator|.
+name|getApplicationPriority
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Test
