@@ -469,6 +469,8 @@ argument_list|(
 name|ozoneConf
 argument_list|)
 decl_stmt|;
+try|try
+init|(
 name|RaftClient
 name|client
 init|=
@@ -493,7 +495,8 @@ name|tlsConfig
 argument_list|,
 name|requestTimeout
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|client
 operator|.
 name|groupRemove
@@ -516,6 +519,7 @@ name|getId
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 end_class
