@@ -2766,7 +2766,6 @@ comment|/*    * Resource    */
 DECL|method|convertToProtoFormat (Resource r)
 specifier|public
 specifier|static
-specifier|synchronized
 name|ResourceProto
 name|convertToProtoFormat
 parameter_list|(

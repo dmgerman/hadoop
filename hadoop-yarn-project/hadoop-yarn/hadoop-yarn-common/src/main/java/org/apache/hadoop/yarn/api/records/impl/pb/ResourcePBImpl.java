@@ -461,6 +461,7 @@ argument_list|()
 expr_stmt|;
 block|}
 DECL|method|getProto ()
+specifier|synchronized
 specifier|public
 name|ResourceProto
 name|getProto
@@ -489,6 +490,7 @@ name|proto
 return|;
 block|}
 DECL|method|maybeInitBuilder ()
+specifier|synchronized
 specifier|private
 name|void
 name|maybeInitBuilder
@@ -695,6 +697,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|initResources ()
+specifier|synchronized
 specifier|private
 name|void
 name|initResources
