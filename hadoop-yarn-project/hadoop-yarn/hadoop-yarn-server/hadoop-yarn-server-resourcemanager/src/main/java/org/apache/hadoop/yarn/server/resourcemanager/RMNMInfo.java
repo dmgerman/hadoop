@@ -76,6 +76,16 @@ name|javax
 operator|.
 name|management
 operator|.
+name|ObjectName
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|management
+operator|.
 name|StandardMBean
 import|;
 end_import
@@ -230,6 +240,11 @@ specifier|private
 name|ResourceScheduler
 name|scheduler
 decl_stmt|;
+DECL|field|mbeanObjectName
+specifier|private
+name|ObjectName
+name|mbeanObjectName
+decl_stmt|;
 comment|/**    * Constructor for RMNMInfo registers the bean with JMX.    *     * @param rmc resource manager's context object    * @param sched resource manager's scheduler object    */
 DECL|method|RMNMInfo (RMContext rmc, ResourceScheduler sched)
 specifier|public
@@ -271,6 +286,8 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
+name|mbeanObjectName
+operator|=
 name|MBeans
 operator|.
 name|register
@@ -304,6 +321,20 @@ operator|.
 name|info
 argument_list|(
 literal|"Registered RMNMInfo MBean"
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|unregister ()
+specifier|public
+name|void
+name|unregister
+parameter_list|()
+block|{
+name|MBeans
+operator|.
+name|unregister
+argument_list|(
+name|mbeanObjectName
 argument_list|)
 expr_stmt|;
 block|}

@@ -4158,6 +4158,11 @@ specifier|private
 name|StandByTransitionRunnable
 name|standByTransitionRunnable
 decl_stmt|;
+DECL|field|rmnmInfo
+specifier|private
+name|RMNMInfo
+name|rmnmInfo
+decl_stmt|;
 DECL|method|RMActiveServices (ResourceManager rm)
 name|RMActiveServices
 parameter_list|(
@@ -5049,6 +5054,8 @@ argument_list|(
 name|proxyCAManager
 argument_list|)
 expr_stmt|;
+name|rmnmInfo
+operator|=
 operator|new
 name|RMNMInfo
 argument_list|(
@@ -5394,6 +5401,20 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+comment|// unregister rmnmInfo bean
+if|if
+condition|(
+name|rmnmInfo
+operator|!=
+literal|null
+condition|)
+block|{
+name|rmnmInfo
+operator|.
+name|unregister
+argument_list|()
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|rmContext
@@ -6522,7 +6543,7 @@ expr_stmt|;
 block|}
 name|Builder
 argument_list|<
-name|ApplicationMasterService
+name|ResourceManager
 argument_list|>
 name|builder
 init|=
@@ -6532,11 +6553,11 @@ name|$for
 argument_list|(
 literal|"cluster"
 argument_list|,
-name|ApplicationMasterService
+name|ResourceManager
 operator|.
 name|class
 argument_list|,
-name|masterService
+name|this
 argument_list|,
 literal|"ws"
 argument_list|)
