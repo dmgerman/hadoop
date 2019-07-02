@@ -54,6 +54,22 @@ name|com
 operator|.
 name|google
 operator|.
+name|common
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ThreadFactoryBuilder
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
 name|protobuf
 operator|.
 name|ServiceException
@@ -99,6 +115,42 @@ operator|.
 name|concurrent
 operator|.
 name|CompletableFuture
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ExecutorService
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ThreadFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
 import|;
 end_import
 
@@ -281,6 +333,22 @@ operator|.
 name|util
 operator|.
 name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|HadoopExecutors
 import|;
 end_import
 
@@ -548,6 +616,12 @@ specifier|final
 name|OzoneManagerDoubleBuffer
 name|ozoneManagerDoubleBuffer
 decl_stmt|;
+DECL|field|executorService
+specifier|private
+specifier|final
+name|ExecutorService
+name|executorService
+decl_stmt|;
 DECL|method|OzoneManagerStateMachine (OzoneManagerRatisServer ratisServer)
 specifier|public
 name|OzoneManagerStateMachine
@@ -598,6 +672,37 @@ argument_list|(
 name|ozoneManager
 argument_list|,
 name|ozoneManagerDoubleBuffer
+argument_list|)
+expr_stmt|;
+name|ThreadFactory
+name|build
+init|=
+operator|new
+name|ThreadFactoryBuilder
+argument_list|()
+operator|.
+name|setDaemon
+argument_list|(
+literal|true
+argument_list|)
+operator|.
+name|setNameFormat
+argument_list|(
+literal|"OM StateMachine ApplyTransaction Thread - %d"
+argument_list|)
+operator|.
+name|build
+argument_list|()
+decl_stmt|;
+name|this
+operator|.
+name|executorService
+operator|=
+name|HadoopExecutors
+operator|.
+name|newSingleThreadExecutor
+argument_list|(
+name|build
 argument_list|)
 expr_stmt|;
 block|}
@@ -806,6 +911,30 @@ operator|.
 name|getIndex
 argument_list|()
 decl_stmt|;
+comment|// In the current approach we have one single global thread executor.
+comment|// with single thread. Right now this is being done for correctness, as
+comment|// applyTransaction will be run on multiple OM's we want to execute the
+comment|// transactions in the same order on all OM's, otherwise there is a
+comment|// chance that OM replica's can be out of sync.
+comment|// TODO: In this way we are making all applyTransactions in
+comment|// OM serial order. Revisit this in future to use multiple executors for
+comment|// volume/bucket.
+comment|// Reason for not immediately implementing executor per volume is, if
+comment|// one executor operations are slow, we cannot update the
+comment|// lastAppliedIndex in OzoneManager StateMachine, even if other
+comment|// executor has completed the transactions with id more.
+comment|// We have 300 transactions, And for each volume we have transactions
+comment|// of 150. Volume1 transactions 0 - 149 and Volume2 transactions 150 -
+comment|// 299.
+comment|// Example: Executor1 - Volume1 - 100 (current completed transaction)
+comment|// Example: Executor2 - Volume2 - 299 (current completed transaction)
+comment|// Now we have applied transactions of 0 - 100 and 149 - 299. We
+comment|// cannot update lastAppliedIndex to 299. We need to update it to 100,
+comment|// since 101 - 149 are not applied. When OM restarts it will
+comment|// applyTransactions from lastAppliedIndex.
+comment|// We can update the lastAppliedIndex to 100, and update it to 299,
+comment|// only after completing 101 - 149. In initial stage, we are starting
+comment|// with single global executor. Will revisit this when needed.
 name|CompletableFuture
 argument_list|<
 name|Message
@@ -824,6 +953,8 @@ name|request
 argument_list|,
 name|trxLogIndex
 argument_list|)
+argument_list|,
+name|executorService
 argument_list|)
 decl_stmt|;
 return|return
@@ -1412,6 +1543,21 @@ name|ozoneManagerDoubleBuffer
 operator|.
 name|stop
 argument_list|()
+expr_stmt|;
+name|HadoopExecutors
+operator|.
+name|shutdown
+argument_list|(
+name|executorService
+argument_list|,
+name|LOG
+argument_list|,
+literal|5
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
+argument_list|)
 expr_stmt|;
 block|}
 block|}
