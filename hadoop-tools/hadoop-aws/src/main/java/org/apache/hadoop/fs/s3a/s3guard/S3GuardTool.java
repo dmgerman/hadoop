@@ -5670,11 +5670,22 @@ name|printOption
 argument_list|(
 name|out
 argument_list|,
-literal|"Authoritative S3Guard"
+literal|"Authoritative Metadata Store"
 argument_list|,
 name|METADATASTORE_AUTHORITATIVE
 argument_list|,
 literal|"false"
+argument_list|)
+expr_stmt|;
+name|printOption
+argument_list|(
+name|out
+argument_list|,
+literal|"Authoritative Path"
+argument_list|,
+name|AUTHORITATIVE_PATH
+argument_list|,
+literal|""
 argument_list|)
 expr_stmt|;
 name|authMode

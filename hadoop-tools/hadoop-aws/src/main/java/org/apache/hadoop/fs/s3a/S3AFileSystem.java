@@ -2340,10 +2340,18 @@ specifier|private
 name|MetadataStore
 name|metadataStore
 decl_stmt|;
-DECL|field|allowAuthoritative
+DECL|field|allowAuthoritativeMetadataStore
 specifier|private
 name|boolean
-name|allowAuthoritative
+name|allowAuthoritativeMetadataStore
+decl_stmt|;
+DECL|field|allowAuthoritativePaths
+specifier|private
+name|Collection
+argument_list|<
+name|String
+argument_list|>
+name|allowAuthoritativePaths
 decl_stmt|;
 comment|/** Delegation token integration; non-empty when DT support is enabled. */
 DECL|field|delegationTokens
@@ -3052,7 +3060,7 @@ name|this
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|allowAuthoritative
+name|allowAuthoritativeMetadataStore
 operator|=
 name|conf
 operator|.
@@ -3061,6 +3069,15 @@ argument_list|(
 name|METADATASTORE_AUTHORITATIVE
 argument_list|,
 name|DEFAULT_METADATASTORE_AUTHORITATIVE
+argument_list|)
+expr_stmt|;
+name|allowAuthoritativePaths
+operator|=
+name|S3Guard
+operator|.
+name|getAuthoritativePaths
+argument_list|(
+name|this
 argument_list|)
 expr_stmt|;
 if|if
@@ -3073,12 +3090,14 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Using metadata store {}, authoritative={}"
+literal|"Using metadata store {}, authoritative store={}, authoritative path={}"
 argument_list|,
 name|getMetadataStore
 argument_list|()
 argument_list|,
-name|allowAuthoritative
+name|allowAuthoritativeMetadataStore
+argument_list|,
+name|allowAuthoritativePaths
 argument_list|)
 expr_stmt|;
 block|}
@@ -4391,8 +4410,12 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Turns a path (relative or otherwise) into an S3 key, adding a trailing    * "/" if the path is not the root<i>and</i> does not already have a "/"    * at the end.    *    * @param key s3 key or ""    * @return the with a trailing "/", or, if it is the root key, "",    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|maybeAddTrailingSlash (String key)
-specifier|private
+specifier|public
 name|String
 name|maybeAddTrailingSlash
 parameter_list|(
@@ -6346,7 +6369,7 @@ return|return
 name|hasMetadataStore
 argument_list|()
 operator|&&
-name|allowAuthoritative
+name|allowAuthoritativeMetadataStore
 return|;
 block|}
 comment|/**    * Get the metadata store.    * This will always be non-null, but may be bound to the    * {@code NullMetadataStore}.    * @return the metadata store of this FS instance    */
@@ -9324,6 +9347,22 @@ argument_list|,
 name|ttlTimeProvider
 argument_list|)
 decl_stmt|;
+name|boolean
+name|allowAuthoritative
+init|=
+name|S3Guard
+operator|.
+name|allowAuthoritative
+argument_list|(
+name|f
+argument_list|,
+name|this
+argument_list|,
+name|allowAuthoritativeMetadataStore
+argument_list|,
+name|allowAuthoritativePaths
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|allowAuthoritative
@@ -10112,6 +10151,22 @@ comment|// Skip going to s3 if the file checked is a directory. Because if the
 comment|// dest is also a directory, there's no difference.
 comment|// TODO After HADOOP-16085 the modification detection can be done with
 comment|//  etags or object version instead of modTime
+name|boolean
+name|allowAuthoritative
+init|=
+name|S3Guard
+operator|.
+name|allowAuthoritative
+argument_list|(
+name|f
+argument_list|,
+name|this
+argument_list|,
+name|allowAuthoritativeMetadataStore
+argument_list|,
+name|allowAuthoritativePaths
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 operator|!
@@ -13869,12 +13924,24 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|", authoritative="
+literal|", authoritativeStore="
 argument_list|)
 operator|.
 name|append
 argument_list|(
-name|allowAuthoritative
+name|allowAuthoritativeMetadataStore
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|", authoritativePath="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|allowAuthoritativePaths
 argument_list|)
 expr_stmt|;
 name|sb
@@ -14668,6 +14735,22 @@ name|Path
 argument_list|>
 name|tombstones
 decl_stmt|;
+name|boolean
+name|allowAuthoritative
+init|=
+name|S3Guard
+operator|.
+name|allowAuthoritative
+argument_list|(
+name|f
+argument_list|,
+name|this
+argument_list|,
+name|allowAuthoritativeMetadataStore
+argument_list|,
+name|allowAuthoritativePaths
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|recursive
@@ -15066,6 +15149,22 @@ argument_list|,
 name|filter
 argument_list|,
 name|acceptor
+argument_list|)
+decl_stmt|;
+name|boolean
+name|allowAuthoritative
+init|=
+name|S3Guard
+operator|.
+name|allowAuthoritative
+argument_list|(
+name|f
+argument_list|,
+name|this
+argument_list|,
+name|allowAuthoritativeMetadataStore
+argument_list|,
+name|allowAuthoritativePaths
 argument_list|)
 decl_stmt|;
 return|return

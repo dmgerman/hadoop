@@ -946,6 +946,26 @@ name|USER_AGENT_PREFIX
 init|=
 literal|"fs.s3a.user.agent.prefix"
 decl_stmt|;
+comment|/** Whether or not to allow MetadataStore to be source of truth for a path prefix */
+DECL|field|AUTHORITATIVE_PATH
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|AUTHORITATIVE_PATH
+init|=
+literal|"fs.s3a.authoritative.path"
+decl_stmt|;
+DECL|field|DEFAULT_AUTHORITATIVE_PATH
+specifier|public
+specifier|static
+specifier|final
+name|String
+index|[]
+name|DEFAULT_AUTHORITATIVE_PATH
+init|=
+block|{}
+decl_stmt|;
 comment|/** Whether or not to allow MetadataStore to be source of truth. */
 DECL|field|METADATASTORE_AUTHORITATIVE
 specifier|public
