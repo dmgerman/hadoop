@@ -24,6 +24,26 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nullable
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -128,16 +148,6 @@ name|BatchOperation
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
 begin_comment
 comment|/**  * Response for CreateKey request.  */
 end_comment
@@ -160,10 +170,12 @@ specifier|private
 name|long
 name|openKeySessionID
 decl_stmt|;
-DECL|method|OMKeyCreateResponse (OmKeyInfo omKeyInfo, long openKeySessionID, OMResponse omResponse)
+DECL|method|OMKeyCreateResponse (@ullable OmKeyInfo omKeyInfo, long openKeySessionID, OMResponse omResponse)
 specifier|public
 name|OMKeyCreateResponse
 parameter_list|(
+annotation|@
+name|Nullable
 name|OmKeyInfo
 name|omKeyInfo
 parameter_list|,

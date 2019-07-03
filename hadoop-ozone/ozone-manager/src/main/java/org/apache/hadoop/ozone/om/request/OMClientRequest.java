@@ -342,6 +342,16 @@ name|UserGroupInformation
 import|;
 end_import
 
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
+import|;
+end_import
+
 begin_comment
 comment|/**  * OMClientRequest provides methods which every write OM request should  * implement.  */
 end_comment
@@ -674,16 +684,20 @@ return|;
 block|}
 block|}
 comment|/**    * Set parameters needed for return error response to client.    * @param omResponse    * @param ex - IOException    * @return error response need to be returned to client - OMResponse.    */
-DECL|method|createErrorOMResponse (OMResponse.Builder omResponse, IOException ex)
+DECL|method|createErrorOMResponse ( @onnull OMResponse.Builder omResponse, @Nonnull IOException ex)
 specifier|protected
 name|OMResponse
 name|createErrorOMResponse
 parameter_list|(
+annotation|@
+name|Nonnull
 name|OMResponse
 operator|.
 name|Builder
 name|omResponse
 parameter_list|,
+annotation|@
+name|Nonnull
 name|IOException
 name|ex
 parameter_list|)
