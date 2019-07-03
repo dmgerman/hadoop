@@ -4981,6 +4981,27 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
+comment|/**    * The allowed hard minimum limit for {@link    * YarnConfiguration#NM_LOG_AGGREGATION_ROLL_MONITORING_INTERVAL_SECONDS}.    */
+DECL|field|MIN_LOG_ROLLING_INTERVAL_SECONDS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MIN_LOG_ROLLING_INTERVAL_SECONDS
+init|=
+name|NM_PREFIX
+operator|+
+literal|"log-aggregation.roll-monitoring-interval-seconds.min"
+decl_stmt|;
+DECL|field|MIN_LOG_ROLLING_INTERVAL_SECONDS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|MIN_LOG_ROLLING_INTERVAL_SECONDS_DEFAULT
+init|=
+literal|3600
+decl_stmt|;
 comment|/**    * Define how many aggregated log files per application per NM we can have    * in remote file system.    */
 DECL|field|NM_LOG_AGGREGATION_NUM_LOG_FILES_SIZE_PER_APP
 specifier|public
