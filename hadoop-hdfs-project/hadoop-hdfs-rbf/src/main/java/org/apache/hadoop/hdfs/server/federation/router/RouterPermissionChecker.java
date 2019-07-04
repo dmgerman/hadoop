@@ -524,7 +524,7 @@ if|if
 condition|(
 name|ugi
 operator|.
-name|getUserName
+name|getShortUserName
 argument_list|()
 operator|.
 name|equals
