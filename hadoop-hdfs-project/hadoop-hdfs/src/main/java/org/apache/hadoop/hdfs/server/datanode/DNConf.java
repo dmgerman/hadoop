@@ -1466,13 +1466,15 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"dfs.blockreport.initialDelay is "
+name|DFS_BLOCKREPORT_INITIAL_DELAY_KEY
+operator|+
+literal|" is "
 operator|+
 literal|"greater than or equal to"
 operator|+
-literal|"dfs.blockreport.intervalMsec."
+name|DFS_BLOCKREPORT_INTERVAL_MSEC_KEY
 operator|+
-literal|" Setting initial delay to 0 msec:"
+literal|".  Setting initial delay to 0 msec:"
 argument_list|)
 expr_stmt|;
 block|}
