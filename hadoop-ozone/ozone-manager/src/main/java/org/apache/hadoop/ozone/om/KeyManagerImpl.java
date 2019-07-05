@@ -4640,9 +4640,14 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|debug
+name|error
 argument_list|(
-literal|"Unable to update pipeline for container"
+literal|"Unable to update pipeline for container:{}"
+argument_list|,
+name|k
+operator|.
+name|getContainerID
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

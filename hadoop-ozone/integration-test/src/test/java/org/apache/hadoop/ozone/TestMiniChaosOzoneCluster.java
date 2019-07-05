@@ -348,7 +348,7 @@ specifier|static
 name|int
 name|failureInterval
 init|=
-literal|5
+literal|300
 decl_stmt|;
 comment|// 5 second period between failures.
 DECL|field|cluster
