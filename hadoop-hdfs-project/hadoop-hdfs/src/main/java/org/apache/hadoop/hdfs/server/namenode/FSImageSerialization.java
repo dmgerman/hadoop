@@ -3160,7 +3160,7 @@ operator|.
 name|getExpiration
 argument_list|()
 operator|.
-name|getMillis
+name|getAbsoluteMillis
 argument_list|()
 argument_list|,
 name|out
@@ -3652,7 +3652,7 @@ operator|.
 name|getExpiration
 argument_list|()
 operator|.
-name|getMillis
+name|getAbsoluteMillis
 argument_list|()
 argument_list|)
 expr_stmt|;
