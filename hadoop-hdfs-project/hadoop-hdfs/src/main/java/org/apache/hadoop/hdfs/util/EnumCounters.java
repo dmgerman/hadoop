@@ -239,7 +239,6 @@ block|}
 comment|/** Negate all counters. */
 DECL|method|negation ()
 specifier|public
-specifier|final
 name|void
 name|negation
 parameter_list|()
@@ -277,7 +276,6 @@ block|}
 comment|/** Set counter e to the given value. */
 DECL|method|set (final E e, final long value)
 specifier|public
-specifier|final
 name|void
 name|set
 parameter_list|(
@@ -304,7 +302,6 @@ block|}
 comment|/** Set this counters to that counters. */
 DECL|method|set (final EnumCounters<E> that)
 specifier|public
-specifier|final
 name|void
 name|set
 parameter_list|(
@@ -352,7 +349,6 @@ block|}
 comment|/** Reset all counters to zero. */
 DECL|method|reset ()
 specifier|public
-specifier|final
 name|void
 name|reset
 parameter_list|()
@@ -366,7 +362,6 @@ block|}
 comment|/** Add the given value to counter e. */
 DECL|method|add (final E e, final long value)
 specifier|public
-specifier|final
 name|void
 name|add
 parameter_list|(
@@ -393,7 +388,6 @@ block|}
 comment|/** Add that counters to this counters. */
 DECL|method|add (final EnumCounters<E> that)
 specifier|public
-specifier|final
 name|void
 name|add
 parameter_list|(
@@ -441,7 +435,6 @@ block|}
 comment|/** Subtract the given value from counter e. */
 DECL|method|subtract (final E e, final long value)
 specifier|public
-specifier|final
 name|void
 name|subtract
 parameter_list|(
@@ -468,7 +461,6 @@ block|}
 comment|/** Subtract this counters from that counters. */
 DECL|method|subtract (final EnumCounters<E> that)
 specifier|public
-specifier|final
 name|void
 name|subtract
 parameter_list|(
@@ -516,7 +508,6 @@ block|}
 comment|/** @return the sum of all counters. */
 DECL|method|sum ()
 specifier|public
-specifier|final
 name|long
 name|sum
 parameter_list|()
@@ -632,6 +623,40 @@ name|that
 operator|.
 name|counters
 argument_list|)
+return|;
+block|}
+comment|/**    * Return a deep copy of EnumCounter.    */
+DECL|method|deepCopyEnumCounter ()
+specifier|public
+name|EnumCounters
+argument_list|<
+name|E
+argument_list|>
+name|deepCopyEnumCounter
+parameter_list|()
+block|{
+name|EnumCounters
+argument_list|<
+name|E
+argument_list|>
+name|newCounter
+init|=
+operator|new
+name|EnumCounters
+argument_list|<>
+argument_list|(
+name|enumClass
+argument_list|)
+decl_stmt|;
+name|newCounter
+operator|.
+name|set
+argument_list|(
+name|this
+argument_list|)
+expr_stmt|;
+return|return
+name|newCounter
 return|;
 block|}
 annotation|@
@@ -750,7 +775,6 @@ return|;
 block|}
 DECL|method|reset (long val)
 specifier|public
-specifier|final
 name|void
 name|reset
 parameter_list|(
