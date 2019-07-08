@@ -3002,7 +3002,12 @@ name|fs
 operator|.
 name|maybeAddTrailingSlash
 argument_list|(
+name|fs
+operator|.
+name|qualify
+argument_list|(
 name|p
+argument_list|)
 operator|.
 name|toString
 argument_list|()
