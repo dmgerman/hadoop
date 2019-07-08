@@ -949,7 +949,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The ApplicationMaster for Dynamometer. This will launch DataNodes in YARN  * containers. If the RPC address of a NameNode is specified, it will configure  * the DataNodes to talk to that NameNode. Else, a NameNode will be launched as  * part of this YARN application. This does not implement any retry/failure  * handling.  * TODO: Add proper retry/failure handling  *  *<p/>The AM will persist until it has run for a period of time equal to the  * timeout specified or until the application is killed.  *  *<p/>If the NameNode is launched internally, it will upload some information  * onto the remote HDFS instance (i.e., the default FileSystem) about its  * hostname and ports. This is in the location determined by the  * {@link DynoConstants#DYNAMOMETER_STORAGE_DIR} and  * {@link DynoConstants#NN_INFO_FILE_NAME} constants and is in the  * {@link Properties} file format. This is consumed by this AM as well as the  * {@link Client} to determine how to contact the NameNode.  *  *<p/>Information about the location of the DataNodes is logged by the AM.  */
+comment|/**  * The ApplicationMaster for Dynamometer. This will launch DataNodes in YARN  * containers. If the RPC address of a NameNode is specified, it will configure  * the DataNodes to talk to that NameNode. Else, a NameNode will be launched as  * part of this YARN application. This does not implement any retry/failure  * handling.  * TODO: Add proper retry/failure handling  *<p>  * The AM will persist until it has run for a period of time equal to the  * timeout specified or until the application is killed.  *<p>  * If the NameNode is launched internally, it will upload some information  * onto the remote HDFS instance (i.e., the default FileSystem) about its  * hostname and ports. This is in the location determined by the  * {@link DynoConstants#DYNAMOMETER_STORAGE_DIR} and  * {@link DynoConstants#NN_INFO_FILE_NAME} constants and is in the  * {@link Properties} file format. This is consumed by this AM as well as the  * {@link Client} to determine how to contact the NameNode.  *<p>  * Information about the location of the DataNodes is logged by the AM.  */
 end_comment
 
 begin_class
@@ -1316,7 +1316,7 @@ name|YarnConfiguration
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Parse command line options.    *    * @param args Command line args    * @return Whether init successful and run should be invoked    */
+comment|/**    * Parse command line options.    *    * @param args Command line args    * @return Whether init successful and run should be invoked    * @throws ParseException on error while parsing options    */
 DECL|method|init (String[] args)
 specifier|public
 name|boolean
@@ -1595,7 +1595,7 @@ name|opts
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Main run function for the application master.    *    * @return True if the application completed successfully; false if if exited    *         unexpectedly, failed, was killed, etc.    */
+comment|/**    * Main run function for the application master.    *    * @return True if the application completed successfully; false if if exited    *         unexpectedly, failed, was killed, etc.    * @throws YarnException for issues while contacting YARN daemons    * @throws IOException for other issues    * @throws InterruptedException when the thread is interrupted    */
 DECL|method|run ()
 specifier|public
 name|boolean

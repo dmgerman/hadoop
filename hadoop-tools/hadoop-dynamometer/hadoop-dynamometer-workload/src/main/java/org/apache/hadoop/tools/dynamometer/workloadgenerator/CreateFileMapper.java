@@ -157,7 +157,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * CreateFileMapper continuously creates 1 byte files for the specified duration  * to increase the number of file objects on the NN.  *  *<p/>Configuration options available:  *<ul>  *<li>{@value NUM_MAPPERS_KEY} (required): Number of mappers to launch.</li>  *<li>{@value DURATION_MIN_KEY} (required): Number of minutes to induce  *       workload for.</li>  *<li>{@value SHOULD_DELETE_KEY} (default: {@value SHOULD_DELETE_DEFAULT}):  *       If true, delete the files after creating them. This can be useful for  *       generating constant load without increasing the number of file  *       objects.</li>  *<li>{@value FILE_PARENT_PATH_KEY} (default:  *       {@value FILE_PARENT_PATH_DEFAULT}): The root directory in which to  *       create files.</li>  *</ul>  */
+comment|/**  * CreateFileMapper continuously creates 1 byte files for the specified duration  * to increase the number of file objects on the NN.  *<p>  * Configuration options available:  *<ul>  *<li>{@value NUM_MAPPERS_KEY} (required): Number of mappers to launch.</li>  *<li>{@value DURATION_MIN_KEY} (required): Number of minutes to induce  *       workload for.</li>  *<li>{@value SHOULD_DELETE_KEY} (default: {@value SHOULD_DELETE_DEFAULT}):  *       If true, delete the files after creating them. This can be useful for  *       generating constant load without increasing the number of file  *       objects.</li>  *<li>{@value FILE_PARENT_PATH_KEY} (default:  *       {@value FILE_PARENT_PATH_DEFAULT}): The root directory in which to  *       create files.</li>  *</ul>  */
 end_comment
 
 begin_class

@@ -82,7 +82,7 @@ specifier|public
 interface|interface
 name|AuditCommandParser
 block|{
-comment|/**    * Initialize this parser with the given configuration. Guaranteed to be    * called prior to any calls to {@link #parse(Text, Function)}.    *    * @param conf The Configuration to be used to set up this parser.    */
+comment|/**    * Initialize this parser with the given configuration. Guaranteed to be    * called prior to any calls to {@link #parse(Text, Function)}.    *    * @param conf The Configuration to be used to set up this parser.    * @throws IOException if error on initializing a parser.    */
 DECL|method|initialize (Configuration conf)
 name|void
 name|initialize
@@ -93,7 +93,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Convert a line of input into an {@link AuditReplayCommand}. Since    * {@link AuditReplayCommand}s store absolute timestamps, relativeToAbsolute    * can be used to convert relative timestamps (i.e., milliseconds elapsed    * between the start of the audit log and this command) into absolute    * timestamps.    *    * @param inputLine Single input line to convert.    * @param relativeToAbsolute Function converting relative timestamps    *                           (in milliseconds) to absolute timestamps    *                           (in milliseconds).    * @return A command representing the input line.    */
+comment|/**    * Convert a line of input into an {@link AuditReplayCommand}. Since    * {@link AuditReplayCommand}s store absolute timestamps, relativeToAbsolute    * can be used to convert relative timestamps (i.e., milliseconds elapsed    * between the start of the audit log and this command) into absolute    * timestamps.    *    * @param inputLine Single input line to convert.    * @param relativeToAbsolute Function converting relative timestamps    *                           (in milliseconds) to absolute timestamps    *                           (in milliseconds).    * @return A command representing the input line.    * @throws IOException if error on parsing.    */
 DECL|method|parse (Text inputLine, Function<Long, Long> relativeToAbsolute)
 name|AuditReplayCommand
 name|parse

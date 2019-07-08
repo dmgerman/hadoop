@@ -113,7 +113,7 @@ argument_list|,
 name|NullWritable
 argument_list|>
 block|{
-comment|/**    * Return the input class to be used by this mapper.    */
+comment|/**    * Return the input class to be used by this mapper.    * @param conf configuration.    * @return the {@link InputFormat} implementation for the mapper.    */
 DECL|method|getInputFormat (Configuration conf)
 specifier|public
 name|Class
@@ -134,7 +134,7 @@ operator|.
 name|class
 return|;
 block|}
-comment|/**    * Get the description of the behavior of this mapper.    */
+comment|/**    * Get the description of the behavior of this mapper.    * @return description string.    */
 DECL|method|getDescription ()
 specifier|public
 specifier|abstract
@@ -142,7 +142,7 @@ name|String
 name|getDescription
 parameter_list|()
 function_decl|;
-comment|/**    * Get a list of the description of each configuration that this mapper    * accepts.    */
+comment|/**    * Get a list of the description of each configuration that this mapper    * accepts.    * @return list of the description of each configuration.    */
 DECL|method|getConfigDescriptions ()
 specifier|public
 specifier|abstract
@@ -153,7 +153,7 @@ argument_list|>
 name|getConfigDescriptions
 parameter_list|()
 function_decl|;
-comment|/**    * Verify that the provided configuration contains all configurations required    * by this mapper.    */
+comment|/**    * Verify that the provided configuration contains all configurations required    * by this mapper.    * @param conf configuration.    * @return whether or not all configurations required are provided.    */
 DECL|method|verifyConfigurations (Configuration conf)
 specifier|public
 specifier|abstract

@@ -760,7 +760,7 @@ name|JMX_LIVE_NODES_LIST
 init|=
 literal|"LiveNodes"
 decl_stmt|;
-comment|/**    * If a file matching {@value HADOOP_TAR_FILENAME_FORMAT} and {@code version}    * is found in {@code destinationDir}, return its path. Otherwise, first    * download the tarball from an Apache mirror. If the    * {@value APACHE_DOWNLOAD_MIRROR_KEY} configuration or system property    * (checked in that order) is set, use that as the mirror; else use    * {@value APACHE_DOWNLOAD_MIRROR_DEFAULT}.    *    * @param version The version of Hadoop to download, like "2.7.4"    *                or "3.0.0-beta1"    * @return The path to the tarball.    */
+comment|/**    * If a file matching {@value HADOOP_TAR_FILENAME_FORMAT} and {@code version}    * is found in {@code destinationDir}, return its path. Otherwise, first    * download the tarball from an Apache mirror. If the    * {@value APACHE_DOWNLOAD_MIRROR_KEY} configuration or system property    * (checked in that order) is set, use that as the mirror; else use    * {@value APACHE_DOWNLOAD_MIRROR_DEFAULT}.    *    * @param destinationDir destination directory to save a tarball    * @param version The version of Hadoop to download, like "2.7.4"    *                or "3.0.0-beta1"    * @param conf configuration    * @param log logger instance    * @return The path to the tarball.    * @throws IOException on failure    */
 DECL|method|fetchHadoopTarball (File destinationDir, String version, Configuration conf, Logger log)
 specifier|public
 specifier|static

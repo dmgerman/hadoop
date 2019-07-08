@@ -1139,7 +1139,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Client for submitting a Dynamometer YARN application, and optionally, a  * workload MapReduce job. This client uploads resources to HDFS as necessary  * for them to be accessed by the YARN app, then launches an  * {@link ApplicationMaster}, which is responsible for managing the lifetime of  * the application.  *  *<p/>The Dynamometer YARN application starts up the DataNodes of an HDFS  * cluster. If the namenode_servicerpc_addr option is specified, it should point  * to the service RPC address of an existing namenode, which the datanodes will  * talk to. Else, a namenode will be launched internal to this YARN application.  * The ApplicationMaster's logs contain links to the NN / DN containers to be  * able to access their logs. Some of this information is also printed by the  * client.  *  *<p/>The application will store files in the submitting user's home directory  * under a `.dynamometer/applicationID/` folder. This is mostly for uses  * internal to the application, but if the NameNode is launched through YARN,  * the NameNode's metrics will also be uploaded to a file `namenode_metrics`  * within this folder. This file is also accessible as part of the NameNode's  * logs, but this centralized location is easier to access for subsequent  * parsing.  *  *<p/>If the NameNode is launched internally, this Client will monitor the  * status of the NameNode, printing information about its availability as the  * DataNodes register (e.g., outstanding under replicated blocks as block  * reports arrive). If this is configured to launch the workload job, once the  * NameNode has gathered information from all of its DataNodes, the client will  * launch a workload job which is configured to act against the newly launched  * NameNode. Once the workload job completes, the infrastructure application  * will be shut down. At this time only the audit log replay  * ({@link AuditReplayMapper}) workload is supported.  *  *<p/>If there is no workload job configured, this application will, by  * default, persist indefinitely until killed by YARN. You can specify the  * timeout option to have it exit automatically after some time. This timeout  * will enforced if there is a workload job configured as well.  */
+comment|/**  * Client for submitting a Dynamometer YARN application, and optionally, a  * workload MapReduce job. This client uploads resources to HDFS as necessary  * for them to be accessed by the YARN app, then launches an  * {@link ApplicationMaster}, which is responsible for managing the lifetime of  * the application.  *<p>  * The Dynamometer YARN application starts up the DataNodes of an HDFS  * cluster. If the namenode_servicerpc_addr option is specified, it should point  * to the service RPC address of an existing namenode, which the datanodes will  * talk to. Else, a namenode will be launched internal to this YARN application.  * The ApplicationMaster's logs contain links to the NN / DN containers to be  * able to access their logs. Some of this information is also printed by the  * client.  *<p>  * The application will store files in the submitting user's home directory  * under a `.dynamometer/applicationID/` folder. This is mostly for uses  * internal to the application, but if the NameNode is launched through YARN,  * the NameNode's metrics will also be uploaded to a file `namenode_metrics`  * within this folder. This file is also accessible as part of the NameNode's  * logs, but this centralized location is easier to access for subsequent  * parsing.  *<p>  * If the NameNode is launched internally, this Client will monitor the  * status of the NameNode, printing information about its availability as the  * DataNodes register (e.g., outstanding under replicated blocks as block  * reports arrive). If this is configured to launch the workload job, once the  * NameNode has gathered information from all of its DataNodes, the client will  * launch a workload job which is configured to act against the newly launched  * NameNode. Once the workload job completes, the infrastructure application  * will be shut down. At this time only the audit log replay  * ({@link AuditReplayMapper}) workload is supported.  *<p>  * If there is no workload job configured, this application will, by  * default, persist indefinitely until killed by YARN. You can specify the  * timeout option to have it exit automatically after some time. This timeout  * will enforced if there is a workload job configured as well.  */
 end_comment
 
 begin_class
@@ -1670,7 +1670,7 @@ specifier|private
 name|Options
 name|opts
 decl_stmt|;
-comment|/**    * @param args    *          Command line arguments    */
+comment|/**    * @param args Command line arguments    * @throws Exception on error    */
 DECL|method|main (String[] args)
 specifier|public
 specifier|static
@@ -2305,7 +2305,7 @@ name|opts
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Parse command line options.    *    * @param args Parsed command line options    * @return Whether the init was successful to run the client    */
+comment|/**    * Parse command line options.    *    * @param args Parsed command line options    * @return Whether the init was successful to run the client    * @throws ParseException on error while parsing    * @throws IOException for other errors    */
 DECL|method|init (String[] args)
 specifier|public
 name|boolean
@@ -3093,7 +3093,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Main run function for the client.    *    * @return true if application completed successfully    */
+comment|/**    * Main run function for the client.    *    * @return true if application completed successfully    * @throws IOException for general issues    * @throws YarnException for issues while contacting YARN daemons    */
 DECL|method|run ()
 specifier|public
 name|boolean
