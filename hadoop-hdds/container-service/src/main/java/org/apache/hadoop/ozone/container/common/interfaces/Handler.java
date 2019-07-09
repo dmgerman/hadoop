@@ -611,6 +611,14 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Stop the Handler.    */
+DECL|method|stop ()
+specifier|public
+specifier|abstract
+name|void
+name|stop
+parameter_list|()
+function_decl|;
 comment|/**    * Marks the container for closing. Moves the container to CLOSING state.    *    * @param container container to update    * @throws IOException in case of exception    */
 DECL|method|markContainerForClose (Container container)
 specifier|public

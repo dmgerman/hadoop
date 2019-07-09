@@ -1400,6 +1400,20 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|stop ()
+specifier|public
+name|void
+name|stop
+parameter_list|()
+block|{
+name|blockDeletingService
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|handle ( ContainerCommandRequestProto request, Container container, DispatcherContext dispatcherContext)
 specifier|public
 name|ContainerCommandResponseProto

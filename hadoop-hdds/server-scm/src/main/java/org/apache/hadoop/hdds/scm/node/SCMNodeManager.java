@@ -1233,6 +1233,11 @@ operator|.
 name|unRegister
 argument_list|()
 expr_stmt|;
+name|nodeStateManager
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Gets the version info from SCM.    *    * @param versionRequest - version Request.    * @return - returns SCM version info and other required information needed by    * datanode.    */
 annotation|@

@@ -116,6 +116,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -146,6 +166,18 @@ name|ScheduledExecutorService
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+import|;
+end_import
+
 begin_comment
 comment|/**  * ReportManager is responsible for managing all the {@link ReportPublisher}  * and also provides {@link ScheduledExecutorService} to ReportPublisher  * which should be used for scheduling the reports.  */
 end_comment
@@ -157,6 +189,22 @@ specifier|final
 class|class
 name|ReportManager
 block|{
+DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
+name|Logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|ReportManager
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 DECL|field|context
 specifier|private
 specifier|final
@@ -275,6 +323,36 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+try|try
+block|{
+name|executorService
+operator|.
+name|awaitTermination
+argument_list|(
+literal|5
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Failed to shutdown Report Manager"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Returns new {@link ReportManager.Builder} which can be used to construct.    * {@link ReportManager}    * @param conf  - Conf    * @return builder - Builder.    */
 DECL|method|newBuilder (Configuration conf)

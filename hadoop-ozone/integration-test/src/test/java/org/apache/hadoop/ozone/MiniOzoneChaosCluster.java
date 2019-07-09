@@ -1205,7 +1205,7 @@ name|OzoneConfigKeys
 operator|.
 name|OZONE_CONTAINER_CACHE_SIZE
 argument_list|,
-literal|8
+literal|2
 argument_list|)
 expr_stmt|;
 name|conf

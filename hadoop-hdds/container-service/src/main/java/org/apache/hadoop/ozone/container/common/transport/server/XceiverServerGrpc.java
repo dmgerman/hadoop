@@ -556,6 +556,18 @@ name|UUID
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+import|;
+end_import
+
 begin_comment
 comment|/**  * Creates a Grpc server endpoint that acts as the communication layer for  * Ozone containers.  */
 end_comment
@@ -1087,6 +1099,36 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+try|try
+block|{
+name|server
+operator|.
+name|awaitTermination
+argument_list|(
+literal|5
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"failed to shutdown XceiverServerGrpc"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 name|isStarted
 operator|=
 literal|false
