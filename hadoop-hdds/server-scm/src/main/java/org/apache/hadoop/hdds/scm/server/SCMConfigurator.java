@@ -50,6 +50,24 @@ name|hdds
 operator|.
 name|scm
 operator|.
+name|net
+operator|.
+name|NetworkTopology
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
 name|safemode
 operator|.
 name|SCMSafeModeManager
@@ -219,6 +237,11 @@ specifier|private
 name|SCMMetadataStore
 name|metadataStore
 decl_stmt|;
+DECL|field|networkTopology
+specifier|private
+name|NetworkTopology
+name|networkTopology
+decl_stmt|;
 comment|/**    * Allows user to specify a version of Node manager to use with this SCM.    * @param scmNodeManager - Node Manager.    */
 DECL|method|setScmNodeManager (NodeManager scmNodeManager)
 specifier|public
@@ -355,6 +378,23 @@ operator|=
 name|scmMetadataStore
 expr_stmt|;
 block|}
+comment|/**    * Allows user to specify a custom version of Network Topology Cluster    * to  be used with this SCM.    * @param networkTopology - network topology cluster.    */
+DECL|method|setNetworkTopology (NetworkTopology networkTopology)
+specifier|public
+name|void
+name|setNetworkTopology
+parameter_list|(
+name|NetworkTopology
+name|networkTopology
+parameter_list|)
+block|{
+name|this
+operator|.
+name|networkTopology
+operator|=
+name|networkTopology
+expr_stmt|;
+block|}
 comment|/**    * Gets SCM Node Manager.    * @return Node Manager.    */
 DECL|method|getScmNodeManager ()
 specifier|public
@@ -441,6 +481,17 @@ parameter_list|()
 block|{
 return|return
 name|metadataStore
+return|;
+block|}
+comment|/**    * Get network topology cluster tree.    * @return NetworkTopology.    */
+DECL|method|getNetworkTopology ()
+specifier|public
+name|NetworkTopology
+name|getNetworkTopology
+parameter_list|()
+block|{
+return|return
+name|networkTopology
 return|;
 block|}
 block|}

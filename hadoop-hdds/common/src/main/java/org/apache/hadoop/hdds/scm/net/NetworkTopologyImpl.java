@@ -88,6 +88,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Collection
 import|;
 end_import
@@ -1925,28 +1935,6 @@ return|return
 literal|null
 return|;
 block|}
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Choosing random from \"{}\" available nodes on node \"{}\","
-operator|+
-literal|" scope=\"{}\", excludedScope=\"{}\", excludeNodes=\"{}\"."
-argument_list|,
-name|availableNodes
-argument_list|,
-name|scopeNode
-argument_list|,
-name|scopeNode
-operator|.
-name|getNetworkFullPath
-argument_list|()
-argument_list|,
-name|excludedScope
-argument_list|,
-name|excludedNodes
-argument_list|)
-expr_stmt|;
 comment|// scope is a Leaf node
 if|if
 condition|(
@@ -1965,6 +1953,9 @@ block|}
 name|Node
 name|ret
 decl_stmt|;
+name|int
+name|nodeIndex
+decl_stmt|;
 if|if
 condition|(
 name|leafIndex
@@ -1972,6 +1963,12 @@ operator|>=
 literal|0
 condition|)
 block|{
+name|nodeIndex
+operator|=
+name|leafIndex
+operator|%
+name|availableNodes
+expr_stmt|;
 name|ret
 operator|=
 operator|(
@@ -1983,9 +1980,7 @@ operator|)
 operator|.
 name|getLeaf
 argument_list|(
-name|leafIndex
-operator|%
-name|availableNodes
+name|nodeIndex
 argument_list|,
 name|excludedScope
 argument_list|,
@@ -1997,10 +1992,8 @@ expr_stmt|;
 block|}
 else|else
 block|{
-specifier|final
-name|int
-name|index
-init|=
+name|nodeIndex
+operator|=
 name|ThreadLocalRandom
 operator|.
 name|current
@@ -2010,7 +2003,7 @@ name|nextInt
 argument_list|(
 name|availableNodes
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|ret
 operator|=
 operator|(
@@ -2022,7 +2015,7 @@ operator|)
 operator|.
 name|getLeaf
 argument_list|(
-name|index
+name|nodeIndex
 argument_list|,
 name|excludedScope
 argument_list|,
@@ -2036,9 +2029,53 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"chooseRandom return {}"
+literal|"Choosing node[index={},random={}] from \"{}\" available nodes"
+operator|+
+literal|" scope=\"{}\", excludedScope=\"{}\", excludeNodes=\"{}\"."
 argument_list|,
+name|nodeIndex
+argument_list|,
+operator|(
+name|leafIndex
+operator|==
+operator|-
+literal|1
+condition|?
+literal|"true"
+else|:
+literal|"false"
+operator|)
+argument_list|,
+name|availableNodes
+argument_list|,
+name|scopeNode
+operator|.
+name|getNetworkFullPath
+argument_list|()
+argument_list|,
+name|excludedScope
+argument_list|,
+name|excludedNodes
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Chosen node = {}"
+argument_list|,
+operator|(
 name|ret
+operator|==
+literal|null
+condition|?
+literal|"not found"
+else|:
+name|ret
+operator|.
+name|toString
+argument_list|()
+operator|)
 argument_list|)
 expr_stmt|;
 return|return
@@ -2092,6 +2129,30 @@ return|return
 literal|0
 return|;
 block|}
+if|if
+condition|(
+name|node1
+operator|==
+literal|null
+operator|||
+name|node2
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"One of the nodes is a null pointer"
+argument_list|)
+expr_stmt|;
+return|return
+name|Integer
+operator|.
+name|MAX_VALUE
+return|;
+block|}
 name|int
 name|cost
 init|=
@@ -2109,14 +2170,6 @@ try|try
 block|{
 if|if
 condition|(
-name|node1
-operator|==
-literal|null
-operator|||
-name|node2
-operator|==
-literal|null
-operator|||
 operator|(
 name|node1
 operator|.
@@ -2148,7 +2201,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"One of the nodes is a null pointer"
+literal|"One of the nodes is outside of network topology"
 argument_list|)
 expr_stmt|;
 return|return
@@ -2333,16 +2386,25 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Sort nodes array by network distance to<i>reader</i> to reduces network    * traffic and improves performance.    *    * As an additional twist, we also randomize the nodes at each network    * distance. This helps with load balancing when there is data skew.    *    * @param reader    Node where need the data    * @param nodes     Available replicas with the requested data    * @param activeLen Number of active nodes at the front of the array    */
-DECL|method|sortByDistanceCost (Node reader, Node[] nodes, int activeLen)
+DECL|method|sortByDistanceCost (Node reader, List<? extends Node> nodes, int activeLen)
 specifier|public
-name|void
+name|List
+argument_list|<
+name|?
+extends|extends
+name|Node
+argument_list|>
 name|sortByDistanceCost
 parameter_list|(
 name|Node
 name|reader
 parameter_list|,
+name|List
+argument_list|<
+name|?
+extends|extends
 name|Node
-index|[]
+argument_list|>
 name|nodes
 parameter_list|,
 name|int
@@ -2350,6 +2412,17 @@ name|activeLen
 parameter_list|)
 block|{
 comment|/** Sort weights for the nodes array */
+if|if
+condition|(
+name|reader
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+name|nodes
+return|;
+block|}
 name|int
 index|[]
 name|costs
@@ -2385,9 +2458,11 @@ argument_list|(
 name|reader
 argument_list|,
 name|nodes
-index|[
+operator|.
+name|get
+argument_list|(
 name|i
-index|]
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -2442,9 +2517,11 @@ name|Node
 name|node
 init|=
 name|nodes
-index|[
+operator|.
+name|get
+argument_list|(
 name|i
-index|]
+argument_list|)
 decl_stmt|;
 name|List
 argument_list|<
@@ -2493,10 +2570,16 @@ name|node
 argument_list|)
 expr_stmt|;
 block|}
-name|int
-name|idx
+name|List
+argument_list|<
+name|Node
+argument_list|>
+name|ret
 init|=
-literal|0
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
 decl_stmt|;
 for|for
 control|(
@@ -2534,15 +2617,12 @@ range|:
 name|list
 control|)
 block|{
-name|nodes
-index|[
-name|idx
-index|]
-operator|=
+name|ret
+operator|.
+name|add
+argument_list|(
 name|n
-expr_stmt|;
-name|idx
-operator|++
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -2551,13 +2631,19 @@ name|Preconditions
 operator|.
 name|checkState
 argument_list|(
-name|idx
+name|ret
+operator|.
+name|size
+argument_list|()
 operator|==
 name|activeLen
 argument_list|,
 literal|"Wrong number of nodes sorted!"
 argument_list|)
 expr_stmt|;
+return|return
+name|ret
+return|;
 block|}
 comment|/**    * Return the number of leaves in<i>scope</i> but not in    *<i>excludedNodes</i> and<i>excludeScope</i>.    * @param scope the scope    * @param excludedScope excluded scope    * @param mutableExcludedNodes a list of excluded nodes, content might be    *                            changed after the call    * @param ancestorGen same generation ancestor prohibit on excludedNodes    * @return number of available nodes    */
 DECL|method|getAvailableNodesCount (String scope, String excludedScope, Collection<Node> mutableExcludedNodes, int ancestorGen)

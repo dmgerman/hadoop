@@ -74,6 +74,9 @@ name|IN_SAFE_MODE
 block|,
 DECL|enumConstant|FORCE_EXIT_SAFE_MODE
 name|FORCE_EXIT_SAFE_MODE
+block|,
+DECL|enumConstant|SORT_DATANODE
+name|SORT_DATANODE
 block|;
 annotation|@
 name|Override

@@ -1380,7 +1380,7 @@ operator|.
 name|getPipeline
 argument_list|()
 operator|.
-name|getFirstNode
+name|getClosestNode
 argument_list|()
 operator|.
 name|getUuidString
@@ -2609,7 +2609,7 @@ operator|.
 name|getPipeline
 argument_list|()
 operator|.
-name|getFirstNode
+name|getClosestNode
 argument_list|()
 operator|.
 name|getUuidString

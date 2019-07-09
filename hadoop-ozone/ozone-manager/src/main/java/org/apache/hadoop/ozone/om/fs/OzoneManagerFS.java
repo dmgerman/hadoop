@@ -176,12 +176,16 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-DECL|method|lookupFile (OmKeyArgs args)
+comment|/**    * Look up a file. Return the info of the file to client side.    *    * @param args the args of the key provided by client.    * @param clientAddress a hint to key manager, order the datanode in returned    *                      pipeline by distance between client and datanode.    * @return a OmKeyInfo instance client uses to talk to container.    * @throws IOException    */
+DECL|method|lookupFile (OmKeyArgs args, String clientAddress)
 name|OmKeyInfo
 name|lookupFile
 parameter_list|(
 name|OmKeyArgs
 name|args
+parameter_list|,
+name|String
+name|clientAddress
 parameter_list|)
 throws|throws
 name|IOException

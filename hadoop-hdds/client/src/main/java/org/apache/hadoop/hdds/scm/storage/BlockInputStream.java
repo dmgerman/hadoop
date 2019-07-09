@@ -733,7 +733,7 @@ name|xceiverClient
 operator|=
 name|xceiverClientManager
 operator|.
-name|acquireClient
+name|acquireClientForReadData
 argument_list|(
 name|pipeline
 argument_list|)
@@ -826,7 +826,7 @@ condition|)
 block|{
 name|xceiverClientManager
 operator|.
-name|releaseClient
+name|releaseClientForReadData
 argument_list|(
 name|xceiverClient
 argument_list|,

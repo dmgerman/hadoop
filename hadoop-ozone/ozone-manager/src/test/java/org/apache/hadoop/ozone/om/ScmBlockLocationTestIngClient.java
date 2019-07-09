@@ -984,6 +984,32 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|sortDatanodes (List<String> nodes, String clientMachine)
+specifier|public
+name|List
+argument_list|<
+name|DatanodeDetails
+argument_list|>
+name|sortDatanodes
+parameter_list|(
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|nodes
+parameter_list|,
+name|String
+name|clientMachine
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void

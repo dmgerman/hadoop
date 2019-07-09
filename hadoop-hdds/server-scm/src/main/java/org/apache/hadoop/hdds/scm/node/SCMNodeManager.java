@@ -2644,6 +2644,28 @@ name|address
 argument_list|)
 expr_stmt|;
 block|}
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Get node for {} return {}"
+argument_list|,
+name|address
+argument_list|,
+operator|(
+name|node
+operator|==
+literal|null
+condition|?
+literal|"not found"
+else|:
+name|node
+operator|.
+name|getNetworkFullPath
+argument_list|()
+operator|)
+argument_list|)
+expr_stmt|;
 return|return
 name|node
 operator|==

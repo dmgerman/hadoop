@@ -30,6 +30,16 @@ name|Collection
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
 begin_comment
 comment|/**  * The interface defines a network topology.  */
 end_comment
@@ -309,15 +319,24 @@ name|node2
 parameter_list|)
 function_decl|;
 comment|/**    * Sort nodes array by network distance to<i>reader</i> to reduces network    * traffic and improves performance.    *    * As an additional twist, we also randomize the nodes at each network    * distance. This helps with load balancing when there is data skew.    *    * @param reader    Node where need the data    * @param nodes     Available replicas with the requested data    * @param activeLen Number of active nodes at the front of the array    */
-DECL|method|sortByDistanceCost (Node reader, Node[] nodes, int activeLen)
-name|void
+DECL|method|sortByDistanceCost (Node reader, List<? extends Node> nodes, int activeLen)
+name|List
+argument_list|<
+name|?
+extends|extends
+name|Node
+argument_list|>
 name|sortByDistanceCost
 parameter_list|(
 name|Node
 name|reader
 parameter_list|,
+name|List
+argument_list|<
+name|?
+extends|extends
 name|Node
-index|[]
+argument_list|>
 name|nodes
 parameter_list|,
 name|int

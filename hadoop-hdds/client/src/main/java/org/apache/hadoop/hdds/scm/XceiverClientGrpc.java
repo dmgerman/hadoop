@@ -107,6 +107,26 @@ operator|.
 name|proto
 operator|.
 name|ContainerProtos
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|datanode
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
 operator|.
 name|ContainerCommandRequestProto
 import|;
@@ -653,7 +673,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A Client for the storageContainer protocol.  */
+comment|/**  * A Client for the storageContainer protocol for read object data.  */
 end_comment
 
 begin_class
@@ -733,6 +753,12 @@ DECL|field|secConfig
 specifier|private
 name|SecurityConfig
 name|secConfig
+decl_stmt|;
+DECL|field|topologyAwareRead
+specifier|private
+specifier|final
+name|boolean
+name|topologyAwareRead
 decl_stmt|;
 comment|/**    * Constructs a client that can communicate with the Container framework on    * data nodes.    *    * @param pipeline - Pipeline that defines the machines.    * @param config   -- Ozone Config    */
 DECL|method|XceiverClientGrpc (Pipeline pipeline, Configuration config)
@@ -827,6 +853,28 @@ name|HashMap
 argument_list|<>
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|topologyAwareRead
+operator|=
+name|Boolean
+operator|.
+name|parseBoolean
+argument_list|(
+name|config
+operator|.
+name|get
+argument_list|(
+name|ScmConfigKeys
+operator|.
+name|DFS_NETWORK_TOPOLOGY_AWARE_READ_ENABLED
+argument_list|,
+name|ScmConfigKeys
+operator|.
+name|DFS_NETWORK_TOPOLOGY_AWARE_READ_ENABLED_DEFAULT
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * To be used when grpc token is not enabled.    */
 annotation|@
@@ -839,7 +887,8 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-comment|// leader by default is the 1st datanode in the datanode list of pipleline
+comment|// connect to the closest node, if closest node doesn't exist, delegate to
+comment|// first node, which is usually the leader in the pipeline.
 name|DatanodeDetails
 name|dn
 init|=
@@ -847,10 +896,10 @@ name|this
 operator|.
 name|pipeline
 operator|.
-name|getFirstNode
+name|getClosestNode
 argument_list|()
 decl_stmt|;
-comment|// just make a connection to the 1st datanode at the beginning
+comment|// just make a connection to the picked datanode at the beginning
 name|connectToDatanode
 argument_list|(
 name|dn
@@ -873,18 +922,21 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-comment|// leader by default is the 1st datanode in the datanode list of pipleline
+comment|// connect to the closest node, if closest node doesn't exist, delegate to
+comment|// first node, which is usually the leader in the pipeline.
 name|DatanodeDetails
 name|dn
-init|=
+decl_stmt|;
+name|dn
+operator|=
 name|this
 operator|.
 name|pipeline
 operator|.
-name|getFirstNode
+name|getClosestNode
 argument_list|()
-decl_stmt|;
-comment|// just make a connection to the 1st datanode at the beginning
+expr_stmt|;
+comment|// just make a connection to the picked datanode at the beginning
 name|connectToDatanode
 argument_list|(
 name|dn
@@ -967,8 +1019,23 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Connecting to server Port : "
-operator|+
+literal|"Nodes in pipeline : {}"
+argument_list|,
+name|pipeline
+operator|.
+name|getNodes
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Connecting to server : {}"
+argument_list|,
 name|dn
 operator|.
 name|getIpAddress
@@ -1552,15 +1619,65 @@ argument_list|(
 literal|null
 argument_list|)
 decl_stmt|;
+name|List
+argument_list|<
+name|DatanodeDetails
+argument_list|>
+name|datanodeList
+decl_stmt|;
+if|if
+condition|(
+operator|(
+name|request
+operator|.
+name|getCmdType
+argument_list|()
+operator|==
+name|ContainerProtos
+operator|.
+name|Type
+operator|.
+name|ReadChunk
+operator|||
+name|request
+operator|.
+name|getCmdType
+argument_list|()
+operator|==
+name|ContainerProtos
+operator|.
+name|Type
+operator|.
+name|GetSmallFile
+operator|)
+operator|&&
+name|topologyAwareRead
+condition|)
+block|{
+name|datanodeList
+operator|=
+name|pipeline
+operator|.
+name|getNodesInOrder
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+name|datanodeList
+operator|=
+name|pipeline
+operator|.
+name|getNodes
+argument_list|()
+expr_stmt|;
+block|}
 for|for
 control|(
 name|DatanodeDetails
 name|dn
 range|:
-name|pipeline
-operator|.
-name|getNodes
-argument_list|()
+name|datanodeList
 control|)
 block|{
 try|try
@@ -1978,6 +2095,26 @@ name|token
 argument_list|)
 expr_stmt|;
 block|}
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Send command {} to datanode {}"
+argument_list|,
+name|request
+operator|.
+name|getCmdType
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|dn
+operator|.
+name|getNetworkFullPath
+argument_list|()
+argument_list|)
+expr_stmt|;
 specifier|final
 name|CompletableFuture
 argument_list|<

@@ -451,13 +451,16 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Look up an existing key. Return the info of the key to client side, which    * DistributedStorageHandler will use to access the data on datanode.    *    * @param args the args of the key provided by client.    * @return a OmKeyInfo instance client uses to talk to container.    * @throws IOException    */
-DECL|method|lookupKey (OmKeyArgs args)
+comment|/**    * Look up an existing key. Return the info of the key to client side, which    * DistributedStorageHandler will use to access the data on datanode.    *    * @param args the args of the key provided by client.    * @param clientAddress a hint to key manager, order the datanode in returned    *                      pipeline by distance between client and datanode.    * @return a OmKeyInfo instance client uses to talk to container.    * @throws IOException    */
+DECL|method|lookupKey (OmKeyArgs args, String clientAddress)
 name|OmKeyInfo
 name|lookupKey
 parameter_list|(
 name|OmKeyArgs
 name|args
+parameter_list|,
+name|String
+name|clientAddress
 parameter_list|)
 throws|throws
 name|IOException
