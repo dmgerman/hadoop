@@ -1262,6 +1262,16 @@ argument_list|,
 name|containerID
 argument_list|)
 expr_stmt|;
+name|pipelineManager
+operator|.
+name|incNumBlocksAllocatedMetric
+argument_list|(
+name|pipeline
+operator|.
+name|getId
+argument_list|()
+argument_list|)
+expr_stmt|;
 return|return
 name|abb
 operator|.

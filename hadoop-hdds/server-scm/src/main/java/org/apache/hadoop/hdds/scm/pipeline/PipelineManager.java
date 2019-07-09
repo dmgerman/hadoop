@@ -363,6 +363,14 @@ name|void
 name|triggerPipelineCreation
 parameter_list|()
 function_decl|;
+DECL|method|incNumBlocksAllocatedMetric (PipelineID id)
+name|void
+name|incNumBlocksAllocatedMetric
+parameter_list|(
+name|PipelineID
+name|id
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 
