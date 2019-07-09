@@ -1962,7 +1962,7 @@ name|Thread
 operator|.
 name|sleep
 argument_list|(
-literal|2000
+literal|10000
 argument_list|)
 expr_stmt|;
 specifier|final

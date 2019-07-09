@@ -603,7 +603,7 @@ name|TimeDuration
 operator|.
 name|valueOf
 argument_list|(
-literal|1
+literal|5
 argument_list|,
 name|TimeUnit
 operator|.
