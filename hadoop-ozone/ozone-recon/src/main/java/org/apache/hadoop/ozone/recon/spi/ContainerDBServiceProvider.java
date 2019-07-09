@@ -154,13 +154,58 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get the stored key prefix count for the given containerId, key prefix.    *    * @param containerKeyPrefix the containerId, key-prefix tuple.    * @return count of keys with that prefix.    */
-DECL|method|getCountForForContainerKeyPrefix ( ContainerKeyPrefix containerKeyPrefix)
+comment|/**    * Store the containerID -> no. of keys count into the container DB store.    *    * @param containerID the containerID.    * @param count count of the keys within the given containerID.    * @throws IOException    */
+DECL|method|storeContainerKeyCount (Long containerID, Long count)
+name|void
+name|storeContainerKeyCount
+parameter_list|(
+name|Long
+name|containerID
+parameter_list|,
+name|Long
+name|count
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Store the total count of containers into the container DB store.    *    * @param count count of the containers present in the system.    */
+DECL|method|storeContainerCount (Long count)
+name|void
+name|storeContainerCount
+parameter_list|(
+name|Long
+name|count
+parameter_list|)
+function_decl|;
+comment|/**    * Get the stored key prefix count for the given containerID, key prefix.    *    * @param containerKeyPrefix the containerID, key-prefix tuple.    * @return count of keys with that prefix.    */
+DECL|method|getCountForContainerKeyPrefix ( ContainerKeyPrefix containerKeyPrefix)
 name|Integer
-name|getCountForForContainerKeyPrefix
+name|getCountForContainerKeyPrefix
 parameter_list|(
 name|ContainerKeyPrefix
 name|containerKeyPrefix
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Get the total count of keys within the given containerID.    *    * @param containerID the given containerId.    * @return count of keys within the given containerID.    * @throws IOException    */
+DECL|method|getKeyCountForContainer (Long containerID)
+name|long
+name|getKeyCountForContainer
+parameter_list|(
+name|Long
+name|containerID
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Get if a containerID exists or not.    *    * @param containerID the given containerID.    * @return if the given ContainerID exists or not.    * @throws IOException    */
+DECL|method|doesContainerExists (Long containerID)
+name|boolean
+name|doesContainerExists
+parameter_list|(
+name|Long
+name|containerID
 parameter_list|)
 throws|throws
 name|IOException
@@ -219,7 +264,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Delete an entry in the container DB.    * @param containerKeyPrefix container key prefix to be deleted.    * @throws IOException exception.    */
+comment|/**    * Delete an entry in the container DB.    *    * @param containerKeyPrefix container key prefix to be deleted.    * @throws IOException exception.    */
 DECL|method|deleteContainerMapping (ContainerKeyPrefix containerKeyPrefix)
 name|void
 name|deleteContainerMapping
@@ -235,6 +280,25 @@ DECL|method|getContainerTableIterator ()
 name|TableIterator
 name|getContainerTableIterator
 parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Get the total count of containers present in the system.    *    * @return total count of containers.    * @throws IOException    */
+DECL|method|getCountForContainers ()
+name|long
+name|getCountForContainers
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Increment the total count for containers in the system by the given count.    *    * @param count no. of new containers to add to containers total count.    */
+DECL|method|incrementContainerCountBy (long count)
+name|void
+name|incrementContainerCountBy
+parameter_list|(
+name|long
+name|count
+parameter_list|)
 function_decl|;
 block|}
 end_interface

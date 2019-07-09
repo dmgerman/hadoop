@@ -76,6 +76,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashSet
 import|;
 end_import
@@ -410,7 +420,7 @@ name|OMMetadataManager
 name|omMetadataManager
 parameter_list|)
 block|{
-name|int
+name|long
 name|omKeyCount
 init|=
 literal|0
@@ -432,6 +442,17 @@ operator|.
 name|now
 argument_list|()
 decl_stmt|;
+comment|// initialize new container DB
+name|containerDBServiceProvider
+operator|.
+name|initNewContainerDB
+argument_list|(
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|Table
 argument_list|<
 name|String
@@ -743,6 +764,8 @@ name|error
 argument_list|(
 literal|"Unexpected exception while updating key data : {} "
 argument_list|,
+name|updatedKey
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
@@ -771,7 +794,7 @@ literal|true
 argument_list|)
 return|;
 block|}
-comment|/**    * Delete an OM Key from Container DB.    * @param key key String.    * @throws IOException If Unable to write to container DB.    */
+comment|/**    * Delete an OM Key from Container DB and update containerID -> no. of keys    * count.    *    * @param key key String.    * @throws IOException If Unable to write to container DB.    */
 DECL|method|deleteOMKeyFromContainerDB (String key)
 specifier|private
 name|void
@@ -809,7 +832,7 @@ name|Set
 argument_list|<
 name|ContainerKeyPrefix
 argument_list|>
-name|keysToDeDeleted
+name|keysToBeDeleted
 init|=
 operator|new
 name|HashSet
@@ -860,7 +883,7 @@ name|key
 argument_list|)
 condition|)
 block|{
-name|keysToDeDeleted
+name|keysToBeDeleted
 operator|.
 name|add
 argument_list|(
@@ -877,7 +900,7 @@ control|(
 name|ContainerKeyPrefix
 name|containerKeyPrefix
 range|:
-name|keysToDeDeleted
+name|keysToBeDeleted
 control|)
 block|{
 name|containerDBServiceProvider
@@ -887,9 +910,46 @@ argument_list|(
 name|containerKeyPrefix
 argument_list|)
 expr_stmt|;
+comment|// decrement count and update containerKeyCount.
+name|Long
+name|containerID
+init|=
+name|containerKeyPrefix
+operator|.
+name|getContainerId
+argument_list|()
+decl_stmt|;
+name|long
+name|keyCount
+init|=
+name|containerDBServiceProvider
+operator|.
+name|getKeyCountForContainer
+argument_list|(
+name|containerID
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|keyCount
+operator|>
+literal|0
+condition|)
+block|{
+name|containerDBServiceProvider
+operator|.
+name|storeContainerKeyCount
+argument_list|(
+name|containerID
+argument_list|,
+operator|--
+name|keyCount
+argument_list|)
+expr_stmt|;
 block|}
 block|}
-comment|/**    * Write an OM key to container DB.    * @param key key String    * @param omKeyInfo omKeyInfo value    * @throws IOException if unable to write to recon DB.    */
+block|}
+comment|/**    * Write an OM key to container DB and update containerID -> no. of keys    * count.    *    * @param key key String    * @param omKeyInfo omKeyInfo value    * @throws IOException if unable to write to recon DB.    */
 DECL|method|writeOMKeyToContainerDB (String key, OmKeyInfo omKeyInfo)
 specifier|private
 name|void
@@ -904,6 +964,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|long
+name|containerCountToIncrement
+init|=
+literal|0
+decl_stmt|;
 for|for
 control|(
 name|OmKeyLocationInfoGroup
@@ -959,7 +1024,7 @@ if|if
 condition|(
 name|containerDBServiceProvider
 operator|.
-name|getCountForForContainerKeyPrefix
+name|getCountForContainerKeyPrefix
 argument_list|(
 name|containerKeyPrefix
 argument_list|)
@@ -978,8 +1043,64 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
+comment|// check if container already exists and
+comment|// increment the count of containers if it does not exist
+if|if
+condition|(
+operator|!
+name|containerDBServiceProvider
+operator|.
+name|doesContainerExists
+argument_list|(
+name|containerId
+argument_list|)
+condition|)
+block|{
+name|containerCountToIncrement
+operator|++
+expr_stmt|;
+block|}
+comment|// update the count of keys for the given containerID
+name|long
+name|keyCount
+init|=
+name|containerDBServiceProvider
+operator|.
+name|getKeyCountForContainer
+argument_list|(
+name|containerId
+argument_list|)
+decl_stmt|;
+comment|// increment the count and update containerKeyCount.
+comment|// keyCount will be 0 if containerID is not found. So, there is no
+comment|// need to initialize keyCount for the first time.
+name|containerDBServiceProvider
+operator|.
+name|storeContainerKeyCount
+argument_list|(
+name|containerId
+argument_list|,
+operator|++
+name|keyCount
+argument_list|)
+expr_stmt|;
 block|}
 block|}
+block|}
+if|if
+condition|(
+name|containerCountToIncrement
+operator|>
+literal|0
+condition|)
+block|{
+name|containerDBServiceProvider
+operator|.
+name|incrementContainerCountBy
+argument_list|(
+name|containerCountToIncrement
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 block|}

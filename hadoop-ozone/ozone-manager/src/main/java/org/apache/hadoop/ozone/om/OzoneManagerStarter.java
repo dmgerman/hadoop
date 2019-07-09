@@ -287,7 +287,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-comment|/**      * This method is invoked only when a sub-command is not called. Therefore      * if someone runs "ozone om" with no parameters, this is the methood      * which runs and starts the OM.      */
+comment|/**      * This method is invoked only when a sub-command is not called. Therefore      * if someone runs "ozone om" with no parameters, this is the method      * which runs and starts the OM.      */
 name|commonInit
 argument_list|()
 expr_stmt|;

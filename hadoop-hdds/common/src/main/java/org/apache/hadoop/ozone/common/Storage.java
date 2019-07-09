@@ -364,7 +364,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Gets the path of the Storage dir.    * @return Stoarge dir path    */
+comment|/**    * Gets the path of the Storage dir.    * @return Storage dir path    */
 DECL|method|getStorageDir ()
 specifier|public
 name|String
@@ -474,7 +474,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Retreives the storageInfo instance to read/write the common    * version file properties.    * @return the instance of the storageInfo class    */
+comment|/**    * Retrieves the storageInfo instance to read/write the common    * version file properties.    * @return the instance of the storageInfo class    */
 DECL|method|getStorageInfo ()
 specifier|protected
 name|StorageInfo
@@ -492,7 +492,7 @@ name|Properties
 name|getNodeProperties
 parameter_list|()
 function_decl|;
-comment|/**    * Sets the Node properties spaecific to OM/SCM.    */
+comment|/**    * Sets the Node properties specific to OM/SCM.    */
 DECL|method|setNodeProperties ()
 specifier|private
 name|void
