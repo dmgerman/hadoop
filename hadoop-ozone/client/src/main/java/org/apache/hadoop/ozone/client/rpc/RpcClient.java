@@ -1908,10 +1908,7 @@ operator|=
 name|getOMProxyProvider
 argument_list|()
 operator|.
-name|getProxy
-argument_list|()
-operator|.
-name|getDelegationTokenService
+name|getCurrentProxyDelegationToken
 argument_list|()
 expr_stmt|;
 name|boolean
