@@ -125,6 +125,12 @@ block|,
 literal|"</INodeSection>"
 block|}
 decl_stmt|;
+name|short
+name|replCount
+init|=
+literal|0
+decl_stmt|;
+comment|// This is ignored
 name|Map
 argument_list|<
 name|BlockInfo
@@ -150,6 +156,8 @@ argument_list|,
 literal|7
 argument_list|,
 literal|8
+argument_list|,
+name|replCount
 argument_list|)
 argument_list|,
 operator|(
@@ -170,6 +178,8 @@ argument_list|,
 literal|10
 argument_list|,
 literal|11
+argument_list|,
+name|replCount
 argument_list|)
 argument_list|,
 operator|(
@@ -190,6 +200,8 @@ argument_list|,
 literal|14
 argument_list|,
 literal|15
+argument_list|,
+name|replCount
 argument_list|)
 argument_list|,
 operator|(

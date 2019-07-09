@@ -115,10 +115,24 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class parses an fsimage file in XML format. It accepts the file  * line-by-line and maintains an internal state machine to keep track of  * contextual information. A single parser must process the entire file with the  * lines in the order they appear in the original file.  *  * A file may be spread across multiple lines, so we need to track the  * replication of the file we are currently processing to be aware of what the  * replication factor is for each block we encounter. This is why we require a  * single mapper.  *  * The format is illustrated below (line breaks for readability):  *<pre>{@code  *<inode><id>inode_ID<id/><type>inode_type</type>  *<replication>inode_replication</replication> [file attributes]<blocks>  *<block><id>XXX</id><genstamp>XXX</genstamp><numBytes>XXX</numBytes><block/>  *<blocks/><inode/>  * }</pre>  *  * This is true in both Hadoop 2 and 3.  */
+comment|// Checkstyle complains about the XML tags even though they are wrapped
+end_comment
+
+begin_comment
+comment|// within<pre> and {@code} tags. The SupressWarnings has to go before the
+end_comment
+
+begin_comment
+comment|// Javadoc to take effect.
 end_comment
 
 begin_class
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"checkstyle:javadocstyle"
+argument_list|)
+comment|/**  * This class parses an fsimage file in XML format. It accepts the file  * line-by-line and maintains an internal state machine to keep track of  * contextual information. A single parser must process the entire file with the  * lines in the order they appear in the original file.  *  * A file may be spread across multiple lines, so we need to track the  * replication of the file we are currently processing to be aware of what the  * replication factor is for each block we encounter. This is why we require a  * single mapper.  *  * The format is illustrated below (line breaks for readability):  *<pre>{@code  *<inode><id>inode_ID<id/><type>inode_type</type>  *<replication>inode_replication</replication> [file attributes]<blocks>  *<block><id>XXX</id><genstamp>XXX</genstamp><numBytes>XXX</numBytes><block/>  *<blocks/><inode/>  * }</pre>  *  * This is true in both Hadoop 2 and 3.  */
 DECL|class|XMLParser
 class|class
 name|XMLParser

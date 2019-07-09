@@ -5191,6 +5191,8 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
+try|try
+init|(
 name|FileInputStream
 name|in
 init|=
@@ -5202,7 +5204,8 @@ operator|.
 name|getAbsolutePath
 argument_list|()
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|out
 operator|.
 name|putNextEntry
@@ -5233,11 +5236,7 @@ operator|.
 name|closeEntry
 argument_list|()
 expr_stmt|;
-name|in
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(

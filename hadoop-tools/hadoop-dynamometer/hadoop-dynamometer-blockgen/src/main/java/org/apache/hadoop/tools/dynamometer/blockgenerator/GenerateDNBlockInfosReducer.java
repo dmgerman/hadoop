@@ -388,14 +388,10 @@ block|{
 name|BlockInfo
 name|blockInfo
 init|=
-operator|new
-name|BlockInfo
-argument_list|(
 name|it
 operator|.
 name|next
 argument_list|()
-argument_list|)
 decl_stmt|;
 name|String
 name|blockLine

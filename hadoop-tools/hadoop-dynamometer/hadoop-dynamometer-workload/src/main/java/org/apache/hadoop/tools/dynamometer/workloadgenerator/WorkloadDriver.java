@@ -819,6 +819,11 @@ argument_list|<
 name|?
 extends|extends
 name|WorkloadMapper
+argument_list|<
+name|?
+argument_list|,
+name|?
+argument_list|>
 argument_list|>
 name|mapperClass
 init|=
@@ -901,7 +906,7 @@ else|:
 literal|1
 return|;
 block|}
-DECL|method|getJobForSubmission (Configuration baseConf, String nnURI, long startTimestampMs, Class<? extends WorkloadMapper> mapperClass)
+DECL|method|getJobForSubmission (Configuration baseConf, String nnURI, long startTimestampMs, Class<? extends WorkloadMapper<?, ?>> mapperClass)
 specifier|public
 specifier|static
 name|Job
@@ -921,13 +926,16 @@ argument_list|<
 name|?
 extends|extends
 name|WorkloadMapper
+argument_list|<
+name|?
+argument_list|,
+name|?
+argument_list|>
 argument_list|>
 name|mapperClass
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|ClassNotFoundException
 throws|,
 name|InstantiationException
 throws|,
@@ -1145,6 +1153,13 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|// The cast is actually checked via isAssignableFrom but the compiler doesn't
+comment|// recognize this
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|getMapperClass (String className)
 specifier|private
 name|Class
@@ -1152,6 +1167,11 @@ argument_list|<
 name|?
 extends|extends
 name|WorkloadMapper
+argument_list|<
+name|?
+argument_list|,
+name|?
+argument_list|>
 argument_list|>
 name|getMapperClass
 parameter_list|(
@@ -1240,6 +1260,11 @@ argument_list|<
 name|?
 extends|extends
 name|WorkloadMapper
+argument_list|<
+name|?
+argument_list|,
+name|?
+argument_list|>
 argument_list|>
 operator|)
 name|mapperClass

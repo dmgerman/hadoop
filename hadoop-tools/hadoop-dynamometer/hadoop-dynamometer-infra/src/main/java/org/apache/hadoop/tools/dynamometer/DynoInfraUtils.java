@@ -862,11 +862,35 @@ name|APACHE_DOWNLOAD_MIRROR_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+operator|!
+name|destinationDir
+operator|.
+name|exists
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
+operator|!
 name|destinationDir
 operator|.
 name|mkdirs
 argument_list|()
-expr_stmt|;
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Unable to create local dir: "
+operator|+
+name|destinationDir
+argument_list|)
+throw|;
+block|}
+block|}
 name|URL
 name|downloadURL
 init|=
@@ -2030,6 +2054,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Poll the launched NameNode's JMX for a specific value, waiting for it to    * cross some threshold. Continues until the threshold has been crossed or    * {@code shouldExit} returns true. Periodically logs the current value.    *    * @param valueName The human-readable name of the value which is being    *                  polled (for printing purposes only).    * @param jmxBeanQuery The JMX bean query to execute; should return a JMX    *                     property matching {@code jmxProperty}.    * @param jmxProperty The name of the JMX property whose value should be    *                    polled.    * @param threshold The threshold value to wait for the JMX property to be    *                  above/below.    * @param printThreshold The threshold between each log statement; controls    *                       how frequently the value is printed. For example,    *                       if this was 10, a statement would be logged every    *                       time the value has changed by more than 10.    * @param decreasing True iff the property's value is decreasing and this    *                   should wait until it is lower than threshold; else the    *                   value is treated as increasing and will wait until it    *                   is higher than threshold.    * @param nameNodeProperties The set of properties containing information    *                           about the NameNode.    * @param shouldExit Should return true iff this should stop waiting.    * @param log Where to log information.    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"checkstyle:parameternumber"
+argument_list|)
 DECL|method|waitForNameNodeJMXValue (String valueName, String jmxBeanQuery, String jmxProperty, double threshold, double printThreshold, boolean decreasing, Properties nameNodeProperties, Supplier<Boolean> shouldExit, Logger log)
 specifier|private
 specifier|static

@@ -122,6 +122,7 @@ end_comment
 
 begin_class
 DECL|class|AMOptions
+specifier|final
 class|class
 name|AMOptions
 block|{
@@ -416,7 +417,13 @@ name|String
 argument_list|>
 name|shellEnv
 decl_stmt|;
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"checkstyle:parameternumber"
+argument_list|)
 DECL|method|AMOptions (int datanodeMemoryMB, int datanodeVirtualCores, String datanodeArgs, String datanodeNodeLabelExpression, int datanodesPerCluster, String datanodeLaunchDelay, int namenodeMemoryMB, int namenodeVirtualCores, String namenodeArgs, String namenodeNodeLabelExpression, int namenodeMetricsPeriod, String namenodeNameDir, String namenodeEditsDir, Map<String, String> shellEnv)
+specifier|private
 name|AMOptions
 parameter_list|(
 name|int
