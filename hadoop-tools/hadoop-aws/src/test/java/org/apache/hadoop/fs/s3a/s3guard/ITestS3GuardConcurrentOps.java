@@ -352,6 +352,42 @@ name|S3GUARD_DDB_REGION_KEY
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|Constants
+operator|.
+name|S3GUARD_DDB_TABLE_CAPACITY_READ_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|Constants
+operator|.
+name|S3GUARD_DDB_TABLE_CAPACITY_WRITE_KEY
+import|;
+end_import
+
 begin_comment
 comment|/**  * Tests concurrent operations on S3Guard.  */
 end_comment
@@ -382,6 +418,43 @@ operator|*
 literal|1000
 argument_list|)
 decl_stmt|;
+DECL|method|createConfiguration ()
+specifier|protected
+name|Configuration
+name|createConfiguration
+parameter_list|()
+block|{
+name|Configuration
+name|conf
+init|=
+name|super
+operator|.
+name|createConfiguration
+argument_list|()
+decl_stmt|;
+comment|//patch the read/write capacity
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|S3GUARD_DDB_TABLE_CAPACITY_READ_KEY
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|S3GUARD_DDB_TABLE_CAPACITY_WRITE_KEY
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+return|return
+name|conf
+return|;
+block|}
 DECL|method|failIfTableExists (DynamoDB db, String tableName)
 specifier|private
 name|void
