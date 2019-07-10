@@ -3684,6 +3684,30 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|notifyLogFailed (Throwable t, LogEntryProto failedEntry)
+specifier|public
+name|void
+name|notifyLogFailed
+parameter_list|(
+name|Throwable
+name|t
+parameter_list|,
+name|LogEntryProto
+name|failedEntry
+parameter_list|)
+block|{
+name|ratisServer
+operator|.
+name|handleNodeLogFailure
+argument_list|(
+name|gid
+argument_list|,
+name|t
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|notifyInstallSnapshotFromLeader ( RoleInfoProto roleInfoProto, TermIndex firstTermIndexInLog)
 specifier|public
 name|CompletableFuture
