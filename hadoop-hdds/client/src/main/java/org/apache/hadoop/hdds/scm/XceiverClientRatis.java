@@ -1636,7 +1636,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"3 way commit failed "
+literal|"3 way commit failed on pipeline {}"
+argument_list|,
+name|pipeline
 argument_list|,
 name|e
 argument_list|)
@@ -1757,17 +1759,15 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Could not commit "
+literal|"Could not commit index {} on pipeline {} to all the nodes. "
 operator|+
+literal|"Server {} has failed. Committed by majority."
+argument_list|,
 name|index
-operator|+
-literal|" to all the nodes. Server "
-operator|+
+argument_list|,
+name|pipeline
+argument_list|,
 name|address
-operator|+
-literal|" has failed."
-operator|+
-literal|" Committed by majority."
 argument_list|)
 expr_stmt|;
 block|}
