@@ -862,9 +862,9 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"doesn't have CREATE "
+literal|"Only admin users are "
 operator|+
-literal|"permission to access volume"
+literal|"authorized to create Ozone"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -935,9 +935,9 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"doesn't have CREATE "
+literal|"Only admin users are"
 operator|+
-literal|"permission to access bucket"
+literal|" authorized to create Ozone"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1110,9 +1110,9 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"doesn't have READ permission"
+literal|"doesn't have WRITE "
 operator|+
-literal|" to access key"
+literal|"permission to access key"
 argument_list|)
 argument_list|)
 expr_stmt|;

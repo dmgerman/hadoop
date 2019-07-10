@@ -427,6 +427,16 @@ name|OZONE_ADMINISTRATORS
 init|=
 literal|"ozone.administrators"
 decl_stmt|;
+comment|/**    * Used only for testing purpose. Results in making every user an admin.    * */
+DECL|field|OZONE_ADMINISTRATORS_WILDCARD
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_ADMINISTRATORS_WILDCARD
+init|=
+literal|"*"
+decl_stmt|;
 DECL|field|OZONE_CLIENT_PROTOCOL
 specifier|public
 specifier|static
@@ -1492,6 +1502,15 @@ name|String
 name|OZONE_ACL_AUTHORIZER_CLASS_DEFAULT
 init|=
 literal|"org.apache.hadoop.ozone.security.acl.OzoneAccessAuthorizer"
+decl_stmt|;
+DECL|field|OZONE_ACL_AUTHORIZER_CLASS_NATIVE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_ACL_AUTHORIZER_CLASS_NATIVE
+init|=
+literal|"org.apache.hadoop.ozone.security.acl.OzoneNativeAuthorizer"
 decl_stmt|;
 DECL|field|OZONE_ACL_ENABLED
 specifier|public

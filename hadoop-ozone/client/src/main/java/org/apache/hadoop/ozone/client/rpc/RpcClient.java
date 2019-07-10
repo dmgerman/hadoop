@@ -5508,6 +5508,12 @@ argument_list|(
 name|uploadID
 argument_list|)
 operator|.
+name|setAcls
+argument_list|(
+name|getAclList
+argument_list|()
+argument_list|)
+operator|.
 name|build
 argument_list|()
 decl_stmt|;

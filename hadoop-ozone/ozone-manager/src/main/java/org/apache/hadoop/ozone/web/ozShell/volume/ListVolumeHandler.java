@@ -419,7 +419,7 @@ operator|.
 name|getCurrentUser
 argument_list|()
 operator|.
-name|getShortUserName
+name|getUserName
 argument_list|()
 expr_stmt|;
 block|}

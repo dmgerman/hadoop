@@ -108,6 +108,22 @@ name|S3GatewayConfigKeys
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConfigKeys
+operator|.
+name|OZONE_ACL_AUTHORIZER_CLASS_NATIVE
+import|;
+end_import
+
 begin_comment
 comment|/**  * Tests if configuration constants documented in ozone-defaults.xml.  */
 end_comment
@@ -229,6 +245,13 @@ argument_list|(
 name|OMConfigKeys
 operator|.
 name|OZONE_OM_NODES_KEY
+argument_list|)
+expr_stmt|;
+name|configurationPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|OZONE_ACL_AUTHORIZER_CLASS_NATIVE
 argument_list|)
 expr_stmt|;
 name|configurationPropsToSkipCompare

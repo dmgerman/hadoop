@@ -357,6 +357,8 @@ interface|interface
 name|KeyManager
 extends|extends
 name|OzoneManagerFS
+extends|,
+name|IOzoneAcl
 block|{
 comment|/**    * Start key manager.    *    * @param configuration    * @throws IOException    */
 DECL|method|start (OzoneConfiguration configuration)

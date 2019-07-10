@@ -1873,7 +1873,7 @@ argument_list|()
 argument_list|,
 name|aclInfo
 operator|.
-name|getRightsList
+name|getRights
 argument_list|()
 argument_list|)
 decl_stmt|;

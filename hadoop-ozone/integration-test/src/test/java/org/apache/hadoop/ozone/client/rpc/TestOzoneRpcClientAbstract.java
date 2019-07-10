@@ -2361,7 +2361,13 @@ decl_stmt|;
 name|String
 name|userName
 init|=
-literal|"ozone"
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+operator|.
+name|getUserName
+argument_list|()
 decl_stmt|;
 name|String
 name|bucketName
@@ -15860,6 +15866,10 @@ condition|)
 block|{
 name|assertFalse
 argument_list|(
+literal|"READ_ACL should not exist in current acls:"
+operator|+
+name|acls
+argument_list|,
 name|acl
 operator|.
 name|getAclList

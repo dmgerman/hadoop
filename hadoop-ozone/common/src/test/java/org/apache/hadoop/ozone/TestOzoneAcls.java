@@ -755,6 +755,50 @@ operator|.
 name|FALSE
 argument_list|)
 expr_stmt|;
+name|testMatrix
+operator|.
+name|put
+argument_list|(
+literal|" anonymous:bilbo:w"
+argument_list|,
+name|Boolean
+operator|.
+name|FALSE
+argument_list|)
+expr_stmt|;
+name|testMatrix
+operator|.
+name|put
+argument_list|(
+literal|" anonymous:ANONYMOUS:w"
+argument_list|,
+name|Boolean
+operator|.
+name|TRUE
+argument_list|)
+expr_stmt|;
+name|testMatrix
+operator|.
+name|put
+argument_list|(
+literal|" anonymous::rw"
+argument_list|,
+name|Boolean
+operator|.
+name|TRUE
+argument_list|)
+expr_stmt|;
+name|testMatrix
+operator|.
+name|put
+argument_list|(
+literal|" world:WORLD:rw"
+argument_list|,
+name|Boolean
+operator|.
+name|TRUE
+argument_list|)
+expr_stmt|;
 name|Set
 argument_list|<
 name|String
@@ -1197,7 +1241,7 @@ operator|.
 name|getName
 argument_list|()
 argument_list|,
-literal|""
+literal|"WORLD"
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -1598,7 +1642,7 @@ operator|.
 name|getName
 argument_list|()
 argument_list|,
-literal|""
+literal|"WORLD"
 argument_list|)
 expr_stmt|;
 name|assertTrue
