@@ -2658,6 +2658,13 @@ operator|==
 name|total
 condition|)
 block|{
+if|if
+condition|(
+name|nodeThresh
+operator|==
+literal|0
+condition|)
+block|{
 name|assertTrue
 argument_list|(
 literal|"Bad safemode status: '"
@@ -2680,22 +2687,58 @@ literal|"threshold 0.9990 of total blocks "
 operator|+
 name|total
 operator|+
-literal|". The number of "
+literal|". The minimum number of live datanodes is not "
 operator|+
-literal|"live datanodes "
+literal|"required. In safe mode extension. Safe mode will be turned "
 operator|+
-name|numNodes
-operator|+
-literal|" has reached the minimum number "
-operator|+
-name|nodeThresh
-operator|+
-literal|". In safe mode extension. "
-operator|+
-literal|"Safe mode will be turned off automatically"
+literal|"off automatically"
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|assertTrue
+argument_list|(
+literal|"Bad safemode status: '"
+operator|+
+name|status
+operator|+
+literal|"'"
+argument_list|,
+name|status
+operator|.
+name|startsWith
+argument_list|(
+literal|"Safe mode is ON. The reported blocks "
+operator|+
+name|safe
+operator|+
+literal|" has reached "
+operator|+
+literal|"the threshold 0.9990 of total blocks "
+operator|+
+name|total
+operator|+
+literal|". The "
+operator|+
+literal|"number of live datanodes "
+operator|+
+name|numNodes
+operator|+
+literal|" has reached "
+operator|+
+literal|"the minimum number "
+operator|+
+name|nodeThresh
+operator|+
+literal|". In safe mode "
+operator|+
+literal|"extension. Safe mode will be turned off automatically"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 else|else
 block|{
@@ -2979,11 +3022,11 @@ name|startsWith
 argument_list|(
 literal|"Safe mode is ON. The reported blocks 10 has reached the threshold "
 operator|+
-literal|"0.9990 of total blocks 10. The number of live datanodes 3 has "
+literal|"0.9990 of total blocks 10. The minimum number of live datanodes is "
 operator|+
-literal|"reached the minimum number 0. In safe mode extension. "
+literal|"not required. In safe mode extension. Safe mode will be turned off "
 operator|+
-literal|"Safe mode will be turned off automatically"
+literal|"automatically"
 argument_list|)
 argument_list|)
 expr_stmt|;

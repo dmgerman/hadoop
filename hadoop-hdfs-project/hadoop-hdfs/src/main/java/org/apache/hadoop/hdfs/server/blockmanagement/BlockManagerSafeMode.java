@@ -1442,6 +1442,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+if|if
+condition|(
+name|datanodeThreshold
+operator|>
+literal|0
+condition|)
+block|{
 name|int
 name|numLive
 init|=
@@ -1498,6 +1505,14 @@ name|numLive
 argument_list|,
 name|datanodeThreshold
 argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+name|msg
+operator|+=
+literal|"The minimum number of live datanodes is not required. "
 expr_stmt|;
 block|}
 if|if

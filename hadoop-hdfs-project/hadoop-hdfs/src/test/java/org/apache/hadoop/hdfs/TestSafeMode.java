@@ -1273,11 +1273,11 @@ literal|"14 blocks to reach the threshold 0.9990 of total blocks 15."
 operator|+
 name|NEWLINE
 operator|+
-literal|"The number of live datanodes 0 has reached the minimum number 0. "
+literal|"The minimum number of live datanodes is not required. "
 operator|+
-literal|"Safe mode will be turned off automatically once the thresholds "
+literal|"Safe mode will be turned off automatically once the thresholds have "
 operator|+
-literal|"have been reached."
+literal|"been reached."
 argument_list|,
 name|status
 argument_list|)
