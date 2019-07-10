@@ -1885,6 +1885,13 @@ name|void
 name|run
 parameter_list|()
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"DatanodeAdminMonitor is running."
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 operator|!
@@ -1931,6 +1938,22 @@ argument_list|()
 expr_stmt|;
 name|check
 argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"DatanodeAdminMonitor caught exception when processing node."
+argument_list|,
+name|e
+argument_list|)
 expr_stmt|;
 block|}
 finally|finally
@@ -2101,6 +2124,8 @@ operator|.
 name|getKey
 argument_list|()
 decl_stmt|;
+try|try
+block|{
 name|AbstractList
 argument_list|<
 name|BlockInfo
@@ -2346,7 +2371,21 @@ name|checkState
 argument_list|(
 literal|false
 argument_list|,
-literal|"A node is in an invalid state!"
+literal|"Node %s is in an invalid state! "
+operator|+
+literal|"Invalid state: %s %s blocks are on this dn."
+argument_list|,
+name|dn
+argument_list|,
+name|dn
+operator|.
+name|getAdminState
+argument_list|()
+argument_list|,
+name|blocks
+operator|.
+name|size
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2424,10 +2463,50 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+comment|// Log and postpone to process node when meet exception since it is in
+comment|// an invalid state.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"DatanodeAdminMonitor caught exception when processing node "
+operator|+
+literal|"{}."
+argument_list|,
+name|dn
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|pendingNodes
+operator|.
+name|add
+argument_list|(
+name|dn
+argument_list|)
+expr_stmt|;
+name|toRemove
+operator|.
+name|add
+argument_list|(
+name|dn
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
 name|iterkey
 operator|=
 name|dn
 expr_stmt|;
+block|}
 block|}
 comment|// Remove the datanodes that are DECOMMISSIONED or in service after
 comment|// maintenance expiration.
@@ -2453,7 +2532,9 @@ operator|.
 name|isInService
 argument_list|()
 argument_list|,
-literal|"Removing a node that is not yet decommissioned or in service!"
+literal|"Removing node %s that is not yet decommissioned or in service!"
+argument_list|,
+name|dn
 argument_list|)
 expr_stmt|;
 name|outOfServiceNodeBlocks
