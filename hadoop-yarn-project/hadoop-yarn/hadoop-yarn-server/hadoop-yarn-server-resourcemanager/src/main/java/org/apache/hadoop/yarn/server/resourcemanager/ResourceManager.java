@@ -2515,6 +2515,13 @@ name|conf
 operator|=
 name|conf
 expr_stmt|;
+name|UserGroupInformation
+operator|.
+name|setConfiguration
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|rmContext

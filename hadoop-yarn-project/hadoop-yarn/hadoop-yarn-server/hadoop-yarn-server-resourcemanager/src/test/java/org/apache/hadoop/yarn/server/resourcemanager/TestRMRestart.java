@@ -14037,11 +14037,19 @@ argument_list|,
 literal|"kerberos"
 argument_list|)
 expr_stmt|;
+name|UserGroupInformation
+operator|.
+name|setConfiguration
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 comment|// start RM
 name|MockRM
 name|rm1
 init|=
-name|createMockRM
+operator|new
+name|TestSecurityMockRM
 argument_list|(
 name|conf
 argument_list|)
@@ -14102,7 +14110,7 @@ name|MockRM
 name|rm2
 init|=
 operator|new
-name|MockRM
+name|TestSecurityMockRM
 argument_list|(
 name|conf
 argument_list|,
