@@ -969,11 +969,16 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Test array for parameterized test runs: how many threads and    * how many files to use.    * @return a list of parameter tuples.    */
+comment|/**    * Test array for parameterized test runs: how many threads and    * whether or not filenames are unique.    * @return a list of parameter tuples.    */
 annotation|@
 name|Parameterized
 operator|.
 name|Parameters
+argument_list|(
+name|name
+operator|=
+literal|"threads-{0}-unique-{1}"
+argument_list|)
 DECL|method|params ()
 specifier|public
 specifier|static

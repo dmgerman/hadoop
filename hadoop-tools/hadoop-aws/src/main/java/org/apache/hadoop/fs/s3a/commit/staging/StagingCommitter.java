@@ -3297,6 +3297,8 @@ argument_list|(
 name|context
 argument_list|,
 name|fsConf
+argument_list|,
+name|DEFAULT_CONFLICT_MODE
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3481,11 +3483,11 @@ block|}
 end_function
 
 begin_comment
-comment|/**    * Get the conflict mode option string.    * @param context context with the config    * @param fsConf filesystem config    * @return the trimmed configuration option, upper case.    */
+comment|/**    * Get the conflict mode option string.    * @param context context with the config    * @param fsConf filesystem config    * @param defVal default value.    * @return the trimmed configuration option, upper case.    */
 end_comment
 
 begin_function
-DECL|method|getConfictModeOption (JobContext context, Configuration fsConf)
+DECL|method|getConfictModeOption (JobContext context, Configuration fsConf, String defVal)
 specifier|public
 specifier|static
 name|String
@@ -3496,6 +3498,9 @@ name|context
 parameter_list|,
 name|Configuration
 name|fsConf
+parameter_list|,
+name|String
+name|defVal
 parameter_list|)
 block|{
 return|return
@@ -3507,7 +3512,7 @@ name|fsConf
 argument_list|,
 name|FS_S3A_COMMITTER_STAGING_CONFLICT_MODE
 argument_list|,
-name|DEFAULT_CONFLICT_MODE
+name|defVal
 argument_list|)
 operator|.
 name|toUpperCase

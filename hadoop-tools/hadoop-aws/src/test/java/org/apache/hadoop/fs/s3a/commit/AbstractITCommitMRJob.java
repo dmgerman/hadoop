@@ -1063,12 +1063,14 @@ name|successData
 init|=
 name|validateSuccessFile
 argument_list|(
-name|fs
-argument_list|,
 name|outputPath
 argument_list|,
 name|committerName
 argument_list|()
+argument_list|,
+name|fs
+argument_list|,
+literal|"MR job"
 argument_list|)
 decl_stmt|;
 name|List

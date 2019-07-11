@@ -316,6 +316,22 @@ name|Progressable
 import|;
 end_import
 
+begin_import
+import|import static
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+operator|.
+name|checkNotNull
+import|;
+end_import
+
 begin_comment
 comment|/**  * Relays FS calls to the mocked FS, allows for some extra logging with  * stack traces to be included, stubbing out other methods  * where needed to avoid failures.  *  * The logging is useful for tracking  * down why there are extra calls to a method than a test would expect:  * changes in implementation details often trigger such false-positive  * test failures.  *  * This class is in the s3a package so that it has access to methods  */
 end_comment
@@ -1116,6 +1132,35 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|mkdirs (Path f)
+specifier|public
+name|boolean
+name|mkdirs
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|event
+argument_list|(
+literal|"mkdirs(%s)"
+argument_list|,
+name|f
+argument_list|)
+expr_stmt|;
+return|return
+name|mock
+operator|.
+name|mkdirs
+argument_list|(
+name|f
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|mkdirs (Path f, FsPermission permission)
 specifier|public
 name|boolean
@@ -1169,10 +1214,17 @@ name|f
 argument_list|)
 expr_stmt|;
 return|return
+name|checkNotNull
+argument_list|(
 name|mock
 operator|.
 name|getFileStatus
 argument_list|(
+name|f
+argument_list|)
+argument_list|,
+literal|"Mock getFileStatus(%s) returned null"
+argument_list|,
 name|f
 argument_list|)
 return|;

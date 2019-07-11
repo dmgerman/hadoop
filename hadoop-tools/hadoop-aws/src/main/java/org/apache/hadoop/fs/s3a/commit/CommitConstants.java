@@ -386,7 +386,7 @@ specifier|final
 name|String
 name|DEFAULT_CONFLICT_MODE
 init|=
-name|CONFLICT_MODE_FAIL
+name|CONFLICT_MODE_APPEND
 decl_stmt|;
 comment|/**    * Number of threads in committers for parallel operations on files    * (upload, commit, abort, delete...): {@value}.    */
 DECL|field|FS_S3A_COMMITTER_THREADS
