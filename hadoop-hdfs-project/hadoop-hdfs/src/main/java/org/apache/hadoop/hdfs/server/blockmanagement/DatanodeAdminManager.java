@@ -1977,11 +1977,23 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Checked {} blocks and {} nodes this tick"
+literal|"Checked {} blocks and {} nodes this tick. {} nodes are now "
+operator|+
+literal|"in maintenance or transitioning state. {} nodes pending."
 argument_list|,
 name|numBlocksChecked
 argument_list|,
 name|numNodesChecked
+argument_list|,
+name|outOfServiceNodeBlocks
+operator|.
+name|size
+argument_list|()
+argument_list|,
+name|pendingNodes
+operator|.
+name|size
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2410,7 +2422,7 @@ else|else
 block|{
 name|LOG
 operator|.
-name|debug
+name|info
 argument_list|(
 literal|"Node {} {} healthy."
 operator|+
@@ -2443,7 +2455,7 @@ else|else
 block|{
 name|LOG
 operator|.
-name|debug
+name|info
 argument_list|(
 literal|"Node {} still has {} blocks to replicate "
 operator|+
