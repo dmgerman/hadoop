@@ -146,6 +146,38 @@ name|hdfs
 operator|.
 name|util
 operator|.
+name|Canceler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|util
+operator|.
+name|DataTransferThrottler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|util
+operator|.
 name|RwLock
 import|;
 end_import
@@ -381,11 +413,29 @@ name|long
 name|blockCommitSequenceId
 parameter_list|)
 function_decl|;
-comment|/**    * check and report the structural integrity of the container.    * @return true if the integrity checks pass    *         false otherwise    */
-DECL|method|check ()
+comment|/**    * Scan the container metadata to detect corruption.    */
+DECL|method|scanMetaData ()
 name|boolean
-name|check
+name|scanMetaData
 parameter_list|()
+function_decl|;
+comment|/**    * Return if the container data should be checksum verified to detect    * corruption. The result depends upon the current state of the container    * (e.g. if a container is accepting writes, it may not be a good idea to    * perform checksum verification to avoid concurrency issues).    */
+DECL|method|shouldScanData ()
+name|boolean
+name|shouldScanData
+parameter_list|()
+function_decl|;
+comment|/**    * Perform checksum verification for the container data.    *    * @param throttler A reference of {@link DataTransferThrottler} used to    *                  perform I/O bandwidth throttling    * @param canceler  A reference of {@link Canceler} used to cancel the    *                  I/O bandwidth throttling (e.g. for shutdown purpose).    * @return true if the checksum verification succeeds    *         false otherwise    */
+DECL|method|scanData (DataTransferThrottler throttler, Canceler canceler)
+name|boolean
+name|scanData
+parameter_list|(
+name|DataTransferThrottler
+name|throttler
+parameter_list|,
+name|Canceler
+name|canceler
+parameter_list|)
 function_decl|;
 block|}
 end_interface

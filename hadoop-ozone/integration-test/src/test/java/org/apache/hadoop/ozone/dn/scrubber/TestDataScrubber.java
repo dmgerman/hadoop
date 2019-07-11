@@ -482,7 +482,7 @@ name|container
 operator|.
 name|ozoneimpl
 operator|.
-name|ContainerScrubber
+name|ContainerMetadataScanner
 import|;
 end_import
 
@@ -1280,18 +1280,18 @@ name|exists
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|ContainerScrubber
+name|ContainerMetadataScanner
 name|sb
 init|=
 operator|new
-name|ContainerScrubber
+name|ContainerMetadataScanner
 argument_list|(
-name|ozoneConfig
-argument_list|,
 name|oc
 operator|.
 name|getController
 argument_list|()
+argument_list|,
+literal|0
 argument_list|)
 decl_stmt|;
 name|sb

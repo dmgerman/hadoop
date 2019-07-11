@@ -294,13 +294,9 @@ name|config
 operator|.
 name|getBoolean
 argument_list|(
-name|HddsConfigKeys
-operator|.
-name|HDDS_CONTAINERSCRUB_ENABLED
+literal|"hdds.containerscrub.enabled"
 argument_list|,
-name|HddsConfigKeys
-operator|.
-name|HDDS_CONTAINERSCRUB_ENABLED_DEFAULT
+literal|false
 argument_list|)
 decl_stmt|;
 if|if
@@ -319,11 +315,7 @@ name|HDDS_CONTAINER_PERSISTDATA
 operator|+
 literal|" to false."
 operator|+
-literal|" Please set "
-operator|+
-name|HddsConfigKeys
-operator|.
-name|HDDS_CONTAINERSCRUB_ENABLED
+literal|" Please set hdds.containerscrub.enabled"
 operator|+
 literal|" also to false to enable non-persistent containers."
 argument_list|)
