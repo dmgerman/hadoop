@@ -3007,11 +3007,9 @@ block|}
 comment|/**    * run integrity checks on the Container metadata.    */
 DECL|method|check ()
 specifier|public
-name|void
+name|boolean
 name|check
 parameter_list|()
-throws|throws
-name|StorageContainerException
 block|{
 name|ContainerCheckLevel
 name|level
@@ -3108,20 +3106,7 @@ argument_list|)
 expr_stmt|;
 break|break;
 default|default:
-throw|throw
-operator|new
-name|StorageContainerException
-argument_list|(
-literal|"Invalid Container state found for Container : "
-operator|+
-name|containerData
-operator|.
-name|getContainerID
-argument_list|()
-argument_list|,
-name|INVALID_CONTAINER_STATE
-argument_list|)
-throw|;
+break|break;
 block|}
 if|if
 condition|(
@@ -3141,7 +3126,9 @@ argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
-return|return;
+return|return
+literal|true
+return|;
 block|}
 name|KeyValueContainerCheck
 name|checker
@@ -3167,45 +3154,25 @@ block|{
 case|case
 name|FAST_CHECK
 case|:
+return|return
 name|checker
 operator|.
 name|fastCheck
 argument_list|()
-expr_stmt|;
-break|break;
+return|;
 case|case
 name|FULL_CHECK
 case|:
+return|return
 name|checker
 operator|.
 name|fullCheck
 argument_list|()
-expr_stmt|;
-break|break;
-case|case
-name|NO_CHECK
-case|:
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Skipping integrity checks for Container Id : {}"
-argument_list|,
-name|containerId
-argument_list|)
-expr_stmt|;
-break|break;
+return|;
 default|default:
-comment|// we should not be here at all, scuttle the ship!
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-literal|0
-argument_list|,
-literal|"Invalid Containercheck level"
-argument_list|)
-expr_stmt|;
+return|return
+literal|true
+return|;
 block|}
 block|}
 DECL|enum|ContainerCheckLevel

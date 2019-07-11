@@ -349,6 +349,40 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Marks the container as UNHEALTHY.    *    * @param containerId Id of the container to update    * @throws IOException in case of exception    */
+DECL|method|markContainerUnhealthy (final long containerId)
+specifier|public
+name|void
+name|markContainerUnhealthy
+parameter_list|(
+specifier|final
+name|long
+name|containerId
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|Container
+name|container
+init|=
+name|containerSet
+operator|.
+name|getContainer
+argument_list|(
+name|containerId
+argument_list|)
+decl_stmt|;
+name|getHandler
+argument_list|(
+name|container
+argument_list|)
+operator|.
+name|markContainerUnhealthy
+argument_list|(
+name|container
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Returns the container report.    *    * @return ContainerReportsProto    * @throws IOException in case of exception    */
 DECL|method|getContainerReport ()
 specifier|public

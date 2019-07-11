@@ -4662,16 +4662,55 @@ operator|.
 name|UNHEALTHY
 condition|)
 block|{
+try|try
+block|{
 name|container
 operator|.
 name|markContainerUnhealthy
 argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ex
+parameter_list|)
+block|{
+comment|// explicitly catch IOException here since the this operation
+comment|// will fail if the Rocksdb metadata is corrupted.
+name|long
+name|id
+init|=
+name|container
+operator|.
+name|getContainerData
+argument_list|()
+operator|.
+name|getContainerID
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Unexpected error while marking container "
+operator|+
+name|id
+operator|+
+literal|" as unhealthy"
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
 name|sendICR
 argument_list|(
 name|container
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 annotation|@

@@ -532,18 +532,6 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|assertFalse
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
 name|assertTrue
 import|;
 end_import
@@ -768,7 +756,7 @@ init|=
 literal|4
 decl_stmt|;
 name|boolean
-name|corruption
+name|valid
 init|=
 literal|false
 decl_stmt|;
@@ -833,16 +821,16 @@ name|containerID
 argument_list|)
 decl_stmt|;
 comment|// first run checks on a Open Container
-name|corruption
+name|valid
 operator|=
 name|kvCheck
 operator|.
 name|fastCheck
 argument_list|()
 expr_stmt|;
-name|assertFalse
+name|assertTrue
 argument_list|(
-name|corruption
+name|valid
 argument_list|)
 expr_stmt|;
 name|container
@@ -851,16 +839,16 @@ name|close
 argument_list|()
 expr_stmt|;
 comment|// next run checks on a Closed Container
-name|corruption
+name|valid
 operator|=
 name|kvCheck
 operator|.
 name|fullCheck
 argument_list|()
 expr_stmt|;
-name|assertFalse
+name|assertTrue
 argument_list|(
-name|corruption
+name|valid
 argument_list|)
 expr_stmt|;
 block|}

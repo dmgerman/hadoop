@@ -192,6 +192,21 @@ name|EventPublisher
 name|publisher
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Processing incremental container report from data node {}"
+argument_list|,
+name|report
+operator|.
+name|getDatanodeDetails
+argument_list|()
+operator|.
+name|getUuid
+argument_list|()
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|ContainerReplicaProto
