@@ -90,11 +90,6 @@ specifier|final
 name|TimelineEvent
 name|timelineEvent
 decl_stmt|;
-DECL|field|valid
-specifier|private
-name|boolean
-name|valid
-decl_stmt|;
 DECL|method|TimelineEventSubDoc ()
 specifier|public
 name|TimelineEventSubDoc
@@ -164,22 +159,6 @@ operator|.
 name|isValid
 argument_list|()
 return|;
-block|}
-DECL|method|setValid (boolean valid)
-specifier|public
-name|void
-name|setValid
-parameter_list|(
-name|boolean
-name|valid
-parameter_list|)
-block|{
-name|this
-operator|.
-name|valid
-operator|=
-name|valid
-expr_stmt|;
 block|}
 DECL|method|getTimestamp ()
 specifier|public

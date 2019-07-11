@@ -104,11 +104,6 @@ specifier|final
 name|TimelineMetric
 name|timelineMetric
 decl_stmt|;
-DECL|field|valid
-specifier|private
-name|boolean
-name|valid
-decl_stmt|;
 DECL|field|singleDataTimestamp
 specifier|private
 name|long
@@ -148,15 +143,6 @@ operator|.
 name|timelineMetric
 operator|=
 name|timelineMetric
-expr_stmt|;
-name|this
-operator|.
-name|valid
-operator|=
-name|timelineMetric
-operator|.
-name|isValid
-argument_list|()
 expr_stmt|;
 if|if
 condition|(
@@ -446,22 +432,6 @@ name|setType
 argument_list|(
 name|metricType
 argument_list|)
-expr_stmt|;
-block|}
-DECL|method|setValid (boolean valid)
-specifier|public
-name|void
-name|setValid
-parameter_list|(
-name|boolean
-name|valid
-parameter_list|)
-block|{
-name|this
-operator|.
-name|valid
-operator|=
-name|valid
 expr_stmt|;
 block|}
 DECL|method|isValid ()

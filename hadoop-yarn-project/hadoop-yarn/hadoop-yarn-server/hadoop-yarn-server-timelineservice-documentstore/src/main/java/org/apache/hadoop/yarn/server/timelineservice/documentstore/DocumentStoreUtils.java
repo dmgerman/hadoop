@@ -30,7 +30,7 @@ name|microsoft
 operator|.
 name|azure
 operator|.
-name|documentdb
+name|cosmosdb
 operator|.
 name|ConnectionPolicy
 import|;
@@ -44,7 +44,7 @@ name|microsoft
 operator|.
 name|azure
 operator|.
-name|documentdb
+name|cosmosdb
 operator|.
 name|ConsistencyLevel
 import|;
@@ -58,9 +58,11 @@ name|microsoft
 operator|.
 name|azure
 operator|.
-name|documentdb
+name|cosmosdb
 operator|.
-name|DocumentClient
+name|rx
+operator|.
+name|AsyncDocumentClient
 import|;
 end_import
 
@@ -892,6 +894,23 @@ modifier|...
 name|values
 parameter_list|)
 block|{
+if|if
+condition|(
+name|values
+operator|==
+literal|null
+operator|||
+name|values
+operator|.
+name|length
+operator|==
+literal|0
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
 for|for
 control|(
 name|String
@@ -921,12 +940,12 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * Creates CosmosDB Document Client.    * @param conf    *          to retrieve cosmos db endpoint and key    * @return async document client for CosmosDB    */
-DECL|method|createCosmosDBClient (Configuration conf)
+comment|/**    * Creates CosmosDB Async Document Client.    * @param conf    *          to retrieve cosmos db endpoint and key    * @return async document client for CosmosDB    */
+DECL|method|createCosmosDBAsyncClient ( Configuration conf)
 specifier|public
 specifier|static
-name|DocumentClient
-name|createCosmosDBClient
+name|AsyncDocumentClient
+name|createCosmosDBAsyncClient
 parameter_list|(
 name|Configuration
 name|conf
@@ -934,7 +953,12 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|DocumentClient
+name|AsyncDocumentClient
+operator|.
+name|Builder
+argument_list|()
+operator|.
+name|withServiceEndpoint
 argument_list|(
 name|DocumentStoreUtils
 operator|.
@@ -942,23 +966,35 @@ name|getCosmosDBEndpoint
 argument_list|(
 name|conf
 argument_list|)
-argument_list|,
+argument_list|)
+operator|.
+name|withMasterKeyOrResourceToken
+argument_list|(
 name|DocumentStoreUtils
 operator|.
 name|getCosmosDBMasterKey
 argument_list|(
 name|conf
 argument_list|)
-argument_list|,
+argument_list|)
+operator|.
+name|withConnectionPolicy
+argument_list|(
 name|ConnectionPolicy
 operator|.
 name|GetDefault
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|withConsistencyLevel
+argument_list|(
 name|ConsistencyLevel
 operator|.
 name|Session
 argument_list|)
+operator|.
+name|build
+argument_list|()
 return|;
 block|}
 comment|/**    * Returns the timestamp of the day's start (which is midnight 00:00:00 AM)    * for a given input timestamp.    *    * @param timeStamp Timestamp.    * @return timestamp of that day's beginning (midnight)    */
