@@ -7925,6 +7925,8 @@ name|resourceType
 decl_stmt|;
 try|try
 block|{
+try|try
+init|(
 name|WriteBatch
 name|batch
 init|=
@@ -7932,8 +7934,7 @@ name|db
 operator|.
 name|createWriteBatch
 argument_list|()
-decl_stmt|;
-try|try
+init|)
 block|{
 name|ResourceMappings
 operator|.
@@ -7975,14 +7976,6 @@ name|write
 argument_list|(
 name|batch
 argument_list|)
-expr_stmt|;
-block|}
-finally|finally
-block|{
-name|batch
-operator|.
-name|close
-argument_list|()
 expr_stmt|;
 block|}
 block|}
