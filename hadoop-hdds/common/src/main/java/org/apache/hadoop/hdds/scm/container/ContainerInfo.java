@@ -1765,6 +1765,23 @@ operator|.
 name|CLOSING
 return|;
 block|}
+comment|/**    * Check if a container is in Open state, but Close has not been initiated.    * @return true if Open, false otherwise.    */
+DECL|method|isOpenNotClosing ()
+specifier|public
+name|boolean
+name|isOpenNotClosing
+parameter_list|()
+block|{
+return|return
+name|state
+operator|==
+name|HddsProtos
+operator|.
+name|LifeCycleState
+operator|.
+name|OPEN
+return|;
+block|}
 block|}
 end_class
 

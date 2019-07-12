@@ -1624,7 +1624,7 @@ if|if
 condition|(
 name|container
 operator|.
-name|isOpen
+name|isOpenNotClosing
 argument_list|()
 condition|)
 block|{
