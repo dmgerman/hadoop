@@ -66,6 +66,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|FileStatus
@@ -347,6 +361,10 @@ comment|/**  * Place for the S3A listing classes; keeps all the small classes un
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|Listing
 specifier|public
 class|class
@@ -414,6 +432,7 @@ return|;
 block|}
 comment|/**    * Create a FileStatus iterator against a path, with a given list object    * request.    *    * @param listPath path of the listing    * @param request initial request to make    * @param filter the filter on which paths to accept    * @param acceptor the class/predicate to decide which entries to accept    * in the listing based on the full file status.    * @return the iterator    * @throws IOException IO Problems    */
 DECL|method|createFileStatusListingIterator ( Path listPath, S3ListRequest request, PathFilter filter, Listing.FileStatusAcceptor acceptor)
+specifier|public
 name|FileStatusListingIterator
 name|createFileStatusListingIterator
 parameter_list|(
@@ -455,6 +474,7 @@ name|Retries
 operator|.
 name|RetryRaw
 DECL|method|createFileStatusListingIterator ( Path listPath, S3ListRequest request, PathFilter filter, Listing.FileStatusAcceptor acceptor, RemoteIterator<S3AFileStatus> providedStatus)
+specifier|public
 name|FileStatusListingIterator
 name|createFileStatusListingIterator
 parameter_list|(
@@ -505,6 +525,7 @@ comment|/**    * Create a located status iterator over a file status iterator.  
 annotation|@
 name|VisibleForTesting
 DECL|method|createLocatedFileStatusIterator ( RemoteIterator<S3AFileStatus> statusIterator)
+specifier|public
 name|LocatedFileStatusIterator
 name|createLocatedFileStatusIterator
 parameter_list|(
@@ -2388,6 +2409,7 @@ block|}
 block|}
 comment|/**    * Accept all entries except the base path and those which map to S3N    * pseudo directory markers.    */
 DECL|class|AcceptAllButSelfAndS3nDirs
+specifier|public
 specifier|static
 class|class
 name|AcceptAllButSelfAndS3nDirs

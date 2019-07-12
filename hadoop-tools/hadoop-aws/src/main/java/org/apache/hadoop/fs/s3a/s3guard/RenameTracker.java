@@ -279,7 +279,7 @@ specifier|final
 name|MetadataStore
 name|metadataStore
 decl_stmt|;
-comment|/**    * Constructor.    * @param name tracker name for logs.    * @param storeContext store context.    * @param metadataStore the stopre    * @param sourceRoot source path.    * @param dest destination path.    * @param operationState ongoing move state.    */
+comment|/**    * Constructor.    * @param name tracker name for logs.    * @param storeContext store context.    * @param metadataStore the store    * @param sourceRoot source path.    * @param dest destination path.    * @param operationState ongoing move state.    */
 DECL|method|RenameTracker ( final String name, final StoreContext storeContext, final MetadataStore metadataStore, final Path sourceRoot, final Path dest, final BulkOperationState operationState)
 specifier|protected
 name|RenameTracker

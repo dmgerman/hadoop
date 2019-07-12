@@ -158,9 +158,39 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|RemoteIterator
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|test
 operator|.
 name|LambdaTestUtils
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|lang3
+operator|.
+name|StringUtils
+operator|.
+name|join
 import|;
 end_import
 
@@ -825,6 +855,8 @@ argument_list|(
 literal|"/testRmRootRecursive"
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|ContractTestUtils
 operator|.
 name|touch
@@ -884,7 +916,20 @@ argument_list|,
 name|file
 argument_list|)
 expr_stmt|;
-empty_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|getFileSystem
+argument_list|()
+operator|.
+name|delete
+argument_list|(
+name|file
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 annotation|@
@@ -1033,25 +1078,38 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-name|assertEquals
-argument_list|(
-literal|"listStatus on empty root-directory returned a non-empty list"
-argument_list|,
-literal|0
-argument_list|,
+name|FileStatus
+index|[]
+name|rootListStatus
+init|=
 name|fs
 operator|.
 name|listStatus
 argument_list|(
 name|root
 argument_list|)
+decl_stmt|;
+name|assertEquals
+argument_list|(
+literal|"listStatus on empty root-directory returned found: "
+operator|+
+name|join
+argument_list|(
+literal|"\n"
+argument_list|,
+name|rootListStatus
+argument_list|)
+argument_list|,
+literal|0
+argument_list|,
+name|rootListStatus
 operator|.
 name|length
 argument_list|)
 expr_stmt|;
-name|assertFalse
+name|assertNoElements
 argument_list|(
-literal|"listFiles(/, false).hasNext"
+literal|"listFiles(/, false)"
 argument_list|,
 name|fs
 operator|.
@@ -1061,14 +1119,11 @@ name|root
 argument_list|,
 literal|false
 argument_list|)
-operator|.
-name|hasNext
-argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertFalse
+name|assertNoElements
 argument_list|(
-literal|"listFiles(/, true).hasNext"
+literal|"listFiles(/, true)"
 argument_list|,
 name|fs
 operator|.
@@ -1078,14 +1133,11 @@ name|root
 argument_list|,
 literal|true
 argument_list|)
-operator|.
-name|hasNext
-argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertFalse
+name|assertNoElements
 argument_list|(
-literal|"listLocatedStatus(/).hasNext"
+literal|"listLocatedStatus(/)"
 argument_list|,
 name|fs
 operator|.
@@ -1093,9 +1145,6 @@ name|listLocatedStatus
 argument_list|(
 name|root
 argument_list|)
-operator|.
-name|hasNext
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertIsDirectory
@@ -1103,6 +1152,69 @@ argument_list|(
 name|root
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Assert that an iterator has no elements; the raised exception    * will include the element list.    * @param operation operation for assertion text.    * @param iter iterator    * @throws IOException failure retrieving the values.    */
+DECL|method|assertNoElements (String operation, RemoteIterator<LocatedFileStatus> iter)
+specifier|protected
+name|void
+name|assertNoElements
+parameter_list|(
+name|String
+name|operation
+parameter_list|,
+name|RemoteIterator
+argument_list|<
+name|LocatedFileStatus
+argument_list|>
+name|iter
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|List
+argument_list|<
+name|LocatedFileStatus
+argument_list|>
+name|resultList
+init|=
+name|toList
+argument_list|(
+name|iter
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|resultList
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|fail
+argument_list|(
+literal|"Expected no results from "
+operator|+
+name|operation
+operator|+
+literal|", but got "
+operator|+
+name|resultList
+operator|.
+name|size
+argument_list|()
+operator|+
+literal|" elements:\n"
+operator|+
+name|join
+argument_list|(
+name|resultList
+argument_list|,
+literal|"\n"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Test
@@ -1145,6 +1257,16 @@ argument_list|(
 name|root
 argument_list|)
 decl_stmt|;
+name|String
+name|listStatusResult
+init|=
+name|join
+argument_list|(
+name|statuses
+argument_list|,
+literal|"\n"
+argument_list|)
+decl_stmt|;
 name|List
 argument_list|<
 name|LocatedFileStatus
@@ -1161,8 +1283,28 @@ name|root
 argument_list|)
 argument_list|)
 decl_stmt|;
+name|String
+name|locatedStatusResult
+init|=
+name|join
+argument_list|(
+name|locatedStatusList
+argument_list|,
+literal|"\n"
+argument_list|)
+decl_stmt|;
 name|assertEquals
 argument_list|(
+literal|"listStatus(/) vs listLocatedStatus(/) with \n"
+operator|+
+literal|"listStatus ="
+operator|+
+name|listStatusResult
+operator|+
+literal|" listLocatedStatus = "
+operator|+
+name|locatedStatusResult
+argument_list|,
 name|statuses
 operator|.
 name|length
@@ -1191,8 +1333,28 @@ literal|false
 argument_list|)
 argument_list|)
 decl_stmt|;
+name|String
+name|listFilesResult
+init|=
+name|join
+argument_list|(
+name|fileList
+argument_list|,
+literal|"\n"
+argument_list|)
+decl_stmt|;
 name|assertTrue
 argument_list|(
+literal|"listStatus(/) vs listFiles(/, false) with \n"
+operator|+
+literal|"listStatus = "
+operator|+
+name|listStatusResult
+operator|+
+literal|"listFiles = "
+operator|+
+name|listFilesResult
+argument_list|,
 name|fileList
 operator|.
 name|size

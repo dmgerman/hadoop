@@ -193,6 +193,40 @@ name|hashCode
 argument_list|()
 return|;
 block|}
+comment|/**    * Generate an S3AFileStatus instance, including etag and    * version ID, if present.    */
+DECL|method|toS3AFileStatus ()
+specifier|public
+name|S3AFileStatus
+name|toS3AFileStatus
+parameter_list|()
+block|{
+return|return
+operator|new
+name|S3AFileStatus
+argument_list|(
+name|getLen
+argument_list|()
+argument_list|,
+name|getModificationTime
+argument_list|()
+argument_list|,
+name|getPath
+argument_list|()
+argument_list|,
+name|getBlockSize
+argument_list|()
+argument_list|,
+name|getOwner
+argument_list|()
+argument_list|,
+name|getETag
+argument_list|()
+argument_list|,
+name|getVersionId
+argument_list|()
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 

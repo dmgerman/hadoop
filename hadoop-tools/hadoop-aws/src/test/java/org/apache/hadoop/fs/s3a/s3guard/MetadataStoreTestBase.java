@@ -525,6 +525,16 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|setName
+argument_list|(
+literal|"setup"
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|debug
@@ -598,6 +608,16 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|setName
+argument_list|(
+literal|"teardown"
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|debug
@@ -5477,6 +5497,7 @@ name|pathStr
 argument_list|)
 return|;
 block|}
+comment|/**    * Assert that either a path has no entry or that it is marked as deleted.    * @param pathStr path    * @throws IOException IO failure.    */
 DECL|method|assertDeleted (String pathStr)
 specifier|protected
 name|void
@@ -5577,6 +5598,110 @@ return|return
 name|meta
 return|;
 block|}
+comment|/**    * Assert that an entry exists and is a file.    * @param pathStr path    * @throws IOException IO failure.    */
+DECL|method|verifyIsFile (String pathStr)
+specifier|protected
+name|PathMetadata
+name|verifyIsFile
+parameter_list|(
+name|String
+name|pathStr
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|PathMetadata
+name|md
+init|=
+name|verifyCached
+argument_list|(
+name|pathStr
+argument_list|)
+decl_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Not a file: "
+operator|+
+name|md
+argument_list|,
+name|md
+operator|.
+name|getFileStatus
+argument_list|()
+operator|.
+name|isFile
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|md
+return|;
+block|}
+comment|/**    * Assert that an entry exists and is a tombstone.    * @param pathStr path    * @throws IOException IO failure.    */
+DECL|method|assertIsTombstone (String pathStr)
+specifier|protected
+name|void
+name|assertIsTombstone
+parameter_list|(
+name|String
+name|pathStr
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|PathMetadata
+name|meta
+init|=
+name|getNonNull
+argument_list|(
+name|pathStr
+argument_list|)
+decl_stmt|;
+name|assertTrue
+argument_list|(
+name|pathStr
+operator|+
+literal|" must be a tombstone: "
+operator|+
+name|meta
+argument_list|,
+name|meta
+operator|.
+name|isDeleted
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Assert that an entry does not exist.    * @param pathStr path    * @throws IOException IO failure.    */
+DECL|method|assertNotFound (String pathStr)
+specifier|protected
+name|void
+name|assertNotFound
+parameter_list|(
+name|String
+name|pathStr
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|PathMetadata
+name|meta
+init|=
+name|get
+argument_list|(
+name|pathStr
+argument_list|)
+decl_stmt|;
+name|assertNull
+argument_list|(
+literal|"Unexpectedly found entry at path "
+operator|+
+name|pathStr
+argument_list|,
+name|meta
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Get an entry which must be a file.    * @param pathStr path    * @return the entry    * @throws IOException IO failure.    */
 DECL|method|getFile (final String pathStr)
 specifier|protected
@@ -5654,6 +5779,96 @@ name|getFileStatus
 argument_list|()
 operator|.
 name|isDirectory
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|meta
+return|;
+block|}
+comment|/**    * Get an entry which must not be marked as an empty directory:    * its empty directory field must be FALSE or UNKNOWN.    * @param pathStr path    * @return the entry    * @throws IOException IO failure.    */
+DECL|method|getNonEmptyDirectory (final String pathStr)
+specifier|protected
+name|PathMetadata
+name|getNonEmptyDirectory
+parameter_list|(
+specifier|final
+name|String
+name|pathStr
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|PathMetadata
+name|meta
+init|=
+name|getDirectory
+argument_list|(
+name|pathStr
+argument_list|)
+decl_stmt|;
+name|assertNotEquals
+argument_list|(
+literal|"Path "
+operator|+
+name|pathStr
+operator|+
+literal|" is considered an empty dir "
+operator|+
+name|meta
+argument_list|,
+name|Tristate
+operator|.
+name|TRUE
+argument_list|,
+name|meta
+operator|.
+name|isEmptyDirectory
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|meta
+return|;
+block|}
+comment|/**    * Get an entry which must be an empty directory.    * its empty directory field must be TRUE.    * @param pathStr path    * @return the entry    * @throws IOException IO failure.    */
+DECL|method|getEmptyDirectory (final String pathStr)
+specifier|protected
+name|PathMetadata
+name|getEmptyDirectory
+parameter_list|(
+specifier|final
+name|String
+name|pathStr
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|PathMetadata
+name|meta
+init|=
+name|getDirectory
+argument_list|(
+name|pathStr
+argument_list|)
+decl_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Path "
+operator|+
+name|pathStr
+operator|+
+literal|" is not considered an empty dir "
+operator|+
+name|meta
+argument_list|,
+name|Tristate
+operator|.
+name|TRUE
+argument_list|,
+name|meta
+operator|.
+name|isEmptyDirectory
 argument_list|()
 argument_list|)
 expr_stmt|;

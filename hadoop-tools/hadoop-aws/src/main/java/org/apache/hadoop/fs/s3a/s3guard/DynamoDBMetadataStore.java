@@ -1248,6 +1248,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|DurationInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|ReflectionUtils
 import|;
 end_import
@@ -1444,6 +1458,31 @@ argument_list|(
 name|DynamoDBMetadataStore
 operator|.
 name|class
+argument_list|)
+decl_stmt|;
+comment|/**    * Name of the operations log.    */
+DECL|field|OPERATIONS_LOG_NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OPERATIONS_LOG_NAME
+init|=
+literal|"org.apache.hadoop.fs.s3a.s3guard.Operations"
+decl_stmt|;
+comment|/**    * A log of all state changing operations to the store;    * only updated at debug level.    */
+DECL|field|OPERATIONS_LOG
+specifier|public
+specifier|static
+specifier|final
+name|Logger
+name|OPERATIONS_LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|OPERATIONS_LOG_NAME
 argument_list|)
 decl_stmt|;
 comment|/** parent/child name to use in the version marker. */
@@ -2479,6 +2518,8 @@ argument_list|,
 literal|true
 argument_list|,
 name|ttlTimeProvider
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -2515,15 +2556,17 @@ argument_list|,
 literal|false
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Inner delete option, action based on the {@code tombstone} flag.    * No tombstone: delete the entry. Tombstone: create a tombstone entry.    * There is no check as to whether the entry exists in the table first.    * @param path path to delete    * @param tombstone flag to create a tombstone marker    * @param ttlTimeProvider The time provider to set last_updated. Must not    *                        be null if tombstone is true.    * @throws IOException I/O error.    */
+comment|/**    * Inner delete option, action based on the {@code tombstone} flag.    * No tombstone: delete the entry. Tombstone: create a tombstone entry.    * There is no check as to whether the entry exists in the table first.    * @param path path to delete    * @param tombstone flag to create a tombstone marker    * @param ttlTimeProvider The time provider to set last_updated. Must not    *                        be null if tombstone is true.    * @param ancestorState ancestor state for logging    * @throws IOException I/O error.    */
 annotation|@
 name|Retries
 operator|.
 name|RetryTranslated
-DECL|method|innerDelete (final Path path, boolean tombstone, ITtlTimeProvider ttlTimeProvider)
+DECL|method|innerDelete (final Path path, final boolean tombstone, final ITtlTimeProvider ttlTimeProvider, final AncestorState ancestorState)
 specifier|private
 name|void
 name|innerDelete
@@ -2532,11 +2575,17 @@ specifier|final
 name|Path
 name|path
 parameter_list|,
+specifier|final
 name|boolean
 name|tombstone
 parameter_list|,
+specifier|final
 name|ITtlTimeProvider
 name|ttlTimeProvider
+parameter_list|,
+specifier|final
+name|AncestorState
+name|ancestorState
 parameter_list|)
 throws|throws
 name|IOException
@@ -2656,13 +2705,11 @@ argument_list|,
 parameter_list|()
 lambda|->
 block|{
-name|LOG
-operator|.
-name|debug
+name|logPut
 argument_list|(
-literal|"Adding tombstone to {}"
+name|ancestorState
 argument_list|,
-name|path
+name|item
 argument_list|)
 expr_stmt|;
 name|recordsWritten
@@ -2708,13 +2755,11 @@ parameter_list|()
 lambda|->
 block|{
 comment|// record the attempt so even on retry the counter goes up.
-name|LOG
-operator|.
-name|debug
+name|logDelete
 argument_list|(
-literal|"Delete key {}"
+name|ancestorState
 argument_list|,
-name|path
+name|key
 argument_list|)
 expr_stmt|;
 name|recordsDeleted
@@ -2786,11 +2831,6 @@ condition|(
 name|meta
 operator|==
 literal|null
-operator|||
-name|meta
-operator|.
-name|isDeleted
-argument_list|()
 condition|)
 block|{
 name|LOG
@@ -2804,6 +2844,45 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
+if|if
+condition|(
+name|meta
+operator|.
+name|isDeleted
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Subtree path {} is deleted; this will be a no-op"
+argument_list|,
+name|path
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+try|try
+init|(
+name|AncestorState
+name|state
+init|=
+operator|new
+name|AncestorState
+argument_list|(
+name|this
+argument_list|,
+name|BulkOperationState
+operator|.
+name|OperationType
+operator|.
+name|Delete
+argument_list|,
+name|path
+argument_list|)
+init|)
+block|{
 comment|// Execute via the bounded threadpool.
 specifier|final
 name|List
@@ -2870,6 +2949,8 @@ argument_list|,
 literal|true
 argument_list|,
 name|ttlTimeProvider
+argument_list|,
+name|state
 argument_list|)
 expr_stmt|;
 return|return
@@ -2908,6 +2989,7 @@ argument_list|(
 name|futures
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Get a consistent view of an item.    * @param path path to look up in the database    * @return the result    * @throws IOException failure    */
 annotation|@
@@ -3625,18 +3707,19 @@ parameter_list|)
 throws|throws
 name|PathIOException
 block|{
-name|List
+comment|// Key on path to allow fast lookup
+name|Map
 argument_list|<
+name|Path
+argument_list|,
 name|DDBPathMetadata
 argument_list|>
-name|ancestorsToAdd
+name|ancestry
 init|=
 operator|new
-name|ArrayList
+name|HashMap
 argument_list|<>
-argument_list|(
-literal|0
-argument_list|)
+argument_list|()
 decl_stmt|;
 name|LOG
 operator|.
@@ -3778,7 +3861,7 @@ argument_list|()
 condition|)
 block|{
 comment|// check for and warn if the existing bulk operation overwrote it.
-comment|// this should never occur outside tests explicitly crating it
+comment|// this should never occur outside tests explicitly creating it
 name|LOG
 operator|.
 name|warn
@@ -3837,10 +3920,12 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|ancestorsToAdd
+name|ancestry
 operator|.
-name|add
+name|put
 argument_list|(
+name|path
+argument_list|,
 name|entry
 argument_list|)
 expr_stmt|;
@@ -3859,6 +3944,14 @@ name|parent
 operator|.
 name|isRoot
 argument_list|()
+operator|&&
+operator|!
+name|ancestry
+operator|.
+name|containsKey
+argument_list|(
+name|parent
+argument_list|)
 condition|)
 block|{
 if|if
@@ -3928,10 +4021,12 @@ argument_list|,
 name|md
 argument_list|)
 expr_stmt|;
-name|ancestorsToAdd
+name|ancestry
 operator|.
-name|add
+name|put
 argument_list|(
+name|parent
+argument_list|,
 name|md
 argument_list|)
 expr_stmt|;
@@ -3946,7 +4041,10 @@ expr_stmt|;
 block|}
 block|}
 return|return
-name|ancestorsToAdd
+name|ancestry
+operator|.
+name|values
+argument_list|()
 return|;
 block|}
 comment|/**    * {@inheritDoc}    *<p>    * The implementation scans all up the directory tree and does a get()    * for each entry; at each level one is found it is added to the ancestor    * state.    *<p>    * The original implementation would stop on finding the first non-empty    * parent. This (re) implementation issues a GET for every parent entry    * and so detects and recovers from a tombstone marker further up the tree    * (i.e. an inconsistent store is corrected for).    *<p>    * if {@code operationState} is not null, when this method returns the    * operation state will be updated with all new entries created.    * This ensures that subsequent operations with the same store will not    * trigger new updates.    * @param qualifiedPath path to update    * @param operationState (nullable) operational state for a bulk update    * @throws IOException on failure.    */
@@ -4169,7 +4267,7 @@ operator|.
 name|toString
 argument_list|()
 argument_list|,
-literal|"Cannot overwrite parent file: metadatstore is"
+literal|"Cannot overwrite parent file: metastore is"
 operator|+
 literal|" in an inconsistent state"
 argument_list|)
@@ -4509,6 +4607,8 @@ expr_stmt|;
 block|}
 name|processBatchWriteRequest
 argument_list|(
+name|ancestorState
+argument_list|,
 literal|null
 argument_list|,
 name|pathMetadataToItem
@@ -4518,7 +4618,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Helper method to issue a batch write request to DynamoDB.    *<ol>    *<li>Keys to delete are processed ahead of writing new items.</li>    *<li>No attempt is made to sort the input: the caller must do that</li>    *</ol>    * As well as retrying on the operation invocation, incomplete    * batches are retried until all have been processed..    * @param keysToDelete primary keys to be deleted; can be null    * @param itemsToPut new items to be put; can be null    * @return the number of iterations needed to complete the call.    */
+comment|/**    * Helper method to issue a batch write request to DynamoDB.    *<ol>    *<li>Keys to delete are processed ahead of writing new items.</li>    *<li>No attempt is made to sort the input: the caller must do that</li>    *</ol>    * As well as retrying on the operation invocation, incomplete    * batches are retried until all have been processed.    *    * @param ancestorState ancestor state for logging    * @param keysToDelete primary keys to be deleted; can be null    * @param itemsToPut new items to be put; can be null    * @return the number of iterations needed to complete the call.    */
 annotation|@
 name|Retries
 operator|.
@@ -4526,11 +4626,16 @@ name|RetryTranslated
 argument_list|(
 literal|"Outstanding batch items are updated with backoff"
 argument_list|)
-DECL|method|processBatchWriteRequest (PrimaryKey[] keysToDelete, Item[] itemsToPut)
+DECL|method|processBatchWriteRequest ( @ullable AncestorState ancestorState, PrimaryKey[] keysToDelete, Item[] itemsToPut)
 specifier|private
 name|int
 name|processBatchWriteRequest
 parameter_list|(
+annotation|@
+name|Nullable
+name|AncestorState
+name|ancestorState
+parameter_list|,
 name|PrimaryKey
 index|[]
 name|keysToDelete
@@ -4654,10 +4759,10 @@ operator|-
 name|count
 argument_list|)
 expr_stmt|;
-name|writeItems
-operator|.
-name|withPrimaryKeysToDelete
-argument_list|(
+name|PrimaryKey
+index|[]
+name|toDelete
+init|=
 name|Arrays
 operator|.
 name|copyOfRange
@@ -4670,6 +4775,25 @@ name|count
 operator|+
 name|numToDelete
 argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Deleting {} entries: {}"
+argument_list|,
+name|toDelete
+operator|.
+name|length
+argument_list|,
+name|toDelete
+argument_list|)
+expr_stmt|;
+name|writeItems
+operator|.
+name|withPrimaryKeysToDelete
+argument_list|(
+name|toDelete
 argument_list|)
 expr_stmt|;
 name|count
@@ -4877,6 +5001,13 @@ operator|.
 name|length
 argument_list|)
 expr_stmt|;
+name|logPut
+argument_list|(
+name|ancestorState
+argument_list|,
+name|itemsToPut
+argument_list|)
+expr_stmt|;
 block|}
 if|if
 condition|(
@@ -4890,6 +5021,13 @@ argument_list|(
 name|keysToDelete
 operator|.
 name|length
+argument_list|)
+expr_stmt|;
+name|logDelete
+argument_list|(
+name|ancestorState
+argument_list|,
+name|keysToDelete
 argument_list|)
 expr_stmt|;
 block|}
@@ -5355,6 +5493,8 @@ argument_list|)
 expr_stmt|;
 name|processBatchWriteRequest
 argument_list|(
+name|ancestorState
+argument_list|,
 literal|null
 argument_list|,
 name|items
@@ -5594,6 +5734,7 @@ block|}
 comment|/**    * Does an item represent an object which exists?    * @param item item retrieved in a query.    * @return true iff the item isn't null and, if there is an is_deleted    * column, that its value is false.    */
 DECL|method|itemExists (Item item)
 specifier|private
+specifier|static
 name|boolean
 name|itemExists
 parameter_list|(
@@ -5664,7 +5805,7 @@ name|owner
 argument_list|)
 return|;
 block|}
-comment|/**    * {@inheritDoc}.    * There is retry around building the list of paths to update, but    * the call to {@link #processBatchWriteRequest(PrimaryKey[], Item[])}    * is only tried once.    * @param meta Directory listing metadata.    * @param operationState operational state for a bulk update    * @throws IOException IO problem    */
+comment|/**    * {@inheritDoc}.    * There is retry around building the list of paths to update, but    * the call to    * {@link #processBatchWriteRequest(DynamoDBMetadataStore.AncestorState, PrimaryKey[], Item[])}    * is only tried once.    * @param meta Directory listing metadata.    * @param operationState operational state for a bulk update    * @throws IOException IO problem    */
 annotation|@
 name|Override
 annotation|@
@@ -5693,7 +5834,23 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Saving to table {} in region {}: {}"
+literal|"Saving {} dir meta for {} to table {} in region {}: {}"
+argument_list|,
+name|tableName
+argument_list|,
+name|meta
+operator|.
+name|isAuthoritative
+argument_list|()
+condition|?
+literal|"auth"
+else|:
+literal|"nonauth"
+argument_list|,
+name|meta
+operator|.
+name|getPath
+argument_list|()
 argument_list|,
 name|tableName
 argument_list|,
@@ -5742,8 +5899,7 @@ name|getLastUpdated
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// put all its ancestors if not present; as an optimization we return at its
-comment|// first existent ancestor
+comment|// put all its ancestors if not present
 specifier|final
 name|AncestorState
 name|ancestorState
@@ -5801,6 +5957,8 @@ argument_list|)
 expr_stmt|;
 name|processBatchWriteRequest
 argument_list|(
+name|ancestorState
+argument_list|,
 literal|null
 argument_list|,
 name|pathMetadataToItem
@@ -6262,7 +6420,17 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Prune files under {} with age {}"
+literal|"Prune {} under {} with age {}"
+argument_list|,
+name|pruneMode
+operator|==
+name|PruneMode
+operator|.
+name|ALL_BY_MODTIME
+condition|?
+literal|"files and tombstones"
+else|:
+literal|"tombstones"
 argument_list|,
 name|keyPrefix
 argument_list|,
@@ -6329,6 +6497,17 @@ operator|.
 name|Prune
 argument_list|,
 literal|null
+argument_list|)
+init|;
+name|DurationInfo
+name|ignored
+operator|=
+operator|new
+name|DurationInfo
+argument_list|(
+name|LOG
+argument_list|,
+literal|"Pruning DynamoDB Store"
 argument_list|)
 init|)
 block|{
@@ -6414,6 +6593,23 @@ operator|.
 name|getPath
 argument_list|()
 decl_stmt|;
+name|boolean
+name|tombstone
+init|=
+name|md
+operator|.
+name|isDeleted
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Prune entry {}"
+argument_list|,
+name|path
+argument_list|)
+expr_stmt|;
 name|deletionBatch
 operator|.
 name|add
@@ -6421,8 +6617,11 @@ argument_list|(
 name|path
 argument_list|)
 expr_stmt|;
-comment|// add parent path of what we remove if it has not
-comment|// already been processed
+comment|// add parent path of item so it can be marked as non-auth.
+comment|// this is only done if
+comment|// * it has not already been processed
+comment|// * the entry pruned is not a tombstone (no need to update)
+comment|// * the file is not in the root dir
 name|Path
 name|parentPath
 init|=
@@ -6433,6 +6632,9 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
+operator|!
+name|tombstone
+operator|&&
 name|parentPath
 operator|!=
 literal|null
@@ -6479,6 +6681,8 @@ argument_list|)
 expr_stmt|;
 name|processBatchWriteRequest
 argument_list|(
+name|state
+argument_list|,
 name|pathToKey
 argument_list|(
 name|deletionBatch
@@ -6542,6 +6746,8 @@ condition|)
 block|{
 name|processBatchWriteRequest
 argument_list|(
+name|state
+argument_list|,
 name|pathToKey
 argument_list|(
 name|deletionBatch
@@ -6620,7 +6826,7 @@ name|S3GUARD_DDB_BATCH_WRITE_REQUEST_LIMIT
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Remove the Authoritative Directory Marker from a set of paths, if    * those paths are in the store.    * If an exception is raised in the get/update process, then the exception    * is caught and only rethrown after all the other paths are processed.    * This is to ensure a best-effort attempt to update the store.    * @param pathSet set of paths.    * @param state ongoing operation state.    * @throws IOException only after a best effort is made to update the store.    */
+comment|/**    * Remove the Authoritative Directory Marker from a set of paths, if    * those paths are in the store.    *<p>    * This operation is<i>only</i>for pruning; it does not raise an error    * if, during the prune phase, the table appears inconsistent.    * This is not unusual as it can happen in a number of ways    *<ol>    *<li>The state of the table changes during a slow prune operation which    *   deliberately inserts pauses to avoid overloading prepaid IO capacity.    *</li>    *<li>Tombstone markers have been left in the table after many other    *   operations have taken place, including deleting/replacing    *   parents.</li>    *</ol>    *<p>    *    * If an exception is raised in the get/update process, then the exception    * is caught and only rethrown after all the other paths are processed.    * This is to ensure a best-effort attempt to update the store.    * @param pathSet set of paths.    * @param state ongoing operation state.    * @throws IOException only after a best effort is made to update the store.    */
 DECL|method|removeAuthoritativeDirFlag ( final Set<Path> pathSet, final AncestorState state)
 specifier|private
 name|void
@@ -6712,6 +6918,64 @@ operator|==
 literal|null
 condition|)
 block|{
+comment|// there is no entry.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"No parent {}; skipping"
+argument_list|,
+name|path
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
+if|if
+condition|(
+name|ddbPathMetadata
+operator|.
+name|isDeleted
+argument_list|()
+condition|)
+block|{
+comment|// the parent itself is deleted
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Parent has been deleted {}; skipping"
+argument_list|,
+name|path
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
+if|if
+condition|(
+operator|!
+name|ddbPathMetadata
+operator|.
+name|getFileStatus
+argument_list|()
+operator|.
+name|isDirectory
+argument_list|()
+condition|)
+block|{
+comment|// the parent itself is deleted
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Parent is not a directory {}; skipping"
+argument_list|,
+name|path
+argument_list|)
+expr_stmt|;
 return|return
 literal|null
 return|;
@@ -6720,7 +6984,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Setting false isAuthoritativeDir on {}"
+literal|"Setting isAuthoritativeDir==false on {}"
 argument_list|,
 name|ddbPathMetadata
 argument_list|)
@@ -9379,6 +9643,8 @@ argument_list|,
 operator|new
 name|AncestorState
 argument_list|(
+name|this
+argument_list|,
 name|BulkOperationState
 operator|.
 name|OperationType
@@ -9412,6 +9678,8 @@ return|return
 operator|new
 name|AncestorState
 argument_list|(
+name|this
+argument_list|,
 name|operation
 argument_list|,
 name|dest
@@ -9438,6 +9706,16 @@ condition|?
 name|ttlTimeProvider
 else|:
 name|timeProvider
+return|;
+block|}
+comment|/**    * Username.    * @return the current username    */
+DECL|method|getUsername ()
+name|String
+name|getUsername
+parameter_list|()
+block|{
+return|return
+name|username
 return|;
 block|}
 comment|/**    * Take an {@code IllegalArgumentException} raised by a DDB operation    * and if it contains an inner SDK exception, unwrap it.    * @param ex exception.    * @return the inner AWS exception or null.    */
@@ -9561,11 +9839,222 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Get the move state passed in; create a new one if needed.    * @param state state.    * @param operation the type of the operation to use if the state is created.    * @return the cast or created state.    */
-annotation|@
-name|VisibleForTesting
-DECL|method|extractOrCreate (@ullable BulkOperationState state, BulkOperationState.OperationType operation)
+comment|/**    * Log a PUT into the operations log at debug level.    * @param state optional ancestor state.    * @param items items which have been PUT    */
+DECL|method|logPut ( @ullable AncestorState state, Item[] items)
+specifier|private
 specifier|static
+name|void
+name|logPut
+parameter_list|(
+annotation|@
+name|Nullable
+name|AncestorState
+name|state
+parameter_list|,
+name|Item
+index|[]
+name|items
+parameter_list|)
+block|{
+if|if
+condition|(
+name|OPERATIONS_LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+comment|// log the operations
+name|String
+name|stateStr
+init|=
+name|AncestorState
+operator|.
+name|stateAsString
+argument_list|(
+name|state
+argument_list|)
+decl_stmt|;
+for|for
+control|(
+name|Item
+name|item
+range|:
+name|items
+control|)
+block|{
+name|boolean
+name|tombstone
+init|=
+name|itemExists
+argument_list|(
+name|item
+argument_list|)
+decl_stmt|;
+name|OPERATIONS_LOG
+operator|.
+name|debug
+argument_list|(
+literal|"{} {} {}"
+argument_list|,
+name|stateStr
+argument_list|,
+name|tombstone
+condition|?
+literal|"TOMBSTONE"
+else|:
+literal|"PUT"
+argument_list|,
+name|itemPrimaryKeyToString
+argument_list|(
+name|item
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+comment|/**    * Log a PUT into the operations log at debug level.    * @param state optional ancestor state.    * @param item item PUT.    */
+DECL|method|logPut ( @ullable AncestorState state, Item item)
+specifier|private
+specifier|static
+name|void
+name|logPut
+parameter_list|(
+annotation|@
+name|Nullable
+name|AncestorState
+name|state
+parameter_list|,
+name|Item
+name|item
+parameter_list|)
+block|{
+if|if
+condition|(
+name|OPERATIONS_LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+comment|// log the operations
+name|logPut
+argument_list|(
+name|state
+argument_list|,
+operator|new
+name|Item
+index|[]
+block|{
+name|item
+block|}
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Log a DELETE into the operations log at debug level.    * @param state optional ancestor state.    * @param keysDeleted keys which were deleted.    */
+DECL|method|logDelete ( @ullable AncestorState state, PrimaryKey[] keysDeleted)
+specifier|private
+specifier|static
+name|void
+name|logDelete
+parameter_list|(
+annotation|@
+name|Nullable
+name|AncestorState
+name|state
+parameter_list|,
+name|PrimaryKey
+index|[]
+name|keysDeleted
+parameter_list|)
+block|{
+if|if
+condition|(
+name|OPERATIONS_LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+comment|// log the operations
+name|String
+name|stateStr
+init|=
+name|AncestorState
+operator|.
+name|stateAsString
+argument_list|(
+name|state
+argument_list|)
+decl_stmt|;
+for|for
+control|(
+name|PrimaryKey
+name|key
+range|:
+name|keysDeleted
+control|)
+block|{
+name|OPERATIONS_LOG
+operator|.
+name|debug
+argument_list|(
+literal|"{} DELETE {}"
+argument_list|,
+name|stateStr
+argument_list|,
+name|primaryKeyToString
+argument_list|(
+name|key
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+comment|/**    * Log a DELETE into the operations log at debug level.    * @param state optional ancestor state.    * @param key Deleted key    */
+DECL|method|logDelete ( @ullable AncestorState state, PrimaryKey key)
+specifier|private
+specifier|static
+name|void
+name|logDelete
+parameter_list|(
+annotation|@
+name|Nullable
+name|AncestorState
+name|state
+parameter_list|,
+name|PrimaryKey
+name|key
+parameter_list|)
+block|{
+if|if
+condition|(
+name|OPERATIONS_LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|logDelete
+argument_list|(
+name|state
+argument_list|,
+operator|new
+name|PrimaryKey
+index|[]
+block|{
+name|key
+block|}
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Get the move state passed in; create a new one if needed.    * @param state state.    * @param operation the type of the operation to use if the state is created.    * @return the cast or created state.    */
+DECL|method|extractOrCreate (@ullable BulkOperationState state, BulkOperationState.OperationType operation)
+specifier|private
 name|AncestorState
 name|extractOrCreate
 parameter_list|(
@@ -9600,6 +10089,8 @@ return|return
 operator|new
 name|AncestorState
 argument_list|(
+name|this
+argument_list|,
 name|operation
 argument_list|,
 literal|null
@@ -9618,6 +10109,35 @@ name|AncestorState
 extends|extends
 name|BulkOperationState
 block|{
+comment|/**      * Counter of IDs issued.      */
+DECL|field|ID_COUNTER
+specifier|private
+specifier|static
+specifier|final
+name|AtomicLong
+name|ID_COUNTER
+init|=
+operator|new
+name|AtomicLong
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
+comment|/** Owning store. */
+DECL|field|store
+specifier|private
+specifier|final
+name|DynamoDBMetadataStore
+name|store
+decl_stmt|;
+comment|/** The ID of the state; for logging. */
+DECL|field|id
+specifier|private
+specifier|final
+name|long
+name|id
+decl_stmt|;
+comment|/**      * Map of ancestors.      */
 DECL|field|ancestry
 specifier|private
 specifier|final
@@ -9634,16 +10154,23 @@ name|HashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
+comment|/**      * Destination path.      */
 DECL|field|dest
 specifier|private
 specifier|final
 name|Path
 name|dest
 decl_stmt|;
-comment|/**      * Create the state.      * @param operation the type of the operation.      * @param dest destination path.      */
-DECL|method|AncestorState (final OperationType operation, @Nullable final Path dest)
+comment|/**      * Create the state.      * @param store the store, for use in validation.      * If null: no validation (test only operation)      * @param operation the type of the operation.      * @param dest destination path.      */
+DECL|method|AncestorState ( @ullable final DynamoDBMetadataStore store, final OperationType operation, @Nullable final Path dest)
 name|AncestorState
 parameter_list|(
+annotation|@
+name|Nullable
+specifier|final
+name|DynamoDBMetadataStore
+name|store
+parameter_list|,
 specifier|final
 name|OperationType
 name|operation
@@ -9662,9 +10189,26 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
+name|store
+operator|=
+name|store
+expr_stmt|;
+name|this
+operator|.
 name|dest
 operator|=
 name|dest
+expr_stmt|;
+name|this
+operator|.
+name|id
+operator|=
+name|ID_COUNTER
+operator|.
+name|addAndGet
+argument_list|(
+literal|1
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|size ()
@@ -9687,6 +10231,15 @@ parameter_list|()
 block|{
 return|return
 name|dest
+return|;
+block|}
+DECL|method|getId ()
+name|long
+name|getId
+parameter_list|()
+block|{
+return|return
+name|id
 return|;
 block|}
 annotation|@
@@ -9718,6 +10271,18 @@ name|append
 argument_list|(
 name|getOperation
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"id="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|id
 argument_list|)
 expr_stmt|;
 name|sb
@@ -9796,12 +10361,12 @@ name|p
 parameter_list|)
 block|{
 return|return
-name|ancestry
-operator|.
-name|containsKey
+name|get
 argument_list|(
 name|p
 argument_list|)
+operator|!=
+literal|null
 return|;
 block|}
 DECL|method|put (Path p, DDBPathMetadata md)
@@ -9964,6 +10529,266 @@ return|return
 literal|false
 return|;
 block|}
+block|}
+comment|/**      * If debug logging is enabled, this does an audit of the store state.      * it only logs this; the error messages are created so as they could      * be turned into exception messages.      * Audit failures aren't being turned into IOEs is that      * rename operations delete the source entry and that ends up in the      * ancestor state as present      * @throws IOException failure      */
+annotation|@
+name|Override
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+operator|&&
+name|store
+operator|!=
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Auditing {}"
+argument_list|,
+name|stateAsString
+argument_list|(
+name|this
+argument_list|)
+argument_list|)
+expr_stmt|;
+for|for
+control|(
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|Path
+argument_list|,
+name|DDBPathMetadata
+argument_list|>
+name|entry
+range|:
+name|ancestry
+operator|.
+name|entrySet
+argument_list|()
+control|)
+block|{
+name|Path
+name|path
+init|=
+name|entry
+operator|.
+name|getKey
+argument_list|()
+decl_stmt|;
+name|DDBPathMetadata
+name|expected
+init|=
+name|entry
+operator|.
+name|getValue
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|expected
+operator|.
+name|isDeleted
+argument_list|()
+condition|)
+block|{
+comment|// file was deleted in bulk op; we don't care about it
+comment|// any more
+continue|continue;
+block|}
+name|DDBPathMetadata
+name|actual
+decl_stmt|;
+try|try
+block|{
+name|actual
+operator|=
+name|store
+operator|.
+name|get
+argument_list|(
+name|path
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Retrieving {}"
+argument_list|,
+name|path
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+comment|// this is for debug; don't be ambitious
+return|return;
+block|}
+if|if
+condition|(
+name|actual
+operator|==
+literal|null
+operator|||
+name|actual
+operator|.
+name|isDeleted
+argument_list|()
+condition|)
+block|{
+name|String
+name|message
+init|=
+literal|"Metastore entry for path "
+operator|+
+name|path
+operator|+
+literal|" deleted during bulk "
+operator|+
+name|getOperation
+argument_list|()
+operator|+
+literal|" operation"
+decl_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|message
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|actual
+operator|.
+name|getFileStatus
+argument_list|()
+operator|.
+name|isDirectory
+argument_list|()
+operator|!=
+name|expected
+operator|.
+name|getFileStatus
+argument_list|()
+operator|.
+name|isDirectory
+argument_list|()
+condition|)
+block|{
+comment|// the type of the entry has changed
+name|String
+name|message
+init|=
+literal|"Metastore entry for path "
+operator|+
+name|path
+operator|+
+literal|" changed during bulk "
+operator|+
+name|getOperation
+argument_list|()
+operator|+
+literal|" operation"
+operator|+
+literal|" from "
+operator|+
+name|expected
+operator|+
+literal|" to "
+operator|+
+name|actual
+decl_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|message
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+block|}
+block|}
+comment|/**      * Create a string from the state including operation and ID.      * @param state state to use -may be null      * @return a string for logging.      */
+DECL|method|stateAsString (@ullable AncestorState state)
+specifier|private
+specifier|static
+name|String
+name|stateAsString
+parameter_list|(
+annotation|@
+name|Nullable
+name|AncestorState
+name|state
+parameter_list|)
+block|{
+name|String
+name|stateStr
+decl_stmt|;
+if|if
+condition|(
+name|state
+operator|!=
+literal|null
+condition|)
+block|{
+name|stateStr
+operator|=
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"#(%s-%04d)"
+argument_list|,
+name|state
+operator|.
+name|getOperation
+argument_list|()
+argument_list|,
+name|state
+operator|.
+name|getId
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|stateStr
+operator|=
+literal|"#()"
+expr_stmt|;
+block|}
+return|return
+name|stateStr
+return|;
 block|}
 block|}
 block|}

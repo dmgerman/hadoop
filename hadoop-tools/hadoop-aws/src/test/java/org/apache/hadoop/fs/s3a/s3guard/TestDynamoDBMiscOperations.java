@@ -597,6 +597,8 @@ name|DynamoDBMetadataStore
 operator|.
 name|AncestorState
 argument_list|(
+literal|null
+argument_list|,
 name|BulkOperationState
 operator|.
 name|OperationType
@@ -765,6 +767,8 @@ name|DynamoDBMetadataStore
 operator|.
 name|AncestorState
 argument_list|(
+literal|null
+argument_list|,
 name|BulkOperationState
 operator|.
 name|OperationType

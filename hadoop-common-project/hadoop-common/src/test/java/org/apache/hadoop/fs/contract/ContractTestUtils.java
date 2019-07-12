@@ -174,8 +174,6 @@ name|org
 operator|.
 name|junit
 operator|.
-name|internal
-operator|.
 name|AssumptionViolatedException
 import|;
 end_import
@@ -1819,6 +1817,17 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Deleting children of {} (recursive={})"
+argument_list|,
+name|path
+argument_list|,
+name|recursive
+argument_list|)
+expr_stmt|;
 name|FileStatus
 index|[]
 name|children
@@ -1838,6 +1847,15 @@ range|:
 name|children
 control|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Deleting {}"
+argument_list|,
+name|entry
+argument_list|)
+expr_stmt|;
 name|fileSystem
 operator|.
 name|delete

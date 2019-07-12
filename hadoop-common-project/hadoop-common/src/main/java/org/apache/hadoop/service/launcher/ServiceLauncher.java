@@ -562,7 +562,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get the service.    *    * Null until    * {@link #coreServiceLaunch(Configuration, List, boolean, boolean)}    * has completed.    * @return the service    */
+comment|/**    * Get the service.    *    * Null until    * {@link #coreServiceLaunch(Configuration, Service, List, boolean, boolean)}    * has completed.    * @return the service    */
 DECL|method|getService ()
 specifier|public
 specifier|final
@@ -896,8 +896,10 @@ name|exitException
 operator|.
 name|getExitCode
 argument_list|()
-operator|!=
-literal|0
+operator|==
+name|LauncherExitCodes
+operator|.
+name|EXIT_USAGE
 condition|)
 block|{
 comment|// something went wrong. Print the usage and commands
@@ -967,21 +969,67 @@ name|ExitException
 name|exitException
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Exception raised"
-argument_list|,
-name|exitException
-argument_list|)
-expr_stmt|;
-name|serviceExitCode
-operator|=
+name|int
+name|exitCode
+init|=
 name|exitException
 operator|.
 name|getExitCode
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|exitCode
+operator|!=
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Exception raised with exit code {}"
+argument_list|,
+name|exitCode
+argument_list|,
+name|exitException
+argument_list|)
+expr_stmt|;
+name|Throwable
+name|cause
+init|=
+name|exitException
+operator|.
+name|getCause
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|cause
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// log the nested exception in more detail
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"{}"
+argument_list|,
+name|cause
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|cause
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+name|serviceExitCode
+operator|=
+name|exitCode
 expr_stmt|;
 name|serviceException
 operator|=
@@ -1333,8 +1381,6 @@ name|loaded
 return|;
 block|}
 comment|/**    * Launch a service catching all exceptions and downgrading them to exit codes    * after logging.    *    * Sets {@link #serviceException} to this value.    * @param conf configuration to use    * @param processedArgs command line after the launcher-specific arguments    * have been stripped out.    * @param addShutdownHook should a shutdown hook be added to terminate    * this service on shutdown. Tests should set this to false.    * @param execute execute/wait for the service to stop.    * @return an exit exception, which will have a status code of 0 if it worked    */
-annotation|@
-name|VisibleForTesting
 DECL|method|launchService (Configuration conf, List<String> processedArgs, boolean addShutdownHook, boolean execute)
 specifier|public
 name|ExitUtil
@@ -1344,6 +1390,48 @@ name|launchService
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|processedArgs
+parameter_list|,
+name|boolean
+name|addShutdownHook
+parameter_list|,
+name|boolean
+name|execute
+parameter_list|)
+block|{
+return|return
+name|launchService
+argument_list|(
+name|conf
+argument_list|,
+literal|null
+argument_list|,
+name|processedArgs
+argument_list|,
+name|addShutdownHook
+argument_list|,
+name|execute
+argument_list|)
+return|;
+block|}
+comment|/**    * Launch a service catching all exceptions and downgrading them to exit codes    * after logging.    *    * Sets {@link #serviceException} to this value.    * @param conf configuration to use    * @param instance optional instance of the service.    * @param processedArgs command line after the launcher-specific arguments    * have been stripped out.    * @param addShutdownHook should a shutdown hook be added to terminate    * this service on shutdown. Tests should set this to false.    * @param execute execute/wait for the service to stop.    * @return an exit exception, which will have a status code of 0 if it worked    */
+DECL|method|launchService (Configuration conf, S instance, List<String> processedArgs, boolean addShutdownHook, boolean execute)
+specifier|public
+name|ExitUtil
+operator|.
+name|ExitException
+name|launchService
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|S
+name|instance
 parameter_list|,
 name|List
 argument_list|<
@@ -1371,6 +1459,8 @@ init|=
 name|coreServiceLaunch
 argument_list|(
 name|conf
+argument_list|,
+name|instance
 argument_list|,
 name|processedArgs
 argument_list|,
@@ -1512,6 +1602,36 @@ name|Throwable
 name|thrown
 parameter_list|)
 block|{
+comment|// other errors need a full log.
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Exception raised {}"
+argument_list|,
+name|service
+operator|!=
+literal|null
+condition|?
+operator|(
+name|service
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|" in state  "
+operator|+
+name|service
+operator|.
+name|getServiceState
+argument_list|()
+operator|)
+else|:
+literal|"during service instantiation"
+argument_list|,
+name|thrown
+argument_list|)
+expr_stmt|;
 name|exitException
 operator|=
 name|convertToExitException
@@ -1529,14 +1649,17 @@ return|return
 name|exitException
 return|;
 block|}
-comment|/**    * Launch the service.    *    * All exceptions that occur are propagated upwards.    *    * If the method returns a status code, it means that it got as far starting    * the service, and if it implements {@link LaunchableService}, that the     * method {@link LaunchableService#execute()} has completed.     *    * After this method returns, the service can be retrieved returned by    * {@link #getService()}.    *    * @param conf configuration    * @param processedArgs arguments after the configuration parameters    * have been stripped out.    * @param addShutdownHook should a shutdown hook be added to terminate    * this service on shutdown. Tests should set this to false.    * @param execute execute/wait for the service to stop    * @throws ClassNotFoundException classname not on the classpath    * @throws IllegalAccessException not allowed at the class    * @throws InstantiationException not allowed to instantiate it    * @throws InterruptedException thread interrupted    * @throws ExitUtil.ExitException any exception defining the status code.    * @throws Exception any other failure -if it implements    * {@link ExitCodeProvider} then it defines the exit code for any    * containing exception    */
-DECL|method|coreServiceLaunch (Configuration conf, List<String> processedArgs, boolean addShutdownHook, boolean execute)
+comment|/**    * Launch the service.    *    * All exceptions that occur are propagated upwards.    *    * If the method returns a status code, it means that it got as far starting    * the service, and if it implements {@link LaunchableService}, that the     * method {@link LaunchableService#execute()} has completed.     *    * After this method returns, the service can be retrieved returned by    * {@link #getService()}.    *    * @param conf configuration    * @param instance optional instance of the service.    * @param processedArgs arguments after the configuration parameters    * have been stripped out.    * @param addShutdownHook should a shutdown hook be added to terminate    * this service on shutdown. Tests should set this to false.    * @param execute execute/wait for the service to stop    * @throws ClassNotFoundException classname not on the classpath    * @throws IllegalAccessException not allowed at the class    * @throws InstantiationException not allowed to instantiate it    * @throws InterruptedException thread interrupted    * @throws ExitUtil.ExitException any exception defining the status code.    * @throws Exception any other failure -if it implements    * {@link ExitCodeProvider} then it defines the exit code for any    * containing exception    */
+DECL|method|coreServiceLaunch (Configuration conf, S instance, List<String> processedArgs, boolean addShutdownHook, boolean execute)
 specifier|protected
 name|int
 name|coreServiceLaunch
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+name|S
+name|instance
 parameter_list|,
 name|List
 argument_list|<
@@ -1554,11 +1677,31 @@ throws|throws
 name|Exception
 block|{
 comment|// create the service instance
+if|if
+condition|(
+name|instance
+operator|==
+literal|null
+condition|)
+block|{
 name|instantiateService
 argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+comment|// service already exists, so instantiate
+name|configuration
+operator|=
+name|conf
+expr_stmt|;
+name|service
+operator|=
+name|instance
+expr_stmt|;
+block|}
 name|ServiceShutdownHook
 name|shutdownHook
 init|=
@@ -2082,14 +2225,9 @@ name|ServiceLaunchException
 argument_list|(
 name|exitCode
 argument_list|,
-name|message
-argument_list|)
-expr_stmt|;
-name|exitException
-operator|.
-name|initCause
-argument_list|(
 name|thrown
+argument_list|,
+name|message
 argument_list|)
 expr_stmt|;
 return|return
@@ -2839,6 +2977,8 @@ operator|new
 name|ServiceLaunchException
 argument_list|(
 name|EXIT_COMMAND_ARGUMENT_ERROR
+argument_list|,
+name|e
 argument_list|,
 name|E_PARSE_FAILED
 operator|+

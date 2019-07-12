@@ -223,6 +223,46 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Create a formatted exception.    *<p>    * This uses {@link String#format(String, Object...)}    * to build the formatted exception in the ENGLISH locale.    * @param exitCode exit code    * @param cause inner cause    * @param format format for message to use in exception    * @param args list of arguments    */
+DECL|method|ServiceLaunchException (int exitCode, Throwable cause, String format, Object... args)
+specifier|public
+name|ServiceLaunchException
+parameter_list|(
+name|int
+name|exitCode
+parameter_list|,
+name|Throwable
+name|cause
+parameter_list|,
+name|String
+name|format
+parameter_list|,
+name|Object
+modifier|...
+name|args
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|exitCode
+argument_list|,
+name|String
+operator|.
+name|format
+argument_list|(
+name|Locale
+operator|.
+name|ENGLISH
+argument_list|,
+name|format
+argument_list|,
+name|args
+argument_list|)
+argument_list|,
+name|cause
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

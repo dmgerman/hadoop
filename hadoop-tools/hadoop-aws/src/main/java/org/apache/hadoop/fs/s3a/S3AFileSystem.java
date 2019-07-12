@@ -6646,8 +6646,9 @@ annotation|@
 name|Retries
 operator|.
 name|RetryRaw
+annotation|@
+name|VisibleForTesting
 DECL|method|getObjectMetadata (String key)
-specifier|protected
 name|ObjectMetadata
 name|getObjectMetadata
 parameter_list|(
@@ -8676,6 +8677,35 @@ argument_list|,
 name|recursive
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Type = {}"
+argument_list|,
+name|status
+operator|.
+name|isFile
+argument_list|()
+condition|?
+literal|"File"
+else|:
+operator|(
+name|status
+operator|.
+name|isEmptyDirectory
+argument_list|()
+operator|==
+name|Tristate
+operator|.
+name|TRUE
+condition|?
+literal|"Empty Directory"
+else|:
+literal|"Directory"
+operator|)
+argument_list|)
+expr_stmt|;
 name|String
 name|key
 init|=
@@ -8996,7 +9026,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"delete: Path is a file"
+literal|"delete: Path is a file: {}"
+argument_list|,
+name|key
 argument_list|)
 expr_stmt|;
 name|deleteObjectAtPath
@@ -9517,6 +9549,7 @@ comment|/**    * Create a {@code ListObjectsRequest} request against this bucket
 annotation|@
 name|VisibleForTesting
 DECL|method|createListObjectsRequest (String key, String delimiter)
+specifier|public
 name|S3ListRequest
 name|createListObjectsRequest
 parameter_list|(

@@ -292,7 +292,6 @@ block|}
 block|}
 comment|/**    * Compare on path status.    */
 DECL|class|PathMetadataComparator
-specifier|private
 specifier|static
 specifier|final
 class|class
@@ -315,7 +314,6 @@ argument_list|>
 name|inner
 decl_stmt|;
 DECL|method|PathMetadataComparator (final Comparator<Path> inner)
-specifier|private
 name|PathMetadataComparator
 parameter_list|(
 specifier|final

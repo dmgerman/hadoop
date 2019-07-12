@@ -1858,7 +1858,7 @@ name|BulkOperationState
 operator|.
 name|OperationType
 operator|.
-name|Put
+name|Commit
 argument_list|,
 name|path
 argument_list|)

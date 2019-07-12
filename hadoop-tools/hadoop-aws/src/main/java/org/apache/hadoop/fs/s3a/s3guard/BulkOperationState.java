@@ -113,7 +113,19 @@ block|,
 comment|/** Pruning: deleting entries and updating parents. */
 DECL|enumConstant|Prune
 name|Prune
-block|,   }
+block|,
+comment|/** Commit operation. */
+DECL|enumConstant|Commit
+name|Commit
+block|,
+comment|/** Deletion operation. */
+DECL|enumConstant|Delete
+name|Delete
+block|,
+comment|/** FSCK operation. */
+DECL|enumConstant|Fsck
+name|Fsck
+block|}
 block|}
 end_class
 
