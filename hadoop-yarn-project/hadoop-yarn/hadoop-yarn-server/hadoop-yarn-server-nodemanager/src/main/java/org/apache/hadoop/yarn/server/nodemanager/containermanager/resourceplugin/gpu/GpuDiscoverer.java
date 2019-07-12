@@ -469,6 +469,14 @@ name|lastDiscoveredGpuInformation
 init|=
 literal|null
 decl_stmt|;
+DECL|field|gpuDevicesFromUser
+specifier|private
+name|List
+argument_list|<
+name|GpuDevice
+argument_list|>
+name|gpuDevicesFromUser
+decl_stmt|;
 DECL|method|validateConfOrThrowException ()
 specifier|private
 name|void
@@ -746,22 +754,12 @@ name|e
 throw|;
 block|}
 block|}
-comment|/**    * Get list of GPU devices usable by YARN.    *    * @return List of GPU devices    * @throws YarnException when any issue happens    */
-DECL|method|getGpusUsableByYarn ()
-specifier|public
-specifier|synchronized
-name|List
-argument_list|<
-name|GpuDevice
-argument_list|>
-name|getGpusUsableByYarn
+DECL|method|IsAutoDiscoveryEnabled ()
+specifier|private
+name|boolean
+name|IsAutoDiscoveryEnabled
 parameter_list|()
-throws|throws
-name|YarnException
 block|{
-name|validateConfOrThrowException
-argument_list|()
-expr_stmt|;
 name|String
 name|allowedDevicesStr
 init|=
@@ -778,8 +776,7 @@ operator|.
 name|AUTOMATICALLY_DISCOVER_GPU_DEVICES
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
+return|return
 name|allowedDevicesStr
 operator|.
 name|equals
@@ -788,6 +785,28 @@ name|YarnConfiguration
 operator|.
 name|AUTOMATICALLY_DISCOVER_GPU_DEVICES
 argument_list|)
+return|;
+block|}
+comment|/**    * Get list of GPU devices usable by YARN.    *    * @return List of GPU devices    * @throws YarnException when any issue happens    */
+DECL|method|getGpusUsableByYarn ()
+specifier|public
+specifier|synchronized
+name|List
+argument_list|<
+name|GpuDevice
+argument_list|>
+name|getGpusUsableByYarn
+parameter_list|()
+throws|throws
+name|YarnException
+block|{
+name|validateConfOrThrowException
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+name|IsAutoDiscoveryEnabled
+argument_list|()
 condition|)
 block|{
 return|return
@@ -797,11 +816,21 @@ return|;
 block|}
 else|else
 block|{
-return|return
+if|if
+condition|(
+name|gpuDevicesFromUser
+operator|==
+literal|null
+condition|)
+block|{
+name|gpuDevicesFromUser
+operator|=
 name|parseGpuDevicesFromUserDefinedValues
-argument_list|(
-name|allowedDevicesStr
-argument_list|)
+argument_list|()
+expr_stmt|;
+block|}
+return|return
+name|gpuDevicesFromUser
 return|;
 block|}
 block|}
@@ -957,21 +986,34 @@ return|return
 name|gpuDevices
 return|;
 block|}
-comment|/**    * @param devices allowed devices coming from the config.    *                          Individual devices should be separated by commas.    *<br>The format of individual devices should be:    *&lt;index:&gt;&lt;minorNumber&gt;    * @return List of GpuDevices    * @throws YarnException when a GPU device is defined as a duplicate.    * The first duplicate GPU device will be added to the exception message.    */
-DECL|method|parseGpuDevicesFromUserDefinedValues (String devices)
+comment|/**    * @return List of GpuDevices    * @throws YarnException when a GPU device is defined as a duplicate.    * The first duplicate GPU device will be added to the exception message.    */
+DECL|method|parseGpuDevicesFromUserDefinedValues ()
 specifier|private
 name|List
 argument_list|<
 name|GpuDevice
 argument_list|>
 name|parseGpuDevicesFromUserDefinedValues
-parameter_list|(
-name|String
-name|devices
-parameter_list|)
+parameter_list|()
 throws|throws
 name|YarnException
 block|{
+name|String
+name|devices
+init|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_GPU_ALLOWED_DEVICES
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|AUTOMATICALLY_DISCOVER_GPU_DEVICES
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|devices
@@ -1214,6 +1256,12 @@ name|conf
 operator|=
 name|config
 expr_stmt|;
+if|if
+condition|(
+name|IsAutoDiscoveryEnabled
+argument_list|()
+condition|)
+block|{
 name|numOfErrorExecutionSinceLastSucceed
 operator|=
 literal|0
@@ -1277,6 +1325,7 @@ argument_list|(
 name|msg
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|lookUpAutoDiscoveryBinary (Configuration config)
