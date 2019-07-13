@@ -3411,7 +3411,7 @@ decl_stmt|;
 name|boolean
 name|retVal
 init|=
-literal|false
+literal|true
 decl_stmt|;
 comment|// If the sleep time is greater than 0, then sleep and return
 if|if
