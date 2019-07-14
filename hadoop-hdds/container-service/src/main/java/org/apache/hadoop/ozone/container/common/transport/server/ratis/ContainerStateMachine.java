@@ -1308,10 +1308,12 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"The snapshot info is null."
+literal|"{}: The snapshot info is null. Setting the last applied index"
 operator|+
-literal|"Setting the last applied index to:"
-operator|+
+literal|"to:{}"
+argument_list|,
+name|gid
+argument_list|,
 name|empty
 argument_list|)
 expr_stmt|;
@@ -1321,9 +1323,10 @@ name|empty
 argument_list|)
 expr_stmt|;
 return|return
-name|RaftLog
+name|empty
 operator|.
-name|INVALID_LOG_INDEX
+name|getIndex
+argument_list|()
 return|;
 block|}
 specifier|final
@@ -1356,8 +1359,10 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Setting the last applied index to "
-operator|+
+literal|"{}: Setting the last applied index to {}"
+argument_list|,
+name|gid
+argument_list|,
 name|last
 argument_list|)
 expr_stmt|;
@@ -1497,15 +1502,14 @@ init|=
 name|getLastAppliedTermIndex
 argument_list|()
 decl_stmt|;
-name|LOG
+name|long
+name|startTime
+init|=
+name|Time
 operator|.
-name|info
-argument_list|(
-literal|"Taking snapshot at termIndex:"
-operator|+
-name|ti
-argument_list|)
-expr_stmt|;
+name|monotonicNow
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|ti
@@ -1545,7 +1549,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Taking a snapshot to file {}"
+literal|"{}: Taking a snapshot at:{} file {}"
+argument_list|,
+name|gid
+argument_list|,
+name|ti
 argument_list|,
 name|snapshotFile
 argument_list|)
@@ -1576,21 +1584,43 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|warn
+name|info
 argument_list|(
-literal|"Failed to write snapshot file \""
-operator|+
-name|snapshotFile
-operator|+
-literal|"\", last applied index="
-operator|+
+literal|"{}: Failed to write snapshot at:{} file {}"
+argument_list|,
+name|gid
+argument_list|,
 name|ti
+argument_list|,
+name|snapshotFile
 argument_list|)
 expr_stmt|;
 throw|throw
 name|ioe
 throw|;
 block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"{}: Finished taking a snapshot at:{} file:{} time:{}"
+argument_list|,
+name|gid
+argument_list|,
+name|ti
+argument_list|,
+name|snapshotFile
+argument_list|,
+operator|(
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+operator|-
+name|startTime
+operator|)
+argument_list|)
+expr_stmt|;
 return|return
 name|ti
 operator|.
@@ -1988,7 +2018,9 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"dispatch {} containerID={} pipelineID={} traceID={}"
+literal|"{}: dispatch {} containerID={} pipelineID={} traceID={}"
+argument_list|,
+name|gid
 argument_list|,
 name|requestProto
 operator|.
@@ -2096,7 +2128,9 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"response {}"
+literal|"{}: response {}"
+argument_list|,
+name|gid
 argument_list|,
 name|response
 argument_list|)
@@ -2323,7 +2357,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"writeChunk writeStateMachineData : blockId "
+name|gid
+operator|+
+literal|": writeChunk writeStateMachineData : blockId "
 operator|+
 name|write
 operator|.
@@ -2381,7 +2417,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"writeChunk writeStateMachineData  completed: blockId "
+name|gid
+operator|+
+literal|": writeChunk writeStateMachineData  completed: blockId"
 operator|+
 name|write
 operator|.
@@ -3139,8 +3177,10 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"unable to read stateMachineData:"
-operator|+
+literal|"{} unable to read stateMachineData:"
+argument_list|,
+name|gid
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
@@ -3154,6 +3194,7 @@ block|}
 block|}
 DECL|method|updateLastApplied ()
 specifier|private
+specifier|synchronized
 name|void
 name|updateLastApplied
 parameter_list|()
