@@ -582,6 +582,51 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|TENSORFLOW
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|TENSORFLOW
+init|=
+literal|"TensorFlow"
+decl_stmt|;
+DECL|field|PYTORCH
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|PYTORCH
+init|=
+literal|"PyTorch"
+decl_stmt|;
+DECL|field|PS
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|PS
+init|=
+literal|"PS"
+decl_stmt|;
+DECL|field|WORKER
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|WORKER
+init|=
+literal|"worker"
+decl_stmt|;
+DECL|field|TENSORBOARD
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|TENSORBOARD
+init|=
+literal|"TensorBoard"
+decl_stmt|;
 DECL|field|CAN_BE_USED_WITH_TF_PYTORCH
 specifier|private
 specifier|static
@@ -589,16 +634,32 @@ specifier|final
 name|String
 name|CAN_BE_USED_WITH_TF_PYTORCH
 init|=
-literal|"Can be used with TensorFlow or PyTorch frameworks."
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Can be used with %s or %s frameworks."
+argument_list|,
+name|TENSORFLOW
+argument_list|,
+name|PYTORCH
+argument_list|)
 decl_stmt|;
-DECL|field|CAN_BE_USED_WITH_TF_ONLY
+DECL|field|TENSORFLOW_ONLY
 specifier|private
 specifier|static
 specifier|final
 name|String
-name|CAN_BE_USED_WITH_TF_ONLY
+name|TENSORFLOW_ONLY
 init|=
-literal|"Can only be used with TensorFlow framework."
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Can only be used with %s framework."
+argument_list|,
+name|TENSORFLOW
+argument_list|)
 decl_stmt|;
 DECL|field|YAML_PARSE_FAILED
 specifier|public
@@ -610,6 +671,17 @@ init|=
 literal|"Failed to parse "
 operator|+
 literal|"YAML config"
+decl_stmt|;
+DECL|field|LOCAL_OR_ANY_FS_DIRECTORY
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|LOCAL_OR_ANY_FS_DIRECTORY
+init|=
+literal|"Could be a local "
+operator|+
+literal|"directory or any other directory on the file system."
 decl_stmt|;
 DECL|field|options
 specifier|private
@@ -794,7 +866,9 @@ name|INPUT_PATH
 argument_list|,
 literal|true
 argument_list|,
-literal|"Input of the job, could be local or other FS directory"
+literal|"Input of the job. "
+operator|+
+name|LOCAL_OR_ANY_FS_DIRECTORY
 argument_list|)
 expr_stmt|;
 name|options
@@ -807,11 +881,11 @@ name|CHECKPOINT_PATH
 argument_list|,
 literal|true
 argument_list|,
-literal|"Training output directory of the job, "
+literal|"Training output directory of the job. "
 operator|+
-literal|"could be local or other FS directory. This typically includes "
+name|LOCAL_OR_ANY_FS_DIRECTORY
 operator|+
-literal|"checkpoint files and exported model "
+literal|"This typically includes checkpoint files and exported model"
 argument_list|)
 expr_stmt|;
 name|options
@@ -824,13 +898,13 @@ name|SAVED_MODEL_PATH
 argument_list|,
 literal|true
 argument_list|,
-literal|"Model exported path (savedmodel) of the job, which is needed when "
+literal|"Model exported path (saved model) of the job, which is needed when "
 operator|+
-literal|"exported model is not placed under ${checkpoint_path}"
+literal|"exported model is not placed under ${checkpoint_path}. "
 operator|+
-literal|"could be local or other FS directory. "
+name|LOCAL_OR_ANY_FS_DIRECTORY
 operator|+
-literal|"This will be used to serve."
+literal|"This will be used to serve"
 argument_list|)
 expr_stmt|;
 name|options
@@ -852,11 +926,43 @@ name|addOption
 argument_list|(
 name|CliConstants
 operator|.
+name|PS_DOCKER_IMAGE
+argument_list|,
+literal|true
+argument_list|,
+name|getDockerImageMessage
+argument_list|(
+name|PS
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|options
+operator|.
+name|addOption
+argument_list|(
+name|CliConstants
+operator|.
+name|WORKER_DOCKER_IMAGE
+argument_list|,
+literal|true
+argument_list|,
+name|getDockerImageMessage
+argument_list|(
+name|WORKER
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|options
+operator|.
+name|addOption
+argument_list|(
+name|CliConstants
+operator|.
 name|QUEUE
 argument_list|,
 literal|true
 argument_list|,
-literal|"Name of queue to run the job, by default it uses default queue"
+literal|"Name of queue to run the job. By default, the default queue is used"
 argument_list|)
 expr_stmt|;
 name|addWorkerOptions
@@ -884,7 +990,7 @@ name|ENV
 argument_list|,
 literal|true
 argument_list|,
-literal|"Common environment variable of worker/ps"
+literal|"Common environment variable passed to worker / PS"
 argument_list|)
 expr_stmt|;
 name|options
@@ -910,7 +1016,7 @@ name|WAIT_JOB_FINISH
 argument_list|,
 literal|false
 argument_list|,
-literal|"Specified when user want to wait the job finish"
+literal|"Specified when user wants to wait for jobs to finish"
 argument_list|)
 expr_stmt|;
 name|options
@@ -923,21 +1029,25 @@ name|QUICKLINK
 argument_list|,
 literal|true
 argument_list|,
-literal|"Specify quicklink so YARN"
+literal|"Specify quicklink so YARN "
 operator|+
-literal|"web UI shows link to given role instance and port. When "
+literal|"web UI shows link to the given role instance and port. "
 operator|+
-literal|"--tensorboard is specified, quicklink to tensorboard instance will "
+literal|"When --tensorboard is specified, quicklink to the "
 operator|+
-literal|"be added automatically. The format of quick link is: "
+name|TENSORBOARD
 operator|+
-literal|"Quick_link_label=http(or https)://role-name:port. For example, "
+literal|" instance will be added automatically. "
 operator|+
-literal|"if want to link to first worker's 7070 port, and text of quicklink "
+literal|"The format of quick link is: "
 operator|+
-literal|"is Notebook_UI, user need to specify --quicklink "
+literal|"Quick_link_label=http(or https)://role-name:port. "
 operator|+
-literal|"Notebook_UI=https://master-0:7070"
+literal|"For example, if users want to link to the first worker's 7070 port, "
+operator|+
+literal|"and text of quicklink is Notebook_UI, "
+operator|+
+literal|"users need to specify --quicklink Notebook_UI=https://master-0:7070"
 argument_list|)
 expr_stmt|;
 name|options
@@ -956,23 +1066,27 @@ literal|" localization to make remote/local file/directory available to"
 operator|+
 literal|" all container(Docker)."
 operator|+
-literal|" Argument format is \"RemoteUri:LocalFilePath[:rw] \" (ro"
+literal|" Argument format is: \"RemoteUri:LocalFilePath[:rw] \" "
 operator|+
-literal|" permission is not supported yet)"
+literal|"(ro permission is not supported yet)."
 operator|+
-literal|" The RemoteUri can be a file or directory in local or"
+literal|" The RemoteUri can be a local file or directory on the filesystem."
 operator|+
-literal|" HDFS or s3 or abfs or http .etc."
+literal|" Alternatively, the following remote file systems / "
+operator|+
+literal|"transmit mechanisms can be used: "
+operator|+
+literal|" HDFS, S3 or abfs, HTTP, etc."
 operator|+
 literal|" The LocalFilePath can be absolute or relative."
 operator|+
-literal|" If it's a relative path, it'll be"
+literal|" If it is a relative path, it will be"
 operator|+
 literal|" under container's implied working directory"
 operator|+
-literal|" but sub directory is not supported yet."
+literal|" but sub-directory is not supported yet."
 operator|+
-literal|" This option can be set mutiple times."
+literal|" This option can be set multiple times."
 operator|+
 literal|" Examples are \n"
 operator|+
@@ -999,7 +1113,7 @@ literal|true
 argument_list|,
 literal|"Specify keytab used by the "
 operator|+
-literal|"job under security environment"
+literal|"job under a secured environment"
 argument_list|)
 expr_stmt|;
 name|options
@@ -1014,7 +1128,7 @@ literal|true
 argument_list|,
 literal|"Specify principal used "
 operator|+
-literal|"by the job under security environment"
+literal|"by the job under a secured environment"
 argument_list|)
 expr_stmt|;
 name|options
@@ -1029,9 +1143,9 @@ literal|false
 argument_list|,
 literal|"Distribute "
 operator|+
-literal|"local keytab to cluster machines for service authentication. If not "
+literal|"local keytab to cluster machines for service authentication. "
 operator|+
-literal|"specified, pre-distributed keytab of which path specified by"
+literal|"If not specified, pre-distributed keytab of which path specified by"
 operator|+
 literal|" parameter"
 operator|+
@@ -1102,7 +1216,12 @@ name|N_WORKERS
 argument_list|,
 literal|true
 argument_list|,
-literal|"Number of worker tasks of the job, by default it's 1."
+name|getNumberOfServiceMessage
+argument_list|(
+name|WORKER
+argument_list|,
+literal|1
+argument_list|)
 operator|+
 name|CAN_BE_USED_WITH_TF_PYTORCH
 argument_list|)
@@ -1117,15 +1236,10 @@ name|WORKER_DOCKER_IMAGE
 argument_list|,
 literal|true
 argument_list|,
-literal|"Specify docker image for WORKER, when this is not specified, WORKER "
-operator|+
-literal|"uses --"
-operator|+
-name|CliConstants
-operator|.
-name|DOCKER_IMAGE
-operator|+
-literal|" as default."
+name|getDockerImageMessage
+argument_list|(
+name|WORKER
+argument_list|)
 operator|+
 name|CAN_BE_USED_WITH_TF_PYTORCH
 argument_list|)
@@ -1140,9 +1254,10 @@ name|WORKER_LAUNCH_CMD
 argument_list|,
 literal|true
 argument_list|,
-literal|"Commandline of worker, arguments will be "
-operator|+
-literal|"directly used to launch the worker"
+name|getLaunchCommandMessage
+argument_list|(
+name|WORKER
+argument_list|)
 operator|+
 name|CAN_BE_USED_WITH_TF_PYTORCH
 argument_list|)
@@ -1157,9 +1272,10 @@ name|WORKER_RES
 argument_list|,
 literal|true
 argument_list|,
-literal|"Resource of each worker, for example "
-operator|+
-literal|"memory-mb=2048,vcores=2,yarn.io/gpu=2"
+name|getServiceResourceMessage
+argument_list|(
+name|WORKER
+argument_list|)
 operator|+
 name|CAN_BE_USED_WITH_TF_PYTORCH
 argument_list|)
@@ -1184,9 +1300,14 @@ name|N_PS
 argument_list|,
 literal|true
 argument_list|,
-literal|"Number of PS tasks of the job, by default it's 0. "
+name|getNumberOfServiceMessage
+argument_list|(
+literal|"PS"
+argument_list|,
+literal|0
+argument_list|)
 operator|+
-name|CAN_BE_USED_WITH_TF_ONLY
+name|TENSORFLOW_ONLY
 argument_list|)
 expr_stmt|;
 name|options
@@ -1199,15 +1320,12 @@ name|PS_DOCKER_IMAGE
 argument_list|,
 literal|true
 argument_list|,
-literal|"Specify docker image for PS, when this is not specified, PS uses --"
+name|getDockerImageMessage
+argument_list|(
+name|PS
+argument_list|)
 operator|+
-name|CliConstants
-operator|.
-name|DOCKER_IMAGE
-operator|+
-literal|" as default."
-operator|+
-name|CAN_BE_USED_WITH_TF_ONLY
+name|TENSORFLOW_ONLY
 argument_list|)
 expr_stmt|;
 name|options
@@ -1220,11 +1338,12 @@ name|PS_LAUNCH_CMD
 argument_list|,
 literal|true
 argument_list|,
-literal|"Commandline of worker, arguments will be "
+name|getLaunchCommandMessage
+argument_list|(
+literal|"PS"
+argument_list|)
 operator|+
-literal|"directly used to launch the PS"
-operator|+
-name|CAN_BE_USED_WITH_TF_ONLY
+name|TENSORFLOW_ONLY
 argument_list|)
 expr_stmt|;
 name|options
@@ -1237,11 +1356,12 @@ name|PS_RES
 argument_list|,
 literal|true
 argument_list|,
-literal|"Resource of each PS, for example "
+name|getServiceResourceMessage
+argument_list|(
+literal|"PS"
+argument_list|)
 operator|+
-literal|"memory-mb=2048,vcores=2,yarn.io/gpu=2"
-operator|+
-name|CAN_BE_USED_WITH_TF_ONLY
+name|TENSORFLOW_ONLY
 argument_list|)
 expr_stmt|;
 block|}
@@ -1264,11 +1384,11 @@ name|TENSORBOARD
 argument_list|,
 literal|false
 argument_list|,
-literal|"Should we run TensorBoard"
+literal|"Should we run TensorBoard for this job? "
 operator|+
-literal|" for this job? By default it's disabled."
+literal|"By default, TensorBoard is disabled."
 operator|+
-name|CAN_BE_USED_WITH_TF_ONLY
+name|TENSORFLOW_ONLY
 argument_list|)
 expr_stmt|;
 name|options
@@ -1281,7 +1401,7 @@ name|TENSORBOARD_RESOURCES
 argument_list|,
 literal|true
 argument_list|,
-literal|"Specify resources of Tensorboard, by default it is "
+literal|"Specifies resources of Tensorboard. The default resource is: "
 operator|+
 name|CliConstants
 operator|.
@@ -1289,7 +1409,7 @@ name|TENSORBOARD_DEFAULT_RESOURCES
 operator|+
 literal|"."
 operator|+
-name|CAN_BE_USED_WITH_TF_ONLY
+name|TENSORFLOW_ONLY
 argument_list|)
 expr_stmt|;
 name|options
@@ -1302,21 +1422,113 @@ name|TENSORBOARD_DOCKER_IMAGE
 argument_list|,
 literal|true
 argument_list|,
-literal|"Specify Tensorboard docker image. when this is not "
+name|getDockerImageMessage
+argument_list|(
+name|TENSORBOARD
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|getLaunchCommandMessage (String service)
+specifier|private
+name|String
+name|getLaunchCommandMessage
+parameter_list|(
+name|String
+name|service
+parameter_list|)
+block|{
+return|return
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Launch command of the %s, arguments will be "
 operator|+
-literal|"specified, Tensorboard "
+literal|"directly used to launch the %s"
+argument_list|,
+name|service
+argument_list|,
+name|service
+argument_list|)
+return|;
+block|}
+DECL|method|getServiceResourceMessage (String serviceType)
+specifier|private
+name|String
+name|getServiceResourceMessage
+parameter_list|(
+name|String
+name|serviceType
+parameter_list|)
+block|{
+return|return
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Resource of each %s process, for example: "
 operator|+
-literal|"uses --"
+literal|"memory-mb=2048,vcores=2,yarn.io/gpu=2"
+argument_list|,
+name|serviceType
+argument_list|)
+return|;
+block|}
+DECL|method|getNumberOfServiceMessage (String serviceType, int defaultValue)
+specifier|private
+name|String
+name|getNumberOfServiceMessage
+parameter_list|(
+name|String
+name|serviceType
+parameter_list|,
+name|int
+name|defaultValue
+parameter_list|)
+block|{
+return|return
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Number of %s processes for the job. "
 operator|+
+literal|"The default value is %d."
+argument_list|,
+name|serviceType
+argument_list|,
+name|defaultValue
+argument_list|)
+return|;
+block|}
+DECL|method|getDockerImageMessage (String serviceType)
+specifier|private
+name|String
+name|getDockerImageMessage
+parameter_list|(
+name|String
+name|serviceType
+parameter_list|)
+block|{
+return|return
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Specifies docker image for the %s process. "
+operator|+
+literal|"When not specified, %s uses --%s as a default value."
+argument_list|,
+name|serviceType
+argument_list|,
+name|serviceType
+argument_list|,
 name|CliConstants
 operator|.
 name|DOCKER_IMAGE
-operator|+
-literal|" as default."
-operator|+
-name|CAN_BE_USED_WITH_TF_ONLY
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 DECL|method|parseCommandLineAndGetRunJobParameters (String[] args)
 specifier|private
