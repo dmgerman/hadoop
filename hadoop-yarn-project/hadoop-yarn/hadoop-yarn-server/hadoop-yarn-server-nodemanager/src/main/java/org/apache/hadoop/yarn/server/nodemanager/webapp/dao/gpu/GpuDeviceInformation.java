@@ -64,6 +64,20 @@ name|bind
 operator|.
 name|annotation
 operator|.
+name|XmlElement
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|xml
+operator|.
+name|bind
+operator|.
+name|annotation
+operator|.
 name|XmlRootElement
 import|;
 end_import
@@ -104,6 +118,7 @@ class|class
 name|GpuDeviceInformation
 block|{
 DECL|field|gpus
+specifier|private
 name|List
 argument_list|<
 name|PerGpuDeviceInformation
@@ -111,22 +126,13 @@ argument_list|>
 name|gpus
 decl_stmt|;
 DECL|field|driverVersion
+specifier|private
 name|String
 name|driverVersion
 init|=
 literal|"N/A"
 decl_stmt|;
-comment|// More fields like topology information could be added when needed.
-comment|// ...
 annotation|@
-name|javax
-operator|.
-name|xml
-operator|.
-name|bind
-operator|.
-name|annotation
-operator|.
 name|XmlElement
 argument_list|(
 name|name
@@ -166,14 +172,6 @@ name|gpus
 expr_stmt|;
 block|}
 annotation|@
-name|javax
-operator|.
-name|xml
-operator|.
-name|bind
-operator|.
-name|annotation
-operator|.
 name|XmlElement
 argument_list|(
 name|name
@@ -225,7 +223,7 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"=== Gpus in the system ===\n"
+literal|"=== GPUs in the system ===\n"
 argument_list|)
 operator|.
 name|append
