@@ -384,19 +384,6 @@ name|Throwable
 name|e
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Unable to wrap exception of type "
-operator|+
-name|clazz
-operator|+
-literal|": it has no (String) constructor"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
 return|return
 name|exception
 return|;
