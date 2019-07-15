@@ -892,11 +892,20 @@ comment|// first node, which is usually the leader in the pipeline.
 name|DatanodeDetails
 name|dn
 init|=
+name|topologyAwareRead
+condition|?
 name|this
 operator|.
 name|pipeline
 operator|.
 name|getClosestNode
+argument_list|()
+else|:
+name|this
+operator|.
+name|pipeline
+operator|.
+name|getFirstNode
 argument_list|()
 decl_stmt|;
 comment|// just make a connection to the picked datanode at the beginning
@@ -926,16 +935,23 @@ comment|// connect to the closest node, if closest node doesn't exist, delegate 
 comment|// first node, which is usually the leader in the pipeline.
 name|DatanodeDetails
 name|dn
-decl_stmt|;
-name|dn
-operator|=
+init|=
+name|topologyAwareRead
+condition|?
 name|this
 operator|.
 name|pipeline
 operator|.
 name|getClosestNode
 argument_list|()
-expr_stmt|;
+else|:
+name|this
+operator|.
+name|pipeline
+operator|.
+name|getFirstNode
+argument_list|()
+decl_stmt|;
 comment|// just make a connection to the picked datanode at the beginning
 name|connectToDatanode
 argument_list|(

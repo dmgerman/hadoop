@@ -1245,17 +1245,6 @@ name|OZONE_SCM_CONTAINER_PLACEMENT_IMPL_KEY
 init|=
 literal|"ozone.scm.container.placement.impl"
 decl_stmt|;
-DECL|field|OZONE_SCM_CONTAINER_PLACEMENT_IMPL_DEFAULT
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|OZONE_SCM_CONTAINER_PLACEMENT_IMPL_DEFAULT
-init|=
-literal|"org.apache.hadoop.hdds.scm.container.placement.algorithms."
-operator|+
-literal|"SCMContainerPlacementRackAware"
-decl_stmt|;
 DECL|field|OZONE_SCM_PIPELINE_OWNER_CONTAINER_COUNT
 specifier|public
 specifier|static
@@ -1426,7 +1415,7 @@ specifier|final
 name|String
 name|DFS_NETWORK_TOPOLOGY_AWARE_READ_ENABLED_DEFAULT
 init|=
-literal|"true"
+literal|"false"
 decl_stmt|;
 DECL|field|HDDS_TRACING_ENABLED
 specifier|public

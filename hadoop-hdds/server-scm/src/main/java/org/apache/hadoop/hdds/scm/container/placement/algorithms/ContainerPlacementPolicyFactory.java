@@ -167,6 +167,22 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+specifier|private
+specifier|static
+specifier|final
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|ContainerPlacementPolicy
+argument_list|>
+DECL|field|OZONE_SCM_CONTAINER_PLACEMENT_IMPL_DEFAULT
+name|OZONE_SCM_CONTAINER_PLACEMENT_IMPL_DEFAULT
+init|=
+name|SCMContainerPlacementRandom
+operator|.
+name|class
+decl_stmt|;
 DECL|method|ContainerPlacementPolicyFactory ()
 specifier|private
 name|ContainerPlacementPolicyFactory
@@ -212,9 +228,7 @@ name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_CONTAINER_PLACEMENT_IMPL_KEY
 argument_list|,
-name|SCMContainerPlacementRackAware
-operator|.
-name|class
+name|OZONE_SCM_CONTAINER_PLACEMENT_IMPL_DEFAULT
 argument_list|,
 name|ContainerPlacementPolicy
 operator|.
