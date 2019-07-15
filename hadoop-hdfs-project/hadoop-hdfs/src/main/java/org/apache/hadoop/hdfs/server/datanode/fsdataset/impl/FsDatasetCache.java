@@ -96,20 +96,6 @@ name|google
 operator|.
 name|common
 operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
 name|base
 operator|.
 name|Preconditions
@@ -674,7 +660,7 @@ decl_stmt|;
 DECL|field|memCacheStats
 specifier|private
 specifier|final
-name|MemoryCacheStats
+name|CacheStats
 name|memCacheStats
 decl_stmt|;
 comment|/**    * Number of cache commands that could not be completed successfully    */
@@ -869,25 +855,6 @@ name|revocationPollingMs
 operator|=
 name|confRevocationPollingMs
 expr_stmt|;
-comment|// Both lazy writer and read cache are sharing this statistics.
-name|this
-operator|.
-name|memCacheStats
-operator|=
-operator|new
-name|MemoryCacheStats
-argument_list|(
-name|dataset
-operator|.
-name|datanode
-operator|.
-name|getDnConf
-argument_list|()
-operator|.
-name|getMaxLockedMemory
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|this
 operator|.
 name|cacheLoader
@@ -902,28 +869,21 @@ name|getDnConf
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Both lazy writer and read cache are sharing this statistics.
+name|this
+operator|.
+name|memCacheStats
+operator|=
 name|cacheLoader
 operator|.
 name|initialize
 argument_list|(
 name|this
+operator|.
+name|getDnConf
+argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
-comment|/**    * Check if pmem cache is enabled.    */
-DECL|method|isPmemCacheEnabled ()
-specifier|private
-name|boolean
-name|isPmemCacheEnabled
-parameter_list|()
-block|{
-return|return
-operator|!
-name|cacheLoader
-operator|.
-name|isTransientCache
-argument_list|()
-return|;
 block|}
 DECL|method|getDnConf ()
 name|DNConf
@@ -939,15 +899,6 @@ name|datanode
 operator|.
 name|getDnConf
 argument_list|()
-return|;
-block|}
-DECL|method|getMemCacheStats ()
-name|MemoryCacheStats
-name|getMemCacheStats
-parameter_list|()
-block|{
-return|return
-name|memCacheStats
 return|;
 block|}
 comment|/**    * Get the cache path if the replica is cached into persistent memory.    */
@@ -2577,6 +2528,20 @@ block|}
 block|}
 comment|// Stats related methods for FSDatasetMBean
 comment|/**    * Get the approximate amount of DRAM cache space used.    */
+DECL|method|getMemCacheUsed ()
+specifier|public
+name|long
+name|getMemCacheUsed
+parameter_list|()
+block|{
+return|return
+name|memCacheStats
+operator|.
+name|getCacheUsed
+argument_list|()
+return|;
+block|}
+comment|/**    * Get the approximate amount of cache space used either on DRAM or    * on persistent memory.    * @return    */
 DECL|method|getCacheUsed ()
 specifier|public
 name|long
@@ -2584,37 +2549,27 @@ name|getCacheUsed
 parameter_list|()
 block|{
 return|return
-name|memCacheStats
-operator|.
-name|getCacheUsed
-argument_list|()
-return|;
-block|}
-comment|/**    * Get the approximate amount of persistent memory cache space used.    * TODO: advertise this metric to NameNode by FSDatasetMBean    */
-DECL|method|getPmemCacheUsed ()
-specifier|public
-name|long
-name|getPmemCacheUsed
-parameter_list|()
-block|{
-if|if
-condition|(
-name|isPmemCacheEnabled
-argument_list|()
-condition|)
-block|{
-return|return
 name|cacheLoader
 operator|.
 name|getCacheUsed
 argument_list|()
 return|;
 block|}
+comment|/**    * Get the maximum amount of bytes we can cache on DRAM. This is a constant.    */
+DECL|method|getMemCacheCapacity ()
+specifier|public
+name|long
+name|getMemCacheCapacity
+parameter_list|()
+block|{
 return|return
-literal|0
+name|memCacheStats
+operator|.
+name|getCacheCapacity
+argument_list|()
 return|;
 block|}
-comment|/**    * Get the maximum amount of bytes we can cache on DRAM.  This is a constant.    */
+comment|/**    * Get the maximum amount of bytes we can cache either on DRAM or    * on persistent memory. This is a constant.    */
 DECL|method|getCacheCapacity ()
 specifier|public
 name|long
@@ -2622,34 +2577,10 @@ name|getCacheCapacity
 parameter_list|()
 block|{
 return|return
-name|memCacheStats
-operator|.
-name|getCacheCapacity
-argument_list|()
-return|;
-block|}
-comment|/**    * Get cache capacity of persistent memory.    * TODO: advertise this metric to NameNode by FSDatasetMBean    */
-DECL|method|getPmemCacheCapacity ()
-specifier|public
-name|long
-name|getPmemCacheCapacity
-parameter_list|()
-block|{
-if|if
-condition|(
-name|isPmemCacheEnabled
-argument_list|()
-condition|)
-block|{
-return|return
 name|cacheLoader
 operator|.
 name|getCacheCapacity
 argument_list|()
-return|;
-block|}
-return|return
-literal|0
 return|;
 block|}
 DECL|method|getNumBlocksFailedToCache ()
@@ -2738,17 +2669,6 @@ name|state
 operator|.
 name|shouldAdvertise
 argument_list|()
-return|;
-block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|getCacheLoader ()
-name|MappableBlockLoader
-name|getCacheLoader
-parameter_list|()
-block|{
-return|return
-name|cacheLoader
 return|;
 block|}
 comment|/**    * This method can be executed during DataNode shutdown.    */

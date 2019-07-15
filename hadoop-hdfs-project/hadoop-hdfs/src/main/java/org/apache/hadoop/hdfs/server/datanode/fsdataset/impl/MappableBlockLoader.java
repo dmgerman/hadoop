@@ -120,6 +120,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|DNConf
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|DataChecksum
@@ -208,13 +226,13 @@ class|class
 name|MappableBlockLoader
 block|{
 comment|/**    * Initialize a specific MappableBlockLoader.    */
-DECL|method|initialize (FsDatasetCache cacheManager)
+DECL|method|initialize (DNConf dnConf)
 specifier|abstract
-name|void
+name|CacheStats
 name|initialize
 parameter_list|(
-name|FsDatasetCache
-name|cacheManager
+name|DNConf
+name|dnConf
 parameter_list|)
 throws|throws
 name|IOException

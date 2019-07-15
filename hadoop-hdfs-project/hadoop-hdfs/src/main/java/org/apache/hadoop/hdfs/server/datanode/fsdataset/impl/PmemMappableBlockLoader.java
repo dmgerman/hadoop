@@ -203,12 +203,12 @@ name|pmemVolumeManager
 decl_stmt|;
 annotation|@
 name|Override
-DECL|method|initialize (FsDatasetCache cacheManager)
-name|void
+DECL|method|initialize (DNConf dnConf)
+name|CacheStats
 name|initialize
 parameter_list|(
-name|FsDatasetCache
-name|cacheManager
+name|DNConf
+name|dnConf
 parameter_list|)
 throws|throws
 name|IOException
@@ -228,14 +228,6 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|DNConf
-name|dnConf
-init|=
-name|cacheManager
-operator|.
-name|getDnConf
-argument_list|()
-decl_stmt|;
 name|PmemVolumeManager
 operator|.
 name|init
@@ -253,6 +245,25 @@ operator|.
 name|getInstance
 argument_list|()
 expr_stmt|;
+comment|// The configuration for max locked memory is shaded.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Persistent memory is used for caching data instead of "
+operator|+
+literal|"DRAM. Max locked memory is set to zero to disable DRAM cache"
+argument_list|)
+expr_stmt|;
+comment|// TODO: PMem is not supporting Lazy Writer now, will refine this stats
+comment|// while implementing it.
+return|return
+operator|new
+name|CacheStats
+argument_list|(
+literal|0L
+argument_list|)
+return|;
 block|}
 comment|/**    * Load the block.    *    * Map the block and verify its checksum.    *    * The block will be mapped to PmemDir/BlockPoolId-BlockId, in which PmemDir    * is a persistent memory volume chosen by PmemVolumeManager.    *    * @param length         The current length of the block.    * @param blockIn        The block input stream. Should be positioned at the    *                       start. The caller must close this.    * @param metaIn         The meta file input stream. Should be positioned at    *                       the start. The caller must close this.    * @param blockFileName  The block file name, for logging purposes.    * @param key            The extended block ID.    *    * @throws IOException   If mapping block fails or checksum fails.    *    * @return               The Mappable block.    */
 annotation|@

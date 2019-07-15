@@ -656,7 +656,7 @@ name|fsdataset
 operator|.
 name|impl
 operator|.
-name|MemoryCacheStats
+name|CacheStats
 operator|.
 name|PageRounder
 import|;

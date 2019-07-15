@@ -73,9 +73,9 @@ comment|/**  * Keeps statistics for the memory cache.  */
 end_comment
 
 begin_class
-DECL|class|MemoryCacheStats
+DECL|class|CacheStats
 class|class
-name|MemoryCacheStats
+name|CacheStats
 block|{
 comment|/**    * The approximate amount of cache space in use.    *    * This number is an overestimate, counting bytes that will be used only if    * pending caching operations succeed. It does not take into account pending    * uncaching operations.    *    * This overestimate is more useful to the NameNode than an underestimate,    * since we don't want the NameNode to assign us more replicas than we can    * cache, because of the current batch of operations.    */
 DECL|field|usedBytesCount
@@ -91,8 +91,8 @@ specifier|final
 name|long
 name|maxBytes
 decl_stmt|;
-DECL|method|MemoryCacheStats (long maxBytes)
-name|MemoryCacheStats
+DECL|method|CacheStats (long maxBytes)
+name|CacheStats
 parameter_list|(
 name|long
 name|maxBytes
@@ -210,7 +210,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|rounder
 specifier|private
-name|MemoryCacheStats
+name|CacheStats
 operator|.
 name|PageRounder
 name|rounder

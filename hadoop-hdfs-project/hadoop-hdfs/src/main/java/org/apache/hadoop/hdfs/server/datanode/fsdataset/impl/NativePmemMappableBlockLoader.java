@@ -120,6 +120,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|DNConf
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|nativeio
@@ -280,23 +298,24 @@ argument_list|)
 decl_stmt|;
 annotation|@
 name|Override
-DECL|method|initialize (FsDatasetCache cacheManager)
-name|void
+DECL|method|initialize (DNConf dnConf)
+name|CacheStats
 name|initialize
 parameter_list|(
-name|FsDatasetCache
-name|cacheManager
+name|DNConf
+name|dnConf
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+return|return
 name|super
 operator|.
 name|initialize
 argument_list|(
-name|cacheManager
+name|dnConf
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 comment|/**    * Load the block.    *    * Map the block and verify its checksum.    *    * The block will be mapped to PmemDir/BlockPoolId-BlockId, in which PmemDir    * is a persistent memory volume chosen by PmemVolumeManager.    *    * @param length         The current length of the block.    * @param blockIn        The block input stream. Should be positioned at the    *                       start. The caller must close this.    * @param metaIn         The meta file input stream. Should be positioned at    *                       the start. The caller must close this.    * @param blockFileName  The block file name, for logging purposes.    * @param key            The extended block ID.    *    * @throws IOException   If mapping block to persistent memory fails or    *                       checksum fails.    *    * @return               The Mappable block.    */
 annotation|@

@@ -16054,7 +16054,7 @@ name|cacheCapacity
 init|=
 name|cacheManager
 operator|.
-name|getCacheCapacity
+name|getMemCacheCapacity
 argument_list|()
 decl_stmt|;
 while|while
@@ -16069,7 +16069,7 @@ name|cacheCapacity
 operator|-
 name|cacheManager
 operator|.
-name|getCacheUsed
+name|getMemCacheUsed
 argument_list|()
 operator|)
 operator|<

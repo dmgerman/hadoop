@@ -702,12 +702,6 @@ specifier|static
 name|FsDatasetCache
 name|cacheManager
 decl_stmt|;
-DECL|field|cacheLoader
-specifier|private
-specifier|static
-name|PmemMappableBlockLoader
-name|cacheLoader
-decl_stmt|;
 comment|/**    * Used to pause DN BPServiceActor threads. BPSA threads acquire the    * shared read lock. The test acquires the write lock for exclusive access.    */
 DECL|field|lock
 specifier|private
@@ -922,17 +916,6 @@ name|setLong
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_DATANODE_MAX_LOCKED_MEMORY_KEY
-argument_list|,
-name|CACHE_CAPACITY
-argument_list|)
-expr_stmt|;
-name|conf
-operator|.
-name|setLong
-argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_HEARTBEAT_INTERVAL_KEY
 argument_list|,
 literal|1
@@ -1075,16 +1058,6 @@ argument_list|()
 operator|)
 operator|.
 name|cacheManager
-expr_stmt|;
-name|cacheLoader
-operator|=
-operator|(
-name|PmemMappableBlockLoader
-operator|)
-name|cacheManager
-operator|.
-name|getCacheLoader
-argument_list|()
 expr_stmt|;
 block|}
 annotation|@
@@ -1453,7 +1426,18 @@ name|CACHE_CAPACITY
 argument_list|,
 name|cacheManager
 operator|.
-name|getPmemCacheCapacity
+name|getCacheCapacity
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// DRAM cache is expected to be disabled.
+name|assertEquals
+argument_list|(
+literal|0L
+argument_list|,
+name|cacheManager
+operator|.
+name|getMemCacheCapacity
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1653,7 +1637,18 @@ name|CACHE_CAPACITY
 argument_list|,
 name|cacheManager
 operator|.
-name|getPmemCacheUsed
+name|getCacheUsed
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// There should be no cache used on DRAM.
+name|assertEquals
+argument_list|(
+literal|0L
+argument_list|,
+name|cacheManager
+operator|.
+name|getMemCacheUsed
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2072,7 +2067,7 @@ literal|0
 argument_list|,
 name|cacheManager
 operator|.
-name|getPmemCacheUsed
+name|getCacheUsed
 argument_list|()
 argument_list|)
 expr_stmt|;
