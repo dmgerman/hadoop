@@ -1151,6 +1151,16 @@ operator|>
 literal|0
 argument_list|)
 expr_stmt|;
+comment|// since expired record doesn't update the modification time, let's skip it
+if|if
+condition|(
+operator|!
+name|committed
+operator|.
+name|isExpired
+argument_list|()
+condition|)
+block|{
 name|assertTrue
 argument_list|(
 name|committed
@@ -1164,6 +1174,7 @@ name|getDateCreated
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|ret
 return|;

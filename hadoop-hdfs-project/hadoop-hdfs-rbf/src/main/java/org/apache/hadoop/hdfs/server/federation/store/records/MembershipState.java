@@ -240,6 +240,13 @@ specifier|static
 name|long
 name|expirationMs
 decl_stmt|;
+comment|/** Deletion time in ms for this expired entry. */
+DECL|field|deletionMs
+specifier|private
+specifier|static
+name|long
+name|deletionMs
+decl_stmt|;
 comment|/** Comparator based on the name.*/
 DECL|field|NAME_COMPARATOR
 specifier|public
@@ -1340,6 +1347,53 @@ block|{
 name|MembershipState
 operator|.
 name|expirationMs
+operator|=
+name|time
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|isExpired ()
+specifier|public
+name|boolean
+name|isExpired
+parameter_list|()
+block|{
+return|return
+name|getState
+argument_list|()
+operator|==
+name|EXPIRED
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getDeletionMs ()
+specifier|public
+name|long
+name|getDeletionMs
+parameter_list|()
+block|{
+return|return
+name|MembershipState
+operator|.
+name|deletionMs
+return|;
+block|}
+comment|/**    * Set the deletion time for this class.    *    * @param time Deletion time in milliseconds.    */
+DECL|method|setDeletionMs (long time)
+specifier|public
+specifier|static
+name|void
+name|setDeletionMs
+parameter_list|(
+name|long
+name|time
+parameter_list|)
+block|{
+name|MembershipState
+operator|.
+name|deletionMs
 operator|=
 name|time
 expr_stmt|;

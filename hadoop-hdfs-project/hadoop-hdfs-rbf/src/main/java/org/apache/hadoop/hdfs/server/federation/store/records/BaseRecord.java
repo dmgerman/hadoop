@@ -142,6 +142,29 @@ name|long
 name|getExpirationMs
 parameter_list|()
 function_decl|;
+comment|/**    * Check if this record is expired. The default is false. Override for    * customized behavior.    *    * @return True if the record is expired.    */
+DECL|method|isExpired ()
+specifier|public
+name|boolean
+name|isExpired
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
+comment|/**    * Get the deletion time for the expired record. The default is disabled.    * Override for customized behavior.    *    * @return Deletion time for the expired record.    */
+DECL|method|getDeletionMs ()
+specifier|public
+name|long
+name|getDeletionMs
+parameter_list|()
+block|{
+return|return
+operator|-
+literal|1
+return|;
+block|}
 comment|/**    * Map of primary key names to values for the record. The primary key can be    * a combination of 1-n different State Store serialized values.    *    * @return Map of key/value pairs that constitute this object's primary key.    */
 DECL|method|getPrimaryKeys ()
 specifier|public
@@ -517,10 +540,15 @@ init|=
 name|getExpirationMs
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
+name|long
+name|modifiedTime
+init|=
 name|getDateModified
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|modifiedTime
 operator|>
 literal|0
 operator|&&
@@ -531,8 +559,7 @@ condition|)
 block|{
 return|return
 operator|(
-name|getDateModified
-argument_list|()
+name|modifiedTime
 operator|+
 name|expiration
 operator|)
@@ -543,6 +570,58 @@ block|}
 return|return
 literal|false
 return|;
+block|}
+comment|/**    * Called when this record is expired and expired deletion is enabled, checks    * for the deletion. If an expired record exists beyond the deletion time, it    * should be deleted.    *    * @param currentTime The current timestamp in ms from the data store, to be    *          compared against the modification and creation dates of the    *          object.    * @return boolean True if the record has been updated and should be    *         deleted from the data store.    */
+DECL|method|shouldBeDeleted (long currentTime)
+specifier|public
+name|boolean
+name|shouldBeDeleted
+parameter_list|(
+name|long
+name|currentTime
+parameter_list|)
+block|{
+name|long
+name|deletionTime
+init|=
+name|getDeletionMs
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|isExpired
+argument_list|()
+operator|&&
+name|deletionTime
+operator|>
+literal|0
+condition|)
+block|{
+name|long
+name|elapsedTime
+init|=
+name|currentTime
+operator|-
+operator|(
+name|getDateModified
+argument_list|()
+operator|+
+name|getExpirationMs
+argument_list|()
+operator|)
+decl_stmt|;
+return|return
+name|elapsedTime
+operator|>
+name|deletionTime
+return|;
+block|}
+else|else
+block|{
+return|return
+literal|false
+return|;
+block|}
 block|}
 comment|/**    * Validates the record. Called when the record is created, populated from the    * state store, and before committing to the state store. If validate failed,    * there throws an exception.    */
 DECL|method|validate ()

@@ -1481,6 +1481,16 @@ name|long
 name|time
 parameter_list|)
 block|{
+if|if
+condition|(
+name|getState
+argument_list|()
+operator|!=
+name|FederationNamenodeServiceState
+operator|.
+name|EXPIRED
+condition|)
+block|{
 name|this
 operator|.
 name|translator
@@ -1493,6 +1503,7 @@ argument_list|(
 name|time
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override

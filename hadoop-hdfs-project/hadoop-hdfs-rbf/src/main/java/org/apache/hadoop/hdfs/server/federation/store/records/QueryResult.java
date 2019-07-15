@@ -30,16 +30,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Collections
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -116,14 +106,9 @@ name|getRecords
 parameter_list|()
 block|{
 return|return
-name|Collections
-operator|.
-name|unmodifiableList
-argument_list|(
 name|this
 operator|.
 name|records
-argument_list|)
 return|;
 block|}
 comment|/**    * The timetamp in driver time of this query.    *    * @return Timestamp in driver time.    */

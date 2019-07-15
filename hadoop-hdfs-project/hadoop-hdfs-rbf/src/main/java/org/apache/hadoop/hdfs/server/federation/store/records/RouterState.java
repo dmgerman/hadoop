@@ -172,6 +172,13 @@ specifier|static
 name|long
 name|expirationMs
 decl_stmt|;
+comment|/** Deletion time in ms for this entry when it is expired. */
+DECL|field|deletionMs
+specifier|private
+specifier|static
+name|long
+name|deletionMs
+decl_stmt|;
 comment|/**    * Constructors.    */
 DECL|method|RouterState ()
 specifier|public
@@ -733,6 +740,54 @@ block|{
 name|RouterState
 operator|.
 name|expirationMs
+operator|=
+name|time
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|isExpired ()
+specifier|public
+name|boolean
+name|isExpired
+parameter_list|()
+block|{
+return|return
+name|getStatus
+argument_list|()
+operator|==
+name|RouterServiceState
+operator|.
+name|EXPIRED
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getDeletionMs ()
+specifier|public
+name|long
+name|getDeletionMs
+parameter_list|()
+block|{
+return|return
+name|RouterState
+operator|.
+name|deletionMs
+return|;
+block|}
+DECL|method|setDeletionMs (long time)
+specifier|public
+specifier|static
+name|void
+name|setDeletionMs
+parameter_list|(
+name|long
+name|time
+parameter_list|)
+block|{
+name|RouterState
+operator|.
+name|deletionMs
 operator|=
 name|time
 expr_stmt|;
