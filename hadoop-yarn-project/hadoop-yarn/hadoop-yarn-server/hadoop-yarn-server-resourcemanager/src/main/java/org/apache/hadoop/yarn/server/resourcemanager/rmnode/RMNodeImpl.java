@@ -1716,6 +1716,25 @@ operator|.
 name|DECOMMISSIONED
 argument_list|)
 argument_list|)
+operator|.
+name|addTransition
+argument_list|(
+name|NodeState
+operator|.
+name|NEW
+argument_list|,
+name|NodeState
+operator|.
+name|NEW
+argument_list|,
+name|RMNodeEventType
+operator|.
+name|FINISHED_CONTAINERS_PULLED_BY_AM
+argument_list|,
+operator|new
+name|AddContainersToBeRemovedFromNMTransition
+argument_list|()
+argument_list|)
 comment|//Transitions from RUNNING state
 operator|.
 name|addTransition
@@ -8193,6 +8212,21 @@ name|nodeattrs
 operator|.
 name|keySet
 argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getContainersToBeRemovedFromNM ()
+specifier|public
+name|Set
+argument_list|<
+name|ContainerId
+argument_list|>
+name|getContainersToBeRemovedFromNM
+parameter_list|()
+block|{
+return|return
+name|containersToBeRemovedFromNM
 return|;
 block|}
 block|}
