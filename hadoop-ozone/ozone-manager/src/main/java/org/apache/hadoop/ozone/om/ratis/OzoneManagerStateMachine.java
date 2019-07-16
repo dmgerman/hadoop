@@ -524,26 +524,6 @@ name|LoggerFactory
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|om
-operator|.
-name|exceptions
-operator|.
-name|OMException
-operator|.
-name|STATUS_CODE
-import|;
-end_import
-
 begin_comment
 comment|/**  * The OM StateMachine is the state machine for OM Ratis server. It is  * responsible for applying ratis committed transactions to  * {@link OzoneManager}.  */
 end_comment
@@ -1328,36 +1308,6 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
-return|;
-block|}
-comment|/**    * Construct IOException message for failed requests in StartTransaction.    * @param omResponse    * @return    */
-DECL|method|constructExceptionForFailedRequest ( OMResponse omResponse)
-specifier|private
-name|IOException
-name|constructExceptionForFailedRequest
-parameter_list|(
-name|OMResponse
-name|omResponse
-parameter_list|)
-block|{
-return|return
-operator|new
-name|IOException
-argument_list|(
-name|omResponse
-operator|.
-name|getMessage
-argument_list|()
-operator|+
-literal|" "
-operator|+
-name|STATUS_CODE
-operator|+
-name|omResponse
-operator|.
-name|getStatus
-argument_list|()
-argument_list|)
 return|;
 block|}
 comment|/**    * Submits write request to OM and returns the response Message.    * @param request OMRequest    * @return response from OM    * @throws ServiceException    */

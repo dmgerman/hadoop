@@ -34,14 +34,8 @@ comment|// WRITE Actions
 DECL|enumConstant|ALLOCATE_BLOCK
 name|ALLOCATE_BLOCK
 block|,
-DECL|enumConstant|ADD_ALLOCATE_BLOCK
-name|ADD_ALLOCATE_BLOCK
-block|,
 DECL|enumConstant|ALLOCATE_KEY
 name|ALLOCATE_KEY
-block|,
-DECL|enumConstant|APPLY_ALLOCATE_KEY
-name|APPLY_ALLOCATE_KEY
 block|,
 DECL|enumConstant|COMMIT_KEY
 name|COMMIT_KEY

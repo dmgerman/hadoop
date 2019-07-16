@@ -335,13 +335,6 @@ name|Metric
 name|MutableCounterLong
 name|numAllocateBlockCalls
 decl_stmt|;
-DECL|field|numAddAllocateBlockCalls
-specifier|private
-annotation|@
-name|Metric
-name|MutableCounterLong
-name|numAddAllocateBlockCalls
-decl_stmt|;
 DECL|field|numGetServiceLists
 specifier|private
 annotation|@
@@ -1745,30 +1738,6 @@ name|incNumBlockAllocateCallFails
 parameter_list|()
 block|{
 name|numBlockAllocateCallFails
-operator|.
-name|incr
-argument_list|()
-expr_stmt|;
-block|}
-DECL|method|incNumAddAllocateBlockCalls ()
-specifier|public
-name|void
-name|incNumAddAllocateBlockCalls
-parameter_list|()
-block|{
-name|numAddAllocateBlockCalls
-operator|.
-name|incr
-argument_list|()
-expr_stmt|;
-block|}
-DECL|method|incNumAddAllocateBlockFails ()
-specifier|public
-name|void
-name|incNumAddAllocateBlockFails
-parameter_list|()
-block|{
-name|numAddAllocateBlockCallFails
 operator|.
 name|incr
 argument_list|()

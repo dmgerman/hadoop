@@ -910,7 +910,7 @@ argument_list|()
 decl_stmt|;
 name|omMetrics
 operator|.
-name|incNumAddAllocateBlockCalls
+name|incNumBlockAllocateCalls
 argument_list|()
 expr_stmt|;
 name|AuditLogger
