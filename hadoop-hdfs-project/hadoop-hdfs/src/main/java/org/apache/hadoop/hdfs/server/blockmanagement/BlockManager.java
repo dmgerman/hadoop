@@ -17130,6 +17130,9 @@ argument_list|(
 name|blk
 argument_list|)
 decl_stmt|;
+name|processed
+operator|++
+expr_stmt|;
 name|LOG
 operator|.
 name|debug

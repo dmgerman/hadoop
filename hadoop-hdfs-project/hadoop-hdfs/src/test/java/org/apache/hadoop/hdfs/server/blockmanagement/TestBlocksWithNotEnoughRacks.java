@@ -1196,6 +1196,16 @@ literal|" on 1 more rack(s). Total number of racks in the cluster: 2"
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|assertTrue
+argument_list|(
+name|fsckOp
+operator|.
+name|contains
+argument_list|(
+literal|" Blocks queued for replication:\t1"
+argument_list|)
+argument_list|)
+expr_stmt|;
 try|try
 block|{
 name|DFSTestUtil
