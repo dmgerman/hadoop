@@ -3203,7 +3203,7 @@ name|args
 operator|.
 name|getDataSize
 argument_list|()
-operator|>=
+operator|>
 literal|0
 condition|?
 name|args
@@ -3473,10 +3473,7 @@ name|allocateBlockInKey
 argument_list|(
 name|keyInfo
 argument_list|,
-name|args
-operator|.
-name|getDataSize
-argument_list|()
+name|size
 argument_list|,
 name|currentTime
 argument_list|)
