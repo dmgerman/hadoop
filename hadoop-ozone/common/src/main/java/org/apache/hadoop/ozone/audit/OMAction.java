@@ -73,6 +73,9 @@ block|,
 DECL|enumConstant|UPDATE_KEY
 name|UPDATE_KEY
 block|,
+DECL|enumConstant|PURGE_KEYS
+name|PURGE_KEYS
+block|,
 comment|// READ Actions
 DECL|enumConstant|CHECK_VOLUME_ACCESS
 name|CHECK_VOLUME_ACCESS

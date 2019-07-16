@@ -1129,6 +1129,9 @@ case|:
 case|case
 name|AddAcl
 case|:
+case|case
+name|PurgeKeys
+case|:
 return|return
 literal|false
 return|;
@@ -2246,6 +2249,28 @@ throw|;
 block|}
 return|return
 name|dirFile
+return|;
+block|}
+comment|/**    * Returns the DB key name of a deleted key in OM metadata store. The    * deleted key name is the<keyName>_<deletionTimestamp>.    * @param key Original key name    * @param timestamp timestamp of deletion    * @return Deleted key name    */
+DECL|method|getDeletedKeyName (String key, long timestamp)
+specifier|public
+specifier|static
+name|String
+name|getDeletedKeyName
+parameter_list|(
+name|String
+name|key
+parameter_list|,
+name|long
+name|timestamp
+parameter_list|)
+block|{
+return|return
+name|key
+operator|+
+literal|"_"
+operator|+
+name|timestamp
 return|;
 block|}
 block|}

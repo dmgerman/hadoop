@@ -32,6 +32,20 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|OmUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|om
 operator|.
 name|OMMetadataManager
@@ -173,12 +187,20 @@ specifier|private
 name|OmKeyInfo
 name|omKeyInfo
 decl_stmt|;
-DECL|method|OMKeyDeleteResponse (OmKeyInfo omKeyInfo, OMResponse omResponse)
+DECL|field|deleteTimestamp
+specifier|private
+name|long
+name|deleteTimestamp
+decl_stmt|;
+DECL|method|OMKeyDeleteResponse (OmKeyInfo omKeyInfo, long deletionTime, OMResponse omResponse)
 specifier|public
 name|OMKeyDeleteResponse
 parameter_list|(
 name|OmKeyInfo
 name|omKeyInfo
+parameter_list|,
+name|long
+name|deletionTime
 parameter_list|,
 name|OMResponse
 name|omResponse
@@ -194,6 +216,12 @@ operator|.
 name|omKeyInfo
 operator|=
 name|omKeyInfo
+expr_stmt|;
+name|this
+operator|.
+name|deleteTimestamp
+operator|=
+name|deletionTime
 expr_stmt|;
 block|}
 annotation|@
@@ -274,6 +302,22 @@ name|omKeyInfo
 argument_list|)
 condition|)
 block|{
+comment|// If a deleted key is put in the table where a key with the same
+comment|// name already exists, then the old deleted key information would be
+comment|// lost. To differentiate between keys with same name in
+comment|// deletedTable, we add the timestamp to the key name.
+name|String
+name|deleteKeyName
+init|=
+name|OmUtils
+operator|.
+name|getDeletedKeyName
+argument_list|(
+name|ozoneKey
+argument_list|,
+name|deleteTimestamp
+argument_list|)
+decl_stmt|;
 name|omMetadataManager
 operator|.
 name|getDeletedTable
@@ -283,7 +327,7 @@ name|putWithBatch
 argument_list|(
 name|batchOperation
 argument_list|,
-name|ozoneKey
+name|deleteKeyName
 argument_list|,
 name|omKeyInfo
 argument_list|)

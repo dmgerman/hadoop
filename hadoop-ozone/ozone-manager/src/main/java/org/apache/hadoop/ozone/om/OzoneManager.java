@@ -3398,6 +3398,11 @@ specifier|private
 name|String
 name|omComponent
 decl_stmt|;
+DECL|field|omServerProtocol
+specifier|private
+name|OzoneManagerProtocolServerSideTranslatorPB
+name|omServerProtocol
+decl_stmt|;
 DECL|field|isRatisEnabled
 specifier|private
 name|boolean
@@ -4081,9 +4086,9 @@ operator|=
 operator|new
 name|KeyManagerImpl
 argument_list|(
-name|scmClient
+name|this
 argument_list|,
-name|metadataManager
+name|scmClient
 argument_list|,
 name|configuration
 argument_list|,
@@ -4091,13 +4096,6 @@ name|omStorage
 operator|.
 name|getOmId
 argument_list|()
-argument_list|,
-name|blockTokenMgr
-argument_list|,
-name|getKmsProvider
-argument_list|()
-argument_list|,
-name|prefixManager
 argument_list|)
 expr_stmt|;
 name|shutdownHook
@@ -7200,6 +7198,16 @@ return|return
 name|kmsProvider
 return|;
 block|}
+DECL|method|getPrefixManager ()
+specifier|public
+name|PrefixManager
+name|getPrefixManager
+parameter_list|()
+block|{
+return|return
+name|prefixManager
+return|;
+block|}
 comment|/**    * Get metadata manager.    *    * @return metadata manager.    */
 DECL|method|getMetadataManager ()
 specifier|public
@@ -7209,6 +7217,26 @@ parameter_list|()
 block|{
 return|return
 name|metadataManager
+return|;
+block|}
+DECL|method|getBlockTokenMgr ()
+specifier|public
+name|OzoneBlockTokenSecretManager
+name|getBlockTokenMgr
+parameter_list|()
+block|{
+return|return
+name|blockTokenMgr
+return|;
+block|}
+DECL|method|getOmServerProtocol ()
+specifier|public
+name|OzoneManagerProtocolServerSideTranslatorPB
+name|getOmServerProtocol
+parameter_list|()
+block|{
+return|return
+name|omServerProtocol
 return|;
 block|}
 DECL|method|getMetrics ()
@@ -7710,11 +7738,10 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
-name|BlockingService
-name|omService
-init|=
-name|newReflectiveBlockingService
-argument_list|(
+name|this
+operator|.
+name|omServerProtocol
+operator|=
 operator|new
 name|OzoneManagerProtocolServerSideTranslatorPB
 argument_list|(
@@ -7724,6 +7751,13 @@ name|omRatisServer
 argument_list|,
 name|isRatisEnabled
 argument_list|)
+expr_stmt|;
+name|BlockingService
+name|omService
+init|=
+name|newReflectiveBlockingService
+argument_list|(
+name|omServerProtocol
 argument_list|)
 decl_stmt|;
 return|return
@@ -16931,6 +16965,35 @@ parameter_list|()
 block|{
 return|return
 name|maxUserVolumeCount
+return|;
+block|}
+comment|/**    * Checks the Leader status of OM Ratis Server.    * Note that this status has a small window of error. It should not be used    * to determine the absolute leader status.    * If it is the leader, the role status is cached till Ratis server    * notifies of leader change. If it is not leader, the role information is    * retrieved through by submitting a GroupInfoRequest to Ratis server.    *    * If ratis is not enabled, then it always returns true.    *    * @return Return true if this node is the leader, false otherwsie.    */
+DECL|method|isLeader ()
+specifier|public
+name|boolean
+name|isLeader
+parameter_list|()
+block|{
+return|return
+name|isRatisEnabled
+condition|?
+name|omRatisServer
+operator|.
+name|isLeader
+argument_list|()
+else|:
+literal|true
+return|;
+block|}
+comment|/**    * Return if Ratis is enabled or not.    * @return    */
+DECL|method|isRatisEnabled ()
+specifier|public
+name|boolean
+name|isRatisEnabled
+parameter_list|()
+block|{
+return|return
+name|isRatisEnabled
 return|;
 block|}
 block|}
