@@ -984,9 +984,9 @@ argument_list|()
 operator|.
 name|map
 argument_list|(
-name|OMPBHelper
+name|OzoneAcl
 operator|::
-name|convertOzoneAcl
+name|toProtobuf
 argument_list|)
 operator|.
 name|collect
@@ -1109,9 +1109,9 @@ argument_list|()
 operator|.
 name|map
 argument_list|(
-name|OMPBHelper
+name|OzoneAcl
 operator|::
-name|convertOzoneAcl
+name|fromProtobuf
 argument_list|)
 operator|.
 name|collect

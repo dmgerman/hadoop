@@ -616,6 +616,24 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|OzoneAcl
+operator|.
+name|AclScope
+operator|.
+name|ACCESS
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|OzoneConfigKeys
 operator|.
 name|OZONE_ACL_AUTHORIZER_CLASS
@@ -1892,6 +1910,8 @@ name|getUserName
 argument_list|()
 argument_list|,
 name|parentDirUserAcl
+argument_list|,
+name|ACCESS
 argument_list|)
 decl_stmt|;
 name|OzoneAcl
@@ -1925,6 +1945,8 @@ else|:
 literal|""
 argument_list|,
 name|parentDirGroupAcl
+argument_list|,
+name|ACCESS
 argument_list|)
 decl_stmt|;
 comment|// Set access for volume.
@@ -2005,6 +2027,8 @@ name|getUserName
 argument_list|()
 argument_list|,
 name|parentDirUserAcl
+argument_list|,
+name|ACCESS
 argument_list|)
 decl_stmt|;
 name|OzoneAcl
@@ -2038,6 +2062,8 @@ else|:
 literal|""
 argument_list|,
 name|parentDirGroupAcl
+argument_list|,
+name|ACCESS
 argument_list|)
 decl_stmt|;
 comment|// Set access for volume, bucket& prefix.
@@ -2171,6 +2197,8 @@ name|getUserName
 argument_list|()
 argument_list|,
 name|parentDirUserAcl
+argument_list|,
+name|ACCESS
 argument_list|)
 decl_stmt|;
 name|OzoneAcl
@@ -2204,6 +2232,8 @@ else|:
 literal|""
 argument_list|,
 name|parentDirGroupAcl
+argument_list|,
+name|ACCESS
 argument_list|)
 decl_stmt|;
 comment|// Set access for volume& bucket.
@@ -2411,6 +2441,8 @@ name|accessType
 argument_list|)
 argument_list|,
 name|a1
+argument_list|,
+name|ACCESS
 argument_list|)
 decl_stmt|;
 comment|// Reset acls to only one right.
@@ -2753,6 +2785,8 @@ name|identityType
 argument_list|)
 argument_list|,
 name|a2
+argument_list|,
+name|ACCESS
 argument_list|)
 decl_stmt|;
 name|aclImplementor

@@ -1830,9 +1830,14 @@ argument_list|)
 operator|.
 name|map
 argument_list|(
+name|acl
+lambda|->
 name|OzoneAcl
-operator|::
+operator|.
 name|parseAcl
+argument_list|(
+name|acl
+argument_list|)
 argument_list|)
 operator|.
 name|collect

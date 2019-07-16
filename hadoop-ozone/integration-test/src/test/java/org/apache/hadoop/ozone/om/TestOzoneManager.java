@@ -1126,6 +1126,24 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|OzoneAcl
+operator|.
+name|AclScope
+operator|.
+name|ACCESS
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|OzoneConfigKeys
 operator|.
 name|OZONE_ACL_ENABLED
@@ -3021,6 +3039,8 @@ argument_list|,
 name|ACLType
 operator|.
 name|READ
+argument_list|,
+name|ACCESS
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -3055,6 +3075,8 @@ argument_list|,
 name|ACLType
 operator|.
 name|READ
+argument_list|,
+name|ACCESS
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -3099,6 +3121,8 @@ argument_list|,
 name|ACLType
 operator|.
 name|ALL
+argument_list|,
+name|ACCESS
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -3131,6 +3155,8 @@ argument_list|,
 name|ACLType
 operator|.
 name|ALL
+argument_list|,
+name|ACCESS
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -3163,6 +3189,8 @@ argument_list|,
 name|ACLType
 operator|.
 name|READ
+argument_list|,
+name|ACCESS
 argument_list|)
 decl_stmt|;
 name|Assert

@@ -70,22 +70,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|protocolPB
-operator|.
-name|OMPBHelper
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|util
@@ -483,9 +467,9 @@ argument_list|()
 operator|.
 name|map
 argument_list|(
-name|OMPBHelper
+name|OzoneAcl
 operator|::
-name|convertOzoneAcl
+name|toProtobuf
 argument_list|)
 operator|.
 name|collect
@@ -555,9 +539,9 @@ argument_list|()
 operator|.
 name|map
 argument_list|(
-name|OMPBHelper
+name|OzoneAcl
 operator|::
-name|convertOzoneAcl
+name|fromProtobuf
 argument_list|)
 operator|.
 name|collect

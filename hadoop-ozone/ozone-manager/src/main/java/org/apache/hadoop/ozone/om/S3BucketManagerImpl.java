@@ -452,7 +452,9 @@ argument_list|(
 name|bucketName
 argument_list|)
 argument_list|,
-literal|"Bucket name cannot be null or empty."
+literal|"Bucket"
+operator|+
+literal|" name cannot be null or empty."
 argument_list|)
 expr_stmt|;
 name|Preconditions

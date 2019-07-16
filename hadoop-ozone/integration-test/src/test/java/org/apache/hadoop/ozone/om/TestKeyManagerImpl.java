@@ -1044,6 +1044,24 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|OzoneAcl
+operator|.
+name|AclScope
+operator|.
+name|ACCESS
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|OzoneConfigKeys
 operator|.
 name|OZONE_KEY_PREALLOCATION_BLOCKS_MAX
@@ -2975,6 +2993,8 @@ argument_list|,
 name|ACLType
 operator|.
 name|READ
+argument_list|,
+name|ACCESS
 argument_list|)
 decl_stmt|;
 name|prefixManager
@@ -3051,6 +3071,8 @@ argument_list|,
 name|ACLType
 operator|.
 name|ALL
+argument_list|,
+name|ACCESS
 argument_list|)
 decl_stmt|;
 name|BitSet
@@ -3101,6 +3123,8 @@ argument_list|,
 literal|"dev"
 argument_list|,
 name|rwRights
+argument_list|,
+name|ACCESS
 argument_list|)
 decl_stmt|;
 name|BitSet
@@ -3137,6 +3161,8 @@ argument_list|,
 literal|"dev"
 argument_list|,
 name|wRights
+argument_list|,
+name|ACCESS
 argument_list|)
 decl_stmt|;
 name|BitSet
@@ -3173,6 +3199,8 @@ argument_list|,
 literal|"dev"
 argument_list|,
 name|rRights
+argument_list|,
+name|ACCESS
 argument_list|)
 decl_stmt|;
 name|acls
@@ -3570,6 +3598,8 @@ argument_list|,
 name|ACLType
 operator|.
 name|READ
+argument_list|,
+name|ACCESS
 argument_list|)
 decl_stmt|;
 name|OzoneObj
@@ -3930,6 +3960,8 @@ argument_list|,
 name|ACLType
 operator|.
 name|READ
+argument_list|,
+name|ACCESS
 argument_list|)
 decl_stmt|;
 name|prefixManager

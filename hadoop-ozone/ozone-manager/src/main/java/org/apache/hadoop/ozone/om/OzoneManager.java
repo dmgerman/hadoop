@@ -2554,6 +2554,22 @@ name|ozone
 operator|.
 name|OzoneConfigKeys
 operator|.
+name|OZONE_ADMINISTRATORS
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConfigKeys
+operator|.
 name|OZONE_KEY_PREALLOCATION_BLOCKS_MAX
 import|;
 end_import
@@ -4052,6 +4068,14 @@ argument_list|,
 name|scmContainerClient
 argument_list|)
 expr_stmt|;
+name|prefixManager
+operator|=
+operator|new
+name|PrefixManagerImpl
+argument_list|(
+name|metadataManager
+argument_list|)
+expr_stmt|;
 name|keyManager
 operator|=
 operator|new
@@ -4072,14 +4096,8 @@ name|blockTokenMgr
 argument_list|,
 name|getKmsProvider
 argument_list|()
-argument_list|)
-expr_stmt|;
+argument_list|,
 name|prefixManager
-operator|=
-operator|new
-name|PrefixManagerImpl
-argument_list|(
-name|metadataManager
 argument_list|)
 expr_stmt|;
 name|shutdownHook
@@ -4185,8 +4203,6 @@ name|conf
 operator|.
 name|getTrimmedStringCollection
 argument_list|(
-name|OzoneConfigKeys
-operator|.
 name|OZONE_ADMINISTRATORS
 argument_list|)
 expr_stmt|;
@@ -9178,7 +9194,17 @@ name|error
 argument_list|(
 literal|"Only admin users are authorized to create "
 operator|+
-literal|"Ozone volumes."
+literal|"Ozone volumes. User :{} is not an admin."
+argument_list|,
+name|ProtobufRpcEngine
+operator|.
+name|Server
+operator|.
+name|getRemoteUser
+argument_list|()
+operator|.
+name|getUserName
+argument_list|()
 argument_list|)
 expr_stmt|;
 throw|throw
