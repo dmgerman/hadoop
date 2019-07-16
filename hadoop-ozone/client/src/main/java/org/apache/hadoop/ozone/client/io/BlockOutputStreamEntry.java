@@ -564,8 +564,6 @@ name|BlockOutputStream
 argument_list|(
 name|blockID
 argument_list|,
-name|key
-argument_list|,
 name|xceiverClientManager
 argument_list|,
 name|pipeline
