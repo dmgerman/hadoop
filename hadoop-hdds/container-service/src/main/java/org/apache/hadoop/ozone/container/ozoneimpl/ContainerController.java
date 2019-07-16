@@ -556,6 +556,13 @@ argument_list|(
 name|containerId
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|container
+operator|!=
+literal|null
+condition|)
+block|{
 name|getHandler
 argument_list|(
 name|container
@@ -568,6 +575,7 @@ argument_list|,
 name|force
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Given a container, returns its handler instance.    *    * @param container Container    * @return handler of the container    */
 DECL|method|getHandler (final Container container)
