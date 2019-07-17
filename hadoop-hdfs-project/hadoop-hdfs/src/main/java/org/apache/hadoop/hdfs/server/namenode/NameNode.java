@@ -918,6 +918,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|http
+operator|.
+name|HttpServer2
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ipc
 operator|.
 name|ExternalCall
@@ -3363,6 +3377,21 @@ parameter_list|()
 block|{
 return|return
 name|rpcServer
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getHttpServer ()
+specifier|public
+name|HttpServer2
+name|getHttpServer
+parameter_list|()
+block|{
+return|return
+name|httpServer
+operator|.
+name|getHttpServer
+argument_list|()
 return|;
 block|}
 DECL|method|queueExternalCall (ExternalCall<?> extCall)
