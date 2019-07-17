@@ -1863,8 +1863,6 @@ argument_list|,
 literal|true
 argument_list|,
 literal|false
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 name|checkResult
@@ -2013,8 +2011,6 @@ argument_list|,
 literal|false
 argument_list|,
 literal|true
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 name|checkResult
@@ -3092,12 +3088,10 @@ argument_list|,
 literal|false
 argument_list|,
 literal|false
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|runTest (Path listFile, Path target, boolean targetExists, boolean sync, boolean delete, boolean overwrite, boolean useTrash)
+DECL|method|runTest (Path listFile, Path target, boolean targetExists, boolean sync, boolean delete, boolean overwrite)
 specifier|private
 name|void
 name|runTest
@@ -3119,9 +3113,6 @@ name|delete
 parameter_list|,
 name|boolean
 name|overwrite
-parameter_list|,
-name|boolean
-name|useTrash
 parameter_list|)
 throws|throws
 name|IOException
@@ -3148,11 +3139,6 @@ operator|.
 name|withDeleteMissing
 argument_list|(
 name|delete
-argument_list|)
-operator|.
-name|withDeleteUseTrash
-argument_list|(
-name|useTrash
 argument_list|)
 operator|.
 name|withOverwrite

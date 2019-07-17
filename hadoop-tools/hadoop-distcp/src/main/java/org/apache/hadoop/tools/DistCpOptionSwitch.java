@@ -164,27 +164,6 @@ literal|"files missing in source. Delete is applicable only with update or overw
 argument_list|)
 argument_list|)
 block|,
-comment|/**    * When -delete option on, files in target that are missing from source    * will be delete by default. This allows the files to be    * moved to the trash    */
-DECL|enumConstant|DELETE_USETRASH
-name|DELETE_USETRASH
-argument_list|(
-name|DistCpConstants
-operator|.
-name|CONF_LABEL_DELETE_MISSING_USETRASH
-argument_list|,
-operator|new
-name|Option
-argument_list|(
-literal|"useTrash"
-argument_list|,
-literal|false
-argument_list|,
-literal|"Move deleted files into "
-operator|+
-literal|"the user's trash directory in the destination filesystem"
-argument_list|)
-argument_list|)
-block|,
 comment|/**    * Track missing files in target that are missing from source    * This allows for other applications to complete the synchronization,    * possibly with object-store-specific delete algorithms.    * Typically used in conjunction with SYNC_FOLDERS    * Incompatible with ATOMIC_COMMIT    */
 DECL|enumConstant|InterfaceStability.Unstable
 annotation|@
