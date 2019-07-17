@@ -216,6 +216,15 @@ name|CONF_LABEL_TRACK_MISSING
 init|=
 literal|"distcp.track.missing.source"
 decl_stmt|;
+DECL|field|CONF_LABEL_DELETE_MISSING_USETRASH
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CONF_LABEL_DELETE_MISSING_USETRASH
+init|=
+literal|"distcp.delete.missing.usetrash"
+decl_stmt|;
 DECL|field|CONF_LABEL_LISTSTATUS_THREADS
 specifier|public
 specifier|static

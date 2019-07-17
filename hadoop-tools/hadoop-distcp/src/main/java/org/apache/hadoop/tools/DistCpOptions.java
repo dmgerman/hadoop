@@ -337,6 +337,11 @@ specifier|final
 name|boolean
 name|blocking
 decl_stmt|;
+DECL|field|deleteUseTrash
+specifier|private
+name|boolean
+name|deleteUseTrash
+decl_stmt|;
 comment|// When "-diff s1 s2 src tgt" is passed, apply forward snapshot diff (from s1
 comment|// to s2) of source cluster to the target cluster to sync target cluster with
 comment|// the source cluster. Referred to as "Fdiff" in the code.
@@ -788,6 +793,14 @@ name|builder
 operator|.
 name|directWrite
 expr_stmt|;
+name|this
+operator|.
+name|deleteUseTrash
+operator|=
+name|builder
+operator|.
+name|deleteUseTrash
+expr_stmt|;
 block|}
 DECL|method|getSourceFileListing ()
 specifier|public
@@ -959,6 +972,16 @@ argument_list|()
 operator|||
 name|shouldUseRdiff
 argument_list|()
+return|;
+block|}
+DECL|method|shouldDeleteUseTrash ()
+specifier|public
+name|boolean
+name|shouldDeleteUseTrash
+parameter_list|()
+block|{
+return|return
+name|deleteUseTrash
 return|;
 block|}
 DECL|method|getFromSnapshot ()
@@ -1302,6 +1325,24 @@ name|conf
 argument_list|,
 name|DistCpOptionSwitch
 operator|.
+name|DELETE_USETRASH
+argument_list|,
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|deleteUseTrash
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|DistCpOptionSwitch
+operator|.
+name|addToConf
+argument_list|(
+name|conf
+argument_list|,
+name|DistCpOptionSwitch
+operator|.
 name|SKIP_CRC
 argument_list|,
 name|String
@@ -1526,6 +1567,10 @@ literal|", deleteMissing="
 operator|+
 name|deleteMissing
 operator|+
+literal|", deleteUseTrash="
+operator|+
+name|deleteUseTrash
+operator|+
 literal|", ignoreFailures="
 operator|+
 name|ignoreFailures
@@ -1733,6 +1778,13 @@ DECL|field|useRdiff
 specifier|private
 name|boolean
 name|useRdiff
+init|=
+literal|false
+decl_stmt|;
+DECL|field|deleteUseTrash
+specifier|private
+name|boolean
+name|deleteUseTrash
 init|=
 literal|false
 decl_stmt|;
@@ -2115,6 +2167,24 @@ throw|;
 block|}
 if|if
 condition|(
+name|deleteUseTrash
+operator|&&
+operator|!
+name|deleteMissing
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Delete useTrash is applicable "
+operator|+
+literal|"only with delete option"
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
 name|overwrite
 operator|&&
 name|syncFolder
@@ -2343,6 +2413,25 @@ operator|.
 name|deleteMissing
 operator|=
 name|newDeleteMissing
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|withDeleteUseTrash (boolean newDeleteUseTrash)
+specifier|public
+name|Builder
+name|withDeleteUseTrash
+parameter_list|(
+name|boolean
+name|newDeleteUseTrash
+parameter_list|)
+block|{
+name|this
+operator|.
+name|deleteUseTrash
+operator|=
+name|newDeleteUseTrash
 expr_stmt|;
 return|return
 name|this
