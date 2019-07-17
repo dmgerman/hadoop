@@ -9075,6 +9075,8 @@ operator|.
 name|info
 argument_list|(
 literal|"Finalize service {} upgrade"
+argument_list|,
+name|serviceName
 argument_list|)
 expr_stmt|;
 name|ApplicationId
