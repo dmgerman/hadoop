@@ -405,15 +405,23 @@ specifier|private
 name|String
 name|username
 decl_stmt|;
+DECL|field|ttlTimeProvider
+specifier|private
+name|ITtlTimeProvider
+name|ttlTimeProvider
+decl_stmt|;
 annotation|@
 name|Override
-DECL|method|initialize (FileSystem fileSystem)
+DECL|method|initialize (FileSystem fileSystem, ITtlTimeProvider ttlTp)
 specifier|public
 name|void
 name|initialize
 parameter_list|(
 name|FileSystem
 name|fileSystem
+parameter_list|,
+name|ITtlTimeProvider
+name|ttlTp
 parameter_list|)
 throws|throws
 name|IOException
@@ -469,18 +477,23 @@ name|fs
 operator|.
 name|getConf
 argument_list|()
+argument_list|,
+name|ttlTp
 argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|initialize (Configuration conf)
+DECL|method|initialize (Configuration conf, ITtlTimeProvider ttlTp)
 specifier|public
 name|void
 name|initialize
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+name|ITtlTimeProvider
+name|ttlTp
 parameter_list|)
 throws|throws
 name|IOException
@@ -577,6 +590,12 @@ operator|.
 name|getShortUserName
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|ttlTimeProvider
+operator|=
+name|ttlTp
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -629,16 +648,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|delete (Path p, ITtlTimeProvider ttlTimeProvider)
+DECL|method|delete (Path p)
 specifier|public
 name|void
 name|delete
 parameter_list|(
 name|Path
 name|p
-parameter_list|,
-name|ITtlTimeProvider
-name|ttlTimeProvider
 parameter_list|)
 throws|throws
 name|IOException
@@ -682,16 +698,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|deleteSubtree (Path path, ITtlTimeProvider ttlTimeProvider)
+DECL|method|deleteSubtree (Path path)
 specifier|public
 name|void
 name|deleteSubtree
 parameter_list|(
 name|Path
 name|path
-parameter_list|,
-name|ITtlTimeProvider
-name|ttlTimeProvider
 parameter_list|)
 throws|throws
 name|IOException
@@ -708,7 +721,7 @@ name|ttlTimeProvider
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|doDelete (Path p, boolean recursive, boolean tombstone, ITtlTimeProvider ttlTimeProvider)
+DECL|method|doDelete (Path p, boolean recursive, boolean tombstone, ITtlTimeProvider ttlTp)
 specifier|private
 specifier|synchronized
 name|void
@@ -724,7 +737,7 @@ name|boolean
 name|tombstone
 parameter_list|,
 name|ITtlTimeProvider
-name|ttlTimeProvider
+name|ttlTp
 parameter_list|)
 block|{
 name|Path
@@ -742,7 +755,7 @@ name|path
 argument_list|,
 name|tombstone
 argument_list|,
-name|ttlTimeProvider
+name|ttlTp
 argument_list|)
 expr_stmt|;
 if|if
@@ -759,7 +772,7 @@ name|localCache
 argument_list|,
 name|tombstone
 argument_list|,
-name|ttlTimeProvider
+name|ttlTp
 argument_list|)
 expr_stmt|;
 block|}
@@ -990,7 +1003,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|move ( @ullable Collection<Path> pathsToDelete, @Nullable Collection<PathMetadata> pathsToCreate, ITtlTimeProvider ttlTimeProvider, @Nullable final BulkOperationState operationState)
+DECL|method|move (@ullable Collection<Path> pathsToDelete, @Nullable Collection<PathMetadata> pathsToCreate, @Nullable final BulkOperationState operationState)
 specifier|public
 name|void
 name|move
@@ -1010,9 +1023,6 @@ argument_list|<
 name|PathMetadata
 argument_list|>
 name|pathsToCreate
-parameter_list|,
-name|ITtlTimeProvider
-name|ttlTimeProvider
 parameter_list|,
 annotation|@
 name|Nullable
@@ -1091,8 +1101,6 @@ expr_stmt|;
 name|delete
 argument_list|(
 name|meta
-argument_list|,
-name|ttlTimeProvider
 argument_list|)
 expr_stmt|;
 block|}
@@ -2366,7 +2374,7 @@ comment|/**    * Update fileCache and dirCache to reflect deletion of file 'f'. 
 end_comment
 
 begin_function
-DECL|method|deleteCacheEntries (Path path, boolean tombstone, ITtlTimeProvider ttlTimeProvider)
+DECL|method|deleteCacheEntries (Path path, boolean tombstone, ITtlTimeProvider ttlTp)
 specifier|private
 name|void
 name|deleteCacheEntries
@@ -2378,7 +2386,7 @@ name|boolean
 name|tombstone
 parameter_list|,
 name|ITtlTimeProvider
-name|ttlTimeProvider
+name|ttlTp
 parameter_list|)
 block|{
 name|LocalMetadataEntry
@@ -2448,7 +2456,7 @@ name|pmd
 operator|.
 name|setLastUpdated
 argument_list|(
-name|ttlTimeProvider
+name|ttlTp
 operator|.
 name|getNow
 argument_list|()
@@ -2580,7 +2588,7 @@ name|dir
 operator|.
 name|setLastUpdated
 argument_list|(
-name|ttlTimeProvider
+name|ttlTp
 operator|.
 name|getNow
 argument_list|()
@@ -2906,7 +2914,28 @@ end_function
 begin_function
 annotation|@
 name|Override
-DECL|method|addAncestors (final Path qualifiedPath, ITtlTimeProvider ttlTimeProvider, @Nullable final BulkOperationState operationState)
+DECL|method|setTtlTimeProvider (ITtlTimeProvider ttlTimeProvider)
+specifier|public
+name|void
+name|setTtlTimeProvider
+parameter_list|(
+name|ITtlTimeProvider
+name|ttlTimeProvider
+parameter_list|)
+block|{
+name|this
+operator|.
+name|ttlTimeProvider
+operator|=
+name|ttlTimeProvider
+expr_stmt|;
+block|}
+end_function
+
+begin_function
+annotation|@
+name|Override
+DECL|method|addAncestors (final Path qualifiedPath, @Nullable final BulkOperationState operationState)
 specifier|public
 name|void
 name|addAncestors
@@ -2914,9 +2943,6 @@ parameter_list|(
 specifier|final
 name|Path
 name|qualifiedPath
-parameter_list|,
-name|ITtlTimeProvider
-name|ttlTimeProvider
 parameter_list|,
 annotation|@
 name|Nullable

@@ -1423,7 +1423,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * DynamoDBMetadataStore is a {@link MetadataStore} that persists  * file system metadata to DynamoDB.  *  * The current implementation uses a schema consisting of a single table.  The  * name of the table can be configured by config key  * {@link org.apache.hadoop.fs.s3a.Constants#S3GUARD_DDB_TABLE_NAME_KEY}.  * By default, it matches the name of the S3 bucket.  Each item in the table  * represents a single directory or file.  Its path is split into separate table  * attributes:  *<ul>  *<li> parent (absolute path of the parent, with bucket name inserted as  * first path component).</li>  *<li> child (path of that specific child, relative to parent).</li>  *<li> optional boolean attribute tracking whether the path is a directory.  *      Absence or a false value indicates the path is a file.</li>  *<li> optional long attribute revealing modification time of file.  *      This attribute is meaningful only to file items.</li>  *<li> optional long attribute revealing file length.  *      This attribute is meaningful only to file items.</li>  *<li> optional long attribute revealing block size of the file.  *      This attribute is meaningful only to file items.</li>  *<li> optional string attribute tracking the s3 eTag of the file.  *      May be absent if the metadata was entered with a version of S3Guard  *      before this was tracked.  *      This attribute is meaningful only to file items.</li>   *<li> optional string attribute tracking the s3 versionId of the file.  *      May be absent if the metadata was entered with a version of S3Guard  *      before this was tracked.  *      This attribute is meaningful only to file items.</li>  *</ul>  *  * The DynamoDB partition key is the parent, and the range key is the child.  *  * To allow multiple buckets to share the same DynamoDB table, the bucket  * name is treated as the root directory.  *  * For example, assume the consistent store contains metadata representing this  * file system structure:  *  *<pre>  * s3a://bucket/dir1  * |-- dir2  * |   |-- file1  * |   `-- file2  * `-- dir3  *     |-- dir4  *     |   `-- file3  *     |-- dir5  *     |   `-- file4  *     `-- dir6  *</pre>  *  * This is persisted to a single DynamoDB table as:  *  *<pre>  * ====================================================================================  * | parent                 | child | is_dir | mod_time | len | etag | ver_id |  ...  |  * ====================================================================================  * | /bucket                | dir1  | true   |          |     |      |        |       |  * | /bucket/dir1           | dir2  | true   |          |     |      |        |       |  * | /bucket/dir1           | dir3  | true   |          |     |      |        |       |  * | /bucket/dir1/dir2      | file1 |        |   100    | 111 | abc  |  mno   |       |  * | /bucket/dir1/dir2      | file2 |        |   200    | 222 | def  |  pqr   |       |  * | /bucket/dir1/dir3      | dir4  | true   |          |     |      |        |       |  * | /bucket/dir1/dir3      | dir5  | true   |          |     |      |        |       |  * | /bucket/dir1/dir3/dir4 | file3 |        |   300    | 333 | ghi  |  stu   |       |  * | /bucket/dir1/dir3/dir5 | file4 |        |   400    | 444 | jkl  |  vwx   |       |  * | /bucket/dir1/dir3      | dir6  | true   |          |     |      |        |       |  * ====================================================================================  *</pre>  *  * This choice of schema is efficient for read access patterns.  * {@link #get(Path)} can be served from a single item lookup.  * {@link #listChildren(Path)} can be served from a query against all rows  * matching the parent (the partition key) and the returned list is guaranteed  * to be sorted by child (the range key).  Tracking whether or not a path is a  * directory helps prevent unnecessary queries during traversal of an entire  * sub-tree.  *  * Some mutating operations, notably  * {@link MetadataStore#deleteSubtree(Path, ITtlTimeProvider)} and  * {@link MetadataStore#move(Collection, Collection, ITtlTimeProvider, BulkOperationState)}  * are less efficient with this schema.  * They require mutating multiple items in the DynamoDB table.  *  * By default, DynamoDB access is performed within the same AWS region as  * the S3 bucket that hosts the S3A instance.  During initialization, it checks  * the location of the S3 bucket and creates a DynamoDB client connected to the  * same region. The region may also be set explicitly by setting the config  * parameter {@code fs.s3a.s3guard.ddb.region} to the corresponding region.  */
+comment|/**  * DynamoDBMetadataStore is a {@link MetadataStore} that persists  * file system metadata to DynamoDB.  *  * The current implementation uses a schema consisting of a single table.  The  * name of the table can be configured by config key  * {@link org.apache.hadoop.fs.s3a.Constants#S3GUARD_DDB_TABLE_NAME_KEY}.  * By default, it matches the name of the S3 bucket.  Each item in the table  * represents a single directory or file.  Its path is split into separate table  * attributes:  *<ul>  *<li> parent (absolute path of the parent, with bucket name inserted as  * first path component).</li>  *<li> child (path of that specific child, relative to parent).</li>  *<li> optional boolean attribute tracking whether the path is a directory.  *      Absence or a false value indicates the path is a file.</li>  *<li> optional long attribute revealing modification time of file.  *      This attribute is meaningful only to file items.</li>  *<li> optional long attribute revealing file length.  *      This attribute is meaningful only to file items.</li>  *<li> optional long attribute revealing block size of the file.  *      This attribute is meaningful only to file items.</li>  *<li> optional string attribute tracking the s3 eTag of the file.  *      May be absent if the metadata was entered with a version of S3Guard  *      before this was tracked.  *      This attribute is meaningful only to file items.</li>   *<li> optional string attribute tracking the s3 versionId of the file.  *      May be absent if the metadata was entered with a version of S3Guard  *      before this was tracked.  *      This attribute is meaningful only to file items.</li>  *</ul>  *  * The DynamoDB partition key is the parent, and the range key is the child.  *  * To allow multiple buckets to share the same DynamoDB table, the bucket  * name is treated as the root directory.  *  * For example, assume the consistent store contains metadata representing this  * file system structure:  *  *<pre>  * s3a://bucket/dir1  * |-- dir2  * |   |-- file1  * |   `-- file2  * `-- dir3  *     |-- dir4  *     |   `-- file3  *     |-- dir5  *     |   `-- file4  *     `-- dir6  *</pre>  *  * This is persisted to a single DynamoDB table as:  *  *<pre>  * ====================================================================================  * | parent                 | child | is_dir | mod_time | len | etag | ver_id |  ...  |  * ====================================================================================  * | /bucket                | dir1  | true   |          |     |      |        |       |  * | /bucket/dir1           | dir2  | true   |          |     |      |        |       |  * | /bucket/dir1           | dir3  | true   |          |     |      |        |       |  * | /bucket/dir1/dir2      | file1 |        |   100    | 111 | abc  |  mno   |       |  * | /bucket/dir1/dir2      | file2 |        |   200    | 222 | def  |  pqr   |       |  * | /bucket/dir1/dir3      | dir4  | true   |          |     |      |        |       |  * | /bucket/dir1/dir3      | dir5  | true   |          |     |      |        |       |  * | /bucket/dir1/dir3/dir4 | file3 |        |   300    | 333 | ghi  |  stu   |       |  * | /bucket/dir1/dir3/dir5 | file4 |        |   400    | 444 | jkl  |  vwx   |       |  * | /bucket/dir1/dir3      | dir6  | true   |          |     |      |        |       |  * ====================================================================================  *</pre>  *  * This choice of schema is efficient for read access patterns.  * {@link #get(Path)} can be served from a single item lookup.  * {@link #listChildren(Path)} can be served from a query against all rows  * matching the parent (the partition key) and the returned list is guaranteed  * to be sorted by child (the range key).  Tracking whether or not a path is a  * directory helps prevent unnecessary queries during traversal of an entire  * sub-tree.  *  * Some mutating operations, notably  * {@link MetadataStore#deleteSubtree(Path)} and  * {@link MetadataStore#move(Collection, Collection, BulkOperationState)}  * are less efficient with this schema.  * They require mutating multiple items in the DynamoDB table.  *  * By default, DynamoDB access is performed within the same AWS region as  * the S3 bucket that hosts the S3A instance.  During initialization, it checks  * the location of the S3 bucket and creates a DynamoDB client connected to the  * same region. The region may also be set explicitly by setting the config  * parameter {@code fs.s3a.s3guard.ddb.region} to the corresponding region.  */
 end_comment
 
 begin_class
@@ -1830,10 +1830,10 @@ name|ListeningExecutorService
 name|executor
 decl_stmt|;
 comment|/**    * Time source. This is used during writes when parent    * entries need to be created.    */
-DECL|field|timeProvider
+DECL|field|ttlTimeProvider
 specifier|private
 name|ITtlTimeProvider
-name|timeProvider
+name|ttlTimeProvider
 decl_stmt|;
 comment|/**    * A utility function to create DynamoDB instance.    * @param conf the file system configuration    * @param s3Region region of the associated S3 bucket (if any).    * @param bucket Optional bucket to use to look up per-bucket proxy secrets    * @param credentials credentials.    * @return DynamoDB instance.    * @throws IOException I/O error.    */
 DECL|method|createDynamoDB ( final Configuration conf, final String s3Region, final String bucket, final AWSCredentialsProvider credentials)
@@ -1936,20 +1936,23 @@ name|amazonDynamoDB
 argument_list|)
 return|;
 block|}
-comment|/**    * {@inheritDoc}.    * The credentials for authenticating with S3 are requested from the    * FS via {@link S3AFileSystem#shareCredentials(String)}; this will    * increment the reference counter of these credentials.    * @param fs {@code S3AFileSystem} associated with the MetadataStore    * @throws IOException on a failure    */
+comment|/**    * {@inheritDoc}.    * The credentials for authenticating with S3 are requested from the    * FS via {@link S3AFileSystem#shareCredentials(String)}; this will    * increment the reference counter of these credentials.    * @param fs {@code S3AFileSystem} associated with the MetadataStore    * @param ttlTp the time provider to use for metadata expiry    * @throws IOException on a failure    */
 annotation|@
 name|Override
 annotation|@
 name|Retries
 operator|.
 name|OnceRaw
-DECL|method|initialize (FileSystem fs)
+DECL|method|initialize (FileSystem fs, ITtlTimeProvider ttlTp)
 specifier|public
 name|void
 name|initialize
 parameter_list|(
 name|FileSystem
 name|fs
+parameter_list|,
+name|ITtlTimeProvider
+name|ttlTp
 parameter_list|)
 throws|throws
 name|IOException
@@ -2152,15 +2155,11 @@ operator|::
 name|retryEvent
 argument_list|)
 expr_stmt|;
-name|timeProvider
-operator|=
-operator|new
-name|S3Guard
+name|this
 operator|.
-name|TtlTimeProvider
-argument_list|(
-name|conf
-argument_list|)
+name|ttlTimeProvider
+operator|=
+name|ttlTp
 expr_stmt|;
 name|initTable
 argument_list|()
@@ -2226,7 +2225,7 @@ operator|.
 name|createThrottledExecutor
 argument_list|()
 expr_stmt|;
-name|timeProvider
+name|ttlTimeProvider
 operator|=
 name|Preconditions
 operator|.
@@ -2241,20 +2240,23 @@ literal|"ttlTimeProvider must not be null"
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Performs one-time initialization of the metadata store via configuration.    *    * This initialization depends on the configuration object to get AWS    * credentials, DynamoDBFactory implementation class, DynamoDB endpoints,    * DynamoDB table names etc. After initialization, this metadata store does    * not explicitly relate to any S3 bucket, which be nonexistent.    *    * This is used to operate the metadata store directly beyond the scope of the    * S3AFileSystem integration, e.g. command line tools.    * Generally, callers should use {@link #initialize(FileSystem)}    * with an initialized {@code S3AFileSystem} instance.    *    * Without a filesystem to act as a reference point, the configuration itself    * must declare the table name and region in the    * {@link Constants#S3GUARD_DDB_TABLE_NAME_KEY} and    * {@link Constants#S3GUARD_DDB_REGION_KEY} respectively.    * It also creates a new credential provider list from the configuration,    * using the base fs.s3a.* options, as there is no bucket to infer per-bucket    * settings from.    *    * @see #initialize(FileSystem)    * @throws IOException if there is an error    * @throws IllegalArgumentException if the configuration is incomplete    */
+comment|/**    * Performs one-time initialization of the metadata store via configuration.    *    * This initialization depends on the configuration object to get AWS    * credentials, DynamoDBFactory implementation class, DynamoDB endpoints,    * DynamoDB table names etc. After initialization, this metadata store does    * not explicitly relate to any S3 bucket, which be nonexistent.    *    * This is used to operate the metadata store directly beyond the scope of the    * S3AFileSystem integration, e.g. command line tools.    * Generally, callers should use    * {@link MetadataStore#initialize(FileSystem, ITtlTimeProvider)}    * with an initialized {@code S3AFileSystem} instance.    *    * Without a filesystem to act as a reference point, the configuration itself    * must declare the table name and region in the    * {@link Constants#S3GUARD_DDB_TABLE_NAME_KEY} and    * {@link Constants#S3GUARD_DDB_REGION_KEY} respectively.    * It also creates a new credential provider list from the configuration,    * using the base fs.s3a.* options, as there is no bucket to infer per-bucket    * settings from.    *    * @see MetadataStore#initialize(FileSystem, ITtlTimeProvider)    * @throws IOException if there is an error    * @throws IllegalArgumentException if the configuration is incomplete    */
 annotation|@
 name|Override
 annotation|@
 name|Retries
 operator|.
 name|OnceRaw
-DECL|method|initialize (Configuration config)
+DECL|method|initialize (Configuration config, ITtlTimeProvider ttlTp)
 specifier|public
 name|void
 name|initialize
 parameter_list|(
 name|Configuration
 name|config
+parameter_list|,
+name|ITtlTimeProvider
+name|ttlTp
 parameter_list|)
 throws|throws
 name|IOException
@@ -2399,15 +2401,11 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|timeProvider
-operator|=
-operator|new
-name|S3Guard
+name|this
 operator|.
-name|TtlTimeProvider
-argument_list|(
-name|conf
-argument_list|)
+name|ttlTimeProvider
+operator|=
+name|ttlTp
 expr_stmt|;
 name|initTable
 argument_list|()
@@ -2497,16 +2495,13 @@ annotation|@
 name|Retries
 operator|.
 name|RetryTranslated
-DECL|method|delete (Path path, ITtlTimeProvider ttlTimeProvider)
+DECL|method|delete (Path path)
 specifier|public
 name|void
 name|delete
 parameter_list|(
 name|Path
 name|path
-parameter_list|,
-name|ITtlTimeProvider
-name|ttlTimeProvider
 parameter_list|)
 throws|throws
 name|IOException
@@ -2516,8 +2511,6 @@ argument_list|(
 name|path
 argument_list|,
 literal|true
-argument_list|,
-name|ttlTimeProvider
 argument_list|,
 literal|null
 argument_list|)
@@ -2556,17 +2549,15 @@ argument_list|,
 literal|false
 argument_list|,
 literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Inner delete option, action based on the {@code tombstone} flag.    * No tombstone: delete the entry. Tombstone: create a tombstone entry.    * There is no check as to whether the entry exists in the table first.    * @param path path to delete    * @param tombstone flag to create a tombstone marker    * @param ttlTimeProvider The time provider to set last_updated. Must not    *                        be null if tombstone is true.    * @param ancestorState ancestor state for logging    * @throws IOException I/O error.    */
+comment|/**    * Inner delete option, action based on the {@code tombstone} flag.    * No tombstone: delete the entry. Tombstone: create a tombstone entry.    * There is no check as to whether the entry exists in the table first.    * @param path path to delete    * @param tombstone flag to create a tombstone marker    * @param ancestorState ancestor state for logging    * @throws IOException I/O error.    */
 annotation|@
 name|Retries
 operator|.
 name|RetryTranslated
-DECL|method|innerDelete (final Path path, final boolean tombstone, final ITtlTimeProvider ttlTimeProvider, final AncestorState ancestorState)
+DECL|method|innerDelete (final Path path, final boolean tombstone, final AncestorState ancestorState)
 specifier|private
 name|void
 name|innerDelete
@@ -2578,10 +2569,6 @@ parameter_list|,
 specifier|final
 name|boolean
 name|tombstone
-parameter_list|,
-specifier|final
-name|ITtlTimeProvider
-name|ttlTimeProvider
 parameter_list|,
 specifier|final
 name|AncestorState
@@ -2785,16 +2772,13 @@ annotation|@
 name|Retries
 operator|.
 name|RetryTranslated
-DECL|method|deleteSubtree (Path path, ITtlTimeProvider ttlTimeProvider)
+DECL|method|deleteSubtree (Path path)
 specifier|public
 name|void
 name|deleteSubtree
 parameter_list|(
 name|Path
 name|path
-parameter_list|,
-name|ITtlTimeProvider
-name|ttlTimeProvider
 parameter_list|)
 throws|throws
 name|IOException
@@ -2947,8 +2931,6 @@ argument_list|(
 name|pathToDelete
 argument_list|,
 literal|true
-argument_list|,
-name|ttlTimeProvider
 argument_list|,
 name|state
 argument_list|)
@@ -3680,8 +3662,8 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Build the list of all parent entries.    *<p>    *<b>Thread safety:</b> none. Callers must synchronize access.    *<p>    * Callers are required to synchronize on ancestorState.    * @param pathsToCreate paths to create    * @param ancestorState ongoing ancestor state.    * @param ttlTimeProvider Must not be null    * @return the full ancestry paths    */
-DECL|method|completeAncestry ( final Collection<DDBPathMetadata> pathsToCreate, final AncestorState ancestorState, final ITtlTimeProvider ttlTimeProvider)
+comment|/**    * Build the list of all parent entries.    *<p>    *<b>Thread safety:</b> none. Callers must synchronize access.    *<p>    * Callers are required to synchronize on ancestorState.    * @param pathsToCreate paths to create    * @param ancestorState ongoing ancestor state.    * @return the full ancestry paths    */
+DECL|method|completeAncestry ( final Collection<DDBPathMetadata> pathsToCreate, final AncestorState ancestorState)
 specifier|private
 name|Collection
 argument_list|<
@@ -3699,10 +3681,6 @@ parameter_list|,
 specifier|final
 name|AncestorState
 name|ancestorState
-parameter_list|,
-specifier|final
-name|ITtlTimeProvider
-name|ttlTimeProvider
 parameter_list|)
 throws|throws
 name|PathIOException
@@ -4059,7 +4037,7 @@ annotation|@
 name|Retries
 operator|.
 name|RetryTranslated
-DECL|method|addAncestors ( final Path qualifiedPath, final ITtlTimeProvider ttlTimeProvider, @Nullable final BulkOperationState operationState)
+DECL|method|addAncestors (final Path qualifiedPath, @Nullable final BulkOperationState operationState)
 specifier|public
 name|void
 name|addAncestors
@@ -4067,10 +4045,6 @@ parameter_list|(
 specifier|final
 name|Path
 name|qualifiedPath
-parameter_list|,
-specifier|final
-name|ITtlTimeProvider
-name|ttlTimeProvider
 parameter_list|,
 annotation|@
 name|Nullable
@@ -4339,7 +4313,7 @@ annotation|@
 name|Retries
 operator|.
 name|RetryTranslated
-DECL|method|move ( @ullable Collection<Path> pathsToDelete, @Nullable Collection<PathMetadata> pathsToCreate, final ITtlTimeProvider ttlTimeProvider, @Nullable final BulkOperationState operationState)
+DECL|method|move (@ullable Collection<Path> pathsToDelete, @Nullable Collection<PathMetadata> pathsToCreate, @Nullable final BulkOperationState operationState)
 specifier|public
 name|void
 name|move
@@ -4359,10 +4333,6 @@ argument_list|<
 name|PathMetadata
 argument_list|>
 name|pathsToCreate
-parameter_list|,
-specifier|final
-name|ITtlTimeProvider
-name|ttlTimeProvider
 parameter_list|,
 annotation|@
 name|Nullable
@@ -4489,11 +4459,6 @@ name|pathsToCreate
 argument_list|)
 argument_list|,
 name|ancestorState
-argument_list|,
-name|extractTimeProvider
-argument_list|(
-name|ttlTimeProvider
-argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -5378,11 +5343,11 @@ argument_list|)
 argument_list|,
 name|operationState
 argument_list|,
-name|timeProvider
+name|ttlTimeProvider
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Internal put operation.    *<p>    * The ancestors to all entries are added to the set of entries to write,    * provided they are not already stored in any supplied operation state.    * Both the supplied metadata entries and ancestor entries are sorted    * so that the topmost entries are written first.    * This is to ensure that a failure partway through the operation will not    * create entries in the table without parents.    * @param metas metadata entries to write.    * @param operationState (nullable) operational state for a bulk update    * @param ttlTimeProvider    * @throws IOException failure.    */
+comment|/**    * Internal put operation.    *<p>    * The ancestors to all entries are added to the set of entries to write,    * provided they are not already stored in any supplied operation state.    * Both the supplied metadata entries and ancestor entries are sorted    * so that the topmost entries are written first.    * This is to ensure that a failure partway through the operation will not    * create entries in the table without parents.    * @param metas metadata entries to write.    * @param operationState (nullable) operational state for a bulk update    * @param ttlTp The time provider for metadata expiry    * @throws IOException failure.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -5392,7 +5357,7 @@ annotation|@
 name|Retries
 operator|.
 name|RetryTranslated
-DECL|method|innerPut ( final Collection<DDBPathMetadata> metas, @Nullable final BulkOperationState operationState, final ITtlTimeProvider ttlTimeProvider)
+DECL|method|innerPut ( final Collection<DDBPathMetadata> metas, @Nullable final BulkOperationState operationState, final ITtlTimeProvider ttlTp)
 specifier|private
 name|void
 name|innerPut
@@ -5412,7 +5377,7 @@ name|operationState
 parameter_list|,
 specifier|final
 name|ITtlTimeProvider
-name|ttlTimeProvider
+name|ttlTp
 parameter_list|)
 throws|throws
 name|IOException
@@ -5470,8 +5435,6 @@ argument_list|(
 name|metas
 argument_list|,
 name|ancestorState
-argument_list|,
-name|ttlTimeProvider
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -7084,7 +7047,7 @@ name|metas
 argument_list|,
 name|state
 argument_list|,
-name|timeProvider
+name|ttlTimeProvider
 argument_list|)
 expr_stmt|;
 block|}
@@ -9686,8 +9649,26 @@ name|dest
 argument_list|)
 return|;
 block|}
-comment|/**    * Extract a time provider from the argument or fall back to the    * one in the constructor.    * @param ttlTimeProvider nullable time source passed in as an argument.    * @return a non-null time source.    */
-DECL|method|extractTimeProvider ( @ullable ITtlTimeProvider ttlTimeProvider)
+annotation|@
+name|Override
+DECL|method|setTtlTimeProvider (ITtlTimeProvider ttlTimeProvider)
+specifier|public
+name|void
+name|setTtlTimeProvider
+parameter_list|(
+name|ITtlTimeProvider
+name|ttlTimeProvider
+parameter_list|)
+block|{
+name|this
+operator|.
+name|ttlTimeProvider
+operator|=
+name|ttlTimeProvider
+expr_stmt|;
+block|}
+comment|/**    * Extract a time provider from the argument or fall back to the    * one in the constructor.    * @param ttlTp nullable time source passed in as an argument.    * @return a non-null time source.    */
+DECL|method|extractTimeProvider ( @ullable ITtlTimeProvider ttlTp)
 specifier|private
 name|ITtlTimeProvider
 name|extractTimeProvider
@@ -9695,17 +9676,19 @@ parameter_list|(
 annotation|@
 name|Nullable
 name|ITtlTimeProvider
-name|ttlTimeProvider
+name|ttlTp
 parameter_list|)
 block|{
 return|return
-name|ttlTimeProvider
+name|ttlTp
 operator|!=
 literal|null
 condition|?
-name|ttlTimeProvider
+name|ttlTp
 else|:
-name|timeProvider
+name|this
+operator|.
+name|ttlTimeProvider
 return|;
 block|}
 comment|/**    * Username.    * @return the current username    */

@@ -579,6 +579,20 @@ name|contract
 operator|.
 name|getFileSystem
 argument_list|()
+argument_list|,
+operator|new
+name|S3Guard
+operator|.
+name|TtlTimeProvider
+argument_list|(
+name|contract
+operator|.
+name|getFileSystem
+argument_list|()
+operator|.
+name|getConf
+argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|ttlTimeProvider
@@ -1574,8 +1588,6 @@ name|strToPath
 argument_list|(
 literal|"/ADirectory1/db1/file2"
 argument_list|)
-argument_list|,
-name|ttlTimeProvider
 argument_list|)
 expr_stmt|;
 comment|/* Ensure delete happened. */
@@ -1732,8 +1744,6 @@ name|p
 operator|+
 literal|"/ADirectory1/db1/"
 argument_list|)
-argument_list|,
-name|ttlTimeProvider
 argument_list|)
 expr_stmt|;
 name|assertEmptyDirectory
@@ -1801,8 +1811,6 @@ name|strToPath
 argument_list|(
 literal|"/"
 argument_list|)
-argument_list|,
-name|ttlTimeProvider
 argument_list|)
 expr_stmt|;
 name|assertDeleted
@@ -1850,8 +1858,6 @@ name|strToPath
 argument_list|(
 literal|"/bobs/your/uncle"
 argument_list|)
-argument_list|,
-name|ttlTimeProvider
 argument_list|)
 expr_stmt|;
 comment|// Ditto.
@@ -1863,8 +1869,6 @@ name|strToPath
 argument_list|(
 literal|"/internets"
 argument_list|)
-argument_list|,
-name|ttlTimeProvider
 argument_list|)
 expr_stmt|;
 block|}
@@ -2108,8 +2112,6 @@ name|strToPath
 argument_list|(
 name|filePath
 argument_list|)
-argument_list|,
-name|ttlTimeProvider
 argument_list|)
 expr_stmt|;
 name|meta
@@ -2984,8 +2986,6 @@ name|srcPaths
 argument_list|,
 name|destMetas
 argument_list|,
-name|ttlTimeProvider
-argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
@@ -3274,8 +3274,6 @@ name|Path
 argument_list|(
 name|p2
 argument_list|)
-argument_list|,
-name|ttlTimeProvider
 argument_list|)
 expr_stmt|;
 name|meta
@@ -3308,8 +3306,6 @@ name|Path
 argument_list|(
 name|p1
 argument_list|)
-argument_list|,
-name|ttlTimeProvider
 argument_list|)
 expr_stmt|;
 block|}

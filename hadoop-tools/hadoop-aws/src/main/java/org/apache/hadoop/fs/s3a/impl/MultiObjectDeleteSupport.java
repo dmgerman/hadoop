@@ -824,12 +824,6 @@ operator|.
 name|delete
 argument_list|(
 name|path
-argument_list|,
-name|getStoreContext
-argument_list|()
-operator|.
-name|getTimeProvider
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

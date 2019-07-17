@@ -589,6 +589,14 @@ operator|.
 name|initialize
 argument_list|(
 name|fs
+argument_list|,
+operator|new
+name|S3Guard
+operator|.
+name|TtlTimeProvider
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// the ref count should have gone up
@@ -870,6 +878,14 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+operator|new
+name|S3Guard
+operator|.
+name|TtlTimeProvider
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

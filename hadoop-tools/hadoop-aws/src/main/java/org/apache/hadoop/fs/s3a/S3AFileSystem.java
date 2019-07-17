@@ -3045,6 +3045,8 @@ operator|.
 name|getMetadataStore
 argument_list|(
 name|this
+argument_list|,
+name|ttlTimeProvider
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -7220,8 +7222,6 @@ operator|.
 name|delete
 argument_list|(
 name|f
-argument_list|,
-name|ttlTimeProvider
 argument_list|)
 expr_stmt|;
 block|}
@@ -9009,8 +9009,6 @@ operator|.
 name|deleteSubtree
 argument_list|(
 name|f
-argument_list|,
-name|ttlTimeProvider
 argument_list|)
 expr_stmt|;
 block|}
@@ -15688,6 +15686,13 @@ operator|.
 name|ttlTimeProvider
 operator|=
 name|ttlTimeProvider
+expr_stmt|;
+name|metadataStore
+operator|.
+name|setTtlTimeProvider
+argument_list|(
+name|ttlTimeProvider
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * This is a proof of concept of a select API.    * Once a proper factory mechanism for opening files is added to the    * FileSystem APIs, this will be deleted<i>without any warning</i>.    * @param source path to source data    * @param expression select expression    * @param options request configuration from the builder.    * @return the stream of the results    * @throws IOException IO failure    */

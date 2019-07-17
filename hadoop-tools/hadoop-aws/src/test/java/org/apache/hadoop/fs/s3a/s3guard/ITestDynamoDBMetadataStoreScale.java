@@ -912,6 +912,14 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+operator|new
+name|S3Guard
+operator|.
+name|TtlTimeProvider
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// wire up the owner FS so that we can make assertions about throttle
@@ -1670,15 +1678,6 @@ operator|.
 name|delete
 argument_list|(
 name|path
-argument_list|,
-operator|new
-name|S3Guard
-operator|.
-name|TtlTimeProvider
-argument_list|(
-name|getConf
-argument_list|()
-argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2199,8 +2198,6 @@ operator|.
 name|delete
 argument_list|(
 name|path
-argument_list|,
-name|time
 argument_list|)
 expr_stmt|;
 block|}

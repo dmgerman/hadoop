@@ -554,12 +554,12 @@ name|S3Guard
 parameter_list|()
 block|{ }
 comment|/* Utility functions. */
-comment|/**    * Create a new instance of the configured MetadataStore.    * The returned MetadataStore will have been initialized via    * {@link MetadataStore#initialize(FileSystem)} by this function before    * returning it.  Callers must clean up by calling    * {@link MetadataStore#close()} when done using the MetadataStore.    *    * @param fs  FileSystem whose Configuration specifies which    *            implementation to use.    * @return Reference to new MetadataStore.    * @throws IOException if the metadata store cannot be instantiated    */
+comment|/**    * Create a new instance of the configured MetadataStore.    * The returned MetadataStore will have been initialized via    * {@link MetadataStore#initialize(FileSystem, ITtlTimeProvider)}    * by this function before returning it.  Callers must clean up by calling    * {@link MetadataStore#close()} when done using the MetadataStore.    *    * @param fs  FileSystem whose Configuration specifies which    *            implementation to use.    * @param ttlTimeProvider    * @return Reference to new MetadataStore.    * @throws IOException if the metadata store cannot be instantiated    */
 annotation|@
 name|Retries
 operator|.
 name|OnceTranslated
-DECL|method|getMetadataStore (FileSystem fs)
+DECL|method|getMetadataStore (FileSystem fs, ITtlTimeProvider ttlTimeProvider)
 specifier|public
 specifier|static
 name|MetadataStore
@@ -567,6 +567,9 @@ name|getMetadataStore
 parameter_list|(
 name|FileSystem
 name|fs
+parameter_list|,
+name|ITtlTimeProvider
+name|ttlTimeProvider
 parameter_list|)
 throws|throws
 name|IOException
@@ -644,6 +647,8 @@ operator|.
 name|initialize
 argument_list|(
 name|fs
+argument_list|,
+name|ttlTimeProvider
 argument_list|)
 expr_stmt|;
 return|return
@@ -2023,7 +2028,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * This adds all new ancestors of a path as directories.    * This forwards to    * {@link MetadataStore#addAncestors(Path, ITtlTimeProvider, BulkOperationState)}.    *<p>    * Originally it implemented the logic to probe for an add ancestors,    * but with the addition of a store-specific bulk operation state    * it became unworkable.    *    * @param metadataStore store    * @param qualifiedPath path to update    * @param operationState (nullable) operational state for a bulk update    * @throws IOException failure    */
+comment|/**    * This adds all new ancestors of a path as directories.    * This forwards to    * {@link MetadataStore#addAncestors(Path, BulkOperationState)}.    *<p>    * Originally it implemented the logic to probe for an add ancestors,    * but with the addition of a store-specific bulk operation state    * it became unworkable.    *    * @param metadataStore store    * @param qualifiedPath path to update    * @param operationState (nullable) operational state for a bulk update    * @throws IOException failure    */
 annotation|@
 name|Retries
 operator|.
@@ -2060,8 +2065,6 @@ operator|.
 name|addAncestors
 argument_list|(
 name|qualifiedPath
-argument_list|,
-name|timeProvider
 argument_list|,
 name|operationState
 argument_list|)

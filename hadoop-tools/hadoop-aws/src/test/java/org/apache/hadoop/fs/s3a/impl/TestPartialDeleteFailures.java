@@ -1604,7 +1604,7 @@ argument_list|()
 decl_stmt|;
 annotation|@
 name|Override
-DECL|method|initialize (final FileSystem fs)
+DECL|method|initialize (final FileSystem fs, ITtlTimeProvider ttlTimeProvider)
 specifier|public
 name|void
 name|initialize
@@ -1612,11 +1612,14 @@ parameter_list|(
 specifier|final
 name|FileSystem
 name|fs
+parameter_list|,
+name|ITtlTimeProvider
+name|ttlTimeProvider
 parameter_list|)
 block|{     }
 annotation|@
 name|Override
-DECL|method|initialize (final Configuration conf)
+DECL|method|initialize (final Configuration conf, ITtlTimeProvider ttlTimeProvider)
 specifier|public
 name|void
 name|initialize
@@ -1624,6 +1627,9 @@ parameter_list|(
 specifier|final
 name|Configuration
 name|conf
+parameter_list|,
+name|ITtlTimeProvider
+name|ttlTimeProvider
 parameter_list|)
 block|{     }
 annotation|@
@@ -1816,7 +1822,7 @@ parameter_list|()
 block|{     }
 annotation|@
 name|Override
-DECL|method|delete (final Path path, final ITtlTimeProvider ttlTimeProvider)
+DECL|method|delete (final Path path)
 specifier|public
 name|void
 name|delete
@@ -1824,10 +1830,6 @@ parameter_list|(
 specifier|final
 name|Path
 name|path
-parameter_list|,
-specifier|final
-name|ITtlTimeProvider
-name|ttlTimeProvider
 parameter_list|)
 block|{
 name|deleted
@@ -1840,7 +1842,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|deleteSubtree (final Path path, final ITtlTimeProvider ttlTimeProvider)
+DECL|method|deleteSubtree (final Path path)
 specifier|public
 name|void
 name|deleteSubtree
@@ -1848,15 +1850,11 @@ parameter_list|(
 specifier|final
 name|Path
 name|path
-parameter_list|,
-specifier|final
-name|ITtlTimeProvider
-name|ttlTimeProvider
 parameter_list|)
 block|{      }
 annotation|@
 name|Override
-DECL|method|move (@ullable final Collection<Path> pathsToDelete, @Nullable final Collection<PathMetadata> pathsToCreate, final ITtlTimeProvider ttlTimeProvider, @Nullable final BulkOperationState operationState)
+DECL|method|move (@ullable final Collection<Path> pathsToDelete, @Nullable final Collection<PathMetadata> pathsToCreate, @Nullable final BulkOperationState operationState)
 specifier|public
 name|void
 name|move
@@ -1878,10 +1876,6 @@ argument_list|<
 name|PathMetadata
 argument_list|>
 name|pathsToCreate
-parameter_list|,
-specifier|final
-name|ITtlTimeProvider
-name|ttlTimeProvider
 parameter_list|,
 annotation|@
 name|Nullable
@@ -1948,6 +1942,17 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|setTtlTimeProvider (ITtlTimeProvider ttlTimeProvider)
+specifier|public
+name|void
+name|setTtlTimeProvider
+parameter_list|(
+name|ITtlTimeProvider
+name|ttlTimeProvider
+parameter_list|)
+block|{     }
 annotation|@
 name|Override
 DECL|method|getDiagnostics ()
@@ -2050,7 +2055,7 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|addAncestors (final Path qualifiedPath, final ITtlTimeProvider timeProvider, @Nullable final BulkOperationState operationState)
+DECL|method|addAncestors (final Path qualifiedPath, @Nullable final BulkOperationState operationState)
 specifier|public
 name|void
 name|addAncestors
@@ -2058,10 +2063,6 @@ parameter_list|(
 specifier|final
 name|Path
 name|qualifiedPath
-parameter_list|,
-specifier|final
-name|ITtlTimeProvider
-name|timeProvider
 parameter_list|,
 annotation|@
 name|Nullable

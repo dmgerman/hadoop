@@ -176,26 +176,32 @@ name|MetadataStore
 block|{
 annotation|@
 name|Override
-DECL|method|initialize (FileSystem fs)
+DECL|method|initialize (FileSystem fs, ITtlTimeProvider ttlTimeProvider)
 specifier|public
 name|void
 name|initialize
 parameter_list|(
 name|FileSystem
 name|fs
+parameter_list|,
+name|ITtlTimeProvider
+name|ttlTimeProvider
 parameter_list|)
 throws|throws
 name|IOException
 block|{   }
 annotation|@
 name|Override
-DECL|method|initialize (Configuration conf)
+DECL|method|initialize (Configuration conf, ITtlTimeProvider ttlTimeProvider)
 specifier|public
 name|void
 name|initialize
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+name|ITtlTimeProvider
+name|ttlTimeProvider
 parameter_list|)
 throws|throws
 name|IOException
@@ -212,16 +218,13 @@ name|IOException
 block|{   }
 annotation|@
 name|Override
-DECL|method|delete (Path path, ITtlTimeProvider ttlTimeProvider)
+DECL|method|delete (Path path)
 specifier|public
 name|void
 name|delete
 parameter_list|(
 name|Path
 name|path
-parameter_list|,
-name|ITtlTimeProvider
-name|ttlTimeProvider
 parameter_list|)
 throws|throws
 name|IOException
@@ -241,16 +244,13 @@ name|IOException
 block|{   }
 annotation|@
 name|Override
-DECL|method|deleteSubtree (Path path, ITtlTimeProvider ttlTimeProvider)
+DECL|method|deleteSubtree (Path path)
 specifier|public
 name|void
 name|deleteSubtree
 parameter_list|(
 name|Path
 name|path
-parameter_list|,
-name|ITtlTimeProvider
-name|ttlTimeProvider
 parameter_list|)
 throws|throws
 name|IOException
@@ -311,7 +311,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|move (Collection<Path> pathsToDelete, Collection<PathMetadata> pathsToCreate, ITtlTimeProvider ttlTimeProvider, final BulkOperationState operationState)
+DECL|method|move (Collection<Path> pathsToDelete, Collection<PathMetadata> pathsToCreate, final BulkOperationState operationState)
 specifier|public
 name|void
 name|move
@@ -327,9 +327,6 @@ argument_list|<
 name|PathMetadata
 argument_list|>
 name|pathsToCreate
-parameter_list|,
-name|ITtlTimeProvider
-name|ttlTimeProvider
 parameter_list|,
 specifier|final
 name|BulkOperationState
@@ -571,7 +568,18 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|addAncestors (final Path qualifiedPath, final ITtlTimeProvider timeProvider, @Nullable final BulkOperationState operationState)
+DECL|method|setTtlTimeProvider (ITtlTimeProvider ttlTimeProvider)
+specifier|public
+name|void
+name|setTtlTimeProvider
+parameter_list|(
+name|ITtlTimeProvider
+name|ttlTimeProvider
+parameter_list|)
+block|{   }
+annotation|@
+name|Override
+DECL|method|addAncestors (final Path qualifiedPath, @Nullable final BulkOperationState operationState)
 specifier|public
 name|void
 name|addAncestors
@@ -579,10 +587,6 @@ parameter_list|(
 specifier|final
 name|Path
 name|qualifiedPath
-parameter_list|,
-specifier|final
-name|ITtlTimeProvider
-name|timeProvider
 parameter_list|,
 annotation|@
 name|Nullable

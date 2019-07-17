@@ -738,8 +738,6 @@ name|toDelete
 argument_list|,
 name|toCreate
 argument_list|,
-name|ttlTimeProvider
-argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
@@ -779,8 +777,6 @@ name|origPaths
 argument_list|,
 literal|null
 argument_list|,
-name|ttlTimeProvider
-argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
@@ -791,8 +787,6 @@ argument_list|(
 name|movedPaths
 argument_list|,
 literal|null
-argument_list|,
-name|ttlTimeProvider
 argument_list|,
 literal|null
 argument_list|)
@@ -1165,8 +1159,6 @@ operator|.
 name|deleteSubtree
 argument_list|(
 name|BUCKET_ROOT
-argument_list|,
-name|ttlTimeProvider
 argument_list|)
 expr_stmt|;
 name|deleteTimer

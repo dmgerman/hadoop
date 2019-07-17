@@ -226,35 +226,13 @@ name|MetadataStore
 extends|extends
 name|Closeable
 block|{
-comment|/**    * Performs one-time initialization of the metadata store.    *    * @param fs {@code FileSystem} associated with the MetadataStore    * @throws IOException if there is an error    */
-DECL|method|initialize (FileSystem fs)
+comment|/**    * Performs one-time initialization of the metadata store.    *    * @param fs {@code FileSystem} associated with the MetadataStore    * @param ttlTimeProvider the time provider to use for metadata expiry    * @throws IOException if there is an error    */
+DECL|method|initialize (FileSystem fs, ITtlTimeProvider ttlTimeProvider)
 name|void
 name|initialize
 parameter_list|(
 name|FileSystem
 name|fs
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-comment|/**    * Performs one-time initialization of the metadata store via configuration.    * @see #initialize(FileSystem)    * @param conf Configuration.    * @throws IOException if there is an error    */
-DECL|method|initialize (Configuration conf)
-name|void
-name|initialize
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-comment|/**    * Deletes exactly one path, leaving a tombstone to prevent lingering,    * inconsistent copies of it from being listed.    *    * Deleting an entry with a tombstone needs a    * {@link org.apache.hadoop.fs.s3a.s3guard.S3Guard.TtlTimeProvider} because    * the lastUpdated field of the record has to be updated to<pre>now</pre>.    *    * @param path the path to delete    * @param ttlTimeProvider the time provider to set last_updated. Must not    *                        be null.    * @throws IOException if there is an error    */
-DECL|method|delete (Path path, ITtlTimeProvider ttlTimeProvider)
-name|void
-name|delete
-parameter_list|(
-name|Path
-name|path
 parameter_list|,
 name|ITtlTimeProvider
 name|ttlTimeProvider
@@ -262,7 +240,32 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Removes the record of exactly one path.  Does not leave a tombstone (see    * {@link MetadataStore#delete(Path, ITtlTimeProvider)}. It is currently    * intended for testing only, and a need to use it as part of normal    * FileSystem usage is not anticipated.    *    * @param path the path to delete    * @throws IOException if there is an error    */
+comment|/**    * Performs one-time initialization of the metadata store via configuration.    * @see #initialize(FileSystem, ITtlTimeProvider)    * @param conf Configuration.    * @param ttlTimeProvider the time provider to use for metadata expiry    * @throws IOException if there is an error    */
+DECL|method|initialize (Configuration conf, ITtlTimeProvider ttlTimeProvider)
+name|void
+name|initialize
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|ITtlTimeProvider
+name|ttlTimeProvider
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Deletes exactly one path, leaving a tombstone to prevent lingering,    * inconsistent copies of it from being listed.    *    * Deleting an entry with a tombstone needs a    * {@link org.apache.hadoop.fs.s3a.s3guard.S3Guard.TtlTimeProvider} because    * the lastUpdated field of the record has to be updated to<pre>now</pre>.    *    * @param path the path to delete    * @throws IOException if there is an error    */
+DECL|method|delete (Path path)
+name|void
+name|delete
+parameter_list|(
+name|Path
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Removes the record of exactly one path.  Does not leave a tombstone (see    * {@link MetadataStore#delete(Path)}. It is currently    * intended for testing only, and a need to use it as part of normal    * FileSystem usage is not anticipated.    *    * @param path the path to delete    * @throws IOException if there is an error    */
 annotation|@
 name|VisibleForTesting
 DECL|method|forgetMetadata (Path path)
@@ -275,16 +278,13 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Deletes the entire sub-tree rooted at the given path, leaving tombstones    * to prevent lingering, inconsistent copies of it from being listed.    *    * In addition to affecting future calls to {@link #get(Path)},    * implementations must also update any stored {@code DirListingMetadata}    * objects which track the parent of this file.    *    * Deleting a subtree with a tombstone needs a    * {@link org.apache.hadoop.fs.s3a.s3guard.S3Guard.TtlTimeProvider} because    * the lastUpdated field of all records have to be updated to<pre>now</pre>.    *    * @param path the root of the sub-tree to delete    * @param ttlTimeProvider the time provider to set last_updated. Must not    *                        be null.    * @throws IOException if there is an error    */
-DECL|method|deleteSubtree (Path path, ITtlTimeProvider ttlTimeProvider)
+comment|/**    * Deletes the entire sub-tree rooted at the given path, leaving tombstones    * to prevent lingering, inconsistent copies of it from being listed.    *    * In addition to affecting future calls to {@link #get(Path)},    * implementations must also update any stored {@code DirListingMetadata}    * objects which track the parent of this file.    *    * Deleting a subtree with a tombstone needs a    * {@link org.apache.hadoop.fs.s3a.s3guard.S3Guard.TtlTimeProvider} because    * the lastUpdated field of all records have to be updated to<pre>now</pre>.    *    * @param path the root of the sub-tree to delete    * @throws IOException if there is an error    */
+DECL|method|deleteSubtree (Path path)
 name|void
 name|deleteSubtree
 parameter_list|(
 name|Path
 name|path
-parameter_list|,
-name|ITtlTimeProvider
-name|ttlTimeProvider
 parameter_list|)
 throws|throws
 name|IOException
@@ -325,20 +325,15 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * This adds all new ancestors of a path as directories.    *<p>    * Important: to propagate TTL information, any new ancestors added    * must have their last updated timestamps set through    * {@link S3Guard#patchLastUpdated(Collection, ITtlTimeProvider)}.    * @param qualifiedPath path to update    * @param timeProvider time provider for timestamps    * @param operationState (nullable) operational state for a bulk update    * @throws IOException failure    */
+comment|/**    * This adds all new ancestors of a path as directories.    *<p>    * Important: to propagate TTL information, any new ancestors added    * must have their last updated timestamps set through    * {@link S3Guard#patchLastUpdated(Collection, ITtlTimeProvider)}.    * @param qualifiedPath path to update    * @param operationState (nullable) operational state for a bulk update    * @throws IOException failure    */
 annotation|@
 name|RetryTranslated
-DECL|method|addAncestors ( Path qualifiedPath, @Nullable ITtlTimeProvider timeProvider, @Nullable BulkOperationState operationState)
+DECL|method|addAncestors (Path qualifiedPath, @Nullable BulkOperationState operationState)
 name|void
 name|addAncestors
 parameter_list|(
 name|Path
 name|qualifiedPath
-parameter_list|,
-annotation|@
-name|Nullable
-name|ITtlTimeProvider
-name|timeProvider
 parameter_list|,
 annotation|@
 name|Nullable
@@ -348,8 +343,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Record the effects of a {@link FileSystem#rename(Path, Path)} in the    * MetadataStore.  Clients provide explicit enumeration of the affected    * paths (recursively), before and after the rename.    *    * This operation is not atomic, unless specific implementations claim    * otherwise.    *    * On the need to provide an enumeration of directory trees instead of just    * source and destination paths:    * Since a MetadataStore does not have to track all metadata for the    * underlying storage system, and a new MetadataStore may be created on an    * existing underlying filesystem, this move() may be the first time the    * MetadataStore sees the affected paths.  Therefore, simply providing src    * and destination paths may not be enough to record the deletions (under    * src path) and creations (at destination) that are happening during the    * rename().    *    * @param pathsToDelete Collection of all paths that were removed from the    *                      source directory tree of the move.    * @param pathsToCreate Collection of all PathMetadata for the new paths    *                      that were created at the destination of the rename().    * @param ttlTimeProvider the time provider to set last_updated. Must not    *                        be null.    * @param operationState     Any ongoing state supplied to the rename tracker    *                      which is to be passed in with each move operation.    * @throws IOException if there is an error    */
-DECL|method|move ( @ullable Collection<Path> pathsToDelete, @Nullable Collection<PathMetadata> pathsToCreate, ITtlTimeProvider ttlTimeProvider, @Nullable BulkOperationState operationState)
+comment|/**    * Record the effects of a {@link FileSystem#rename(Path, Path)} in the    * MetadataStore.  Clients provide explicit enumeration of the affected    * paths (recursively), before and after the rename.    *    * This operation is not atomic, unless specific implementations claim    * otherwise.    *    * On the need to provide an enumeration of directory trees instead of just    * source and destination paths:    * Since a MetadataStore does not have to track all metadata for the    * underlying storage system, and a new MetadataStore may be created on an    * existing underlying filesystem, this move() may be the first time the    * MetadataStore sees the affected paths.  Therefore, simply providing src    * and destination paths may not be enough to record the deletions (under    * src path) and creations (at destination) that are happening during the    * rename().    *    * @param pathsToDelete Collection of all paths that were removed from the    *                      source directory tree of the move.    * @param pathsToCreate Collection of all PathMetadata for the new paths    *                      that were created at the destination of the rename().    * @param operationState     Any ongoing state supplied to the rename tracker    *                      which is to be passed in with each move operation.    * @throws IOException if there is an error    */
+DECL|method|move (@ullable Collection<Path> pathsToDelete, @Nullable Collection<PathMetadata> pathsToCreate, @Nullable BulkOperationState operationState)
 name|void
 name|move
 parameter_list|(
@@ -368,9 +363,6 @@ argument_list|<
 name|PathMetadata
 argument_list|>
 name|pathsToCreate
-parameter_list|,
-name|ITtlTimeProvider
-name|ttlTimeProvider
 parameter_list|,
 annotation|@
 name|Nullable
@@ -572,6 +564,15 @@ return|return
 literal|null
 return|;
 block|}
+comment|/**    * The TtlTimeProvider has to be set during the initialization for the    * metadatastore, but this method can be used for testing, and change the    * instance during runtime.    *    * @param ttlTimeProvider    */
+DECL|method|setTtlTimeProvider (ITtlTimeProvider ttlTimeProvider)
+name|void
+name|setTtlTimeProvider
+parameter_list|(
+name|ITtlTimeProvider
+name|ttlTimeProvider
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 
