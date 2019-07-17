@@ -457,6 +457,13 @@ name|XceiverClientMetrics
 name|create
 parameter_list|()
 block|{
+name|DefaultMetricsSystem
+operator|.
+name|initialize
+argument_list|(
+name|SOURCE_NAME
+argument_list|)
+expr_stmt|;
 name|MetricsSystem
 name|ms
 init|=
