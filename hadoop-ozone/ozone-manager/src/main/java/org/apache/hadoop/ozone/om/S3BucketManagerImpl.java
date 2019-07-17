@@ -361,12 +361,6 @@ specifier|final
 name|BucketManager
 name|bucketManager
 decl_stmt|;
-DECL|field|isRatisEnabled
-specifier|private
-specifier|final
-name|boolean
-name|isRatisEnabled
-decl_stmt|;
 comment|/**    * Construct an S3 Bucket Manager Object.    *    * @param configuration - Ozone Configuration.    * @param omMetadataManager - Ozone Metadata Manager.    */
 DECL|method|S3BucketManagerImpl ( OzoneConfiguration configuration, OMMetadataManager omMetadataManager, VolumeManager volumeManager, BucketManager bucketManager)
 specifier|public
@@ -408,21 +402,6 @@ operator|.
 name|bucketManager
 operator|=
 name|bucketManager
-expr_stmt|;
-name|isRatisEnabled
-operator|=
-name|configuration
-operator|.
-name|getBoolean
-argument_list|(
-name|OMConfigKeys
-operator|.
-name|OZONE_OM_RATIS_ENABLE_KEY
-argument_list|,
-name|OMConfigKeys
-operator|.
-name|OZONE_OM_RATIS_ENABLE_DEFAULT
-argument_list|)
 expr_stmt|;
 block|}
 annotation|@
@@ -876,29 +855,6 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|isRatisEnabled
-condition|)
-block|{
-comment|// When ratis is enabled we need to call apply also.
-name|volumeManager
-operator|.
-name|applyCreateVolume
-argument_list|(
-name|args
-argument_list|,
-name|volumeManager
-operator|.
-name|createVolume
-argument_list|(
-name|args
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
 name|volumeManager
 operator|.
 name|createVolume
@@ -906,7 +862,6 @@ argument_list|(
 name|args
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 catch|catch
 parameter_list|(

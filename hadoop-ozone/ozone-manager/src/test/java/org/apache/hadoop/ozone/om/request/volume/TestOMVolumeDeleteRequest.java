@@ -643,25 +643,12 @@ operator|.
 name|toString
 argument_list|()
 decl_stmt|;
-name|String
-name|ownerName
-init|=
-name|UUID
-operator|.
-name|randomUUID
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-decl_stmt|;
 name|OMRequest
 name|originalRequest
 init|=
 name|deleteVolumeRequest
 argument_list|(
 name|volumeName
-argument_list|,
-name|ownerName
 argument_list|)
 decl_stmt|;
 name|OMVolumeDeleteRequest
@@ -725,8 +712,6 @@ init|=
 name|deleteVolumeRequest
 argument_list|(
 name|volumeName
-argument_list|,
-name|ownerName
 argument_list|)
 decl_stmt|;
 name|OMVolumeDeleteRequest
@@ -927,19 +912,12 @@ operator|.
 name|toString
 argument_list|()
 decl_stmt|;
-name|String
-name|ownerName
-init|=
-literal|"user1"
-decl_stmt|;
 name|OMRequest
 name|originalRequest
 init|=
 name|deleteVolumeRequest
 argument_list|(
 name|volumeName
-argument_list|,
-name|ownerName
 argument_list|)
 decl_stmt|;
 name|OMVolumeDeleteRequest
@@ -1039,8 +1017,6 @@ init|=
 name|deleteVolumeRequest
 argument_list|(
 name|volumeName
-argument_list|,
-name|ownerName
 argument_list|)
 decl_stmt|;
 name|OMVolumeDeleteRequest
@@ -1205,17 +1181,14 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create OMRequest for delete volume.    * @param volumeName    * @param ownerName    * @return OMRequest    */
-DECL|method|deleteVolumeRequest (String volumeName, String ownerName)
+comment|/**    * Create OMRequest for delete volume.    * @param volumeName    * @return OMRequest    */
+DECL|method|deleteVolumeRequest (String volumeName)
 specifier|private
 name|OMRequest
 name|deleteVolumeRequest
 parameter_list|(
 name|String
 name|volumeName
-parameter_list|,
-name|String
-name|ownerName
 parameter_list|)
 block|{
 name|DeleteVolumeRequest
@@ -1229,11 +1202,6 @@ operator|.
 name|setVolumeName
 argument_list|(
 name|volumeName
-argument_list|)
-operator|.
-name|setOwner
-argument_list|(
-name|ownerName
 argument_list|)
 operator|.
 name|build

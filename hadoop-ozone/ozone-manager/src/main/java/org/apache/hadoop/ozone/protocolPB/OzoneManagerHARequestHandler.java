@@ -20,16 +20,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -80,17 +70,6 @@ name|OzoneManagerHARequestHandler
 extends|extends
 name|RequestHandler
 block|{
-comment|/**    * Handle start Transaction Requests from OzoneManager StateMachine.    * @param omRequest    * @return OMRequest - New OM Request which will be applied during apply    * Transaction    * @throws IOException    */
-DECL|method|handleStartTransaction (OMRequest omRequest)
-name|OMRequest
-name|handleStartTransaction
-parameter_list|(
-name|OMRequest
-name|omRequest
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
 comment|/**    * Handle Apply Transaction Requests from OzoneManager StateMachine.    * @param omRequest    * @param transactionLogIndex - ratis transaction log index    * @return OMResponse    */
 DECL|method|handleApplyTransaction (OMRequest omRequest, long transactionLogIndex)
 name|OMResponse

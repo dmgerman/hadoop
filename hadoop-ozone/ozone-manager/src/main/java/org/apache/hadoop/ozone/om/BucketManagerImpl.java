@@ -559,12 +559,6 @@ specifier|final
 name|KeyProviderCryptoExtension
 name|kmsProvider
 decl_stmt|;
-DECL|field|isRatisEnabled
-specifier|private
-specifier|final
-name|boolean
-name|isRatisEnabled
-decl_stmt|;
 comment|/**    * Constructs BucketManager.    *    * @param metadataManager    */
 DECL|method|BucketManagerImpl (OMMetadataManager metadataManager)
 specifier|public
@@ -630,12 +624,6 @@ operator|.
 name|kmsProvider
 operator|=
 name|kmsProvider
-expr_stmt|;
-name|this
-operator|.
-name|isRatisEnabled
-operator|=
-name|isRatisEnabled
 expr_stmt|;
 block|}
 DECL|method|getKMSProvider ()
