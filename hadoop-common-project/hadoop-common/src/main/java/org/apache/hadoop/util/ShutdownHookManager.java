@@ -443,6 +443,8 @@ decl_stmt|;
 name|int
 name|timeoutCount
 init|=
+name|MGR
+operator|.
 name|executeShutdown
 argument_list|()
 decl_stmt|;
@@ -516,7 +518,6 @@ name|Private
 annotation|@
 name|VisibleForTesting
 DECL|method|executeShutdown ()
-specifier|static
 name|int
 name|executeShutdown
 parameter_list|()
@@ -531,8 +532,6 @@ control|(
 name|HookEntry
 name|entry
 range|:
-name|MGR
-operator|.
 name|getShutdownHooksInOrder
 argument_list|()
 control|)
@@ -1055,8 +1054,13 @@ literal|false
 argument_list|)
 decl_stmt|;
 comment|//private to constructor to ensure singularity
+annotation|@
+name|VisibleForTesting
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|ShutdownHookManager ()
-specifier|private
 name|ShutdownHookManager
 parameter_list|()
 block|{   }
@@ -1083,8 +1087,6 @@ name|list
 decl_stmt|;
 synchronized|synchronized
 init|(
-name|MGR
-operator|.
 name|hooks
 init|)
 block|{
@@ -1094,8 +1096,6 @@ operator|new
 name|ArrayList
 argument_list|<>
 argument_list|(
-name|MGR
-operator|.
 name|hooks
 argument_list|)
 expr_stmt|;
@@ -1326,6 +1326,7 @@ literal|"shutdownHook"
 argument_list|)
 throw|;
 block|}
+comment|// hooks are only == by runnable
 return|return
 name|hooks
 operator|.
@@ -1337,6 +1338,10 @@ argument_list|(
 name|shutdownHook
 argument_list|,
 literal|0
+argument_list|,
+name|TIMEOUT_MINIMUM
+argument_list|,
+name|TIME_UNIT_DEFAULT
 argument_list|)
 argument_list|)
 return|;
@@ -1370,6 +1375,10 @@ argument_list|(
 name|shutdownHook
 argument_list|,
 literal|0
+argument_list|,
+name|TIMEOUT_MINIMUM
+argument_list|,
+name|TIME_UNIT_DEFAULT
 argument_list|)
 argument_list|)
 return|;
