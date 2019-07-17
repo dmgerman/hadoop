@@ -1770,13 +1770,13 @@ literal|"option is specified.\n"
 operator|+
 literal|"\t\tAvailable storageTypes are \n"
 operator|+
-literal|"\t\t- RAM_DISK\n"
-operator|+
 literal|"\t\t- DISK\n"
 operator|+
 literal|"\t\t- SSD\n"
 operator|+
-literal|"\t\t- ARCHIVE"
+literal|"\t\t- ARCHIVE\n"
+operator|+
+literal|"\t\t- PROVIDED"
 decl_stmt|;
 DECL|field|type
 specifier|private
@@ -2044,13 +2044,13 @@ literal|"\t\tThe storage type specific quota is set when -storageType option is 
 operator|+
 literal|"\t\tAvailable storageTypes are \n"
 operator|+
-literal|"\t\t- RAM_DISK\n"
-operator|+
 literal|"\t\t- DISK\n"
 operator|+
 literal|"\t\t- SSD\n"
 operator|+
-literal|"\t\t- ARCHIVE"
+literal|"\t\t- ARCHIVE\n"
+operator|+
+literal|"\t\t- PROVIDED"
 decl_stmt|;
 DECL|field|quota
 specifier|private
