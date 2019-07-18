@@ -76,6 +76,10 @@ block|,
 DECL|enumConstant|PURGE_KEYS
 name|PURGE_KEYS
 block|,
+comment|// S3 Bucket
+DECL|enumConstant|CREATE_S3_BUCKET
+name|CREATE_S3_BUCKET
+block|,
 comment|// READ Actions
 DECL|enumConstant|CHECK_VOLUME_ACCESS
 name|CHECK_VOLUME_ACCESS

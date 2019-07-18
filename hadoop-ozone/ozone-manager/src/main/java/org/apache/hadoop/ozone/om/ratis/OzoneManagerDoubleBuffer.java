@@ -796,6 +796,16 @@ argument_list|(
 name|lastRatisTransactionIndex
 argument_list|)
 expr_stmt|;
+name|omMetadataManager
+operator|.
+name|getS3Table
+argument_list|()
+operator|.
+name|cleanupCache
+argument_list|(
+name|lastRatisTransactionIndex
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Update OzoneManagerDoubleBuffer metrics values.    * @param flushedTransactionsSize    */
 DECL|method|updateMetrics ( long flushedTransactionsSize)

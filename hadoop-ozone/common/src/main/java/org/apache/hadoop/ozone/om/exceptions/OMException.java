@@ -349,7 +349,10 @@ block|,
 comment|// Error codes used during acl validation
 DECL|enumConstant|PREFIX_NOT_FOUND
 name|PREFIX_NOT_FOUND
-block|,    }
+block|,
+DECL|enumConstant|S3_BUCKET_INVALID_LENGTH
+name|S3_BUCKET_INVALID_LENGTH
+block|}
 block|}
 end_class
 

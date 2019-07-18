@@ -652,6 +652,13 @@ name|Metric
 name|MutableCounterLong
 name|numBuckets
 decl_stmt|;
+DECL|field|numS3Buckets
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numS3Buckets
+decl_stmt|;
 comment|//TODO: This metric is an estimate and it may be inaccurate on restart if the
 comment|// OM process was not shutdown cleanly. Key creations/deletions in the last
 comment|// few minutes before restart may not be included in this count.
@@ -683,6 +690,20 @@ annotation|@
 name|Metric
 name|MutableGaugeLong
 name|lastCheckpointStreamingTimeTaken
+decl_stmt|;
+DECL|field|numS3BucketCreates
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numS3BucketCreates
+decl_stmt|;
+DECL|field|numS3BucketCreateFails
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numS3BucketCreateFails
 decl_stmt|;
 DECL|method|OMMetrics ()
 specifier|public
@@ -718,6 +739,59 @@ name|OMMetrics
 argument_list|()
 argument_list|)
 return|;
+block|}
+DECL|method|incNumS3BucketCreates ()
+specifier|public
+name|void
+name|incNumS3BucketCreates
+parameter_list|()
+block|{
+name|numBucketOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+name|numS3BucketCreates
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumS3BucketCreateFails ()
+specifier|public
+name|void
+name|incNumS3BucketCreateFails
+parameter_list|()
+block|{
+name|numS3BucketCreateFails
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumS3Buckets ()
+specifier|public
+name|void
+name|incNumS3Buckets
+parameter_list|()
+block|{
+name|numS3Buckets
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|decNumS3Buckets ()
+specifier|public
+name|void
+name|decNumS3Buckets
+parameter_list|()
+block|{
+name|numS3Buckets
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|incNumVolumes ()
 specifier|public
