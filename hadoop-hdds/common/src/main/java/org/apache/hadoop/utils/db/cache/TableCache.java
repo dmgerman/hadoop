@@ -54,6 +54,46 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|utils
+operator|.
+name|db
+operator|.
+name|cache
+operator|.
+name|CacheResult
+operator|.
+name|CacheStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|utils
+operator|.
+name|db
+operator|.
+name|cache
+operator|.
+name|TableCacheImpl
+operator|.
+name|CacheCleanupPolicy
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -116,7 +156,7 @@ name|CACHEVALUE
 name|value
 parameter_list|)
 function_decl|;
-comment|/**    * Removes all the entries from the cache which are having epoch value less    * than or equal to specified epoch value. For FullTable Cache this is a    * do-nothing operation.    * @param epoch    */
+comment|/**    * Removes all the entries from the cache which are having epoch value less    * than or equal to specified epoch value.    *    * If clean up policy is NEVER, this is a do nothing operation.    * If clean up policy is MANUAL, it is caller responsibility to cleanup the    * cache before calling cleanup.    * @param epoch    */
 DECL|method|cleanup (long epoch)
 name|void
 name|cleanup
@@ -146,6 +186,18 @@ argument_list|>
 argument_list|>
 name|iterator
 parameter_list|()
+function_decl|;
+comment|/**    * Check key exist in cache or not.    *    * If it exists return CacheResult with value and status as    * {@link CacheStatus#EXISTS}    *    * If it does not exist:    *  If cache clean up policy is    *  {@link TableCacheImpl.CacheCleanupPolicy#NEVER} it means table cache is    *  full cache. It return's {@link CacheResult} with null    *  and status as {@link CacheStatus#NOT_EXIST}.    *    *  If cache clean up policy is {@link CacheCleanupPolicy#MANUAL} it means    *  table cache is partial cache. It return's {@link CacheResult} with    *  null and status as MAY_EXIST.    *    * @param cachekey    */
+DECL|method|lookup (CACHEKEY cachekey)
+name|CacheResult
+argument_list|<
+name|CACHEVALUE
+argument_list|>
+name|lookup
+parameter_list|(
+name|CACHEKEY
+name|cachekey
+parameter_list|)
 function_decl|;
 block|}
 end_interface

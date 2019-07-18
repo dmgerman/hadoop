@@ -147,7 +147,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Cache implementation for the table, this cache is partial cache, this will  * be cleaned up, after entries are flushed to DB.  */
+comment|/**  * Cache implementation for the table. Depending on the cache clean up policy  * this cache will be full cache or partial cache.  *  * If cache cleanup policy is set as {@link CacheCleanupPolicy#MANUAL},  * this will be a partial cache.  *  * If cache cleanup policy is set as {@link CacheCleanupPolicy#NEVER},  * this will be a full cache.  */
 end_comment
 
 begin_class
@@ -155,10 +155,10 @@ annotation|@
 name|Private
 annotation|@
 name|Evolving
-DECL|class|PartialTableCache
+DECL|class|TableCacheImpl
 specifier|public
 class|class
-name|PartialTableCache
+name|TableCacheImpl
 parameter_list|<
 name|CACHEKEY
 extends|extends
@@ -204,10 +204,18 @@ specifier|private
 name|ExecutorService
 name|executorService
 decl_stmt|;
-DECL|method|PartialTableCache ()
+DECL|field|cleanupPolicy
+specifier|private
+name|CacheCleanupPolicy
+name|cleanupPolicy
+decl_stmt|;
+DECL|method|TableCacheImpl (CacheCleanupPolicy cleanupPolicy)
 specifier|public
-name|PartialTableCache
-parameter_list|()
+name|TableCacheImpl
+parameter_list|(
+name|CacheCleanupPolicy
+name|cleanupPolicy
+parameter_list|)
 block|{
 name|cache
 operator|=
@@ -253,6 +261,12 @@ name|newSingleThreadExecutor
 argument_list|(
 name|build
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|cleanupPolicy
+operator|=
+name|cleanupPolicy
 expr_stmt|;
 block|}
 annotation|@
@@ -336,6 +350,8 @@ lambda|->
 name|evictCache
 argument_list|(
 name|epoch
+argument_list|,
+name|cleanupPolicy
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -383,13 +399,16 @@ name|iterator
 argument_list|()
 return|;
 block|}
-DECL|method|evictCache (long epoch)
+DECL|method|evictCache (long epoch, CacheCleanupPolicy cacheCleanupPolicy)
 specifier|private
 name|void
 name|evictCache
 parameter_list|(
 name|long
 name|epoch
+parameter_list|,
+name|CacheCleanupPolicy
+name|cacheCleanupPolicy
 parameter_list|)
 block|{
 name|EpochEntry
@@ -457,6 +476,15 @@ lambda|->
 block|{
 if|if
 condition|(
+name|cleanupPolicy
+operator|==
+name|CacheCleanupPolicy
+operator|.
+name|MANUAL
+condition|)
+block|{
+if|if
+condition|(
 name|v
 operator|.
 name|getEpoch
@@ -473,6 +501,45 @@ expr_stmt|;
 return|return
 literal|null
 return|;
+block|}
+block|}
+elseif|else
+if|if
+condition|(
+name|cleanupPolicy
+operator|==
+name|CacheCleanupPolicy
+operator|.
+name|NEVER
+condition|)
+block|{
+comment|// Remove only entries which are marked for delete.
+if|if
+condition|(
+name|v
+operator|.
+name|getEpoch
+argument_list|()
+operator|<=
+name|epoch
+operator|&&
+name|v
+operator|.
+name|getCacheValue
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+name|iterator
+operator|.
+name|remove
+argument_list|()
+expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
 block|}
 return|return
 name|v
@@ -500,6 +567,173 @@ block|{
 break|break;
 block|}
 block|}
+block|}
+DECL|method|lookup (CACHEKEY cachekey)
+specifier|public
+name|CacheResult
+argument_list|<
+name|CACHEVALUE
+argument_list|>
+name|lookup
+parameter_list|(
+name|CACHEKEY
+name|cachekey
+parameter_list|)
+block|{
+comment|// TODO: Remove this check once HA and Non-HA code is merged and all
+comment|//  requests are converted to use cache and double buffer.
+comment|// This is to done as temporary instead of passing ratis enabled flag
+comment|// which requires more code changes. We cannot use ratis enabled flag
+comment|// also because some of the requests in OM HA are not modified to use
+comment|// double buffer and cache.
+if|if
+condition|(
+name|cache
+operator|.
+name|size
+argument_list|()
+operator|==
+literal|0
+condition|)
+block|{
+return|return
+operator|new
+name|CacheResult
+argument_list|<>
+argument_list|(
+name|CacheResult
+operator|.
+name|CacheStatus
+operator|.
+name|MAY_EXIST
+argument_list|,
+literal|null
+argument_list|)
+return|;
+block|}
+name|CACHEVALUE
+name|cachevalue
+init|=
+name|cache
+operator|.
+name|get
+argument_list|(
+name|cachekey
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|cachevalue
+operator|==
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+name|cleanupPolicy
+operator|==
+name|CacheCleanupPolicy
+operator|.
+name|NEVER
+condition|)
+block|{
+return|return
+operator|new
+name|CacheResult
+argument_list|<>
+argument_list|(
+name|CacheResult
+operator|.
+name|CacheStatus
+operator|.
+name|NOT_EXIST
+argument_list|,
+literal|null
+argument_list|)
+return|;
+block|}
+else|else
+block|{
+return|return
+operator|new
+name|CacheResult
+argument_list|<>
+argument_list|(
+name|CacheResult
+operator|.
+name|CacheStatus
+operator|.
+name|MAY_EXIST
+argument_list|,
+literal|null
+argument_list|)
+return|;
+block|}
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|cachevalue
+operator|.
+name|getCacheValue
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+operator|new
+name|CacheResult
+argument_list|<>
+argument_list|(
+name|CacheResult
+operator|.
+name|CacheStatus
+operator|.
+name|EXISTS
+argument_list|,
+name|cachevalue
+argument_list|)
+return|;
+block|}
+else|else
+block|{
+comment|// When entity is marked for delete, cacheValue will be set to null.
+comment|// In that case we can return NOT_EXIST irrespective of cache cleanup
+comment|// policy.
+return|return
+operator|new
+name|CacheResult
+argument_list|<>
+argument_list|(
+name|CacheResult
+operator|.
+name|CacheStatus
+operator|.
+name|NOT_EXIST
+argument_list|,
+literal|null
+argument_list|)
+return|;
+block|}
+block|}
+block|}
+comment|/**    * Cleanup policies for table cache.    */
+DECL|enum|CacheCleanupPolicy
+specifier|public
+enum|enum
+name|CacheCleanupPolicy
+block|{
+DECL|enumConstant|NEVER
+name|NEVER
+block|,
+comment|// Cache will not be cleaned up. This mean's the table maintains
+comment|// full cache.
+DECL|enumConstant|MANUAL
+name|MANUAL
+comment|// Cache will be cleaned up, once after flushing to DB. It is
+comment|// caller's responsibility to flush to DB, before calling cleanup cache.
 block|}
 block|}
 end_class

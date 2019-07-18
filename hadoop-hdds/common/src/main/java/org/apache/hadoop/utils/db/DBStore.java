@@ -72,6 +72,24 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|utils
+operator|.
+name|db
+operator|.
+name|cache
+operator|.
+name|TableCacheImpl
+import|;
+end_import
+
 begin_comment
 comment|/**  * The DBStore interface provides the ability to create Tables, which store  * a specific type of Key-Value pair. Some DB interfaces like LevelDB will not  * be able to do this. In those case a Table creation will map to a default  * store.  *  */
 end_comment
@@ -106,7 +124,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Gets an existing TableStore with implicit key/value conversion.    *    * @param name - Name of the TableStore to get    * @param keyType    * @param valueType    * @return - TableStore.    * @throws IOException on Failure    */
+comment|/**    * Gets an existing TableStore with implicit key/value conversion and    * with default cleanup policy for cache. Default cache clean up policy is    * manual.    *    * @param name - Name of the TableStore to get    * @param keyType    * @param valueType    * @return - TableStore.    * @throws IOException on Failure    */
 DECL|method|getTable (String name, Class<KEY> keyType, Class<VALUE> valueType)
 parameter_list|<
 name|KEY
@@ -135,6 +153,44 @@ argument_list|<
 name|VALUE
 argument_list|>
 name|valueType
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Gets an existing TableStore with implicit key/value conversion and    * with specified cleanup policy for cache.    * @throws IOException    */
+DECL|method|getTable (String name, Class<KEY> keyType, Class<VALUE> valueType, TableCacheImpl.CacheCleanupPolicy cleanupPolicy)
+parameter_list|<
+name|KEY
+parameter_list|,
+name|VALUE
+parameter_list|>
+name|Table
+argument_list|<
+name|KEY
+argument_list|,
+name|VALUE
+argument_list|>
+name|getTable
+parameter_list|(
+name|String
+name|name
+parameter_list|,
+name|Class
+argument_list|<
+name|KEY
+argument_list|>
+name|keyType
+parameter_list|,
+name|Class
+argument_list|<
+name|VALUE
+argument_list|>
+name|valueType
+parameter_list|,
+name|TableCacheImpl
+operator|.
+name|CacheCleanupPolicy
+name|cleanupPolicy
 parameter_list|)
 throws|throws
 name|IOException
