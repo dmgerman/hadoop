@@ -1669,6 +1669,20 @@ argument_list|(
 name|fos
 argument_list|)
 expr_stmt|;
+name|fos
+operator|.
+name|flush
+argument_list|()
+expr_stmt|;
+comment|// make sure the snapshot file is synced
+name|fos
+operator|.
+name|getFD
+argument_list|()
+operator|.
+name|sync
+argument_list|()
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(

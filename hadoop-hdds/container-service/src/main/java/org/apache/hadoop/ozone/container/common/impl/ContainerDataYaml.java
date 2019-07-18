@@ -510,6 +510,11 @@ name|writer
 init|=
 literal|null
 decl_stmt|;
+name|FileOutputStream
+name|out
+init|=
+literal|null
+decl_stmt|;
 try|try
 block|{
 comment|// Create Yaml for given container type
@@ -530,16 +535,20 @@ name|yaml
 argument_list|)
 expr_stmt|;
 comment|// Write the ContainerData with checksum to Yaml file.
-name|writer
+name|out
 operator|=
-operator|new
-name|OutputStreamWriter
-argument_list|(
 operator|new
 name|FileOutputStream
 argument_list|(
 name|containerFile
 argument_list|)
+expr_stmt|;
+name|writer
+operator|=
+operator|new
+name|OutputStreamWriter
+argument_list|(
+name|out
 argument_list|,
 literal|"UTF-8"
 argument_list|)
@@ -565,6 +574,20 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|writer
+operator|.
+name|flush
+argument_list|()
+expr_stmt|;
+comment|// make sure the container metadata is synced to disk.
+name|out
+operator|.
+name|getFD
+argument_list|()
+operator|.
+name|sync
+argument_list|()
+expr_stmt|;
 name|writer
 operator|.
 name|close
