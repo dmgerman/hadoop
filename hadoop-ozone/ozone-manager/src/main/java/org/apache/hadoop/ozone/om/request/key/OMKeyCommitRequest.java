@@ -1189,6 +1189,30 @@ name|build
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// As when we commit the key, then it is visible in ozone, so we should
+comment|// increment here.
+comment|// As key also can have multiple versions, we need to increment keys
+comment|// only if version is 0. Currently we have not complete support of
+comment|// versioning of keys. So, this can be revisited later.
+if|if
+condition|(
+name|omKeyInfo
+operator|.
+name|getKeyLocationVersions
+argument_list|()
+operator|.
+name|size
+argument_list|()
+operator|==
+literal|1
+condition|)
+block|{
+name|omMetrics
+operator|.
+name|incNumKeys
+argument_list|()
+expr_stmt|;
+block|}
 return|return
 operator|new
 name|OMKeyCommitResponse
