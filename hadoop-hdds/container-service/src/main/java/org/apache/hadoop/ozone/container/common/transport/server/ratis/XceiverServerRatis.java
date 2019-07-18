@@ -864,30 +864,6 @@ name|util
 operator|.
 name|concurrent
 operator|.
-name|ExecutorService
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|Executors
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
 name|TimeUnit
 import|;
 end_import
@@ -980,15 +956,6 @@ specifier|private
 name|ThreadPoolExecutor
 name|chunkExecutor
 decl_stmt|;
-DECL|field|executors
-specifier|private
-specifier|final
-name|List
-argument_list|<
-name|ExecutorService
-argument_list|>
-name|executors
-decl_stmt|;
 DECL|field|dispatcher
 specifier|private
 specifier|final
@@ -1040,6 +1007,12 @@ specifier|private
 name|DatanodeDetails
 name|datanodeDetails
 decl_stmt|;
+DECL|field|conf
+specifier|private
+specifier|final
+name|Configuration
+name|conf
+decl_stmt|;
 DECL|method|XceiverServerRatis (DatanodeDetails dd, int port, ContainerDispatcher dispatcher, Configuration conf, StateContext context, GrpcTlsConfig tlsConfig, CertificateClient caClient)
 specifier|private
 name|XceiverServerRatis
@@ -1075,6 +1048,12 @@ argument_list|,
 name|caClient
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|conf
+operator|=
+name|conf
+expr_stmt|;
 name|Objects
 operator|.
 name|requireNonNull
@@ -1098,9 +1077,7 @@ name|RaftProperties
 name|serverProperties
 init|=
 name|newRaftProperties
-argument_list|(
-name|conf
-argument_list|)
+argument_list|()
 decl_stmt|;
 specifier|final
 name|int
@@ -1148,23 +1125,6 @@ name|CallerRunsPolicy
 argument_list|()
 argument_list|)
 expr_stmt|;
-specifier|final
-name|int
-name|numContainerOpExecutors
-init|=
-name|conf
-operator|.
-name|getInt
-argument_list|(
-name|OzoneConfigKeys
-operator|.
-name|DFS_CONTAINER_RATIS_NUM_CONTAINER_OP_EXECUTORS_KEY
-argument_list|,
-name|OzoneConfigKeys
-operator|.
-name|DFS_CONTAINER_RATIS_NUM_CONTAINER_OP_EXECUTORS_DEFAULT
-argument_list|)
-decl_stmt|;
 name|this
 operator|.
 name|context
@@ -1187,15 +1147,6 @@ name|OzoneConfigKeys
 operator|.
 name|DFS_CONTAINER_RATIS_REPLICATION_LEVEL_DEFAULT
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|executors
-operator|=
-operator|new
-name|ArrayList
-argument_list|<>
-argument_list|()
 expr_stmt|;
 name|cacheEntryExpiryInteval
 operator|=
@@ -1222,32 +1173,6 @@ name|dispatcher
 operator|=
 name|dispatcher
 expr_stmt|;
-for|for
-control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
-name|numContainerOpExecutors
-condition|;
-name|i
-operator|++
-control|)
-block|{
-name|executors
-operator|.
-name|add
-argument_list|(
-name|Executors
-operator|.
-name|newSingleThreadExecutor
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 name|RaftServer
 operator|.
 name|Builder
@@ -1331,13 +1256,6 @@ name|chunkExecutor
 argument_list|,
 name|this
 argument_list|,
-name|Collections
-operator|.
-name|unmodifiableList
-argument_list|(
-name|executors
-argument_list|)
-argument_list|,
 name|cacheEntryExpiryInteval
 argument_list|,
 name|getSecurityConfig
@@ -1348,17 +1266,16 @@ argument_list|()
 argument_list|,
 name|getBlockTokenVerifier
 argument_list|()
+argument_list|,
+name|conf
 argument_list|)
 return|;
 block|}
-DECL|method|newRaftProperties (Configuration conf)
+DECL|method|newRaftProperties ()
 specifier|private
 name|RaftProperties
 name|newRaftProperties
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
+parameter_list|()
 block|{
 specifier|final
 name|RaftProperties
@@ -1375,16 +1292,12 @@ name|rpc
 init|=
 name|setRpcType
 argument_list|(
-name|conf
-argument_list|,
 name|properties
 argument_list|)
 decl_stmt|;
 comment|// set raft segment size
 name|setRaftSegmentSize
 argument_list|(
-name|conf
-argument_list|,
 name|properties
 argument_list|)
 expr_stmt|;
@@ -1395,8 +1308,6 @@ name|raftSegmentPreallocatedSize
 init|=
 name|setRaftSegmentPreallocatedSize
 argument_list|(
-name|conf
-argument_list|,
 name|properties
 argument_list|)
 decl_stmt|;
@@ -1488,24 +1399,18 @@ expr_stmt|;
 comment|// Set the server Request timeout
 name|setServerRequestTimeout
 argument_list|(
-name|conf
-argument_list|,
 name|properties
 argument_list|)
 expr_stmt|;
 comment|// set timeout for a retry cache entry
 name|setTimeoutForRetryCache
 argument_list|(
-name|conf
-argument_list|,
 name|properties
 argument_list|)
 expr_stmt|;
 comment|// Set the ratis leader election timeout
 name|setRatisLeaderElectionTimeout
 argument_list|(
-name|conf
-argument_list|,
 name|properties
 argument_list|)
 expr_stmt|;
@@ -1524,8 +1429,6 @@ expr_stmt|;
 comment|// set the node failure timeout
 name|setNodeFailureTimeout
 argument_list|(
-name|conf
-argument_list|,
 name|properties
 argument_list|)
 expr_stmt|;
@@ -1806,14 +1709,11 @@ return|return
 name|properties
 return|;
 block|}
-DECL|method|setNodeFailureTimeout (Configuration conf, RaftProperties properties)
+DECL|method|setNodeFailureTimeout (RaftProperties properties)
 specifier|private
 name|void
 name|setNodeFailureTimeout
 parameter_list|(
-name|Configuration
-name|conf
-parameter_list|,
 name|RaftProperties
 name|properties
 parameter_list|)
@@ -1898,14 +1798,11 @@ name|MILLISECONDS
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setRatisLeaderElectionTimeout (Configuration conf, RaftProperties properties)
+DECL|method|setRatisLeaderElectionTimeout (RaftProperties properties)
 specifier|private
 name|void
 name|setRatisLeaderElectionTimeout
 parameter_list|(
-name|Configuration
-name|conf
-parameter_list|,
 name|RaftProperties
 name|properties
 parameter_list|)
@@ -2002,14 +1899,11 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setTimeoutForRetryCache (Configuration conf, RaftProperties properties)
+DECL|method|setTimeoutForRetryCache (RaftProperties properties)
 specifier|private
 name|void
 name|setTimeoutForRetryCache
 parameter_list|(
-name|Configuration
-name|conf
-parameter_list|,
 name|RaftProperties
 name|properties
 parameter_list|)
@@ -2074,14 +1968,11 @@ name|retryCacheTimeout
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setServerRequestTimeout (Configuration conf, RaftProperties properties)
+DECL|method|setServerRequestTimeout (RaftProperties properties)
 specifier|private
 name|void
 name|setServerRequestTimeout
 parameter_list|(
-name|Configuration
-name|conf
-parameter_list|,
 name|RaftProperties
 name|properties
 parameter_list|)
@@ -2183,14 +2074,11 @@ return|return
 name|maxChunkSize
 return|;
 block|}
-DECL|method|setRaftSegmentPreallocatedSize (Configuration conf, RaftProperties properties)
+DECL|method|setRaftSegmentPreallocatedSize (RaftProperties properties)
 specifier|private
 name|int
 name|setRaftSegmentPreallocatedSize
 parameter_list|(
-name|Configuration
-name|conf
-parameter_list|,
 name|RaftProperties
 name|properties
 parameter_list|)
@@ -2310,14 +2198,11 @@ return|return
 name|raftSegmentPreallocatedSize
 return|;
 block|}
-DECL|method|setRaftSegmentSize (Configuration conf, RaftProperties properties)
+DECL|method|setRaftSegmentSize (RaftProperties properties)
 specifier|private
 name|void
 name|setRaftSegmentSize
 parameter_list|(
-name|Configuration
-name|conf
-parameter_list|,
 name|RaftProperties
 name|properties
 parameter_list|)
@@ -2363,14 +2248,11 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setRpcType (Configuration conf, RaftProperties properties)
+DECL|method|setRpcType (RaftProperties properties)
 specifier|private
 name|RpcType
 name|setRpcType
 parameter_list|(
-name|Configuration
-name|conf
-parameter_list|,
 name|RaftProperties
 name|properties
 parameter_list|)
@@ -2666,15 +2548,6 @@ name|chunkExecutor
 operator|.
 name|shutdown
 argument_list|()
-expr_stmt|;
-name|executors
-operator|.
-name|forEach
-argument_list|(
-name|ExecutorService
-operator|::
-name|shutdown
-argument_list|)
 expr_stmt|;
 name|isStarted
 operator|=
