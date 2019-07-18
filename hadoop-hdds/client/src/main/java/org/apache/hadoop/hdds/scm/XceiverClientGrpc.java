@@ -1782,7 +1782,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|debug
+name|error
 argument_list|(
 literal|"Failed to execute command "
 operator|+
@@ -1902,16 +1902,11 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Failed to execute command "
-operator|+
+literal|"Failed to execute command {} on the pipeline {}."
+argument_list|,
 name|request
-operator|+
-literal|" on the pipeline "
-operator|+
+argument_list|,
 name|pipeline
-operator|.
-name|getId
-argument_list|()
 argument_list|)
 expr_stmt|;
 throw|throw
