@@ -370,6 +370,13 @@ operator|.
 name|HEALTHY
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|excludedNodes
+operator|!=
+literal|null
+condition|)
+block|{
 name|healthyNodes
 operator|.
 name|removeAll
@@ -377,6 +384,7 @@ argument_list|(
 name|excludedNodes
 argument_list|)
 expr_stmt|;
+block|}
 name|String
 name|msg
 decl_stmt|;
