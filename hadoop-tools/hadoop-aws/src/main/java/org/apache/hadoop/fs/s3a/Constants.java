@@ -572,9 +572,9 @@ specifier|final
 name|long
 name|DEFAULT_MULTIPART_SIZE
 init|=
-literal|104857600
+literal|67108864
 decl_stmt|;
-comment|// 100 MB
+comment|// 64M
 comment|// minimum size in bytes before we start a multipart uploads or copy
 DECL|field|MIN_MULTIPART_THRESHOLD
 specifier|public
@@ -592,10 +592,9 @@ specifier|final
 name|long
 name|DEFAULT_MIN_MULTIPART_THRESHOLD
 init|=
-name|Integer
-operator|.
-name|MAX_VALUE
+literal|134217728
 decl_stmt|;
+comment|// 128M
 comment|//enable multiobject-delete calls?
 DECL|field|ENABLE_MULTI_DELETE
 specifier|public
