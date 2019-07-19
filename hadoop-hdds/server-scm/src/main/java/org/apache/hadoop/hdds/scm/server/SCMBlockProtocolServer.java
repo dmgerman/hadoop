@@ -1737,7 +1737,7 @@ name|client
 init|=
 name|nodeManager
 operator|.
-name|getNode
+name|getNodeByAddress
 argument_list|(
 name|clientMachine
 argument_list|)
@@ -1759,7 +1759,7 @@ argument_list|()
 operator|.
 name|forEach
 argument_list|(
-name|path
+name|uuid
 lambda|->
 block|{
 name|DatanodeDetails
@@ -1767,9 +1767,9 @@ name|node
 init|=
 name|nodeManager
 operator|.
-name|getNode
+name|getNodeByUuid
 argument_list|(
-name|path
+name|uuid
 argument_list|)
 decl_stmt|;
 if|if
@@ -1783,12 +1783,7 @@ name|nodeList
 operator|.
 name|add
 argument_list|(
-name|nodeManager
-operator|.
-name|getNode
-argument_list|(
-name|path
-argument_list|)
+name|node
 argument_list|)
 expr_stmt|;
 block|}

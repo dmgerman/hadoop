@@ -498,10 +498,19 @@ name|UUID
 name|dnID
 parameter_list|)
 function_decl|;
-comment|/**    * Given datanode host address, returns the DatanodeDetails for the    * node.    *    * @param address node host address    * @return the given datanode, or null if not found    */
-DECL|method|getNode (String address)
+comment|/**    * Given datanode uuid, returns the DatanodeDetails for the node.    *    * @param uuid datanode uuid    * @return the given datanode, or null if not found    */
+DECL|method|getNodeByUuid (String uuid)
 name|DatanodeDetails
-name|getNode
+name|getNodeByUuid
+parameter_list|(
+name|String
+name|uuid
+parameter_list|)
+function_decl|;
+comment|/**    * Given datanode address(Ipaddress or hostname), returns the DatanodeDetails    * for the node.    *    * @param address datanode address    * @return the given datanode, or null if not found    */
+DECL|method|getNodeByAddress (String address)
+name|DatanodeDetails
+name|getNodeByAddress
 parameter_list|(
 name|String
 name|address

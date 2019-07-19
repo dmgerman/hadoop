@@ -5410,7 +5410,7 @@ name|assertNotNull
 argument_list|(
 name|nodeManager
 operator|.
-name|getNode
+name|getNodeByAddress
 argument_list|(
 name|hostname
 argument_list|)
@@ -5437,7 +5437,7 @@ name|assertNotNull
 argument_list|(
 name|nodeManager
 operator|.
-name|getNode
+name|getNodeByAddress
 argument_list|(
 name|ip
 argument_list|)

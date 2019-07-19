@@ -301,7 +301,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Received pipeline action {} for {} from datanode [}"
+literal|"Received pipeline action {} for {} from datanode {}"
 argument_list|,
 name|action
 operator|.

@@ -956,10 +956,25 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getNode (String address)
+DECL|method|getNodeByUuid (String address)
 specifier|public
 name|DatanodeDetails
-name|getNode
+name|getNodeByUuid
+parameter_list|(
+name|String
+name|address
+parameter_list|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getNodeByAddress (String address)
+specifier|public
+name|DatanodeDetails
+name|getNodeByAddress
 parameter_list|(
 name|String
 name|address

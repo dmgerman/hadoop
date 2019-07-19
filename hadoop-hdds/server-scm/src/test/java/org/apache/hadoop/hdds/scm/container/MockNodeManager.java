@@ -567,6 +567,18 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ConcurrentHashMap
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -910,6 +922,16 @@ specifier|private
 name|NetworkTopology
 name|clusterMap
 decl_stmt|;
+DECL|field|dnsToUuidMap
+specifier|private
+name|ConcurrentHashMap
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|dnsToUuidMap
+decl_stmt|;
 DECL|method|MockNodeManager (boolean initializeFakeNodes, int nodeCount)
 specifier|public
 name|MockNodeManager
@@ -971,6 +993,14 @@ name|node2ContainerMap
 operator|=
 operator|new
 name|Node2ContainerMap
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|dnsToUuidMap
+operator|=
+operator|new
+name|ConcurrentHashMap
 argument_list|()
 expr_stmt|;
 name|aggregateStat
@@ -1828,6 +1858,21 @@ name|emptySet
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|dnsToUuidMap
+operator|.
+name|put
+argument_list|(
+name|datanodeDetails
+operator|.
+name|getIpAddress
+argument_list|()
+argument_list|,
+name|datanodeDetails
+operator|.
+name|getUuidString
+argument_list|()
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|clusterMap
@@ -1835,6 +1880,16 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|datanodeDetails
+operator|.
+name|setNetworkName
+argument_list|(
+name|datanodeDetails
+operator|.
+name|getUuidString
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|clusterMap
 operator|.
 name|add
@@ -2216,13 +2271,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getNode (String address)
+DECL|method|getNodeByUuid (String uuid)
 specifier|public
 name|DatanodeDetails
-name|getNode
+name|getNodeByUuid
 parameter_list|(
 name|String
-name|address
+name|uuid
 parameter_list|)
 block|{
 name|Node
@@ -2238,7 +2293,7 @@ name|DEFAULT_RACK
 operator|+
 literal|"/"
 operator|+
-name|address
+name|uuid
 argument_list|)
 decl_stmt|;
 return|return
@@ -2252,6 +2307,29 @@ operator|(
 name|DatanodeDetails
 operator|)
 name|node
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getNodeByAddress (String address)
+specifier|public
+name|DatanodeDetails
+name|getNodeByAddress
+parameter_list|(
+name|String
+name|address
+parameter_list|)
+block|{
+return|return
+name|getNodeByUuid
+argument_list|(
+name|dnsToUuidMap
+operator|.
+name|get
+argument_list|(
+name|address
+argument_list|)
+argument_list|)
 return|;
 block|}
 DECL|method|setNetworkTopology (NetworkTopology topology)
