@@ -1112,9 +1112,6 @@ case|case
 name|CancelDelegationToken
 case|:
 case|case
-name|ApplyInitiateMultiPartUpload
-case|:
-case|case
 name|CreateDirectory
 case|:
 case|case

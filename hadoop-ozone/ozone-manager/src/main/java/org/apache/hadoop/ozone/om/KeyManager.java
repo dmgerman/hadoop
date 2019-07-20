@@ -483,20 +483,6 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Initiate multipart upload for the specified key.    *    * @param keyArgs    * @param multipartUploadID    * @return MultipartInfo    * @throws IOException    */
-DECL|method|applyInitiateMultipartUpload (OmKeyArgs keyArgs, String multipartUploadID)
-name|OmMultipartInfo
-name|applyInitiateMultipartUpload
-parameter_list|(
-name|OmKeyArgs
-name|keyArgs
-parameter_list|,
-name|String
-name|multipartUploadID
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
 comment|/**    * Commit Multipart upload part file.    * @param omKeyArgs    * @param clientID    * @return OmMultipartCommitUploadPartInfo    * @throws IOException    */
 DECL|method|commitMultipartUploadPart ( OmKeyArgs omKeyArgs, long clientID)
 name|OmMultipartCommitUploadPartInfo
