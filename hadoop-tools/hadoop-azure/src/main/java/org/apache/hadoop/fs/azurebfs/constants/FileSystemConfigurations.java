@@ -216,12 +216,13 @@ specifier|final
 name|long
 name|MAX_AZURE_BLOCK_SIZE
 init|=
-literal|512
+literal|256
 operator|*
 literal|1024
 operator|*
 literal|1024L
 decl_stmt|;
+comment|// changing default abfs blocksize to 256MB
 DECL|field|AZURE_BLOCK_LOCATION_HOST_DEFAULT
 specifier|public
 specifier|static

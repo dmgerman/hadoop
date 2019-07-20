@@ -1127,6 +1127,28 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+DECL|method|testConfigBlockSizeInitialized ()
+specifier|public
+name|void
+name|testConfigBlockSizeInitialized
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+comment|// test the block size annotated field has been initialized in the constructor
+name|assertEquals
+argument_list|(
+name|MAX_AZURE_BLOCK_SIZE
+argument_list|,
+name|abfsConfiguration
+operator|.
+name|getAzureBlockSize
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
 DECL|method|testGetAccountKey ()
 specifier|public
 name|void
