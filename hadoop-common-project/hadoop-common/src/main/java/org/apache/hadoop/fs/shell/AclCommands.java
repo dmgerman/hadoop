@@ -885,7 +885,15 @@ literal|"  --set :Fully replace the ACL, discarding all existing entries."
 operator|+
 literal|" The<acl_spec> must include entries for user, group, and others"
 operator|+
-literal|" for compatibility with permission bits.\n"
+literal|" for compatibility with permission bits. If the ACL spec contains"
+operator|+
+literal|" only access entries, then the existing default entries are retained"
+operator|+
+literal|". If the ACL spec contains only default entries, then the existing"
+operator|+
+literal|" access entries are retained. If the ACL spec contains both access"
+operator|+
+literal|" and default entries, then both are replaced.\n"
 operator|+
 literal|"<acl_spec>: Comma separated list of ACL entries.\n"
 operator|+
