@@ -869,7 +869,7 @@ block|}
 block|}
 comment|/**    * Download the latest checkpoint from OM Leader via HTTP.    * @param leaderOMNodeID leader OM Node ID.    * @return the DB checkpoint (including the ratis snapshot index)    */
 DECL|method|getOzoneManagerDBSnapshot (String leaderOMNodeID)
-specifier|protected
+specifier|public
 name|DBCheckpoint
 name|getOzoneManagerDBSnapshot
 parameter_list|(

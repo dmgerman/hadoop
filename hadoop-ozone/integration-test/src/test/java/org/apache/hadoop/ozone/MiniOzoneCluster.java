@@ -559,6 +559,11 @@ specifier|protected
 name|int
 name|numOfOMs
 decl_stmt|;
+DECL|field|numOfActiveOMs
+specifier|protected
+name|int
+name|numOfActiveOMs
+decl_stmt|;
 DECL|field|enableTrace
 specifier|protected
 name|Optional
@@ -1115,6 +1120,25 @@ operator|.
 name|numOfOMs
 operator|=
 name|numOMs
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|setNumOfActiveOMs (int numActiveOMs)
+specifier|public
+name|Builder
+name|setNumOfActiveOMs
+parameter_list|(
+name|int
+name|numActiveOMs
+parameter_list|)
+block|{
+name|this
+operator|.
+name|numOfActiveOMs
+operator|=
+name|numActiveOMs
 expr_stmt|;
 return|return
 name|this

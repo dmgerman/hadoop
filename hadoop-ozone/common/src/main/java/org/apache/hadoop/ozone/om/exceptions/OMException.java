@@ -352,6 +352,10 @@ name|PREFIX_NOT_FOUND
 block|,
 DECL|enumConstant|S3_BUCKET_INVALID_LENGTH
 name|S3_BUCKET_INVALID_LENGTH
+block|,
+DECL|enumConstant|RATIS_ERROR
+name|RATIS_ERROR
+comment|// Error in Ratis server
 block|}
 block|}
 end_class

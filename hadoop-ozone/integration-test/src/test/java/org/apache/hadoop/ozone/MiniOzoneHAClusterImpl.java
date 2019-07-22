@@ -311,6 +311,23 @@ name|OzoneManager
 argument_list|>
 name|ozoneManagers
 decl_stmt|;
+comment|// Active OMs denote OMs which are up and running
+DECL|field|activeOMs
+specifier|private
+name|List
+argument_list|<
+name|OzoneManager
+argument_list|>
+name|activeOMs
+decl_stmt|;
+DECL|field|inactiveOMs
+specifier|private
+name|List
+argument_list|<
+name|OzoneManager
+argument_list|>
+name|inactiveOMs
+decl_stmt|;
 DECL|field|RANDOM
 specifier|private
 specifier|static
@@ -343,7 +360,7 @@ literal|2000
 decl_stmt|;
 comment|// 2 seconds
 comment|/**    * Creates a new MiniOzoneCluster with OM HA.    *    * @throws IOException if there is an I/O error    */
-DECL|method|MiniOzoneHAClusterImpl ( OzoneConfiguration conf, Map<String, OzoneManager> omMap, StorageContainerManager scm, List<HddsDatanodeService> hddsDatanodes)
+DECL|method|MiniOzoneHAClusterImpl ( OzoneConfiguration conf, Map<String, OzoneManager> omMap, List<OzoneManager> activeOMList, List<OzoneManager> inactiveOMList, StorageContainerManager scm, List<HddsDatanodeService> hddsDatanodes)
 specifier|private
 name|MiniOzoneHAClusterImpl
 parameter_list|(
@@ -357,6 +374,18 @@ argument_list|,
 name|OzoneManager
 argument_list|>
 name|omMap
+parameter_list|,
+name|List
+argument_list|<
+name|OzoneManager
+argument_list|>
+name|activeOMList
+parameter_list|,
+name|List
+argument_list|<
+name|OzoneManager
+argument_list|>
+name|inactiveOMList
 parameter_list|,
 name|StorageContainerManager
 name|scm
@@ -397,6 +426,18 @@ name|values
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|activeOMs
+operator|=
+name|activeOMList
+expr_stmt|;
+name|this
+operator|.
+name|inactiveOMs
+operator|=
+name|inactiveOMList
+expr_stmt|;
 block|}
 comment|/**    * Returns the first OzoneManager from the list.    * @return    */
 annotation|@
@@ -415,6 +456,29 @@ operator|.
 name|get
 argument_list|(
 literal|0
+argument_list|)
+return|;
+block|}
+DECL|method|isOMActive (String omNodeId)
+specifier|public
+name|boolean
+name|isOMActive
+parameter_list|(
+name|String
+name|omNodeId
+parameter_list|)
+block|{
+return|return
+name|activeOMs
+operator|.
+name|contains
+argument_list|(
+name|ozoneManagerMap
+operator|.
+name|get
+argument_list|(
+name|omNodeId
+argument_list|)
 argument_list|)
 return|;
 block|}
@@ -457,6 +521,70 @@ argument_list|(
 name|omNodeId
 argument_list|)
 return|;
+block|}
+comment|/**    * Start a previously inactive OM.    */
+DECL|method|startInactiveOM (String omNodeID)
+specifier|public
+name|void
+name|startInactiveOM
+parameter_list|(
+name|String
+name|omNodeID
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|OzoneManager
+name|ozoneManager
+init|=
+name|ozoneManagerMap
+operator|.
+name|get
+argument_list|(
+name|omNodeID
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|inactiveOMs
+operator|.
+name|contains
+argument_list|(
+name|ozoneManager
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"OM is already active."
+argument_list|)
+throw|;
+block|}
+else|else
+block|{
+name|ozoneManager
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+name|activeOMs
+operator|.
+name|add
+argument_list|(
+name|ozoneManager
+argument_list|)
+expr_stmt|;
+name|inactiveOMs
+operator|.
+name|remove
+argument_list|(
+name|ozoneManager
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -600,6 +728,32 @@ name|nodeIdBaseStr
 init|=
 literal|"omNode-"
 decl_stmt|;
+DECL|field|activeOMs
+specifier|private
+name|List
+argument_list|<
+name|OzoneManager
+argument_list|>
+name|activeOMs
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+decl_stmt|;
+DECL|field|inactiveOMs
+specifier|private
+name|List
+argument_list|<
+name|OzoneManager
+argument_list|>
+name|inactiveOMs
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+decl_stmt|;
 comment|/**      * Creates a new Builder.      *      * @param conf configuration      */
 DECL|method|Builder (OzoneConfiguration conf)
 specifier|public
@@ -625,6 +779,23 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|numOfActiveOMs
+operator|>
+name|numOfOMs
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Number of active OMs cannot be "
+operator|+
+literal|"more than the total number of OMs"
+argument_list|)
+throw|;
+block|}
 name|DefaultMetricsSystem
 operator|.
 name|setMiniClusterMode
@@ -701,6 +872,10 @@ argument_list|(
 name|conf
 argument_list|,
 name|omMap
+argument_list|,
+name|activeOMs
+argument_list|,
+name|inactiveOMs
 argument_list|,
 name|scm
 argument_list|,
@@ -982,10 +1157,24 @@ argument_list|,
 name|om
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|i
+operator|<=
+name|numOfActiveOMs
+condition|)
+block|{
 name|om
 operator|.
 name|start
 argument_list|()
+expr_stmt|;
+name|activeOMs
+operator|.
+name|add
+argument_list|(
+name|om
+argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
@@ -999,6 +1188,31 @@ name|getOmRpcServerAddr
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|inactiveOMs
+operator|.
+name|add
+argument_list|(
+name|om
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Intialized OzoneManager at "
+operator|+
+name|om
+operator|.
+name|getOmRpcServerAddr
+argument_list|()
+operator|+
+literal|". This OM is currently inactive (not running)."
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|// Set default OM address to point to the first OM. Clients would
 comment|// try connecting to this address by default

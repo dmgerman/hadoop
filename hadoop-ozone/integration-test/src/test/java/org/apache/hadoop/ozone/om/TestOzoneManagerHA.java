@@ -4207,9 +4207,10 @@ name|ratisSnapshotIndex
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Create a key in the bucket.    * @return the key name.    */
 DECL|method|createKey (OzoneBucket ozoneBucket)
-specifier|private
-name|void
+specifier|static
+name|String
 name|createKey
 parameter_list|(
 name|OzoneBucket
@@ -4292,6 +4293,9 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+return|return
+name|keyName
+return|;
 block|}
 block|}
 end_class

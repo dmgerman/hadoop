@@ -1789,7 +1789,7 @@ operator|.
 name|raftGroup
 return|;
 block|}
-comment|/**    * Returns OzoneManager StateMachine.    */
+comment|/**    * Initializes and returns OzoneManager StateMachine.    */
 DECL|method|getStateMachine ()
 specifier|private
 name|OzoneManagerStateMachine
@@ -1802,6 +1802,18 @@ name|OzoneManagerStateMachine
 argument_list|(
 name|this
 argument_list|)
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getOmStateMachine ()
+specifier|public
+name|OzoneManagerStateMachine
+name|getOmStateMachine
+parameter_list|()
+block|{
+return|return
+name|omStateMachine
 return|;
 block|}
 DECL|method|getOzoneManager ()
@@ -2170,6 +2182,47 @@ name|valueOf
 argument_list|(
 name|raftSegmentPreallocatedSize
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|RaftServerConfigKeys
+operator|.
+name|Log
+operator|.
+name|Appender
+operator|.
+name|setInstallSnapshotEnabled
+argument_list|(
+name|properties
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+specifier|final
+name|int
+name|logPurgeGap
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|OMConfigKeys
+operator|.
+name|OZONE_OM_RATIS_LOG_PURGE_GAP
+argument_list|,
+name|OMConfigKeys
+operator|.
+name|OZONE_OM_RATIS_LOG_PURGE_GAP_DEFAULT
+argument_list|)
+decl_stmt|;
+name|RaftServerConfigKeys
+operator|.
+name|Log
+operator|.
+name|setPurgeGap
+argument_list|(
+name|properties
+argument_list|,
+name|logPurgeGap
 argument_list|)
 expr_stmt|;
 comment|// For grpc set the maximum message size

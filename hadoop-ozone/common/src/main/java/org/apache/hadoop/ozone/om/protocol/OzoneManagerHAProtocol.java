@@ -40,11 +40,14 @@ specifier|public
 interface|interface
 name|OzoneManagerHAProtocol
 block|{
-comment|/**    * Store the snapshot index i.e. the raft log index, corresponding to the    * last transaction applied to the OM RocksDB, in OM metadata dir on disk.    * @return the snapshot index    * @throws IOException    */
-DECL|method|saveRatisSnapshot ()
+comment|/**    * Store the snapshot index i.e. the raft log index, corresponding to the    * last transaction applied to the OM RocksDB, in OM metadata dir on disk.    * @param flush flush the OM DB to disk if true    * @return the snapshot index    * @throws IOException    */
+DECL|method|saveRatisSnapshot (boolean flush)
 name|long
 name|saveRatisSnapshot
-parameter_list|()
+parameter_list|(
+name|boolean
+name|flush
+parameter_list|)
 throws|throws
 name|IOException
 function_decl|;

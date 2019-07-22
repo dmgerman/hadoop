@@ -677,6 +677,15 @@ name|OM_DB_NAME
 init|=
 literal|"om.db"
 decl_stmt|;
+DECL|field|OM_DB_BACKUP_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OM_DB_BACKUP_PREFIX
+init|=
+literal|"om.db.backup."
+decl_stmt|;
 DECL|field|OM_DB_CHECKPOINTS_DIR_NAME
 specifier|public
 specifier|static

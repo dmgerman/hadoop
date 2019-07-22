@@ -436,6 +436,24 @@ name|OZONE_OM_RATIS_LOG_APPENDER_QUEUE_BYTE_LIMIT_DEFAULT
 init|=
 literal|"32MB"
 decl_stmt|;
+DECL|field|OZONE_OM_RATIS_LOG_PURGE_GAP
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_OM_RATIS_LOG_PURGE_GAP
+init|=
+literal|"ozone.om.ratis.log.purge.gap"
+decl_stmt|;
+DECL|field|OZONE_OM_RATIS_LOG_PURGE_GAP_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|OZONE_OM_RATIS_LOG_PURGE_GAP_DEFAULT
+init|=
+literal|1000000
+decl_stmt|;
 comment|// OM Snapshot configurations
 DECL|field|OZONE_OM_RATIS_SNAPSHOT_AUTO_TRIGGER_THRESHOLD_KEY
 specifier|public
