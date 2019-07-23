@@ -9038,7 +9038,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Implements the specific logic to reject root directory deletion.    * The caller must return the result of this call, rather than    * attempt to continue with the delete operation: deleting root    * directories is never allowed. This method simply implements    * the policy of when to return an exit code versus raise an exception.    * @param status filesystem status    * @param recursive recursive flag from command    * @return a return code for the operation    * @throws PathIOException if the operation was explicitly rejected.    */
+comment|/**    * Implements the specific logic to reject root directory deletion.    * The caller must return the result of this call, rather than    * attempt to continue with the delete operation: deleting root    * directories is never allowed.    * @param status filesystem status    * @param recursive recursive flag from command    * @return a return code for the operation    */
 DECL|method|rejectRootDirectoryDelete (S3AFileStatus status, boolean recursive)
 specifier|private
 name|boolean
@@ -9050,14 +9050,14 @@ parameter_list|,
 name|boolean
 name|recursive
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|LOG
 operator|.
-name|info
+name|error
 argument_list|(
-literal|"s3a delete the {} root directory. Path: {}. Recursive: {}"
+literal|"S3A: Cannot delete the {} root directory. Path: {}. Recursive: "
+operator|+
+literal|"{}"
 argument_list|,
 name|bucket
 argument_list|,
@@ -9067,80 +9067,11 @@ name|getPath
 argument_list|()
 argument_list|,
 name|recursive
-argument_list|)
-expr_stmt|;
-name|boolean
-name|emptyRoot
-init|=
-name|status
-operator|.
-name|isEmptyDirectory
-argument_list|()
-operator|==
-name|Tristate
-operator|.
-name|TRUE
-decl_stmt|;
-if|if
-condition|(
-name|emptyRoot
-condition|)
-block|{
-return|return
-literal|true
-return|;
-block|}
-if|if
-condition|(
-name|recursive
-condition|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Cannot delete root path: {}"
-argument_list|,
-name|status
-operator|.
-name|getPath
-argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
 literal|false
 return|;
-block|}
-else|else
-block|{
-comment|// reject
-name|String
-name|msg
-init|=
-literal|"Cannot delete root path: "
-operator|+
-name|status
-operator|.
-name|getPath
-argument_list|()
-decl_stmt|;
-name|LOG
-operator|.
-name|error
-argument_list|(
-name|msg
-argument_list|)
-expr_stmt|;
-throw|throw
-operator|new
-name|PathIOException
-argument_list|(
-name|bucket
-argument_list|,
-name|msg
-argument_list|)
-throw|;
-block|}
 block|}
 comment|/**    * Create a fake directory if required.    * That is: it is not the root path and the path does not exist.    * Retry policy: retrying; untranslated.    * @param f path to create    * @throws IOException IO problem    * @throws AmazonClientException untranslated AWS client problem    */
 annotation|@
@@ -10101,6 +10032,8 @@ argument_list|,
 name|path
 argument_list|,
 name|ttlTimeProvider
+argument_list|,
+name|needEmptyDirectoryFlag
 argument_list|)
 expr_stmt|;
 block|}

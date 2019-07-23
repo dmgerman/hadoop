@@ -1988,6 +1988,28 @@ name|DEFAULT_METADATASTORE_AUTHORITATIVE
 argument_list|)
 return|;
 block|}
+comment|/**    * Require a filesystem to have a metadata store; skip test    * if not.    * @param fs filesystem to check    */
+DECL|method|assumeFilesystemHasMetadatastore (S3AFileSystem fs)
+specifier|public
+specifier|static
+name|void
+name|assumeFilesystemHasMetadatastore
+parameter_list|(
+name|S3AFileSystem
+name|fs
+parameter_list|)
+block|{
+name|assume
+argument_list|(
+literal|"Filesystem does not have a metastore"
+argument_list|,
+name|fs
+operator|.
+name|hasMetadataStore
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Reset all metrics in a list.    * @param metrics metrics to reset    */
 DECL|method|reset (S3ATestUtils.MetricDiff... metrics)
 specifier|public
@@ -2965,6 +2987,35 @@ argument_list|)
 expr_stmt|;
 return|return
 literal|null
+return|;
+block|}
+comment|/**    * Get a file status from S3A with the {@code needEmptyDirectoryFlag}    * state probed.    * This accesses a package-private method in the    * S3A filesystem.    * @param fs filesystem    * @param dir directory    * @return a status    * @throws IOException    */
+DECL|method|getStatusWithEmptyDirFlag ( final S3AFileSystem fs, final Path dir)
+specifier|public
+specifier|static
+name|S3AFileStatus
+name|getStatusWithEmptyDirFlag
+parameter_list|(
+specifier|final
+name|S3AFileSystem
+name|fs
+parameter_list|,
+specifier|final
+name|Path
+name|dir
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|fs
+operator|.
+name|innerGetFileStatus
+argument_list|(
+name|dir
+argument_list|,
+literal|true
+argument_list|)
 return|;
 block|}
 comment|/**    * Helper class to do diffs of metrics.    */

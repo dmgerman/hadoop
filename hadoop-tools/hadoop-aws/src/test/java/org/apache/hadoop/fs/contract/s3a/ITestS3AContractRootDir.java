@@ -106,6 +106,16 @@ begin_import
 import|import
 name|org
 operator|.
+name|junit
+operator|.
+name|Ignore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -232,6 +242,21 @@ name|getFileSystem
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+annotation|@
+name|Ignore
+argument_list|(
+literal|"S3 always return false when non-recursively remove root dir"
+argument_list|)
+DECL|method|testRmNonEmptyRootDirNonRecursive ()
+specifier|public
+name|void
+name|testRmNonEmptyRootDirNonRecursive
+parameter_list|()
+throws|throws
+name|Throwable
+block|{   }
 comment|/**    * This is overridden to allow for eventual consistency on listings,    * but only if the store does not have S3Guard protecting it.    */
 annotation|@
 name|Override
@@ -248,20 +273,6 @@ name|maxAttempts
 init|=
 literal|10
 decl_stmt|;
-if|if
-condition|(
-name|getFileSystem
-argument_list|()
-operator|.
-name|hasMetadataStore
-argument_list|()
-condition|)
-block|{
-name|maxAttempts
-operator|=
-literal|1
-expr_stmt|;
-block|}
 name|describe
 argument_list|(
 literal|"Listing root directory; for consistency allowing "

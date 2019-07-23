@@ -2489,7 +2489,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Delete a file/dir and assert that delete() returned true    *<i>and</i> that the path no longer exists. This variant rejects    * all operations on root directories.    * @param fs filesystem    * @param file path to delete    * @param recursive flag to enable recursive delete    * @throws IOException IO problems    */
+comment|/**    * Delete a file/dir and assert that delete() returned true    *<i>and</i> that the path no longer exists. This variant rejects    * all operations on root directories and requires the target path    * to exist before the deletion operation.    * @param fs filesystem    * @param file path to delete    * @param recursive flag to enable recursive delete    * @throws IOException IO problems    */
 DECL|method|assertDeleted (FileSystem fs, Path file, boolean recursive)
 specifier|public
 specifier|static
@@ -2520,7 +2520,7 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Delete a file/dir and assert that delete() returned true    *<i>and</i> that the path no longer exists. This variant rejects    * all operations on root directories    * @param fs filesystem    * @param file path to delete    * @param recursive flag to enable recursive delete    * @param allowRootOperations can the root dir be deleted?    * @throws IOException IO problems    */
+comment|/**    * Delete a file/dir and assert that delete() returned true    *<i>and</i> that the path no longer exists.    * This variant requires the target path    * to exist before the deletion operation.    * @param fs filesystem    * @param file path to delete    * @param recursive flag to enable recursive delete    * @param allowRootOperations can the root dir be deleted?    * @throws IOException IO problems    */
 DECL|method|assertDeleted (FileSystem fs, Path file, boolean recursive, boolean allowRootOperations)
 specifier|public
 specifier|static
@@ -2542,6 +2542,45 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|assertDeleted
+argument_list|(
+name|fs
+argument_list|,
+name|file
+argument_list|,
+literal|true
+argument_list|,
+name|recursive
+argument_list|,
+name|allowRootOperations
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Delete a file/dir and assert that delete() returned true    *<i>and</i> that the path no longer exists.    * @param fs filesystem    * @param file path to delete    * @param requirePathToExist check for the path existing first?    * @param recursive flag to enable recursive delete    * @param allowRootOperations can the root dir be deleted?    * @throws IOException IO problems    */
+DECL|method|assertDeleted (FileSystem fs, Path file, boolean requirePathToExist, boolean recursive, boolean allowRootOperations)
+specifier|public
+specifier|static
+name|void
+name|assertDeleted
+parameter_list|(
+name|FileSystem
+name|fs
+parameter_list|,
+name|Path
+name|file
+parameter_list|,
+name|boolean
+name|requirePathToExist
+parameter_list|,
+name|boolean
+name|recursive
+parameter_list|,
+name|boolean
+name|allowRootOperations
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|rejectRootOperation
 argument_list|(
 name|file
@@ -2549,6 +2588,11 @@ argument_list|,
 name|allowRootOperations
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|requirePathToExist
+condition|)
+block|{
 name|assertPathExists
 argument_list|(
 name|fs
@@ -2558,6 +2602,7 @@ argument_list|,
 name|file
 argument_list|)
 expr_stmt|;
+block|}
 name|boolean
 name|deleted
 init|=

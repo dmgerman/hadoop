@@ -949,6 +949,8 @@ operator|.
 name|get
 argument_list|(
 name|path
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 operator|.
@@ -1007,6 +1009,8 @@ argument_list|,
 name|path
 argument_list|,
 name|timeProvider
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 comment|// assert
@@ -1092,6 +1096,8 @@ operator|.
 name|get
 argument_list|(
 name|path
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 operator|.
@@ -1150,6 +1156,8 @@ argument_list|,
 name|path
 argument_list|,
 name|timeProvider
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 comment|// assert
@@ -1237,6 +1245,8 @@ operator|.
 name|get
 argument_list|(
 name|path
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 operator|.
@@ -1295,6 +1305,8 @@ argument_list|,
 name|path
 argument_list|,
 name|timeProvider
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 comment|// assert

@@ -1202,7 +1202,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertFalse
 argument_list|(
 literal|"Root directory delete failed"
 argument_list|,

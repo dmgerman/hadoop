@@ -2646,8 +2646,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get a path entry provided it is not considered expired.    * @param ms metastore    * @param path path to look up.    * @param timeProvider nullable time provider    * @return the metadata or null if there as no entry.    * @throws IOException failure.    */
-DECL|method|getWithTtl (MetadataStore ms, Path path, @Nullable ITtlTimeProvider timeProvider)
+comment|/**    * Get a path entry provided it is not considered expired.    * @param ms metastore    * @param path path to look up.    * @param timeProvider nullable time provider    * @param needEmptyDirectoryFlag if true, implementation will    * return known state of directory emptiness.    * @return the metadata or null if there as no entry.    * @throws IOException failure.    */
+DECL|method|getWithTtl (MetadataStore ms, Path path, @Nullable ITtlTimeProvider timeProvider, final boolean needEmptyDirectoryFlag)
 specifier|public
 specifier|static
 name|PathMetadata
@@ -2663,6 +2663,10 @@ annotation|@
 name|Nullable
 name|ITtlTimeProvider
 name|timeProvider
+parameter_list|,
+specifier|final
+name|boolean
+name|needEmptyDirectoryFlag
 parameter_list|)
 throws|throws
 name|IOException
@@ -2676,6 +2680,8 @@ operator|.
 name|get
 argument_list|(
 name|path
+argument_list|,
+name|needEmptyDirectoryFlag
 argument_list|)
 decl_stmt|;
 comment|// if timeProvider is null let's return with what the ms has
