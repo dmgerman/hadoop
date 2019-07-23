@@ -2079,8 +2079,8 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Initialize hadoop metrics systen for Ozone servers.    *  @param configuration OzoneConfiguration to use.    * @param serverName    The logical name of the server components. (eg.    * @return    */
-DECL|method|initializeMetrics (OzoneConfiguration configuration, String serverName)
+comment|/**    * Initialize hadoop metrics system for Ozone servers.    * @param configuration OzoneConfiguration to use.    * @param serverName    The logical name of the server components.    * @return    */
+DECL|method|initializeMetrics ( OzoneConfiguration configuration, String serverName)
 specifier|public
 specifier|static
 name|MetricsSystem
