@@ -2122,7 +2122,7 @@ condition|(
 operator|!
 name|parent
 operator|.
-name|addChild
+name|addChildAtLoading
 argument_list|(
 name|child
 argument_list|)
@@ -3963,6 +3963,8 @@ name|isReference
 argument_list|()
 condition|)
 block|{
+comment|// Serialization must ensure that children are in order, related
+comment|// to HDFS-13693
 name|b
 operator|.
 name|addChildren
