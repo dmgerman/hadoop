@@ -1425,7 +1425,7 @@ specifier|final
 name|String
 name|OZONE_CLIENT_CHECKSUM_TYPE_DEFAULT
 init|=
-literal|"SHA256"
+literal|"CRC32"
 decl_stmt|;
 DECL|field|OZONE_CLIENT_BYTES_PER_CHECKSUM
 specifier|public
