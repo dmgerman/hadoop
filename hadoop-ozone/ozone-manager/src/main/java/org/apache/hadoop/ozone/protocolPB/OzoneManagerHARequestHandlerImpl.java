@@ -164,26 +164,6 @@ name|proto
 operator|.
 name|OzoneManagerProtocolProtos
 operator|.
-name|Status
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|OzoneManagerProtocolProtos
-operator|.
 name|Type
 import|;
 end_import
@@ -317,6 +297,9 @@ case|:
 case|case
 name|InitiateMultiPartUpload
 case|:
+case|case
+name|CommitMultiPartUpload
+case|:
 comment|//TODO: We don't need to pass transactionID, this will be removed when
 comment|// complete write requests is changed to new model. And also we can
 comment|// return OMClientResponse, then adding to doubleBuffer can be taken
@@ -345,24 +328,9 @@ argument_list|,
 name|transactionLogIndex
 argument_list|)
 decl_stmt|;
-comment|// If any error we have got when validateAndUpdateCache, OMResponse
-comment|// Status is set with Error Code other than OK, in that case don't
-comment|// add this to double buffer.
-if|if
-condition|(
-name|omClientResponse
-operator|.
-name|getOMResponse
-argument_list|()
-operator|.
-name|getStatus
-argument_list|()
-operator|==
-name|Status
-operator|.
-name|OK
-condition|)
-block|{
+comment|// Add OMClient Response to double buffer.
+comment|// Each OMClient Response should handle what needs to be done in error
+comment|// case.
 name|ozoneManagerDoubleBuffer
 operator|.
 name|add
@@ -372,7 +340,6 @@ argument_list|,
 name|transactionLogIndex
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|omClientResponse
 operator|.
