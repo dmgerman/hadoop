@@ -5102,6 +5102,9 @@ name|dlm
 operator|.
 name|put
 argument_list|(
+operator|new
+name|PathMetadata
+argument_list|(
 name|basicFileStatus
 argument_list|(
 name|fileToPut
@@ -5109,6 +5112,7 @@ argument_list|,
 literal|1
 argument_list|,
 literal|false
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;

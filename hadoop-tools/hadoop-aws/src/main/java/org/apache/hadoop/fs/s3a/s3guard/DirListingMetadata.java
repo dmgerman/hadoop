@@ -86,6 +86,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Iterator
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Map
 import|;
 end_import
@@ -277,7 +287,7 @@ specifier|private
 name|boolean
 name|isAuthoritative
 decl_stmt|;
-comment|/**    * Create a directory listing metadata container.    *    * @param path Path of the directory. If this path has a host component, then    *     all paths added later via {@link #put(S3AFileStatus)} must also have    *     the same host.    * @param listing Entries in the directory.    * @param isAuthoritative true iff listing is the full contents of the    *     directory, and the calling client reports that this may be cached as    *     the full and authoritative listing of all files in the directory.    * @param lastUpdated last updated time on which expiration is based.    */
+comment|/**    * Create a directory listing metadata container.    *    * @param path Path of the directory. If this path has a host component, then    *     all paths added later via {@link #put(PathMetadata)} must also have    *     the same host.    * @param listing Entries in the directory.    * @param isAuthoritative true iff listing is the full contents of the    *     directory, and the calling client reports that this may be cached as    *     the full and authoritative listing of all files in the directory.    * @param lastUpdated last updated time on which expiration is based.    */
 DECL|method|DirListingMetadata (Path path, Collection<PathMetadata> listing, boolean isAuthoritative, long lastUpdated)
 specifier|public
 name|DirListingMetadata
@@ -707,13 +717,16 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Replace an entry with a tombstone.    * @param childPath path of entry to replace.    */
-DECL|method|markDeleted (Path childPath)
+DECL|method|markDeleted (Path childPath, long lastUpdated)
 specifier|public
 name|void
 name|markDeleted
 parameter_list|(
 name|Path
 name|childPath
+parameter_list|,
+name|long
+name|lastUpdated
 parameter_list|)
 block|{
 name|checkChildPath
@@ -732,6 +745,8 @@ operator|.
 name|tombstone
 argument_list|(
 name|childPath
+argument_list|,
+name|lastUpdated
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -759,41 +774,46 @@ name|childPath
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Add an entry to the directory listing.  If this listing already contains a    * {@code FileStatus} with the same path, it will be replaced.    *    * @param childFileStatus entry to add to this directory listing.    * @return true if the status was added or replaced with a new value. False    * if the same FileStatus value was already present.    */
-DECL|method|put (S3AFileStatus childFileStatus)
+comment|/**    * Add an entry to the directory listing.  If this listing already contains a    * {@code FileStatus} with the same path, it will be replaced.    *    * @param childPathMetadata entry to add to this directory listing.    * @return true if the status was added or replaced with a new value. False    * if the same FileStatus value was already present.    */
+DECL|method|put (PathMetadata childPathMetadata)
 specifier|public
 name|boolean
 name|put
 parameter_list|(
-name|S3AFileStatus
-name|childFileStatus
+name|PathMetadata
+name|childPathMetadata
 parameter_list|)
 block|{
 name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|childFileStatus
+name|childPathMetadata
 argument_list|,
-literal|"childFileStatus must be non-null"
+literal|"childPathMetadata must be non-null"
 argument_list|)
 expr_stmt|;
+specifier|final
+name|S3AFileStatus
+name|fileStatus
+init|=
+name|childPathMetadata
+operator|.
+name|getFileStatus
+argument_list|()
+decl_stmt|;
 name|Path
 name|childPath
 init|=
 name|childStatusToPathKey
 argument_list|(
-name|childFileStatus
+name|fileStatus
 argument_list|)
 decl_stmt|;
 name|PathMetadata
 name|newValue
 init|=
-operator|new
-name|PathMetadata
-argument_list|(
-name|childFileStatus
-argument_list|)
+name|childPathMetadata
 decl_stmt|;
 name|PathMetadata
 name|oldValue
@@ -804,7 +824,7 @@ name|put
 argument_list|(
 name|childPath
 argument_list|,
-name|newValue
+name|childPathMetadata
 argument_list|)
 decl_stmt|;
 return|return
@@ -853,6 +873,102 @@ argument_list|()
 operator|+
 literal|'}'
 return|;
+block|}
+comment|/**    * Remove expired entries from the listing based on TTL.    * @param ttl the ttl time    * @param now the current time    */
+DECL|method|removeExpiredEntriesFromListing (long ttl, long now)
+specifier|public
+specifier|synchronized
+name|void
+name|removeExpiredEntriesFromListing
+parameter_list|(
+name|long
+name|ttl
+parameter_list|,
+name|long
+name|now
+parameter_list|)
+block|{
+specifier|final
+name|Iterator
+argument_list|<
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|Path
+argument_list|,
+name|PathMetadata
+argument_list|>
+argument_list|>
+name|iterator
+init|=
+name|listMap
+operator|.
+name|entrySet
+argument_list|()
+operator|.
+name|iterator
+argument_list|()
+decl_stmt|;
+while|while
+condition|(
+name|iterator
+operator|.
+name|hasNext
+argument_list|()
+condition|)
+block|{
+specifier|final
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|Path
+argument_list|,
+name|PathMetadata
+argument_list|>
+name|entry
+init|=
+name|iterator
+operator|.
+name|next
+argument_list|()
+decl_stmt|;
+comment|// we filter iff the lastupdated is not 0 and the entry is expired
+if|if
+condition|(
+name|entry
+operator|.
+name|getValue
+argument_list|()
+operator|.
+name|getLastUpdated
+argument_list|()
+operator|!=
+literal|0
+operator|&&
+operator|(
+name|entry
+operator|.
+name|getValue
+argument_list|()
+operator|.
+name|getLastUpdated
+argument_list|()
+operator|+
+name|ttl
+operator|)
+operator|<=
+name|now
+condition|)
+block|{
+name|iterator
+operator|.
+name|remove
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 block|}
 comment|/**    * Log contents to supplied StringBuilder in a pretty fashion.    * @param sb target StringBuilder    */
 DECL|method|prettyPrint (StringBuilder sb)

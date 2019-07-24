@@ -666,8 +666,6 @@ argument_list|,
 literal|false
 argument_list|,
 literal|true
-argument_list|,
-name|ttlTimeProvider
 argument_list|)
 expr_stmt|;
 block|}
@@ -691,8 +689,6 @@ argument_list|,
 literal|false
 argument_list|,
 literal|false
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -716,12 +712,10 @@ argument_list|,
 literal|true
 argument_list|,
 literal|true
-argument_list|,
-name|ttlTimeProvider
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|doDelete (Path p, boolean recursive, boolean tombstone, ITtlTimeProvider ttlTp)
+DECL|method|doDelete (Path p, boolean recursive, boolean tombstone)
 specifier|private
 specifier|synchronized
 name|void
@@ -735,9 +729,6 @@ name|recursive
 parameter_list|,
 name|boolean
 name|tombstone
-parameter_list|,
-name|ITtlTimeProvider
-name|ttlTp
 parameter_list|)
 block|{
 name|Path
@@ -754,8 +745,6 @@ argument_list|(
 name|path
 argument_list|,
 name|tombstone
-argument_list|,
-name|ttlTp
 argument_list|)
 expr_stmt|;
 if|if
@@ -772,7 +761,7 @@ name|localCache
 argument_list|,
 name|tombstone
 argument_list|,
-name|ttlTp
+name|ttlTimeProvider
 argument_list|)
 expr_stmt|;
 block|}
@@ -986,19 +975,53 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|listing
+operator|!=
+literal|null
+condition|)
+block|{
+name|listing
+operator|.
+name|removeExpiredEntriesFromListing
+argument_list|(
+name|ttlTimeProvider
+operator|.
+name|getMetadataTtl
+argument_list|()
+argument_list|,
+name|ttlTimeProvider
+operator|.
+name|getNow
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"listChildren [after removing expired entries] ({}) -> {}"
+argument_list|,
+name|path
+argument_list|,
+name|listing
+operator|.
+name|prettyPrint
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// Make a copy so callers can mutate without affecting our state
 return|return
-name|listing
-operator|==
-literal|null
-condition|?
-literal|null
-else|:
 operator|new
 name|DirListingMetadata
 argument_list|(
 name|listing
 argument_list|)
+return|;
+block|}
+return|return
+literal|null
 return|;
 block|}
 annotation|@
@@ -1445,6 +1468,16 @@ argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
+name|parentDirMeta
+operator|.
+name|setLastUpdated
+argument_list|(
+name|meta
+operator|.
+name|getLastUpdated
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|parentMeta
 operator|.
 name|setDirListingMetadata
@@ -1453,7 +1486,7 @@ name|parentDirMeta
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Add the child status to the listing
+comment|// Add the child pathMetadata to the listing
 name|parentMeta
 operator|.
 name|getDirListingMeta
@@ -1461,7 +1494,7 @@ argument_list|()
 operator|.
 name|put
 argument_list|(
-name|status
+name|meta
 argument_list|)
 expr_stmt|;
 comment|// Mark the listing entry as deleted if the meta is set to deleted
@@ -1481,6 +1514,11 @@ operator|.
 name|markDeleted
 argument_list|(
 name|path
+argument_list|,
+name|ttlTimeProvider
+operator|.
+name|getNow
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2269,18 +2307,13 @@ operator|.
 name|tombstone
 argument_list|(
 name|path
-argument_list|)
-decl_stmt|;
-name|pmTombstone
-operator|.
-name|setLastUpdated
-argument_list|(
+argument_list|,
 name|ttlTimeProvider
 operator|.
 name|getNow
 argument_list|()
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|meta
 operator|.
 name|setPathMetadata
@@ -2374,7 +2407,7 @@ comment|/**    * Update fileCache and dirCache to reflect deletion of file 'f'. 
 end_comment
 
 begin_function
-DECL|method|deleteCacheEntries (Path path, boolean tombstone, ITtlTimeProvider ttlTp)
+DECL|method|deleteCacheEntries (Path path, boolean tombstone)
 specifier|private
 name|void
 name|deleteCacheEntries
@@ -2384,9 +2417,6 @@ name|path
 parameter_list|,
 name|boolean
 name|tombstone
-parameter_list|,
-name|ITtlTimeProvider
-name|ttlTp
 parameter_list|)
 block|{
 name|LocalMetadataEntry
@@ -2450,18 +2480,13 @@ operator|.
 name|tombstone
 argument_list|(
 name|path
-argument_list|)
-decl_stmt|;
-name|pmd
-operator|.
-name|setLastUpdated
-argument_list|(
-name|ttlTp
+argument_list|,
+name|ttlTimeProvider
 operator|.
 name|getNow
 argument_list|()
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|entry
 operator|.
 name|setPathMetadata
@@ -2582,13 +2607,8 @@ operator|.
 name|markDeleted
 argument_list|(
 name|path
-argument_list|)
-expr_stmt|;
-name|dir
-operator|.
-name|setLastUpdated
-argument_list|(
-name|ttlTp
+argument_list|,
+name|ttlTimeProvider
 operator|.
 name|getNow
 argument_list|()
@@ -3029,6 +3049,11 @@ operator|.
 name|FALSE
 argument_list|,
 literal|false
+argument_list|,
+name|ttlTimeProvider
+operator|.
+name|getNow
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|newDirs

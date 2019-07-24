@@ -500,7 +500,7 @@ name|AbstractMSContract
 name|contract
 decl_stmt|;
 DECL|field|ms
-specifier|private
+specifier|protected
 name|MetadataStore
 name|ms
 decl_stmt|;
@@ -2629,11 +2629,15 @@ name|dirMeta
 operator|.
 name|put
 argument_list|(
+operator|new
+name|PathMetadata
+argument_list|(
 name|makeFileStatus
 argument_list|(
 literal|"/a1/b1/file_new"
 argument_list|,
 literal|100
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;

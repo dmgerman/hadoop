@@ -93,6 +93,11 @@ name|pmd
 operator|.
 name|isDeleted
 argument_list|()
+argument_list|,
+name|pmd
+operator|.
+name|getLastUpdated
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|this
@@ -132,7 +137,7 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
-DECL|method|DDBPathMetadata (S3AFileStatus fileStatus, Tristate isEmptyDir, boolean isDeleted)
+DECL|method|DDBPathMetadata (S3AFileStatus fileStatus, Tristate isEmptyDir, boolean isDeleted, long lastUpdated)
 specifier|public
 name|DDBPathMetadata
 parameter_list|(
@@ -144,6 +149,9 @@ name|isEmptyDir
 parameter_list|,
 name|boolean
 name|isDeleted
+parameter_list|,
+name|long
+name|lastUpdated
 parameter_list|)
 block|{
 name|super
@@ -153,6 +161,8 @@ argument_list|,
 name|isEmptyDir
 argument_list|,
 name|isDeleted
+argument_list|,
+name|lastUpdated
 argument_list|)
 expr_stmt|;
 name|this
@@ -189,6 +199,8 @@ argument_list|,
 name|isEmptyDir
 argument_list|,
 name|isDeleted
+argument_list|,
+name|lastUpdated
 argument_list|)
 expr_stmt|;
 name|this
@@ -196,13 +208,6 @@ operator|.
 name|isAuthoritativeDir
 operator|=
 name|isAuthoritativeDir
-expr_stmt|;
-name|this
-operator|.
-name|setLastUpdated
-argument_list|(
-name|lastUpdated
-argument_list|)
 expr_stmt|;
 block|}
 DECL|method|isAuthoritativeDir ()
@@ -278,13 +283,6 @@ operator|+
 literal|"isAuthoritativeDir="
 operator|+
 name|isAuthoritativeDir
-operator|+
-literal|", lastUpdated="
-operator|+
-name|this
-operator|.
-name|getLastUpdated
-argument_list|()
 operator|+
 literal|", PathMetadata="
 operator|+

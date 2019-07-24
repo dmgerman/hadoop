@@ -109,7 +109,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * {@code PathMetadata} models path metadata stored in the  * {@link MetadataStore}.  */
+comment|/**  * {@code PathMetadata} models path metadata stored in the  * {@link MetadataStore}. The lastUpdated field is implicitly set to 0 in the  * constructors without that parameter to show that it will be initialized  * with 0 if not set otherwise.  */
 end_comment
 
 begin_class
@@ -143,8 +143,8 @@ specifier|private
 name|boolean
 name|isDeleted
 decl_stmt|;
-comment|/**    * Create a tombstone from the current time.    * @param path path to tombstone    * @return the entry.    */
-DECL|method|tombstone (Path path)
+comment|/**    * Create a tombstone from the current time.    * It is mandatory to set the lastUpdated field to update when the    * tombstone state has changed to set when the entry got deleted.    *    * @param path path to tombstone    * @param lastUpdated last updated time on which expiration is based.    * @return the entry.    */
+DECL|method|tombstone (Path path, long lastUpdated)
 specifier|public
 specifier|static
 name|PathMetadata
@@ -152,6 +152,9 @@ name|tombstone
 parameter_list|(
 name|Path
 name|path
+parameter_list|,
+name|long
+name|lastUpdated
 parameter_list|)
 block|{
 name|S3AFileStatus
@@ -189,10 +192,12 @@ operator|.
 name|UNKNOWN
 argument_list|,
 literal|true
+argument_list|,
+name|lastUpdated
 argument_list|)
 return|;
 block|}
-comment|/**    * Creates a new {@code PathMetadata} containing given {@code FileStatus}.    * @param fileStatus file status containing an absolute path.    */
+comment|/**    * Creates a new {@code PathMetadata} containing given {@code FileStatus}.    * lastUpdated field will be updated to 0 implicitly in this constructor.    *    * @param fileStatus file status containing an absolute path.    */
 DECL|method|PathMetadata (S3AFileStatus fileStatus)
 specifier|public
 name|PathMetadata
@@ -210,9 +215,38 @@ operator|.
 name|UNKNOWN
 argument_list|,
 literal|false
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Creates a new {@code PathMetadata} containing given {@code FileStatus}.    *    * @param fileStatus file status containing an absolute path.    * @param lastUpdated last updated time on which expiration is based.    */
+DECL|method|PathMetadata (S3AFileStatus fileStatus, long lastUpdated)
+specifier|public
+name|PathMetadata
+parameter_list|(
+name|S3AFileStatus
+name|fileStatus
+parameter_list|,
+name|long
+name|lastUpdated
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|fileStatus
+argument_list|,
+name|Tristate
+operator|.
+name|UNKNOWN
+argument_list|,
+literal|false
+argument_list|,
+name|lastUpdated
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Creates a new {@code PathMetadata}.    * lastUpdated field will be updated to 0 implicitly in this constructor.    *    * @param fileStatus file status containing an absolute path.    * @param isEmptyDir empty directory {@link Tristate}    */
 DECL|method|PathMetadata (S3AFileStatus fileStatus, Tristate isEmptyDir)
 specifier|public
 name|PathMetadata
@@ -231,9 +265,12 @@ argument_list|,
 name|isEmptyDir
 argument_list|,
 literal|false
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Creates a new {@code PathMetadata}.    * lastUpdated field will be updated to 0 implicitly in this constructor.    *    * @param fileStatus file status containing an absolute path.    * @param isEmptyDir empty directory {@link Tristate}    * @param isDeleted deleted / tombstoned flag    */
 DECL|method|PathMetadata (S3AFileStatus fileStatus, Tristate isEmptyDir, boolean isDeleted)
 specifier|public
 name|PathMetadata
@@ -246,6 +283,36 @@ name|isEmptyDir
 parameter_list|,
 name|boolean
 name|isDeleted
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|fileStatus
+argument_list|,
+name|isEmptyDir
+argument_list|,
+name|isDeleted
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Creates a new {@code PathMetadata}.    *    * @param fileStatus file status containing an absolute path.    * @param isEmptyDir empty directory {@link Tristate}    * @param isDeleted deleted / tombstoned flag    * @param lastUpdated last updated time on which expiration is based.    */
+DECL|method|PathMetadata (S3AFileStatus fileStatus, Tristate isEmptyDir, boolean isDeleted, long lastUpdated)
+specifier|public
+name|PathMetadata
+parameter_list|(
+name|S3AFileStatus
+name|fileStatus
+parameter_list|,
+name|Tristate
+name|isEmptyDir
+parameter_list|,
+name|boolean
+name|isDeleted
+parameter_list|,
+name|long
+name|lastUpdated
 parameter_list|)
 block|{
 name|Preconditions
@@ -288,6 +355,19 @@ operator|+
 literal|" be absolute"
 argument_list|)
 expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|lastUpdated
+operator|>=
+literal|0
+argument_list|,
+literal|"lastUpdated parameter must "
+operator|+
+literal|"be greater or equal to 0."
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|fileStatus
@@ -305,6 +385,13 @@ operator|.
 name|isDeleted
 operator|=
 name|isDeleted
+expr_stmt|;
+name|this
+operator|.
+name|setLastUpdated
+argument_list|(
+name|lastUpdated
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * @return {@code FileStatus} contained in this {@code PathMetadata}.    */
@@ -457,6 +544,13 @@ operator|+
 literal|"; isDeleted="
 operator|+
 name|isDeleted
+operator|+
+literal|"; lastUpdated="
+operator|+
+name|super
+operator|.
+name|getLastUpdated
+argument_list|()
 operator|+
 literal|'}'
 return|;
