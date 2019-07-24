@@ -6312,6 +6312,25 @@ init|=
 literal|60
 decl_stmt|;
 comment|// 1m
+DECL|field|DFS_HA_TAILEDITS_PERIOD_BACKOFF_MAX_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_HA_TAILEDITS_PERIOD_BACKOFF_MAX_KEY
+init|=
+literal|"dfs.ha.tail-edits.period.backoff-max"
+decl_stmt|;
+DECL|field|DFS_HA_TAILEDITS_PERIOD_BACKOFF_MAX_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DFS_HA_TAILEDITS_PERIOD_BACKOFF_MAX_DEFAULT
+init|=
+literal|0
+decl_stmt|;
+comment|// disabled
 DECL|field|DFS_HA_TAILEDITS_ALL_NAMESNODES_RETRY_KEY
 specifier|public
 specifier|static
