@@ -532,6 +532,16 @@ name|DEFAULT_HB_PROCESSOR_INTERVAL_MS
 init|=
 literal|100
 decl_stmt|;
+DECL|field|ACTIVE_OMS_NOT_SET
+specifier|protected
+specifier|static
+specifier|final
+name|int
+name|ACTIVE_OMS_NOT_SET
+init|=
+operator|-
+literal|1
+decl_stmt|;
 DECL|field|conf
 specifier|protected
 specifier|final
@@ -563,6 +573,8 @@ DECL|field|numOfActiveOMs
 specifier|protected
 name|int
 name|numOfActiveOMs
+init|=
+name|ACTIVE_OMS_NOT_SET
 decl_stmt|;
 DECL|field|enableTrace
 specifier|protected

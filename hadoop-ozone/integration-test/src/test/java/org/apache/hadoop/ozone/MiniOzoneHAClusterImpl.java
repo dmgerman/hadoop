@@ -796,6 +796,19 @@ literal|"more than the total number of OMs"
 argument_list|)
 throw|;
 block|}
+comment|// If num of ActiveOMs is not set, set it to numOfOMs.
+if|if
+condition|(
+name|numOfActiveOMs
+operator|==
+name|ACTIVE_OMS_NOT_SET
+condition|)
+block|{
+name|numOfActiveOMs
+operator|=
+name|numOfOMs
+expr_stmt|;
+block|}
 name|DefaultMetricsSystem
 operator|.
 name|setMiniClusterMode
