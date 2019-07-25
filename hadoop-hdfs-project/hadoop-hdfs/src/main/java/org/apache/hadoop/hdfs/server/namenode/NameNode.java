@@ -4138,6 +4138,22 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// during startup namesystem is null, let client retry
+if|if
+condition|(
+name|namesystem
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|RetriableException
+argument_list|(
+literal|"Namenode is in startup mode"
+argument_list|)
+throw|;
+block|}
 name|namesystem
 operator|.
 name|verifyToken
