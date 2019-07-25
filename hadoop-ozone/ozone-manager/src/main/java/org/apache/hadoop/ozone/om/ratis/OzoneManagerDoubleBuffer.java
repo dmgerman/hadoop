@@ -62,6 +62,20 @@ name|concurrent
 operator|.
 name|atomic
 operator|.
+name|AtomicBoolean
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
 name|AtomicLong
 import|;
 end_import
@@ -310,9 +324,15 @@ argument_list|)
 decl_stmt|;
 DECL|field|isRunning
 specifier|private
-specifier|volatile
-name|boolean
+specifier|final
+name|AtomicBoolean
 name|isRunning
+init|=
+operator|new
+name|AtomicBoolean
+argument_list|(
+literal|false
+argument_list|)
 decl_stmt|;
 DECL|field|ozoneManagerDoubleBufferMetrics
 specifier|private
@@ -381,8 +401,11 @@ name|create
 argument_list|()
 expr_stmt|;
 name|isRunning
-operator|=
+operator|.
+name|set
+argument_list|(
 literal|true
+argument_list|)
 expr_stmt|;
 comment|// Daemon thread which runs in back ground and flushes transactions to DB.
 name|daemon
@@ -418,6 +441,9 @@ block|{
 while|while
 condition|(
 name|isRunning
+operator|.
+name|get
+argument_list|()
 condition|)
 block|{
 try|try
@@ -605,6 +631,9 @@ expr_stmt|;
 if|if
 condition|(
 name|isRunning
+operator|.
+name|get
+argument_list|()
 condition|)
 block|{
 specifier|final
@@ -862,7 +891,6 @@ block|}
 comment|/**    * Stop OM DoubleBuffer flush thread.    */
 DECL|method|stop ()
 specifier|public
-specifier|synchronized
 name|void
 name|stop
 parameter_list|()
@@ -870,6 +898,13 @@ block|{
 if|if
 condition|(
 name|isRunning
+operator|.
+name|compareAndSet
+argument_list|(
+literal|true
+argument_list|,
+literal|false
+argument_list|)
 condition|)
 block|{
 name|LOG
@@ -879,15 +914,34 @@ argument_list|(
 literal|"Stopping OMDoubleBuffer flush thread"
 argument_list|)
 expr_stmt|;
-name|isRunning
-operator|=
-literal|false
-expr_stmt|;
 name|daemon
 operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
+try|try
+block|{
+comment|// Wait for daemon thread to exit
+name|daemon
+operator|.
+name|join
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Interrupted while waiting for daemon to exit."
+argument_list|)
+expr_stmt|;
+block|}
 comment|// stop metrics.
 name|ozoneManagerDoubleBufferMetrics
 operator|.
