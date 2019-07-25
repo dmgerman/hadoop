@@ -578,6 +578,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashMap
 import|;
 end_import
@@ -1686,6 +1696,15 @@ name|pipeline
 operator|.
 name|getNodes
 argument_list|()
+expr_stmt|;
+comment|// Shuffle datanode list so that clients do not read in the same order
+comment|// every time.
+name|Collections
+operator|.
+name|shuffle
+argument_list|(
+name|datanodeList
+argument_list|)
 expr_stmt|;
 block|}
 for|for
