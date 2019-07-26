@@ -678,7 +678,7 @@ name|ScmConfigKeys
 operator|.
 name|DFS_NETWORK_TOPOLOGY_AWARE_READ_ENABLED
 argument_list|,
-literal|false
+literal|true
 argument_list|)
 expr_stmt|;
 name|conf
