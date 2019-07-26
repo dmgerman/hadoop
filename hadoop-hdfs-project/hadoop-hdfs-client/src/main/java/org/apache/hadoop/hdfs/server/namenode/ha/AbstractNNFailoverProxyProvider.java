@@ -1074,7 +1074,7 @@ comment|// If the address needs to be resolved, get all of the IP addresses
 comment|// from this address and pass them into the proxy
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Namenode domain name will be resolved with {}"
 argument_list|,
