@@ -46,7 +46,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|TreeSet
+name|NavigableSet
 import|;
 end_import
 
@@ -59,6 +59,18 @@ operator|.
 name|concurrent
 operator|.
 name|ConcurrentHashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ConcurrentSkipListSet
 import|;
 end_import
 
@@ -190,7 +202,7 @@ decl_stmt|;
 DECL|field|epochEntries
 specifier|private
 specifier|final
-name|TreeSet
+name|NavigableSet
 argument_list|<
 name|EpochEntry
 argument_list|<
@@ -227,7 +239,7 @@ expr_stmt|;
 name|epochEntries
 operator|=
 operator|new
-name|TreeSet
+name|ConcurrentSkipListSet
 argument_list|<>
 argument_list|()
 expr_stmt|;
