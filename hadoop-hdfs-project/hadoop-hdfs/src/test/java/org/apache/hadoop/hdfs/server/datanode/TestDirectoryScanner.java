@@ -6574,6 +6574,15 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|HdfsConfiguration
+name|conf
+init|=
+operator|new
+name|HdfsConfiguration
+argument_list|(
+name|CONF
+argument_list|)
+decl_stmt|;
 comment|// Create Federated cluster with two nameservices and one DN
 try|try
 init|(
@@ -6585,7 +6594,7 @@ name|MiniDFSCluster
 operator|.
 name|Builder
 argument_list|(
-name|CONF
+name|conf
 argument_list|)
 operator|.
 name|nnTopology
@@ -6697,7 +6706,7 @@ name|DirectoryScanner
 argument_list|(
 name|fds
 argument_list|,
-name|CONF
+name|conf
 argument_list|)
 expr_stmt|;
 name|scanner
