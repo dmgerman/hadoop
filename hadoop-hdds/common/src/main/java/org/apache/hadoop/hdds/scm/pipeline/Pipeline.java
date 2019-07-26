@@ -910,7 +910,7 @@ block|}
 block|}
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Serialize pipeline {} with nodesInOrder{ }"
 argument_list|,
@@ -1756,7 +1756,7 @@ block|}
 block|}
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Deserialize nodesInOrder {} in pipeline {}"
 argument_list|,
