@@ -24,6 +24,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|lang
 operator|.
 name|reflect
@@ -130,6 +140,26 @@ name|namenode
 operator|.
 name|ha
 operator|.
+name|ObserverReadProxyProvider
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|ha
+operator|.
 name|ReadOnly
 import|;
 end_import
@@ -159,6 +189,20 @@ operator|.
 name|ipc
 operator|.
 name|RetriableException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|StandbyException
 import|;
 end_import
 
@@ -402,8 +446,53 @@ name|long
 name|clientWaitTime
 parameter_list|)
 throws|throws
-name|RetriableException
+name|IOException
 block|{
+if|if
+condition|(
+operator|!
+name|header
+operator|.
+name|hasStateId
+argument_list|()
+operator|&&
+name|HAServiceState
+operator|.
+name|OBSERVER
+operator|.
+name|equals
+argument_list|(
+name|namesystem
+operator|.
+name|getState
+argument_list|()
+argument_list|)
+condition|)
+block|{
+comment|// This could happen if client configured with non-observer proxy provider
+comment|// (e.g., ConfiguredFailoverProxyProvider) is accessing a cluster with
+comment|// observers. In this case, we should let the client failover to the
+comment|// active node, rather than potentially serving stale result (client
+comment|// stateId is 0 if not set).
+throw|throw
+operator|new
+name|StandbyException
+argument_list|(
+literal|"Observer Node received request without "
+operator|+
+literal|"stateId. This mostly likely is because client is not configured "
+operator|+
+literal|"with "
+operator|+
+name|ObserverReadProxyProvider
+operator|.
+name|class
+operator|.
+name|getSimpleName
+argument_list|()
+argument_list|)
+throw|;
+block|}
 name|long
 name|serverStateId
 init|=
