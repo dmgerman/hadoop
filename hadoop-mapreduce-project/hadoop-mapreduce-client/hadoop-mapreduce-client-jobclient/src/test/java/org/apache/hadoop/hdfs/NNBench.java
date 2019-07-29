@@ -747,6 +747,15 @@ name|FileSystem
 operator|.
 name|get
 argument_list|(
+operator|new
+name|Path
+argument_list|(
+name|baseDir
+argument_list|)
+operator|.
+name|toUri
+argument_list|()
+argument_list|,
 name|getConf
 argument_list|()
 argument_list|)
@@ -1059,7 +1068,9 @@ literal|" default is 1. This is not mandatory>\n"
 operator|+
 literal|"\t-baseDir<base DFS path. default is /benchmarks/NNBench. "
 operator|+
-literal|"This is not mandatory>\n"
+literal|"Supports cross-cluster access by using full path with schema and "
+operator|+
+literal|"cluster. This is not mandatory>\n"
 operator|+
 literal|"\t-readFileAfterOpen<true or false. if true, it reads the file and "
 operator|+
@@ -1874,6 +1885,15 @@ name|FileSystem
 operator|.
 name|get
 argument_list|(
+operator|new
+name|Path
+argument_list|(
+name|baseDir
+argument_list|)
+operator|.
+name|toUri
+argument_list|()
+argument_list|,
 name|getConf
 argument_list|()
 argument_list|)
@@ -3337,12 +3357,31 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
+name|String
+name|dir
+init|=
+name|conf
+operator|.
+name|get
+argument_list|(
+literal|"test.nnbench.basedir"
+argument_list|)
+decl_stmt|;
 name|filesystem
 operator|=
 name|FileSystem
 operator|.
 name|get
 argument_list|(
+operator|new
+name|Path
+argument_list|(
+name|dir
+argument_list|)
+operator|.
+name|toUri
+argument_list|()
+argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
