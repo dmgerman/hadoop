@@ -131,24 +131,6 @@ operator|.
 name|exceptions
 operator|.
 name|OMException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|om
-operator|.
-name|exceptions
-operator|.
-name|OMException
 operator|.
 name|ResultCodes
 import|;
@@ -626,7 +608,7 @@ name|setClass
 argument_list|(
 name|OZONE_ACL_AUTHORIZER_CLASS
 argument_list|,
-name|OzoneAccessAuthrizerTest
+name|OzoneAccessAuthorizerTest
 operator|.
 name|class
 argument_list|,
@@ -1125,9 +1107,9 @@ comment|/**  * Test implementation to negative case.  */
 end_comment
 
 begin_class
-DECL|class|OzoneAccessAuthrizerTest
+DECL|class|OzoneAccessAuthorizerTest
 class|class
-name|OzoneAccessAuthrizerTest
+name|OzoneAccessAuthorizerTest
 implements|implements
 name|IAccessAuthorizer
 block|{
@@ -1144,8 +1126,6 @@ parameter_list|,
 name|RequestContext
 name|context
 parameter_list|)
-throws|throws
-name|OMException
 block|{
 return|return
 literal|false
