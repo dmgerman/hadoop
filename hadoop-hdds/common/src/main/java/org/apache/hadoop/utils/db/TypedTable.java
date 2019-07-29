@@ -975,23 +975,6 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getEstimatedKeyCount ()
-specifier|public
-name|long
-name|getEstimatedKeyCount
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-return|return
-name|rawTable
-operator|.
-name|getEstimatedKeyCount
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
 DECL|method|close ()
 specifier|public
 name|void

@@ -681,27 +681,6 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Returns an estimated number of rows in a table.  This is much quicker    * than {@link OMMetadataManager#countRowsInTable} but the result can be    * inaccurate.    * @param table Table    * @return long Estimated number of rows in the table.    * @throws IOException    */
-DECL|method|countEstimatedRowsInTable (Table<KEY, VALUE> table)
-parameter_list|<
-name|KEY
-parameter_list|,
-name|VALUE
-parameter_list|>
-name|long
-name|countEstimatedRowsInTable
-parameter_list|(
-name|Table
-argument_list|<
-name|KEY
-argument_list|,
-name|VALUE
-argument_list|>
-name|table
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
 block|}
 end_interface
 

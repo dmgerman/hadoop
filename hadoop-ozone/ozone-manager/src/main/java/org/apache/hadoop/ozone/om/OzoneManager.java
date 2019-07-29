@@ -17083,21 +17083,6 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|metrics
-operator|.
-name|setNumKeys
-argument_list|(
-name|metadataManager
-operator|.
-name|countEstimatedRowsInTable
-argument_list|(
-name|metadataManager
-operator|.
-name|getKeyTable
-argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
 comment|// Delete the omMetrics file if it exists and save the a new metrics file
 comment|// with new data
 name|Files

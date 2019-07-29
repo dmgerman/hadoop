@@ -773,48 +773,6 @@ name|Exception
 block|{
 comment|// Nothing do for a Column Family.
 block|}
-annotation|@
-name|Override
-DECL|method|getEstimatedKeyCount ()
-specifier|public
-name|long
-name|getEstimatedKeyCount
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-try|try
-block|{
-return|return
-name|db
-operator|.
-name|getLongProperty
-argument_list|(
-name|handle
-argument_list|,
-literal|"rocksdb.estimate-num-keys"
-argument_list|)
-return|;
-block|}
-catch|catch
-parameter_list|(
-name|RocksDBException
-name|e
-parameter_list|)
-block|{
-throw|throw
-name|toIOException
-argument_list|(
-literal|"Failed to get estimated key count of table "
-operator|+
-name|getName
-argument_list|()
-argument_list|,
-name|e
-argument_list|)
-throw|;
-block|}
-block|}
 block|}
 end_class
 
