@@ -386,6 +386,17 @@ name|CodecRegistry
 name|getCodecRegistry
 parameter_list|()
 function_decl|;
+comment|/**    * Get data written to DB since a specific sequence number.    * @param sequenceNumber    * @return    * @throws SequenceNumberNotFoundException    */
+DECL|method|getUpdatesSince (long sequenceNumber)
+name|DBUpdatesWrapper
+name|getUpdatesSince
+parameter_list|(
+name|long
+name|sequenceNumber
+parameter_list|)
+throws|throws
+name|SequenceNumberNotFoundException
+function_decl|;
 block|}
 end_interface
 
