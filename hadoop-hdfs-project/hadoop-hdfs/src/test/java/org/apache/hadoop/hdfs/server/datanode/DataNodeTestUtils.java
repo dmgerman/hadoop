@@ -550,6 +550,24 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|resumeIBR (DataNode dn)
+specifier|public
+specifier|static
+name|void
+name|resumeIBR
+parameter_list|(
+name|DataNode
+name|dn
+parameter_list|)
+block|{
+name|dn
+operator|.
+name|setIBRDisabledForTest
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|createInterDatanodeProtocolProxy ( DataNode dn, DatanodeID datanodeid, final Configuration conf, boolean connectToDnViaHostname)
 specifier|public
 specifier|static
