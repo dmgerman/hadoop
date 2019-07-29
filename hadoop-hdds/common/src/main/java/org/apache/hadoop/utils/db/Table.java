@@ -245,6 +245,14 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Returns the key count of this Table.  Note the result can be inaccurate.    * @return Estimated key count of this Table    * @throws IOException on failure    */
+DECL|method|getEstimatedKeyCount ()
+name|long
+name|getEstimatedKeyCount
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Add entry to the table cache.    *    * If the cacheKey already exists, it will override the entry.    * @param cacheKey    * @param cacheValue    */
 DECL|method|addCacheEntry (CacheKey<KEY> cacheKey, CacheValue<VALUE> cacheValue)
 specifier|default
