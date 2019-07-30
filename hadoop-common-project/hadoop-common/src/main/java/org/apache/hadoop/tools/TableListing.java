@@ -968,7 +968,7 @@ if|if
 condition|(
 name|maxWidth
 operator|>
-literal|4
+literal|10
 condition|)
 block|{
 name|column
