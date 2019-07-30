@@ -129,6 +129,12 @@ specifier|final
 name|boolean
 name|runDuringUpgrade
 decl_stmt|;
+DECL|field|runAsService
+specifier|private
+specifier|final
+name|boolean
+name|runAsService
+decl_stmt|;
 DECL|field|DEFAULT
 specifier|static
 specifier|final
@@ -223,6 +229,14 @@ operator|=
 name|builder
 operator|.
 name|runDuringUpgrade
+expr_stmt|;
+name|this
+operator|.
+name|runAsService
+operator|=
+name|builder
+operator|.
+name|runAsService
 expr_stmt|;
 block|}
 DECL|method|getBalancingPolicy ()
@@ -323,6 +337,17 @@ return|return
 name|this
 operator|.
 name|runDuringUpgrade
+return|;
+block|}
+DECL|method|getRunAsService ()
+name|boolean
+name|getRunAsService
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|runAsService
 return|;
 block|}
 annotation|@
@@ -501,6 +526,13 @@ name|runDuringUpgrade
 init|=
 literal|false
 decl_stmt|;
+DECL|field|runAsService
+specifier|private
+name|boolean
+name|runAsService
+init|=
+literal|false
+decl_stmt|;
 DECL|method|Builder ()
 name|Builder
 parameter_list|()
@@ -656,6 +688,24 @@ operator|.
 name|runDuringUpgrade
 operator|=
 name|run
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|setRunAsService (boolean asService)
+name|Builder
+name|setRunAsService
+parameter_list|(
+name|boolean
+name|asService
+parameter_list|)
+block|{
+name|this
+operator|.
+name|runAsService
+operator|=
+name|asService
 expr_stmt|;
 return|return
 name|this
