@@ -926,7 +926,18 @@ specifier|public
 name|void
 name|shutdown
 parameter_list|()
-block|{}
+block|{
+name|DefaultMetricsSystem
+operator|.
+name|instance
+argument_list|()
+operator|.
+name|unregisterSource
+argument_list|(
+name|name
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Increment sent bytes by count    * @param count to increment    */
 comment|//@Override
 DECL|method|incrSentBytes (int count)

@@ -371,7 +371,18 @@ specifier|public
 name|void
 name|shutdown
 parameter_list|()
-block|{}
+block|{
+name|DefaultMetricsSystem
+operator|.
+name|instance
+argument_list|()
+operator|.
+name|unregisterSource
+argument_list|(
+name|name
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 
