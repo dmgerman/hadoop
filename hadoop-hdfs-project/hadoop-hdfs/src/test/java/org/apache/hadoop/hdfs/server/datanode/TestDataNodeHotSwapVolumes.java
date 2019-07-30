@@ -3829,10 +3829,15 @@ name|Thread
 argument_list|>
 name|addVolumeDelayedThreads
 init|=
+name|Collections
+operator|.
+name|synchronizedList
+argument_list|(
 operator|new
 name|ArrayList
 argument_list|<>
 argument_list|()
+argument_list|)
 decl_stmt|;
 name|AtomicBoolean
 name|addVolumeError
