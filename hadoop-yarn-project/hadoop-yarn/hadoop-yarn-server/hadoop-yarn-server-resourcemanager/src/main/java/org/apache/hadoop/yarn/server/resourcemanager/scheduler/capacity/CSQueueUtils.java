@@ -1096,56 +1096,25 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getMaxAvailableResourceToQueue ( final ResourceCalculator rc, RMNodeLabelsManager nlm, CSQueue queue, Resource cluster)
+DECL|method|getMaxAvailableResourceToQueuePartition ( final ResourceCalculator rc, CSQueue queue, Resource cluster, String partition)
 specifier|private
 specifier|static
 name|Resource
-name|getMaxAvailableResourceToQueue
+name|getMaxAvailableResourceToQueuePartition
 parameter_list|(
 specifier|final
 name|ResourceCalculator
 name|rc
-parameter_list|,
-name|RMNodeLabelsManager
-name|nlm
 parameter_list|,
 name|CSQueue
 name|queue
 parameter_list|,
 name|Resource
 name|cluster
-parameter_list|)
-block|{
-name|Set
-argument_list|<
-name|String
-argument_list|>
-name|nodeLabels
-init|=
-name|queue
-operator|.
-name|getNodeLabelsForQueue
-argument_list|()
-decl_stmt|;
-name|Resource
-name|totalAvailableResource
-init|=
-name|Resources
-operator|.
-name|createResource
-argument_list|(
-literal|0
-argument_list|,
-literal|0
-argument_list|)
-decl_stmt|;
-for|for
-control|(
+parameter_list|,
 name|String
 name|partition
-range|:
-name|nodeLabels
-control|)
+parameter_list|)
 block|{
 comment|// Calculate guaranteed resource for a label in a queue by below logic.
 comment|// (total label resource) * (absolute capacity of label in that queue)
@@ -1162,7 +1131,6 @@ decl_stmt|;
 comment|// Available resource in queue for a specific label will be calculated as
 comment|// {(guaranteed resource for a label in a queue) -
 comment|// (resource usage of that label in the queue)}
-comment|// Finally accumulate this available resource to get total.
 name|Resource
 name|available
 init|=
@@ -1221,18 +1189,8 @@ operator|.
 name|none
 argument_list|()
 decl_stmt|;
-name|Resources
-operator|.
-name|addTo
-argument_list|(
-name|totalAvailableResource
-argument_list|,
-name|available
-argument_list|)
-expr_stmt|;
-block|}
 return|return
-name|totalAvailableResource
+name|available
 return|;
 block|}
 comment|/**    *<p>    * Update Queue Statistics:    *</p>    *    *<ul>    *<li>used-capacity/absolute-used-capacity by partition</li>    *<li>non-partitioned max-avail-resource to queue</li>    *</ul>    *    *<p>    * When nodePartition is null, all partition of    * used-capacity/absolute-used-capacity will be updated.    *</p>    */
@@ -1332,6 +1290,32 @@ argument_list|,
 name|childQueue
 argument_list|)
 expr_stmt|;
+comment|// Update queue metrics w.r.t node labels.
+comment|// In QueueMetrics, null label is handled the same as NO_LABEL.
+comment|// This is because queue metrics for partitions are not tracked.
+comment|// In the future, will have to change this when/if queue metrics
+comment|// for partitions also get tracked.
+name|childQueue
+operator|.
+name|getMetrics
+argument_list|()
+operator|.
+name|setAvailableResourcesToQueue
+argument_list|(
+name|partition
+argument_list|,
+name|getMaxAvailableResourceToQueuePartition
+argument_list|(
+name|rc
+argument_list|,
+name|childQueue
+argument_list|,
+name|cluster
+argument_list|,
+name|partition
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 else|else
@@ -1354,9 +1338,7 @@ argument_list|,
 name|childQueue
 argument_list|)
 expr_stmt|;
-block|}
-comment|// Update queue metrics w.r.t node labels. In a generic way, we can
-comment|// calculate available resource from all labels in cluster.
+comment|// Same as above.
 name|childQueue
 operator|.
 name|getMetrics
@@ -1366,18 +1348,19 @@ name|setAvailableResourcesToQueue
 argument_list|(
 name|nodePartition
 argument_list|,
-name|getMaxAvailableResourceToQueue
+name|getMaxAvailableResourceToQueuePartition
 argument_list|(
 name|rc
-argument_list|,
-name|nlm
 argument_list|,
 name|childQueue
 argument_list|,
 name|cluster
+argument_list|,
+name|nodePartition
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Updated configured capacity/max-capacity for queue.    * @param rc resource calculator    * @param partitionResource total cluster resources for this partition    * @param partition partition being updated    * @param queue queue    */
 DECL|method|updateConfiguredCapacityMetrics (ResourceCalculator rc, Resource partitionResource, String partition, AbstractCSQueue queue)
