@@ -289,7 +289,7 @@ specifier|final
 name|int
 name|IPC_MAXIMUM_DATA_LENGTH_DEFAULT
 init|=
-literal|64
+literal|128
 operator|*
 literal|1024
 operator|*
