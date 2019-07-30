@@ -401,7 +401,7 @@ name|TYPE
 operator|+
 literal|".binddomain"
 decl_stmt|;
-comment|/**    * Constant for the configuration property that indicates the base    * distinguished name (DN) to be used with the LDAP server. This value is    * appended to the provided user id for authentication purpose.    */
+comment|/**    * Constant for the configuration property that indicates whether    * the LDAP server supports 'StartTLS' extension.    */
 DECL|field|ENABLE_START_TLS
 specifier|public
 specifier|static
