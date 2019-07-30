@@ -22026,6 +22026,38 @@ name|getNumEncryptionZones
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+comment|// FSNamesystemMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"CurrentTokensCount"
+block|,
+literal|"The number of delegation tokens"
+block|}
+argument_list|)
+DECL|method|getCurrentTokensCount ()
+specifier|public
+name|long
+name|getCurrentTokensCount
+parameter_list|()
+block|{
+return|return
+name|dtSecretManager
+operator|!=
+literal|null
+condition|?
+name|dtSecretManager
+operator|.
+name|getCurrentTokensSize
+argument_list|()
+else|:
+operator|-
+literal|1
+return|;
+block|}
 comment|/**    * Returns the length of the wait Queue for the FSNameSystemLock.    *    * A larger number here indicates lots of threads are waiting for    * FSNameSystemLock.    *    * @return int - Number of Threads waiting to acquire FSNameSystemLock    */
 annotation|@
 name|Override

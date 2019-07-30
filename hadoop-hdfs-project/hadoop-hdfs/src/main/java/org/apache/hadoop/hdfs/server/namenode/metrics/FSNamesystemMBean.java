@@ -281,6 +281,12 @@ name|int
 name|getNumEnteringMaintenanceDataNodes
 parameter_list|()
 function_decl|;
+comment|/**    * Get the current number of delegation tokens in memory.    * @return number of DTs    */
+DECL|method|getCurrentTokensCount ()
+name|long
+name|getCurrentTokensCount
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
