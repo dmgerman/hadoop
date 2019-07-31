@@ -454,7 +454,7 @@ name|bucketName
 argument_list|,
 name|keyName
 argument_list|,
-literal|1
+literal|2
 argument_list|)
 decl_stmt|;
 name|addPart

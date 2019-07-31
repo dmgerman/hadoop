@@ -703,10 +703,7 @@ name|S3MultipartUploadAbortResponse
 argument_list|(
 name|multipartKey
 argument_list|,
-name|Time
-operator|.
-name|now
-argument_list|()
+name|timeStamp
 argument_list|,
 name|omMultipartKeyInfo
 argument_list|,
