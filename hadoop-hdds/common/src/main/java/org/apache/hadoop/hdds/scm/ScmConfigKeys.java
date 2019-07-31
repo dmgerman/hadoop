@@ -347,6 +347,26 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|DFS_CONTAINER_RATIS_STATEMACHINE_MAX_PENDING_APPLY_TRANSACTIONS
+name|DFS_CONTAINER_RATIS_STATEMACHINE_MAX_PENDING_APPLY_TRANSACTIONS
+init|=
+literal|"dfs.container.ratis.statemachine.max.pending.apply-transactions"
+decl_stmt|;
+comment|// The default value of maximum number of pending state machine apply
+comment|// transactions is kept same as default snapshot threshold.
+specifier|public
+specifier|static
+specifier|final
+name|int
+DECL|field|DFS_CONTAINER_RATIS_STATEMACHINE_MAX_PENDING_APPLY_TRANSACTIONS_DEFAULT
+name|DFS_CONTAINER_RATIS_STATEMACHINE_MAX_PENDING_APPLY_TRANSACTIONS_DEFAULT
+init|=
+literal|100000
+decl_stmt|;
 DECL|field|DFS_CONTAINER_RATIS_LOG_QUEUE_NUM_ELEMENTS
 specifier|public
 specifier|static
