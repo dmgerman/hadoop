@@ -32,6 +32,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|CompletableFuture
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -112,6 +124,16 @@ specifier|private
 name|OMResponse
 name|omResponse
 decl_stmt|;
+DECL|field|flushFuture
+specifier|private
+name|CompletableFuture
+argument_list|<
+name|Void
+argument_list|>
+name|flushFuture
+init|=
+literal|null
+decl_stmt|;
 DECL|method|OMClientResponse (OMResponse omResponse)
 specifier|public
 name|OMClientResponse
@@ -159,6 +181,38 @@ parameter_list|()
 block|{
 return|return
 name|omResponse
+return|;
+block|}
+DECL|method|setFlushFuture (CompletableFuture<Void> flushFuture)
+specifier|public
+name|void
+name|setFlushFuture
+parameter_list|(
+name|CompletableFuture
+argument_list|<
+name|Void
+argument_list|>
+name|flushFuture
+parameter_list|)
+block|{
+name|this
+operator|.
+name|flushFuture
+operator|=
+name|flushFuture
+expr_stmt|;
+block|}
+DECL|method|getFlushFuture ()
+specifier|public
+name|CompletableFuture
+argument_list|<
+name|Void
+argument_list|>
+name|getFlushFuture
+parameter_list|()
+block|{
+return|return
+name|flushFuture
 return|;
 block|}
 block|}

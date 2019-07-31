@@ -329,20 +329,12 @@ name|getOzoneManager
 argument_list|()
 argument_list|,
 name|transactionLogIndex
+argument_list|,
+name|ozoneManagerDoubleBuffer
+operator|::
+name|add
 argument_list|)
 decl_stmt|;
-comment|// Add OMClient Response to double buffer.
-comment|// Each OMClient Response should handle what needs to be done in error
-comment|// case.
-name|ozoneManagerDoubleBuffer
-operator|.
-name|add
-argument_list|(
-name|omClientResponse
-argument_list|,
-name|transactionLogIndex
-argument_list|)
-expr_stmt|;
 return|return
 name|omClientResponse
 operator|.

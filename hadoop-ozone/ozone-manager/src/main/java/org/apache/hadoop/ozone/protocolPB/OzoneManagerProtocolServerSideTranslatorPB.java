@@ -114,6 +114,24 @@ name|om
 operator|.
 name|ratis
 operator|.
+name|OzoneManagerDoubleBuffer
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|ratis
+operator|.
 name|OzoneManagerRatisServer
 import|;
 end_import
@@ -354,6 +372,12 @@ specifier|final
 name|OzoneManager
 name|ozoneManager
 decl_stmt|;
+DECL|field|ozoneManagerDoubleBuffer
+specifier|private
+specifier|final
+name|OzoneManagerDoubleBuffer
+name|ozoneManagerDoubleBuffer
+decl_stmt|;
 comment|/**    * Constructs an instance of the server handler.    *    * @param impl OzoneManagerProtocolPB    */
 DECL|method|OzoneManagerProtocolServerSideTranslatorPB ( OzoneManager impl, OzoneManagerRatisServer ratisServer, boolean enableRatis)
 specifier|public
@@ -394,6 +418,31 @@ operator|.
 name|isRatisEnabled
 operator|=
 name|enableRatis
+expr_stmt|;
+name|this
+operator|.
+name|ozoneManagerDoubleBuffer
+operator|=
+operator|new
+name|OzoneManagerDoubleBuffer
+argument_list|(
+name|ozoneManager
+operator|.
+name|getMetadataManager
+argument_list|()
+argument_list|,
+parameter_list|(
+name|i
+parameter_list|)
+lambda|->
+block|{
+comment|// Do nothing.
+comment|// For OM NON-HA code, there is no need to save transaction index.
+comment|// As we wait until the double buffer flushes DB to disk.
+block|}
+argument_list|,
+name|isRatisEnabled
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Submit requests to Ratis server for OM HA implementation.    * TODO: Once HA is implemented fully, we should have only one server side    * translator for OM protocol.    */
@@ -834,6 +883,25 @@ argument_list|(
 name|request
 argument_list|)
 return|;
+block|}
+DECL|method|stop ()
+specifier|public
+name|void
+name|stop
+parameter_list|()
+block|{
+if|if
+condition|(
+operator|!
+name|isRatisEnabled
+condition|)
+block|{
+name|ozoneManagerDoubleBuffer
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class

@@ -292,6 +292,8 @@ argument_list|(
 name|ozoneManager
 argument_list|,
 literal|1L
+argument_list|,
+name|ozoneManagerDoubleBufferHelper
 argument_list|)
 decl_stmt|;
 name|String
@@ -340,6 +342,8 @@ argument_list|(
 name|ozoneManager
 argument_list|,
 literal|2L
+argument_list|,
+name|ozoneManagerDoubleBufferHelper
 argument_list|)
 expr_stmt|;
 name|String
@@ -501,6 +505,8 @@ argument_list|(
 name|ozoneManager
 argument_list|,
 literal|2L
+argument_list|,
+name|ozoneManagerDoubleBufferHelper
 argument_list|)
 decl_stmt|;
 comment|// Check table and response.
@@ -605,6 +611,8 @@ argument_list|(
 name|ozoneManager
 argument_list|,
 literal|2L
+argument_list|,
+name|ozoneManagerDoubleBufferHelper
 argument_list|)
 decl_stmt|;
 comment|// Check table and response.
@@ -718,6 +726,8 @@ argument_list|(
 name|ozoneManager
 argument_list|,
 literal|2L
+argument_list|,
+name|ozoneManagerDoubleBufferHelper
 argument_list|)
 decl_stmt|;
 comment|// Check table and response.

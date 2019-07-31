@@ -212,6 +212,26 @@ name|ratis
 operator|.
 name|utils
 operator|.
+name|OzoneManagerDoubleBufferHelper
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|ratis
+operator|.
+name|utils
+operator|.
 name|OzoneManagerRatisUtils
 import|;
 end_import
@@ -426,7 +446,7 @@ name|omRequest
 return|;
 block|}
 comment|/**    * Validate the OMRequest and update the cache.    * This step should verify that the request can be executed, perform    * any authorization steps and update the in-memory cache.     * This step does not persist the changes to the database.    *    * @return the response that will be returned to the client.    */
-DECL|method|validateAndUpdateCache ( OzoneManager ozoneManager, long transactionLogIndex)
+DECL|method|validateAndUpdateCache ( OzoneManager ozoneManager, long transactionLogIndex, OzoneManagerDoubleBufferHelper ozoneManagerDoubleBufferHelper)
 specifier|public
 specifier|abstract
 name|OMClientResponse
@@ -437,6 +457,9 @@ name|ozoneManager
 parameter_list|,
 name|long
 name|transactionLogIndex
+parameter_list|,
+name|OzoneManagerDoubleBufferHelper
+name|ozoneManagerDoubleBufferHelper
 parameter_list|)
 function_decl|;
 annotation|@

@@ -8174,6 +8174,20 @@ operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+comment|// When ratis is not enabled, we need to call stop() to stop
+comment|// OzoneManageDoubleBuffer in OM server protocol.
+if|if
+condition|(
+operator|!
+name|isRatisEnabled
+condition|)
+block|{
+name|omServerProtocol
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|omRatisServer

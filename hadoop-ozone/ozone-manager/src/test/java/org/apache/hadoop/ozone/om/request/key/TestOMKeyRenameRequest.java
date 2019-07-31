@@ -293,6 +293,8 @@ argument_list|(
 name|ozoneManager
 argument_list|,
 literal|100L
+argument_list|,
+name|ozoneManagerDoubleBufferHelper
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -483,6 +485,8 @@ argument_list|(
 name|ozoneManager
 argument_list|,
 literal|100L
+argument_list|,
+name|ozoneManagerDoubleBufferHelper
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -558,6 +562,8 @@ argument_list|(
 name|ozoneManager
 argument_list|,
 literal|100L
+argument_list|,
+name|ozoneManagerDoubleBufferHelper
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -639,6 +645,8 @@ argument_list|(
 name|ozoneManager
 argument_list|,
 literal|100L
+argument_list|,
+name|ozoneManagerDoubleBufferHelper
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -730,6 +738,8 @@ argument_list|(
 name|ozoneManager
 argument_list|,
 literal|100L
+argument_list|,
+name|ozoneManagerDoubleBufferHelper
 argument_list|)
 decl_stmt|;
 name|Assert
