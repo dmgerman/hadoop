@@ -195,6 +195,17 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
+name|routerConf
+operator|.
+name|set
+argument_list|(
+name|RBFConfigKeys
+operator|.
+name|DFS_ROUTER_RPC_ADDRESS_KEY
+argument_list|,
+literal|"0.0.0.0:0"
+argument_list|)
+expr_stmt|;
 name|router
 operator|.
 name|init
