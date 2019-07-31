@@ -1952,6 +1952,25 @@ name|SERVICE_SHUTDOWN_TIMEOUT_DEFAULT
 init|=
 literal|30
 decl_stmt|;
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
+DECL|field|HADOOP_PROMETHEUS_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_PROMETHEUS_ENABLED
+init|=
+literal|"hadoop.prometheus.endpoint.enabled"
+decl_stmt|;
+DECL|field|HADOOP_PROMETHEUS_ENABLED_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|HADOOP_PROMETHEUS_ENABLED_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 block|}
 end_class
 

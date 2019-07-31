@@ -401,6 +401,18 @@ name|builder
 init|=
 literal|null
 decl_stmt|;
+comment|// Avoid registering o.a.h.http.PrometheusServlet in HttpServer2.
+comment|// TODO: Replace "hadoop.prometheus.endpoint.enabled" with
+comment|// CommonConfigurationKeysPublic.HADOOP_PROMETHEUS_ENABLED when possible.
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+literal|"hadoop.prometheus.endpoint.enabled"
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
 name|builder
 operator|=
 name|DFSUtil
