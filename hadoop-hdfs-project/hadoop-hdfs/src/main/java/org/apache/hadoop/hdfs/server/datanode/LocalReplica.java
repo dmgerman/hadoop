@@ -591,6 +591,9 @@ init|=
 name|parseBaseDir
 argument_list|(
 name|dir
+argument_list|,
+name|getBlockId
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|this
@@ -704,7 +707,7 @@ block|}
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|parseBaseDir (File dir)
+DECL|method|parseBaseDir (File dir, long blockId)
 specifier|public
 specifier|static
 name|ReplicaDirInfo
@@ -712,6 +715,9 @@ name|parseBaseDir
 parameter_list|(
 name|File
 name|dir
+parameter_list|,
+name|long
+name|blockId
 parameter_list|)
 block|{
 name|File
@@ -751,6 +757,34 @@ name|getParentFile
 argument_list|()
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|hasSubdirs
+condition|)
+block|{
+comment|// set baseDir to currentDir if it matches id(idToBlockDir).
+name|File
+name|idToBlockDir
+init|=
+name|DatanodeUtil
+operator|.
+name|idToBlockDir
+argument_list|(
+name|currentDir
+argument_list|,
+name|blockId
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|idToBlockDir
+operator|.
+name|equals
+argument_list|(
+name|dir
+argument_list|)
+condition|)
+block|{
 return|return
 operator|new
 name|ReplicaDirInfo
@@ -760,7 +794,21 @@ operator|.
 name|getAbsolutePath
 argument_list|()
 argument_list|,
-name|hasSubdirs
+literal|true
+argument_list|)
+return|;
+block|}
+block|}
+return|return
+operator|new
+name|ReplicaDirInfo
+argument_list|(
+name|dir
+operator|.
+name|getAbsolutePath
+argument_list|()
+argument_list|,
+literal|false
 argument_list|)
 return|;
 block|}
