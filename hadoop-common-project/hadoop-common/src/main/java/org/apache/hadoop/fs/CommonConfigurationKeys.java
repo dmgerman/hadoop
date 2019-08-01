@@ -806,7 +806,6 @@ init|=
 literal|1000
 decl_stmt|;
 comment|/**    * HA health monitor and failover controller.    */
-comment|/** How often to retry connecting to the service. */
 DECL|field|HA_HM_CONNECT_RETRY_INTERVAL_KEY
 specifier|public
 specifier|static
@@ -863,6 +862,26 @@ name|HA_HM_SLEEP_AFTER_DISCONNECT_DEFAULT
 init|=
 literal|1000
 decl_stmt|;
+comment|/** How many time to retry connecting to the service. */
+DECL|field|HA_HM_RPC_CONNECT_MAX_RETRIES_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HA_HM_RPC_CONNECT_MAX_RETRIES_KEY
+init|=
+literal|"ha.health-monitor.rpc.connect.max.retries"
+decl_stmt|;
+DECL|field|HA_HM_RPC_CONNECT_MAX_RETRIES_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|HA_HM_RPC_CONNECT_MAX_RETRIES_DEFAULT
+init|=
+literal|1
+decl_stmt|;
+comment|/** How often to retry connecting to the service. */
 comment|/* Timeout for the actual monitorHealth() calls. */
 DECL|field|HA_HM_RPC_TIMEOUT_KEY
 specifier|public

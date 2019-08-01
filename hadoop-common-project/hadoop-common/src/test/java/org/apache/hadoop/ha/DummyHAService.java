@@ -274,6 +274,22 @@ name|fs
 operator|.
 name|CommonConfigurationKeys
 operator|.
+name|HA_HM_RPC_CONNECT_MAX_RETRIES_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeys
+operator|.
 name|HA_HM_RPC_TIMEOUT_DEFAULT
 import|;
 end_import
@@ -392,6 +408,10 @@ name|testWithProtoBufRPC
 init|=
 literal|false
 decl_stmt|;
+DECL|field|rpcTimeout
+name|int
+name|rpcTimeout
+decl_stmt|;
 DECL|field|instances
 specifier|static
 name|ArrayList
@@ -505,6 +525,8 @@ argument_list|(
 name|conf
 argument_list|,
 name|HA_HM_RPC_TIMEOUT_DEFAULT
+argument_list|,
+name|HA_HM_RPC_CONNECT_MAX_RETRIES_DEFAULT
 argument_list|)
 expr_stmt|;
 try|try
@@ -830,7 +852,7 @@ name|service
 argument_list|)
 return|;
 block|}
-DECL|method|makeHealthMonitorMock (Configuration conf, int timeoutMs)
+DECL|method|makeHealthMonitorMock (Configuration conf, int timeoutMs, int retries)
 specifier|private
 name|HAServiceProtocol
 name|makeHealthMonitorMock
@@ -840,6 +862,9 @@ name|conf
 parameter_list|,
 name|int
 name|timeoutMs
+parameter_list|,
+name|int
+name|retries
 parameter_list|)
 block|{
 name|HAServiceProtocol
@@ -871,6 +896,8 @@ argument_list|(
 name|conf
 argument_list|,
 name|timeoutMs
+argument_list|,
+name|retries
 argument_list|)
 expr_stmt|;
 block|}
@@ -967,7 +994,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getHealthMonitorProxy (Configuration conf, int timeout)
+DECL|method|getHealthMonitorProxy (Configuration conf, int timeout, int retries)
 specifier|public
 name|HAServiceProtocol
 name|getHealthMonitorProxy
@@ -977,6 +1004,9 @@ name|conf
 parameter_list|,
 name|int
 name|timeout
+parameter_list|,
+name|int
+name|retries
 parameter_list|)
 throws|throws
 name|IOException
@@ -993,6 +1023,8 @@ argument_list|(
 name|conf
 argument_list|,
 name|timeout
+argument_list|,
+name|retries
 argument_list|)
 expr_stmt|;
 block|}
