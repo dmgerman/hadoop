@@ -1404,13 +1404,7 @@ return|return;
 comment|// trash disabled
 name|long
 name|now
-init|=
-name|Time
-operator|.
-name|now
-argument_list|()
-decl_stmt|;
-name|long
+decl_stmt|,
 name|end
 decl_stmt|;
 while|while
@@ -1418,6 +1412,13 @@ condition|(
 literal|true
 condition|)
 block|{
+name|now
+operator|=
+name|Time
+operator|.
+name|now
+argument_list|()
+expr_stmt|;
 name|end
 operator|=
 name|ceiling
