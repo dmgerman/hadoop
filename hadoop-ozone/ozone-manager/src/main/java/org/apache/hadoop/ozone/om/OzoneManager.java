@@ -9631,16 +9631,6 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|UserGroupInformation
-name|user
-init|=
-name|ProtobufRpcEngine
-operator|.
-name|Server
-operator|.
-name|getRemoteUser
-argument_list|()
-decl_stmt|;
 name|RequestContext
 name|context
 init|=
@@ -9651,17 +9641,12 @@ argument_list|()
 operator|.
 name|setClientUgi
 argument_list|(
-name|user
+name|ugi
 argument_list|)
 operator|.
 name|setIp
 argument_list|(
-name|ProtobufRpcEngine
-operator|.
-name|Server
-operator|.
-name|getRemoteIp
-argument_list|()
+name|remoteAddress
 argument_list|)
 operator|.
 name|setAclType
@@ -9698,7 +9683,7 @@ name|warn
 argument_list|(
 literal|"User {} doesn't have {} permission to access {}"
 argument_list|,
-name|user
+name|ugi
 operator|.
 name|getUserName
 argument_list|()
@@ -9714,7 +9699,7 @@ name|OMException
 argument_list|(
 literal|"User "
 operator|+
-name|user
+name|ugi
 operator|.
 name|getUserName
 argument_list|()
