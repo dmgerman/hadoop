@@ -3073,6 +3073,50 @@ name|server
 operator|=
 name|currentAddr
 expr_stmt|;
+name|UserGroupInformation
+name|ticket
+init|=
+name|remoteId
+operator|.
+name|getTicket
+argument_list|()
+decl_stmt|;
+name|this
+operator|.
+name|setName
+argument_list|(
+literal|"IPC Client ("
+operator|+
+name|socketFactory
+operator|.
+name|hashCode
+argument_list|()
+operator|+
+literal|") connection to "
+operator|+
+name|server
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|" from "
+operator|+
+operator|(
+operator|(
+name|ticket
+operator|==
+literal|null
+operator|)
+condition|?
+literal|"an unknown user"
+else|:
+name|ticket
+operator|.
+name|getUserName
+argument_list|()
+operator|)
+argument_list|)
+expr_stmt|;
 return|return
 literal|true
 return|;
