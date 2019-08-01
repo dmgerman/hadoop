@@ -738,10 +738,8 @@ expr_stmt|;
 comment|//empty the file
 name|lines
 operator|.
-name|remove
-argument_list|(
-literal|0
-argument_list|)
+name|clear
+argument_list|()
 expr_stmt|;
 name|FileUtils
 operator|.
