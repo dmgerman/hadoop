@@ -324,6 +324,20 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|OmUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|om
 operator|.
 name|exceptions
@@ -589,11 +603,13 @@ specifier|final
 name|String
 name|URI_EXCEPTION_TEXT
 init|=
-literal|"Ozone file system url "
+literal|"Ozone file system URL "
 operator|+
-literal|"should be either one of the two forms: "
+literal|"should be one of the following formats: "
 operator|+
 literal|"o3fs://bucket.volume/key  OR "
+operator|+
+literal|"o3fs://bucket.volume.om-host.example.com/key  OR "
 operator|+
 literal|"o3fs://bucket.volume.om-host.example.com:5678/key"
 decl_stmt|;
@@ -771,12 +787,13 @@ argument_list|(
 literal|":"
 argument_list|)
 decl_stmt|;
+comment|// Array length should be either 1(host) or 2(host:port)
 if|if
 condition|(
 name|parts
 operator|.
 name|length
-operator|!=
+operator|>
 literal|2
 condition|)
 block|{
@@ -795,6 +812,15 @@ index|[
 literal|0
 index|]
 expr_stmt|;
+if|if
+condition|(
+name|parts
+operator|.
+name|length
+operator|==
+literal|2
+condition|)
+block|{
 name|omPort
 operator|=
 name|parts
@@ -802,6 +828,25 @@ index|[
 literal|1
 index|]
 expr_stmt|;
+block|}
+else|else
+block|{
+comment|// If port number is not specified, read it from config
+name|omPort
+operator|=
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|OmUtils
+operator|.
+name|getOmRpcPort
+argument_list|(
+name|conf
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 operator|!
