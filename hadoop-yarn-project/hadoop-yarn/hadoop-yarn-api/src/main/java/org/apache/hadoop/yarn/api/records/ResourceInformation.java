@@ -304,7 +304,8 @@ argument_list|(
 name|FPGA_URI
 argument_list|)
 decl_stmt|;
-DECL|field|MANDATORY_RESOURCES
+comment|/**    * Special resources that should be treated separately    * from arbitrary resource types.    */
+DECL|field|SPECIAL_RESOURCES
 specifier|public
 specifier|static
 specifier|final
@@ -314,7 +315,7 @@ name|String
 argument_list|,
 name|ResourceInformation
 argument_list|>
-name|MANDATORY_RESOURCES
+name|SPECIAL_RESOURCES
 init|=
 name|ImmutableMap
 operator|.

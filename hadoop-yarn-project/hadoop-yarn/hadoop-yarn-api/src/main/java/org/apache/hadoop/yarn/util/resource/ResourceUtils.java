@@ -726,11 +726,12 @@ specifier|private
 name|ResourceUtils
 parameter_list|()
 block|{   }
-DECL|method|checkMandatoryResources ( Map<String, ResourceInformation> resourceInformationMap)
+comment|/**    * Ensures that historical resource types (like {@link    * ResourceInformation#MEMORY_URI}, {@link ResourceInformation#VCORES_URI})    * are not getting overridden in the resourceInformationMap.    *    * Also checks whether {@link ResourceInformation#SPECIAL_RESOURCES} are not    * configured poorly: having their proper units and types.    *    * @param resourceInformationMap Map object having keys as resources names    *                               and {@link ResourceInformation} objects as    *                               values    * @throws YarnRuntimeException if either of the two above    * conditions do not hold    */
+DECL|method|checkSpecialResources ( Map<String, ResourceInformation> resourceInformationMap)
 specifier|private
 specifier|static
 name|void
-name|checkMandatoryResources
+name|checkSpecialResources
 parameter_list|(
 name|Map
 argument_list|<
@@ -743,10 +744,10 @@ parameter_list|)
 throws|throws
 name|YarnRuntimeException
 block|{
-comment|/*      * Supporting 'memory', 'memory-mb', 'vcores' also as invalid resource names, in addition to      * 'MEMORY' for historical reasons      */
+comment|/*      * Supporting 'memory', 'memory-mb', 'vcores' also as invalid resource      * names, in addition to 'MEMORY' for historical reasons      */
 name|String
-name|keys
 index|[]
+name|keys
 init|=
 block|{
 literal|"memory"
@@ -816,7 +817,7 @@ name|mandatoryResourceEntry
 range|:
 name|ResourceInformation
 operator|.
-name|MANDATORY_RESOURCES
+name|SPECIAL_RESOURCES
 operator|.
 name|entrySet
 argument_list|()
@@ -937,6 +938,7 @@ block|}
 block|}
 block|}
 block|}
+comment|/**    * Ensures that {@link ResourceUtils#MEMORY} and {@link ResourceUtils#VCORES}    * resources are contained in the map received as parameter.    *    * @param res Map object having keys as resources names    *            and {@link ResourceInformation} objects as values    */
 DECL|method|addMandatoryResources ( Map<String, ResourceInformation> res)
 specifier|private
 specifier|static
@@ -1754,7 +1756,7 @@ name|name
 argument_list|)
 expr_stmt|;
 block|}
-name|checkMandatoryResources
+name|checkSpecialResources
 argument_list|(
 name|resourceInformationMap
 argument_list|)
@@ -2837,7 +2839,7 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-name|checkMandatoryResources
+name|checkSpecialResources
 argument_list|(
 name|nodeResources
 argument_list|)
