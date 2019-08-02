@@ -258,9 +258,12 @@ name|compressedDirectBuf
 init|=
 literal|null
 decl_stmt|;
+DECL|field|finish
 DECL|field|finished
 specifier|private
 name|boolean
+name|finish
+decl_stmt|,
 name|finished
 decl_stmt|;
 DECL|field|bytesRead
@@ -747,7 +750,12 @@ specifier|public
 name|void
 name|finish
 parameter_list|()
-block|{   }
+block|{
+name|finish
+operator|=
+literal|true
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|finished ()
@@ -1021,6 +1029,10 @@ name|level
 argument_list|,
 name|stream
 argument_list|)
+expr_stmt|;
+name|finish
+operator|=
+literal|false
 expr_stmt|;
 name|finished
 operator|=
