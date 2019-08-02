@@ -610,7 +610,20 @@ parameter_list|(
 name|Exception
 name|e
 parameter_list|)
-block|{        }
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Failed to restartNodes Datanode"
+argument_list|,
+name|dn
+operator|.
+name|getUuid
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|shutdownNodes ()
@@ -742,7 +755,20 @@ parameter_list|(
 name|Exception
 name|e
 parameter_list|)
-block|{        }
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Failed to shutdown Datanode"
+argument_list|,
+name|dn
+operator|.
+name|getUuid
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|getFailureMode ()
@@ -1228,6 +1254,28 @@ argument_list|,
 literal|20
 operator|*
 literal|1000
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|OzoneConfigKeys
+operator|.
+name|DFS_RATIS_SNAPSHOT_THRESHOLD_KEY
+argument_list|,
+literal|100
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|OzoneConfigKeys
+operator|.
+name|DFS_CONTAINER_RATIS_LOG_PURGE_GAP
+argument_list|,
+literal|100
 argument_list|)
 expr_stmt|;
 block|}
