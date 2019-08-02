@@ -301,7 +301,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Received pipeline action {} for {} from datanode {}"
+literal|"Received pipeline action {} for {} from datanode {}. "
+operator|+
+literal|"Reason : {}"
 argument_list|,
 name|action
 operator|.
@@ -314,15 +316,14 @@ name|report
 operator|.
 name|getDatanodeDetails
 argument_list|()
-argument_list|)
-expr_stmt|;
-name|pipelineManager
-operator|.
-name|finalizeAndDestroyPipeline
-argument_list|(
-name|pipeline
 argument_list|,
-literal|true
+name|action
+operator|.
+name|getClosePipeline
+argument_list|()
+operator|.
+name|getDetailedReason
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
