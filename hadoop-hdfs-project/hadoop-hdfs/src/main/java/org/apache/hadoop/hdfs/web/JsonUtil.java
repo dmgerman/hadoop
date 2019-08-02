@@ -2524,6 +2524,18 @@ name|getDirectoryCount
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|m
+operator|.
+name|put
+argument_list|(
+literal|"ecPolicy"
+argument_list|,
+name|contentsummary
+operator|.
+name|getErasureCodingPolicy
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// For ContentSummary we don't need this since we already have
 comment|// separate count for file and directory.
 name|m
