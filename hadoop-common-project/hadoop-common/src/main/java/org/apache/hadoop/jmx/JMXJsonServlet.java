@@ -1484,17 +1484,13 @@ comment|// RuntimeErrorException happens when an unexpected failure occurs in ge
 comment|// for example https://issues.apache.org/jira/browse/DAEMON-120
 name|LOG
 operator|.
-name|debug
+name|error
 argument_list|(
-literal|"getting attribute "
-operator|+
+literal|"getting attribute {} of {} threw an exception"
+argument_list|,
 name|attName
-operator|+
-literal|" of "
-operator|+
+argument_list|,
 name|oname
-operator|+
-literal|" threw an exception"
 argument_list|,
 name|e
 argument_list|)
