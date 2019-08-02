@@ -3167,7 +3167,7 @@ expr_stmt|;
 block|}
 name|LOG
 operator|.
-name|info
+name|error
 argument_list|(
 literal|"pipeline Action "
 operator|+
