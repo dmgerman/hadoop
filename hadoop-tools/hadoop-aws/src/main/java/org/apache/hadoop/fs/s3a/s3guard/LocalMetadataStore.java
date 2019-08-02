@@ -2936,6 +2936,7 @@ annotation|@
 name|Override
 DECL|method|setTtlTimeProvider (ITtlTimeProvider ttlTimeProvider)
 specifier|public
+specifier|synchronized
 name|void
 name|setTtlTimeProvider
 parameter_list|(
@@ -2957,6 +2958,7 @@ annotation|@
 name|Override
 DECL|method|addAncestors (final Path qualifiedPath, @Nullable final BulkOperationState operationState)
 specifier|public
+specifier|synchronized
 name|void
 name|addAncestors
 parameter_list|(
