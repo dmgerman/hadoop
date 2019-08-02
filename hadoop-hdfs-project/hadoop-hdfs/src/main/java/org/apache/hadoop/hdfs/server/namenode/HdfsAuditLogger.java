@@ -200,6 +200,7 @@ block|}
 comment|/**    * Same as    * {@link #logAuditEvent(boolean, String, InetAddress, String, String, String,    * FileStatus)} with additional parameters related to logging delegation token    * tracking IDs.    *     * @param succeeded Whether authorization succeeded.    * @param userName Name of the user executing the request.    * @param addr Remote address of the request.    * @param cmd The requested command.    * @param src Path of affected source file.    * @param dst Path of affected destination file (if any).    * @param stat File information for operations that change the file's metadata    *          (permissions, owner, times, etc).    * @param callerContext Context information of the caller    * @param ugi UserGroupInformation of the current user, or null if not logging    *          token tracking information    * @param dtSecretManager The token secret manager, or null if not logging    *          token tracking information    */
 DECL|method|logAuditEvent (boolean succeeded, String userName, InetAddress addr, String cmd, String src, String dst, FileStatus stat, CallerContext callerContext, UserGroupInformation ugi, DelegationTokenSecretManager dtSecretManager)
 specifier|public
+specifier|abstract
 name|void
 name|logAuditEvent
 parameter_list|(
@@ -233,29 +234,7 @@ parameter_list|,
 name|DelegationTokenSecretManager
 name|dtSecretManager
 parameter_list|)
-block|{
-name|logAuditEvent
-argument_list|(
-name|succeeded
-argument_list|,
-name|userName
-argument_list|,
-name|addr
-argument_list|,
-name|cmd
-argument_list|,
-name|src
-argument_list|,
-name|dst
-argument_list|,
-name|stat
-argument_list|,
-name|ugi
-argument_list|,
-name|dtSecretManager
-argument_list|)
-expr_stmt|;
-block|}
+function_decl|;
 comment|/**    * Same as    * {@link #logAuditEvent(boolean, String, InetAddress, String, String,    * String, FileStatus, CallerContext, UserGroupInformation,    * DelegationTokenSecretManager)} without {@link CallerContext} information.    */
 DECL|method|logAuditEvent (boolean succeeded, String userName, InetAddress addr, String cmd, String src, String dst, FileStatus stat, UserGroupInformation ugi, DelegationTokenSecretManager dtSecretManager)
 specifier|public
