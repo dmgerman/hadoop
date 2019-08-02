@@ -898,7 +898,6 @@ specifier|public
 class|class
 name|TestDefaultContainerExecutor
 block|{
-comment|/*   // XXX FileContext cannot be mocked to do this   static FSDataInputStream getRandomStream(Random r, int len)       throws IOException {     byte[] bytes = new byte[len];     r.nextBytes(bytes);     DataInputBuffer buf = new DataInputBuffer();     buf.reset(bytes, 0, bytes.length);     return new FSDataInputStream(new FakeFSDataInputStream(buf));   }    class PathEndsWith extends ArgumentMatcher<Path> {     final String suffix;     PathEndsWith(String suffix) {       this.suffix = suffix;     }     @Override     public boolean matches(Object o) {       return       suffix.equals(((Path)o).getName());     }   }    DataOutputBuffer mockStream(       AbstractFileSystem spylfs, Path p, Random r, int len)        throws IOException {     DataOutputBuffer dob = new DataOutputBuffer();     doReturn(getRandomStream(r, len)).when(spylfs).open(p);     doReturn(new FileStatus(len, false, -1, -1L, -1L, p)).when(         spylfs).getFileStatus(argThat(new PathEndsWith(p.getName())));     doReturn(new FSDataOutputStream(dob)).when(spylfs).createInternal(         argThat(new PathEndsWith(p.getName())),         eq(EnumSet.of(OVERWRITE)),         Matchers.<FsPermission>anyObject(), anyInt(), anyShort(), anyLong(),         Matchers.<Progressable>anyObject(), anyInt(), anyBoolean());     return dob;   }   */
 DECL|field|BASE_TMP_PATH
 specifier|private
 specifier|static
