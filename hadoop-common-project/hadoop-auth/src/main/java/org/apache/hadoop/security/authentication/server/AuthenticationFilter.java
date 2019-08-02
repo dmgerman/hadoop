@@ -2541,6 +2541,10 @@ argument_list|(
 literal|"EEE, "
 operator|+
 literal|"dd-MMM-yyyy HH:mm:ss zzz"
+argument_list|,
+name|Locale
+operator|.
+name|US
 argument_list|)
 decl_stmt|;
 name|df
