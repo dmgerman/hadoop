@@ -13297,6 +13297,11 @@ name|Properties
 name|from
 parameter_list|)
 block|{
+synchronized|synchronized
+init|(
+name|from
+init|)
+block|{
 for|for
 control|(
 name|Entry
@@ -13328,6 +13333,7 @@ name|getValue
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|loadProperty (Properties properties, String name, String attr, String value, boolean finalParameter, String[] source)
