@@ -419,6 +419,30 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Start ReplicationManager.    */
+DECL|method|startReplicationManager ()
+name|void
+name|startReplicationManager
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Stop ReplicationManager.    */
+DECL|method|stopReplicationManager ()
+name|void
+name|stopReplicationManager
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Returns ReplicationManager status.    *    * @return True if ReplicationManager is running, false otherwise.    */
+DECL|method|getReplicationManagerStatus ()
+name|boolean
+name|getReplicationManagerStatus
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

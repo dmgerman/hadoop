@@ -866,6 +866,67 @@ literal|100L
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Checks if restarting of replication manager works.    */
+annotation|@
+name|Test
+DECL|method|testReplicationManagerRestart ()
+specifier|public
+name|void
+name|testReplicationManagerRestart
+parameter_list|()
+throws|throws
+name|InterruptedException
+block|{
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|replicationManager
+operator|.
+name|isRunning
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|replicationManager
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+comment|// Stop is a non-blocking call, it might take sometime for the
+comment|// ReplicationManager to shutdown
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|500
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertFalse
+argument_list|(
+name|replicationManager
+operator|.
+name|isRunning
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|replicationManager
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|replicationManager
+operator|.
+name|isRunning
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Open containers are not handled by ReplicationManager.    * This test-case makes sure that ReplicationManages doesn't take    * any action on OPEN containers.    */
 annotation|@
 name|Test

@@ -635,19 +635,18 @@ argument_list|>
 argument_list|>
 name|inflightDeletion
 decl_stmt|;
-comment|/**    * ReplicationMonitor thread is the one which wakes up at configured    * interval and processes all the containers.    */
-DECL|field|replicationMonitor
-specifier|private
-specifier|final
-name|Thread
-name|replicationMonitor
-decl_stmt|;
 comment|/**    * ReplicationManager specific configuration.    */
 DECL|field|conf
 specifier|private
 specifier|final
 name|ReplicationManagerConfiguration
 name|conf
+decl_stmt|;
+comment|/**    * ReplicationMonitor thread is the one which wakes up at configured    * interval and processes all the containers.    */
+DECL|field|replicationMonitor
+specifier|private
+name|Thread
+name|replicationMonitor
 decl_stmt|;
 comment|/**    * Flag used for checking if the ReplicationMonitor thread is running or    * not.    */
 DECL|field|running
@@ -657,7 +656,7 @@ name|boolean
 name|running
 decl_stmt|;
 comment|/**    * Constructs ReplicationManager instance with the given configuration.    *    * @param conf OzoneConfiguration    * @param containerManager ContainerManager    * @param containerPlacement ContainerPlacementPolicy    * @param eventPublisher EventPublisher    */
-DECL|method|ReplicationManager (final ReplicationManagerConfiguration conf, final ContainerManager containerManager, final ContainerPlacementPolicy containerPlacement, final EventPublisher eventPublisher, final LockManager lockManager)
+DECL|method|ReplicationManager (final ReplicationManagerConfiguration conf, final ContainerManager containerManager, final ContainerPlacementPolicy containerPlacement, final EventPublisher eventPublisher, final LockManager<ContainerID> lockManager)
 specifier|public
 name|ReplicationManager
 parameter_list|(
@@ -679,6 +678,9 @@ name|eventPublisher
 parameter_list|,
 specifier|final
 name|LockManager
+argument_list|<
+name|ContainerID
+argument_list|>
 name|lockManager
 parameter_list|)
 block|{
@@ -708,6 +710,18 @@ name|lockManager
 expr_stmt|;
 name|this
 operator|.
+name|conf
+operator|=
+name|conf
+expr_stmt|;
+name|this
+operator|.
+name|running
+operator|=
+literal|false
+expr_stmt|;
+name|this
+operator|.
 name|inflightReplication
 operator|=
 operator|new
@@ -724,48 +738,6 @@ name|HashMap
 argument_list|<>
 argument_list|()
 expr_stmt|;
-name|this
-operator|.
-name|replicationMonitor
-operator|=
-operator|new
-name|Thread
-argument_list|(
-name|this
-operator|::
-name|run
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|replicationMonitor
-operator|.
-name|setName
-argument_list|(
-literal|"ReplicationMonitor"
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|replicationMonitor
-operator|.
-name|setDaemon
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|conf
-operator|=
-name|conf
-expr_stmt|;
-name|this
-operator|.
-name|running
-operator|=
-literal|false
-expr_stmt|;
 block|}
 comment|/**    * Starts Replication Monitor thread.    */
 DECL|method|start ()
@@ -778,7 +750,8 @@ block|{
 if|if
 condition|(
 operator|!
-name|running
+name|isRunning
+argument_list|()
 condition|)
 block|{
 name|LOG
@@ -791,6 +764,30 @@ expr_stmt|;
 name|running
 operator|=
 literal|true
+expr_stmt|;
+name|replicationMonitor
+operator|=
+operator|new
+name|Thread
+argument_list|(
+name|this
+operator|::
+name|run
+argument_list|)
+expr_stmt|;
+name|replicationMonitor
+operator|.
+name|setName
+argument_list|(
+literal|"ReplicationMonitor"
+argument_list|)
+expr_stmt|;
+name|replicationMonitor
+operator|.
+name|setDaemon
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 name|replicationMonitor
 operator|.
@@ -816,11 +813,31 @@ name|boolean
 name|isRunning
 parameter_list|()
 block|{
+if|if
+condition|(
+operator|!
+name|running
+condition|)
+block|{
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
 return|return
+name|replicationMonitor
+operator|!=
+literal|null
+operator|&&
 name|replicationMonitor
 operator|.
 name|isAlive
 argument_list|()
+return|;
+block|}
+block|}
+return|return
+literal|true
 return|;
 block|}
 comment|/**    * Process all the containers immediately.    */
@@ -866,6 +883,16 @@ name|info
 argument_list|(
 literal|"Stopping Replication Monitor Thread."
 argument_list|)
+expr_stmt|;
+name|inflightReplication
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|inflightDeletion
+operator|.
+name|clear
+argument_list|()
 expr_stmt|;
 name|running
 operator|=

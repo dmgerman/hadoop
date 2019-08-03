@@ -1498,6 +1498,55 @@ name|forceExitSafeMode
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|startReplicationManager ()
+specifier|public
+name|void
+name|startReplicationManager
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|storageContainerLocationClient
+operator|.
+name|startReplicationManager
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|stopReplicationManager ()
+specifier|public
+name|void
+name|stopReplicationManager
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|storageContainerLocationClient
+operator|.
+name|stopReplicationManager
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getReplicationManagerStatus ()
+specifier|public
+name|boolean
+name|getReplicationManagerStatus
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|storageContainerLocationClient
+operator|.
+name|getReplicationManagerStatus
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

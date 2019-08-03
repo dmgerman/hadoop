@@ -744,6 +744,10 @@ block|,
 name|TopologySubcommand
 operator|.
 name|class
+block|,
+name|ReplicationManagerCommands
+operator|.
+name|class
 block|}
 argument_list|,
 name|mixinStandardHelpOptions
