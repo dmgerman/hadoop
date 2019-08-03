@@ -20,22 +20,6 @@ end_package
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|conf
-operator|.
-name|OzoneConfiguration
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -46,37 +30,51 @@ name|Provider
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
 begin_comment
 comment|/**  * Ozone Configuration Provider.  *<p>  * As the OzoneConfiguration is created by the CLI application here we inject  * it via a singleton instance to the Jax-RS/CDI instances.  */
 end_comment
 
 begin_class
-DECL|class|OzoneConfigurationProvider
+DECL|class|ConfigurationProvider
 specifier|public
 class|class
-name|OzoneConfigurationProvider
+name|ConfigurationProvider
 implements|implements
 name|Provider
 argument_list|<
-name|OzoneConfiguration
+name|Configuration
 argument_list|>
 block|{
 DECL|field|configuration
 specifier|private
 specifier|static
-name|OzoneConfiguration
+name|Configuration
 name|configuration
 decl_stmt|;
-DECL|method|setConfiguration (OzoneConfiguration conf)
+DECL|method|setConfiguration (Configuration conf)
 specifier|static
 name|void
 name|setConfiguration
 parameter_list|(
-name|OzoneConfiguration
+name|Configuration
 name|conf
 parameter_list|)
 block|{
-name|OzoneConfigurationProvider
+name|ConfigurationProvider
 operator|.
 name|configuration
 operator|=
@@ -87,7 +85,7 @@ annotation|@
 name|Override
 DECL|method|get ()
 specifier|public
-name|OzoneConfiguration
+name|Configuration
 name|get
 parameter_list|()
 block|{

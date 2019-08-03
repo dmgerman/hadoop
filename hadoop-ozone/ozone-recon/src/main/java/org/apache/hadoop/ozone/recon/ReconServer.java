@@ -416,7 +416,7 @@ init|=
 name|createOzoneConfiguration
 argument_list|()
 decl_stmt|;
-name|OzoneConfigurationProvider
+name|ConfigurationProvider
 operator|.
 name|setConfiguration
 argument_list|(
