@@ -2199,7 +2199,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|warn
+name|debug
 argument_list|(
 literal|"One of the nodes is outside of network topology"
 argument_list|)
