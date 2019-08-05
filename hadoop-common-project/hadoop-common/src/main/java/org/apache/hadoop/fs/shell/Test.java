@@ -163,7 +163,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"-[defsz]<path>"
+literal|"-[defswrz]<path>"
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|public
