@@ -308,6 +308,13 @@ name|Metric
 name|MutableCounterLong
 name|numWriteStateMachineFails
 decl_stmt|;
+DECL|field|numWriteDataFails
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numWriteDataFails
+decl_stmt|;
 DECL|field|numQueryStateMachineFails
 specifier|private
 annotation|@
@@ -544,6 +551,18 @@ name|incr
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|incNumWriteDataFails ()
+specifier|public
+name|void
+name|incNumWriteDataFails
+parameter_list|()
+block|{
+name|numWriteDataFails
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
 DECL|method|incNumQueryStateMachineFails ()
 specifier|public
 name|void
@@ -681,6 +700,21 @@ parameter_list|()
 block|{
 return|return
 name|numWriteStateMachineFails
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumWriteDataFails ()
+specifier|public
+name|long
+name|getNumWriteDataFails
+parameter_list|()
+block|{
+return|return
+name|numWriteDataFails
 operator|.
 name|value
 argument_list|()
