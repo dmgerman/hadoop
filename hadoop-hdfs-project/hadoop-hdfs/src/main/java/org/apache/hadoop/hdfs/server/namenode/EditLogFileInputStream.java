@@ -803,6 +803,31 @@ literal|"No header found in log"
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
+name|logVersion
+operator|==
+operator|-
+literal|1
+condition|)
+block|{
+comment|// The edits in progress file is pre-allocated with 1MB of "-1" bytes
+comment|// when it is created, then the header is written. If the header is
+comment|// -1, it indicates the an exception occurred pre-allocating the file
+comment|// and the header was never written. Therefore this is effectively a
+comment|// corrupt and empty log.
+throw|throw
+operator|new
+name|LogHeaderCorruptException
+argument_list|(
+literal|"No header present in log (value "
+operator|+
+literal|"is -1), probably due to disk space issues when it was created. "
+operator|+
+literal|"The log has no transactions and will be sidelined."
+argument_list|)
+throw|;
+block|}
 comment|// We assume future layout will also support ADD_LAYOUT_FLAGS
 if|if
 condition|(

@@ -8335,6 +8335,36 @@ name|getPosition
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|in
+operator|.
+name|getPosition
+argument_list|()
+operator|<=
+name|lastPos
+condition|)
+block|{
+name|FSImage
+operator|.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"After resync, the position, {} is not greater "
+operator|+
+literal|"than the previous position {}. Skipping remainder of this log."
+argument_list|,
+name|in
+operator|.
+name|getPosition
+argument_list|()
+argument_list|,
+name|lastPos
+argument_list|)
+expr_stmt|;
+break|break;
+block|}
 continue|continue;
 block|}
 if|if
