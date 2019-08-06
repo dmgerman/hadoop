@@ -13061,6 +13061,18 @@ name|DEFAULT_RM_ACTIVITIES_MANAGER_APP_ACTIVITIES_MAX_QUEUE_LENGTH
 init|=
 literal|100
 decl_stmt|;
+comment|/**    * Containers launcher implementation to use.    */
+DECL|field|NM_CONTAINERS_LAUNCHER_CLASS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_CONTAINERS_LAUNCHER_CLASS
+init|=
+name|NM_PREFIX
+operator|+
+literal|"containers-launcher.class"
+decl_stmt|;
 DECL|method|YarnConfiguration ()
 specifier|public
 name|YarnConfiguration
