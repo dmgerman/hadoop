@@ -460,6 +460,19 @@ literal|" is not known."
 argument_list|)
 throw|;
 block|}
+name|String
+name|clientPrincipal
+init|=
+literal|null
+decl_stmt|;
+if|if
+condition|(
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+condition|)
+block|{
 comment|// get client principal key to verify (if available)
 name|KerberosInfo
 name|krbInfo
@@ -472,11 +485,6 @@ name|protocol
 argument_list|,
 name|conf
 argument_list|)
-decl_stmt|;
-name|String
-name|clientPrincipal
-init|=
-literal|null
 decl_stmt|;
 if|if
 condition|(
@@ -556,6 +564,7 @@ argument_list|(
 name|e
 argument_list|)
 throw|;
+block|}
 block|}
 block|}
 block|}
