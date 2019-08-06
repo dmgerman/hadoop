@@ -326,6 +326,15 @@ name|getDetailedReason
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|pipelineManager
+operator|.
+name|finalizeAndDestroyPipeline
+argument_list|(
+name|pipeline
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
