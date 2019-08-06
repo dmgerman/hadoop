@@ -831,7 +831,7 @@ specifier|final
 name|String
 name|OZONE_OM_HTTP_KERBEROS_KEYTAB_FILE
 init|=
-literal|"ozone.om.http.kerberos.keytab.file"
+literal|"ozone.om.http.kerberos.keytab"
 decl_stmt|;
 DECL|field|OZONE_OM_HTTP_KERBEROS_PRINCIPAL_KEY
 specifier|public

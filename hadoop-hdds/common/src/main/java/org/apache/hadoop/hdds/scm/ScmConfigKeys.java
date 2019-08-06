@@ -1398,7 +1398,7 @@ name|String
 DECL|field|HDDS_SCM_HTTP_KERBEROS_KEYTAB_FILE_KEY
 name|HDDS_SCM_HTTP_KERBEROS_KEYTAB_FILE_KEY
 init|=
-literal|"hdds.scm.http.kerberos.keytab.file"
+literal|"hdds.scm.http.kerberos.keytab"
 decl_stmt|;
 comment|// Network topology
 DECL|field|OZONE_SCM_NETWORK_TOPOLOGY_SCHEMA_FILE
