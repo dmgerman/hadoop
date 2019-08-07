@@ -13046,6 +13046,29 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"DataTransfer "
+operator|+
+name|b
+operator|+
+literal|" to "
+operator|+
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|targets
+argument_list|)
+return|;
+block|}
 block|}
 comment|/***    * Use BlockTokenSecretManager to generate block token for current user.    */
 DECL|method|getBlockAccessToken (ExtendedBlock b, EnumSet<AccessMode> mode, StorageType[] storageTypes, String[] storageIds)
