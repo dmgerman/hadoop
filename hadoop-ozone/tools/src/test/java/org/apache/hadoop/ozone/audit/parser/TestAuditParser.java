@@ -247,7 +247,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Tests GenerateOzoneRequiredConfigurations.  */
+comment|/**  * Tests AuditParser.  */
 end_comment
 
 begin_class
