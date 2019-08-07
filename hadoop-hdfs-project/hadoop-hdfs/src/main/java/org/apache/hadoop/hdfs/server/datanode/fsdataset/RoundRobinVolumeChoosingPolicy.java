@@ -442,6 +442,27 @@ literal|" B)."
 argument_list|)
 throw|;
 block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"The volume[{}] with the available space (={} B) is "
+operator|+
+literal|"less than the block size (={} B)."
+argument_list|,
+name|volume
+operator|.
+name|getBaseURI
+argument_list|()
+argument_list|,
+name|availableVolumeSize
+argument_list|,
+name|blockSize
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 block|}
