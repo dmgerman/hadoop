@@ -404,7 +404,19 @@ throw|throw
 operator|new
 name|SCMException
 argument_list|(
-literal|"No enough datanodes to choose."
+literal|"No enough datanodes to choose. "
+operator|+
+literal|"TotalNode = "
+operator|+
+name|datanodeCount
+operator|+
+literal|"RequiredNode = "
+operator|+
+name|nodesRequired
+operator|+
+literal|"ExcludedNode = "
+operator|+
+name|excludedNodesCount
 argument_list|,
 literal|null
 argument_list|)

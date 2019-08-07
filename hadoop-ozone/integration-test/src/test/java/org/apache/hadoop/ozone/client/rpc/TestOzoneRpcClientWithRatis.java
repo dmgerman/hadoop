@@ -118,6 +118,20 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|OzoneConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|client
 operator|.
 name|ObjectStore
@@ -402,6 +416,17 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|OzoneConfigKeys
+operator|.
+name|OZONE_NETWORK_TOPOLOGY_AWARE_READ_KEY
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 name|startCluster
 argument_list|(
 name|conf
@@ -510,6 +535,8 @@ name|toString
 argument_list|()
 decl_stmt|;
 comment|// Write data into a key
+try|try
+init|(
 name|OzoneOutputStream
 name|out
 init|=
@@ -537,7 +564,8 @@ name|HashMap
 argument_list|<>
 argument_list|()
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|out
 operator|.
 name|write
@@ -548,11 +576,7 @@ name|getBytes
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|out
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
+block|}
 comment|// Since the rpc client is outside of cluster, then getFirstNode should be
 comment|// equal to getClosestNode.
 name|OmKeyArgs
@@ -588,9 +612,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-comment|// read key with topology aware read enabled(default)
+comment|// read key with topology aware read enabled
 try|try
-block|{
+init|(
 name|OzoneInputStream
 name|is
 init|=
@@ -600,7 +624,8 @@ name|readKey
 argument_list|(
 name|keyName
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|byte
 index|[]
 name|b
@@ -649,23 +674,24 @@ parameter_list|)
 block|{
 name|fail
 argument_list|(
-literal|"Reading key should success"
+literal|"Read key should succeed"
 argument_list|)
 expr_stmt|;
 block|}
-comment|// read file with topology aware read enabled(default)
+comment|// read file with topology aware read enabled
 try|try
-block|{
+init|(
 name|OzoneInputStream
 name|is
 init|=
 name|bucket
 operator|.
-name|readFile
+name|readKey
 argument_list|(
 name|keyName
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|byte
 index|[]
 name|b
@@ -714,22 +740,24 @@ parameter_list|)
 block|{
 name|fail
 argument_list|(
-literal|"Reading file should success"
+literal|"Read file should succeed"
 argument_list|)
 expr_stmt|;
 block|}
 comment|// read key with topology aware read disabled
 name|conf
 operator|.
-name|set
+name|setBoolean
 argument_list|(
-name|ScmConfigKeys
+name|OzoneConfigKeys
 operator|.
-name|DFS_NETWORK_TOPOLOGY_AWARE_READ_ENABLED
+name|OZONE_NETWORK_TOPOLOGY_AWARE_READ_KEY
 argument_list|,
-literal|"false"
+literal|false
 argument_list|)
 expr_stmt|;
+try|try
+init|(
 name|OzoneClient
 name|newClient
 init|=
@@ -739,7 +767,8 @@ name|getRpcClient
 argument_list|(
 name|conf
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|ObjectStore
 name|newStore
 init|=
@@ -764,7 +793,7 @@ name|bucketName
 argument_list|)
 decl_stmt|;
 try|try
-block|{
+init|(
 name|OzoneInputStream
 name|is
 init|=
@@ -774,7 +803,8 @@ name|readKey
 argument_list|(
 name|keyName
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|byte
 index|[]
 name|b
@@ -823,13 +853,13 @@ parameter_list|)
 block|{
 name|fail
 argument_list|(
-literal|"Reading key should success"
+literal|"Read key should succeed"
 argument_list|)
 expr_stmt|;
 block|}
 comment|// read file with topology aware read disabled
 try|try
-block|{
+init|(
 name|OzoneInputStream
 name|is
 init|=
@@ -839,7 +869,8 @@ name|readFile
 argument_list|(
 name|keyName
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|byte
 index|[]
 name|b
@@ -888,9 +919,10 @@ parameter_list|)
 block|{
 name|fail
 argument_list|(
-literal|"Reading file should success"
+literal|"Read file should succeed"
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}

@@ -4653,6 +4653,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+if|if
+condition|(
+name|args
+operator|.
+name|getSortDatanodes
+argument_list|()
+condition|)
+block|{
 name|sortDatanodeInPipeline
 argument_list|(
 name|value
@@ -4660,6 +4668,7 @@ argument_list|,
 name|clientAddress
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|value
 return|;
@@ -11246,6 +11255,14 @@ name|isFile
 argument_list|()
 condition|)
 block|{
+if|if
+condition|(
+name|args
+operator|.
+name|getSortDatanodes
+argument_list|()
+condition|)
+block|{
 name|sortDatanodeInPipeline
 argument_list|(
 name|fileStatus
@@ -11256,6 +11273,7 @@ argument_list|,
 name|clientAddress
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|fileStatus
 operator|.

@@ -268,6 +268,18 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Create container placement policy of type "
+operator|+
+name|placementClass
+operator|.
+name|getCanonicalName
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(

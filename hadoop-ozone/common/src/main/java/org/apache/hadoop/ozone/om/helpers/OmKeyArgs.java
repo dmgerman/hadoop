@@ -257,6 +257,11 @@ specifier|private
 name|boolean
 name|refreshPipeline
 decl_stmt|;
+DECL|field|sortDatanodesInPipeline
+specifier|private
+name|boolean
+name|sortDatanodesInPipeline
+decl_stmt|;
 DECL|field|acls
 specifier|private
 name|List
@@ -270,7 +275,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"parameternumber"
 argument_list|)
-DECL|method|OmKeyArgs (String volumeName, String bucketName, String keyName, long dataSize, ReplicationType type, ReplicationFactor factor, List<OmKeyLocationInfo> locationInfoList, boolean isMultipart, String uploadID, int partNumber, Map<String, String> metadataMap, boolean refreshPipeline, List<OzoneAcl> acls)
+DECL|method|OmKeyArgs (String volumeName, String bucketName, String keyName, long dataSize, ReplicationType type, ReplicationFactor factor, List<OmKeyLocationInfo> locationInfoList, boolean isMultipart, String uploadID, int partNumber, Map<String, String> metadataMap, boolean refreshPipeline, List<OzoneAcl> acls, boolean sortDatanode)
 specifier|private
 name|OmKeyArgs
 parameter_list|(
@@ -323,6 +328,9 @@ argument_list|<
 name|OzoneAcl
 argument_list|>
 name|acls
+parameter_list|,
+name|boolean
+name|sortDatanode
 parameter_list|)
 block|{
 name|this
@@ -402,6 +410,12 @@ operator|.
 name|acls
 operator|=
 name|acls
+expr_stmt|;
+name|this
+operator|.
+name|sortDatanodesInPipeline
+operator|=
+name|sortDatanode
 expr_stmt|;
 block|}
 DECL|method|getIsMultipartKey ()
@@ -597,6 +611,16 @@ parameter_list|()
 block|{
 return|return
 name|refreshPipeline
+return|;
+block|}
+DECL|method|getSortDatanodes ()
+specifier|public
+name|boolean
+name|getSortDatanodes
+parameter_list|()
+block|{
+return|return
+name|sortDatanodesInPipeline
 return|;
 block|}
 annotation|@
@@ -877,6 +901,11 @@ DECL|field|refreshPipeline
 specifier|private
 name|boolean
 name|refreshPipeline
+decl_stmt|;
+DECL|field|sortDatanodesInPipeline
+specifier|private
+name|boolean
+name|sortDatanodesInPipeline
 decl_stmt|;
 DECL|field|acls
 specifier|private
@@ -1174,6 +1203,25 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|setSortDatanodesInPipeline (boolean sort)
+specifier|public
+name|Builder
+name|setSortDatanodesInPipeline
+parameter_list|(
+name|boolean
+name|sort
+parameter_list|)
+block|{
+name|this
+operator|.
+name|sortDatanodesInPipeline
+operator|=
+name|sort
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|build ()
 specifier|public
 name|OmKeyArgs
@@ -1209,6 +1257,8 @@ argument_list|,
 name|refreshPipeline
 argument_list|,
 name|acls
+argument_list|,
+name|sortDatanodesInPipeline
 argument_list|)
 return|;
 block|}

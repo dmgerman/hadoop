@@ -1722,6 +1722,24 @@ name|OZONE_FREON_HTTP_KERBEROS_KEYTAB_FILE_KEY
 init|=
 literal|"ozone.freon.http.kerberos.keytab"
 decl_stmt|;
+DECL|field|OZONE_NETWORK_TOPOLOGY_AWARE_READ_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_NETWORK_TOPOLOGY_AWARE_READ_KEY
+init|=
+literal|"ozone.network.topology.aware.read"
+decl_stmt|;
+DECL|field|OZONE_NETWORK_TOPOLOGY_AWARE_READ_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|OZONE_NETWORK_TOPOLOGY_AWARE_READ_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * There is no need to instantiate this class.    */
 DECL|method|OzoneConfigKeys ()
 specifier|private

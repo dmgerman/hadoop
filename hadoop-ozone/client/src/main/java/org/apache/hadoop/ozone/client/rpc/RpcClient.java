@@ -1417,6 +1417,12 @@ specifier|private
 name|Text
 name|dtService
 decl_stmt|;
+DECL|field|topologyAwareReadEnabled
+specifier|private
+specifier|final
+name|boolean
+name|topologyAwareReadEnabled
+decl_stmt|;
 comment|/**     * Creates RpcClient instance with the given configuration.     * @param conf     * @throws IOException     */
 DECL|method|RpcClient (Configuration conf)
 specifier|public
@@ -1916,6 +1922,21 @@ operator|.
 name|init
 argument_list|(
 name|isUnsafeByteOperationsEnabled
+argument_list|)
+expr_stmt|;
+name|topologyAwareReadEnabled
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|OzoneConfigKeys
+operator|.
+name|OZONE_NETWORK_TOPOLOGY_AWARE_READ_KEY
+argument_list|,
+name|OzoneConfigKeys
+operator|.
+name|OZONE_NETWORK_TOPOLOGY_AWARE_READ_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
@@ -4173,6 +4194,11 @@ argument_list|(
 literal|true
 argument_list|)
 operator|.
+name|setSortDatanodesInPipeline
+argument_list|(
+name|topologyAwareReadEnabled
+argument_list|)
+operator|.
 name|build
 argument_list|()
 decl_stmt|;
@@ -4523,6 +4549,11 @@ operator|.
 name|setRefreshPipeline
 argument_list|(
 literal|true
+argument_list|)
+operator|.
+name|setSortDatanodesInPipeline
+argument_list|(
+name|topologyAwareReadEnabled
 argument_list|)
 operator|.
 name|build
@@ -5953,6 +5984,11 @@ operator|.
 name|setKeyName
 argument_list|(
 name|keyName
+argument_list|)
+operator|.
+name|setSortDatanodesInPipeline
+argument_list|(
+name|topologyAwareReadEnabled
 argument_list|)
 operator|.
 name|build
