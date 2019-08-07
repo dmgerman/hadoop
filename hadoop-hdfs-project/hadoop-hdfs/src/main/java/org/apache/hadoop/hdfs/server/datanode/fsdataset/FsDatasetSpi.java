@@ -1889,6 +1889,21 @@ name|AutoCloseableLock
 name|acquireDatasetLock
 parameter_list|()
 function_decl|;
+DECL|method|deepCopyReplica (String bpid)
+name|Set
+argument_list|<
+name|?
+extends|extends
+name|Replica
+argument_list|>
+name|deepCopyReplica
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

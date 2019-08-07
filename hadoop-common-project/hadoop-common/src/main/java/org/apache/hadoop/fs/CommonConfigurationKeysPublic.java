@@ -169,6 +169,36 @@ init|=
 literal|600000
 decl_stmt|;
 comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
+DECL|field|FS_GETSPACEUSED_CLASSNAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_GETSPACEUSED_CLASSNAME
+init|=
+literal|"fs.getspaceused.classname"
+decl_stmt|;
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
+DECL|field|FS_GETSPACEUSED_JITTER_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_GETSPACEUSED_JITTER_KEY
+init|=
+literal|"fs.getspaceused.jitterMillis"
+decl_stmt|;
+comment|/** Default value for FS_GETSPACEUSED_JITTER_KEY */
+DECL|field|FS_GETSPACEUSED_JITTER_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|FS_GETSPACEUSED_JITTER_DEFAULT
+init|=
+literal|60000
+decl_stmt|;
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|FS_CLIENT_RESOLVE_REMOTE_SYMLINKS_KEY
 specifier|public
 specifier|static

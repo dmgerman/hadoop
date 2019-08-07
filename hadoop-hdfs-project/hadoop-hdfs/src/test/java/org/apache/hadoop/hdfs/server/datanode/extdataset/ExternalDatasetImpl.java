@@ -1918,6 +1918,30 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|deepCopyReplica (String bpid)
+specifier|public
+name|Set
+argument_list|<
+name|?
+extends|extends
+name|Replica
+argument_list|>
+name|deepCopyReplica
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|Collections
+operator|.
+name|EMPTY_SET
+return|;
+block|}
 block|}
 end_class
 
