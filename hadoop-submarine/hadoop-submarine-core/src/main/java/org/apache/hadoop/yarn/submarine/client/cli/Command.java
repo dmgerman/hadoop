@@ -34,9 +34,12 @@ name|Command
 block|{
 DECL|enumConstant|RUN_JOB
 DECL|enumConstant|SHOW_JOB
+DECL|enumConstant|KILL_JOB
 name|RUN_JOB
 block|,
 name|SHOW_JOB
+block|,
+name|KILL_JOB
 block|}
 end_enum
 

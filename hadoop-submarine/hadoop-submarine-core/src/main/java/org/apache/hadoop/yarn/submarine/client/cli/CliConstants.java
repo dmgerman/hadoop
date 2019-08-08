@@ -32,6 +32,15 @@ specifier|public
 class|class
 name|CliConstants
 block|{
+DECL|field|KILL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KILL
+init|=
+literal|"kill"
+decl_stmt|;
 DECL|field|RUN
 specifier|public
 specifier|static
