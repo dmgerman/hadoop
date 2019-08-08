@@ -306,6 +306,15 @@ case|:
 case|case
 name|CompleteMultiPartUpload
 case|:
+case|case
+name|AddAcl
+case|:
+case|case
+name|RemoveAcl
+case|:
+case|case
+name|SetAcl
+case|:
 comment|//TODO: We don't need to pass transactionID, this will be removed when
 comment|// complete write requests is changed to new model. And also we can
 comment|// return OMClientResponse, then adding to doubleBuffer can be taken
@@ -321,6 +330,13 @@ argument_list|(
 name|omRequest
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|omClientRequest
+operator|!=
+literal|null
+condition|)
+block|{
 name|OMClientResponse
 name|omClientResponse
 init|=
@@ -344,6 +360,17 @@ operator|.
 name|getOMResponse
 argument_list|()
 return|;
+block|}
+else|else
+block|{
+comment|//TODO: remove this once we have all HA support for all write request.
+return|return
+name|handle
+argument_list|(
+name|omRequest
+argument_list|)
+return|;
+block|}
 default|default:
 comment|// As all request types are not changed so we need to call handle
 comment|// here.
