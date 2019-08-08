@@ -550,6 +550,10 @@ block|{
 if|if
 condition|(
 name|configuredMaxResource
+operator|==
+literal|null
+operator|||
+name|configuredMaxResource
 operator|.
 name|getResource
 argument_list|()
