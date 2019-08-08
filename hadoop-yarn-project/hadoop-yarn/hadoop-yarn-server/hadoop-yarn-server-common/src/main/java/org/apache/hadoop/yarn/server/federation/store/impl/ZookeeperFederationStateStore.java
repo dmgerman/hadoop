@@ -2749,6 +2749,24 @@ argument_list|(
 name|child
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|policy
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Policy for queue: {} does not exist."
+argument_list|,
+name|child
+argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
 name|result
 operator|.
 name|add
