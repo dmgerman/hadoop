@@ -1131,7 +1131,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|error
+name|warn
 argument_list|(
 name|ShortCircuitCache
 operator|.
@@ -1149,7 +1149,9 @@ literal|"ReleaseShortCircuitAccessRequestProto to "
 operator|+
 name|path
 operator|+
-literal|".  Closing shared memory segment."
+literal|".  Closing shared memory segment. "
+operator|+
+literal|"DataNode may have been stopped or restarted"
 argument_list|,
 name|e
 argument_list|)
