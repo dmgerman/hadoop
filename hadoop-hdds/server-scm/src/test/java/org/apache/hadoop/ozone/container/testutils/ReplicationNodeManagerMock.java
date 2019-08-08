@@ -705,6 +705,30 @@ literal|"Not yet implemented"
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|Override
+DECL|method|addContainer (DatanodeDetails datanodeDetails, ContainerID containerId)
+specifier|public
+name|void
+name|addContainer
+parameter_list|(
+name|DatanodeDetails
+name|datanodeDetails
+parameter_list|,
+name|ContainerID
+name|containerId
+parameter_list|)
+throws|throws
+name|NodeNotFoundException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not yet implemented"
+argument_list|)
+throw|;
+block|}
 comment|/**    * Update set of containers available on a datanode.    * @param uuid - DatanodeID    * @param containerIds - Set of containerIDs    * @throws NodeNotFoundException - if datanode is not known. For new datanode    *                                 use addDatanodeInContainerMap call.    */
 annotation|@
 name|Override

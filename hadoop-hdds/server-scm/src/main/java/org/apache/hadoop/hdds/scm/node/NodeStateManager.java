@@ -1465,6 +1465,33 @@ name|pipeline
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Adds the given container to the specified datanode.    *    * @param uuid - datanode uuid    * @param containerId - containerID    * @throws NodeNotFoundException - if datanode is not known. For new datanode    *                        use addDatanodeInContainerMap call.    */
+DECL|method|addContainer (final UUID uuid, final ContainerID containerId)
+specifier|public
+name|void
+name|addContainer
+parameter_list|(
+specifier|final
+name|UUID
+name|uuid
+parameter_list|,
+specifier|final
+name|ContainerID
+name|containerId
+parameter_list|)
+throws|throws
+name|NodeNotFoundException
+block|{
+name|nodeStateMap
+operator|.
+name|addContainer
+argument_list|(
+name|uuid
+argument_list|,
+name|containerId
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Update set of containers available on a datanode.    * @param uuid - DatanodeID    * @param containerIds - Set of containerIDs    * @throws NodeNotFoundException - if datanode is not known.    */
 DECL|method|setContainers (UUID uuid, Set<ContainerID> containerIds)
 specifier|public

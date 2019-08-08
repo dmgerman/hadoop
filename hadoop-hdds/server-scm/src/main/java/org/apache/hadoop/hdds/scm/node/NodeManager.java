@@ -430,6 +430,20 @@ name|Pipeline
 name|pipeline
 parameter_list|)
 function_decl|;
+comment|/**    * Adds the given container to the specified datanode.    *    * @param datanodeDetails - DatanodeDetails    * @param containerId - containerID    * @throws NodeNotFoundException - if datanode is not known. For new datanode    *                        use addDatanodeInContainerMap call.    */
+DECL|method|addContainer (DatanodeDetails datanodeDetails, ContainerID containerId)
+name|void
+name|addContainer
+parameter_list|(
+name|DatanodeDetails
+name|datanodeDetails
+parameter_list|,
+name|ContainerID
+name|containerId
+parameter_list|)
+throws|throws
+name|NodeNotFoundException
+function_decl|;
 comment|/**    * Remaps datanode to containers mapping to the new set of containers.    * @param datanodeDetails - DatanodeDetails    * @param containerIds - Set of containerIDs    * @throws NodeNotFoundException - if datanode is not known. For new datanode    *                        use addDatanodeInContainerMap call.    */
 DECL|method|setContainers (DatanodeDetails datanodeDetails, Set<ContainerID> containerIds)
 name|void

@@ -2445,6 +2445,37 @@ name|pipeline
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|addContainer (final DatanodeDetails datanodeDetails, final ContainerID containerId)
+specifier|public
+name|void
+name|addContainer
+parameter_list|(
+specifier|final
+name|DatanodeDetails
+name|datanodeDetails
+parameter_list|,
+specifier|final
+name|ContainerID
+name|containerId
+parameter_list|)
+throws|throws
+name|NodeNotFoundException
+block|{
+name|nodeStateManager
+operator|.
+name|addContainer
+argument_list|(
+name|datanodeDetails
+operator|.
+name|getUuid
+argument_list|()
+argument_list|,
+name|containerId
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Update set of containers available on a datanode.    * @param datanodeDetails - DatanodeID    * @param containerIds - Set of containerIDs    * @throws NodeNotFoundException - if datanode is not known. For new datanode    *                        use addDatanodeInContainerMap call.    */
 annotation|@
 name|Override

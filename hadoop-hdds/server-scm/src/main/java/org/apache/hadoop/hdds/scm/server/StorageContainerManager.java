@@ -2077,6 +2077,8 @@ init|=
 operator|new
 name|IncrementalContainerReportHandler
 argument_list|(
+name|scmNodeManager
+argument_list|,
 name|containerManager
 argument_list|)
 decl_stmt|;
