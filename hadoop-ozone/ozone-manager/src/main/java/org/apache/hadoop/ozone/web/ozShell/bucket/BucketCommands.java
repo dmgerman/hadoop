@@ -167,10 +167,6 @@ name|CreateBucketHandler
 operator|.
 name|class
 block|,
-name|UpdateBucketHandler
-operator|.
-name|class
-block|,
 name|DeleteBucketHandler
 operator|.
 name|class
