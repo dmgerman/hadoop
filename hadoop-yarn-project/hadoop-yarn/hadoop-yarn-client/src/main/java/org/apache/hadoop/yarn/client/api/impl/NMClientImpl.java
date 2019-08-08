@@ -880,7 +880,7 @@ operator|.
 name|getContainerId
 argument_list|()
 operator|+
-literal|"when stopping NMClientImpl"
+literal|" when stopping NMClientImpl"
 argument_list|)
 expr_stmt|;
 block|}
@@ -901,7 +901,7 @@ operator|.
 name|getContainerId
 argument_list|()
 operator|+
-literal|"when stopping NMClientImpl"
+literal|" when stopping NMClientImpl"
 argument_list|)
 expr_stmt|;
 block|}
