@@ -1160,28 +1160,6 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|ClosedChannelException
-name|e
-parameter_list|)
-block|{
-name|FsDatasetImpl
-operator|.
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"The volume "
-operator|+
-name|v
-operator|+
-literal|" is closed while "
-operator|+
-literal|"adding replicas, ignored."
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
 name|IOException
 name|ioe
 parameter_list|)
@@ -2100,14 +2078,6 @@ operator|+
 literal|"ms"
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|ClosedChannelException
-name|e
-parameter_list|)
-block|{
-comment|// ignore.
 block|}
 catch|catch
 parameter_list|(
