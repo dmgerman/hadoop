@@ -1069,6 +1069,11 @@ specifier|private
 name|Table
 name|prefixTable
 decl_stmt|;
+DECL|field|isRatisEnabled
+specifier|private
+name|boolean
+name|isRatisEnabled
+decl_stmt|;
 DECL|method|OmMetadataManagerImpl (OzoneConfiguration conf)
 specifier|public
 name|OmMetadataManagerImpl
@@ -1102,6 +1107,24 @@ argument_list|(
 name|OZONE_OPEN_KEY_EXPIRE_THRESHOLD_SECONDS
 argument_list|,
 name|OZONE_OPEN_KEY_EXPIRE_THRESHOLD_SECONDS_DEFAULT
+argument_list|)
+expr_stmt|;
+comment|// TODO: This is a temporary check. Once fully implemented, all OM state
+comment|//  change should go through Ratis - be it standalone (for non-HA) or
+comment|//  replicated (for HA).
+name|isRatisEnabled
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|OMConfigKeys
+operator|.
+name|OZONE_OM_RATIS_ENABLE_KEY
+argument_list|,
+name|OMConfigKeys
+operator|.
+name|OZONE_OM_RATIS_ENABLE_DEFAULT
 argument_list|)
 expr_stmt|;
 name|start
@@ -1637,6 +1660,27 @@ argument_list|,
 name|USER_TABLE
 argument_list|)
 expr_stmt|;
+comment|// As now we have eviction policies, and for non-HA code path we don't
+comment|// support cache and cleanup policies setting cache to manual.
+name|TableCacheImpl
+operator|.
+name|CacheCleanupPolicy
+name|cleanupPolicy
+init|=
+name|isRatisEnabled
+condition|?
+name|TableCacheImpl
+operator|.
+name|CacheCleanupPolicy
+operator|.
+name|NEVER
+else|:
+name|TableCacheImpl
+operator|.
+name|CacheCleanupPolicy
+operator|.
+name|MANUAL
+decl_stmt|;
 name|volumeTable
 operator|=
 name|this
@@ -1655,11 +1699,7 @@ name|OmVolumeArgs
 operator|.
 name|class
 argument_list|,
-name|TableCacheImpl
-operator|.
-name|CacheCleanupPolicy
-operator|.
-name|NEVER
+name|cleanupPolicy
 argument_list|)
 expr_stmt|;
 name|checkTableStatus
@@ -1687,11 +1727,7 @@ name|OmBucketInfo
 operator|.
 name|class
 argument_list|,
-name|TableCacheImpl
-operator|.
-name|CacheCleanupPolicy
-operator|.
-name|NEVER
+name|cleanupPolicy
 argument_list|)
 expr_stmt|;
 name|checkTableStatus
