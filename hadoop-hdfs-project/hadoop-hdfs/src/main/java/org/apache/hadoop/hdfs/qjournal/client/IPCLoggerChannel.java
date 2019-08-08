@@ -2310,6 +2310,33 @@ operator|>
 literal|0
 condition|)
 block|{
+name|QuorumJournalManager
+operator|.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Pending edits to "
+operator|+
+name|IPCLoggerChannel
+operator|.
+name|this
+operator|+
+literal|" is going to exceed limit size: "
+operator|+
+name|queueSizeLimitBytes
+operator|+
+literal|", current queued edits size: "
+operator|+
+name|queuedEditsSizeBytes
+operator|+
+literal|", will silently drop "
+operator|+
+name|size
+operator|+
+literal|" bytes of edits!"
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|new
 name|LoggerTooFarBehindException
