@@ -1367,7 +1367,7 @@ specifier|final
 name|String
 name|DATE_TIME_PATTERN
 init|=
-literal|"E, dd MMM yyyy HH:mm:ss 'GMT'"
+literal|"E, dd MMM yyyy HH:mm:ss z"
 decl_stmt|;
 DECL|field|TOKEN_DATE_PATTERN
 specifier|private
