@@ -592,25 +592,7 @@ name|s3a
 operator|.
 name|S3ATestUtils
 operator|.
-name|getTestBucketName
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|s3a
-operator|.
-name|S3ATestUtils
-operator|.
-name|removeBucketOverrides
+name|removeBaseAndBucketOverrides
 import|;
 end_import
 
@@ -814,7 +796,7 @@ specifier|final
 name|int
 name|TEST_MAX_RETRIES
 init|=
-literal|5
+literal|4
 decl_stmt|;
 DECL|field|TEST_RETRY_INTERVAL
 specifier|private
@@ -823,7 +805,7 @@ specifier|final
 name|String
 name|TEST_RETRY_INTERVAL
 init|=
-literal|"10ms"
+literal|"1ms"
 decl_stmt|;
 DECL|field|QUOTED_TEST_DATA
 specifier|private
@@ -1355,18 +1337,8 @@ operator|.
 name|createConfiguration
 argument_list|()
 decl_stmt|;
-name|String
-name|bucketName
-init|=
-name|getTestBucketName
+name|removeBaseAndBucketOverrides
 argument_list|(
-name|conf
-argument_list|)
-decl_stmt|;
-name|removeBucketOverrides
-argument_list|(
-name|bucketName
-argument_list|,
 name|conf
 argument_list|,
 name|CHANGE_DETECT_SOURCE

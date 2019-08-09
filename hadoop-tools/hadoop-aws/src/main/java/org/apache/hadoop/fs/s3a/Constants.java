@@ -1530,7 +1530,7 @@ specifier|final
 name|int
 name|RETRY_LIMIT_DEFAULT
 init|=
-name|DEFAULT_MAX_ERROR_RETRIES
+literal|7
 decl_stmt|;
 comment|/**    * Interval between retry attempts.: {@value}.    */
 DECL|field|RETRY_INTERVAL

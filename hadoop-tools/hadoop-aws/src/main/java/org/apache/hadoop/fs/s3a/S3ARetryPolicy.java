@@ -402,7 +402,7 @@ expr_stmt|;
 comment|// base policy from configuration
 name|fixedRetries
 operator|=
-name|retryUpToMaximumCountWithFixedSleep
+name|exponentialBackoffRetry
 argument_list|(
 name|conf
 operator|.

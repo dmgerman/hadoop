@@ -2819,6 +2819,52 @@ name|options
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Remove any values from the test bucket and the base values too.    * @param conf config    * @param options list of fs.s3a options to remove    */
+DECL|method|removeBaseAndBucketOverrides ( final Configuration conf, final String... options)
+specifier|public
+specifier|static
+name|void
+name|removeBaseAndBucketOverrides
+parameter_list|(
+specifier|final
+name|Configuration
+name|conf
+parameter_list|,
+specifier|final
+name|String
+modifier|...
+name|options
+parameter_list|)
+block|{
+for|for
+control|(
+name|String
+name|option
+range|:
+name|options
+control|)
+block|{
+name|conf
+operator|.
+name|unset
+argument_list|(
+name|option
+argument_list|)
+expr_stmt|;
+block|}
+name|removeBaseAndBucketOverrides
+argument_list|(
+name|getTestBucketName
+argument_list|(
+name|conf
+argument_list|)
+argument_list|,
+name|conf
+argument_list|,
+name|options
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Call a function; any exception raised is logged at info.    * This is for test teardowns.    * @param log log to use.    * @param operation operation to invoke    * @param<T> type of operation.    */
 DECL|method|callQuietly (final Logger log, final Invoker.Operation<T> operation)
 specifier|public
