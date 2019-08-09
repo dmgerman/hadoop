@@ -597,7 +597,6 @@ literal|null
 decl_stmt|;
 DECL|method|initialize (Context context)
 specifier|public
-specifier|synchronized
 name|void
 name|initialize
 parameter_list|(
@@ -1577,7 +1576,6 @@ return|;
 block|}
 DECL|method|cleanup ()
 specifier|public
-specifier|synchronized
 name|void
 name|cleanup
 parameter_list|()

@@ -444,7 +444,6 @@ annotation|@
 name|Override
 DECL|method|initialize (Context context)
 specifier|public
-specifier|synchronized
 name|void
 name|initialize
 parameter_list|(
@@ -485,7 +484,6 @@ annotation|@
 name|Override
 DECL|method|createResourceHandler ( Context context, CGroupsHandler cGroupsHandler, PrivilegedOperationExecutor privilegedOperationExecutor)
 specifier|public
-specifier|synchronized
 name|ResourceHandler
 name|createResourceHandler
 parameter_list|(
@@ -529,7 +527,6 @@ annotation|@
 name|Override
 DECL|method|getNodeResourceHandlerInstance ()
 specifier|public
-specifier|synchronized
 name|NodeResourceUpdaterPlugin
 name|getNodeResourceHandlerInstance
 parameter_list|()
