@@ -69,7 +69,7 @@ specifier|abstract
 class|class
 name|NodeResourceUpdaterPlugin
 block|{
-comment|/**    * Update configured resource for the given component.    * @param res resource passed in by external mododule (such as    *            {@link org.apache.hadoop.yarn.server.nodemanager.NodeStatusUpdater}    * @throws YarnException when any issue happens.    */
+comment|/**    * Update configured resource for the given component.    * @param res resource passed in by external module (such as    *            {@link org.apache.hadoop.yarn.server.nodemanager.NodeStatusUpdater}    * @throws YarnException when any issue happens.    */
 DECL|method|updateConfiguredResource (Resource res)
 specifier|public
 specifier|abstract
@@ -82,22 +82,6 @@ parameter_list|)
 throws|throws
 name|YarnException
 function_decl|;
-comment|/**    * This method will be called when the node's resource is loaded from    * dynamic-resources.xml in ResourceManager.    *    * @param newResource newResource reported by RM    * @throws YarnException when any mismatch between NM/RM    */
-DECL|method|handleUpdatedResourceFromRM (Resource newResource)
-specifier|public
-name|void
-name|handleUpdatedResourceFromRM
-parameter_list|(
-name|Resource
-name|newResource
-parameter_list|)
-throws|throws
-name|YarnException
-block|{
-comment|// by default do nothing, subclass should implement this method when any
-comment|// special activities required upon new resource reported by RM.
-block|}
-comment|// TODO: add implementation to update node attribute once YARN-3409 merged.
 block|}
 end_class
 
