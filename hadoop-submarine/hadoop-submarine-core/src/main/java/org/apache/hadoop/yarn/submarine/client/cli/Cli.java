@@ -532,7 +532,12 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Bad parameters<TODO>"
+literal|"Unrecognized option: "
+operator|+
+name|args
+index|[
+literal|0
+index|]
 argument_list|)
 throw|;
 block|}
