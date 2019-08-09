@@ -355,7 +355,12 @@ name|S3_BUCKET_INVALID_LENGTH
 block|,
 DECL|enumConstant|RATIS_ERROR
 name|RATIS_ERROR
+block|,
 comment|// Error in Ratis server
+DECL|enumConstant|INVALID_PATH_IN_ACL_REQUEST
+name|INVALID_PATH_IN_ACL_REQUEST
+comment|// Error code when path name is invalid during
+comment|// acl requests.
 block|}
 block|}
 end_class
