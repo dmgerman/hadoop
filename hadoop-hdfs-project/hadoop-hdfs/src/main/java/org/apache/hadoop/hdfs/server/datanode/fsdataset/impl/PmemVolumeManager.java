@@ -907,6 +907,12 @@ argument_list|(
 name|pmemDir
 argument_list|)
 decl_stmt|;
+comment|// Clean up the cache left before, if any.
+name|cleanup
+argument_list|(
+name|realPmemDir
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|pmemVolumes
@@ -1045,23 +1051,14 @@ literal|"At least one valid persistent memory volume is required!"
 argument_list|)
 throw|;
 block|}
-name|cleanup
-argument_list|()
-expr_stmt|;
 block|}
-DECL|method|cleanup ()
+DECL|method|cleanup (File realPmemDir)
 name|void
 name|cleanup
-parameter_list|()
-block|{
-comment|// Remove all files under the volume.
-for|for
-control|(
-name|String
-name|pmemDir
-range|:
-name|pmemVolumes
-control|)
+parameter_list|(
+name|File
+name|realPmemDir
+parameter_list|)
 block|{
 try|try
 block|{
@@ -1069,11 +1066,7 @@ name|FileUtils
 operator|.
 name|cleanDirectory
 argument_list|(
-operator|new
-name|File
-argument_list|(
-name|pmemDir
-argument_list|)
+name|realPmemDir
 argument_list|)
 expr_stmt|;
 block|}
@@ -1089,12 +1082,39 @@ name|error
 argument_list|(
 literal|"Failed to clean up "
 operator|+
-name|pmemDir
+name|realPmemDir
+operator|.
+name|getPath
+argument_list|()
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+DECL|method|cleanup ()
+name|void
+name|cleanup
+parameter_list|()
+block|{
+comment|// Remove all files under the volume.
+for|for
+control|(
+name|String
+name|pmemVolume
+range|:
+name|pmemVolumes
+control|)
+block|{
+name|cleanup
+argument_list|(
+operator|new
+name|File
+argument_list|(
+name|pmemVolume
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 annotation|@
