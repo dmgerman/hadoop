@@ -933,6 +933,13 @@ argument_list|(
 name|metastoreUriStr
 argument_list|)
 argument_list|,
+literal|"-region"
+argument_list|,
+name|fs
+operator|.
+name|getBucketLocation
+argument_list|()
+argument_list|,
 literal|"-seconds"
 argument_list|,
 literal|"1"
