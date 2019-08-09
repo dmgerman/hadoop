@@ -3877,6 +3877,13 @@ name|timelineServiceV1Enabled
 argument_list|(
 name|conf
 argument_list|)
+operator|&&
+name|YarnConfiguration
+operator|.
+name|systemMetricsPublisherEnabled
+argument_list|(
+name|conf
+argument_list|)
 condition|)
 block|{
 name|SystemMetricsPublisher
@@ -3899,6 +3906,13 @@ condition|(
 name|YarnConfiguration
 operator|.
 name|timelineServiceV2Enabled
+argument_list|(
+name|conf
+argument_list|)
+operator|&&
+name|YarnConfiguration
+operator|.
+name|systemMetricsPublisherEnabled
 argument_list|(
 name|conf
 argument_list|)

@@ -210,7 +210,7 @@ specifier|static
 name|MockRM
 name|rm
 decl_stmt|;
-DECL|method|setup (boolean v1Enabled, boolean v2Enabled)
+DECL|method|setup (boolean v1Enabled, boolean v2Enabled, boolean systemMetricEnabled)
 specifier|private
 name|void
 name|setup
@@ -220,6 +220,9 @@ name|v1Enabled
 parameter_list|,
 name|boolean
 name|v2Enabled
+parameter_list|,
+name|boolean
+name|systemMetricEnabled
 parameter_list|)
 block|{
 name|Configuration
@@ -245,6 +248,17 @@ name|timelineServiceEnabled
 argument_list|(
 name|conf
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|SYSTEM_METRICS_PUBLISHER_ENABLED
+argument_list|,
+name|systemMetricEnabled
 argument_list|)
 expr_stmt|;
 if|if
@@ -378,7 +392,7 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|// validate RM services exist or not as we specified
-DECL|method|validate (boolean v1Enabled, boolean v2Enabled)
+DECL|method|validate (boolean v1Enabled, boolean v2Enabled, boolean systemMetricEnabled)
 specifier|private
 name|void
 name|validate
@@ -388,6 +402,9 @@ name|v1Enabled
 parameter_list|,
 name|boolean
 name|v2Enabled
+parameter_list|,
+name|boolean
+name|systemMetricEnabled
 parameter_list|)
 block|{
 name|boolean
@@ -445,6 +462,11 @@ literal|true
 expr_stmt|;
 block|}
 block|}
+if|if
+condition|(
+name|systemMetricEnabled
+condition|)
+block|{
 name|Assert
 operator|.
 name|assertEquals
@@ -463,6 +485,28 @@ argument_list|,
 name|v2PublisherServiceFound
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|false
+argument_list|,
+name|v1PublisherServiceFound
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|false
+argument_list|,
+name|v2PublisherServiceFound
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|cleanup ()
 specifier|private
@@ -485,7 +529,7 @@ expr_stmt|;
 block|}
 comment|// runs test to validate RM creates a timeline service publisher if and
 comment|// only if the service is enabled for v1 and v2 (independently).
-DECL|method|runTest (boolean v1Enabled, boolean v2Enabled)
+DECL|method|runTest (boolean v1Enabled, boolean v2Enabled, boolean systemMetricEnabled)
 specifier|private
 name|void
 name|runTest
@@ -495,6 +539,9 @@ name|v1Enabled
 parameter_list|,
 name|boolean
 name|v2Enabled
+parameter_list|,
+name|boolean
+name|systemMetricEnabled
 parameter_list|)
 throws|throws
 name|Exception
@@ -504,6 +551,8 @@ argument_list|(
 name|v1Enabled
 argument_list|,
 name|v2Enabled
+argument_list|,
+name|systemMetricEnabled
 argument_list|)
 expr_stmt|;
 name|validate
@@ -511,6 +560,8 @@ argument_list|(
 name|v1Enabled
 argument_list|,
 name|v2Enabled
+argument_list|,
+name|systemMetricEnabled
 argument_list|)
 expr_stmt|;
 name|cleanup
@@ -532,6 +583,8 @@ argument_list|(
 literal|true
 argument_list|,
 literal|true
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -550,6 +603,8 @@ argument_list|(
 literal|true
 argument_list|,
 literal|false
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -568,6 +623,8 @@ argument_list|(
 literal|false
 argument_list|,
 literal|true
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -583,6 +640,88 @@ name|Exception
 block|{
 name|runTest
 argument_list|(
+literal|false
+argument_list|,
+literal|false
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testTimelineServiceV1V2EnabledSystemMetricDisable ()
+specifier|public
+name|void
+name|testTimelineServiceV1V2EnabledSystemMetricDisable
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|runTest
+argument_list|(
+literal|true
+argument_list|,
+literal|true
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testTimelineServiceV1EnabledSystemMetricDisable ()
+specifier|public
+name|void
+name|testTimelineServiceV1EnabledSystemMetricDisable
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|runTest
+argument_list|(
+literal|true
+argument_list|,
+literal|false
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testTimelineServiceV2EnabledSystemMetricDisable ()
+specifier|public
+name|void
+name|testTimelineServiceV2EnabledSystemMetricDisable
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|runTest
+argument_list|(
+literal|false
+argument_list|,
+literal|true
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testTimelineServiceDisabledSystemMetricDisable ()
+specifier|public
+name|void
+name|testTimelineServiceDisabledSystemMetricDisable
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|runTest
+argument_list|(
+literal|false
+argument_list|,
 literal|false
 argument_list|,
 literal|false
