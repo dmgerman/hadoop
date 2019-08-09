@@ -1066,6 +1066,16 @@ name|contains
 argument_list|(
 literal|"*"
 argument_list|)
+operator|&&
+operator|!
+operator|(
+name|s
+operator|.
+name|startsWith
+argument_list|(
+name|ALLOWED_ORIGINS_REGEX_PREFIX
+argument_list|)
+operator|)
 argument_list|)
 operator|.
 name|collect
