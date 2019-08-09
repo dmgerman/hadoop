@@ -503,6 +503,12 @@ name|void
 name|startHddsDatanodes
 parameter_list|()
 function_decl|;
+comment|/**    * Shuts down all the DataNodes.    */
+DECL|method|shutdownHddsDatanodes ()
+name|void
+name|shutdownHddsDatanodes
+parameter_list|()
+function_decl|;
 comment|/**    * Builder class for MiniOzoneCluster.    */
 annotation|@
 name|SuppressWarnings
