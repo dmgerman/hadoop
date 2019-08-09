@@ -351,6 +351,8 @@ literal|"    delimiter. The default delimiter is \\t, though this may be\n"
 operator|+
 literal|"    changed via the -delimiter argument.\n"
 operator|+
+literal|"    -sp print storage policy, used by delimiter only.\n"
+operator|+
 literal|"  * DetectCorruption: Detect potential corruption of the image by\n"
 operator|+
 literal|"    selectively loading parts of it and actively searching for\n"
@@ -543,6 +545,17 @@ argument_list|(
 literal|"delimiter"
 argument_list|,
 literal|true
+argument_list|,
+literal|""
+argument_list|)
+expr_stmt|;
+name|options
+operator|.
+name|addOption
+argument_list|(
+literal|"sp"
+argument_list|,
+literal|false
 argument_list|,
 literal|""
 argument_list|)
@@ -1046,6 +1059,16 @@ break|break;
 case|case
 literal|"DELIMITED"
 case|:
+name|boolean
+name|printStoragePolicy
+init|=
+name|cmd
+operator|.
+name|hasOption
+argument_list|(
+literal|"sp"
+argument_list|)
+decl_stmt|;
 try|try
 init|(
 name|PBImageDelimitedTextWriter
@@ -1059,6 +1082,8 @@ argument_list|,
 name|delimiter
 argument_list|,
 name|tempPath
+argument_list|,
+name|printStoragePolicy
 argument_list|)
 init|;
 name|RandomAccessFile
