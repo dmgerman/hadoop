@@ -116,16 +116,6 @@ begin_import
 import|import
 name|javax
 operator|.
-name|inject
-operator|.
-name|Inject
-import|;
-end_import
-
-begin_import
-import|import
-name|javax
-operator|.
 name|ws
 operator|.
 name|rs
@@ -231,6 +221,16 @@ operator|.
 name|core
 operator|.
 name|Response
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|inject
+operator|.
+name|Inject
 import|;
 end_import
 
