@@ -273,7 +273,7 @@ name|key
 operator|=
 name|tokens
 index|[
-literal|3
+literal|2
 index|]
 expr_stmt|;
 block|}
