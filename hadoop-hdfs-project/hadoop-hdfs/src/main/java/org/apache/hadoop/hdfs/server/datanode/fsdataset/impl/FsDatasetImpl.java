@@ -4733,9 +4733,15 @@ block|{
 name|ReplicaInfo
 name|info
 decl_stmt|;
-synchronized|synchronized
+try|try
 init|(
-name|this
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
 init|)
 block|{
 name|info
