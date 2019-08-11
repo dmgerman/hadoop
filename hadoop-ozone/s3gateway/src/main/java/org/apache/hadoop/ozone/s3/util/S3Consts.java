@@ -76,6 +76,15 @@ name|COPY_SOURCE_HEADER
 init|=
 literal|"x-amz-copy-source"
 decl_stmt|;
+DECL|field|COPY_SOURCE_HEADER_RANGE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|COPY_SOURCE_HEADER_RANGE
+init|=
+literal|"x-amz-copy-source-range"
+decl_stmt|;
 DECL|field|STORAGE_CLASS_HEADER
 specifier|public
 specifier|static
