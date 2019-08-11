@@ -300,7 +300,10 @@ name|checkerThread
 operator|.
 name|setName
 argument_list|(
-literal|"Ping Checker"
+literal|"Ping Checker for "
+operator|+
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|checkerThread
