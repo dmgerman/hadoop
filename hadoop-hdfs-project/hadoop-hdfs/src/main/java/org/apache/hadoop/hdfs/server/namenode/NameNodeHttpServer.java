@@ -88,6 +88,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|HashMap
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|servlet
@@ -420,6 +430,22 @@ name|RestCsrfPreventionFilter
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|sun
+operator|.
+name|jersey
+operator|.
+name|api
+operator|.
+name|core
+operator|.
+name|ResourceConfig
+import|;
+end_import
+
 begin_comment
 comment|/**  * Encapsulates the HTTP server started by the NameNode.   */
 end_comment
@@ -680,6 +706,31 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// add webhdfs packages
+specifier|final
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|params
+init|=
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
+decl_stmt|;
+name|params
+operator|.
+name|put
+argument_list|(
+name|ResourceConfig
+operator|.
+name|FEATURE_MATCH_MATRIX_PARAMS
+argument_list|,
+literal|"true"
+argument_list|)
+expr_stmt|;
 name|httpServer2
 operator|.
 name|addJerseyResourcePackage
@@ -699,6 +750,8 @@ name|getName
 argument_list|()
 argument_list|,
 name|pathSpec
+argument_list|,
+name|params
 argument_list|)
 expr_stmt|;
 block|}
