@@ -229,6 +229,11 @@ specifier|private
 name|long
 name|allocatedMB
 decl_stmt|;
+DECL|field|pendingMB
+specifier|private
+name|long
+name|pendingMB
+decl_stmt|;
 DECL|field|reservedVirtualCores
 specifier|private
 name|long
@@ -243,6 +248,11 @@ DECL|field|allocatedVirtualCores
 specifier|private
 name|long
 name|allocatedVirtualCores
+decl_stmt|;
+DECL|field|pendingVirtualCores
+specifier|private
+name|long
+name|pendingVirtualCores
 decl_stmt|;
 DECL|field|containersAllocated
 specifier|private
@@ -453,6 +463,15 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
+name|pendingMB
+operator|=
+name|metrics
+operator|.
+name|getPendingMB
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
 name|reservedVirtualCores
 operator|=
 name|metrics
@@ -476,6 +495,15 @@ operator|=
 name|metrics
 operator|.
 name|getAllocatedVirtualCores
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|pendingVirtualCores
+operator|=
+name|metrics
+operator|.
+name|getPendingVirtualCores
 argument_list|()
 expr_stmt|;
 name|this
@@ -804,6 +832,18 @@ operator|.
 name|allocatedMB
 return|;
 block|}
+DECL|method|getPendingMB ()
+specifier|public
+name|long
+name|getPendingMB
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|pendingMB
+return|;
+block|}
 DECL|method|getReservedVirtualCores ()
 specifier|public
 name|long
@@ -838,6 +878,18 @@ return|return
 name|this
 operator|.
 name|allocatedVirtualCores
+return|;
+block|}
+DECL|method|getPendingVirtualCores ()
+specifier|public
+name|long
+name|getPendingVirtualCores
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|pendingVirtualCores
 return|;
 block|}
 DECL|method|getContainersAllocated ()

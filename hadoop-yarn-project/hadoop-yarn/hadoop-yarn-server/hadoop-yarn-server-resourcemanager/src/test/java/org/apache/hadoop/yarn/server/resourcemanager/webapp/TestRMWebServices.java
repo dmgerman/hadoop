@@ -3329,6 +3329,15 @@ name|getXmlInt
 argument_list|(
 name|element
 argument_list|,
+literal|"pendingMB"
+argument_list|)
+argument_list|,
+name|WebServicesTestUtils
+operator|.
+name|getXmlInt
+argument_list|(
+name|element
+argument_list|,
 literal|"reservedVirtualCores"
 argument_list|)
 argument_list|,
@@ -3348,6 +3357,15 @@ argument_list|(
 name|element
 argument_list|,
 literal|"allocatedVirtualCores"
+argument_list|)
+argument_list|,
+name|WebServicesTestUtils
+operator|.
+name|getXmlInt
+argument_list|(
+name|element
+argument_list|,
+literal|"pendingVirtualCores"
 argument_list|)
 argument_list|,
 name|WebServicesTestUtils
@@ -3482,7 +3500,7 @@ name|assertEquals
 argument_list|(
 literal|"incorrect number of elements"
 argument_list|,
-literal|25
+literal|27
 argument_list|,
 name|clusterinfo
 operator|.
@@ -3531,6 +3549,13 @@ name|clusterinfo
 operator|.
 name|getInt
 argument_list|(
+literal|"pendingMB"
+argument_list|)
+argument_list|,
+name|clusterinfo
+operator|.
+name|getInt
+argument_list|(
 literal|"reservedVirtualCores"
 argument_list|)
 argument_list|,
@@ -3546,6 +3571,13 @@ operator|.
 name|getInt
 argument_list|(
 literal|"allocatedVirtualCores"
+argument_list|)
+argument_list|,
+name|clusterinfo
+operator|.
+name|getInt
+argument_list|(
+literal|"pendingVirtualCores"
 argument_list|)
 argument_list|,
 name|clusterinfo
@@ -3620,7 +3652,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|verifyClusterMetrics (int submittedApps, int completedApps, int reservedMB, int availableMB, int allocMB, int reservedVirtualCores, int availableVirtualCores, int allocVirtualCores, int totalVirtualCores, int containersAlloc, int totalMB, int totalNodes, int lostNodes, int unhealthyNodes, int decommissionedNodes, int rebootedNodes, int activeNodes, int shutdownNodes)
+DECL|method|verifyClusterMetrics (int submittedApps, int completedApps, int reservedMB, int availableMB, int allocMB, int pendingMB, int reservedVirtualCores, int availableVirtualCores, int allocVirtualCores, int pendingVirtualCores, int totalVirtualCores, int containersAlloc, int totalMB, int totalNodes, int lostNodes, int unhealthyNodes, int decommissionedNodes, int rebootedNodes, int activeNodes, int shutdownNodes)
 specifier|public
 name|void
 name|verifyClusterMetrics
@@ -3641,6 +3673,9 @@ name|int
 name|allocMB
 parameter_list|,
 name|int
+name|pendingMB
+parameter_list|,
+name|int
 name|reservedVirtualCores
 parameter_list|,
 name|int
@@ -3648,6 +3683,9 @@ name|availableVirtualCores
 parameter_list|,
 name|int
 name|allocVirtualCores
+parameter_list|,
+name|int
+name|pendingVirtualCores
 parameter_list|,
 name|int
 name|totalVirtualCores
@@ -3796,6 +3834,18 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
+literal|"pendingMB doesn't match"
+argument_list|,
+name|metrics
+operator|.
+name|getPendingMB
+argument_list|()
+argument_list|,
+name|pendingMB
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
 literal|"reservedVirtualCores doesn't match"
 argument_list|,
 name|metrics
@@ -3820,11 +3870,35 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
+literal|"pendingVirtualCores doesn't match"
+argument_list|,
+name|metrics
+operator|.
+name|getPendingVirtualCores
+argument_list|()
+argument_list|,
+name|pendingVirtualCores
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
 literal|"allocatedVirtualCores doesn't match"
+argument_list|,
+name|metrics
+operator|.
+name|getAllocatedVirtualCores
+argument_list|()
+argument_list|,
+name|allocVirtualCores
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"totalVirtualCores doesn't match"
 argument_list|,
 name|totalVirtualCoresExpect
 argument_list|,
-name|allocVirtualCores
+name|totalVirtualCores
 argument_list|)
 expr_stmt|;
 name|assertEquals
