@@ -180,11 +180,11 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"Invoking method {} on proxy {}"
+literal|"Invoking method {} on target {}"
 argument_list|,
 name|method
 argument_list|,
-name|proxy
+name|target
 argument_list|)
 expr_stmt|;
 try|try
