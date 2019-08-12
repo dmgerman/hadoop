@@ -8703,19 +8703,11 @@ name|IOException
 name|ioe
 parameter_list|)
 block|{
-name|Throwable
-name|t
-init|=
-name|ioe
-operator|.
-name|getCause
-argument_list|()
-decl_stmt|;
 name|Assert
 operator|.
 name|assertNotNull
 argument_list|(
-name|t
+name|ioe
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -8726,7 +8718,7 @@ name|RpcException
 operator|.
 name|class
 argument_list|,
-name|t
+name|ioe
 operator|.
 name|getClass
 argument_list|()
@@ -8738,7 +8730,7 @@ name|assertEquals
 argument_list|(
 literal|"RPC response exceeds maximum data length"
 argument_list|,
-name|t
+name|ioe
 operator|.
 name|getMessage
 argument_list|()

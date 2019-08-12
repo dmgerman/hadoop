@@ -2870,7 +2870,11 @@ return|;
 block|}
 else|else
 block|{
-comment|// Return instance of same type if Exception has a String constructor
+comment|// 1. Return instance of same type with exception msg if Exception has a
+comment|// String constructor.
+comment|// 2. Return instance of same type if Exception doesn't have a String
+comment|// constructor.
+comment|// Related HADOOP-16453.
 return|return
 name|wrapWithMessage
 argument_list|(
@@ -3037,23 +3041,20 @@ return|;
 block|}
 catch|catch
 parameter_list|(
+name|NoSuchMethodException
+name|e
+parameter_list|)
+block|{
+return|return
+name|exception
+return|;
+block|}
+catch|catch
+parameter_list|(
 name|Throwable
 name|e
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|trace
-argument_list|(
-literal|"Unable to wrap exception of type {}: it has no (String) "
-operator|+
-literal|"constructor"
-argument_list|,
-name|clazz
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
 throw|throw
 name|exception
 throw|;
