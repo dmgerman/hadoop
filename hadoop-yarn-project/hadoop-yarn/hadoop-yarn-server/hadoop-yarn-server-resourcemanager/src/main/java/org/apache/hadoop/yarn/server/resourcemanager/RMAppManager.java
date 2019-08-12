@@ -770,6 +770,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|rmapp
+operator|.
+name|RMAppState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|scheduler
 operator|.
 name|SchedulerUtils
@@ -2510,6 +2530,8 @@ literal|false
 argument_list|,
 operator|-
 literal|1
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 try|try
@@ -2701,6 +2723,11 @@ name|appState
 operator|.
 name|getStartTime
 argument_list|()
+argument_list|,
+name|appState
+operator|.
+name|getState
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|application
@@ -2717,7 +2744,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|createAndPopulateNewRMApp ( ApplicationSubmissionContext submissionContext, long submitTime, String user, boolean isRecovery, long startTime)
+DECL|method|createAndPopulateNewRMApp ( ApplicationSubmissionContext submissionContext, long submitTime, String user, boolean isRecovery, long startTime, RMAppState recoveredFinalState)
 specifier|private
 name|RMAppImpl
 name|createAndPopulateNewRMApp
@@ -2736,6 +2763,9 @@ name|isRecovery
 parameter_list|,
 name|long
 name|startTime
+parameter_list|,
+name|RMAppState
+name|recoveredFinalState
 parameter_list|)
 throws|throws
 name|YarnException
@@ -2743,6 +2773,17 @@ block|{
 name|ApplicationPlacementContext
 name|placementContext
 init|=
+literal|null
+decl_stmt|;
+if|if
+condition|(
+name|recoveredFinalState
+operator|==
+literal|null
+condition|)
+block|{
+name|placementContext
+operator|=
 name|placeApplication
 argument_list|(
 name|rmContext
@@ -2756,7 +2797,8 @@ name|user
 argument_list|,
 name|isRecovery
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
 comment|// We only replace the queue when it's a new application
 if|if
 condition|(
