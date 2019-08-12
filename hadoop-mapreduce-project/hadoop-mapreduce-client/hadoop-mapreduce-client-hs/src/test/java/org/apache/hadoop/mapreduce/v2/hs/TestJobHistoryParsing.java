@@ -40,6 +40,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -3524,17 +3540,21 @@ argument_list|)
 argument_list|)
 decl_stmt|;
 comment|// Verify rack-name for all task attempts
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
-literal|"rack-name is incorrect"
-argument_list|,
 name|taskAttemptInfo
 operator|.
 name|getRackname
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|withFailMessage
+argument_list|(
+literal|"rack-name is incorrect"
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 name|RACK_NAME
 argument_list|)
 expr_stmt|;

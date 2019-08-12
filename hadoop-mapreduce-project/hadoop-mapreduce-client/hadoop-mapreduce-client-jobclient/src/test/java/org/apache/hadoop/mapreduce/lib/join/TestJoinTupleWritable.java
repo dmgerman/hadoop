@@ -192,6 +192,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -1295,16 +1311,19 @@ name|in
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|assertTrue
-argument_list|(
-literal|"Failed to write/read tuple"
-argument_list|,
-name|sTuple
-operator|.
-name|equals
+name|assertThat
 argument_list|(
 name|dTuple
 argument_list|)
+operator|.
+name|withFailMessage
+argument_list|(
+literal|"Failed to write/read tuple"
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
+name|sTuple
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1422,16 +1441,19 @@ name|in
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|assertTrue
-argument_list|(
-literal|"Failed to write/read tuple"
-argument_list|,
-name|sTuple
-operator|.
-name|equals
+name|assertThat
 argument_list|(
 name|dTuple
 argument_list|)
+operator|.
+name|withFailMessage
+argument_list|(
+literal|"Failed to write/read tuple"
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
+name|sTuple
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1560,16 +1582,19 @@ name|in
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|assertTrue
-argument_list|(
-literal|"Failed to write/read tuple"
-argument_list|,
-name|sTuple
-operator|.
-name|equals
+name|assertThat
 argument_list|(
 name|dTuple
 argument_list|)
+operator|.
+name|withFailMessage
+argument_list|(
+literal|"Failed to write/read tuple"
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
+name|sTuple
 argument_list|)
 expr_stmt|;
 name|assertEquals

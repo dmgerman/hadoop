@@ -24,11 +24,15 @@ begin_import
 import|import static
 name|org
 operator|.
-name|junit
+name|assertj
 operator|.
-name|Assert
+name|core
 operator|.
-name|assertEquals
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
 import|;
 end_import
 
@@ -183,20 +187,6 @@ operator|.
 name|mapred
 operator|.
 name|SequenceFileInputFormat
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapred
-operator|.
-name|Task
 import|;
 end_import
 
@@ -565,24 +555,34 @@ argument_list|,
 name|normaloutput
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
-literal|"file compare result: if they are the same ,then return true"
-argument_list|,
-literal|true
-argument_list|,
 name|compareRet
 argument_list|)
-expr_stmt|;
-name|assertEquals
+operator|.
+name|withFailMessage
 argument_list|(
-literal|"The input reduce record count must be same"
-argument_list|,
+literal|"file compare result: if they are the same ,then return true"
+argument_list|)
+operator|.
+name|isTrue
+argument_list|()
+expr_stmt|;
+name|assertThat
+argument_list|(
 name|nativeReduceGroups
 operator|.
 name|getValue
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|withFailMessage
+argument_list|(
+literal|"The input reduce record count must be same"
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 name|normalReduceGroups
 operator|.
 name|getValue

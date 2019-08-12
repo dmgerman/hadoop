@@ -24,23 +24,15 @@ begin_import
 import|import static
 name|org
 operator|.
-name|junit
+name|assertj
 operator|.
-name|Assert
+name|core
 operator|.
-name|assertEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
+name|api
 operator|.
-name|junit
+name|Assertions
 operator|.
-name|Assert
-operator|.
-name|assertTrue
+name|assertThat
 import|;
 end_import
 
@@ -111,20 +103,6 @@ operator|.
 name|io
 operator|.
 name|Text
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapred
-operator|.
-name|Task
 import|;
 end_import
 
@@ -253,20 +231,6 @@ operator|.
 name|testutil
 operator|.
 name|TestConstants
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|Counter
 import|;
 end_import
 
@@ -504,7 +468,7 @@ argument_list|,
 name|hadoopoutputpath
 argument_list|)
 decl_stmt|;
-name|assertTrue
+name|assertThat
 argument_list|(
 name|nativejob
 operator|.
@@ -513,8 +477,11 @@ argument_list|(
 literal|true
 argument_list|)
 argument_list|)
+operator|.
+name|isTrue
+argument_list|()
 expr_stmt|;
-name|assertTrue
+name|assertThat
 argument_list|(
 name|normaljob
 operator|.
@@ -523,11 +490,12 @@ argument_list|(
 literal|true
 argument_list|)
 argument_list|)
+operator|.
+name|isTrue
+argument_list|()
 expr_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
-literal|true
-argument_list|,
 name|ResultVerifier
 operator|.
 name|verify
@@ -537,6 +505,9 @@ argument_list|,
 name|hadoopoutputpath
 argument_list|)
 argument_list|)
+operator|.
+name|isTrue
+argument_list|()
 expr_stmt|;
 name|ResultVerifier
 operator|.

@@ -24,6 +24,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -617,16 +633,18 @@ argument_list|,
 literal|0
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
-literal|"Should be told to wait"
-argument_list|,
-literal|null
-argument_list|,
 name|out3
 argument_list|)
+operator|.
+name|withFailMessage
+argument_list|(
+literal|"Should be told to wait"
+argument_list|)
+operator|.
+name|isNull
+argument_list|()
 expr_stmt|;
 comment|// trigger the first merge and wait for merge thread to start merging
 comment|// and free enough output to reserve more
@@ -758,16 +776,18 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
-literal|"Should be told to wait"
-argument_list|,
-literal|null
-argument_list|,
 name|out3
 argument_list|)
+operator|.
+name|withFailMessage
+argument_list|(
+literal|"Should be told to wait"
+argument_list|)
+operator|.
+name|isNull
+argument_list|()
 expr_stmt|;
 comment|// commit output *before* merge thread completes
 name|mout1

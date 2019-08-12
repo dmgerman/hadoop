@@ -390,6 +390,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -757,7 +773,7 @@ argument_list|,
 literal|"ignoreCrc"
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
 name|cf
 operator|.
@@ -781,7 +797,10 @@ name|get
 argument_list|(
 literal|1
 argument_list|)
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|"-"
 argument_list|)
 expr_stmt|;
@@ -835,7 +854,7 @@ argument_list|,
 literal|"f"
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
 name|cf
 operator|.
@@ -857,11 +876,14 @@ name|get
 argument_list|(
 literal|0
 argument_list|)
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|"fileName"
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
 name|cf
 operator|.
@@ -885,7 +907,10 @@ name|get
 argument_list|(
 literal|0
 argument_list|)
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|"fileName"
 argument_list|)
 expr_stmt|;
@@ -905,7 +930,7 @@ argument_list|,
 literal|"w"
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
 name|cf
 operator|.
@@ -931,7 +956,10 @@ name|get
 argument_list|(
 literal|1
 argument_list|)
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|"/foo/bar"
 argument_list|)
 expr_stmt|;
@@ -947,7 +975,7 @@ argument_list|,
 literal|10000
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
 name|cf
 operator|.
@@ -971,7 +999,10 @@ name|get
 argument_list|(
 literal|1
 argument_list|)
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|"dest"
 argument_list|)
 expr_stmt|;

@@ -158,17 +158,23 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Assert
+name|Test
 import|;
 end_import
 
 begin_import
-import|import
+import|import static
 name|org
 operator|.
-name|junit
+name|assertj
 operator|.
-name|Test
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
 import|;
 end_import
 
@@ -180,7 +186,7 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|*
+name|assertEquals
 import|;
 end_import
 
@@ -477,21 +483,20 @@ name|Counters
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
 name|treport
 operator|.
 name|getTaskId
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|"task_1014873536921_0006_m_000000"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
 name|treport
 operator|.
@@ -500,7 +505,10 @@ argument_list|()
 operator|.
 name|toString
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|"task_1014873536921_0006_m_000000"
 argument_list|)
 expr_stmt|;

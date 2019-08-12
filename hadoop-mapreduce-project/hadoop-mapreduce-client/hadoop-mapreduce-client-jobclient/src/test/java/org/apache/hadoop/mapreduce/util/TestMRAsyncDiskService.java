@@ -138,6 +138,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -1725,20 +1741,23 @@ argument_list|,
 name|content
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
-literal|""
-operator|+
+name|content
+argument_list|)
+operator|.
+name|withFailMessage
+argument_list|(
 name|toBeDeletedDir
+operator|.
+name|toString
+argument_list|()
 operator|+
 literal|" should be empty now."
-argument_list|,
-literal|0
-argument_list|,
-name|content
-operator|.
-name|length
 argument_list|)
+operator|.
+name|isEmpty
+argument_list|()
 expr_stmt|;
 block|}
 block|}

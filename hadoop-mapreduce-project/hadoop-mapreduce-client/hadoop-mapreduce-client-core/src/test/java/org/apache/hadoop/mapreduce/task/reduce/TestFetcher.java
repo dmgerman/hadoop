@@ -122,16 +122,6 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Assert
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
 name|Before
 import|;
 end_import
@@ -155,6 +145,22 @@ operator|.
 name|rules
 operator|.
 name|TestName
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
 import|;
 end_import
 
@@ -1403,12 +1409,8 @@ argument_list|(
 name|host
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
-literal|"No host failure is expected."
-argument_list|,
 name|ss
 operator|.
 name|hostFailureCount
@@ -1418,39 +1420,55 @@ operator|.
 name|getHostName
 argument_list|()
 argument_list|)
-argument_list|,
+argument_list|)
+operator|.
+name|withFailMessage
+argument_list|(
+literal|"No host failure is expected."
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|0
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
-literal|"No fetch failure is expected."
-argument_list|,
 name|ss
 operator|.
 name|fetchFailureCount
 argument_list|(
 name|map1ID
 argument_list|)
-argument_list|,
+argument_list|)
+operator|.
+name|withFailMessage
+argument_list|(
+literal|"No fetch failure is expected."
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|0
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
-literal|"No fetch failure is expected."
-argument_list|,
 name|ss
 operator|.
 name|fetchFailureCount
 argument_list|(
 name|map2ID
 argument_list|)
-argument_list|,
+argument_list|)
+operator|.
+name|withFailMessage
+argument_list|(
+literal|"No fetch failure is expected."
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|0
 argument_list|)
 expr_stmt|;

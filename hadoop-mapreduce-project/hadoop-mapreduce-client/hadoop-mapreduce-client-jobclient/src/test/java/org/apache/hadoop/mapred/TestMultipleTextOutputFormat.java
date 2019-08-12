@@ -108,11 +108,15 @@ begin_import
 import|import static
 name|org
 operator|.
-name|junit
+name|assertj
 operator|.
-name|Assert
+name|core
 operator|.
-name|assertEquals
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
 import|;
 end_import
 
@@ -686,10 +690,13 @@ name|expectedFile_11
 argument_list|)
 decl_stmt|;
 comment|//System.out.printf("File_2 output: %s\n", output);
-name|assertEquals
+name|assertThat
 argument_list|(
 name|output
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 name|expectedOutput
 operator|.
 name|toString
@@ -778,10 +785,13 @@ name|expectedFile_12
 argument_list|)
 expr_stmt|;
 comment|//System.out.printf("File_2 output: %s\n", output);
-name|assertEquals
+name|assertThat
 argument_list|(
 name|output
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 name|expectedOutput
 operator|.
 name|toString
@@ -870,10 +880,13 @@ name|expectedFile_13
 argument_list|)
 expr_stmt|;
 comment|//System.out.printf("File_2 output: %s\n", output);
-name|assertEquals
+name|assertThat
 argument_list|(
 name|output
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 name|expectedOutput
 operator|.
 name|toString
@@ -962,10 +975,13 @@ name|expectedFile_2
 argument_list|)
 expr_stmt|;
 comment|//System.out.printf("File_2 output: %s\n", output);
-name|assertEquals
+name|assertThat
 argument_list|(
 name|output
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 name|expectedOutput
 operator|.
 name|toString

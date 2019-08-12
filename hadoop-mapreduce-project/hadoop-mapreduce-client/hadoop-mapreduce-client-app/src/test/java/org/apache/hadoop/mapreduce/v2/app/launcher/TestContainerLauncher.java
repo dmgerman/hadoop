@@ -26,6 +26,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|mockito
 operator|.
 name|Mockito
@@ -1420,14 +1436,15 @@ name|getThreadPool
 argument_list|()
 decl_stmt|;
 comment|// No events yet
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
 name|containerLauncher
 operator|.
 name|initialPoolSize
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 name|MRJobConfig
 operator|.
 name|DEFAULT_MR_AM_CONTAINERLAUNCHER_THREADPOOL_INITIAL_SIZE
@@ -1883,14 +1900,15 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
 name|containerLauncher
 operator|.
 name|initialPoolSize
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|20
 argument_list|)
 expr_stmt|;

@@ -21,18 +21,6 @@ package|;
 end_package
 
 begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
-import|;
-end_import
-
-begin_import
 import|import
 name|java
 operator|.
@@ -512,11 +500,51 @@ begin_import
 import|import static
 name|org
 operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
 operator|.
-name|*
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
 import|;
 end_import
 
@@ -899,10 +927,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|//Verify tasks loaded at this point.
-name|assertEquals
+name|assertThat
 argument_list|(
-literal|true
-argument_list|,
 name|completedJob
 operator|.
 name|tasksLoaded
@@ -910,6 +936,9 @@ operator|.
 name|get
 argument_list|()
 argument_list|)
+operator|.
+name|isTrue
+argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(

@@ -1041,7 +1041,7 @@ control|)
 block|{
 name|file
 operator|.
-name|deleteOnExit
+name|delete
 argument_list|()
 expr_stmt|;
 block|}
@@ -1591,7 +1591,7 @@ control|)
 block|{
 name|file
 operator|.
-name|deleteOnExit
+name|delete
 argument_list|()
 expr_stmt|;
 block|}
@@ -2121,7 +2121,7 @@ control|)
 block|{
 name|file
 operator|.
-name|deleteOnExit
+name|delete
 argument_list|()
 expr_stmt|;
 block|}
@@ -2755,7 +2755,7 @@ control|)
 block|{
 name|file
 operator|.
-name|deleteOnExit
+name|delete
 argument_list|()
 expr_stmt|;
 block|}

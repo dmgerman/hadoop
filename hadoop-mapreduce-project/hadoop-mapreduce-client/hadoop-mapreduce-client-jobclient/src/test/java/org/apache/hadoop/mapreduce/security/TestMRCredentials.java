@@ -22,11 +22,15 @@ begin_import
 import|import static
 name|org
 operator|.
-name|junit
+name|assertj
 operator|.
-name|Assert
+name|core
 operator|.
-name|assertEquals
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
 import|;
 end_import
 
@@ -742,12 +746,18 @@ literal|"Job failed"
 argument_list|)
 expr_stmt|;
 block|}
-name|assertEquals
+name|assertThat
+argument_list|(
+name|res
+argument_list|)
+operator|.
+name|withFailMessage
 argument_list|(
 literal|"dist job res is not 0"
-argument_list|,
-name|res
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|0
 argument_list|)
 expr_stmt|;

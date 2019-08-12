@@ -414,6 +414,22 @@ name|LoggerFactory
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
+import|;
+end_import
+
 begin_class
 DECL|class|TestJobHistoryEvents
 specifier|public
@@ -1321,9 +1337,7 @@ operator|>
 literal|0
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
 operator|(
 operator|(
@@ -1334,7 +1348,10 @@ operator|)
 operator|.
 name|getServiceState
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 name|Service
 operator|.
 name|STATE
@@ -1364,9 +1381,7 @@ operator|.
 name|stop
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
 operator|(
 operator|(
@@ -1377,7 +1392,10 @@ operator|)
 operator|.
 name|getServiceState
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 name|Service
 operator|.
 name|STATE

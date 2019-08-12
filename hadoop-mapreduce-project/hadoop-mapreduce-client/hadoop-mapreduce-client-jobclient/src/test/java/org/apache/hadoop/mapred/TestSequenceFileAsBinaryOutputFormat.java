@@ -212,11 +212,15 @@ begin_import
 import|import static
 name|org
 operator|.
-name|junit
+name|assertj
 operator|.
-name|Assert
+name|core
 operator|.
-name|assertEquals
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
 import|;
 end_import
 
@@ -228,7 +232,7 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|assertTrue
+name|assertEquals
 import|;
 end_import
 
@@ -823,7 +827,15 @@ name|get
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertThat
+argument_list|(
+name|dwritable
+operator|.
+name|get
+argument_list|()
+argument_list|)
+operator|.
+name|withFailMessage
 argument_list|(
 literal|"Vals don't match: "
 operator|+
@@ -839,20 +851,11 @@ operator|+
 name|sourceDouble
 operator|+
 literal|"*"
-argument_list|,
-name|Double
-operator|.
-name|compare
-argument_list|(
-name|dwritable
-operator|.
-name|get
-argument_list|()
-argument_list|,
-name|sourceDouble
 argument_list|)
-operator|==
-literal|0
+operator|.
+name|isEqualTo
+argument_list|(
+name|sourceDouble
 argument_list|)
 expr_stmt|;
 operator|++

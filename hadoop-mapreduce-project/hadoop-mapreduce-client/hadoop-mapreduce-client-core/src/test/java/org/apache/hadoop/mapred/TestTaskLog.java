@@ -20,11 +20,15 @@ begin_import
 import|import static
 name|org
 operator|.
-name|junit
+name|assertj
 operator|.
-name|Assert
+name|core
 operator|.
-name|assertEquals
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
 import|;
 end_import
 
@@ -275,13 +279,16 @@ argument_list|,
 literal|"testString"
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
 name|TaskLog
 operator|.
 name|getMRv2LogDir
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|"testString"
 argument_list|)
 expr_stmt|;
@@ -703,15 +710,16 @@ name|YARN_APP_CONTAINER_LOG_DIR
 argument_list|)
 expr_stmt|;
 comment|// test TaskLog
-name|assertEquals
+name|assertThat
 argument_list|(
 name|TaskLog
 operator|.
 name|getMRv2LogDir
 argument_list|()
-argument_list|,
-literal|null
 argument_list|)
+operator|.
+name|isNull
+argument_list|()
 expr_stmt|;
 name|TaskAttemptID
 name|taid

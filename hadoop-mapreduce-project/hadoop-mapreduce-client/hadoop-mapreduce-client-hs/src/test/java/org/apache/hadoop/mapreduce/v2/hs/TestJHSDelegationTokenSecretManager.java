@@ -24,6 +24,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -1228,28 +1244,26 @@ operator|.
 name|reset
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
-literal|"Secret manager should not contain keys"
-argument_list|,
 name|mgr
 operator|.
 name|getAllKeys
 argument_list|()
 operator|.
 name|length
-argument_list|,
-literal|0
 argument_list|)
-expr_stmt|;
-name|Assert
 operator|.
-name|assertEquals
+name|withFailMessage
 argument_list|(
-literal|"Secret manager should not contain tokens"
-argument_list|,
+literal|"Secret manager should not contain keys"
+argument_list|)
+operator|.
+name|isZero
+argument_list|()
+expr_stmt|;
+name|assertThat
+argument_list|(
 name|mgr
 operator|.
 name|getAllTokens
@@ -1257,9 +1271,15 @@ argument_list|()
 operator|.
 name|size
 argument_list|()
-argument_list|,
-literal|0
 argument_list|)
+operator|.
+name|withFailMessage
+argument_list|(
+literal|"Secret manager should not contain tokens"
+argument_list|)
+operator|.
+name|isZero
+argument_list|()
 expr_stmt|;
 block|}
 DECL|class|JHSDelegationTokenSecretManagerForTest

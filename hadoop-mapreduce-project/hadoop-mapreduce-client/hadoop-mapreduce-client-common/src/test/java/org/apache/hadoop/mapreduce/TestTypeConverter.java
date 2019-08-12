@@ -34,6 +34,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|mockito
 operator|.
 name|Mockito
@@ -1557,12 +1573,8 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 comment|//Verify that the converted queue has the 1 child we had added
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
-literal|"QueueInfo children weren't properly converted"
-argument_list|,
 name|returned
 operator|.
 name|getQueueChildren
@@ -1570,7 +1582,15 @@ argument_list|()
 operator|.
 name|size
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|withFailMessage
+argument_list|(
+literal|"QueueInfo children weren't properly converted"
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;

@@ -74,11 +74,51 @@ begin_import
 import|import static
 name|org
 operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
 operator|.
-name|*
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
 import|;
 end_import
 
@@ -818,10 +858,13 @@ argument_list|(
 name|expectedFile
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
 name|output
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 name|expectedOutput
 operator|.
 name|toString
@@ -1181,12 +1224,8 @@ name|exists
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
-literal|"Output directory not empty"
-argument_list|,
-literal|0
-argument_list|,
 operator|new
 name|File
 argument_list|(
@@ -1198,9 +1237,15 @@ argument_list|)
 operator|.
 name|listFiles
 argument_list|()
-operator|.
-name|length
 argument_list|)
+operator|.
+name|withFailMessage
+argument_list|(
+literal|"Output directory not empty"
+argument_list|)
+operator|.
+name|isEmpty
+argument_list|()
 expr_stmt|;
 name|FileUtil
 operator|.

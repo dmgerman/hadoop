@@ -50,11 +50,15 @@ begin_import
 import|import static
 name|org
 operator|.
-name|junit
+name|assertj
 operator|.
-name|Assert
+name|core
 operator|.
-name|assertEquals
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
 import|;
 end_import
 
@@ -172,10 +176,13 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
 name|masterHostname
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|"bar.com"
 argument_list|)
 expr_stmt|;

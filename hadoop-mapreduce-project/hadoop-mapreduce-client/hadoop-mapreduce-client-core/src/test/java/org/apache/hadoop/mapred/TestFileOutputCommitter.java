@@ -70,6 +70,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -1166,10 +1182,13 @@ argument_list|(
 name|expectedFile
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
 name|output
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 name|expectedOutput
 operator|.
 name|toString

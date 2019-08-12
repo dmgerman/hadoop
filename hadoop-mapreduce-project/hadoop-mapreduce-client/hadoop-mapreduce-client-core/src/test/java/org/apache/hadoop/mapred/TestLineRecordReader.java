@@ -20,6 +20,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -3630,17 +3646,17 @@ name|value
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|assertTrue
-argument_list|(
-literal|"abcd|efgh"
-operator|.
-name|equals
+name|assertThat
 argument_list|(
 name|value
 operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
+literal|"abcd|efgh"
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -3687,17 +3703,17 @@ argument_list|)
 condition|)
 block|{
 comment|// check the record info: "ij|kl"
-name|assertTrue
-argument_list|(
-literal|"ij|kl"
-operator|.
-name|equals
+name|assertThat
 argument_list|(
 name|value
 operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
+literal|"ij|kl"
 argument_list|)
 expr_stmt|;
 comment|// Position should be 20 right after "|+|"
@@ -3732,17 +3748,17 @@ argument_list|)
 condition|)
 block|{
 comment|// check the record info: "mno|pqr"
-name|assertTrue
-argument_list|(
-literal|"mno|pqr"
-operator|.
-name|equals
+name|assertThat
 argument_list|(
 name|value
 operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
+literal|"mno|pqr"
 argument_list|)
 expr_stmt|;
 comment|// Position should be 27 at the end of the string now

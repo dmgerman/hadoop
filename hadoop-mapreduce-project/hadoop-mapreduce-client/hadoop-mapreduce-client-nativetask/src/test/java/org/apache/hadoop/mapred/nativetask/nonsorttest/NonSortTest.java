@@ -24,23 +24,15 @@ begin_import
 import|import static
 name|org
 operator|.
-name|junit
+name|assertj
 operator|.
-name|Assert
+name|core
 operator|.
-name|assertEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
+name|api
 operator|.
-name|junit
+name|Assertions
 operator|.
-name|Assert
-operator|.
-name|assertTrue
+name|assertThat
 import|;
 end_import
 
@@ -429,7 +421,7 @@ operator|.
 name|NATIVETASK_NONSORT_TEST_NATIVE_OUTPUT
 argument_list|)
 decl_stmt|;
-name|assertTrue
+name|assertThat
 argument_list|(
 name|nativeNonSort
 operator|.
@@ -438,6 +430,9 @@ argument_list|(
 literal|true
 argument_list|)
 argument_list|)
+operator|.
+name|isTrue
+argument_list|()
 expr_stmt|;
 name|Configuration
 name|normalConf
@@ -475,7 +470,7 @@ operator|.
 name|NATIVETASK_NONSORT_TEST_NORMAL_OUTPUT
 argument_list|)
 decl_stmt|;
-name|assertTrue
+name|assertThat
 argument_list|(
 name|hadoopWithSort
 operator|.
@@ -484,6 +479,9 @@ argument_list|(
 literal|true
 argument_list|)
 argument_list|)
+operator|.
+name|isTrue
+argument_list|()
 expr_stmt|;
 specifier|final
 name|boolean
@@ -502,14 +500,18 @@ operator|.
 name|NATIVETASK_NONSORT_TEST_NORMAL_OUTPUT
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
-literal|"file compare result: if they are the same ,then return true"
-argument_list|,
-literal|true
-argument_list|,
 name|compareRet
 argument_list|)
+operator|.
+name|withFailMessage
+argument_list|(
+literal|"file compare result: if they are the same ,then return true"
+argument_list|)
+operator|.
+name|isTrue
+argument_list|()
 expr_stmt|;
 name|ResultVerifier
 operator|.

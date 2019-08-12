@@ -24,23 +24,15 @@ begin_import
 import|import static
 name|org
 operator|.
-name|junit
+name|assertj
 operator|.
-name|Assert
+name|core
 operator|.
-name|assertEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
+name|api
 operator|.
-name|junit
+name|Assertions
 operator|.
-name|Assert
-operator|.
-name|assertTrue
+name|assertThat
 import|;
 end_import
 
@@ -902,15 +894,21 @@ argument_list|,
 name|nativeOutputPath
 argument_list|)
 decl_stmt|;
-name|assertTrue
+name|assertThat
 argument_list|(
-literal|"job should complete successfully"
-argument_list|,
 name|nativeJob
 operator|.
 name|runJob
 argument_list|()
 argument_list|)
+operator|.
+name|withFailMessage
+argument_list|(
+literal|"job should complete successfully"
+argument_list|)
+operator|.
+name|isTrue
+argument_list|()
 expr_stmt|;
 specifier|final
 name|String
@@ -979,15 +977,21 @@ argument_list|,
 name|normalOutputPath
 argument_list|)
 decl_stmt|;
-name|assertTrue
+name|assertThat
 argument_list|(
-literal|"job should complete successfully"
-argument_list|,
 name|normalJob
 operator|.
 name|runJob
 argument_list|()
 argument_list|)
+operator|.
+name|withFailMessage
+argument_list|(
+literal|"job should complete successfully"
+argument_list|)
+operator|.
+name|isTrue
+argument_list|()
 expr_stmt|;
 specifier|final
 name|boolean
@@ -1002,14 +1006,18 @@ argument_list|,
 name|nativeOutputPath
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
-literal|"job output not the same"
-argument_list|,
-literal|true
-argument_list|,
 name|compareRet
 argument_list|)
+operator|.
+name|withFailMessage
+argument_list|(
+literal|"job output not the same"
+argument_list|)
+operator|.
+name|isTrue
+argument_list|()
 expr_stmt|;
 name|ResultVerifier
 operator|.

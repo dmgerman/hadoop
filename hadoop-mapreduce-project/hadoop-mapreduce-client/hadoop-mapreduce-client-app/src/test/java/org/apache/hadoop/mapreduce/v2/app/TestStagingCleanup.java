@@ -28,6 +28,18 @@ name|junit
 operator|.
 name|Assert
 operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
 name|assertTrue
 import|;
 end_import
@@ -997,16 +1009,8 @@ condition|(
 name|shouldHaveDeleted
 condition|)
 block|{
-name|Assert
-operator|.
-name|assertEquals
+name|assertTrue
 argument_list|(
-operator|new
-name|Boolean
-argument_list|(
-literal|true
-argument_list|)
-argument_list|,
 name|appMaster
 operator|.
 name|isLastAMRetry
@@ -1028,16 +1032,8 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|Assert
-operator|.
-name|assertEquals
+name|assertFalse
 argument_list|(
-operator|new
-name|Boolean
-argument_list|(
-literal|false
-argument_list|)
-argument_list|,
 name|appMaster
 operator|.
 name|isLastAMRetry
@@ -1257,12 +1253,8 @@ name|shutDownJob
 argument_list|()
 expr_stmt|;
 comment|//test whether notifyIsLastAMRetry called
-name|Assert
-operator|.
-name|assertEquals
+name|assertTrue
 argument_list|(
-literal|true
-argument_list|,
 operator|(
 operator|(
 name|TestMRApp
@@ -1469,12 +1461,8 @@ name|shutDownJob
 argument_list|()
 expr_stmt|;
 comment|//test whether notifyIsLastAMRetry called
-name|Assert
-operator|.
-name|assertEquals
+name|assertFalse
 argument_list|(
-literal|false
-argument_list|,
 operator|(
 operator|(
 name|TestMRApp
@@ -1672,12 +1660,8 @@ name|shutDownJob
 argument_list|()
 expr_stmt|;
 comment|//test whether notifyIsLastAMRetry called
-name|Assert
-operator|.
-name|assertEquals
+name|assertTrue
 argument_list|(
-literal|true
-argument_list|,
 operator|(
 operator|(
 name|TestMRApp
@@ -2348,12 +2332,8 @@ name|shutDownJob
 argument_list|()
 expr_stmt|;
 comment|//test whether notifyIsLastAMRetry called
-name|Assert
-operator|.
-name|assertEquals
+name|assertTrue
 argument_list|(
-literal|true
-argument_list|,
 operator|(
 operator|(
 name|TestMRApp
@@ -2592,12 +2572,8 @@ name|shutDownJob
 argument_list|()
 expr_stmt|;
 comment|//test whether notifyIsLastAMRetry called
-name|Assert
-operator|.
-name|assertEquals
+name|assertTrue
 argument_list|(
-literal|true
-argument_list|,
 operator|(
 operator|(
 name|TestMRApp
@@ -2834,12 +2810,8 @@ name|shutDownJob
 argument_list|()
 expr_stmt|;
 comment|//test whether notifyIsLastAMRetry called
-name|Assert
-operator|.
-name|assertEquals
+name|assertTrue
 argument_list|(
-literal|true
-argument_list|,
 operator|(
 operator|(
 name|TestMRApp
@@ -3091,12 +3063,8 @@ name|shutDownJob
 argument_list|()
 expr_stmt|;
 comment|//test whether notifyIsLastAMRetry called
-name|Assert
-operator|.
-name|assertEquals
+name|assertTrue
 argument_list|(
-literal|true
-argument_list|,
 operator|(
 operator|(
 name|TestMRApp

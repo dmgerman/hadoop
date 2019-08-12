@@ -2322,10 +2322,8 @@ argument_list|)
 expr_stmt|;
 name|Assert
 operator|.
-name|assertEquals
+name|assertFalse
 argument_list|(
-literal|false
-argument_list|,
 name|jr
 operator|.
 name|isUber

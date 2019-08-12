@@ -424,6 +424,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|apache
 operator|.
 name|hadoop
@@ -565,44 +581,50 @@ argument_list|,
 name|success
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
-literal|"Expected ignore run"
-argument_list|,
-literal|null
-argument_list|,
 name|uploader
 operator|.
 name|input
 argument_list|)
-expr_stmt|;
-name|Assert
 operator|.
-name|assertEquals
+name|withFailMessage
 argument_list|(
 literal|"Expected ignore run"
-argument_list|,
-literal|null
-argument_list|,
+argument_list|)
+operator|.
+name|isNull
+argument_list|()
+expr_stmt|;
+name|assertThat
+argument_list|(
 name|uploader
 operator|.
 name|whitelist
 argument_list|)
-expr_stmt|;
-name|Assert
 operator|.
-name|assertEquals
+name|withFailMessage
 argument_list|(
 literal|"Expected ignore run"
-argument_list|,
-literal|null
-argument_list|,
+argument_list|)
+operator|.
+name|isNull
+argument_list|()
+expr_stmt|;
+name|assertThat
+argument_list|(
 name|uploader
 operator|.
 name|target
 argument_list|)
+operator|.
+name|withFailMessage
+argument_list|(
+literal|"Expected ignore run"
+argument_list|)
+operator|.
+name|isNull
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Test invalid argument parsing.    * @throws IOException test failure    */
