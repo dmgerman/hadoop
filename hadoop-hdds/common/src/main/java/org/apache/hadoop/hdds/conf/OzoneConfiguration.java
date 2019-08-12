@@ -249,6 +249,20 @@ specifier|public
 name|OzoneConfiguration
 parameter_list|()
 block|{
+name|this
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|OzoneConfiguration (boolean justTheDefaults)
+specifier|private
+name|OzoneConfiguration
+parameter_list|(
+name|boolean
+name|justTheDefaults
+parameter_list|)
+block|{
 name|OzoneConfiguration
 operator|.
 name|activate
@@ -257,6 +271,33 @@ expr_stmt|;
 name|loadDefaults
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|justTheDefaults
+condition|)
+block|{
+name|loadConfigFiles
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+DECL|method|loadConfigFiles ()
+specifier|private
+name|void
+name|loadConfigFiles
+parameter_list|()
+block|{
+name|addResource
+argument_list|(
+literal|"ozone-global.xml"
+argument_list|)
+expr_stmt|;
+name|addResource
+argument_list|(
+literal|"ozone-site.xml"
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|OzoneConfiguration (Configuration conf)
 specifier|public
@@ -264,6 +305,25 @@ name|OzoneConfiguration
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|conf
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|OzoneConfiguration (Configuration conf, boolean justTheDefaults)
+specifier|private
+name|OzoneConfiguration
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|boolean
+name|justTheDefaults
 parameter_list|)
 block|{
 name|super
@@ -293,7 +353,33 @@ block|{
 name|loadDefaults
 argument_list|()
 expr_stmt|;
+comment|//here we load the REAL configuration.
+if|if
+condition|(
+operator|!
+name|justTheDefaults
+condition|)
+block|{
+name|loadConfigFiles
+argument_list|()
+expr_stmt|;
 block|}
+block|}
+block|}
+DECL|method|createWithDefaultsOnly ()
+specifier|public
+specifier|static
+name|OzoneConfiguration
+name|createWithDefaultsOnly
+parameter_list|()
+block|{
+return|return
+operator|new
+name|OzoneConfiguration
+argument_list|(
+literal|true
+argument_list|)
+return|;
 block|}
 DECL|method|loadDefaults ()
 specifier|private
@@ -354,11 +440,6 @@ name|printStackTrace
 argument_list|()
 expr_stmt|;
 block|}
-name|addResource
-argument_list|(
-literal|"ozone-site.xml"
-argument_list|)
-expr_stmt|;
 block|}
 DECL|method|readPropertyFromXml (URL url)
 specifier|public
@@ -1372,6 +1453,22 @@ block|}
 block|}
 return|return
 name|props
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getProps ()
+specifier|public
+specifier|synchronized
+name|Properties
+name|getProps
+parameter_list|()
+block|{
+return|return
+name|super
+operator|.
+name|getProps
+argument_list|()
 return|;
 block|}
 block|}
