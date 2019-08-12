@@ -1028,20 +1028,17 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Application "
-operator|+
+literal|"Application {} mapping [{}] to [{}] override {}"
+argument_list|,
 name|applicationName
-operator|+
-literal|" mapping ["
-operator|+
+argument_list|,
 name|queueName
-operator|+
-literal|"] to ["
-operator|+
+argument_list|,
 name|mappedQueue
-operator|+
-literal|"] override "
-operator|+
+operator|.
+name|getQueue
+argument_list|()
+argument_list|,
 name|overrideWithQueueMappings
 argument_list|)
 expr_stmt|;

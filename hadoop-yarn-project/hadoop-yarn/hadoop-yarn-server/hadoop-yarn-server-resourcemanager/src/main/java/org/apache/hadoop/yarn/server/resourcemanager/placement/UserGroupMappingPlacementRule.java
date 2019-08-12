@@ -1175,24 +1175,19 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Application "
-operator|+
+literal|"Application {} user {} mapping [{}] to [{}] override {}"
+argument_list|,
 name|applicationId
-operator|+
-literal|" user "
-operator|+
+argument_list|,
 name|user
-operator|+
-literal|" mapping ["
-operator|+
+argument_list|,
 name|queueName
-operator|+
-literal|"] to ["
-operator|+
+argument_list|,
 name|mappedQueue
-operator|+
-literal|"] override "
-operator|+
+operator|.
+name|getQueue
+argument_list|()
+argument_list|,
 name|overrideWithQueueMappings
 argument_list|)
 expr_stmt|;
