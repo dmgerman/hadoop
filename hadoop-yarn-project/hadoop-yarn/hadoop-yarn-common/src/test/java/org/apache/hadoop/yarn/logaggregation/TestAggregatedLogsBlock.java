@@ -986,7 +986,21 @@ name|out
 operator|.
 name|contains
 argument_list|(
-literal|"Logs not available for entity. Aggregation may not be complete, Check back later or try the nodemanager at localhost:1234"
+literal|"Logs not available for entity. Aggregation may not be "
+operator|+
+literal|"complete, Check back later or try to find the container logs "
+operator|+
+literal|"in the local directory of nodemanager localhost:1234"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|out
+operator|.
+name|contains
+argument_list|(
+literal|"Or see application log at http://localhost:8042"
 argument_list|)
 argument_list|)
 expr_stmt|;
