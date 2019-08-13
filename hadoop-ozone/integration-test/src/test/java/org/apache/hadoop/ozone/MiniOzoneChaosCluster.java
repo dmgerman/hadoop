@@ -413,8 +413,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Starting MiniOzoneChaosCluster with:{} datanodes"
-operator|+
+literal|"Starting MiniOzoneChaosCluster with {} datanodes"
+argument_list|,
 name|numDatanodes
 argument_list|)
 expr_stmt|;
@@ -615,12 +615,14 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Failed to restartNodes Datanode"
+literal|"Failed to restartNodes Datanode {}"
 argument_list|,
 name|dn
 operator|.
 name|getUuid
 argument_list|()
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 block|}
@@ -682,7 +684,7 @@ name|shouldStop
 condition|?
 literal|"Stopping"
 else|:
-literal|"Starting"
+literal|"Restarting"
 decl_stmt|;
 name|DatanodeDetails
 name|dn
@@ -760,12 +762,16 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Failed to shutdown Datanode"
+literal|"Failed {} Datanode {}"
+argument_list|,
+name|stopString
 argument_list|,
 name|dn
 operator|.
 name|getUuid
 argument_list|()
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 block|}
