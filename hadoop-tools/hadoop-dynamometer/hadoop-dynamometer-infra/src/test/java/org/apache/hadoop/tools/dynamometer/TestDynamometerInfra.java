@@ -1005,7 +1005,7 @@ specifier|final
 name|String
 name|HADOOP_BIN_VERSION_DEFAULT
 init|=
-literal|"3.1.1"
+literal|"3.1.2"
 decl_stmt|;
 DECL|field|FSIMAGE_FILENAME
 specifier|private

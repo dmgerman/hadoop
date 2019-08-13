@@ -1112,16 +1112,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|junit
-operator|.
-name|Assert
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -1695,17 +1685,6 @@ operator|.
 name|findContainingJar
 argument_list|(
 name|ApplicationMaster
-operator|.
-name|class
-argument_list|)
-argument_list|,
-comment|// JUnit is required by MiniDFSCluster at runtime, but is not included
-comment|// in standard Hadoop dependencies, so it must explicitly included here
-name|ClassUtil
-operator|.
-name|findContainingJar
-argument_list|(
-name|Assert
 operator|.
 name|class
 argument_list|)
