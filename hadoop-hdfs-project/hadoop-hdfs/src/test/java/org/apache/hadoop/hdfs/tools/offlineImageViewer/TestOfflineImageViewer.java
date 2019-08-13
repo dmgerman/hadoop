@@ -2571,6 +2571,53 @@ name|file1
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// HDFS-14148: Create a second snapshot-enabled directory. This can cause
+comment|// TestOfflineImageViewer#testReverseXmlRoundTrip to fail before the patch
+specifier|final
+name|Path
+name|snapshotDir2
+init|=
+operator|new
+name|Path
+argument_list|(
+literal|"/snapshotDir2"
+argument_list|)
+decl_stmt|;
+name|hdfs
+operator|.
+name|mkdirs
+argument_list|(
+name|snapshotDir2
+argument_list|)
+expr_stmt|;
+comment|// Simply enable snapshot on it, no need to create one
+name|hdfs
+operator|.
+name|allowSnapshot
+argument_list|(
+name|snapshotDir2
+argument_list|)
+expr_stmt|;
+name|dirCount
+operator|++
+expr_stmt|;
+name|writtenFiles
+operator|.
+name|put
+argument_list|(
+name|snapshotDir2
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|hdfs
+operator|.
+name|getFileStatus
+argument_list|(
+name|snapshotDir2
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// Set XAttrs so the fsimage contains XAttr ops
 specifier|final
 name|Path
