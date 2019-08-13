@@ -3515,16 +3515,12 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-operator|(
 name|datanodeInfo
 operator|.
 name|getLastHeartbeatTime
 argument_list|()
-operator|-
+operator|>
 name|start
-operator|)
-operator|>=
-name|heartbeatCheckerIntervalMs
 argument_list|)
 expr_stmt|;
 name|Assert
