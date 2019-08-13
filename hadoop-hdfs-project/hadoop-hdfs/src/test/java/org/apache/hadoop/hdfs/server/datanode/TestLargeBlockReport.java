@@ -40,6 +40,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeys
+operator|.
+name|IPC_MAXIMUM_DATA_LENGTH_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -527,14 +543,11 @@ name|setInt
 argument_list|(
 name|IPC_MAXIMUM_DATA_LENGTH
 argument_list|,
-literal|128
+name|IPC_MAXIMUM_DATA_LENGTH_DEFAULT
 operator|*
-literal|1024
-operator|*
-literal|1024
+literal|2
 argument_list|)
 expr_stmt|;
-comment|// 128 MB
 name|initCluster
 argument_list|()
 expr_stmt|;
