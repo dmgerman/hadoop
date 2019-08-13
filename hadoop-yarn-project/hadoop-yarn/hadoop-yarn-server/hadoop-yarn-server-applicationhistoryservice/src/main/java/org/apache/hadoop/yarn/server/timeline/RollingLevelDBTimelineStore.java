@@ -4804,6 +4804,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|entity
+operator|!=
+literal|null
+condition|)
+block|{
 comment|// determine if the retrieved entity matches the provided secondary
 comment|// filters, and if so add it to the list of entities to return
 name|boolean
@@ -4988,6 +4995,7 @@ argument_list|(
 name|entity
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}
