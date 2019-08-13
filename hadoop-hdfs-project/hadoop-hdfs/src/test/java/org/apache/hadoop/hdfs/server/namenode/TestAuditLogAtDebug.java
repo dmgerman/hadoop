@@ -112,7 +112,7 @@ name|namenode
 operator|.
 name|FSNamesystem
 operator|.
-name|DefaultAuditLogger
+name|FSNamesystemAuditLogger
 import|;
 end_import
 
@@ -316,7 +316,7 @@ name|DefaultAuditLogger
 name|logger
 init|=
 operator|new
-name|DefaultAuditLogger
+name|FSNamesystemAuditLogger
 argument_list|()
 decl_stmt|;
 name|Configuration
