@@ -1811,7 +1811,7 @@ specifier|final
 name|boolean
 name|DFS_NAMENODE_ACLS_ENABLED_DEFAULT
 init|=
-literal|false
+literal|true
 decl_stmt|;
 DECL|field|DFS_NAMENODE_POSIX_ACL_INHERITANCE_ENABLED_KEY
 specifier|public

@@ -824,12 +824,6 @@ operator|new
 name|Configuration
 argument_list|()
 decl_stmt|;
-comment|// not explicitly setting to false, should be false by default
-if|if
-condition|(
-name|aclsEnabled
-condition|)
-block|{
 name|conf
 operator|.
 name|setBoolean
@@ -838,10 +832,9 @@ name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_ACLS_ENABLED_KEY
 argument_list|,
-literal|true
+name|aclsEnabled
 argument_list|)
 expr_stmt|;
-block|}
 name|cluster
 operator|=
 operator|new
