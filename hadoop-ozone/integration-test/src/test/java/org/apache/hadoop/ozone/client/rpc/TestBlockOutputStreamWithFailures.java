@@ -3120,38 +3120,41 @@ operator|.
 name|flush
 argument_list|()
 expr_stmt|;
-comment|// Since, 2 datanodes went down, if the pipeline gets destroyed quickly,
-comment|// it will hit GroupMismatchException else, it will fail with
-comment|// RaftRetryFailureException
+name|Throwable
+name|ioException
+init|=
+name|HddsClientUtils
+operator|.
+name|checkForException
+argument_list|(
+name|blockOutputStream
+operator|.
+name|getIoException
+argument_list|()
+argument_list|)
+decl_stmt|;
+comment|// Since, 2 datanodes went down,
+comment|// a) if the pipeline gets destroyed quickly it will hit
+comment|//    GroupMismatchException.
+comment|// b) will hit close container exception if the container is closed
+comment|//    but pipeline is still not destroyed.
+comment|// c) will fail with RaftRetryFailureException if the leader election
+comment|//    did not finish before the request retry count finishes.
 name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-operator|(
-name|HddsClientUtils
-operator|.
-name|checkForException
-argument_list|(
-name|blockOutputStream
-operator|.
-name|getIoException
-argument_list|()
-argument_list|)
+name|ioException
 operator|instanceof
 name|RaftRetryFailureException
-operator|)
 operator|||
-name|HddsClientUtils
-operator|.
-name|checkForException
-argument_list|(
-name|blockOutputStream
-operator|.
-name|getIoException
-argument_list|()
-argument_list|)
+name|ioException
 operator|instanceof
 name|GroupMismatchException
+operator|||
+name|ioException
+operator|instanceof
+name|ContainerNotOpenException
 argument_list|)
 expr_stmt|;
 comment|// Make sure the retryCount is reset after the exception is handled
