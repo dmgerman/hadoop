@@ -4108,6 +4108,50 @@ operator|new
 name|String
 index|[]
 block|{
+literal|"-refreshRouterArgs"
+block|}
+expr_stmt|;
+name|assertEquals
+argument_list|(
+operator|-
+literal|1
+argument_list|,
+name|ToolRunner
+operator|.
+name|run
+argument_list|(
+name|admin
+argument_list|,
+name|argv
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|out
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"\t[-refreshRouterArgs "
+operator|+
+literal|"<host:ipc_port><key> [arg1..argn]]"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
+name|argv
+operator|=
+operator|new
+name|String
+index|[]
+block|{
 literal|"-Random"
 block|}
 expr_stmt|;
@@ -4165,7 +4209,11 @@ literal|"\t[-safemode enter | leave | get]\n"
 operator|+
 literal|"\t[-nameservice enable | disable<nameservice>]\n"
 operator|+
-literal|"\t[-getDisabledNameservices]"
+literal|"\t[-getDisabledNameservices]\n"
+operator|+
+literal|"\t[-refresh]\n"
+operator|+
+literal|"\t[-refreshRouterArgs<host:ipc_port><key> [arg1..argn]]"
 decl_stmt|;
 name|assertTrue
 argument_list|(

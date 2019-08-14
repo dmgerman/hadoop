@@ -1341,6 +1341,8 @@ block|,
 literal|"-getDisabledNameservices"
 block|,
 literal|"-refresh"
+block|,
+literal|"-refreshRouterArgs"
 block|}
 decl_stmt|;
 name|StringBuilder
