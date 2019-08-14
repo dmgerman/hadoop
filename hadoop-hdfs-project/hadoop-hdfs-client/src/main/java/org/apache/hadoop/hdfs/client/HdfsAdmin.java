@@ -1626,6 +1626,34 @@ name|listOpenFiles
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Deprecated
+DECL|method|listOpenFiles ( EnumSet<OpenFilesType> openFilesTypes)
+specifier|public
+name|RemoteIterator
+argument_list|<
+name|OpenFileEntry
+argument_list|>
+name|listOpenFiles
+parameter_list|(
+name|EnumSet
+argument_list|<
+name|OpenFilesType
+argument_list|>
+name|openFilesTypes
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|dfs
+operator|.
+name|listOpenFiles
+argument_list|(
+name|openFilesTypes
+argument_list|)
+return|;
+block|}
 DECL|method|listOpenFiles ( EnumSet<OpenFilesType> openFilesTypes, String path)
 specifier|public
 name|RemoteIterator
