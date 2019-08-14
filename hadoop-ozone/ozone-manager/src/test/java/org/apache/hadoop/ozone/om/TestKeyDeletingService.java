@@ -502,7 +502,7 @@ operator|new
 name|KeyManagerImpl
 argument_list|(
 operator|new
-name|ScmBlockLocationTestIngClient
+name|ScmBlockLocationTestingClient
 argument_list|(
 literal|null
 argument_list|,
@@ -650,7 +650,7 @@ operator|new
 name|KeyManagerImpl
 argument_list|(
 operator|new
-name|ScmBlockLocationTestIngClient
+name|ScmBlockLocationTestingClient
 argument_list|(
 literal|null
 argument_list|,
@@ -826,7 +826,7 @@ operator|new
 name|KeyManagerImpl
 argument_list|(
 operator|new
-name|ScmBlockLocationTestIngClient
+name|ScmBlockLocationTestingClient
 argument_list|(
 literal|null
 argument_list|,
