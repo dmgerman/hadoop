@@ -520,30 +520,6 @@ name|nodemanager
 operator|.
 name|containermanager
 operator|.
-name|linux
-operator|.
-name|resources
-operator|.
-name|ResourceHandlerException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|nodemanager
-operator|.
-name|containermanager
-operator|.
 name|resourceplugin
 operator|.
 name|deviceframework
@@ -695,6 +671,18 @@ operator|.
 name|ArgumentMatchers
 operator|.
 name|any
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|ArgumentMatchers
+operator|.
+name|anyMap
 import|;
 end_import
 
@@ -1051,8 +1039,6 @@ parameter_list|(
 name|Configuration
 name|configuration
 parameter_list|)
-throws|throws
-name|ResourceHandlerException
 block|{
 return|return
 literal|null
@@ -1071,8 +1057,6 @@ parameter_list|(
 name|Container
 name|container
 parameter_list|)
-throws|throws
-name|ResourceHandlerException
 block|{
 return|return
 literal|null
@@ -1080,7 +1064,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|reacquireContainer (ContainerId containerId)
+DECL|method|reacquireContainer ( ContainerId containerId)
 specifier|public
 name|List
 argument_list|<
@@ -1091,8 +1075,6 @@ parameter_list|(
 name|ContainerId
 name|containerId
 parameter_list|)
-throws|throws
-name|ResourceHandlerException
 block|{
 return|return
 literal|null
@@ -1111,8 +1093,6 @@ parameter_list|(
 name|Container
 name|container
 parameter_list|)
-throws|throws
-name|ResourceHandlerException
 block|{
 return|return
 literal|null
@@ -1131,8 +1111,6 @@ parameter_list|(
 name|ContainerId
 name|containerId
 parameter_list|)
-throws|throws
-name|ResourceHandlerException
 block|{
 return|return
 literal|null
@@ -1148,8 +1126,6 @@ name|PrivilegedOperation
 argument_list|>
 name|teardown
 parameter_list|()
-throws|throws
-name|ResourceHandlerException
 block|{
 return|return
 literal|null
@@ -1235,7 +1211,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|createContainerManager (Context context, ContainerExecutor exec, DeletionService del, NodeStatusUpdater nodeStatusUpdater, ApplicationACLsManager aclsManager, LocalDirsHandlerService diskhandler)
+DECL|method|createContainerManager (Context context, ContainerExecutor exec, DeletionService del, NodeStatusUpdater nodeStatusUpdater, ApplicationACLsManager aclsManager, LocalDirsHandlerService dirsHandler)
 specifier|protected
 name|ContainerManagerImpl
 name|createContainerManager
@@ -1256,7 +1232,7 @@ name|ApplicationACLsManager
 name|aclsManager
 parameter_list|,
 name|LocalDirsHandlerService
-name|diskhandler
+name|dirsHandler
 parameter_list|)
 block|{
 return|return
@@ -1273,7 +1249,7 @@ name|nodeStatusUpdater
 argument_list|,
 name|metrics
 argument_list|,
-name|diskhandler
+name|dirsHandler
 argument_list|)
 return|;
 block|}
@@ -1363,11 +1339,6 @@ expr_stmt|;
 name|verify
 argument_list|(
 name|rpm
-argument_list|,
-name|times
-argument_list|(
-literal|1
-argument_list|)
 argument_list|)
 operator|.
 name|initialize
@@ -1443,11 +1414,6 @@ decl_stmt|;
 name|verify
 argument_list|(
 name|nodeResourceUpdaterPlugin
-argument_list|,
-name|times
-argument_list|(
-literal|1
-argument_list|)
 argument_list|)
 operator|.
 name|updateConfiguredResource
@@ -1474,8 +1440,6 @@ specifier|public
 name|void
 name|testLinuxContainerExecutorWithResourcePluginsEnabled
 parameter_list|()
-throws|throws
-name|Exception
 block|{
 specifier|final
 name|ResourcePluginManager
@@ -1566,7 +1530,7 @@ name|ApplicationACLsManager
 name|aclsManager
 parameter_list|,
 name|LocalDirsHandlerService
-name|diskhandler
+name|dirsHandler
 parameter_list|)
 block|{
 return|return
@@ -1583,7 +1547,7 @@ name|nodeStatusUpdater
 argument_list|,
 name|metrics
 argument_list|,
-name|diskhandler
+name|dirsHandler
 argument_list|)
 return|;
 block|}
@@ -1788,11 +1752,6 @@ expr_stmt|;
 name|verify
 argument_list|(
 name|rpmSpy
-argument_list|,
-name|times
-argument_list|(
-literal|1
-argument_list|)
 argument_list|)
 operator|.
 name|initialize
@@ -1831,12 +1790,8 @@ operator|.
 name|class
 argument_list|)
 argument_list|,
-name|any
-argument_list|(
-name|Map
-operator|.
-name|class
-argument_list|)
+name|anyMap
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1894,11 +1849,6 @@ expr_stmt|;
 name|verify
 argument_list|(
 name|rpmSpy
-argument_list|,
-name|times
-argument_list|(
-literal|1
-argument_list|)
 argument_list|)
 operator|.
 name|initialize
@@ -1937,12 +1887,8 @@ operator|.
 name|class
 argument_list|)
 argument_list|,
-name|any
-argument_list|(
-name|Map
-operator|.
-name|class
-argument_list|)
+name|anyMap
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2027,11 +1973,6 @@ expr_stmt|;
 name|verify
 argument_list|(
 name|rpmSpy
-argument_list|,
-name|times
-argument_list|(
-literal|1
-argument_list|)
 argument_list|)
 operator|.
 name|initialize
@@ -2047,11 +1988,6 @@ expr_stmt|;
 name|verify
 argument_list|(
 name|rpmSpy
-argument_list|,
-name|times
-argument_list|(
-literal|1
-argument_list|)
 argument_list|)
 operator|.
 name|initializePluggableDevicePlugins
@@ -2070,12 +2006,8 @@ operator|.
 name|class
 argument_list|)
 argument_list|,
-name|any
-argument_list|(
-name|Map
-operator|.
-name|class
-argument_list|)
+name|anyMap
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2119,7 +2051,7 @@ argument_list|(
 name|rpmSpy
 argument_list|)
 expr_stmt|;
-name|Boolean
+name|boolean
 name|fail
 init|=
 literal|false
@@ -2164,17 +2096,12 @@ block|}
 catch|catch
 parameter_list|(
 name|Exception
-name|e
+name|ignored
 parameter_list|)
 block|{      }
 name|verify
 argument_list|(
 name|rpmSpy
-argument_list|,
-name|times
-argument_list|(
-literal|1
-argument_list|)
 argument_list|)
 operator|.
 name|initializePluggableDevicePlugins
@@ -2193,12 +2120,8 @@ operator|.
 name|class
 argument_list|)
 argument_list|,
-name|any
-argument_list|(
-name|Map
-operator|.
-name|class
-argument_list|)
+name|anyMap
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -2221,8 +2144,6 @@ specifier|public
 name|void
 name|testNormalInitializationOfPluggableDeviceClasses
 parameter_list|()
-throws|throws
-name|Exception
 block|{
 name|ResourcePluginManager
 name|rpm
@@ -2333,20 +2254,13 @@ condition|)
 block|{
 name|Assert
 operator|.
-name|assertTrue
-argument_list|(
-literal|false
-argument_list|)
+name|fail
+argument_list|()
 expr_stmt|;
 block|}
 name|verify
 argument_list|(
 name|rpmSpy
-argument_list|,
-name|times
-argument_list|(
-literal|1
-argument_list|)
 argument_list|)
 operator|.
 name|checkInterfaceCompatibility
@@ -2374,8 +2288,6 @@ specifier|public
 name|void
 name|testLoadInvalidPluggableDeviceClasses
 parameter_list|()
-throws|throws
-name|Exception
 block|{
 name|ResourcePluginManager
 name|rpm
@@ -2505,8 +2417,6 @@ specifier|public
 name|void
 name|testLoadDuplicateResourceNameDevicePlugin
 parameter_list|()
-throws|throws
-name|Exception
 block|{
 name|ResourcePluginManager
 name|rpm
@@ -2642,8 +2552,6 @@ specifier|public
 name|void
 name|testIncompatibleDevicePlugin
 parameter_list|()
-throws|throws
-name|Exception
 block|{
 name|ResourcePluginManager
 name|rpm
@@ -2865,11 +2773,6 @@ comment|// only 1 plugin has the customized scheduler
 name|verify
 argument_list|(
 name|rpmSpy
-argument_list|,
-name|times
-argument_list|(
-literal|1
-argument_list|)
 argument_list|)
 operator|.
 name|checkInterfaceCompatibility
@@ -2886,11 +2789,6 @@ expr_stmt|;
 name|verify
 argument_list|(
 name|dmmSpy
-argument_list|,
-name|times
-argument_list|(
-literal|1
-argument_list|)
 argument_list|)
 operator|.
 name|addDevicePluginScheduler
@@ -2938,8 +2836,6 @@ specifier|public
 name|void
 name|testRequestedResourceNameIsConfigured
 parameter_list|()
-throws|throws
-name|Exception
 block|{
 name|ResourcePluginManager
 name|rpm
