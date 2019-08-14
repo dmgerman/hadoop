@@ -757,7 +757,7 @@ argument_list|()
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Filesystem {} is using delegation tokens of kind {}"
 argument_list|,
@@ -794,7 +794,7 @@ argument_list|()
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"S3A Delegation support token {} with {}"
 argument_list|,
@@ -898,7 +898,7 @@ argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"No delegation tokens present: using direct authentication"
 argument_list|)
