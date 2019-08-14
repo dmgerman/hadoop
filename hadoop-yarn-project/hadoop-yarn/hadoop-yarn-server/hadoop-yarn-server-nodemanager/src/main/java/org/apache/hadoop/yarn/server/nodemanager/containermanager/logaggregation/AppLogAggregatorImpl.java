@@ -1086,13 +1086,6 @@ name|logAggregationTimes
 init|=
 literal|0
 decl_stmt|;
-DECL|field|cleanupOldLogTimes
-specifier|private
-name|int
-name|cleanupOldLogTimes
-init|=
-literal|0
-decl_stmt|;
 DECL|field|logFileSizeThreshold
 specifier|private
 name|long
@@ -1595,24 +1588,25 @@ name|boolean
 name|logAggregationInRolling
 init|=
 name|rollingMonitorInterval
-operator|<=
+operator|>
 literal|0
-operator|||
+operator|&&
 name|this
 operator|.
 name|logAggregationContext
-operator|==
+operator|!=
 literal|null
-operator|||
+operator|&&
 name|this
 operator|.
 name|logAggregationContext
 operator|.
 name|getRolledLogsIncludePattern
 argument_list|()
-operator|==
+operator|!=
 literal|null
-operator|||
+operator|&&
+operator|!
 name|this
 operator|.
 name|logAggregationContext
@@ -1622,11 +1616,37 @@ argument_list|()
 operator|.
 name|isEmpty
 argument_list|()
-condition|?
-literal|false
-else|:
-literal|true
 decl_stmt|;
+if|if
+condition|(
+name|logAggregationInRolling
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Rolling mode is turned on with include pattern {}"
+argument_list|,
+name|this
+operator|.
+name|logAggregationContext
+operator|.
+name|getRolledLogsIncludePattern
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Rolling mode is turned off"
+argument_list|)
+expr_stmt|;
+block|}
 name|logControllerContext
 operator|=
 operator|new
@@ -2107,6 +2127,13 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"No pending container in this cycle"
+argument_list|)
+expr_stmt|;
 name|sendLogAggregationReport
 argument_list|(
 literal|true
@@ -2120,6 +2147,15 @@ return|return;
 block|}
 name|logAggregationTimes
 operator|++
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Cycle #{} of log aggregator"
+argument_list|,
+name|logAggregationTimes
+argument_list|)
 expr_stmt|;
 name|String
 name|diagnosticMessage
@@ -2268,6 +2304,20 @@ block|{
 name|uploadedLogsInThisCycle
 operator|=
 literal|true
+expr_stmt|;
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Uploaded the following files for {}: {}"
+argument_list|,
+name|container
+argument_list|,
+name|uploadedFilePathsInThisCycle
+operator|.
+name|toString
+argument_list|()
+argument_list|)
 expr_stmt|;
 name|List
 argument_list|<
@@ -2544,6 +2594,41 @@ operator|.
 name|delete
 argument_list|(
 name|deletionTask
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+operator|!
+name|diagnosticMessage
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Sending log aggregation report along with the "
+operator|+
+literal|"following diagnostic message:\"{}\""
+argument_list|,
+name|diagnosticMessage
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+operator|!
+name|logAggregationSucceedInThisCycle
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Log aggregation did not succeed in this cycle"
 argument_list|)
 expr_stmt|;
 block|}
@@ -3188,11 +3273,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Log dir "
-operator|+
+literal|"Log dir {} is in an unsupported file system"
+argument_list|,
 name|rootLogDir
-operator|+
-literal|"is an unsupported file system"
 argument_list|,
 name|ue
 argument_list|)
@@ -3205,6 +3288,15 @@ name|IOException
 name|fe
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"An exception occurred while getting file information"
+argument_list|,
+name|fe
+argument_list|)
+expr_stmt|;
 continue|continue;
 block|}
 block|}
@@ -3218,6 +3310,18 @@ operator|>
 literal|0
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Cleaning up {} files"
+argument_list|,
+name|localAppLogDirs
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|List
 argument_list|<
 name|Path
@@ -3868,35 +3972,6 @@ argument_list|)
 expr_stmt|;
 return|return
 name|userUgi
-return|;
-block|}
-annotation|@
-name|Private
-annotation|@
-name|VisibleForTesting
-DECL|method|getLogAggregationTimes ()
-specifier|public
-name|int
-name|getLogAggregationTimes
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|logAggregationTimes
-return|;
-block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|getCleanupOldLogTimes ()
-name|int
-name|getCleanupOldLogTimes
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|cleanupOldLogTimes
 return|;
 block|}
 annotation|@
