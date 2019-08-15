@@ -598,16 +598,6 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Assert
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
 name|Before
 import|;
 end_import
@@ -659,6 +649,34 @@ operator|.
 name|io
 operator|.
 name|File
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
 import|;
 end_import
 
@@ -759,11 +777,6 @@ specifier|private
 name|NodeManager
 name|nm
 decl_stmt|;
-DECL|field|conf
-specifier|private
-name|YarnConfiguration
-name|conf
-decl_stmt|;
 DECL|field|tempResourceTypesFile
 specifier|private
 name|String
@@ -779,13 +792,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|this
-operator|.
-name|conf
-operator|=
-name|createNMConfig
-argument_list|()
-expr_stmt|;
 comment|// setup resource-types.xml
 name|ResourceUtils
 operator|.
@@ -814,6 +820,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|stubResourcePluginmanager ()
+specifier|private
 name|ResourcePluginManager
 name|stubResourcePluginmanager
 parameter_list|()
@@ -1012,9 +1019,15 @@ name|exists
 argument_list|()
 condition|)
 block|{
+name|assertThat
+argument_list|(
 name|dest
 operator|.
 name|delete
+argument_list|()
+argument_list|)
+operator|.
+name|isTrue
 argument_list|()
 expr_stmt|;
 block|}
@@ -1132,10 +1145,10 @@ literal|null
 return|;
 block|}
 block|}
-DECL|class|MyMockNM
+DECL|class|ResourcePluginMockNM
 specifier|private
 class|class
-name|MyMockNM
+name|ResourcePluginMockNM
 extends|extends
 name|NodeManager
 block|{
@@ -1145,9 +1158,8 @@ specifier|final
 name|ResourcePluginManager
 name|rpm
 decl_stmt|;
-DECL|method|MyMockNM (ResourcePluginManager rpm)
-specifier|public
-name|MyMockNM
+DECL|method|ResourcePluginMockNM (ResourcePluginManager rpm)
+name|ResourcePluginMockNM
 parameter_list|(
 name|ResourcePluginManager
 name|rpm
@@ -1298,7 +1310,7 @@ name|poe
 return|;
 block|}
 block|}
-comment|/*    * Make sure ResourcePluginManager is initialized during NM start up.    */
+comment|/**    * Make sure {@link ResourcePluginManager} is initialized during NM start up.    */
 annotation|@
 name|Test
 argument_list|(
@@ -1324,7 +1336,7 @@ decl_stmt|;
 name|nm
 operator|=
 operator|new
-name|MyMockNM
+name|ResourcePluginMockNM
 argument_list|(
 name|rpm
 argument_list|)
@@ -1352,7 +1364,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/*    * Make sure ResourcePluginManager is invoked during NM update.    */
+comment|/**    * Make sure {@link ResourcePluginManager} is invoked during NM update.    */
 annotation|@
 name|Test
 argument_list|(
@@ -1378,7 +1390,7 @@ decl_stmt|;
 name|nm
 operator|=
 operator|new
-name|MyMockNM
+name|ResourcePluginMockNM
 argument_list|(
 name|rpm
 argument_list|)
@@ -1427,7 +1439,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/*    * Make sure ResourcePluginManager is used to initialize ResourceHandlerChain    */
+comment|/**    * Make sure ResourcePluginManager is used to initialize ResourceHandlerChain.    */
 annotation|@
 name|Test
 argument_list|(
@@ -1609,21 +1621,23 @@ operator|.
 name|getResourceHandler
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
-name|assertNotNull
+name|assertThat
 argument_list|(
 name|handler
 argument_list|)
-expr_stmt|;
-name|Assert
 operator|.
-name|assertTrue
+name|isNotNull
+argument_list|()
+expr_stmt|;
+name|assertThat
 argument_list|(
 name|handler
 operator|instanceof
 name|ResourceHandlerChain
 argument_list|)
+operator|.
+name|isTrue
+argument_list|()
 expr_stmt|;
 name|boolean
 name|newHandlerAdded
@@ -1653,11 +1667,9 @@ operator|instanceof
 name|DevicePluginAdapter
 condition|)
 block|{
-name|Assert
-operator|.
-name|assertTrue
+name|fail
 argument_list|(
-literal|false
+literal|"ResourceHandler is a DevicePluginAdapter."
 argument_list|)
 expr_stmt|;
 block|}
@@ -1675,19 +1687,21 @@ expr_stmt|;
 break|break;
 block|}
 block|}
-name|Assert
-operator|.
-name|assertTrue
+name|assertThat
 argument_list|(
-literal|"New ResourceHandler should be added"
-argument_list|,
 name|newHandlerAdded
 argument_list|)
+operator|.
+name|withFailMessage
+argument_list|(
+literal|"New ResourceHandler should be added"
+argument_list|)
+operator|.
+name|isTrue
+argument_list|()
 expr_stmt|;
 block|}
-comment|// Disabled pluggable framework in configuration.
-comment|// We use spy object of real rpm to verify "initializePluggableDevicePlugins"
-comment|// because use mock rpm will not working
+comment|/**    * Disabled pluggable framework in configuration.    * We use spy object of real rpm to verify "initializePluggableDevicePlugins"    * because use mock rpm will not working    */
 annotation|@
 name|Test
 argument_list|(
@@ -1721,7 +1735,7 @@ decl_stmt|;
 name|nm
 operator|=
 operator|new
-name|MyMockNM
+name|ResourcePluginMockNM
 argument_list|(
 name|rpmSpy
 argument_list|)
@@ -1829,7 +1843,7 @@ decl_stmt|;
 name|nm
 operator|=
 operator|new
-name|MyMockNM
+name|ResourcePluginMockNM
 argument_list|(
 name|rpmSpy
 argument_list|)
@@ -1926,7 +1940,7 @@ decl_stmt|;
 name|nm
 operator|=
 operator|new
-name|MyMockNM
+name|ResourcePluginMockNM
 argument_list|(
 name|rpmSpy
 argument_list|)
@@ -2046,7 +2060,7 @@ decl_stmt|;
 name|nm
 operator|=
 operator|new
-name|MyMockNM
+name|ResourcePluginMockNM
 argument_list|(
 name|rpmSpy
 argument_list|)
@@ -2098,7 +2112,9 @@ parameter_list|(
 name|Exception
 name|ignored
 parameter_list|)
-block|{      }
+block|{
+comment|// ignore
+block|}
 name|verify
 argument_list|(
 name|rpmSpy
@@ -2124,12 +2140,13 @@ name|anyMap
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertTrue
+name|assertThat
 argument_list|(
 name|fail
 argument_list|)
+operator|.
+name|isTrue
+argument_list|()
 expr_stmt|;
 block|}
 annotation|@
@@ -2163,7 +2180,7 @@ decl_stmt|;
 name|nm
 operator|=
 operator|new
-name|MyMockNM
+name|ResourcePluginMockNM
 argument_list|(
 name|rpmSpy
 argument_list|)
@@ -2220,17 +2237,16 @@ operator|.
 name|getNameToPlugins
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
-literal|1
-argument_list|,
 name|pluginMap
 operator|.
 name|size
 argument_list|()
 argument_list|)
+operator|.
+name|isOne
+argument_list|()
 expr_stmt|;
 name|ResourcePlugin
 name|rp
@@ -2252,10 +2268,10 @@ name|DevicePluginAdapter
 operator|)
 condition|)
 block|{
-name|Assert
-operator|.
 name|fail
-argument_list|()
+argument_list|(
+literal|"ResourcePlugin is not DevicePluginAdapter."
+argument_list|)
 expr_stmt|;
 block|}
 name|verify
@@ -2307,7 +2323,7 @@ decl_stmt|;
 name|nm
 operator|=
 operator|new
-name|MyMockNM
+name|ResourcePluginMockNM
 argument_list|(
 name|rpmSpy
 argument_list|)
@@ -2394,13 +2410,14 @@ name|getMessage
 argument_list|()
 expr_stmt|;
 block|}
-name|Assert
+name|assertThat
+argument_list|(
+name|actualMessage
+argument_list|)
 operator|.
-name|assertEquals
+name|isEqualTo
 argument_list|(
 name|expectedMessage
-argument_list|,
-name|actualMessage
 argument_list|)
 expr_stmt|;
 block|}
@@ -2436,7 +2453,7 @@ decl_stmt|;
 name|nm
 operator|=
 operator|new
-name|MyMockNM
+name|ResourcePluginMockNM
 argument_list|(
 name|rpmSpy
 argument_list|)
@@ -2529,13 +2546,14 @@ name|getMessage
 argument_list|()
 expr_stmt|;
 block|}
-name|Assert
+name|assertThat
+argument_list|(
+name|actualMessage
+argument_list|)
 operator|.
-name|assertEquals
+name|isEqualTo
 argument_list|(
 name|expectedMessage
-argument_list|,
-name|actualMessage
 argument_list|)
 expr_stmt|;
 block|}
@@ -2571,7 +2589,7 @@ decl_stmt|;
 name|nm
 operator|=
 operator|new
-name|MyMockNM
+name|ResourcePluginMockNM
 argument_list|(
 name|rpmSpy
 argument_list|)
@@ -2651,13 +2669,14 @@ name|getMessage
 argument_list|()
 expr_stmt|;
 block|}
-name|Assert
+name|assertThat
+argument_list|(
+name|actualMessage
+argument_list|)
 operator|.
-name|assertEquals
+name|isEqualTo
 argument_list|(
 name|expectedMessage
-argument_list|,
-name|actualMessage
 argument_list|)
 expr_stmt|;
 block|}
@@ -2716,7 +2735,7 @@ expr_stmt|;
 name|nm
 operator|=
 operator|new
-name|MyMockNM
+name|ResourcePluginMockNM
 argument_list|(
 name|rpmSpy
 argument_list|)
@@ -2808,12 +2827,8 @@ name|class
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
-literal|1
-argument_list|,
 name|dmm
 operator|.
 name|getDevicePluginSchedulers
@@ -2822,6 +2837,9 @@ operator|.
 name|size
 argument_list|()
 argument_list|)
+operator|.
+name|isOne
+argument_list|()
 expr_stmt|;
 block|}
 annotation|@
@@ -2849,9 +2867,7 @@ name|resourceName
 init|=
 literal|"a.com/a"
 decl_stmt|;
-name|Assert
-operator|.
-name|assertFalse
+name|assertThat
 argument_list|(
 name|rpm
 operator|.
@@ -2860,14 +2876,15 @@ argument_list|(
 name|resourceName
 argument_list|)
 argument_list|)
+operator|.
+name|isFalse
+argument_list|()
 expr_stmt|;
 name|resourceName
 operator|=
 literal|"cmp.com/cmp"
 expr_stmt|;
-name|Assert
-operator|.
-name|assertTrue
+name|assertThat
 argument_list|(
 name|rpm
 operator|.
@@ -2876,6 +2893,9 @@ argument_list|(
 name|resourceName
 argument_list|)
 argument_list|)
+operator|.
+name|isTrue
+argument_list|()
 expr_stmt|;
 block|}
 block|}
