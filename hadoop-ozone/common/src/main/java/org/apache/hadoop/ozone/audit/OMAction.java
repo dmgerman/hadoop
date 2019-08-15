@@ -123,6 +123,19 @@ block|,
 DECL|enumConstant|ABORT_MULTIPART_UPLOAD
 name|ABORT_MULTIPART_UPLOAD
 block|,
+comment|//ACL Actions
+DECL|enumConstant|ADD_ACL
+name|ADD_ACL
+block|,
+DECL|enumConstant|GET_ACL
+name|GET_ACL
+block|,
+DECL|enumConstant|SET_ACL
+name|SET_ACL
+block|,
+DECL|enumConstant|REMOVE_ACL
+name|REMOVE_ACL
+block|,
 comment|//FS Actions
 DECL|enumConstant|GET_FILE_STATUS
 name|GET_FILE_STATUS
