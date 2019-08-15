@@ -927,7 +927,7 @@ specifier|final
 name|int
 name|IPC_SERVER_LISTEN_QUEUE_SIZE_DEFAULT
 init|=
-literal|128
+literal|256
 decl_stmt|;
 comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|IPC_CLIENT_KILL_MAX_KEY
