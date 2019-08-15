@@ -693,6 +693,16 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|serviceSpec
+operator|.
+name|setQueue
+argument_list|(
+name|parameters
+operator|.
+name|getQueue
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|KerberosPrincipal
 name|kerberosPrincipal
 init|=

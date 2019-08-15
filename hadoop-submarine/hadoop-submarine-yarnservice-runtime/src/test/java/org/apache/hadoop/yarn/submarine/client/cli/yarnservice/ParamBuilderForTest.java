@@ -209,6 +209,32 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|withQueue (String queue)
+name|ParamBuilderForTest
+name|withQueue
+parameter_list|(
+name|String
+name|queue
+parameter_list|)
+block|{
+name|params
+operator|.
+name|add
+argument_list|(
+literal|"--queue"
+argument_list|)
+expr_stmt|;
+name|params
+operator|.
+name|add
+argument_list|(
+name|queue
+argument_list|)
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|withNumberOfWorkers (int numWorkers)
 name|ParamBuilderForTest
 name|withNumberOfWorkers

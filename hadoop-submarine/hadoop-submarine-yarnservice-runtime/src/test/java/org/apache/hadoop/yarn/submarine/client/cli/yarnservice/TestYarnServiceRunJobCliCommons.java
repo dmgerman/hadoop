@@ -282,6 +282,14 @@ name|DEFAULT_CHECKPOINT_PATH
 init|=
 literal|"s3://output"
 decl_stmt|;
+DECL|field|DEFAULT_QUEUE
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_QUEUE
+init|=
+literal|"root.queue"
+decl_stmt|;
 DECL|field|DEFAULT_WORKER_DOCKER_IMAGE
 specifier|static
 specifier|final
