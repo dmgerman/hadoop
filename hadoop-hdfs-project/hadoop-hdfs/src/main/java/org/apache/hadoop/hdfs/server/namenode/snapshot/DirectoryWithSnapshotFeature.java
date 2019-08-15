@@ -3678,6 +3678,31 @@ operator|!=
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|currentINode
+operator|.
+name|isLastReference
+argument_list|()
+condition|)
+block|{
+comment|// if this is the last reference, the created list can be
+comment|// destroyed.
+name|priorDiff
+operator|.
+name|getChildrenDiff
+argument_list|()
+operator|.
+name|destroyCreatedList
+argument_list|(
+name|reclaimContext
+argument_list|,
+name|currentINode
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 comment|// we only check the node originally in prior's created list
 for|for
 control|(
@@ -3713,6 +3738,7 @@ argument_list|,
 name|NO_SNAPSHOT_ID
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}
@@ -3805,6 +3831,20 @@ name|current
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|""
+operator|+
+name|diffs
+return|;
 block|}
 block|}
 end_class

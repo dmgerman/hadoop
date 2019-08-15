@@ -1373,8 +1373,14 @@ block|}
 name|assertEquals
 argument_list|(
 name|line1
+operator|.
+name|trim
+argument_list|()
 argument_list|,
 name|line2
+operator|.
+name|trim
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
