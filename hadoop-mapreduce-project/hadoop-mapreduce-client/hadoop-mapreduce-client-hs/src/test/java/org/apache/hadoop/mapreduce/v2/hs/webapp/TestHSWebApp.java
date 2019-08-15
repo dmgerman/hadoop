@@ -1970,9 +1970,9 @@ name|write
 argument_list|(
 literal|"Logs not available for container_10_0001_01_000001."
 operator|+
-literal|" Aggregation may not be complete, "
+literal|" Aggregation may not be complete, Check back later or try to"
 operator|+
-literal|"Check back later or try the nodemanager at "
+literal|" find the container logs in the local directory of nodemanager "
 operator|+
 name|MockJobs
 operator|.
