@@ -632,7 +632,7 @@ comment|/** Safe mode threshold condition %.*/
 DECL|field|threshold
 specifier|private
 specifier|final
-name|double
+name|float
 name|threshold
 decl_stmt|;
 comment|/** Number of blocks needed to satisfy safe mode threshold condition. */
@@ -671,7 +671,7 @@ comment|/** Threshold for populating needed replication queues. */
 DECL|field|replQueueThreshold
 specifier|private
 specifier|final
-name|double
+name|float
 name|replQueueThreshold
 decl_stmt|;
 comment|/** Number of blocks needed before populating replication queues. */
@@ -888,9 +888,6 @@ name|getFloat
 argument_list|(
 name|DFS_NAMENODE_REPL_QUEUE_THRESHOLD_PCT_KEY
 argument_list|,
-operator|(
-name|float
-operator|)
 name|threshold
 argument_list|)
 expr_stmt|;
