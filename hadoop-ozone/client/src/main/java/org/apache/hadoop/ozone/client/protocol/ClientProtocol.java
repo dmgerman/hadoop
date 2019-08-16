@@ -604,46 +604,6 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Adds ACLs to the Bucket.    * @param volumeName Name of the Volume    * @param bucketName Name of the Bucket    * @param addAcls ACLs to be added    * @throws IOException    */
-DECL|method|addBucketAcls (String volumeName, String bucketName, List<OzoneAcl> addAcls)
-name|void
-name|addBucketAcls
-parameter_list|(
-name|String
-name|volumeName
-parameter_list|,
-name|String
-name|bucketName
-parameter_list|,
-name|List
-argument_list|<
-name|OzoneAcl
-argument_list|>
-name|addAcls
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-comment|/**    * Removes ACLs from a Bucket.    * @param volumeName Name of the Volume    * @param bucketName Name of the Bucket    * @param removeAcls ACLs to be removed    * @throws IOException    */
-DECL|method|removeBucketAcls (String volumeName, String bucketName, List<OzoneAcl> removeAcls)
-name|void
-name|removeBucketAcls
-parameter_list|(
-name|String
-name|volumeName
-parameter_list|,
-name|String
-name|bucketName
-parameter_list|,
-name|List
-argument_list|<
-name|OzoneAcl
-argument_list|>
-name|removeAcls
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
 comment|/**    * Enables or disables Bucket Versioning.    * @param volumeName Name of the Volume    * @param bucketName Name of the Bucket    * @param versioning True to enable Versioning, False to disable.    * @throws IOException    */
 DECL|method|setBucketVersioning (String volumeName, String bucketName, Boolean versioning)
 name|void

@@ -251,11 +251,6 @@ name|bucketName
 argument_list|,
 name|bucketArgs
 operator|.
-name|getAcls
-argument_list|()
-argument_list|,
-name|bucketArgs
-operator|.
 name|getStorageType
 argument_list|()
 argument_list|,

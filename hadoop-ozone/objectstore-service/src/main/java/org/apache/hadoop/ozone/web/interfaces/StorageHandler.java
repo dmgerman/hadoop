@@ -420,19 +420,6 @@ name|IOException
 throws|,
 name|OzoneException
 function_decl|;
-comment|/**    * Adds or Removes ACLs from a Bucket.    *    * @param args - BucketArgs    *    * @throws IOException    */
-DECL|method|setBucketAcls (BucketArgs args)
-name|void
-name|setBucketAcls
-parameter_list|(
-name|BucketArgs
-name|args
-parameter_list|)
-throws|throws
-name|IOException
-throws|,
-name|OzoneException
-function_decl|;
 comment|/**    * Enables or disables Bucket Versioning.    *    * @param args - BucketArgs    *    * @throws IOException    */
 DECL|method|setBucketVersioning (BucketArgs args)
 name|void

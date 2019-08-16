@@ -204,20 +204,6 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|OzoneAcl
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
 name|client
 operator|.
 name|io
@@ -428,8 +414,8 @@ name|HashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
-comment|/**    * Constructs OzoneBucket instance.    *    * @param volumeName   Name of the volume the bucket belongs to.    * @param bucketName   Name of the bucket.    * @param acls         ACLs associated with the bucket.    * @param storageType  StorageType of the bucket.    * @param versioning   versioning status of the bucket.    * @param creationTime creation time of the bucket.    */
-DECL|method|OzoneBucketStub ( String volumeName, String bucketName, List<OzoneAcl> acls, StorageType storageType, Boolean versioning, long creationTime)
+comment|/**    * Constructs OzoneBucket instance.    *    * @param volumeName   Name of the volume the bucket belongs to.    * @param bucketName   Name of the bucket.    * @param storageType  StorageType of the bucket.    * @param versioning   versioning status of the bucket.    * @param creationTime creation time of the bucket.    */
+DECL|method|OzoneBucketStub ( String volumeName, String bucketName, StorageType storageType, Boolean versioning, long creationTime)
 specifier|public
 name|OzoneBucketStub
 parameter_list|(
@@ -438,12 +424,6 @@ name|volumeName
 parameter_list|,
 name|String
 name|bucketName
-parameter_list|,
-name|List
-argument_list|<
-name|OzoneAcl
-argument_list|>
-name|acls
 parameter_list|,
 name|StorageType
 name|storageType
@@ -468,8 +448,6 @@ argument_list|,
 name|ReplicationType
 operator|.
 name|STAND_ALONE
-argument_list|,
-name|acls
 argument_list|,
 name|storageType
 argument_list|,
