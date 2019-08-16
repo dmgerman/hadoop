@@ -315,6 +315,8 @@ operator|.
 name|init
 argument_list|(
 name|protocol
+argument_list|,
+literal|"Deferred"
 argument_list|)
 expr_stmt|;
 block|}

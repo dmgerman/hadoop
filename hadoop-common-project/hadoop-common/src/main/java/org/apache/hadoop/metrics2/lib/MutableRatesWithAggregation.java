@@ -309,6 +309,14 @@ name|ThreadLocal
 argument_list|<>
 argument_list|()
 decl_stmt|;
+comment|// prefix for metric name
+DECL|field|typePrefix
+specifier|private
+name|String
+name|typePrefix
+init|=
+literal|""
+decl_stmt|;
 comment|/**    * Initialize the registry with all the methods in a protocol    * so they all show up in the first snapshot.    * Convenient for JMX implementations.    * @param protocol the protocol class    */
 DECL|method|init (Class<?> protocol)
 specifier|public
@@ -722,8 +730,12 @@ operator|new
 name|MutableRate
 argument_list|(
 name|name
+operator|+
+name|typePrefix
 argument_list|,
 name|name
+operator|+
+name|typePrefix
 argument_list|,
 literal|false
 argument_list|)
@@ -820,6 +832,33 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+block|}
+DECL|method|init (Class<?> protocol, String prefix)
+specifier|public
+name|void
+name|init
+parameter_list|(
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|protocol
+parameter_list|,
+name|String
+name|prefix
+parameter_list|)
+block|{
+name|this
+operator|.
+name|typePrefix
+operator|=
+name|prefix
+expr_stmt|;
+name|init
+argument_list|(
+name|protocol
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class
