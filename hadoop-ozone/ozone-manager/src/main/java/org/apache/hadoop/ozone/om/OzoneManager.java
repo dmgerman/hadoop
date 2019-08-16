@@ -4288,6 +4288,8 @@ operator|new
 name|PrefixManagerImpl
 argument_list|(
 name|metadataManager
+argument_list|,
+name|isRatisEnabled
 argument_list|)
 expr_stmt|;
 name|keyManager

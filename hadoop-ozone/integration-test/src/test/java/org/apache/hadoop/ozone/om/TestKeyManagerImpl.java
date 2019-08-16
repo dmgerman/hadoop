@@ -1594,6 +1594,8 @@ operator|new
 name|PrefixManagerImpl
 argument_list|(
 name|metadataManager
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|Mockito
