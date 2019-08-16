@@ -2599,6 +2599,10 @@ expr_stmt|;
 block|}
 if|if
 condition|(
+name|diagnosticMessage
+operator|!=
+literal|null
+operator|&&
 operator|!
 name|diagnosticMessage
 operator|.
