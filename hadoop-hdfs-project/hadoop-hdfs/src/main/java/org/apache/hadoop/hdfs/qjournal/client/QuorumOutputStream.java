@@ -341,6 +341,21 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|shouldForceSync ()
+specifier|public
+name|boolean
+name|shouldForceSync
+parameter_list|()
+block|{
+return|return
+name|buf
+operator|.
+name|shouldForceSync
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|flushAndSync (boolean durable)
 specifier|protected
 name|void

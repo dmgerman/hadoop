@@ -8392,8 +8392,9 @@ name|clazz
 return|;
 block|}
 comment|/**    * Construct a custom journal manager.    * The class to construct is taken from the configuration.    * @param uri Uri to construct    * @return The constructed journal manager    * @throws IllegalArgumentException if no class is configured for uri    */
+annotation|@
+name|VisibleForTesting
 DECL|method|createJournal (URI uri)
-specifier|private
 name|JournalManager
 name|createJournal
 parameter_list|(
