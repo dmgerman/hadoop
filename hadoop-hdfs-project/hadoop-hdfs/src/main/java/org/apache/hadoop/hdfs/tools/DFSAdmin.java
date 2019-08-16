@@ -2751,7 +2751,7 @@ literal|"\t[-getDatanodeInfo<datanode_host:ipc_port>]\n"
 operator|+
 literal|"\t[-metasave filename]\n"
 operator|+
-literal|"\t[-triggerBlockReport [-incremental]<datanode_host:ipc_port>]\n"
+literal|"\t[-triggerBlockReport [-incremental]<datanode_host:ipc_port> [-namenode<namenode_host:ipc_port>]]\n"
 operator|+
 literal|"\t[-listOpenFiles [-blockingDecommission] [-path<path>]]\n"
 operator|+
@@ -4220,6 +4220,41 @@ index|]
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Block report to a specific namenode
+name|InetSocketAddress
+name|namenodeAddr
+init|=
+literal|null
+decl_stmt|;
+name|String
+name|nnHostPort
+init|=
+name|StringUtils
+operator|.
+name|popOptionWithArgument
+argument_list|(
+literal|"-namenode"
+argument_list|,
+name|args
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|nnHostPort
+operator|!=
+literal|null
+condition|)
+block|{
+name|namenodeAddr
+operator|=
+name|NetUtils
+operator|.
+name|createSocketAddr
+argument_list|(
+name|nnHostPort
+argument_list|)
+expr_stmt|;
+block|}
 name|boolean
 name|incremental
 init|=
@@ -4318,6 +4353,11 @@ operator|.
 name|Factory
 argument_list|()
 operator|.
+name|setNamenodeAddr
+argument_list|(
+name|namenodeAddr
+argument_list|)
+operator|.
 name|setIncremental
 argument_list|(
 name|incremental
@@ -4368,6 +4408,18 @@ operator|+
 literal|"block report on "
 operator|+
 name|hostPort
+operator|+
+operator|(
+name|namenodeAddr
+operator|==
+literal|null
+condition|?
+literal|""
+else|:
+literal|" to namenode "
+operator|+
+name|nnHostPort
+operator|)
 operator|+
 literal|"."
 argument_list|)
@@ -6465,7 +6517,7 @@ decl_stmt|;
 name|String
 name|triggerBlockReport
 init|=
-literal|"-triggerBlockReport [-incremental]<datanode_host:ipc_port>\n"
+literal|"-triggerBlockReport [-incremental]<datanode_host:ipc_port> [-namenode<namenode_host:ipc_port>]\n"
 operator|+
 literal|"\tTrigger a block report for the datanode.\n"
 operator|+
@@ -11836,7 +11888,7 @@ name|println
 argument_list|(
 literal|"Usage: hdfs dfsadmin"
 operator|+
-literal|" [-triggerBlockReport [-incremental]<datanode_host:ipc_port>]"
+literal|" [-triggerBlockReport [-incremental]<datanode_host:ipc_port> [-namenode<namenode_host:ipc_port>]]"
 argument_list|)
 expr_stmt|;
 block|}
@@ -12750,16 +12802,16 @@ operator|(
 name|argv
 operator|.
 name|length
-operator|!=
+operator|<
 literal|2
 operator|)
-operator|&&
+operator|||
 operator|(
 name|argv
 operator|.
 name|length
-operator|!=
-literal|3
+operator|>
+literal|5
 operator|)
 condition|)
 block|{

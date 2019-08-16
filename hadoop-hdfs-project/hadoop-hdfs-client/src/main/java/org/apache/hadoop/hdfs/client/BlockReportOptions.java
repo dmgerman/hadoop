@@ -46,6 +46,16 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|InetSocketAddress
+import|;
+end_import
+
 begin_comment
 comment|/**  * Options that can be specified when manually triggering a block report.  */
 end_comment
@@ -71,12 +81,21 @@ specifier|final
 name|boolean
 name|incremental
 decl_stmt|;
-DECL|method|BlockReportOptions (boolean incremental)
+DECL|field|namenodeAddr
+specifier|private
+specifier|final
+name|InetSocketAddress
+name|namenodeAddr
+decl_stmt|;
+DECL|method|BlockReportOptions (boolean incremental, InetSocketAddress namenodeAddr)
 specifier|private
 name|BlockReportOptions
 parameter_list|(
 name|boolean
 name|incremental
+parameter_list|,
+name|InetSocketAddress
+name|namenodeAddr
 parameter_list|)
 block|{
 name|this
@@ -84,6 +103,12 @@ operator|.
 name|incremental
 operator|=
 name|incremental
+expr_stmt|;
+name|this
+operator|.
+name|namenodeAddr
+operator|=
+name|namenodeAddr
 expr_stmt|;
 block|}
 DECL|method|isIncremental ()
@@ -94,6 +119,16 @@ parameter_list|()
 block|{
 return|return
 name|incremental
+return|;
+block|}
+DECL|method|getNamenodeAddr ()
+specifier|public
+name|InetSocketAddress
+name|getNamenodeAddr
+parameter_list|()
+block|{
+return|return
+name|namenodeAddr
 return|;
 block|}
 DECL|class|Factory
@@ -108,6 +143,11 @@ name|boolean
 name|incremental
 init|=
 literal|false
+decl_stmt|;
+DECL|field|namenodeAddr
+specifier|private
+name|InetSocketAddress
+name|namenodeAddr
 decl_stmt|;
 DECL|method|Factory ()
 specifier|public
@@ -133,6 +173,25 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|setNamenodeAddr (InetSocketAddress namenodeAddr)
+specifier|public
+name|Factory
+name|setNamenodeAddr
+parameter_list|(
+name|InetSocketAddress
+name|namenodeAddr
+parameter_list|)
+block|{
+name|this
+operator|.
+name|namenodeAddr
+operator|=
+name|namenodeAddr
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|build ()
 specifier|public
 name|BlockReportOptions
@@ -144,6 +203,8 @@ operator|new
 name|BlockReportOptions
 argument_list|(
 name|incremental
+argument_list|,
+name|namenodeAddr
 argument_list|)
 return|;
 block|}
@@ -160,6 +221,10 @@ return|return
 literal|"BlockReportOptions{incremental="
 operator|+
 name|incremental
+operator|+
+literal|", namenodeAddr="
+operator|+
+name|namenodeAddr
 operator|+
 literal|"}"
 return|;
