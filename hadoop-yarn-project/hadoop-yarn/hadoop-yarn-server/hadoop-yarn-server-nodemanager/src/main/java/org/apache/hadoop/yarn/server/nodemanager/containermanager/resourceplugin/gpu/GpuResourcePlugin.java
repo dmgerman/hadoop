@@ -596,7 +596,7 @@ name|totalGpus
 init|=
 name|gpuResourceAllocator
 operator|.
-name|getAllowedGpusCopy
+name|getAllowedGpus
 argument_list|()
 decl_stmt|;
 name|List
@@ -607,7 +607,7 @@ name|assignedGpuDevices
 init|=
 name|gpuResourceAllocator
 operator|.
-name|getAssignedGpusCopy
+name|getAssignedGpus
 argument_list|()
 decl_stmt|;
 return|return

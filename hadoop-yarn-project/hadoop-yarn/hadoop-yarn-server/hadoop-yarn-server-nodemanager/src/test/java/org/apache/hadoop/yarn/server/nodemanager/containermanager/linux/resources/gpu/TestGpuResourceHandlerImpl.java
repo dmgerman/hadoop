@@ -1271,7 +1271,7 @@ operator|.
 name|getGpuAllocator
 argument_list|()
 operator|.
-name|getAllowedGpusCopy
+name|getAllowedGpus
 argument_list|()
 decl_stmt|;
 name|assertEquals
@@ -3134,7 +3134,7 @@ operator|.
 name|getGpuAllocator
 argument_list|()
 operator|.
-name|getDeviceAllocationMappingCopy
+name|getDeviceAllocationMapping
 argument_list|()
 decl_stmt|;
 name|assertEquals
@@ -3346,7 +3346,7 @@ operator|.
 name|getGpuAllocator
 argument_list|()
 operator|.
-name|getDeviceAllocationMappingCopy
+name|getDeviceAllocationMapping
 argument_list|()
 expr_stmt|;
 name|assertEquals
@@ -3547,7 +3547,7 @@ operator|.
 name|getGpuAllocator
 argument_list|()
 operator|.
-name|getDeviceAllocationMappingCopy
+name|getDeviceAllocationMapping
 argument_list|()
 expr_stmt|;
 name|assertEquals

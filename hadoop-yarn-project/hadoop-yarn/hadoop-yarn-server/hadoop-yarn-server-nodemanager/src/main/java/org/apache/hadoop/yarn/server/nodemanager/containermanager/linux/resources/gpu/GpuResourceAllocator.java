@@ -52,6 +52,34 @@ name|common
 operator|.
 name|collect
 operator|.
+name|ImmutableList
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|ImmutableMap
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
 name|ImmutableSet
 import|;
 end_import
@@ -332,26 +360,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Iterator
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -397,6 +405,18 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|stream
+operator|.
+name|Collectors
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -417,7 +437,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Allocate GPU resources according to requirements  */
+comment|/**  * Allocate GPU resources according to requirements.  */
 end_comment
 
 begin_class
@@ -483,6 +503,12 @@ specifier|private
 name|Context
 name|nmContext
 decl_stmt|;
+DECL|field|waitPeriodForResource
+specifier|private
+specifier|final
+name|int
+name|waitPeriodForResource
+decl_stmt|;
 DECL|method|GpuResourceAllocator (Context ctx)
 specifier|public
 name|GpuResourceAllocator
@@ -497,8 +523,43 @@ name|nmContext
 operator|=
 name|ctx
 expr_stmt|;
+comment|// Wait for a maximum of 120 seconds if no available GPU are there which
+comment|// are yet to be released.
+name|this
+operator|.
+name|waitPeriodForResource
+operator|=
+literal|120
+operator|*
+name|WAIT_MS_PER_LOOP
+expr_stmt|;
 block|}
-comment|/**    * Contains allowed and denied devices    * Denied devices will be useful for cgroups devices module to do blacklisting    */
+annotation|@
+name|VisibleForTesting
+DECL|method|GpuResourceAllocator (Context ctx, int waitPeriodForResource)
+name|GpuResourceAllocator
+parameter_list|(
+name|Context
+name|ctx
+parameter_list|,
+name|int
+name|waitPeriodForResource
+parameter_list|)
+block|{
+name|this
+operator|.
+name|nmContext
+operator|=
+name|ctx
+expr_stmt|;
+name|this
+operator|.
+name|waitPeriodForResource
+operator|=
+name|waitPeriodForResource
+expr_stmt|;
+block|}
+comment|/**    * Contains allowed and denied devices.    * Denied devices will be useful for cgroups devices module to do blacklisting    */
 DECL|class|GpuAllocation
 specifier|static
 class|class
@@ -612,7 +673,7 @@ name|denied
 return|;
 block|}
 block|}
-comment|/**    * Add GPU to allowed list    * @param gpuDevice gpu device    */
+comment|/**    * Add GPU to the allowed list of GPUs.    * @param gpuDevice gpu device    */
 DECL|method|addGpu (GpuDevice gpuDevice)
 specifier|public
 specifier|synchronized
@@ -630,33 +691,6 @@ argument_list|(
 name|gpuDevice
 argument_list|)
 expr_stmt|;
-block|}
-DECL|method|getResourceHandlerExceptionMessage (int numRequestedGpuDevices, ContainerId containerId)
-specifier|private
-name|String
-name|getResourceHandlerExceptionMessage
-parameter_list|(
-name|int
-name|numRequestedGpuDevices
-parameter_list|,
-name|ContainerId
-name|containerId
-parameter_list|)
-block|{
-return|return
-literal|"Failed to find enough GPUs, requestor="
-operator|+
-name|containerId
-operator|+
-literal|", #RequestedGPUs="
-operator|+
-name|numRequestedGpuDevices
-operator|+
-literal|", #availableGpus="
-operator|+
-name|getAvailableGpus
-argument_list|()
-return|;
 block|}
 annotation|@
 name|VisibleForTesting
@@ -706,18 +740,20 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-literal|null
-operator|==
 name|c
+operator|==
+literal|null
 condition|)
 block|{
 throw|throw
 operator|new
 name|ResourceHandlerException
 argument_list|(
-literal|"This shouldn't happen, cannot find container with id="
+literal|"Cannot find container with id="
 operator|+
 name|containerId
+operator|+
+literal|", this should not occur under normal circumstances!"
 argument_list|)
 throw|;
 block|}
@@ -762,7 +798,16 @@ name|ResourceHandlerException
 argument_list|(
 literal|"Trying to recover device id, however it"
 operator|+
-literal|" is not GpuDevice, this shouldn't happen"
+literal|" is not an instance of "
+operator|+
+name|GpuDevice
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|", this should not occur under normal circumstances!"
 argument_list|)
 throw|;
 block|}
@@ -794,7 +839,7 @@ literal|"Try to recover device = "
 operator|+
 name|gpuDevice
 operator|+
-literal|" however it is not in allowed device list:"
+literal|" however it is not in the allowed device list:"
 operator|+
 name|StringUtils
 operator|.
@@ -911,7 +956,7 @@ literal|0
 return|;
 block|}
 block|}
-comment|/**    * Assign GPU to requestor    * @param container container to allocate    * @return allocation results.    * @throws ResourceHandlerException When failed to assign GPUs.    */
+comment|/**    * Assign GPU to the specified container.    * @param container container to allocate    * @return allocation results.    * @throws ResourceHandlerException When failed to assign GPUs.    */
 DECL|method|assignGpus (Container container)
 specifier|public
 name|GpuAllocation
@@ -931,16 +976,8 @@ argument_list|(
 name|container
 argument_list|)
 decl_stmt|;
-comment|// Wait for a maximum of 120 seconds if no available GPU are there which
-comment|// are yet to be released.
-specifier|final
-name|int
-name|timeoutMsecs
-init|=
-literal|120
-operator|*
-name|WAIT_MS_PER_LOOP
-decl_stmt|;
+comment|// Wait for a maximum of waitPeriodForResource seconds if no
+comment|// available GPU are there which are yet to be released.
 name|int
 name|timeWaiting
 init|=
@@ -957,7 +994,7 @@ if|if
 condition|(
 name|timeWaiting
 operator|>=
-name|timeoutMsecs
+name|waitPeriodForResource
 condition|)
 block|{
 break|break;
@@ -1006,6 +1043,21 @@ name|e
 parameter_list|)
 block|{
 comment|// On any interrupt, break the loop and continue execution.
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Interrupted while waiting for available GPU"
+argument_list|)
+expr_stmt|;
 break|break;
 block|}
 block|}
@@ -1083,7 +1135,7 @@ argument_list|(
 name|requestedResource
 argument_list|)
 decl_stmt|;
-comment|// Assign Gpus to container if requested some.
+comment|// Assign GPUs to container if requested some.
 if|if
 condition|(
 name|numRequestedGpuDevices
@@ -1091,6 +1143,39 @@ operator|>
 literal|0
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Trying to assign %d GPUs to container: %s"
+operator|+
+literal|", #AvailableGPUs=%d, #ReleasingGPUs=%d"
+argument_list|,
+name|numRequestedGpuDevices
+argument_list|,
+name|containerId
+argument_list|,
+name|getAvailableGpus
+argument_list|()
+argument_list|,
+name|getReleasingGpus
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|numRequestedGpuDevices
@@ -1129,12 +1214,18 @@ throw|throw
 operator|new
 name|ResourceHandlerException
 argument_list|(
-name|getResourceHandlerExceptionMessage
-argument_list|(
-name|numRequestedGpuDevices
-argument_list|,
+literal|"Failed to find enough GPUs, requestor="
+operator|+
 name|containerId
-argument_list|)
+operator|+
+literal|", #RequestedGPUs="
+operator|+
+name|numRequestedGpuDevices
+operator|+
+literal|", #AvailableGPUs="
+operator|+
+name|getAvailableGpus
+argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -1237,7 +1328,7 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-name|cleanupAssignGpus
+name|unassignGpus
 argument_list|(
 name|containerId
 argument_list|)
@@ -1362,52 +1453,45 @@ return|return
 name|releasingGpus
 return|;
 block|}
-comment|/**    * Clean up all Gpus assigned to containerId    * @param containerId containerId    */
-DECL|method|cleanupAssignGpus (ContainerId containerId)
+comment|/**    * Clean up all GPUs assigned to containerId.    * @param containerId containerId    */
+DECL|method|unassignGpus (ContainerId containerId)
 specifier|public
 specifier|synchronized
 name|void
-name|cleanupAssignGpus
+name|unassignGpus
 parameter_list|(
 name|ContainerId
 name|containerId
 parameter_list|)
 block|{
-name|Iterator
-argument_list|<
-name|Map
+if|if
+condition|(
+name|LOG
 operator|.
-name|Entry
-argument_list|<
-name|GpuDevice
-argument_list|,
-name|ContainerId
-argument_list|>
-argument_list|>
-name|iter
-init|=
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Trying to unassign GPU device from container "
+operator|+
+name|containerId
+argument_list|)
+expr_stmt|;
+block|}
 name|usedDevices
 operator|.
 name|entrySet
 argument_list|()
 operator|.
-name|iterator
-argument_list|()
-decl_stmt|;
-while|while
-condition|(
-name|iter
-operator|.
-name|hasNext
-argument_list|()
-condition|)
-block|{
-if|if
-condition|(
-name|iter
-operator|.
-name|next
-argument_list|()
+name|removeIf
+argument_list|(
+name|entry
+lambda|->
+name|entry
 operator|.
 name|getValue
 argument_list|()
@@ -1416,19 +1500,12 @@ name|equals
 argument_list|(
 name|containerId
 argument_list|)
-condition|)
-block|{
-name|iter
-operator|.
-name|remove
-argument_list|()
+argument_list|)
 expr_stmt|;
-block|}
-block|}
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getDeviceAllocationMappingCopy ()
+DECL|method|getDeviceAllocationMapping ()
 specifier|public
 specifier|synchronized
 name|Map
@@ -1437,109 +1514,105 @@ name|GpuDevice
 argument_list|,
 name|ContainerId
 argument_list|>
-name|getDeviceAllocationMappingCopy
+name|getDeviceAllocationMapping
 parameter_list|()
 block|{
 return|return
-operator|new
-name|HashMap
-argument_list|<>
+name|ImmutableMap
+operator|.
+name|copyOf
 argument_list|(
 name|usedDevices
 argument_list|)
 return|;
 block|}
-DECL|method|getAllowedGpusCopy ()
+DECL|method|getAllowedGpus ()
 specifier|public
 specifier|synchronized
 name|List
 argument_list|<
 name|GpuDevice
 argument_list|>
-name|getAllowedGpusCopy
+name|getAllowedGpus
 parameter_list|()
 block|{
 return|return
-operator|new
-name|ArrayList
-argument_list|<>
+name|ImmutableList
+operator|.
+name|copyOf
 argument_list|(
 name|allowedGpuDevices
 argument_list|)
 return|;
 block|}
-DECL|method|getAssignedGpusCopy ()
+DECL|method|getAssignedGpus ()
 specifier|public
 specifier|synchronized
 name|List
 argument_list|<
 name|AssignedGpuDevice
 argument_list|>
-name|getAssignedGpusCopy
+name|getAssignedGpus
 parameter_list|()
 block|{
-name|List
-argument_list|<
-name|AssignedGpuDevice
-argument_list|>
-name|assigns
-init|=
-operator|new
-name|ArrayList
-argument_list|<>
-argument_list|()
-decl_stmt|;
-for|for
-control|(
-name|Map
-operator|.
-name|Entry
-argument_list|<
-name|GpuDevice
-argument_list|,
-name|ContainerId
-argument_list|>
-name|entry
-range|:
+return|return
 name|usedDevices
 operator|.
 name|entrySet
 argument_list|()
-control|)
-block|{
-name|assigns
 operator|.
-name|add
+name|stream
+argument_list|()
+operator|.
+name|map
 argument_list|(
-operator|new
-name|AssignedGpuDevice
-argument_list|(
-name|entry
+name|e
+lambda|->
+block|{
+specifier|final
+name|GpuDevice
+name|gpu
+init|=
+name|e
 operator|.
 name|getKey
 argument_list|()
+decl_stmt|;
+name|ContainerId
+name|containerId
+init|=
+name|e
+operator|.
+name|getValue
+argument_list|()
+decl_stmt|;
+return|return
+operator|new
+name|AssignedGpuDevice
+argument_list|(
+name|gpu
 operator|.
 name|getIndex
 argument_list|()
 argument_list|,
-name|entry
-operator|.
-name|getKey
-argument_list|()
+name|gpu
 operator|.
 name|getMinorNumber
 argument_list|()
 argument_list|,
-name|entry
+name|containerId
+argument_list|)
+return|;
+block|}
+argument_list|)
 operator|.
-name|getValue
+name|collect
+argument_list|(
+name|Collectors
+operator|.
+name|toList
 argument_list|()
 argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-return|return
-name|assigns
 return|;
 block|}
 annotation|@

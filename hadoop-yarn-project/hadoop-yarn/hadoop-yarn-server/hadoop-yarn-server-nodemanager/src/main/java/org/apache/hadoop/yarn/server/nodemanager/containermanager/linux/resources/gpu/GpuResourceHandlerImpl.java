@@ -999,7 +999,7 @@ name|ResourceHandlerException
 block|{
 name|gpuAllocator
 operator|.
-name|cleanupAssignGpus
+name|unassignGpus
 argument_list|(
 name|containerId
 argument_list|)
