@@ -537,6 +537,8 @@ argument_list|,
 name|IsActiveServlet
 operator|.
 name|PATH_SPEC
+argument_list|,
+literal|"/jmx"
 argument_list|)
 decl_stmt|;
 DECL|field|path

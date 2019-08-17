@@ -1805,25 +1805,7 @@ operator|+
 literal|"/metrics"
 argument_list|)
 expr_stmt|;
-name|redirectURL
-operator|=
-name|getRedirectURL
-argument_list|(
-name|rm2Url
-operator|+
-literal|"/jmx?param1=value1+x&param2=y"
-argument_list|)
-expr_stmt|;
-name|assertEquals
-argument_list|(
-name|rm1Url
-operator|+
-literal|"/jmx?param1=value1+x&param2=y"
-argument_list|,
-name|redirectURL
-argument_list|)
-expr_stmt|;
-comment|// standby RM links /conf, /stacks, /logLevel, /static, /logs,
+comment|// standby RM links /conf, /stacks, /logLevel, /static, /logs, /jmx
 comment|// /cluster/cluster as well as webService
 comment|// /ws/v1/cluster/info should not be redirected to active RM
 name|redirectURL
@@ -1903,6 +1885,20 @@ argument_list|(
 name|rm2Url
 operator|+
 literal|"/logs"
+argument_list|)
+expr_stmt|;
+name|assertNull
+argument_list|(
+name|redirectURL
+argument_list|)
+expr_stmt|;
+name|redirectURL
+operator|=
+name|getRedirectURL
+argument_list|(
+name|rm2Url
+operator|+
+literal|"/jmx?param1=value1+x&param2=y"
 argument_list|)
 expr_stmt|;
 name|assertNull
