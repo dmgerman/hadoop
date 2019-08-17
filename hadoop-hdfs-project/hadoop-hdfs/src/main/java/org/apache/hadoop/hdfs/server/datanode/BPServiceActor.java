@@ -2367,7 +2367,7 @@ literal|" RPC(s). This took "
 operator|+
 name|brCreateCost
 operator|+
-literal|" msec to generate and "
+literal|" msecs to generate and "
 operator|+
 name|brSendCost
 operator|+
@@ -2681,7 +2681,7 @@ literal|" block(s) took "
 operator|+
 name|createCost
 operator|+
-literal|" msec to generate and "
+literal|" msecs to generate and "
 operator|+
 name|sendCost
 operator|+
@@ -3335,7 +3335,7 @@ name|dnConf
 operator|.
 name|blockReportInterval
 operator|+
-literal|"msec"
+literal|"msecs"
 operator|+
 literal|" CACHEREPORT_INTERVAL of "
 operator|+
@@ -3343,7 +3343,7 @@ name|dnConf
 operator|.
 name|cacheReportInterval
 operator|+
-literal|"msec"
+literal|"msecs"
 operator|+
 literal|" Initial delay: "
 operator|+
@@ -3351,7 +3351,7 @@ name|dnConf
 operator|.
 name|initialBlockReportDelayMs
 operator|+
-literal|"msec"
+literal|"msecs"
 operator|+
 literal|"; heartBeatInterval="
 operator|+
