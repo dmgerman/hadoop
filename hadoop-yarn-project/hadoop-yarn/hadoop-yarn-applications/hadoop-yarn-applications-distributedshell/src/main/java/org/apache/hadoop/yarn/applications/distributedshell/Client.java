@@ -5413,7 +5413,9 @@ name|classPathEnv
 operator|.
 name|append
 argument_list|(
-literal|':'
+name|ApplicationConstants
+operator|.
+name|CLASS_PATH_SEPARATOR
 argument_list|)
 operator|.
 name|append
