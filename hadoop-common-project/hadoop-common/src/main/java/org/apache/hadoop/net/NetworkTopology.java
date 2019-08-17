@@ -1201,31 +1201,9 @@ name|int
 name|getNumOfRacks
 parameter_list|()
 block|{
-name|netlock
-operator|.
-name|readLock
-argument_list|()
-operator|.
-name|lock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
 return|return
 name|numOfRacks
 return|;
-block|}
-finally|finally
-block|{
-name|netlock
-operator|.
-name|readLock
-argument_list|()
-operator|.
-name|unlock
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/** @return the total number of leaf nodes */
 DECL|method|getNumOfLeaves ()
@@ -1234,34 +1212,12 @@ name|int
 name|getNumOfLeaves
 parameter_list|()
 block|{
-name|netlock
-operator|.
-name|readLock
-argument_list|()
-operator|.
-name|lock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
 return|return
 name|clusterMap
 operator|.
 name|getNumOfLeaves
 argument_list|()
 return|;
-block|}
-finally|finally
-block|{
-name|netlock
-operator|.
-name|readLock
-argument_list|()
-operator|.
-name|unlock
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/** Return the distance between two nodes    * It is assumed that the distance from one node to its parent is 1    * The distance between two nodes is calculated by summing up their distances    * to their closest common ancestor.    * @param node1 one node    * @param node2 another node    * @return the distance between node1 and node2 which is zero if they are the same    *  or {@link Integer#MAX_VALUE} if node1 or node2 do not belong to the cluster    */
 DECL|method|getDistance (Node node1, Node node2)
