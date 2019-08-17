@@ -456,7 +456,7 @@ specifier|final
 name|int
 name|DFS_CONTAINER_RATIS_LOG_PURGE_GAP_DEFAULT
 init|=
-literal|1000000000
+literal|1000000
 decl_stmt|;
 comment|// expiry interval stateMachineData cache entry inside containerStateMachine
 specifier|public
