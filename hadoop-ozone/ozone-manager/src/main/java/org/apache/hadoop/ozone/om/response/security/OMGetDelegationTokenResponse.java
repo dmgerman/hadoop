@@ -128,6 +128,42 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|utils
+operator|.
+name|db
+operator|.
+name|Table
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nullable
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -137,14 +173,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Handle response for DelegationToken request.  */
+comment|/**  * Handle response for GetDelegationToken request.  */
 end_comment
 
 begin_class
-DECL|class|OMDelegationTokenResponse
+DECL|class|OMGetDelegationTokenResponse
 specifier|public
 class|class
-name|OMDelegationTokenResponse
+name|OMGetDelegationTokenResponse
 extends|extends
 name|OMClientResponse
 block|{
@@ -157,17 +193,24 @@ DECL|field|renewTime
 specifier|private
 name|long
 name|renewTime
+init|=
+operator|-
+literal|1L
 decl_stmt|;
-DECL|method|OMDelegationTokenResponse (OzoneTokenIdentifier ozoneTokenIdentifier, long renewTime, OMResponse omResponse)
+DECL|method|OMGetDelegationTokenResponse ( @ullable OzoneTokenIdentifier ozoneTokenIdentifier, long renewTime, @Nonnull OMResponse omResponse)
 specifier|public
-name|OMDelegationTokenResponse
+name|OMGetDelegationTokenResponse
 parameter_list|(
+annotation|@
+name|Nullable
 name|OzoneTokenIdentifier
 name|ozoneTokenIdentifier
 parameter_list|,
 name|long
 name|renewTime
 parameter_list|,
+annotation|@
+name|Nonnull
 name|OMResponse
 name|omResponse
 parameter_list|)
@@ -206,6 +249,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|Table
+name|table
+init|=
+name|omMetadataManager
+operator|.
+name|getDelegationTokenTable
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|getOMResponse
@@ -221,10 +272,7 @@ operator|.
 name|OK
 condition|)
 block|{
-name|omMetadataManager
-operator|.
-name|getDelegationTokenTable
-argument_list|()
+name|table
 operator|.
 name|putWithBatch
 argument_list|(

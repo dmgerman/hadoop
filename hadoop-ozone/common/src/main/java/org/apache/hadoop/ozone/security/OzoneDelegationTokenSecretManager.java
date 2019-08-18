@@ -1477,6 +1477,14 @@ argument_list|)
 argument_list|)
 throw|;
 block|}
+comment|// For HA ratis will take care of removal.
+comment|// This check will be removed, when HA/Non-HA code is merged.
+if|if
+condition|(
+operator|!
+name|isRatisEnabled
+condition|)
+block|{
 try|try
 block|{
 name|store
@@ -1538,9 +1546,63 @@ argument_list|)
 argument_list|)
 throw|;
 block|}
+block|}
+else|else
+block|{
+comment|// Check whether token is there in-memory map of tokens or not on the
+comment|// OM leader.
+name|TokenInfo
+name|info
+init|=
+name|currentTokens
+operator|.
+name|get
+argument_list|(
+name|id
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|info
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|InvalidToken
+argument_list|(
+literal|"Token not found in-memory map of tokens"
+operator|+
+name|formatTokenId
+argument_list|(
+name|id
+argument_list|)
+argument_list|)
+throw|;
+block|}
+block|}
 return|return
 name|id
 return|;
+block|}
+comment|/**    * Remove the expired token from in-memory map.    * @param ozoneTokenIdentifier    * @throws IOException    */
+DECL|method|removeToken (OzoneTokenIdentifier ozoneTokenIdentifier)
+specifier|public
+name|void
+name|removeToken
+parameter_list|(
+name|OzoneTokenIdentifier
+name|ozoneTokenIdentifier
+parameter_list|)
+block|{
+name|currentTokens
+operator|.
+name|remove
+argument_list|(
+name|ozoneTokenIdentifier
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
