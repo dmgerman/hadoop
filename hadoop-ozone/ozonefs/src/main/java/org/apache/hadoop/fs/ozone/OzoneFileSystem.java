@@ -337,7 +337,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|createAdapter (Configuration conf, String bucketStr, String volumeStr, String omHost, String omPort, boolean isolatedClassloader)
+DECL|method|createAdapter (Configuration conf, String bucketStr, String volumeStr, String omHost, int omPort, boolean isolatedClassloader)
 specifier|protected
 name|OzoneClientAdapter
 name|createAdapter
@@ -354,7 +354,7 @@ parameter_list|,
 name|String
 name|omHost
 parameter_list|,
-name|String
+name|int
 name|omPort
 parameter_list|,
 name|boolean
@@ -411,12 +411,7 @@ name|OzoneClientAdapterImpl
 argument_list|(
 name|omHost
 argument_list|,
-name|Integer
-operator|.
-name|parseInt
-argument_list|(
 name|omPort
-argument_list|)
 argument_list|,
 name|conf
 argument_list|,
