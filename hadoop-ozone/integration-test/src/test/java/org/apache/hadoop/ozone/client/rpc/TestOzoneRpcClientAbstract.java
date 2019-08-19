@@ -1632,6 +1632,14 @@ name|remoteUserName
 init|=
 literal|"remoteUser"
 decl_stmt|;
+DECL|field|remoteGroupName
+specifier|private
+specifier|static
+name|String
+name|remoteGroupName
+init|=
+literal|"remoteGroup"
+decl_stmt|;
 DECL|field|defaultUserAcl
 specifier|private
 specifier|static
@@ -1661,7 +1669,7 @@ name|OzoneAcl
 argument_list|(
 name|GROUP
 argument_list|,
-name|remoteUserName
+name|remoteGroupName
 argument_list|,
 name|READ
 argument_list|,
@@ -1697,7 +1705,7 @@ name|OzoneAcl
 argument_list|(
 name|GROUP
 argument_list|,
-name|remoteUserName
+name|remoteGroupName
 argument_list|,
 name|READ
 argument_list|,
@@ -15269,7 +15277,7 @@ argument_list|)
 decl_stmt|;
 name|assertTrue
 argument_list|(
-literal|"Current acls:"
+literal|"Current acls: "
 operator|+
 name|StringUtils
 operator|.
@@ -15280,7 +15288,7 @@ argument_list|,
 name|acls
 argument_list|)
 operator|+
-literal|" inheritedUserAcl:"
+literal|" inheritedUserAcl: "
 operator|+
 name|inheritedUserAcl
 argument_list|,
@@ -15294,7 +15302,7 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-literal|"Current acls:"
+literal|"Current acls: "
 operator|+
 name|StringUtils
 operator|.
@@ -15305,9 +15313,9 @@ argument_list|,
 name|acls
 argument_list|)
 operator|+
-literal|" inheritedUserAcl:"
+literal|" inheritedGroupAcl: "
 operator|+
-name|inheritedUserAcl
+name|inheritedGroupAcl
 argument_list|,
 name|acls
 operator|.
@@ -15364,9 +15372,9 @@ argument_list|,
 name|acls
 argument_list|)
 operator|+
-literal|" inheritedUserAcl:"
+literal|" inheritedGroupAcl:"
 operator|+
-name|inheritedUserAcl
+name|inheritedGroupAcl
 argument_list|,
 name|acls
 operator|.

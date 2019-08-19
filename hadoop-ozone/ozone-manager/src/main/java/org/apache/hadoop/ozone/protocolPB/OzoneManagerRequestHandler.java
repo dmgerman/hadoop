@@ -3269,6 +3269,13 @@ argument_list|()
 argument_list|)
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|aclList
+operator|!=
+literal|null
+condition|)
+block|{
 name|aclList
 operator|.
 name|forEach
@@ -3288,6 +3295,7 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|GetAclResponse
 operator|.

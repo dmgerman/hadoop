@@ -1543,6 +1543,25 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+DECL|method|setAclScope (AclScope scope)
+specifier|public
+name|OzoneAcl
+name|setAclScope
+parameter_list|(
+name|AclScope
+name|scope
+parameter_list|)
+block|{
+name|this
+operator|.
+name|aclScope
+operator|=
+name|scope
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 comment|/**    * Scope of ozone acl.    * */
 DECL|enum|AclScope
 specifier|public

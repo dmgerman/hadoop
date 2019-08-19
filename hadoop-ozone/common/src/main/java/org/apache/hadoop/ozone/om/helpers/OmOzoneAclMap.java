@@ -176,24 +176,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
-operator|.
-name|web
-operator|.
-name|utils
-operator|.
-name|OzoneUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|security
 operator|.
 name|UserGroupInformation
@@ -1463,7 +1445,7 @@ case|case
 name|USER
 case|:
 return|return
-name|OzoneUtils
+name|OzoneAclUtil
 operator|.
 name|checkIfAclBitIsSet
 argument_list|(
@@ -1497,7 +1479,7 @@ control|)
 block|{
 if|if
 condition|(
-name|OzoneUtils
+name|OzoneAclUtil
 operator|.
 name|checkIfAclBitIsSet
 argument_list|(
@@ -1523,7 +1505,7 @@ default|default:
 comment|// For type WORLD and ANONYMOUS we set acl type as name.
 if|if
 condition|(
-name|OzoneUtils
+name|OzoneAclUtil
 operator|.
 name|checkIfAclBitIsSet
 argument_list|(
