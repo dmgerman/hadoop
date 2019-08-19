@@ -553,12 +553,11 @@ name|ecPolicy
 init|=
 name|SystemErasureCodingPolicies
 operator|.
-name|getPolicies
-argument_list|()
-operator|.
-name|get
+name|getByID
 argument_list|(
-literal|3
+name|SystemErasureCodingPolicies
+operator|.
+name|XOR_2_1_POLICY_ID
 argument_list|)
 decl_stmt|;
 name|Path
