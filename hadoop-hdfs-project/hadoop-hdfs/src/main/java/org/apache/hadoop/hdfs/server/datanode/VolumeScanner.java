@@ -1312,39 +1312,19 @@ argument_list|,
 name|volume
 argument_list|)
 expr_stmt|;
-try|try
-block|{
 name|scanner
 operator|.
 name|datanode
 operator|.
-name|reportBadBlocks
+name|handleBadBlock
 argument_list|(
 name|block
 argument_list|,
-name|volume
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ie
-parameter_list|)
-block|{
-comment|// This is bad, but not bad enough to shut down the scanner.
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Cannot report bad block "
-operator|+
-name|block
+name|e
 argument_list|,
-name|ie
+literal|true
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 DECL|method|VolumeScanner (Conf conf, DataNode datanode, FsVolumeReference ref)

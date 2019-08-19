@@ -2990,7 +2990,9 @@ name|getStorageType
 parameter_list|()
 block|{
 return|return
-literal|null
+name|StorageType
+operator|.
+name|DISK
 return|;
 block|}
 annotation|@
@@ -5655,7 +5657,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|getBlockInputStream (ExtendedBlock b)
-specifier|protected
+specifier|public
 specifier|synchronized
 name|InputStream
 name|getBlockInputStream

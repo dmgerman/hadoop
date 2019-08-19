@@ -853,6 +853,15 @@ name|CHUNK_SIZE
 init|=
 literal|512
 decl_stmt|;
+DECL|field|EIO_ERROR
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|EIO_ERROR
+init|=
+literal|"Input/output error"
+decl_stmt|;
 comment|/**    * Constructor    *     * @param block Block that is being read    * @param startOffset starting offset to read from    * @param length length of data to read    * @param corruptChecksumOk if true, corrupt checksum is okay    * @param verifyChecksum verify checksum while reading the data    * @param sendChecksum send checksum to client.    * @param datanode datanode from which the block is being read    * @param clientTraceFmt format string used to print client trace logs    * @throws IOException    */
 DECL|method|BlockSender (ExtendedBlock block, long startOffset, long length, boolean corruptChecksumOk, boolean verifyChecksum, boolean sendChecksum, DataNode datanode, String clientTraceFmt, CachingStrategy cachingStrategy)
 name|BlockSender
@@ -2583,6 +2592,8 @@ name|transferTo
 condition|)
 block|{
 comment|// normal transfer
+try|try
+block|{
 name|ris
 operator|.
 name|readDataFully
@@ -2594,6 +2605,40 @@ argument_list|,
 name|dataLen
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+if|if
+condition|(
+name|ioe
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|startsWith
+argument_list|(
+name|EIO_ERROR
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|DiskFileCorruptException
+argument_list|(
+literal|"A disk IO error occurred"
+argument_list|,
+name|ioe
+argument_list|)
+throw|;
+block|}
+throw|throw
+name|ioe
+throw|;
+block|}
 if|if
 condition|(
 name|verifyChecksum
@@ -2774,6 +2819,27 @@ operator|.
 name|getMessage
 argument_list|()
 decl_stmt|;
+comment|/*          * If we got an EIO when reading files or transferTo the client socket,          * it's very likely caused by bad disk track or other file corruptions.          */
+if|if
+condition|(
+name|ioem
+operator|.
+name|startsWith
+argument_list|(
+name|EIO_ERROR
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|DiskFileCorruptException
+argument_list|(
+literal|"A disk IO error occurred"
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
 if|if
 condition|(
 operator|!

@@ -1560,7 +1560,7 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
-comment|// Make a mock blockScanner class and return false whenever isEnabled is
+comment|// Make a mock blockScanner class and return true whenever isEnabled is
 comment|// called on blockScanner
 name|BlockScanner
 name|mockScanner
@@ -1586,7 +1586,7 @@ argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
-literal|false
+literal|true
 argument_list|)
 expr_stmt|;
 name|dn0
