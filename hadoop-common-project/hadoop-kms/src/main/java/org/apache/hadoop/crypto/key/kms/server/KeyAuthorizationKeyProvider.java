@@ -1827,6 +1827,16 @@ name|toString
 parameter_list|()
 block|{
 return|return
+name|this
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|": "
+operator|+
 name|provider
 operator|.
 name|toString
