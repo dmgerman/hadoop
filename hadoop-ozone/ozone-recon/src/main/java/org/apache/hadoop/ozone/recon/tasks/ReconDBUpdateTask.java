@@ -63,51 +63,23 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Abstract class used to denote a Recon task that needs to act on OM DB events.  */
+comment|/**  * Interface used to denote a Recon task that needs to act on OM DB events.  */
 end_comment
 
-begin_class
-DECL|class|ReconDBUpdateTask
+begin_interface
+DECL|interface|ReconDBUpdateTask
 specifier|public
-specifier|abstract
-class|class
+interface|interface
 name|ReconDBUpdateTask
 block|{
-DECL|field|taskName
-specifier|private
-name|String
-name|taskName
-decl_stmt|;
-DECL|method|ReconDBUpdateTask (String taskName)
-specifier|protected
-name|ReconDBUpdateTask
-parameter_list|(
-name|String
-name|taskName
-parameter_list|)
-block|{
-name|this
-operator|.
-name|taskName
-operator|=
-name|taskName
-expr_stmt|;
-block|}
 comment|/**    * Return task name.    * @return task name    */
 DECL|method|getTaskName ()
-specifier|public
 name|String
 name|getTaskName
 parameter_list|()
-block|{
-return|return
-name|taskName
-return|;
-block|}
+function_decl|;
 comment|/**    * Return the list of tables that the task is listening on.    * Empty list means the task is NOT listening on any tables.    * @return Collection of Tables.    */
 DECL|method|getTaskTables ()
-specifier|protected
-specifier|abstract
 name|Collection
 argument_list|<
 name|String
@@ -117,7 +89,6 @@ parameter_list|()
 function_decl|;
 comment|/**    * Process a set of OM events on tables that the task is listening on.    * @param events Set of events to be processed by the task.    * @return Pair of task name -> task success.    */
 DECL|method|process (OMUpdateEventBatch events)
-specifier|abstract
 name|Pair
 argument_list|<
 name|String
@@ -132,7 +103,6 @@ parameter_list|)
 function_decl|;
 comment|/**    * Process a  on tables that the task is listening on.    * @param omMetadataManager OM Metadata manager instance.    * @return Pair of task name -> task success.    */
 DECL|method|reprocess (OMMetadataManager omMetadataManager)
-specifier|abstract
 name|Pair
 argument_list|<
 name|String
@@ -146,7 +116,7 @@ name|omMetadataManager
 parameter_list|)
 function_decl|;
 block|}
-end_class
+end_interface
 
 end_unit
 

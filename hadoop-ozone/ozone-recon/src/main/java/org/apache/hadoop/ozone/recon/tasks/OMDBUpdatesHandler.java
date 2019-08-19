@@ -457,7 +457,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    *    */
+comment|/**    *    * @param cfIndex    * @param keyBytes    * @param valueBytes    * @param action    * @throws IOException    */
 DECL|method|processEvent (int cfIndex, byte[] keyBytes, byte[] valueBytes, OMDBUpdateEvent.OMDBUpdateAction action)
 specifier|private
 name|void
@@ -605,7 +605,7 @@ argument_list|()
 decl_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Generated OM update Event for table : "
 operator|+
@@ -619,6 +619,13 @@ operator|+
 name|event
 operator|.
 name|getKey
+argument_list|()
+operator|+
+literal|", action = "
+operator|+
+name|event
+operator|.
+name|getAction
 argument_list|()
 argument_list|)
 expr_stmt|;

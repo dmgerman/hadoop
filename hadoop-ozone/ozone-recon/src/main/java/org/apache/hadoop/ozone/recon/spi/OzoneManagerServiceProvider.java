@@ -22,16 +22,6 @@ end_comment
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -56,21 +46,17 @@ specifier|public
 interface|interface
 name|OzoneManagerServiceProvider
 block|{
-comment|/**    * Initialize Ozone Manager Service Provider Impl.    */
-DECL|method|init ()
+comment|/**    * Start a task to sync data from OM.    */
+DECL|method|start ()
 name|void
-name|init
+name|start
 parameter_list|()
-throws|throws
-name|IOException
 function_decl|;
-comment|/**    * Update Recon OM DB with new snapshot from OM.    */
-DECL|method|updateReconOmDBWithNewSnapshot ()
+comment|/**    * Stop the OM sync data.    */
+DECL|method|stop ()
 name|void
-name|updateReconOmDBWithNewSnapshot
+name|stop
 parameter_list|()
-throws|throws
-name|IOException
 function_decl|;
 comment|/**    * Return instance of OM Metadata manager.    * @return OM metadata manager instance.    */
 DECL|method|getOMMetadataManagerInstance ()

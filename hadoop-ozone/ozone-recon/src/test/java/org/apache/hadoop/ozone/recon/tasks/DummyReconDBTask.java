@@ -97,7 +97,7 @@ DECL|class|DummyReconDBTask
 specifier|public
 class|class
 name|DummyReconDBTask
-extends|extends
+implements|implements
 name|ReconDBUpdateTask
 block|{
 DECL|field|numFailuresAllowed
@@ -116,8 +116,12 @@ name|callCtr
 init|=
 literal|0
 decl_stmt|;
+DECL|field|taskName
+specifier|private
+name|String
+name|taskName
+decl_stmt|;
 DECL|method|DummyReconDBTask (String taskName, TaskType taskType)
-specifier|public
 name|DummyReconDBTask
 parameter_list|(
 name|String
@@ -127,10 +131,11 @@ name|TaskType
 name|taskType
 parameter_list|)
 block|{
-name|super
-argument_list|(
+name|this
+operator|.
 name|taskName
-argument_list|)
+operator|=
+name|taskName
 expr_stmt|;
 if|if
 condition|(
@@ -172,8 +177,20 @@ block|}
 block|}
 annotation|@
 name|Override
+DECL|method|getTaskName ()
+specifier|public
+name|String
+name|getTaskName
+parameter_list|()
+block|{
+return|return
+name|taskName
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getTaskTables ()
-specifier|protected
+specifier|public
 name|Collection
 argument_list|<
 name|String
@@ -193,6 +210,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|process (OMUpdateEventBatch events)
+specifier|public
 name|Pair
 argument_list|<
 name|String
@@ -243,6 +261,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|reprocess (OMMetadataManager omMetadataManager)
+specifier|public
 name|Pair
 argument_list|<
 name|String

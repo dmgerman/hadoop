@@ -91,6 +91,7 @@ argument_list|>
 name|events
 decl_stmt|;
 DECL|method|OMUpdateEventBatch (Collection<OMDBUpdateEvent> e)
+specifier|public
 name|OMUpdateEventBatch
 parameter_list|(
 name|Collection
@@ -111,11 +112,9 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Get Sequence Number and timestamp of last event in this batch.    * @return Event Info instance.    */
-DECL|method|getLastEventInfo ()
-name|OMDBUpdateEvent
-operator|.
-name|EventInfo
-name|getLastEventInfo
+DECL|method|getLastSequenceNumber ()
+name|long
+name|getLastSequenceNumber
 parameter_list|()
 block|{
 if|if
@@ -127,17 +126,8 @@ argument_list|()
 condition|)
 block|{
 return|return
-operator|new
-name|OMDBUpdateEvent
-operator|.
-name|EventInfo
-argument_list|(
 operator|-
 literal|1
-argument_list|,
-operator|-
-literal|1
-argument_list|)
 return|;
 block|}
 else|else
@@ -155,7 +145,7 @@ operator|-
 literal|1
 argument_list|)
 operator|.
-name|getEventInfo
+name|getSequenceNumber
 argument_list|()
 return|;
 block|}
@@ -222,6 +212,22 @@ name|toList
 argument_list|()
 argument_list|)
 argument_list|)
+return|;
+block|}
+comment|/**    * Return if empty.    * @return true if empty, else false.    */
+DECL|method|isEmpty ()
+specifier|public
+name|boolean
+name|isEmpty
+parameter_list|()
+block|{
+return|return
+operator|!
+name|getIterator
+argument_list|()
+operator|.
+name|hasNext
+argument_list|()
 return|;
 block|}
 block|}

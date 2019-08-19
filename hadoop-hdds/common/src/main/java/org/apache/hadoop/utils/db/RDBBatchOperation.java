@@ -108,6 +108,21 @@ name|WriteBatch
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|RDBBatchOperation (WriteBatch writeBatch)
+specifier|public
+name|RDBBatchOperation
+parameter_list|(
+name|WriteBatch
+name|writeBatch
+parameter_list|)
+block|{
+name|this
+operator|.
+name|writeBatch
+operator|=
+name|writeBatch
+expr_stmt|;
+block|}
 DECL|method|commit (RocksDB db, WriteOptions writeOptions)
 specifier|public
 name|void

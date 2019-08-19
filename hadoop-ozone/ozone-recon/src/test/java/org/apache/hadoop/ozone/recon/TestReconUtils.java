@@ -381,7 +381,9 @@ expr_stmt|;
 name|File
 name|file
 init|=
+operator|new
 name|ReconUtils
+argument_list|()
 operator|.
 name|getReconDbDir
 argument_list|(
@@ -543,7 +545,9 @@ operator|.
 name|newFolder
 argument_list|()
 decl_stmt|;
+operator|new
 name|ReconUtils
+argument_list|()
 operator|.
 name|untarCheckpointFile
 argument_list|(
@@ -784,7 +788,9 @@ expr_stmt|;
 name|InputStream
 name|inputStream
 init|=
+operator|new
 name|ReconUtils
+argument_list|()
 operator|.
 name|makeHttpCall
 argument_list|(

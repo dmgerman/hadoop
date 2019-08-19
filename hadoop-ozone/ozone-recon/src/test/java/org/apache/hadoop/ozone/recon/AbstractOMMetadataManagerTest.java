@@ -442,7 +442,7 @@ operator|new
 name|TemporaryFolder
 argument_list|()
 decl_stmt|;
-comment|/**    * Create a new OM Metadata manager instance.    * @throws IOException ioEx    */
+comment|/**    * Create a new OM Metadata manager instance with default volume and bucket.    * @throws IOException ioEx    */
 DECL|method|initializeNewOmMetadataManager ()
 specifier|protected
 name|OMMetadataManager
@@ -574,6 +574,50 @@ argument_list|)
 expr_stmt|;
 return|return
 name|omMetadataManager
+return|;
+block|}
+comment|/**    * Create an empty OM Metadata manager instance.    * @throws IOException ioEx    */
+DECL|method|initializeEmptyOmMetadataManager ()
+specifier|protected
+name|OMMetadataManager
+name|initializeEmptyOmMetadataManager
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|File
+name|omDbDir
+init|=
+name|temporaryFolder
+operator|.
+name|newFolder
+argument_list|()
+decl_stmt|;
+name|OzoneConfiguration
+name|omConfiguration
+init|=
+operator|new
+name|OzoneConfiguration
+argument_list|()
+decl_stmt|;
+name|omConfiguration
+operator|.
+name|set
+argument_list|(
+name|OZONE_OM_DB_DIRS
+argument_list|,
+name|omDbDir
+operator|.
+name|getAbsolutePath
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+operator|new
+name|OmMetadataManagerImpl
+argument_list|(
+name|omConfiguration
+argument_list|)
 return|;
 block|}
 comment|/**    * Get an instance of Recon OM Metadata manager.    * @return ReconOMMetadataManager    * @throws IOException when creating the RocksDB instance.    */

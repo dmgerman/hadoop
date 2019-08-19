@@ -60,13 +60,13 @@ specifier|final
 name|VALUE
 name|updatedValue
 decl_stmt|;
-DECL|field|eventInfo
+DECL|field|sequenceNumber
 specifier|private
 specifier|final
-name|EventInfo
-name|eventInfo
+name|long
+name|sequenceNumber
 decl_stmt|;
-DECL|method|OMDBUpdateEvent (OMDBUpdateAction action, String table, KEY updatedKey, VALUE updatedValue, EventInfo eventInfo)
+DECL|method|OMDBUpdateEvent (OMDBUpdateAction action, String table, KEY updatedKey, VALUE updatedValue, long sequenceNumber)
 specifier|private
 name|OMDBUpdateEvent
 parameter_list|(
@@ -82,8 +82,8 @@ parameter_list|,
 name|VALUE
 name|updatedValue
 parameter_list|,
-name|EventInfo
-name|eventInfo
+name|long
+name|sequenceNumber
 parameter_list|)
 block|{
 name|this
@@ -112,9 +112,9 @@ name|updatedValue
 expr_stmt|;
 name|this
 operator|.
-name|eventInfo
+name|sequenceNumber
 operator|=
-name|eventInfo
+name|sequenceNumber
 expr_stmt|;
 block|}
 DECL|method|getAction ()
@@ -157,14 +157,14 @@ return|return
 name|updatedValue
 return|;
 block|}
-DECL|method|getEventInfo ()
+DECL|method|getSequenceNumber ()
 specifier|public
-name|EventInfo
-name|getEventInfo
+name|long
+name|getSequenceNumber
 parameter_list|()
 block|{
 return|return
-name|eventInfo
+name|sequenceNumber
 return|;
 block|}
 comment|/**    * Builder used to construct an OM DB Update event.    * @param<KEY> Key type.    * @param<VALUE> Value type.    */
@@ -199,10 +199,10 @@ specifier|private
 name|VALUE
 name|updatedValue
 decl_stmt|;
-DECL|field|eventInfo
+DECL|field|lastSequenceNumber
 specifier|private
-name|EventInfo
-name|eventInfo
+name|long
+name|lastSequenceNumber
 decl_stmt|;
 DECL|method|setAction (OMDBUpdateAction omdbUpdateAction)
 name|OMUpdateEventBuilder
@@ -276,28 +276,19 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setEventInfo (long sequenceNumber, long eventTimestampMillis)
+DECL|method|setSequenceNumber (long sequenceNumber)
 name|OMUpdateEventBuilder
-name|setEventInfo
+name|setSequenceNumber
 parameter_list|(
 name|long
 name|sequenceNumber
-parameter_list|,
-name|long
-name|eventTimestampMillis
 parameter_list|)
 block|{
 name|this
 operator|.
-name|eventInfo
+name|lastSequenceNumber
 operator|=
-operator|new
-name|EventInfo
-argument_list|(
 name|sequenceNumber
-argument_list|,
-name|eventTimestampMillis
-argument_list|)
 expr_stmt|;
 return|return
 name|this
@@ -327,70 +318,8 @@ name|updatedKey
 argument_list|,
 name|updatedValue
 argument_list|,
-name|eventInfo
+name|lastSequenceNumber
 argument_list|)
-return|;
-block|}
-block|}
-comment|/**    * Class used to hold timing information for an event. (Seq number and    * timestamp)    */
-DECL|class|EventInfo
-specifier|public
-specifier|static
-class|class
-name|EventInfo
-block|{
-DECL|field|sequenceNumber
-specifier|private
-name|long
-name|sequenceNumber
-decl_stmt|;
-DECL|field|eventTimestampMillis
-specifier|private
-name|long
-name|eventTimestampMillis
-decl_stmt|;
-DECL|method|EventInfo (long sequenceNumber, long eventTimestampMillis)
-specifier|public
-name|EventInfo
-parameter_list|(
-name|long
-name|sequenceNumber
-parameter_list|,
-name|long
-name|eventTimestampMillis
-parameter_list|)
-block|{
-name|this
-operator|.
-name|sequenceNumber
-operator|=
-name|sequenceNumber
-expr_stmt|;
-name|this
-operator|.
-name|eventTimestampMillis
-operator|=
-name|eventTimestampMillis
-expr_stmt|;
-block|}
-DECL|method|getSequenceNumber ()
-specifier|public
-name|long
-name|getSequenceNumber
-parameter_list|()
-block|{
-return|return
-name|sequenceNumber
-return|;
-block|}
-DECL|method|getEventTimestampMillis ()
-specifier|public
-name|long
-name|getEventTimestampMillis
-parameter_list|()
-block|{
-return|return
-name|eventTimestampMillis
 return|;
 block|}
 block|}

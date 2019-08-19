@@ -95,24 +95,6 @@ import|;
 end_import
 
 begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|recon
-operator|.
-name|ReconUtils
-operator|.
-name|getReconDbDir
-import|;
-end_import
-
-begin_import
 import|import
 name|java
 operator|.
@@ -137,6 +119,22 @@ operator|.
 name|conf
 operator|.
 name|OzoneConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|recon
+operator|.
+name|ReconUtils
 import|;
 end_import
 
@@ -335,6 +333,13 @@ name|OzoneConfiguration
 name|configuration
 decl_stmt|;
 annotation|@
+name|Inject
+DECL|field|reconUtils
+specifier|private
+name|ReconUtils
+name|reconUtils
+decl_stmt|;
+annotation|@
 name|Override
 DECL|method|get ()
 specifier|public
@@ -348,6 +353,8 @@ init|=
 name|getNewDBStore
 argument_list|(
 name|configuration
+argument_list|,
+name|reconUtils
 argument_list|)
 decl_stmt|;
 if|if
@@ -371,7 +378,7 @@ return|return
 name|dbStore
 return|;
 block|}
-DECL|method|getNewDBStore (OzoneConfiguration configuration)
+DECL|method|getNewDBStore (OzoneConfiguration configuration, ReconUtils reconUtils)
 specifier|public
 specifier|static
 name|DBStore
@@ -379,6 +386,9 @@ name|getNewDBStore
 parameter_list|(
 name|OzoneConfiguration
 name|configuration
+parameter_list|,
+name|ReconUtils
+name|reconUtils
 parameter_list|)
 block|{
 name|DBStore
@@ -403,6 +413,8 @@ block|{
 name|Path
 name|metaDir
 init|=
+name|reconUtils
+operator|.
 name|getReconDbDir
 argument_list|(
 name|configuration

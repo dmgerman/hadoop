@@ -365,7 +365,6 @@ end_comment
 begin_class
 DECL|class|ReconUtils
 specifier|public
-specifier|final
 class|class
 name|ReconUtils
 block|{
@@ -380,7 +379,7 @@ literal|1048576
 decl_stmt|;
 comment|//1MB
 DECL|method|ReconUtils ()
-specifier|private
+specifier|public
 name|ReconUtils
 parameter_list|()
 block|{   }
@@ -403,7 +402,6 @@ decl_stmt|;
 comment|/**    * Get configured Recon DB directory value based on config. If not present,    * fallback to ozone.metadata.dirs    *    * @param conf         configuration bag    * @param dirConfigKey key to check    * @return Return File based on configured or fallback value.    */
 DECL|method|getReconDbDir (Configuration conf, String dirConfigKey)
 specifier|public
-specifier|static
 name|File
 name|getReconDbDir
 parameter_list|(
@@ -462,7 +460,6 @@ block|}
 comment|/**    * Untar DB snapshot tar file to recon OM snapshot directory.    *    * @param tarFile  source tar file    * @param destPath destination path to untar to.    * @throws IOException ioException    */
 DECL|method|untarCheckpointFile (File tarFile, Path destPath)
 specifier|public
-specifier|static
 name|void
 name|untarCheckpointFile
 parameter_list|(
@@ -767,7 +764,6 @@ block|}
 comment|/**    * Make HTTP GET call on the URL and return inputstream to the response.    * @param httpClient HttpClient to use.    * @param url url to call    * @return Inputstream to the response of the HTTP call.    * @throws IOException While reading the response.    */
 DECL|method|makeHttpCall (CloseableHttpClient httpClient, String url)
 specifier|public
-specifier|static
 name|InputStream
 name|makeHttpCall
 parameter_list|(

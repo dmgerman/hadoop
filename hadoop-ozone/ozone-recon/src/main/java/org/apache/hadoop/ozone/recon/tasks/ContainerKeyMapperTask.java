@@ -21,6 +21,24 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|OmMetadataManagerImpl
+operator|.
+name|KEY_TABLE
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -56,7 +74,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|ArrayList
+name|Collection
 import|;
 end_import
 
@@ -66,7 +84,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Collection
+name|Collections
 import|;
 end_import
 
@@ -302,6 +320,18 @@ name|LoggerFactory
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|inject
+operator|.
+name|Inject
+import|;
+end_import
+
 begin_comment
 comment|/**  * Class to iterate over the OM DB and populate the Recon container DB with  * the container -> Key reverse mapping.  */
 end_comment
@@ -311,7 +341,7 @@ DECL|class|ContainerKeyMapperTask
 specifier|public
 class|class
 name|ContainerKeyMapperTask
-extends|extends
+implements|implements
 name|ReconDBUpdateTask
 block|{
 DECL|field|LOG
@@ -335,73 +365,22 @@ specifier|private
 name|ContainerDBServiceProvider
 name|containerDBServiceProvider
 decl_stmt|;
-DECL|field|tables
-specifier|private
-name|Collection
-argument_list|<
-name|String
-argument_list|>
-name|tables
-init|=
-operator|new
-name|ArrayList
-argument_list|<>
-argument_list|()
-decl_stmt|;
-DECL|method|ContainerKeyMapperTask (ContainerDBServiceProvider containerDBServiceProvider, OMMetadataManager omMetadataManager)
+annotation|@
+name|Inject
+DECL|method|ContainerKeyMapperTask (ContainerDBServiceProvider containerDBServiceProvider)
 specifier|public
 name|ContainerKeyMapperTask
 parameter_list|(
 name|ContainerDBServiceProvider
 name|containerDBServiceProvider
-parameter_list|,
-name|OMMetadataManager
-name|omMetadataManager
 parameter_list|)
 block|{
-name|super
-argument_list|(
-literal|"ContainerKeyMapperTask"
-argument_list|)
-expr_stmt|;
 name|this
 operator|.
 name|containerDBServiceProvider
 operator|=
 name|containerDBServiceProvider
 expr_stmt|;
-try|try
-block|{
-name|tables
-operator|.
-name|add
-argument_list|(
-name|omMetadataManager
-operator|.
-name|getKeyTable
-argument_list|()
-operator|.
-name|getName
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ioEx
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Unable to listen on Key Table updates "
-argument_list|,
-name|ioEx
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Read Key -> ContainerId data from OM snapshot DB and write reverse map    * (container, key) -> count to Recon Container DB.    */
 annotation|@
@@ -631,8 +610,20 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getTaskName ()
+specifier|public
+name|String
+name|getTaskName
+parameter_list|()
+block|{
+return|return
+literal|"ContainerKeyMapperTask"
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getTaskTables ()
-specifier|protected
+specifier|public
 name|Collection
 argument_list|<
 name|String
@@ -641,12 +632,18 @@ name|getTaskTables
 parameter_list|()
 block|{
 return|return
-name|tables
+name|Collections
+operator|.
+name|singletonList
+argument_list|(
+name|KEY_TABLE
+argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
 DECL|method|process (OMUpdateEventBatch events)
+specifier|public
 name|Pair
 argument_list|<
 name|String
@@ -669,6 +666,11 @@ name|events
 operator|.
 name|getIterator
 argument_list|()
+decl_stmt|;
+name|int
+name|eventCount
+init|=
+literal|0
 decl_stmt|;
 while|while
 condition|(
@@ -751,6 +753,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|eventCount
+operator|++
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -782,6 +787,18 @@ argument_list|)
 return|;
 block|}
 block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"{} successfully processed {} OM DB update event(s)."
+argument_list|,
+name|getTaskName
+argument_list|()
+argument_list|,
+name|eventCount
+argument_list|)
+expr_stmt|;
 return|return
 operator|new
 name|ImmutablePair

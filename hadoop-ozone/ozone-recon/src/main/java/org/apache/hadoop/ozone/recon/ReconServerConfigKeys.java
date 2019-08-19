@@ -440,7 +440,7 @@ specifier|final
 name|int
 name|OZONE_RECON_TASK_THREAD_COUNT_DEFAULT
 init|=
-literal|1
+literal|5
 decl_stmt|;
 comment|/**    * Private constructor for utility class.    */
 DECL|method|ReconServerConfigKeys ()

@@ -244,6 +244,22 @@ name|ozone
 operator|.
 name|recon
 operator|.
+name|ReconUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|recon
+operator|.
 name|api
 operator|.
 name|types
@@ -504,6 +520,13 @@ name|sqlConfiguration
 decl_stmt|;
 annotation|@
 name|Inject
+DECL|field|reconUtils
+specifier|private
+name|ReconUtils
+name|reconUtils
+decl_stmt|;
+annotation|@
+name|Inject
 DECL|method|ContainerDBServiceProviderImpl (DBStore dbStore, Configuration sqlConfiguration)
 specifier|public
 name|ContainerDBServiceProviderImpl
@@ -615,6 +638,8 @@ operator|.
 name|getNewDBStore
 argument_list|(
 name|configuration
+argument_list|,
+name|reconUtils
 argument_list|)
 expr_stmt|;
 name|containerKeyTable

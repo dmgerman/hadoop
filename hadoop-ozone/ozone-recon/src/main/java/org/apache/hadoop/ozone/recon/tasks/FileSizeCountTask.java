@@ -216,7 +216,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|ArrayList
+name|Collection
 import|;
 end_import
 
@@ -226,7 +226,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Collection
+name|Collections
 import|;
 end_import
 
@@ -247,6 +247,24 @@ operator|.
 name|util
 operator|.
 name|List
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|OmMetadataManagerImpl
+operator|.
+name|KEY_TABLE
 import|;
 end_import
 
@@ -303,7 +321,7 @@ DECL|class|FileSizeCountTask
 specifier|public
 class|class
 name|FileSizeCountTask
-extends|extends
+implements|implements
 name|ReconDBUpdateTask
 block|{
 DECL|field|LOG
@@ -351,19 +369,6 @@ name|oneKb
 init|=
 literal|1024L
 decl_stmt|;
-DECL|field|tables
-specifier|private
-name|Collection
-argument_list|<
-name|String
-argument_list|>
-name|tables
-init|=
-operator|new
-name|ArrayList
-argument_list|<>
-argument_list|()
-decl_stmt|;
 DECL|field|fileCountBySizeDao
 specifier|private
 name|FileCountBySizeDao
@@ -371,37 +376,14 @@ name|fileCountBySizeDao
 decl_stmt|;
 annotation|@
 name|Inject
-DECL|method|FileSizeCountTask (OMMetadataManager omMetadataManager, Configuration sqlConfiguration)
+DECL|method|FileSizeCountTask (Configuration sqlConfiguration)
 specifier|public
 name|FileSizeCountTask
 parameter_list|(
-name|OMMetadataManager
-name|omMetadataManager
-parameter_list|,
 name|Configuration
 name|sqlConfiguration
 parameter_list|)
 block|{
-name|super
-argument_list|(
-literal|"FileSizeCountTask"
-argument_list|)
-expr_stmt|;
-try|try
-block|{
-name|tables
-operator|.
-name|add
-argument_list|(
-name|omMetadataManager
-operator|.
-name|getKeyTable
-argument_list|()
-operator|.
-name|getName
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|fileCountBySizeDao
 operator|=
 operator|new
@@ -410,23 +392,6 @@ argument_list|(
 name|sqlConfiguration
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Unable to fetch Key Table updates "
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
 name|upperBoundCount
 operator|=
 operator|new
@@ -503,13 +468,6 @@ name|OMMetadataManager
 name|omMetadataManager
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Starting a 'reprocess' run of FileSizeCountTask."
-argument_list|)
-expr_stmt|;
 name|Table
 argument_list|<
 name|String
@@ -635,8 +593,20 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getTaskName ()
+specifier|public
+name|String
+name|getTaskName
+parameter_list|()
+block|{
+return|return
+literal|"FileSizeCountTask"
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getTaskTables ()
-specifier|protected
+specifier|public
 name|Collection
 argument_list|<
 name|String
@@ -645,7 +615,12 @@ name|getTaskTables
 parameter_list|()
 block|{
 return|return
-name|tables
+name|Collections
+operator|.
+name|singletonList
+argument_list|(
+name|KEY_TABLE
+argument_list|)
 return|;
 block|}
 DECL|method|updateCountFromDB ()
@@ -707,6 +682,7 @@ comment|/**    * Read the Keys from update events and update the count of files 
 annotation|@
 name|Override
 DECL|method|process (OMUpdateEventBatch events)
+specifier|public
 name|Pair
 argument_list|<
 name|String
@@ -719,13 +695,6 @@ name|OMUpdateEventBatch
 name|events
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Starting a 'process' run of FileSizeCountTask."
-argument_list|)
-expr_stmt|;
 name|Iterator
 argument_list|<
 name|OMDBUpdateEvent
@@ -1138,20 +1107,22 @@ else|else
 block|{
 name|LOG
 operator|.
-name|debug
+name|warn
 argument_list|(
-literal|"Cannot decrement count. Default value is 0 (zero)."
+literal|"Unexpected error while updating bin count. Found 0 count "
+operator|+
+literal|"for index : "
+operator|+
+name|binIndex
+operator|+
+literal|" while processing DELETE event for "
+operator|+
+name|omKeyInfo
+operator|.
+name|getKeyName
+argument_list|()
 argument_list|)
 expr_stmt|;
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Cannot decrement count. "
-operator|+
-literal|"Default value is 0 (zero)."
-argument_list|)
-throw|;
 block|}
 block|}
 block|}

@@ -117,6 +117,22 @@ return|return
 name|dataList
 return|;
 block|}
+DECL|method|setCurrentSequenceNumber (long sequenceNumber)
+specifier|public
+name|void
+name|setCurrentSequenceNumber
+parameter_list|(
+name|long
+name|sequenceNumber
+parameter_list|)
+block|{
+name|this
+operator|.
+name|currentSequenceNumber
+operator|=
+name|sequenceNumber
+expr_stmt|;
+block|}
 DECL|method|getCurrentSequenceNumber ()
 specifier|public
 name|long

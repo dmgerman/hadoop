@@ -30,6 +30,42 @@ name|Map
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|OMMetadataManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|recon
+operator|.
+name|schema
+operator|.
+name|tables
+operator|.
+name|daos
+operator|.
+name|ReconTaskStatusDao
+import|;
+end_import
+
 begin_comment
 comment|/**  * Controller used by Recon to manage Tasks that are waiting on Recon events.  */
 end_comment
@@ -50,12 +86,26 @@ name|task
 parameter_list|)
 function_decl|;
 comment|/**    * Pass on a set of OM DB update events to the registered tasks.    * @param events set of events    * @throws InterruptedException InterruptedException    */
-DECL|method|consumeOMEvents (OMUpdateEventBatch events)
+DECL|method|consumeOMEvents (OMUpdateEventBatch events, OMMetadataManager omMetadataManager)
 name|void
 name|consumeOMEvents
 parameter_list|(
 name|OMUpdateEventBatch
 name|events
+parameter_list|,
+name|OMMetadataManager
+name|omMetadataManager
+parameter_list|)
+throws|throws
+name|InterruptedException
+function_decl|;
+comment|/**    * Pass on the handle to a new OM DB instance to the registered tasks.    * @param omMetadataManager OM Metadata Manager instance    */
+DECL|method|reInitializeTasks (OMMetadataManager omMetadataManager)
+name|void
+name|reInitializeTasks
+parameter_list|(
+name|OMMetadataManager
+name|omMetadataManager
 parameter_list|)
 throws|throws
 name|InterruptedException
@@ -69,6 +119,18 @@ argument_list|,
 name|ReconDBUpdateTask
 argument_list|>
 name|getRegisteredTasks
+parameter_list|()
+function_decl|;
+comment|/**    * Get instance of ReconTaskStatusDao.    * @return instance of ReconTaskStatusDao    */
+DECL|method|getReconTaskStatusDao ()
+name|ReconTaskStatusDao
+name|getReconTaskStatusDao
+parameter_list|()
+function_decl|;
+comment|/**    * Stop the tasks. Start API is not needed since it is implicit.    */
+DECL|method|stop ()
+name|void
+name|stop
 parameter_list|()
 function_decl|;
 block|}

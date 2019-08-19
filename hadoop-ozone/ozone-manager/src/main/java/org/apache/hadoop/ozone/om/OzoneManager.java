@@ -17631,6 +17631,8 @@ name|isRatisEnabled
 return|;
 block|}
 comment|/**    * Get DB updates since a specific sequence number.    * @param dbUpdatesRequest request that encapsulates a sequence number.    * @return Wrapper containing the updates.    * @throws SequenceNumberNotFoundException if db is unable to read the data.    */
+annotation|@
+name|Override
 DECL|method|getDBUpdates ( DBUpdatesRequest dbUpdatesRequest)
 specifier|public
 name|DBUpdatesWrapper
