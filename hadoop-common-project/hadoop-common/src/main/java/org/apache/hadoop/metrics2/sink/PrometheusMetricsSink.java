@@ -128,7 +128,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
+name|Map
 import|;
 end_import
 
@@ -138,7 +138,9 @@ name|java
 operator|.
 name|util
 operator|.
-name|Map
+name|concurrent
+operator|.
+name|ConcurrentHashMap
 import|;
 end_import
 
@@ -183,6 +185,7 @@ block|{
 comment|/**    * Cached output lines for each metrics.    */
 DECL|field|metricLines
 specifier|private
+specifier|final
 name|Map
 argument_list|<
 name|String
@@ -192,7 +195,7 @@ argument_list|>
 name|metricLines
 init|=
 operator|new
-name|HashMap
+name|ConcurrentHashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
@@ -300,11 +303,20 @@ operator|.
 name|append
 argument_list|(
 literal|"# TYPE "
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|key
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|" "
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|metrics
 operator|.
 name|type
@@ -315,16 +327,20 @@ argument_list|()
 operator|.
 name|toLowerCase
 argument_list|()
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|"\n"
 argument_list|)
-expr_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(
 name|key
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|"{"
 argument_list|)
 expr_stmt|;
@@ -373,16 +389,28 @@ operator|.
 name|append
 argument_list|(
 name|sep
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|tagName
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|"=\""
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|tag
 operator|.
 name|value
 argument_list|()
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|"\""
 argument_list|)
 expr_stmt|;
@@ -407,6 +435,13 @@ name|metrics
 operator|.
 name|value
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|builder
+operator|.
+name|append
+argument_list|(
+literal|"\n"
 argument_list|)
 expr_stmt|;
 name|metricLines
@@ -540,8 +575,6 @@ operator|.
 name|write
 argument_list|(
 name|line
-operator|+
-literal|"\n"
 argument_list|)
 expr_stmt|;
 block|}
