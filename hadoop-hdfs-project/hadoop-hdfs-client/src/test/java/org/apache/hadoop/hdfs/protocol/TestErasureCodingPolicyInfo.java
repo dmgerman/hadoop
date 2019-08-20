@@ -191,7 +191,7 @@ argument_list|)
 expr_stmt|;
 name|fail
 argument_list|(
-literal|"Null policy should fail"
+literal|"Null policy state should fail"
 argument_list|)
 expr_stmt|;
 block|}
