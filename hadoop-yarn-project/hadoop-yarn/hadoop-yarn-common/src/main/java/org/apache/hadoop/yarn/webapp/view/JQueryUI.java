@@ -449,7 +449,7 @@ name|script
 argument_list|(
 name|root_url
 argument_list|(
-literal|"static/jquery/jquery-3.3.1.min.js"
+literal|"static/jquery/jquery-3.4.1.min.js"
 argument_list|)
 argument_list|)
 operator|.
