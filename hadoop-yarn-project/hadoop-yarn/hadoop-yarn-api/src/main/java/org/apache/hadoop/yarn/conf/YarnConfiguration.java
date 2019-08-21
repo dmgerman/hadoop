@@ -5719,6 +5719,31 @@ name|NM_PREFIX
 operator|+
 literal|"resource-plugins"
 decl_stmt|;
+comment|/**    * Specifies whether the initialization of the Node Manager should continue    * if a certain device (GPU, FPGA, etc) was not found in the system. If set    * to "true", then an exception will be thrown if a device is missing or    * an error occurred during discovery.    */
+annotation|@
+name|Private
+DECL|field|NM_RESOURCE_PLUGINS_FAIL_FAST
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_RESOURCE_PLUGINS_FAIL_FAST
+init|=
+name|NM_RESOURCE_PLUGINS
+operator|+
+literal|".fail-fast"
+decl_stmt|;
+annotation|@
+name|Private
+DECL|field|DEFAULT_NM_RESOURCE_PLUGINS_FAIL_FAST
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_NM_RESOURCE_PLUGINS_FAIL_FAST
+init|=
+literal|true
+decl_stmt|;
 comment|/**    * This setting controls if pluggable device plugin framework is enabled.    * */
 annotation|@
 name|Private

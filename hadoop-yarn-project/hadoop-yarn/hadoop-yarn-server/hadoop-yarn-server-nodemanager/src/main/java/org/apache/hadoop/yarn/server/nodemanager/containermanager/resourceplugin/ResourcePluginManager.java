@@ -653,6 +653,8 @@ name|pluginMap
 operator|=
 name|initializePlugins
 argument_list|(
+name|conf
+argument_list|,
 name|context
 argument_list|,
 name|plugins
@@ -779,7 +781,7 @@ return|return
 name|plugins
 return|;
 block|}
-DECL|method|initializePlugins ( Context context, String[] plugins)
+DECL|method|initializePlugins (Configuration conf, Context context, String[] plugins)
 specifier|private
 name|Map
 argument_list|<
@@ -789,6 +791,9 @@ name|ResourcePlugin
 argument_list|>
 name|initializePlugins
 parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
 name|Context
 name|context
 parameter_list|,
@@ -874,6 +879,8 @@ operator|new
 name|GpuNodeResourceUpdateHandler
 argument_list|(
 name|gpuDiscoverer
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 name|plugin

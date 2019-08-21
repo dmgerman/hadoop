@@ -27,6 +27,46 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|linux
+operator|.
+name|resources
+operator|.
+name|ResourcesExceptionUtil
+operator|.
+name|throwIfNecessary
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -224,12 +264,20 @@ specifier|final
 name|GpuDiscoverer
 name|gpuDiscoverer
 decl_stmt|;
-DECL|method|GpuNodeResourceUpdateHandler (GpuDiscoverer gpuDiscoverer)
+DECL|field|conf
+specifier|private
+name|Configuration
+name|conf
+decl_stmt|;
+DECL|method|GpuNodeResourceUpdateHandler (GpuDiscoverer gpuDiscoverer, Configuration conf)
 specifier|public
 name|GpuNodeResourceUpdateHandler
 parameter_list|(
 name|GpuDiscoverer
 name|gpuDiscoverer
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|this
@@ -237,6 +285,12 @@ operator|.
 name|gpuDiscoverer
 operator|=
 name|gpuDiscoverer
+expr_stmt|;
+name|this
+operator|.
+name|conf
+operator|=
+name|conf
 expr_stmt|;
 block|}
 annotation|@
@@ -297,13 +351,18 @@ name|message
 argument_list|)
 expr_stmt|;
 comment|// No gpu can be used by YARN.
-throw|throw
+name|throwIfNecessary
+argument_list|(
 operator|new
 name|YarnException
 argument_list|(
 name|message
 argument_list|)
-throw|;
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+return|return;
 block|}
 name|long
 name|nUsableGpus
@@ -337,9 +396,9 @@ name|GPU_URI
 argument_list|)
 condition|)
 block|{
-throw|throw
-operator|new
-name|YarnException
+name|LOG
+operator|.
+name|warn
 argument_list|(
 literal|"Found "
 operator|+
@@ -363,7 +422,7 @@ name|YarnConfiguration
 operator|.
 name|NM_RESOURCE_PLUGINS
 argument_list|)
-throw|;
+expr_stmt|;
 block|}
 name|res
 operator|.

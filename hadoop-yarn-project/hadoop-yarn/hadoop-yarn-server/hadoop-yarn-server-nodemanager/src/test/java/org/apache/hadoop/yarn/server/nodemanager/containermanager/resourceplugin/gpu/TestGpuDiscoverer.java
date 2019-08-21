@@ -531,6 +531,15 @@ operator|.
 name|getAbsolutePath
 argument_list|()
 decl_stmt|;
+DECL|field|binaryHelper
+specifier|private
+name|NvidiaBinaryHelper
+name|binaryHelper
+init|=
+operator|new
+name|NvidiaBinaryHelper
+argument_list|()
+decl_stmt|;
 annotation|@
 name|Rule
 DECL|field|exception
@@ -972,6 +981,8 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+name|binaryHelper
 argument_list|)
 expr_stmt|;
 return|return
@@ -1028,6 +1039,8 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+name|binaryHelper
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1065,6 +1078,8 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+name|binaryHelper
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1111,6 +1126,8 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+name|binaryHelper
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1779,6 +1796,8 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+name|binaryHelper
 argument_list|)
 expr_stmt|;
 name|GpuDeviceInformation
@@ -1852,6 +1871,8 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+name|binaryHelper
 argument_list|)
 expr_stmt|;
 name|List
@@ -1945,6 +1966,8 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+name|binaryHelper
 argument_list|)
 expr_stmt|;
 name|discoverer
@@ -1983,6 +2006,8 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+name|binaryHelper
 argument_list|)
 expr_stmt|;
 name|List
@@ -2166,6 +2191,8 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+name|binaryHelper
 argument_list|)
 expr_stmt|;
 name|discoverer
@@ -2213,6 +2240,8 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+name|binaryHelper
 argument_list|)
 expr_stmt|;
 name|discoverer
@@ -2260,6 +2289,8 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+name|binaryHelper
 argument_list|)
 expr_stmt|;
 name|discoverer
@@ -2307,6 +2338,8 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+name|binaryHelper
 argument_list|)
 expr_stmt|;
 name|discoverer
@@ -2354,6 +2387,8 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+name|binaryHelper
 argument_list|)
 expr_stmt|;
 name|discoverer
@@ -2401,6 +2436,8 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+name|binaryHelper
 argument_list|)
 expr_stmt|;
 name|discoverer
@@ -2448,6 +2485,8 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+name|binaryHelper
 argument_list|)
 expr_stmt|;
 name|discoverer
@@ -2495,6 +2534,8 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+name|binaryHelper
 argument_list|)
 expr_stmt|;
 name|discoverer
@@ -2542,6 +2583,8 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+name|binaryHelper
 argument_list|)
 expr_stmt|;
 name|discoverer
@@ -2589,6 +2632,8 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+name|binaryHelper
 argument_list|)
 expr_stmt|;
 name|discoverer
@@ -2639,6 +2684,8 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+name|binaryHelper
 argument_list|)
 expr_stmt|;
 name|plugin
@@ -2701,6 +2748,8 @@ name|testScriptNotCalled
 parameter_list|()
 throws|throws
 name|YarnException
+throws|,
+name|IOException
 block|{
 name|Configuration
 name|conf
@@ -2735,6 +2784,8 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+name|binaryHelper
 argument_list|)
 expr_stmt|;
 name|gpuSpy
