@@ -777,6 +777,17 @@ name|TASK_CONTAINER
 operator|+
 literal|"execution.type"
 decl_stmt|;
+DECL|field|TASK_ALLOCATION_ID
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TASK_ALLOCATION_ID
+init|=
+name|TASK_CONTAINER
+operator|+
+literal|"allocation.id"
+decl_stmt|;
 block|}
 end_class
 

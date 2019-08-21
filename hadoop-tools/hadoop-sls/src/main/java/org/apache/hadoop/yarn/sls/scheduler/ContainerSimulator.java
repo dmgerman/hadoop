@@ -194,6 +194,12 @@ name|ExecutionType
 operator|.
 name|GUARANTEED
 decl_stmt|;
+comment|// allocation id
+DECL|field|allocationId
+specifier|private
+name|long
+name|allocationId
+decl_stmt|;
 comment|/**    * invoked when AM schedules containers to allocate.    */
 DECL|method|ContainerSimulator (Resource resource, long lifeTime, String hostname, int priority, String type)
 specifier|public
@@ -258,6 +264,52 @@ name|executionType
 parameter_list|)
 block|{
 name|this
+argument_list|(
+name|resource
+argument_list|,
+name|lifeTime
+argument_list|,
+name|hostname
+argument_list|,
+name|priority
+argument_list|,
+name|type
+argument_list|,
+name|executionType
+argument_list|,
+operator|-
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * invoked when AM schedules containers to allocate.    */
+DECL|method|ContainerSimulator (Resource resource, long lifeTime, String hostname, int priority, String type, ExecutionType executionType, long allocationId)
+specifier|public
+name|ContainerSimulator
+parameter_list|(
+name|Resource
+name|resource
+parameter_list|,
+name|long
+name|lifeTime
+parameter_list|,
+name|String
+name|hostname
+parameter_list|,
+name|int
+name|priority
+parameter_list|,
+name|String
+name|type
+parameter_list|,
+name|ExecutionType
+name|executionType
+parameter_list|,
+name|long
+name|allocationId
+parameter_list|)
+block|{
+name|this
 operator|.
 name|resource
 operator|=
@@ -292,10 +344,16 @@ operator|.
 name|executionType
 operator|=
 name|executionType
+expr_stmt|;
+name|this
+operator|.
+name|allocationId
+operator|=
+name|allocationId
 expr_stmt|;
 block|}
 comment|/**    * invoke when NM schedules containers to run.    */
-DECL|method|ContainerSimulator (ContainerId id, Resource resource, long endTime, long lifeTime)
+DECL|method|ContainerSimulator (ContainerId id, Resource resource, long endTime, long lifeTime, long allocationId)
 specifier|public
 name|ContainerSimulator
 parameter_list|(
@@ -310,6 +368,9 @@ name|endTime
 parameter_list|,
 name|long
 name|lifeTime
+parameter_list|,
+name|long
+name|allocationId
 parameter_list|)
 block|{
 name|this
@@ -335,6 +396,12 @@ operator|.
 name|lifeTime
 operator|=
 name|lifeTime
+expr_stmt|;
+name|this
+operator|.
+name|allocationId
+operator|=
+name|allocationId
 expr_stmt|;
 block|}
 DECL|method|getResource ()
@@ -511,6 +578,16 @@ parameter_list|()
 block|{
 return|return
 name|executionType
+return|;
+block|}
+DECL|method|getAllocationId ()
+specifier|public
+name|long
+name|getAllocationId
+parameter_list|()
+block|{
+return|return
+name|allocationId
 return|;
 block|}
 block|}
