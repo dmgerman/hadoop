@@ -470,6 +470,18 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|CountDownLatch
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|ExecutorService
 import|;
 end_import
@@ -8542,6 +8554,15 @@ name|logAggregationService
 operator|.
 name|threadPool
 decl_stmt|;
+name|CountDownLatch
+name|latch
+init|=
+operator|new
+name|CountDownLatch
+argument_list|(
+name|threadPoolSize
+argument_list|)
+decl_stmt|;
 comment|// used to block threads in the thread pool because main thread always
 comment|// acquires the write lock first.
 specifier|final
@@ -8593,12 +8614,17 @@ parameter_list|()
 block|{
 try|try
 block|{
+name|latch
+operator|.
+name|countDown
+argument_list|()
+expr_stmt|;
 comment|// threads in the thread pool running this will be blocked
 name|rLock
 operator|.
 name|tryLock
 argument_list|(
-literal|35000
+literal|15000
 argument_list|,
 name|TimeUnit
 operator|.
@@ -8657,6 +8683,11 @@ name|runnable
 argument_list|)
 expr_stmt|;
 block|}
+name|latch
+operator|.
+name|await
+argument_list|()
+expr_stmt|;
 comment|// count the number of current running LogAggregationService threads
 name|int
 name|runningThread
