@@ -1989,6 +1989,11 @@ block|{
 comment|// There's no point in triggering a log roll if the Standby hasn't
 comment|// read any more transactions since the last time a roll was
 comment|// triggered.
+name|boolean
+name|triggeredLogRoll
+init|=
+literal|false
+decl_stmt|;
 if|if
 condition|(
 name|tooLongSinceLastLoad
@@ -2001,6 +2006,10 @@ condition|)
 block|{
 name|triggerActiveLogRoll
 argument_list|()
+expr_stmt|;
+name|triggeredLogRoll
+operator|=
+literal|true
 expr_stmt|;
 block|}
 comment|/**            * Check again in case someone calls {@link EditLogTailer#stop} while            * we're triggering an edit log roll, since ipc.Client catches and            * ignores {@link InterruptedException} in a few places. This fixes            * the bug described in HDFS-2823.            */
@@ -2072,6 +2081,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|//Update NameDirSize Metric
+if|if
+condition|(
+name|triggeredLogRoll
+condition|)
+block|{
 name|namesystem
 operator|.
 name|getFSImage
@@ -2083,6 +2097,7 @@ operator|.
 name|updateNameDirSize
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
