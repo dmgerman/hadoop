@@ -1284,6 +1284,14 @@ name|getTokenRenewInterval
 argument_list|()
 argument_list|)
 decl_stmt|;
+comment|// For HA ratis will take care of updating.
+comment|// This will be removed, when HA/Non-HA code is merged.
+if|if
+condition|(
+operator|!
+name|isRatisEnabled
+condition|)
+block|{
 try|try
 block|{
 name|addToTokenStore
@@ -1320,9 +1328,61 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+block|}
 return|return
 name|renewTime
 return|;
+block|}
+DECL|method|updateRenewToken (Token<OzoneTokenIdentifier> token, OzoneTokenIdentifier ozoneTokenIdentifier, long expiryTime)
+specifier|public
+name|void
+name|updateRenewToken
+parameter_list|(
+name|Token
+argument_list|<
+name|OzoneTokenIdentifier
+argument_list|>
+name|token
+parameter_list|,
+name|OzoneTokenIdentifier
+name|ozoneTokenIdentifier
+parameter_list|,
+name|long
+name|expiryTime
+parameter_list|)
+block|{
+comment|//TODO: Instead of having in-memory map inside this class, we can use
+comment|// cache from table and make this table cache clean up policy NEVER. In
+comment|// this way, we don't need to maintain seperate in-memory map. To do this
+comment|// work we need to merge HA/Non-HA code.
+name|TokenInfo
+name|tokenInfo
+init|=
+operator|new
+name|TokenInfo
+argument_list|(
+name|expiryTime
+argument_list|,
+name|token
+operator|.
+name|getPassword
+argument_list|()
+argument_list|,
+name|ozoneTokenIdentifier
+operator|.
+name|getTrackingId
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|currentTokens
+operator|.
+name|put
+argument_list|(
+name|ozoneTokenIdentifier
+argument_list|,
+name|tokenInfo
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Cancel a token by removing it from store and cache.    *    * @return Identifier of the canceled token    * @throws InvalidToken for invalid token    * @throws AccessControlException if the user isn't allowed to cancel    */
 DECL|method|cancelToken (Token<OzoneTokenIdentifier> token, String canceller)
