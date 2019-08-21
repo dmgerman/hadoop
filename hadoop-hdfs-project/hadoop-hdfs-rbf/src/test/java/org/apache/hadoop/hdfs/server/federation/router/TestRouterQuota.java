@@ -2132,6 +2132,7 @@ comment|// Add two mount tables:
 comment|// /getquota --> ns0---/testdir7
 comment|// /getquota/subdir1 --> ns0---/testdir7/subdir
 comment|// /getquota/subdir2 --> ns1---/testdir8
+comment|// /getquota/subdir3 --> ns1---/testdir8-ext
 name|nnFs1
 operator|.
 name|mkdirs
@@ -2162,6 +2163,17 @@ operator|new
 name|Path
 argument_list|(
 literal|"/testdir8"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|nnFs2
+operator|.
+name|mkdirs
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+literal|"/testdir8-ext"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2261,6 +2273,30 @@ argument_list|(
 name|mountTable3
 argument_list|)
 expr_stmt|;
+name|MountTable
+name|mountTable4
+init|=
+name|MountTable
+operator|.
+name|newInstance
+argument_list|(
+literal|"/getquota/subdir3"
+argument_list|,
+name|Collections
+operator|.
+name|singletonMap
+argument_list|(
+literal|"ns1"
+argument_list|,
+literal|"/testdir8-ext"
+argument_list|)
+argument_list|)
+decl_stmt|;
+name|addMountTable
+argument_list|(
+name|mountTable4
+argument_list|)
+expr_stmt|;
 comment|// use router client to create new files
 name|DFSClient
 name|routerClient
@@ -2299,6 +2335,18 @@ operator|.
 name|create
 argument_list|(
 literal|"/getquota/subdir2/file"
+argument_list|,
+literal|true
+argument_list|)
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+name|routerClient
+operator|.
+name|create
+argument_list|(
+literal|"/getquota/subdir3/file"
 argument_list|,
 literal|true
 argument_list|)
@@ -2347,7 +2395,7 @@ decl_stmt|;
 comment|// the quota should be aggregated
 name|assertEquals
 argument_list|(
-literal|6
+literal|8
 argument_list|,
 name|quota
 operator|.
