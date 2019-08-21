@@ -521,15 +521,6 @@ name|DEFAULT_MAP_SIZE
 init|=
 literal|32768
 decl_stmt|;
-DECL|field|RECONCILE_BLOCKS_BATCH_SIZE
-specifier|private
-specifier|static
-specifier|final
-name|int
-name|RECONCILE_BLOCKS_BATCH_SIZE
-init|=
-literal|1000
-decl_stmt|;
 DECL|field|dataset
 specifier|private
 specifier|final
@@ -1745,23 +1736,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"reconcile start DirectoryScanning"
-argument_list|)
-expr_stmt|;
 name|scan
 argument_list|()
 expr_stmt|;
-comment|// HDFS-14476: run checkAndUpadte with batch to avoid holding the lock too
-comment|// long
-name|int
-name|loopCount
-init|=
-literal|0
-decl_stmt|;
 for|for
 control|(
 specifier|final
@@ -1795,37 +1772,6 @@ operator|.
 name|getValue
 argument_list|()
 argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|loopCount
-operator|%
-name|RECONCILE_BLOCKS_BATCH_SIZE
-operator|==
-literal|0
-condition|)
-block|{
-try|try
-block|{
-name|Thread
-operator|.
-name|sleep
-argument_list|(
-literal|2000
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|e
-parameter_list|)
-block|{
-comment|// do nothing
-block|}
-block|}
-name|loopCount
-operator|++
 expr_stmt|;
 block|}
 if|if
