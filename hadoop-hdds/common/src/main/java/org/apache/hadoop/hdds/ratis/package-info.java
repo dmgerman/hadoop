@@ -4,11 +4,15 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.ratis
+DECL|package|org.apache.hadoop.hdds.ratis
 package|package
 name|org
 operator|.
 name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
 operator|.
 name|ratis
 package|;

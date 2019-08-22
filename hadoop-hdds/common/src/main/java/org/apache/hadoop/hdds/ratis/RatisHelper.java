@@ -4,11 +4,15 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.ratis
+DECL|package|org.apache.hadoop.hdds.ratis
 package|package
 name|org
 operator|.
 name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
 operator|.
 name|ratis
 package|;
@@ -199,6 +203,18 @@ operator|.
 name|ozone
 operator|.
 name|OzoneConsts
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|ratis
+operator|.
+name|RaftConfigKeys
 import|;
 end_import
 

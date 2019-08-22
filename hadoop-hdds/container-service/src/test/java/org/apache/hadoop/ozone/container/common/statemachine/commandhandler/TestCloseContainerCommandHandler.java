@@ -300,6 +300,10 @@ name|org
 operator|.
 name|apache
 operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|ratis
 operator|.
 name|RatisHelper
