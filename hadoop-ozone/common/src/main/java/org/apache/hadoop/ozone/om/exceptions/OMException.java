@@ -359,8 +359,13 @@ block|,
 comment|// Error in Ratis server
 DECL|enumConstant|INVALID_PATH_IN_ACL_REQUEST
 name|INVALID_PATH_IN_ACL_REQUEST
+block|,
 comment|// Error code when path name is invalid during
 comment|// acl requests.
+DECL|enumConstant|USER_MISMATCH
+name|USER_MISMATCH
+comment|// Error code when requested user name passed is different
+comment|// from remote user.
 block|}
 block|}
 end_class

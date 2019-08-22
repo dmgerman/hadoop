@@ -151,6 +151,9 @@ name|LOOKUP_FILE
 block|,
 DECL|enumConstant|LIST_STATUS
 name|LIST_STATUS
+block|,
+DECL|enumConstant|GET_S3_SECRET
+name|GET_S3_SECRET
 block|;
 annotation|@
 name|Override

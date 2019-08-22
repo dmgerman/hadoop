@@ -14252,6 +14252,56 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|UserGroupInformation
+name|user
+init|=
+name|ProtobufRpcEngine
+operator|.
+name|Server
+operator|.
+name|getRemoteUser
+argument_list|()
+decl_stmt|;
+comment|// Check whether user name passed is matching with the current user or not.
+if|if
+condition|(
+operator|!
+name|user
+operator|.
+name|getUserName
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|kerberosID
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|OMException
+argument_list|(
+literal|"User mismatch. Requested user name is "
+operator|+
+literal|"mismatched "
+operator|+
+name|kerberosID
+operator|+
+literal|", with current user "
+operator|+
+name|user
+operator|.
+name|getUserName
+argument_list|()
+argument_list|,
+name|OMException
+operator|.
+name|ResultCodes
+operator|.
+name|USER_MISMATCH
+argument_list|)
+throw|;
+block|}
 return|return
 name|s3SecretManager
 operator|.

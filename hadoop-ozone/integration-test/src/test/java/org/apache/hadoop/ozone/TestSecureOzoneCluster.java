@@ -1232,6 +1232,18 @@ begin_import
 import|import static
 name|org
 operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|slf4j
 operator|.
 name|event
@@ -4155,7 +4167,13 @@ name|omClient
 operator|.
 name|getS3Secret
 argument_list|(
-literal|"HADOOP/JOHNDOE"
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+operator|.
+name|getUserName
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|//Fetches the secret from db since it was created in previous step
@@ -4166,7 +4184,13 @@ name|omClient
 operator|.
 name|getS3Secret
 argument_list|(
-literal|"HADOOP/JOHNDOE"
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+operator|.
+name|getUserName
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|//secret fetched on both attempts must be same
@@ -4203,6 +4227,37 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+try|try
+block|{
+name|omClient
+operator|.
+name|getS3Secret
+argument_list|(
+literal|"HADOOP/JOHNDOE"
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"testGetS3Secret failed"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ex
+parameter_list|)
+block|{
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
+literal|"USER_MISMATCH"
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 finally|finally
 block|{

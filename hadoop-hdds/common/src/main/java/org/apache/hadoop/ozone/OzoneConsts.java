@@ -1378,6 +1378,15 @@ name|S3_BUCKET
 init|=
 literal|"s3Bucket"
 decl_stmt|;
+DECL|field|S3_GETSECRET_USER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|S3_GETSECRET_USER
+init|=
+literal|"S3GetSecretUser"
+decl_stmt|;
 comment|// For OM metrics saving to a file
 DECL|field|OM_METRICS_FILE
 specifier|public
