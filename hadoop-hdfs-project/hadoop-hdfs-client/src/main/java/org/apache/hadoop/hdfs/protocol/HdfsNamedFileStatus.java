@@ -368,6 +368,12 @@ return|return
 name|uSymlink
 operator|!=
 literal|null
+operator|&&
+name|uSymlink
+operator|.
+name|length
+operator|>
+literal|0
 return|;
 block|}
 annotation|@
