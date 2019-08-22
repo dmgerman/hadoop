@@ -667,7 +667,7 @@ specifier|final
 name|long
 name|DFS_DATANODE_BALANCE_BANDWIDTHPERSEC_DEFAULT
 init|=
-literal|10
+literal|100
 operator|*
 literal|1024
 operator|*
@@ -689,7 +689,7 @@ name|int
 DECL|field|DFS_DATANODE_BALANCE_MAX_NUM_CONCURRENT_MOVES_DEFAULT
 name|DFS_DATANODE_BALANCE_MAX_NUM_CONCURRENT_MOVES_DEFAULT
 init|=
-literal|50
+literal|100
 decl_stmt|;
 annotation|@
 name|Deprecated
