@@ -2751,9 +2751,7 @@ name|Boolean
 operator|.
 name|class
 argument_list|,
-name|Boolean
-operator|.
-name|TRUE
+literal|null
 argument_list|)
 decl_stmt|;
 end_decl_stmt
