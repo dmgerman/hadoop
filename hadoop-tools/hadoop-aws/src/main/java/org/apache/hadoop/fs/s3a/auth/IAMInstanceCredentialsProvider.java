@@ -82,7 +82,7 @@ name|amazonaws
 operator|.
 name|auth
 operator|.
-name|InstanceProfileCredentialsProvider
+name|EC2ContainerCredentialsProviderWrapper
 import|;
 end_import
 
@@ -115,18 +115,18 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This is going to be an IAM credential provider which performs  * async refresh for lower-latency on IO calls.  * Initially it does not do this, simply shares the single IAM instance  * across all instances. This makes it less expensive to declare.  *  */
+comment|/**  * This is an IAM credential provider which wraps  * an {@code EC2ContainerCredentialsProviderWrapper}  * to provide credentials when the S3A connector is instantiated on AWS EC2  * or the AWS container services.  *<p>  * When it fails to authenticate, it raises a  * {@link NoAwsCredentialsException} which can be recognized by retry handlers  * as a non-recoverable failure.  *<p>  * It is implicitly public; marked evolving as we can change its semantics.  */
 end_comment
 
 begin_class
 annotation|@
 name|InterfaceAudience
 operator|.
-name|Private
+name|Public
 annotation|@
 name|InterfaceStability
 operator|.
-name|Unstable
+name|Evolving
 DECL|class|IAMInstanceCredentialsProvider
 specifier|public
 class|class
@@ -136,16 +136,14 @@ name|AWSCredentialsProvider
 implements|,
 name|Closeable
 block|{
-DECL|field|INSTANCE
+DECL|field|provider
 specifier|private
-specifier|static
 specifier|final
-name|InstanceProfileCredentialsProvider
-name|INSTANCE
+name|AWSCredentialsProvider
+name|provider
 init|=
-name|InstanceProfileCredentialsProvider
-operator|.
-name|getInstance
+operator|new
+name|EC2ContainerCredentialsProviderWrapper
 argument_list|()
 decl_stmt|;
 DECL|method|IAMInstanceCredentialsProvider ()
@@ -153,7 +151,7 @@ specifier|public
 name|IAMInstanceCredentialsProvider
 parameter_list|()
 block|{   }
-comment|/**    * Ask for the credentials.    * as it invariably means "you aren't running on EC2"    * @return the credentials    */
+comment|/**    * Ask for the credentials.    * Failure invariably means "you aren't running in an EC2 VM or AWS container".    * @return the credentials    * @throws NoAwsCredentialsException on auth failure to indicate non-recoverable.    */
 annotation|@
 name|Override
 DECL|method|getCredentials ()
@@ -165,7 +163,7 @@ block|{
 try|try
 block|{
 return|return
-name|INSTANCE
+name|provider
 operator|.
 name|getCredentials
 argument_list|()
@@ -201,7 +199,7 @@ name|void
 name|refresh
 parameter_list|()
 block|{
-name|INSTANCE
+name|provider
 operator|.
 name|refresh
 argument_list|()
@@ -217,7 +215,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-comment|// until async, no-op.
+comment|// no-op.
 block|}
 block|}
 end_class
