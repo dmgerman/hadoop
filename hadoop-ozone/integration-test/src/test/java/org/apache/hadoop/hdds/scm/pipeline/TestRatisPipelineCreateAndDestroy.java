@@ -235,10 +235,10 @@ comment|/**  * Tests for RatisPipelineUtils.  */
 end_comment
 
 begin_class
-DECL|class|TestRatisPipelineCreateAndDestory
+DECL|class|TestRatisPipelineCreateAndDestroy
 specifier|public
 class|class
-name|TestRatisPipelineCreateAndDestory
+name|TestRatisPipelineCreateAndDestroy
 block|{
 DECL|field|cluster
 specifier|private
@@ -353,7 +353,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|30000
+literal|180000
 argument_list|)
 DECL|method|testAutomaticPipelineCreationOnPipelineDestroy ()
 specifier|public
@@ -433,7 +433,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|30000
+literal|180000
 argument_list|)
 DECL|method|testPipelineCreationOnNodeRestart ()
 specifier|public
