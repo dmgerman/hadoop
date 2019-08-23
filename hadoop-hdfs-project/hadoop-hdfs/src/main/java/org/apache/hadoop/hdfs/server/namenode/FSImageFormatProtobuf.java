@@ -4364,6 +4364,17 @@ operator|.
 name|getDigester
 argument_list|()
 decl_stmt|;
+name|int
+name|layoutVersion
+init|=
+name|context
+operator|.
+name|getSourceNamesystem
+argument_list|()
+operator|.
+name|getEffectiveLayoutVersion
+argument_list|()
+decl_stmt|;
 name|underlyingOutputStream
 operator|=
 operator|new
@@ -4479,10 +4490,28 @@ operator|.
 name|checkCancelled
 argument_list|()
 expr_stmt|;
-comment|// Erasure coding policies should be saved before inodes
 name|Step
 name|step
-init|=
+decl_stmt|;
+comment|// Erasure coding policies should be saved before inodes
+if|if
+condition|(
+name|NameNodeLayoutVersion
+operator|.
+name|supports
+argument_list|(
+name|NameNodeLayoutVersion
+operator|.
+name|Feature
+operator|.
+name|ERASURE_CODING
+argument_list|,
+name|layoutVersion
+argument_list|)
+condition|)
+block|{
+name|step
+operator|=
 operator|new
 name|Step
 argument_list|(
@@ -4492,7 +4521,7 @@ name|ERASURE_CODING_POLICIES
 argument_list|,
 name|filePath
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|prog
 operator|.
 name|beginStep
@@ -4520,6 +4549,7 @@ argument_list|,
 name|step
 argument_list|)
 expr_stmt|;
+block|}
 name|step
 operator|=
 operator|new
