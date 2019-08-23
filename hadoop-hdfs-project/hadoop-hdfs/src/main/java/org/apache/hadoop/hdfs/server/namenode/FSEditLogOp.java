@@ -2653,6 +2653,26 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+DECL|method|writeFields (DataOutputStream out, int logVersion)
+specifier|public
+name|void
+name|writeFields
+parameter_list|(
+name|DataOutputStream
+name|out
+parameter_list|,
+name|int
+name|logVersion
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|writeFields
+argument_list|(
+name|out
+argument_list|)
+expr_stmt|;
+block|}
 DECL|interface|BlockListUpdatingOp
 specifier|static
 interface|interface
@@ -4086,6 +4106,30 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Unsupported without logversion"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|writeFields (DataOutputStream out, int logVersion)
+specifier|public
+name|void
+name|writeFields
+parameter_list|(
+name|DataOutputStream
+name|out
+parameter_list|,
+name|int
+name|logVersion
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|FSImageSerialization
 operator|.
 name|writeLong
@@ -4248,6 +4292,22 @@ argument_list|,
 name|out
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|NameNodeLayoutVersion
+operator|.
+name|supports
+argument_list|(
+name|NameNodeLayoutVersion
+operator|.
+name|Feature
+operator|.
+name|ERASURE_CODING
+argument_list|,
+name|logVersion
+argument_list|)
+condition|)
+block|{
 name|FSImageSerialization
 operator|.
 name|writeByte
@@ -4257,6 +4317,7 @@ argument_list|,
 name|out
 argument_list|)
 expr_stmt|;
+block|}
 comment|// write clientId and callId
 name|writeRpcIds
 argument_list|(
@@ -25162,14 +25223,17 @@ name|newCrc32
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**      * Write an operation to the output stream      *       * @param op The operation to write      * @throws IOException if an error occurs during writing.      */
-DECL|method|writeOp (FSEditLogOp op)
+comment|/**      * Write an operation to the output stream      *       * @param op The operation to write      * @param logVersion The version of edit log      * @throws IOException if an error occurs during writing.      */
+DECL|method|writeOp (FSEditLogOp op, int logVersion)
 specifier|public
 name|void
 name|writeOp
 parameter_list|(
 name|FSEditLogOp
 name|op
+parameter_list|,
+name|int
+name|logVersion
 parameter_list|)
 throws|throws
 name|IOException
@@ -25218,6 +25282,8 @@ operator|.
 name|writeFields
 argument_list|(
 name|buf
+argument_list|,
+name|logVersion
 argument_list|)
 expr_stmt|;
 name|int

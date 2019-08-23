@@ -459,6 +459,9 @@ operator|.
 name|writeOp
 argument_list|(
 name|op
+argument_list|,
+name|getCurrentLogVersion
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -538,6 +541,11 @@ argument_list|()
 expr_stmt|;
 name|flush
 argument_list|()
+expr_stmt|;
+name|setCurrentLogVersion
+argument_list|(
+name|layoutVersion
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Write header information for this EditLogFileOutputStream to the provided    * DataOutputSream.    *     * @param layoutVersion the LayoutVersion of the EditLog    * @param out the output stream to write the header to.    * @throws IOException in the event of error writing to the stream.    */

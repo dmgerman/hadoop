@@ -118,6 +118,12 @@ name|long
 name|totalTimeSync
 decl_stmt|;
 comment|// total time to sync
+comment|// The version of the current edit log
+DECL|field|currentLogVersion
+specifier|private
+name|int
+name|currentLogVersion
+decl_stmt|;
 DECL|method|EditLogOutputStream ()
 specifier|public
 name|EditLogOutputStream
@@ -321,6 +327,34 @@ return|return
 name|toString
 argument_list|()
 return|;
+block|}
+comment|/**    * @return The version of the current edit log    */
+DECL|method|getCurrentLogVersion ()
+specifier|public
+name|int
+name|getCurrentLogVersion
+parameter_list|()
+block|{
+return|return
+name|currentLogVersion
+return|;
+block|}
+comment|/**    * @param logVersion The version of the current edit log    */
+DECL|method|setCurrentLogVersion (int logVersion)
+specifier|public
+name|void
+name|setCurrentLogVersion
+parameter_list|(
+name|int
+name|logVersion
+parameter_list|)
+block|{
+name|this
+operator|.
+name|currentLogVersion
+operator|=
+name|logVersion
+expr_stmt|;
 block|}
 block|}
 end_class

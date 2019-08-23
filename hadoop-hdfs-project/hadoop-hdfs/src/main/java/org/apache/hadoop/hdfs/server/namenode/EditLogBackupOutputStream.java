@@ -294,7 +294,7 @@ specifier|private
 name|EditsDoubleBuffer
 name|doubleBuf
 decl_stmt|;
-DECL|method|EditLogBackupOutputStream (NamenodeRegistration bnReg, JournalInfo journalInfo)
+DECL|method|EditLogBackupOutputStream (NamenodeRegistration bnReg, JournalInfo journalInfo, int logVersion)
 name|EditLogBackupOutputStream
 parameter_list|(
 name|NamenodeRegistration
@@ -303,6 +303,9 @@ parameter_list|,
 comment|// backup node
 name|JournalInfo
 name|journalInfo
+parameter_list|,
+name|int
+name|logVersion
 parameter_list|)
 comment|// active name-node
 throws|throws
@@ -411,6 +414,11 @@ argument_list|(
 name|DEFAULT_BUFFER_SIZE
 argument_list|)
 expr_stmt|;
+name|setCurrentLogVersion
+argument_list|(
+name|logVersion
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -431,6 +439,9 @@ operator|.
 name|writeOp
 argument_list|(
 name|op
+argument_list|,
+name|getCurrentLogVersion
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -493,6 +504,11 @@ operator|new
 name|EditsDoubleBuffer
 argument_list|(
 name|DEFAULT_BUFFER_SIZE
+argument_list|)
+expr_stmt|;
+name|setCurrentLogVersion
+argument_list|(
+name|layoutVersion
 argument_list|)
 expr_stmt|;
 block|}

@@ -277,13 +277,16 @@ name|initBufferSize
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|writeOp (FSEditLogOp op)
+DECL|method|writeOp (FSEditLogOp op, int logVersion)
 specifier|public
 name|void
 name|writeOp
 parameter_list|(
 name|FSEditLogOp
 name|op
+parameter_list|,
+name|int
+name|logVersion
 parameter_list|)
 throws|throws
 name|IOException
@@ -293,6 +296,8 @@ operator|.
 name|writeOp
 argument_list|(
 name|op
+argument_list|,
+name|logVersion
 argument_list|)
 expr_stmt|;
 block|}
@@ -613,13 +618,16 @@ name|reset
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|writeOp (FSEditLogOp op)
+DECL|method|writeOp (FSEditLogOp op, int logVersion)
 specifier|public
 name|void
 name|writeOp
 parameter_list|(
 name|FSEditLogOp
 name|op
+parameter_list|,
+name|int
+name|logVersion
 parameter_list|)
 throws|throws
 name|IOException
@@ -655,6 +663,8 @@ operator|.
 name|writeOp
 argument_list|(
 name|op
+argument_list|,
+name|logVersion
 argument_list|)
 expr_stmt|;
 name|numTxns

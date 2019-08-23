@@ -1758,8 +1758,9 @@ name|journalSet
 init|=
 literal|null
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
 DECL|field|editLogStream
-specifier|private
 name|EditLogOutputStream
 name|editLogStream
 init|=

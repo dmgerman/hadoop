@@ -132,7 +132,7 @@ specifier|final
 name|int
 name|writeTimeoutMs
 decl_stmt|;
-DECL|method|QuorumOutputStream (AsyncLoggerSet loggers, long txId, int outputBufferCapacity, int writeTimeoutMs)
+DECL|method|QuorumOutputStream (AsyncLoggerSet loggers, long txId, int outputBufferCapacity, int writeTimeoutMs, int logVersion)
 specifier|public
 name|QuorumOutputStream
 parameter_list|(
@@ -147,6 +147,9 @@ name|outputBufferCapacity
 parameter_list|,
 name|int
 name|writeTimeoutMs
+parameter_list|,
+name|int
+name|logVersion
 parameter_list|)
 throws|throws
 name|IOException
@@ -182,6 +185,11 @@ name|writeTimeoutMs
 operator|=
 name|writeTimeoutMs
 expr_stmt|;
+name|setCurrentLogVersion
+argument_list|(
+name|logVersion
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -201,6 +209,9 @@ operator|.
 name|writeOp
 argument_list|(
 name|op
+argument_list|,
+name|getCurrentLogVersion
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

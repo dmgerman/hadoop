@@ -460,6 +460,11 @@ operator|.
 name|writeOp
 argument_list|(
 name|op
+argument_list|,
+name|FAKE_NSINFO
+operator|.
+name|getLayoutVersion
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -555,6 +560,11 @@ operator|.
 name|writeOp
 argument_list|(
 name|op
+argument_list|,
+name|FAKE_NSINFO
+operator|.
+name|getLayoutVersion
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

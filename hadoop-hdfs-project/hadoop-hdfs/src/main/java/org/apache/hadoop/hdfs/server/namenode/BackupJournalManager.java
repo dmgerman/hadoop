@@ -254,6 +254,8 @@ argument_list|(
 name|bnReg
 argument_list|,
 name|journalInfo
+argument_list|,
+name|layoutVersion
 argument_list|)
 decl_stmt|;
 name|stm

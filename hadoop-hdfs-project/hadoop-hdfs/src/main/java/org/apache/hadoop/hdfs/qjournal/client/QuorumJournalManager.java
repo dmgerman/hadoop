@@ -2367,6 +2367,8 @@ argument_list|,
 name|outputBufferCapacity
 argument_list|,
 name|writeTxnsTimeoutMs
+argument_list|,
+name|layoutVersion
 argument_list|)
 return|;
 block|}
