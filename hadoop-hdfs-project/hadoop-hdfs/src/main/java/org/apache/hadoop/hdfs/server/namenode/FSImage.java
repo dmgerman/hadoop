@@ -4954,6 +4954,8 @@ operator|.
 name|Saver
 argument_list|(
 name|context
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 name|FSImageCompression
