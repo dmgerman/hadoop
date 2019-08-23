@@ -655,7 +655,7 @@ name|leaderSnapshotIndex
 init|=
 name|ozoneManager
 operator|.
-name|loadRatisSnapshotIndex
+name|getRatisSnapshotIndex
 argument_list|()
 decl_stmt|;
 name|long

@@ -1076,7 +1076,16 @@ name|nodeIdBaseStr
 operator|+
 name|i
 decl_stmt|;
+name|OzoneConfiguration
+name|config
+init|=
+operator|new
+name|OzoneConfiguration
+argument_list|(
 name|conf
+argument_list|)
+decl_stmt|;
+name|config
 operator|.
 name|set
 argument_list|(
@@ -1089,7 +1098,7 @@ argument_list|)
 expr_stmt|;
 comment|// Set the OM http(s) address to null so that the cluster picks
 comment|// up the address set with service ID and node ID in initHAConfig
-name|conf
+name|config
 operator|.
 name|set
 argument_list|(
@@ -1100,7 +1109,7 @@ argument_list|,
 literal|""
 argument_list|)
 expr_stmt|;
-name|conf
+name|config
 operator|.
 name|set
 argument_list|(
@@ -1121,7 +1130,7 @@ literal|"/"
 operator|+
 name|nodeId
 decl_stmt|;
-name|conf
+name|config
 operator|.
 name|set
 argument_list|(
@@ -1136,7 +1145,7 @@ init|=
 operator|new
 name|OMStorage
 argument_list|(
-name|conf
+name|config
 argument_list|)
 decl_stmt|;
 name|initializeOmStorage
@@ -1151,7 +1160,7 @@ name|OzoneManager
 operator|.
 name|createOm
 argument_list|(
-name|conf
+name|config
 argument_list|)
 decl_stmt|;
 name|om

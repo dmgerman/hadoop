@@ -759,14 +759,6 @@ operator|.
 name|getStateMachineLastAppliedIndex
 argument_list|()
 decl_stmt|;
-name|leaderOM
-operator|.
-name|getOmRatisServer
-argument_list|()
-operator|.
-name|getStateMachineLastAppliedIndex
-argument_list|()
-expr_stmt|;
 name|List
 argument_list|<
 name|String
@@ -810,9 +802,7 @@ init|=
 name|leaderOM
 operator|.
 name|saveRatisSnapshot
-argument_list|(
-literal|true
-argument_list|)
+argument_list|()
 decl_stmt|;
 name|DBCheckpoint
 name|leaderDbCheckpoint

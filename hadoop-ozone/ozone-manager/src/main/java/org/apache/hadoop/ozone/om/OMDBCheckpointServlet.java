@@ -645,9 +645,7 @@ operator|=
 name|om
 operator|.
 name|saveRatisSnapshot
-argument_list|(
-literal|true
-argument_list|)
+argument_list|()
 expr_stmt|;
 block|}
 else|else
@@ -656,7 +654,7 @@ name|ratisSnapshotIndex
 operator|=
 name|om
 operator|.
-name|loadRatisSnapshotIndex
+name|getRatisSnapshotIndex
 argument_list|()
 expr_stmt|;
 block|}

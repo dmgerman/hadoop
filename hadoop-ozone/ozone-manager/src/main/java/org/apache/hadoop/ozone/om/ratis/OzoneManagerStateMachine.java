@@ -154,30 +154,6 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|transport
-operator|.
-name|server
-operator|.
-name|ratis
-operator|.
-name|ContainerStateMachine
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
 name|om
 operator|.
 name|OzoneManager
@@ -434,6 +410,20 @@ name|ratis
 operator|.
 name|statemachine
 operator|.
+name|SnapshotInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|ratis
+operator|.
+name|statemachine
+operator|.
 name|TransactionContext
 import|;
 end_import
@@ -546,7 +536,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|ContainerStateMachine
+name|OzoneManagerStateMachine
 operator|.
 name|class
 argument_list|)
@@ -587,13 +577,17 @@ DECL|field|lastAppliedIndex
 specifier|private
 name|long
 name|lastAppliedIndex
-init|=
-literal|0
 decl_stmt|;
 DECL|field|ozoneManagerDoubleBuffer
 specifier|private
 name|OzoneManagerDoubleBuffer
 name|ozoneManagerDoubleBuffer
+decl_stmt|;
+DECL|field|snapshotInfo
+specifier|private
+specifier|final
+name|OMRatisSnapshotInfo
+name|snapshotInfo
 decl_stmt|;
 DECL|field|executorService
 specifier|private
@@ -628,6 +622,18 @@ operator|=
 name|omRatisServer
 operator|.
 name|getOzoneManager
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|snapshotInfo
+operator|=
+name|ozoneManager
+operator|.
+name|getSnapshotInfo
+argument_list|()
+expr_stmt|;
+name|updateLastAppliedIndexWithSnaphsotIndex
 argument_list|()
 expr_stmt|;
 name|this
@@ -752,6 +758,46 @@ name|raftStorage
 argument_list|)
 expr_stmt|;
 block|}
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getLatestSnapshot ()
+specifier|public
+name|SnapshotInfo
+name|getLatestSnapshot
+parameter_list|()
+block|{
+return|return
+name|snapshotInfo
+return|;
+block|}
+comment|/**    * Called to notify state machine about indexes which are processed    * internally by Raft Server, this currently happens when conf entries are    * processed in raft Server. This keep state machine to keep a track of index    * updates.    * @param term term of the current log entry    * @param index index which is being updated    */
+annotation|@
+name|Override
+DECL|method|notifyIndexUpdate (long term, long index)
+specifier|public
+name|void
+name|notifyIndexUpdate
+parameter_list|(
+name|long
+name|term
+parameter_list|,
+name|long
+name|index
+parameter_list|)
+block|{
+comment|// SnapshotInfo should be updated when the term changes.
+comment|// The index here refers to the log entry index and the index in
+comment|// SnapshotInfo represents the snapshotIndex i.e. the index of the last
+comment|// transaction included in the snapshot. Hence, snaphsotInfo#index is not
+comment|// updated here.
+name|snapshotInfo
+operator|.
+name|updateTerm
+argument_list|(
+name|term
 argument_list|)
 expr_stmt|;
 block|}
@@ -1145,9 +1191,7 @@ return|return
 name|ozoneManager
 operator|.
 name|saveRatisSnapshot
-argument_list|(
-literal|true
-argument_list|)
+argument_list|()
 return|;
 block|}
 return|return
@@ -1414,6 +1458,22 @@ operator|.
 name|lastAppliedIndex
 operator|=
 name|lastAppliedIndex
+expr_stmt|;
+block|}
+DECL|method|updateLastAppliedIndexWithSnaphsotIndex ()
+specifier|public
+name|void
+name|updateLastAppliedIndexWithSnaphsotIndex
+parameter_list|()
+block|{
+name|this
+operator|.
+name|lastAppliedIndex
+operator|=
+name|snapshotInfo
+operator|.
+name|getIndex
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Submits read request to OM and returns the response Message.    * @param request OMRequest    * @return response from OM    * @throws ServiceException    */
