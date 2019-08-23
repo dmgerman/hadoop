@@ -4513,6 +4513,11 @@ name|prevLastAppliedTxId
 init|=
 name|lastAppliedTxId
 decl_stmt|;
+name|long
+name|remainingReadTxns
+init|=
+name|maxTxnsToRead
+decl_stmt|;
 try|try
 block|{
 name|FSEditLogLoader
@@ -4604,6 +4609,8 @@ expr_stmt|;
 block|}
 try|try
 block|{
+name|remainingReadTxns
+operator|-=
 name|loader
 operator|.
 name|loadFSEdits
@@ -4614,7 +4621,7 @@ name|lastAppliedTxId
 operator|+
 literal|1
 argument_list|,
-name|maxTxnsToRead
+name|remainingReadTxns
 argument_list|,
 name|startOpt
 argument_list|,
@@ -4658,6 +4665,15 @@ operator|.
 name|getLastTxId
 argument_list|()
 expr_stmt|;
+block|}
+if|if
+condition|(
+name|remainingReadTxns
+operator|<=
+literal|0
+condition|)
+block|{
+break|break;
 block|}
 block|}
 block|}
