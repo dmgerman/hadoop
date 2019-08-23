@@ -22,6 +22,16 @@ begin_import
 import|import
 name|javax
 operator|.
+name|annotation
+operator|.
+name|Priority
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
 name|ws
 operator|.
 name|rs
@@ -82,6 +92,20 @@ name|ws
 operator|.
 name|rs
 operator|.
+name|core
+operator|.
+name|MultivaluedMap
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|ws
+operator|.
+name|rs
+operator|.
 name|ext
 operator|.
 name|Provider
@@ -99,7 +123,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Filter to adjust request headers for compatible reasons.  */
+comment|/**  * Filter to adjust request headers for compatible reasons.  *  * It should be executed AFTER signature check (VirtualHostStyleFilter) as the  * original Content-Type could be part of the base of the signature.  */
 end_comment
 
 begin_class
@@ -107,6 +131,17 @@ annotation|@
 name|Provider
 annotation|@
 name|PreMatching
+annotation|@
+name|Priority
+argument_list|(
+name|VirtualHostStyleFilter
+operator|.
+name|PRIORITY
+operator|+
+name|S3GatewayHttpServer
+operator|.
+name|FILTER_PRIORITY_DO_AFTER
+argument_list|)
 DECL|class|HeaderPreprocessor
 specifier|public
 class|class
@@ -114,6 +149,15 @@ name|HeaderPreprocessor
 implements|implements
 name|ContainerRequestFilter
 block|{
+DECL|field|MULTIPART_UPLOAD_MARKER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MULTIPART_UPLOAD_MARKER
+init|=
+literal|"ozone/mpu"
+decl_stmt|;
 annotation|@
 name|Override
 DECL|method|filter (ContainerRequestContext requestContext)
@@ -127,8 +171,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
+name|MultivaluedMap
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|queryParameters
+init|=
 name|requestContext
 operator|.
 name|getUriInfo
@@ -136,6 +186,10 @@ argument_list|()
 operator|.
 name|getQueryParameters
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|queryParameters
 operator|.
 name|containsKey
 argument_list|(
@@ -162,13 +216,7 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|requestContext
-operator|.
-name|getUriInfo
-argument_list|()
-operator|.
-name|getQueryParameters
-argument_list|()
+name|queryParameters
 operator|.
 name|containsKey
 argument_list|(
@@ -190,6 +238,38 @@ argument_list|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|queryParameters
+operator|.
+name|containsKey
+argument_list|(
+literal|"uploads"
+argument_list|)
+condition|)
+block|{
+comment|// uploads defined but uploadId is not --> this is the creation of the
+comment|// multi-part-upload requests.
+comment|//
+comment|//In  AWS SDK for go uses application/octet-stream which also
+comment|//should be fixed to route the request to the right jaxrs method.
+comment|//
+comment|//Should be empty instead of XML as the body is empty which can not be
+comment|//serialized as as CompleteMultipartUploadRequest
+name|requestContext
+operator|.
+name|getHeaders
+argument_list|()
+operator|.
+name|putSingle
+argument_list|(
+literal|"Content-Type"
+argument_list|,
+name|MULTIPART_UPLOAD_MARKER
 argument_list|)
 expr_stmt|;
 block|}

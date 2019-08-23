@@ -70,6 +70,16 @@ name|S3GatewayHttpServer
 extends|extends
 name|BaseHttpServer
 block|{
+comment|/**    * Default offset between two filters.    */
+DECL|field|FILTER_PRIORITY_DO_AFTER
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|FILTER_PRIORITY_DO_AFTER
+init|=
+literal|50
+decl_stmt|;
 DECL|method|S3GatewayHttpServer (Configuration conf, String name)
 specifier|public
 name|S3GatewayHttpServer
