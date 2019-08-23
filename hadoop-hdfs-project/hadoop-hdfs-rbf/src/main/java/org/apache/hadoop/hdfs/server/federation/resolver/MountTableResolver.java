@@ -1443,6 +1443,14 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
+name|String
+name|key
+init|=
+name|entry
+operator|.
+name|getKey
+argument_list|()
+decl_stmt|;
 name|PathLocation
 name|loc
 init|=
@@ -1470,7 +1478,7 @@ if|if
 condition|(
 name|isParentEntry
 argument_list|(
-name|src
+name|key
 argument_list|,
 name|path
 argument_list|)
