@@ -1636,6 +1636,11 @@ operator|new
 name|Object
 argument_list|()
 decl_stmt|;
+DECL|field|releaseCache
+specifier|private
+name|Timer
+name|releaseCache
+decl_stmt|;
 comment|/*    * All schedulers which are inheriting AbstractYarnScheduler should use    * concurrent version of 'applications' map.    */
 DECL|field|applications
 specifier|protected
@@ -1854,8 +1859,15 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|createReleaseCache
-argument_list|()
+name|this
+operator|.
+name|releaseCache
+operator|=
+operator|new
+name|Timer
+argument_list|(
+literal|"Pending Container Clear Timer"
+argument_list|)
 expr_stmt|;
 name|autoUpdateContainers
 operator|=
@@ -1947,6 +1959,9 @@ operator|.
 name|startAll
 argument_list|()
 expr_stmt|;
+name|createReleaseCache
+argument_list|()
+expr_stmt|;
 name|super
 operator|.
 name|serviceStart
@@ -1981,6 +1996,24 @@ name|join
 argument_list|(
 name|THREAD_JOIN_TIMEOUT_MS
 argument_list|)
+expr_stmt|;
+block|}
+comment|//Stop Timer
+if|if
+condition|(
+name|releaseCache
+operator|!=
+literal|null
+condition|)
+block|{
+name|releaseCache
+operator|.
+name|cancel
+argument_list|()
+expr_stmt|;
+name|releaseCache
+operator|=
+literal|null
 expr_stmt|;
 block|}
 name|schedulingMonitorManager
@@ -3750,9 +3783,7 @@ name|createReleaseCache
 parameter_list|()
 block|{
 comment|// Cleanup the cache after nm expire interval.
-operator|new
-name|Timer
-argument_list|()
+name|releaseCache
 operator|.
 name|schedule
 argument_list|(
