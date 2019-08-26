@@ -1199,7 +1199,9 @@ name|c
 init|=
 operator|new
 name|Configuration
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 decl_stmt|;
 for|for
 control|(

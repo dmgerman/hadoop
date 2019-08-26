@@ -782,6 +782,21 @@ literal|"key"
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|assertNull
+argument_list|(
+name|confStore
+operator|.
+name|retrieve
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_HOSTNAME
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// Create a new configuration store, and check for old configuration
 name|confStore
 operator|=
