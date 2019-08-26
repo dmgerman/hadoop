@@ -134,6 +134,34 @@ begin_import
 import|import
 name|java
 operator|.
+name|nio
+operator|.
+name|file
+operator|.
+name|attribute
+operator|.
+name|PosixFilePermission
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|file
+operator|.
+name|attribute
+operator|.
+name|PosixFilePermissions
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -177,6 +205,16 @@ operator|.
 name|util
 operator|.
 name|Properties
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
 import|;
 end_import
 
@@ -259,6 +297,22 @@ operator|.
 name|fs
 operator|.
 name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|permission
+operator|.
+name|FsPermission
 import|;
 end_import
 
@@ -1281,6 +1335,12 @@ name|FileLock
 name|lock
 decl_stmt|;
 comment|// storage lock
+DECL|field|permission
+specifier|private
+specifier|final
+name|FsPermission
+name|permission
+decl_stmt|;
 DECL|field|storageUuid
 specifier|private
 name|String
@@ -1405,6 +1465,37 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|StorageDirectory (File dir, StorageDirType dirType, boolean isShared, FsPermission permission)
+specifier|public
+name|StorageDirectory
+parameter_list|(
+name|File
+name|dir
+parameter_list|,
+name|StorageDirType
+name|dirType
+parameter_list|,
+name|boolean
+name|isShared
+parameter_list|,
+name|FsPermission
+name|permission
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|dir
+argument_list|,
+name|dirType
+argument_list|,
+name|isShared
+argument_list|,
+literal|null
+argument_list|,
+name|permission
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**      * Constructor      * @param dirType storage directory type      * @param isShared whether or not this dir is shared between two NNs. true      *          disables locking on the storage directory, false enables locking      * @param location the {@link StorageLocation} for this directory      */
 DECL|method|StorageDirectory (StorageDirType dirType, boolean isShared, StorageLocation location)
 specifier|public
@@ -1432,6 +1523,8 @@ argument_list|,
 name|isShared
 argument_list|,
 name|location
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -1467,6 +1560,8 @@ argument_list|,
 name|isShared
 argument_list|,
 name|location
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -1521,7 +1616,7 @@ argument_list|)
 return|;
 block|}
 block|}
-DECL|method|StorageDirectory (File dir, StorageDirType dirType, boolean isShared, StorageLocation location)
+DECL|method|StorageDirectory (File dir, StorageDirType dirType, boolean isShared, StorageLocation location, FsPermission permission)
 specifier|private
 name|StorageDirectory
 parameter_list|(
@@ -1536,6 +1631,9 @@ name|isShared
 parameter_list|,
 name|StorageLocation
 name|location
+parameter_list|,
+name|FsPermission
+name|permission
 parameter_list|)
 block|{
 name|this
@@ -1578,6 +1676,12 @@ operator|.
 name|location
 operator|=
 name|location
+expr_stmt|;
+name|this
+operator|.
+name|permission
+operator|=
+name|permission
 expr_stmt|;
 assert|assert
 name|location
@@ -1867,6 +1971,7 @@ operator|.
 name|mkdirs
 argument_list|()
 condition|)
+block|{
 throw|throw
 operator|new
 name|IOException
@@ -1876,6 +1981,43 @@ operator|+
 name|curDir
 argument_list|)
 throw|;
+block|}
+if|if
+condition|(
+name|permission
+operator|!=
+literal|null
+condition|)
+block|{
+name|Set
+argument_list|<
+name|PosixFilePermission
+argument_list|>
+name|permissions
+init|=
+name|PosixFilePermissions
+operator|.
+name|fromString
+argument_list|(
+name|permission
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|Files
+operator|.
+name|setPosixFilePermissions
+argument_list|(
+name|curDir
+operator|.
+name|toPath
+argument_list|()
+argument_list|,
+name|permissions
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**      * Directory {@code current} contains latest files defining      * the file system meta-data.      *       * @return the directory path      */
 DECL|method|getCurrentDir ()
@@ -2371,6 +2513,7 @@ operator|.
 name|mkdirs
 argument_list|()
 condition|)
+block|{
 throw|throw
 operator|new
 name|IOException
@@ -2380,6 +2523,7 @@ operator|+
 name|rootPath
 argument_list|)
 throw|;
+block|}
 name|hadMkdirs
 operator|=
 literal|true

@@ -1734,7 +1734,7 @@ operator|.
 name|clearDirectory
 argument_list|()
 expr_stmt|;
-comment|// create empty currrent dir
+comment|// create empty current dir
 comment|// For non-HA, no further action is needed here, as saveNamespace will
 comment|// take care of the rest.
 if|if
