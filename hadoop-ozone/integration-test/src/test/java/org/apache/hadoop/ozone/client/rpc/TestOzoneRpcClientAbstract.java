@@ -1511,18 +1511,6 @@ import|;
 end_import
 
 begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assume
-operator|.
-name|assumeFalse
-import|;
-end_import
-
-begin_import
 import|import
 name|org
 operator|.
@@ -14878,21 +14866,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|assumeFalse
-argument_list|(
-literal|"Remove this once ACL HA is supported"
-argument_list|,
-name|getClass
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|TestOzoneRpcClientWithRatis
-operator|.
-name|class
-argument_list|)
-argument_list|)
-expr_stmt|;
 name|String
 name|volumeName
 init|=
@@ -14962,21 +14935,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|assumeFalse
-argument_list|(
-literal|"Remove this once ACL HA is supported"
-argument_list|,
-name|getClass
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|TestOzoneRpcClientWithRatis
-operator|.
-name|class
-argument_list|)
-argument_list|)
-expr_stmt|;
 name|String
 name|volumeName
 init|=
@@ -15395,21 +15353,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|assumeFalse
-argument_list|(
-literal|"Remove this once ACL HA is supported"
-argument_list|,
-name|getClass
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|TestOzoneRpcClientWithRatis
-operator|.
-name|class
-argument_list|)
-argument_list|)
-expr_stmt|;
 name|String
 name|volumeName
 init|=
@@ -15789,21 +15732,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|assumeFalse
-argument_list|(
-literal|"Remove this once ACL HA is supported"
-argument_list|,
-name|getClass
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|TestOzoneRpcClientWithRatis
-operator|.
-name|class
-argument_list|)
-argument_list|)
-expr_stmt|;
 name|String
 name|volumeName
 init|=
