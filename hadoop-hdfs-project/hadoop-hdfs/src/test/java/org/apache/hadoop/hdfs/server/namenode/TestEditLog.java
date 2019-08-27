@@ -2491,9 +2491,6 @@ argument_list|(
 literal|"There appears to be an out-of-order edit in the edit log"
 argument_list|,
 name|e
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|fail
