@@ -1644,11 +1644,12 @@ name|E_INCONSISTENT_UPDATE
 init|=
 literal|"Duplicate and inconsistent entry in update operation"
 decl_stmt|;
-DECL|field|deleteTrackingValueMap
+DECL|field|DELETE_TRACKING_VALUE_MAP
 specifier|private
 specifier|static
+specifier|final
 name|ValueMap
-name|deleteTrackingValueMap
+name|DELETE_TRACKING_VALUE_MAP
 init|=
 operator|new
 name|ValueMap
@@ -3275,7 +3276,7 @@ argument_list|)
 operator|.
 name|withValueMap
 argument_list|(
-name|deleteTrackingValueMap
+name|DELETE_TRACKING_VALUE_MAP
 argument_list|)
 decl_stmt|;
 name|boolean
