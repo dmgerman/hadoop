@@ -694,7 +694,7 @@ name|NameNode
 operator|.
 name|LOG
 operator|.
-name|error
+name|warn
 argument_list|(
 literal|"BUG: Inconsistent storagespace for directory "
 operator|+
