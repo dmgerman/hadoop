@@ -3454,62 +3454,6 @@ name|roleInfoProto
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|handleApplyTransactionFailure (RaftGroupId groupId, RaftProtos.RaftPeerRole role)
-name|void
-name|handleApplyTransactionFailure
-parameter_list|(
-name|RaftGroupId
-name|groupId
-parameter_list|,
-name|RaftProtos
-operator|.
-name|RaftPeerRole
-name|role
-parameter_list|)
-block|{
-name|UUID
-name|dnId
-init|=
-name|RatisHelper
-operator|.
-name|toDatanodeId
-argument_list|(
-name|getServer
-argument_list|()
-operator|.
-name|getId
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|String
-name|msg
-init|=
-literal|"Ratis Transaction failure in datanode "
-operator|+
-name|dnId
-operator|+
-literal|" with role "
-operator|+
-name|role
-operator|+
-literal|" .Triggering pipeline close action."
-decl_stmt|;
-name|triggerPipelineClose
-argument_list|(
-name|groupId
-argument_list|,
-name|msg
-argument_list|,
-name|ClosePipelineInfo
-operator|.
-name|Reason
-operator|.
-name|STATEMACHINE_TRANSACTION_FAILED
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * The fact that the snapshot contents cannot be used to actually catch up    * the follower, it is the reason to initiate close pipeline and    * not install the snapshot. The follower will basically never be able to    * catch up.    *    * @param groupId raft group information    * @param roleInfoProto information about the current node role and    *                      rpc delay information.    * @param firstTermIndexInLog After the snapshot installation is complete,    * return the last included term index in the snapshot.    */
 DECL|method|handleInstallSnapshotFromLeader (RaftGroupId groupId, RoleInfoProto roleInfoProto, TermIndex firstTermIndexInLog)
 name|void

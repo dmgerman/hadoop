@@ -3688,8 +3688,18 @@ condition|)
 block|{
 comment|// if this is the last reference, the created list can be
 comment|// destroyed.
-comment|//     priorDiff.getChildrenDiff().destroyCreatedList(
-comment|//         reclaimContext, currentINode);
+name|priorDiff
+operator|.
+name|getChildrenDiff
+argument_list|()
+operator|.
+name|destroyCreatedList
+argument_list|(
+name|reclaimContext
+argument_list|,
+name|currentINode
+argument_list|)
+expr_stmt|;
 block|}
 else|else
 block|{
