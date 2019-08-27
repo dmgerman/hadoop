@@ -708,6 +708,30 @@ name|ContainerProtos
 operator|.
 name|Result
 operator|.
+name|ERROR_IN_DB_SYNC
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|datanode
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|Result
+operator|.
 name|INVALID_CONTAINER_STATE
 import|;
 end_import
@@ -1721,11 +1745,20 @@ parameter_list|()
 throws|throws
 name|StorageContainerException
 block|{
+comment|// The DB must be synced during close operation
+name|flushAndSyncDB
+argument_list|()
+expr_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
 try|try
 block|{
+comment|// Second sync should be a very light operation as sync has already
+comment|// been done outside the lock.
+name|flushAndSyncDB
+argument_list|()
+expr_stmt|;
 name|updateContainerData
 argument_list|(
 name|containerData
@@ -1751,11 +1784,20 @@ parameter_list|()
 throws|throws
 name|StorageContainerException
 block|{
+comment|// The DB must be synced during close operation
+name|flushAndSyncDB
+argument_list|()
+expr_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
 try|try
 block|{
+comment|// Second sync should be a very light operation as sync has already
+comment|// been done outside the lock.
+name|flushAndSyncDB
+argument_list|()
+expr_stmt|;
 name|updateContainerData
 argument_list|(
 name|containerData
@@ -1770,11 +1812,6 @@ name|writeUnlock
 argument_list|()
 expr_stmt|;
 block|}
-comment|// It is ok if this operation takes a bit of time.
-comment|// Close container is not expected to be instantaneous.
-name|compactDB
-argument_list|()
-expr_stmt|;
 block|}
 comment|/**    *    * Must be invoked with the writeLock held.    *    * @param update    * @throws StorageContainerException    */
 DECL|method|updateContainerData (Runnable update)
@@ -1952,6 +1989,96 @@ argument_list|(
 name|ex
 argument_list|,
 name|ERROR_IN_COMPACT_DB
+argument_list|)
+throw|;
+block|}
+block|}
+DECL|method|flushAndSyncDB ()
+specifier|private
+name|void
+name|flushAndSyncDB
+parameter_list|()
+throws|throws
+name|StorageContainerException
+block|{
+try|try
+block|{
+try|try
+init|(
+name|ReferenceCountedDB
+name|db
+init|=
+name|BlockUtils
+operator|.
+name|getDB
+argument_list|(
+name|containerData
+argument_list|,
+name|config
+argument_list|)
+init|)
+block|{
+name|db
+operator|.
+name|getStore
+argument_list|()
+operator|.
+name|flushDB
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Container {} is synced with bcsId {}."
+argument_list|,
+name|containerData
+operator|.
+name|getContainerID
+argument_list|()
+argument_list|,
+name|containerData
+operator|.
+name|getBlockCommitSequenceId
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|StorageContainerException
+name|ex
+parameter_list|)
+block|{
+throw|throw
+name|ex
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ex
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Error in DB sync while closing container"
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|StorageContainerException
+argument_list|(
+name|ex
+argument_list|,
+name|ERROR_IN_DB_SYNC
 argument_list|)
 throw|;
 block|}

@@ -1587,6 +1587,55 @@ throw|;
 block|}
 block|}
 block|}
+annotation|@
+name|Override
+DECL|method|flushDB (boolean sync)
+specifier|public
+name|void
+name|flushDB
+parameter_list|(
+name|boolean
+name|sync
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|db
+operator|!=
+literal|null
+condition|)
+block|{
+try|try
+block|{
+comment|// for RocksDB it is sufficient to flush the WAL as entire db can
+comment|// be reconstructed using it.
+name|db
+operator|.
+name|flushWal
+argument_list|(
+name|sync
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|RocksDBException
+name|e
+parameter_list|)
+block|{
+throw|throw
+name|toIOException
+argument_list|(
+literal|"Failed to flush db"
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
+block|}
+block|}
 DECL|method|deleteQuietly (File fileOrDir)
 specifier|private
 name|void

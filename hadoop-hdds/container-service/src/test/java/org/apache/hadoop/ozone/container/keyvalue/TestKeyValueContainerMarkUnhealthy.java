@@ -872,6 +872,19 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+comment|// We need to create the container so the sync-on-quasi-close operation
+comment|// does not NPE.
+name|keyValueContainer
+operator|.
+name|create
+argument_list|(
+name|volumeSet
+argument_list|,
+name|volumeChoosingPolicy
+argument_list|,
+name|scmId
+argument_list|)
+expr_stmt|;
 name|keyValueContainer
 operator|.
 name|quasiClose

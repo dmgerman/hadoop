@@ -1070,6 +1070,20 @@ block|}
 block|}
 annotation|@
 name|Override
+DECL|method|flushDB (boolean sync)
+specifier|public
+name|void
+name|flushDB
+parameter_list|(
+name|boolean
+name|sync
+parameter_list|)
+block|{
+comment|// TODO: Implement flush for level db
+comment|// do nothing
+block|}
+annotation|@
+name|Override
 DECL|method|writeBatch (BatchOperation operation)
 specifier|public
 name|void

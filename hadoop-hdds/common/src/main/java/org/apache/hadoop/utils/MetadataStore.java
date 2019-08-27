@@ -252,6 +252,17 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Flush the outstanding I/O operations of the DB.    * @param sync if true will sync the outstanding I/Os to the disk.    */
+DECL|method|flushDB (boolean sync)
+name|void
+name|flushDB
+parameter_list|(
+name|boolean
+name|sync
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Destroy the content of the specified database,    * a destroyed database will not be able to load again.    * Be very careful with this method.    *    * @throws IOException if I/O error happens    */
 DECL|method|destroy ()
 name|void
