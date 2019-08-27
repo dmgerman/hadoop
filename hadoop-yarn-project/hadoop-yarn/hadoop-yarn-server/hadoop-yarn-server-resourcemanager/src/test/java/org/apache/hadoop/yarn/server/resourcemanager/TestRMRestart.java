@@ -5903,10 +5903,11 @@ if|if
 condition|(
 name|count
 operator|==
-literal|0
+literal|1
 condition|)
 block|{
-comment|// do nothing; simulate app final state is not saved.
+comment|// Application state is updated on attempt launch.
+comment|// After that, do nothing; simulate app final state is not saved.
 name|LOG
 operator|.
 name|info
@@ -5915,9 +5916,6 @@ name|appId
 operator|+
 literal|" final state is not saved."
 argument_list|)
-expr_stmt|;
-name|count
-operator|++
 expr_stmt|;
 block|}
 else|else
@@ -5932,6 +5930,9 @@ name|appStateData
 argument_list|)
 expr_stmt|;
 block|}
+name|count
+operator|++
+expr_stmt|;
 block|}
 block|}
 decl_stmt|;
@@ -12137,11 +12138,14 @@ operator|.
 name|KILLED
 argument_list|)
 expr_stmt|;
+comment|// count = 1 on storing RMApp launchTime
+comment|// count = 2 on storing attempt state on kill
+comment|// count = 3 on storing app state on kill
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|1
+literal|2
 argument_list|,
 operator|(
 operator|(
@@ -12157,7 +12161,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|2
+literal|3
 argument_list|,
 operator|(
 operator|(
@@ -16600,25 +16604,6 @@ argument_list|(
 literal|200
 argument_list|)
 decl_stmt|;
-name|ApplicationStateData
-name|app0State
-init|=
-name|memStore
-operator|.
-name|getState
-argument_list|()
-operator|.
-name|getApplicationState
-argument_list|()
-operator|.
-name|get
-argument_list|(
-name|app0
-operator|.
-name|getApplicationId
-argument_list|()
-argument_list|)
-decl_stmt|;
 name|MockAM
 name|am0
 init|=
@@ -16678,6 +16663,25 @@ name|getApplicationAttemptId
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|ApplicationStateData
+name|app0State
+init|=
+name|memStore
+operator|.
+name|getState
+argument_list|()
+operator|.
+name|getApplicationState
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|app0
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|)
+decl_stmt|;
 name|ApplicationAttemptStateData
 name|am2State
 init|=

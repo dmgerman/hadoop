@@ -14018,6 +14018,16 @@ name|getApplicationTimeouts
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|appState
+operator|.
+name|setLaunchTime
+argument_list|(
+name|rmApp
+operator|.
+name|getLaunchTime
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|rmContext
 operator|.
 name|getStateStore

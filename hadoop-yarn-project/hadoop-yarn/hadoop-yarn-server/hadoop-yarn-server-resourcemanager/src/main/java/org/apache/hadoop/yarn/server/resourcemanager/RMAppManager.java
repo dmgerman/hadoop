@@ -4235,6 +4235,16 @@ argument_list|(
 name|currentExpireTimeouts
 argument_list|)
 expr_stmt|;
+name|appState
+operator|.
+name|setLaunchTime
+argument_list|(
+name|app
+operator|.
+name|getLaunchTime
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// update to state store. Though it synchronous call, update via future to
 comment|// know any exception has been set. It is required because in non-HA mode,
 comment|// state-store errors are skipped.
@@ -4662,6 +4672,16 @@ argument_list|(
 name|app
 operator|.
 name|getApplicationTimeouts
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|appState
+operator|.
+name|setLaunchTime
+argument_list|(
+name|app
+operator|.
+name|getLaunchTime
 argument_list|()
 argument_list|)
 expr_stmt|;
