@@ -135,6 +135,13 @@ argument_list|(
 literal|"hdfs-site.xml"
 argument_list|)
 expr_stmt|;
+name|Configuration
+operator|.
+name|addDefaultResource
+argument_list|(
+literal|"hdfs-rbf-site.xml"
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|HdfsConfiguration ()
 specifier|public
