@@ -5669,6 +5669,7 @@ decl_stmt|;
 comment|/**    * HDFS-14497: Concurrency control when many metaSave request to write    * meta to same out stream after switch to read lock.    */
 DECL|field|metaSaveLock
 specifier|private
+specifier|final
 name|Object
 name|metaSaveLock
 init|=
