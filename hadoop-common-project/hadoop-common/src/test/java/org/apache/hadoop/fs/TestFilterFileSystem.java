@@ -1029,6 +1029,34 @@ name|Path
 name|f
 parameter_list|)
 function_decl|;
+DECL|method|setQuota (Path f, long namespaceQuota, long storagespaceQuota)
+name|void
+name|setQuota
+parameter_list|(
+name|Path
+name|f
+parameter_list|,
+name|long
+name|namespaceQuota
+parameter_list|,
+name|long
+name|storagespaceQuota
+parameter_list|)
+function_decl|;
+DECL|method|setQuotaByStorageType (Path f, StorageType type, long quota)
+name|void
+name|setQuotaByStorageType
+parameter_list|(
+name|Path
+name|f
+parameter_list|,
+name|StorageType
+name|type
+parameter_list|,
+name|long
+name|quota
+parameter_list|)
+function_decl|;
 DECL|method|getStorageStatistics ()
 name|StorageStatistics
 name|getStorageStatistics

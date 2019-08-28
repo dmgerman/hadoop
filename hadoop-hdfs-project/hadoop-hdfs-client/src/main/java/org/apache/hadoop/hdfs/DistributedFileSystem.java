@@ -5924,6 +5924,8 @@ argument_list|)
 return|;
 block|}
 comment|/** Set a directory's quotas    * @see org.apache.hadoop.hdfs.protocol.ClientProtocol#setQuota(String,    * long, long, StorageType)    */
+annotation|@
+name|Override
 DECL|method|setQuota (Path src, final long namespaceQuota, final long storagespaceQuota)
 specifier|public
 name|void
@@ -6042,6 +6044,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Set the per type storage quota of a directory.    *    * @param src target directory whose quota is to be modified.    * @param type storage type of the specific storage type quota to be modified.    * @param quota value of the specific storage type quota to be modified.    * Maybe {@link HdfsConstants#QUOTA_RESET} to clear quota by storage type.    */
+annotation|@
+name|Override
 DECL|method|setQuotaByStorageType (Path src, final StorageType type, final long quota)
 specifier|public
 name|void

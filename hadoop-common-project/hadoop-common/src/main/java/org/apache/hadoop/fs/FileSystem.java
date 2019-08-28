@@ -5174,6 +5174,54 @@ name|f
 argument_list|)
 return|;
 block|}
+comment|/**    * Set quota for the given {@link Path}.    *    * @param src the target path to set quota for    * @param namespaceQuota the namespace quota (i.e., # of files/directories)    *                       to set    * @param storagespaceQuota the storage space quota to set    * @throws IOException IO failure    */
+DECL|method|setQuota (Path src, final long namespaceQuota, final long storagespaceQuota)
+specifier|public
+name|void
+name|setQuota
+parameter_list|(
+name|Path
+name|src
+parameter_list|,
+specifier|final
+name|long
+name|namespaceQuota
+parameter_list|,
+specifier|final
+name|long
+name|storagespaceQuota
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|methodNotSupported
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Set per storage type quota for the given {@link Path}.    *    * @param src the target path to set storage type quota for    * @param type the storage type to set    * @param quota the quota to set for the given storage type    * @throws IOException IO failure    */
+DECL|method|setQuotaByStorageType (Path src, final StorageType type, final long quota)
+specifier|public
+name|void
+name|setQuotaByStorageType
+parameter_list|(
+name|Path
+name|src
+parameter_list|,
+specifier|final
+name|StorageType
+name|type
+parameter_list|,
+specifier|final
+name|long
+name|quota
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|methodNotSupported
+argument_list|()
+expr_stmt|;
+block|}
 comment|/**    * The default filter accepts all paths.    */
 DECL|field|DEFAULT_FILTER
 specifier|private
@@ -12586,6 +12634,52 @@ block|}
 return|return
 name|result
 return|;
+block|}
+comment|/**    * Helper method that throws an {@link UnsupportedOperationException} for the    * current {@link FileSystem} method being called.    */
+DECL|method|methodNotSupported ()
+specifier|private
+name|void
+name|methodNotSupported
+parameter_list|()
+block|{
+comment|// The order of the stacktrace elements is (from top to bottom):
+comment|//   - java.lang.Thread.getStackTrace
+comment|//   - org.apache.hadoop.fs.FileSystem.methodNotSupported
+comment|//   -<the FileSystem method>
+comment|// therefore, to find out the current method name, we use the element at
+comment|// index 2.
+name|String
+name|name
+init|=
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|getStackTrace
+argument_list|()
+index|[
+literal|2
+index|]
+operator|.
+name|getMethodName
+argument_list|()
+decl_stmt|;
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+name|getClass
+argument_list|()
+operator|.
+name|getCanonicalName
+argument_list|()
+operator|+
+literal|" does not support method "
+operator|+
+name|name
+argument_list|)
+throw|;
 block|}
 comment|/**    * Create instance of the standard {@link FSDataInputStreamBuilder} for the    * given filesystem and path.    * @param fileSystem owner    * @param path path to read    * @return a builder.    */
 annotation|@
