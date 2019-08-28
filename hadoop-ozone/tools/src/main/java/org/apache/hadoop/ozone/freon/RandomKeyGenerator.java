@@ -274,6 +274,20 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
+name|HddsConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
 name|cli
 operator|.
 name|HddsVersionProvider
@@ -1453,6 +1467,41 @@ operator|!=
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+operator|!
+name|ozoneConfiguration
+operator|.
+name|getBoolean
+argument_list|(
+name|HddsConfigKeys
+operator|.
+name|HDDS_CONTAINER_PERSISTDATA
+argument_list|,
+name|HddsConfigKeys
+operator|.
+name|HDDS_CONTAINER_PERSISTDATA_DEFAULT
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Override validateWrites to false, because "
+operator|+
+name|HddsConfigKeys
+operator|.
+name|HDDS_CONTAINER_PERSISTDATA
+operator|+
+literal|" is set to false."
+argument_list|)
+expr_stmt|;
+name|validateWrites
+operator|=
+literal|false
+expr_stmt|;
+block|}
 name|init
 argument_list|(
 name|ozoneConfiguration
@@ -1623,6 +1672,15 @@ argument_list|(
 literal|"Buffer size: {} bytes"
 argument_list|,
 name|bufferSize
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"validateWrites : {}"
+argument_list|,
+name|validateWrites
 argument_list|)
 expr_stmt|;
 for|for
@@ -2891,7 +2949,11 @@ name|getUnsuccessfulValidationCount
 parameter_list|()
 block|{
 return|return
+name|validateWrites
+condition|?
 name|writeValidationFailureCount
+else|:
+literal|0
 return|;
 block|}
 comment|/**    * Wrapper to hold ozone keyValidate entry.    */

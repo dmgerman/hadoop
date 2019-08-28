@@ -800,7 +800,7 @@ name|keyvalue
 operator|.
 name|impl
 operator|.
-name|ChunkManagerImpl
+name|ChunkManagerFactory
 import|;
 end_import
 
@@ -1135,9 +1135,12 @@ argument_list|)
 expr_stmt|;
 name|chunkManager
 operator|=
-operator|new
-name|ChunkManagerImpl
+name|ChunkManagerFactory
+operator|.
+name|getChunkManager
 argument_list|(
+name|config
+argument_list|,
 name|doSyncWrite
 argument_list|)
 expr_stmt|;

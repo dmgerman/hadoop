@@ -858,6 +858,26 @@ name|HDDS_SECURITY_CLIENT_SCM_CERTIFICATE_PROTOCOL_ACL
 init|=
 literal|"hdds.security.client.scm.certificate.protocol.acl"
 decl_stmt|;
+comment|// Determines if the Container Chunk Manager will write user data to disk
+comment|// Set to false only for specific performance tests
+DECL|field|HDDS_CONTAINER_PERSISTDATA
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HDDS_CONTAINER_PERSISTDATA
+init|=
+literal|"hdds.container.chunk.persistdata"
+decl_stmt|;
+DECL|field|HDDS_CONTAINER_PERSISTDATA_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|HDDS_CONTAINER_PERSISTDATA_DEFAULT
+init|=
+literal|true
+decl_stmt|;
 DECL|field|HDDS_DATANODE_HTTP_ENABLED_KEY
 specifier|public
 specifier|static
