@@ -1693,7 +1693,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-empty_stmt|;
 name|String
 name|safeFileName
 init|=

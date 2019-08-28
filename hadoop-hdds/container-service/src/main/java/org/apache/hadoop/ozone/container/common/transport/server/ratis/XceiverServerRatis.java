@@ -2389,13 +2389,15 @@ name|tlsConfig
 init|=
 name|RatisHelper
 operator|.
-name|createTlsServerConfig
+name|createTlsServerConfigForDN
 argument_list|(
 operator|new
 name|SecurityConfig
 argument_list|(
 name|ozoneConf
 argument_list|)
+argument_list|,
+name|caClient
 argument_list|)
 decl_stmt|;
 return|return

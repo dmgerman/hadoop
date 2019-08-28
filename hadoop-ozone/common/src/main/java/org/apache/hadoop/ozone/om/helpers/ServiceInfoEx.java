@@ -31,72 +31,78 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * List of in-flight MPU uploads.  */
+comment|/**  * Wrapper class for service discovery, design for broader usage such as  * security, etc.  */
 end_comment
 
 begin_class
-DECL|class|OmMultipartUploadList
+DECL|class|ServiceInfoEx
 specifier|public
 class|class
-name|OmMultipartUploadList
+name|ServiceInfoEx
 block|{
-DECL|field|uploads
+DECL|field|infoList
 specifier|private
 name|List
 argument_list|<
-name|OmMultipartUpload
+name|ServiceInfo
 argument_list|>
-name|uploads
+name|infoList
 decl_stmt|;
-DECL|method|OmMultipartUploadList ( List<OmMultipartUpload> uploads)
+comment|// PEM encoded string of SCM CA certificate.
+DECL|field|caCertificate
+specifier|private
+name|String
+name|caCertificate
+decl_stmt|;
+DECL|method|ServiceInfoEx (List<ServiceInfo> infoList, String caCertificate)
 specifier|public
-name|OmMultipartUploadList
+name|ServiceInfoEx
 parameter_list|(
 name|List
 argument_list|<
-name|OmMultipartUpload
+name|ServiceInfo
 argument_list|>
-name|uploads
+name|infoList
+parameter_list|,
+name|String
+name|caCertificate
 parameter_list|)
 block|{
 name|this
 operator|.
-name|uploads
+name|infoList
 operator|=
-name|uploads
+name|infoList
+expr_stmt|;
+name|this
+operator|.
+name|caCertificate
+operator|=
+name|caCertificate
 expr_stmt|;
 block|}
-DECL|method|getUploads ()
+DECL|method|getServiceInfoList ()
 specifier|public
 name|List
 argument_list|<
-name|OmMultipartUpload
+name|ServiceInfo
 argument_list|>
-name|getUploads
+name|getServiceInfoList
 parameter_list|()
 block|{
 return|return
-name|uploads
+name|infoList
 return|;
 block|}
-DECL|method|setUploads ( List<OmMultipartUpload> uploads)
+DECL|method|getCaCertificate ()
 specifier|public
-name|void
-name|setUploads
-parameter_list|(
-name|List
-argument_list|<
-name|OmMultipartUpload
-argument_list|>
-name|uploads
-parameter_list|)
+name|String
+name|getCaCertificate
+parameter_list|()
 block|{
-name|this
-operator|.
-name|uploads
-operator|=
-name|uploads
-expr_stmt|;
+return|return
+name|caCertificate
+return|;
 block|}
 block|}
 end_class

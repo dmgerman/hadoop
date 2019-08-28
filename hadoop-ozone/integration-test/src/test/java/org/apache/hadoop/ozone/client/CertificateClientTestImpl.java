@@ -418,7 +418,7 @@ argument_list|)
 operator|.
 name|setSubject
 argument_list|(
-literal|"TestCertSub"
+literal|"localhost"
 argument_list|)
 operator|.
 name|setConfiguration
@@ -512,6 +512,18 @@ DECL|method|getCertificate ()
 specifier|public
 name|X509Certificate
 name|getCertificate
+parameter_list|()
+block|{
+return|return
+name|x509Certificate
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getCACertificate ()
+specifier|public
+name|X509Certificate
+name|getCACertificate
 parameter_list|()
 block|{
 return|return

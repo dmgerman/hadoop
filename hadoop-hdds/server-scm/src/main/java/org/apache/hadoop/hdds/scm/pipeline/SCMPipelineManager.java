@@ -338,6 +338,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|ratis
+operator|.
+name|grpc
+operator|.
+name|GrpcTlsConfig
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -628,7 +642,12 @@ specifier|private
 name|ObjectName
 name|pmInfoBean
 decl_stmt|;
-DECL|method|SCMPipelineManager (Configuration conf, NodeManager nodeManager, EventPublisher eventPublisher)
+DECL|field|grpcTlsConfig
+specifier|private
+name|GrpcTlsConfig
+name|grpcTlsConfig
+decl_stmt|;
+DECL|method|SCMPipelineManager (Configuration conf, NodeManager nodeManager, EventPublisher eventPublisher, GrpcTlsConfig grpcTlsConfig)
 specifier|public
 name|SCMPipelineManager
 parameter_list|(
@@ -640,6 +659,9 @@ name|nodeManager
 parameter_list|,
 name|EventPublisher
 name|eventPublisher
+parameter_list|,
+name|GrpcTlsConfig
+name|grpcTlsConfig
 parameter_list|)
 throws|throws
 name|IOException
@@ -680,6 +702,8 @@ argument_list|,
 name|stateManager
 argument_list|,
 name|conf
+argument_list|,
+name|grpcTlsConfig
 argument_list|)
 expr_stmt|;
 comment|// TODO: See if thread priority needs to be set for these threads
@@ -818,6 +842,12 @@ argument_list|)
 expr_stmt|;
 name|initializePipelineState
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|grpcTlsConfig
+operator|=
+name|grpcTlsConfig
 expr_stmt|;
 block|}
 DECL|method|getStateManager ()
@@ -2082,6 +2112,8 @@ argument_list|(
 name|pipeline
 argument_list|,
 name|conf
+argument_list|,
+name|grpcTlsConfig
 argument_list|)
 expr_stmt|;
 comment|// remove the pipeline from the pipeline manager
@@ -2200,6 +2232,18 @@ argument_list|(
 name|id
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getGrpcTlsConfig ()
+specifier|public
+name|GrpcTlsConfig
+name|getGrpcTlsConfig
+parameter_list|()
+block|{
+return|return
+name|grpcTlsConfig
+return|;
 block|}
 annotation|@
 name|Override

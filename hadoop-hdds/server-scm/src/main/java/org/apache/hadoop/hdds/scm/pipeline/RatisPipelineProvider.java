@@ -234,24 +234,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdds
-operator|.
-name|security
-operator|.
-name|x509
-operator|.
-name|SecurityConfig
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|io
 operator|.
 name|MultipleIOException
@@ -694,7 +676,13 @@ argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
-DECL|method|RatisPipelineProvider (NodeManager nodeManager, PipelineStateManager stateManager, Configuration conf)
+DECL|field|tlsConfig
+specifier|private
+specifier|final
+name|GrpcTlsConfig
+name|tlsConfig
+decl_stmt|;
+DECL|method|RatisPipelineProvider (NodeManager nodeManager, PipelineStateManager stateManager, Configuration conf, GrpcTlsConfig tlsConfig)
 name|RatisPipelineProvider
 parameter_list|(
 name|NodeManager
@@ -705,6 +693,9 @@ name|stateManager
 parameter_list|,
 name|Configuration
 name|conf
+parameter_list|,
+name|GrpcTlsConfig
+name|tlsConfig
 parameter_list|)
 block|{
 name|this
@@ -724,6 +715,12 @@ operator|.
 name|conf
 operator|=
 name|conf
+expr_stmt|;
+name|this
+operator|.
+name|tlsConfig
+operator|=
+name|tlsConfig
 expr_stmt|;
 block|}
 comment|/**    * Create pluggable container placement policy implementation instance.    *    * @param nodeManager - SCM node manager.    * @param conf - configuration.    * @return SCM container placement policy implementation instance.    */
@@ -1409,21 +1406,6 @@ operator|.
 name|getMaxOutstandingRequests
 argument_list|(
 name|conf
-argument_list|)
-decl_stmt|;
-specifier|final
-name|GrpcTlsConfig
-name|tlsConfig
-init|=
-name|RatisHelper
-operator|.
-name|createTlsClientConfig
-argument_list|(
-operator|new
-name|SecurityConfig
-argument_list|(
-name|conf
-argument_list|)
 argument_list|)
 decl_stmt|;
 specifier|final

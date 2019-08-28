@@ -558,7 +558,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|File
+name|IOException
 import|;
 end_import
 
@@ -566,9 +566,11 @@ begin_import
 import|import
 name|java
 operator|.
-name|io
+name|security
 operator|.
-name|IOException
+name|cert
+operator|.
+name|X509Certificate
 import|;
 end_import
 
@@ -779,8 +781,13 @@ specifier|final
 name|boolean
 name|topologyAwareRead
 decl_stmt|;
-comment|/**    * Constructs a client that can communicate with the Container framework on    * data nodes.    *    * @param pipeline - Pipeline that defines the machines.    * @param config   -- Ozone Config    */
-DECL|method|XceiverClientGrpc (Pipeline pipeline, Configuration config)
+DECL|field|caCert
+specifier|private
+name|X509Certificate
+name|caCert
+decl_stmt|;
+comment|/**    * Constructs a client that can communicate with the Container framework on    * data nodes.    *    * @param pipeline - Pipeline that defines the machines.    * @param config   -- Ozone Config    * @param caCert   - SCM ca certificate.    */
+DECL|method|XceiverClientGrpc (Pipeline pipeline, Configuration config, X509Certificate caCert)
 specifier|public
 name|XceiverClientGrpc
 parameter_list|(
@@ -789,6 +796,9 @@ name|pipeline
 parameter_list|,
 name|Configuration
 name|config
+parameter_list|,
+name|X509Certificate
+name|caCert
 parameter_list|)
 block|{
 name|super
@@ -887,6 +897,34 @@ argument_list|,
 name|OzoneConfigKeys
 operator|.
 name|OZONE_NETWORK_TOPOLOGY_AWARE_READ_DEFAULT
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|caCert
+operator|=
+name|caCert
+expr_stmt|;
+block|}
+comment|/**    * Constructs a client that can communicate with the Container framework on    * data nodes.    *    * @param pipeline - Pipeline that defines the machines.    * @param config   -- Ozone Config    */
+DECL|method|XceiverClientGrpc (Pipeline pipeline, Configuration config)
+specifier|public
+name|XceiverClientGrpc
+parameter_list|(
+name|Pipeline
+name|pipeline
+parameter_list|,
+name|Configuration
+name|config
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|pipeline
+argument_list|,
+name|config
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -1120,36 +1158,6 @@ name|isGrpcTlsEnabled
 argument_list|()
 condition|)
 block|{
-name|File
-name|trustCertCollectionFile
-init|=
-name|secConfig
-operator|.
-name|getTrustStoreFile
-argument_list|(
-name|COMPONENT
-argument_list|)
-decl_stmt|;
-name|File
-name|privateKeyFile
-init|=
-name|secConfig
-operator|.
-name|getClientPrivateKeyFile
-argument_list|(
-name|COMPONENT
-argument_list|)
-decl_stmt|;
-name|File
-name|clientCertChainFile
-init|=
-name|secConfig
-operator|.
-name|getClientCertChainFile
-argument_list|(
-name|COMPONENT
-argument_list|)
-decl_stmt|;
 name|SslContextBuilder
 name|sslContextBuilder
 init|=
@@ -1160,7 +1168,7 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|trustCertCollectionFile
+name|caCert
 operator|!=
 literal|null
 condition|)
@@ -1169,33 +1177,7 @@ name|sslContextBuilder
 operator|.
 name|trustManager
 argument_list|(
-name|trustCertCollectionFile
-argument_list|)
-expr_stmt|;
-block|}
-if|if
-condition|(
-name|secConfig
-operator|.
-name|isGrpcMutualTlsRequired
-argument_list|()
-operator|&&
-name|clientCertChainFile
-operator|!=
-literal|null
-operator|&&
-name|privateKeyFile
-operator|!=
-literal|null
-condition|)
-block|{
-name|sslContextBuilder
-operator|.
-name|keyManager
-argument_list|(
-name|clientCertChainFile
-argument_list|,
-name|privateKeyFile
+name|caCert
 argument_list|)
 expr_stmt|;
 block|}

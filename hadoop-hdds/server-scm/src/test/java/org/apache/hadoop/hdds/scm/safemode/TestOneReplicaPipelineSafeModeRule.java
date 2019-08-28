@@ -510,6 +510,8 @@ argument_list|,
 name|mockNodeManager
 argument_list|,
 name|eventQueue
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|PipelineProvider

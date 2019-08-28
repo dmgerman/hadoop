@@ -95,6 +95,8 @@ argument_list|,
 name|stateManager
 argument_list|,
 name|conf
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}

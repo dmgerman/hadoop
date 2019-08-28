@@ -508,6 +508,8 @@ argument_list|,
 name|nodeManager
 argument_list|,
 name|eventQueue
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|PipelineProvider
@@ -706,6 +708,8 @@ argument_list|,
 name|nodeManager
 argument_list|,
 name|eventQueue
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|PipelineProvider
@@ -995,6 +999,8 @@ argument_list|,
 name|nodeManager
 argument_list|,
 name|eventQueue
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|PipelineProvider

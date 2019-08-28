@@ -235,6 +235,15 @@ specifier|public
 class|class
 name|ContainerMetrics
 block|{
+DECL|field|STORAGE_CONTAINER_METRICS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|STORAGE_CONTAINER_METRICS
+init|=
+literal|"StorageContainerMetrics"
+decl_stmt|;
 DECL|field|numOps
 annotation|@
 name|Metric
@@ -599,7 +608,7 @@ name|ms
 operator|.
 name|register
 argument_list|(
-literal|"StorageContainerMetrics"
+name|STORAGE_CONTAINER_METRICS
 argument_list|,
 literal|"Storage Container Node Metrics"
 argument_list|,
@@ -610,6 +619,29 @@ name|intervals
 argument_list|)
 argument_list|)
 return|;
+block|}
+DECL|method|remove ()
+specifier|public
+specifier|static
+name|void
+name|remove
+parameter_list|()
+block|{
+name|MetricsSystem
+name|ms
+init|=
+name|DefaultMetricsSystem
+operator|.
+name|instance
+argument_list|()
+decl_stmt|;
+name|ms
+operator|.
+name|unregisterSource
+argument_list|(
+name|STORAGE_CONTAINER_METRICS
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|incContainerOpsMetrics (ContainerProtos.Type type)
 specifier|public

@@ -34,20 +34,6 @@ end_import
 
 begin_import
 import|import
-name|com
-operator|.
-name|sun
-operator|.
-name|codemodel
-operator|.
-name|internal
-operator|.
-name|JExpression
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache

@@ -169,6 +169,12 @@ name|X509Certificate
 name|getCertificate
 parameter_list|()
 function_decl|;
+comment|/**    * Return the latest CA certificate known to the client.    * @return latest ca certificate known to the client.    */
+DECL|method|getCACertificate ()
+name|X509Certificate
+name|getCACertificate
+parameter_list|()
+function_decl|;
 comment|/**    * Verifies if this certificate is part of a trusted chain.    * @param certificate - certificate.    * @return true if it trusted, false otherwise.    */
 DECL|method|verifyCertificate (X509Certificate certificate)
 name|boolean

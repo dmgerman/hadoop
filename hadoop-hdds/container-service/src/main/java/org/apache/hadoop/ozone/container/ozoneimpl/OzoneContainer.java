@@ -1336,6 +1336,11 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|ContainerMetrics
+operator|.
+name|remove
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting

@@ -548,6 +548,11 @@ argument_list|,
 name|pipelineID
 argument_list|,
 name|conf
+argument_list|,
+name|pipelineManager
+operator|.
+name|getGrpcTlsConfig
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return;

@@ -732,6 +732,8 @@ argument_list|(
 name|conf
 argument_list|,
 name|clientConfig
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|Cache
@@ -1086,6 +1088,8 @@ argument_list|(
 name|conf
 argument_list|,
 name|clientConfig
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|Cache
@@ -1387,6 +1391,8 @@ argument_list|(
 name|conf
 argument_list|,
 name|clientConfig
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|Cache

@@ -124,6 +124,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|ratis
+operator|.
+name|grpc
+operator|.
+name|GrpcTlsConfig
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -183,7 +197,7 @@ name|PipelineProvider
 argument_list|>
 name|providers
 decl_stmt|;
-DECL|method|PipelineFactory (NodeManager nodeManager, PipelineStateManager stateManager, Configuration conf)
+DECL|method|PipelineFactory (NodeManager nodeManager, PipelineStateManager stateManager, Configuration conf, GrpcTlsConfig tlsConfig)
 name|PipelineFactory
 parameter_list|(
 name|NodeManager
@@ -194,6 +208,9 @@ name|stateManager
 parameter_list|,
 name|Configuration
 name|conf
+parameter_list|,
+name|GrpcTlsConfig
+name|tlsConfig
 parameter_list|)
 block|{
 name|providers
@@ -234,6 +251,8 @@ argument_list|,
 name|stateManager
 argument_list|,
 name|conf
+argument_list|,
+name|tlsConfig
 argument_list|)
 argument_list|)
 expr_stmt|;

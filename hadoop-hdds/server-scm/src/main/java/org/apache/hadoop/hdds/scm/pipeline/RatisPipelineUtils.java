@@ -104,24 +104,6 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|security
-operator|.
-name|x509
-operator|.
-name|SecurityConfig
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
 name|ratis
 operator|.
 name|RatisHelper
@@ -292,8 +274,8 @@ specifier|private
 name|RatisPipelineUtils
 parameter_list|()
 block|{   }
-comment|/**    * Removes pipeline from SCM. Sends ratis command to destroy pipeline on all    * the datanodes.    *    * @param pipeline        - Pipeline to be destroyed    * @param ozoneConf       - Ozone configuration    * @throws IOException    */
-DECL|method|destroyPipeline (Pipeline pipeline, Configuration ozoneConf)
+comment|/**    * Removes pipeline from SCM. Sends ratis command to destroy pipeline on all    * the datanodes.    *    * @param pipeline        - Pipeline to be destroyed    * @param ozoneConf       - Ozone configuration    * @param grpcTlsConfig    * @throws IOException    */
+DECL|method|destroyPipeline (Pipeline pipeline, Configuration ozoneConf, GrpcTlsConfig grpcTlsConfig)
 specifier|static
 name|void
 name|destroyPipeline
@@ -303,6 +285,9 @@ name|pipeline
 parameter_list|,
 name|Configuration
 name|ozoneConf
+parameter_list|,
+name|GrpcTlsConfig
+name|grpcTlsConfig
 parameter_list|)
 block|{
 specifier|final
@@ -353,6 +338,8 @@ name|getId
 argument_list|()
 argument_list|,
 name|ozoneConf
+argument_list|,
+name|grpcTlsConfig
 argument_list|)
 expr_stmt|;
 block|}
@@ -379,8 +366,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Sends ratis command to destroy pipeline on the given datanode.    *    * @param dn         - Datanode on which pipeline needs to be destroyed    * @param pipelineID - ID of pipeline to be destroyed    * @param ozoneConf  - Ozone configuration    * @throws IOException    */
-DECL|method|destroyPipeline (DatanodeDetails dn, PipelineID pipelineID, Configuration ozoneConf)
+comment|/**    * Sends ratis command to destroy pipeline on the given datanode.    *    * @param dn         - Datanode on which pipeline needs to be destroyed    * @param pipelineID - ID of pipeline to be destroyed    * @param ozoneConf  - Ozone configuration    * @param grpcTlsConfig - grpc tls configuration    * @throws IOException    */
+DECL|method|destroyPipeline (DatanodeDetails dn, PipelineID pipelineID, Configuration ozoneConf, GrpcTlsConfig grpcTlsConfig)
 specifier|static
 name|void
 name|destroyPipeline
@@ -393,6 +380,9 @@ name|pipelineID
 parameter_list|,
 name|Configuration
 name|ozoneConf
+parameter_list|,
+name|GrpcTlsConfig
+name|grpcTlsConfig
 parameter_list|)
 throws|throws
 name|IOException
@@ -448,21 +438,6 @@ name|ozoneConf
 argument_list|)
 decl_stmt|;
 specifier|final
-name|GrpcTlsConfig
-name|tlsConfig
-init|=
-name|RatisHelper
-operator|.
-name|createTlsClientConfig
-argument_list|(
-operator|new
-name|SecurityConfig
-argument_list|(
-name|ozoneConf
-argument_list|)
-argument_list|)
-decl_stmt|;
-specifier|final
 name|TimeDuration
 name|requestTimeout
 init|=
@@ -495,7 +470,7 @@ name|retryPolicy
 argument_list|,
 name|maxOutstandingRequests
 argument_list|,
-name|tlsConfig
+name|grpcTlsConfig
 argument_list|,
 name|requestTimeout
 argument_list|)
