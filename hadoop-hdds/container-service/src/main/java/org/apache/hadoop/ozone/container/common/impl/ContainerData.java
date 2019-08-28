@@ -1700,6 +1700,14 @@ name|ContainerDataProto
 name|getProtoBufMessage
 parameter_list|()
 function_decl|;
+comment|/**    * Returns the blockCommitSequenceId.    */
+DECL|method|getBlockCommitSequenceId ()
+specifier|public
+specifier|abstract
+name|long
+name|getBlockCommitSequenceId
+parameter_list|()
+function_decl|;
 block|}
 end_class
 

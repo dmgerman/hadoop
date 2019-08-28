@@ -782,6 +782,21 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
+DECL|method|getNumReadStateMachineOps ()
+specifier|public
+name|long
+name|getNumReadStateMachineOps
+parameter_list|()
+block|{
+return|return
+name|numReadStateMachineOps
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getNumBytesWrittenCount ()
 specifier|public
 name|long

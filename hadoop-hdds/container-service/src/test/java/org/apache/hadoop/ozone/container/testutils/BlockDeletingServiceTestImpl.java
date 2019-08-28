@@ -76,11 +76,13 @@ name|ozone
 operator|.
 name|container
 operator|.
-name|common
+name|keyvalue
 operator|.
-name|impl
+name|statemachine
 operator|.
-name|ContainerSet
+name|background
+operator|.
+name|BlockDeletingService
 import|;
 end_import
 
@@ -96,13 +98,9 @@ name|ozone
 operator|.
 name|container
 operator|.
-name|keyvalue
+name|ozoneimpl
 operator|.
-name|statemachine
-operator|.
-name|background
-operator|.
-name|BlockDeletingService
+name|OzoneContainer
 import|;
 end_import
 
@@ -200,12 +198,12 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
-DECL|method|BlockDeletingServiceTestImpl (ContainerSet containerSet, int serviceInterval, Configuration conf)
+DECL|method|BlockDeletingServiceTestImpl (OzoneContainer container, int serviceInterval, Configuration conf)
 specifier|public
 name|BlockDeletingServiceTestImpl
 parameter_list|(
-name|ContainerSet
-name|containerSet
+name|OzoneContainer
+name|container
 parameter_list|,
 name|int
 name|serviceInterval
@@ -216,7 +214,7 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
-name|containerSet
+name|container
 argument_list|,
 name|serviceInterval
 argument_list|,
@@ -300,9 +298,9 @@ argument_list|()
 return|;
 block|}
 comment|// Override the implementation to start a single on-call control thread.
-DECL|method|start ()
 annotation|@
 name|Override
+DECL|method|start ()
 specifier|public
 name|void
 name|start

@@ -1032,6 +1032,10 @@ name|exists
 argument_list|()
 operator|&&
 name|dispatcherContext
+operator|!=
+literal|null
+operator|&&
+name|dispatcherContext
 operator|.
 name|isReadFromTmpFile
 argument_list|()
