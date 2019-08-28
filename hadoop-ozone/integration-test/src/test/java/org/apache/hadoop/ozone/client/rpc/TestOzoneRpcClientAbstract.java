@@ -586,6 +586,22 @@ name|ozone
 operator|.
 name|client
 operator|.
+name|OzoneClientException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|client
+operator|.
 name|OzoneClientFactory
 import|;
 end_import
@@ -719,24 +735,6 @@ operator|.
 name|io
 operator|.
 name|OzoneOutputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|client
-operator|.
-name|rest
-operator|.
-name|OzoneException
 import|;
 end_import
 
@@ -2027,8 +2025,6 @@ name|testSetVolumeQuota
 parameter_list|()
 throws|throws
 name|IOException
-throws|,
-name|OzoneException
 block|{
 name|String
 name|volumeName
@@ -2169,7 +2165,7 @@ parameter_list|()
 throws|throws
 name|IOException
 throws|,
-name|OzoneException
+name|OzoneClientException
 block|{
 name|String
 name|volumeName
@@ -2259,7 +2255,7 @@ parameter_list|()
 throws|throws
 name|IOException
 throws|,
-name|OzoneException
+name|OzoneClientException
 block|{
 name|long
 name|currentTime
@@ -2395,7 +2391,7 @@ parameter_list|()
 throws|throws
 name|IOException
 throws|,
-name|OzoneException
+name|OzoneClientException
 block|{
 name|long
 name|currentTime
@@ -2508,7 +2504,7 @@ parameter_list|()
 throws|throws
 name|IOException
 throws|,
-name|OzoneException
+name|OzoneClientException
 block|{
 name|long
 name|currentTime
@@ -2755,7 +2751,7 @@ parameter_list|()
 throws|throws
 name|IOException
 throws|,
-name|OzoneException
+name|OzoneClientException
 block|{
 name|String
 name|userName
@@ -2866,7 +2862,7 @@ parameter_list|()
 throws|throws
 name|IOException
 throws|,
-name|OzoneException
+name|OzoneClientException
 block|{
 name|String
 name|userName
@@ -3087,7 +3083,7 @@ parameter_list|()
 throws|throws
 name|IOException
 throws|,
-name|OzoneException
+name|OzoneClientException
 block|{
 name|long
 name|currentTime
@@ -3230,7 +3226,7 @@ parameter_list|()
 throws|throws
 name|IOException
 throws|,
-name|OzoneException
+name|OzoneClientException
 block|{
 name|String
 name|volumeName
@@ -3345,7 +3341,7 @@ parameter_list|()
 throws|throws
 name|IOException
 throws|,
-name|OzoneException
+name|OzoneClientException
 block|{
 name|String
 name|volumeName
@@ -3464,7 +3460,7 @@ parameter_list|()
 throws|throws
 name|IOException
 throws|,
-name|OzoneException
+name|OzoneClientException
 block|{
 name|String
 name|volumeName
@@ -3615,7 +3611,7 @@ parameter_list|()
 throws|throws
 name|IOException
 throws|,
-name|OzoneException
+name|OzoneClientException
 block|{
 name|String
 name|volumeName
@@ -3872,7 +3868,7 @@ parameter_list|()
 throws|throws
 name|IOException
 throws|,
-name|OzoneException
+name|OzoneClientException
 block|{
 name|String
 name|volumeName
@@ -4032,7 +4028,7 @@ parameter_list|()
 throws|throws
 name|IOException
 throws|,
-name|OzoneException
+name|OzoneClientException
 block|{
 name|String
 name|volumeName
@@ -4486,7 +4482,7 @@ parameter_list|()
 throws|throws
 name|IOException
 throws|,
-name|OzoneException
+name|OzoneClientException
 block|{
 name|String
 name|volumeName
@@ -4735,7 +4731,7 @@ parameter_list|()
 throws|throws
 name|IOException
 throws|,
-name|OzoneException
+name|OzoneClientException
 block|{
 name|String
 name|volumeName
@@ -5106,7 +5102,7 @@ parameter_list|()
 throws|throws
 name|IOException
 throws|,
-name|OzoneException
+name|OzoneClientException
 block|{
 name|String
 name|volumeName
@@ -5611,7 +5607,7 @@ parameter_list|()
 throws|throws
 name|IOException
 throws|,
-name|OzoneException
+name|OzoneClientException
 block|{
 name|String
 name|volumeName
@@ -5879,7 +5875,7 @@ parameter_list|()
 throws|throws
 name|IOException
 throws|,
-name|OzoneException
+name|OzoneClientException
 block|{
 name|String
 name|volumeName
@@ -7073,7 +7069,7 @@ parameter_list|()
 throws|throws
 name|IOException
 throws|,
-name|OzoneException
+name|OzoneClientException
 block|{
 name|String
 name|volumeName

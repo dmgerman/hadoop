@@ -22,6 +22,20 @@ begin_import
 import|import
 name|com
 operator|.
+name|fasterxml
+operator|.
+name|jackson
+operator|.
+name|annotation
+operator|.
+name|JsonIgnore
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
 name|google
 operator|.
 name|common
@@ -983,6 +997,8 @@ name|name
 return|;
 block|}
 comment|/**    * Returns ACL's associated with the Bucket.    *    * @return acls    */
+annotation|@
+name|JsonIgnore
 DECL|method|getAcls ()
 specifier|public
 name|List

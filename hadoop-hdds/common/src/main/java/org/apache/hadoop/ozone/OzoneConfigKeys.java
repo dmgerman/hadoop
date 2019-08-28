@@ -437,15 +437,6 @@ name|OZONE_ADMINISTRATORS_WILDCARD
 init|=
 literal|"*"
 decl_stmt|;
-DECL|field|OZONE_CLIENT_PROTOCOL
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|OZONE_CLIENT_PROTOCOL
-init|=
-literal|"ozone.client.protocol"
-decl_stmt|;
 DECL|field|OZONE_CLIENT_STREAM_BUFFER_FLUSH_SIZE
 specifier|public
 specifier|static

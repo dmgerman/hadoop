@@ -62,9 +62,7 @@ name|ozone
 operator|.
 name|client
 operator|.
-name|rest
-operator|.
-name|OzoneException
+name|OzoneClientException
 import|;
 end_import
 
@@ -179,18 +177,6 @@ literal|"o3fs:///"
 block|}
 block|,
 block|{
-literal|"http://localhost:9878/"
-block|}
-block|,
-block|{
-literal|"http://localhost/"
-block|}
-block|,
-block|{
-literal|"http:///"
-block|}
-block|,
-block|{
 literal|"/"
 block|}
 block|,
@@ -229,7 +215,7 @@ name|void
 name|checkUrlTypes
 parameter_list|()
 throws|throws
-name|OzoneException
+name|OzoneClientException
 throws|,
 name|IOException
 block|{

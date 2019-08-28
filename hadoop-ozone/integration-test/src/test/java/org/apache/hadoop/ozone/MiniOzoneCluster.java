@@ -372,14 +372,6 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Returns an REST based {@link OzoneClient} to access the    * {@link MiniOzoneCluster}.    *    * @return {@link OzoneClient}    * @throws IOException    */
-DECL|method|getRestClient ()
-name|OzoneClient
-name|getRestClient
-parameter_list|()
-throws|throws
-name|IOException
-function_decl|;
 comment|/**    * Returns StorageContainerLocationClient to communicate with    * {@link StorageContainerManager} associated with the MiniOzoneCluster.    *    * @return StorageContainerLocation Client    * @throws IOException    */
 name|StorageContainerLocationProtocolClientSideTranslatorPB
 DECL|method|getStorageContainerLocationClient ()

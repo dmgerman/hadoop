@@ -18,24 +18,6 @@ name|client
 package|;
 end_package
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|client
-operator|.
-name|rest
-operator|.
-name|OzoneException
-import|;
-end_import
-
 begin_comment
 comment|/**  * This exception is thrown by the Ozone Clients.  */
 end_comment
@@ -46,70 +28,86 @@ specifier|public
 class|class
 name|OzoneClientException
 extends|extends
-name|OzoneException
-block|{
-comment|/**    * Constructor that allows the shortMessage.    *    * @param shortMessage Short Message    */
-DECL|method|OzoneClientException (String shortMessage)
-specifier|public
-name|OzoneClientException
-parameter_list|(
-name|String
-name|shortMessage
-parameter_list|)
-block|{
-name|super
-argument_list|(
-literal|0
-argument_list|,
-name|shortMessage
-argument_list|,
-name|shortMessage
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Constructor that allows a shortMessage and an exception.    *    * @param shortMessage short message    * @param ex exception    */
-DECL|method|OzoneClientException (String shortMessage, Exception ex)
-specifier|public
-name|OzoneClientException
-parameter_list|(
-name|String
-name|shortMessage
-parameter_list|,
 name|Exception
-name|ex
-parameter_list|)
 block|{
-name|super
-argument_list|(
-literal|0
-argument_list|,
-name|shortMessage
-argument_list|,
-name|shortMessage
-argument_list|,
-name|ex
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Constructor that allows the shortMessage and a longer message.    *    * @param shortMessage Short Message    * @param message long error message    */
-DECL|method|OzoneClientException (String shortMessage, String message)
+DECL|method|OzoneClientException ()
+specifier|public
+name|OzoneClientException
+parameter_list|()
+block|{   }
+DECL|method|OzoneClientException (String s)
 specifier|public
 name|OzoneClientException
 parameter_list|(
 name|String
-name|shortMessage
-parameter_list|,
-name|String
-name|message
+name|s
 parameter_list|)
 block|{
 name|super
 argument_list|(
-literal|0
+name|s
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|OzoneClientException (String s, Throwable throwable)
+specifier|public
+name|OzoneClientException
+parameter_list|(
+name|String
+name|s
+parameter_list|,
+name|Throwable
+name|throwable
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|s
 argument_list|,
-name|shortMessage
+name|throwable
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|OzoneClientException (Throwable throwable)
+specifier|public
+name|OzoneClientException
+parameter_list|(
+name|Throwable
+name|throwable
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|throwable
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|OzoneClientException (String s, Throwable throwable, boolean b, boolean b1)
+specifier|public
+name|OzoneClientException
+parameter_list|(
+name|String
+name|s
+parameter_list|,
+name|Throwable
+name|throwable
+parameter_list|,
+name|boolean
+name|b
+parameter_list|,
+name|boolean
+name|b1
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|s
 argument_list|,
-name|message
+name|throwable
+argument_list|,
+name|b
+argument_list|,
+name|b1
 argument_list|)
 expr_stmt|;
 block|}
