@@ -40,6 +40,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|lang3
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|conf
@@ -1506,38 +1520,7 @@ return|return
 name|privateKeyFileName
 return|;
 block|}
-comment|/**    * Returns the File path to where keys are stored.    *    * @return path Key location.    */
-DECL|method|getKeyLocation ()
-specifier|public
-name|Path
-name|getKeyLocation
-parameter_list|()
-block|{
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|this
-operator|.
-name|metadatDir
-argument_list|,
-literal|"Metadata directory can't be"
-operator|+
-literal|" null. Please check configs."
-argument_list|)
-expr_stmt|;
-return|return
-name|Paths
-operator|.
-name|get
-argument_list|(
-name|metadatDir
-argument_list|,
-name|keyDir
-argument_list|)
-return|;
-block|}
-comment|/**    * Returns the File path to where keys are stored with an additional component    * name inserted in between.    *    * @param component - Component Name - String.    * @return Path location.    */
+comment|/**    * Returns the File path to where keys are stored with an additional component    * name inserted in between.    *    * @param component - Component Name - String.    * @return Path Key location.    */
 DECL|method|getKeyLocation (String component)
 specifier|public
 name|Path
@@ -1573,38 +1556,7 @@ name|keyDir
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns the File path to where keys are stored.    *    * @return path Key location.    */
-DECL|method|getCertificateLocation ()
-specifier|public
-name|Path
-name|getCertificateLocation
-parameter_list|()
-block|{
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|this
-operator|.
-name|metadatDir
-argument_list|,
-literal|"Metadata directory can't be"
-operator|+
-literal|" null. Please check configs."
-argument_list|)
-expr_stmt|;
-return|return
-name|Paths
-operator|.
-name|get
-argument_list|(
-name|metadatDir
-argument_list|,
-name|certificateDir
-argument_list|)
-return|;
-block|}
-comment|/**    * Returns the File path to where keys are stored with an addition component    * name inserted in between.    *    * @param component - Component Name - String.    * @return Path location.    */
+comment|/**    * Returns the File path to where certificates are stored with an addition    * component    * name inserted in between.    *    * @param component - Component Name - String.    * @return Path location.    */
 DECL|method|getCertificateLocation (String component)
 specifier|public
 name|Path
@@ -1746,6 +1698,38 @@ operator|.
 name|grpcMutualTlsRequired
 return|;
 block|}
+comment|/**    * Returns the TLS-enabled gRPC client private key file(Only needed for mutual    * authentication) for the given component.    * @param component name of the component.    * @return the TLS-enabled gRPC client private key file.    */
+DECL|method|getClientPrivateKeyFile (String component)
+specifier|public
+name|File
+name|getClientPrivateKeyFile
+parameter_list|(
+name|String
+name|component
+parameter_list|)
+block|{
+return|return
+name|Paths
+operator|.
+name|get
+argument_list|(
+name|getKeyLocation
+argument_list|(
+name|component
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+literal|"client."
+operator|+
+name|privateKeyFileName
+argument_list|)
+operator|.
+name|toFile
+argument_list|()
+return|;
+block|}
 comment|/**    * Returns the TLS-enabled gRPC client private key file(Only needed for mutual    * authentication).    * @return the TLS-enabled gRPC client private key file.    */
 DECL|method|getClientPrivateKeyFile ()
 specifier|public
@@ -1754,17 +1738,38 @@ name|getClientPrivateKeyFile
 parameter_list|()
 block|{
 return|return
+name|getClientPrivateKeyFile
+argument_list|(
+name|StringUtils
+operator|.
+name|EMPTY
+argument_list|)
+return|;
+block|}
+comment|/**    * Returns the TLS-enabled gRPC server private key file for the given    * component.    * @param component name of the component.    * @return the TLS-enabled gRPC server private key file.    */
+DECL|method|getServerPrivateKeyFile (String component)
+specifier|public
+name|File
+name|getServerPrivateKeyFile
+parameter_list|(
+name|String
+name|component
+parameter_list|)
+block|{
+return|return
 name|Paths
 operator|.
 name|get
 argument_list|(
 name|getKeyLocation
-argument_list|()
+argument_list|(
+name|component
+argument_list|)
 operator|.
 name|toString
 argument_list|()
 argument_list|,
-literal|"client."
+literal|"server."
 operator|+
 name|privateKeyFileName
 argument_list|)
@@ -1781,19 +1786,38 @@ name|getServerPrivateKeyFile
 parameter_list|()
 block|{
 return|return
+name|getServerPrivateKeyFile
+argument_list|(
+name|StringUtils
+operator|.
+name|EMPTY
+argument_list|)
+return|;
+block|}
+comment|/**    * Get the trusted CA certificate file for the given component. (CA    * certificate)    * @param component name of the component.    * @return the trusted CA certificate.    */
+DECL|method|getTrustStoreFile (String component)
+specifier|public
+name|File
+name|getTrustStoreFile
+parameter_list|(
+name|String
+name|component
+parameter_list|)
+block|{
+return|return
 name|Paths
 operator|.
 name|get
 argument_list|(
 name|getKeyLocation
-argument_list|()
+argument_list|(
+name|component
+argument_list|)
 operator|.
 name|toString
 argument_list|()
 argument_list|,
-literal|"server."
-operator|+
-name|privateKeyFileName
+name|trustStoreFileName
 argument_list|)
 operator|.
 name|toFile
@@ -1808,17 +1832,38 @@ name|getTrustStoreFile
 parameter_list|()
 block|{
 return|return
+name|getTrustStoreFile
+argument_list|(
+name|StringUtils
+operator|.
+name|EMPTY
+argument_list|)
+return|;
+block|}
+comment|/**    * Get the TLS-enabled gRPC Client certificate chain file for the given    * component (only needed for    * mutual authentication).    * @param component name of the component.    * @return the TLS-enabled gRPC Server certificate chain file.    */
+DECL|method|getClientCertChainFile (String component)
+specifier|public
+name|File
+name|getClientCertChainFile
+parameter_list|(
+name|String
+name|component
+parameter_list|)
+block|{
+return|return
 name|Paths
 operator|.
 name|get
 argument_list|(
 name|getKeyLocation
-argument_list|()
+argument_list|(
+name|component
+argument_list|)
 operator|.
 name|toString
 argument_list|()
 argument_list|,
-name|trustStoreFileName
+name|clientCertChainFileName
 argument_list|)
 operator|.
 name|toFile
@@ -1833,17 +1878,38 @@ name|getClientCertChainFile
 parameter_list|()
 block|{
 return|return
+name|getClientCertChainFile
+argument_list|(
+name|StringUtils
+operator|.
+name|EMPTY
+argument_list|)
+return|;
+block|}
+comment|/**    * Get the TLS-enabled gRPC Server certificate chain file for the given    * component.    * @param component name of the component.    * @return the TLS-enabled gRPC Server certificate chain file.    */
+DECL|method|getServerCertChainFile (String component)
+specifier|public
+name|File
+name|getServerCertChainFile
+parameter_list|(
+name|String
+name|component
+parameter_list|)
+block|{
+return|return
 name|Paths
 operator|.
 name|get
 argument_list|(
 name|getKeyLocation
-argument_list|()
+argument_list|(
+name|component
+argument_list|)
 operator|.
 name|toString
 argument_list|()
 argument_list|,
-name|clientCertChainFileName
+name|serverCertChainFileName
 argument_list|)
 operator|.
 name|toFile
@@ -1858,21 +1924,12 @@ name|getServerCertChainFile
 parameter_list|()
 block|{
 return|return
-name|Paths
-operator|.
-name|get
+name|getServerCertChainFile
 argument_list|(
-name|getKeyLocation
-argument_list|()
+name|StringUtils
 operator|.
-name|toString
-argument_list|()
-argument_list|,
-name|serverCertChainFileName
+name|EMPTY
 argument_list|)
-operator|.
-name|toFile
-argument_list|()
 return|;
 block|}
 comment|/**    * Get the gRPC TLS provider.    * @return the gRPC TLS Provider.    */
@@ -1898,7 +1955,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Return true if using test certificates with authority as localhost.    * This should be used only for unit test where certifiates are generated    * by openssl with localhost as DN and should never use for production as it    * will bypass the hostname/ip matching verification.    * @return true if using test certificates.    */
+comment|/**    * Return true if using test certificates with authority as localhost.    * This should be used only for unit test where certificates are generated    * by openssl with localhost as DN and should never use for production as it    * will bypass the hostname/ip matching verification.    * @return true if using test certificates.    */
 DECL|method|useTestCert ()
 specifier|public
 name|boolean
@@ -1965,7 +2022,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Returns max date for which S3 tokens will be valid.    * */
+comment|/**    * Returns max date for which S3 tokens will be valid.    */
 DECL|method|getS3TokenMaxDate ()
 specifier|public
 name|long

@@ -610,6 +610,28 @@ name|UTF
 init|=
 literal|"UTF-8"
 decl_stmt|;
+DECL|field|DN_COMPONENT
+specifier|private
+specifier|final
+specifier|static
+name|String
+name|DN_COMPONENT
+init|=
+name|DNCertificateClient
+operator|.
+name|COMPONENT_NAME
+decl_stmt|;
+DECL|field|OM_COMPONENT
+specifier|private
+specifier|final
+specifier|static
+name|String
+name|OM_COMPONENT
+init|=
+name|OMCertificateClient
+operator|.
+name|COMPONENT_NAME
+decl_stmt|;
 DECL|field|omKeyCodec
 specifier|private
 name|KeyCodec
@@ -765,6 +787,8 @@ operator|new
 name|KeyCodec
 argument_list|(
 name|omSecurityConfig
+argument_list|,
+name|OM_COMPONENT
 argument_list|)
 expr_stmt|;
 name|dnKeyCodec
@@ -773,6 +797,8 @@ operator|new
 name|KeyCodec
 argument_list|(
 name|dnSecurityConfig
+argument_list|,
+name|DN_COMPONENT
 argument_list|)
 expr_stmt|;
 name|Files
@@ -782,7 +808,9 @@ argument_list|(
 name|omSecurityConfig
 operator|.
 name|getKeyLocation
-argument_list|()
+argument_list|(
+name|OM_COMPONENT
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|Files
@@ -792,7 +820,9 @@ argument_list|(
 name|dnSecurityConfig
 operator|.
 name|getKeyLocation
-argument_list|()
+argument_list|(
+name|DN_COMPONENT
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|x509Certificate
@@ -1051,7 +1081,9 @@ argument_list|(
 name|omSecurityConfig
 operator|.
 name|getKeyLocation
-argument_list|()
+argument_list|(
+name|OM_COMPONENT
+argument_list|)
 operator|.
 name|toString
 argument_list|()
@@ -1077,7 +1109,9 @@ argument_list|(
 name|omSecurityConfig
 operator|.
 name|getKeyLocation
-argument_list|()
+argument_list|(
+name|OM_COMPONENT
+argument_list|)
 operator|.
 name|toString
 argument_list|()
@@ -1103,7 +1137,9 @@ argument_list|(
 name|dnSecurityConfig
 operator|.
 name|getKeyLocation
-argument_list|()
+argument_list|(
+name|DN_COMPONENT
+argument_list|)
 operator|.
 name|toString
 argument_list|()
@@ -1129,7 +1165,9 @@ argument_list|(
 name|dnSecurityConfig
 operator|.
 name|getKeyLocation
-argument_list|()
+argument_list|(
+name|DN_COMPONENT
+argument_list|)
 operator|.
 name|toString
 argument_list|()
@@ -1297,7 +1335,9 @@ argument_list|(
 name|omSecurityConfig
 operator|.
 name|getKeyLocation
-argument_list|()
+argument_list|(
+name|OM_COMPONENT
+argument_list|)
 operator|.
 name|toString
 argument_list|()
@@ -1323,7 +1363,9 @@ argument_list|(
 name|omSecurityConfig
 operator|.
 name|getKeyLocation
-argument_list|()
+argument_list|(
+name|OM_COMPONENT
+argument_list|)
 operator|.
 name|toString
 argument_list|()
@@ -1792,7 +1834,9 @@ init|=
 name|dnSecurityConfig
 operator|.
 name|getCertificateLocation
-argument_list|()
+argument_list|(
+name|DN_COMPONENT
+argument_list|)
 decl_stmt|;
 name|CertificateCodec
 name|codec
@@ -1801,6 +1845,8 @@ operator|new
 name|CertificateCodec
 argument_list|(
 name|dnSecurityConfig
+argument_list|,
+name|DN_COMPONENT
 argument_list|)
 decl_stmt|;
 comment|// Certificate not found.
@@ -1936,7 +1982,7 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-comment|// Re instentiate DN client which will load certificates from filesystem.
+comment|// Re instantiate DN client which will load certificates from filesystem.
 name|dnCertClient
 operator|=
 operator|new
@@ -2205,7 +2251,9 @@ argument_list|(
 name|omSecurityConfig
 operator|.
 name|getKeyLocation
-argument_list|()
+argument_list|(
+name|OM_COMPONENT
+argument_list|)
 operator|.
 name|toString
 argument_list|()
@@ -2231,7 +2279,9 @@ argument_list|(
 name|omSecurityConfig
 operator|.
 name|getKeyLocation
-argument_list|()
+argument_list|(
+name|OM_COMPONENT
+argument_list|)
 operator|.
 name|toString
 argument_list|()
@@ -2257,7 +2307,9 @@ argument_list|(
 name|dnSecurityConfig
 operator|.
 name|getKeyLocation
-argument_list|()
+argument_list|(
+name|DN_COMPONENT
+argument_list|)
 operator|.
 name|toString
 argument_list|()
@@ -2283,7 +2335,9 @@ argument_list|(
 name|dnSecurityConfig
 operator|.
 name|getKeyLocation
-argument_list|()
+argument_list|(
+name|DN_COMPONENT
+argument_list|)
 operator|.
 name|toString
 argument_list|()
@@ -2426,7 +2480,9 @@ argument_list|(
 name|omSecurityConfig
 operator|.
 name|getKeyLocation
-argument_list|()
+argument_list|(
+name|OM_COMPONENT
+argument_list|)
 operator|.
 name|toString
 argument_list|()
@@ -2452,7 +2508,9 @@ argument_list|(
 name|dnSecurityConfig
 operator|.
 name|getKeyLocation
-argument_list|()
+argument_list|(
+name|DN_COMPONENT
+argument_list|)
 operator|.
 name|toString
 argument_list|()
@@ -2474,6 +2532,8 @@ operator|new
 name|CertificateCodec
 argument_list|(
 name|omSecurityConfig
+argument_list|,
+name|OM_COMPONENT
 argument_list|)
 decl_stmt|;
 name|omCertCodec
@@ -2497,6 +2557,8 @@ operator|new
 name|CertificateCodec
 argument_list|(
 name|dnSecurityConfig
+argument_list|,
+name|DN_COMPONENT
 argument_list|)
 decl_stmt|;
 name|dnCertCodec
@@ -2597,7 +2659,9 @@ argument_list|(
 name|omSecurityConfig
 operator|.
 name|getKeyLocation
-argument_list|()
+argument_list|(
+name|OM_COMPONENT
+argument_list|)
 operator|.
 name|toString
 argument_list|()
@@ -2623,7 +2687,9 @@ argument_list|(
 name|dnSecurityConfig
 operator|.
 name|getKeyLocation
-argument_list|()
+argument_list|(
+name|DN_COMPONENT
+argument_list|)
 operator|.
 name|toString
 argument_list|()
@@ -2748,7 +2814,9 @@ argument_list|(
 name|omSecurityConfig
 operator|.
 name|getKeyLocation
-argument_list|()
+argument_list|(
+name|OM_COMPONENT
+argument_list|)
 operator|.
 name|toString
 argument_list|()
@@ -2774,7 +2842,9 @@ argument_list|(
 name|dnSecurityConfig
 operator|.
 name|getKeyLocation
-argument_list|()
+argument_list|(
+name|DN_COMPONENT
+argument_list|)
 operator|.
 name|toString
 argument_list|()

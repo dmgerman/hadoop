@@ -530,6 +530,15 @@ specifier|public
 class|class
 name|TestSecureOzoneManager
 block|{
+DECL|field|COMPONENT
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|COMPONENT
+init|=
+literal|"om"
+decl_stmt|;
 DECL|field|cluster
 specifier|private
 name|MiniOzoneCluster
@@ -1055,7 +1064,9 @@ argument_list|(
 name|securityConfig
 operator|.
 name|getKeyLocation
-argument_list|()
+argument_list|(
+name|COMPONENT
+argument_list|)
 operator|.
 name|toString
 argument_list|()
@@ -1164,7 +1175,9 @@ argument_list|(
 name|securityConfig
 operator|.
 name|getKeyLocation
-argument_list|()
+argument_list|(
+name|COMPONENT
+argument_list|)
 operator|.
 name|toString
 argument_list|()
@@ -1186,6 +1199,8 @@ operator|new
 name|KeyCodec
 argument_list|(
 name|securityConfig
+argument_list|,
+name|COMPONENT
 argument_list|)
 decl_stmt|;
 name|keyCodec
@@ -1281,7 +1296,9 @@ argument_list|(
 name|securityConfig
 operator|.
 name|getKeyLocation
-argument_list|()
+argument_list|(
+name|COMPONENT
+argument_list|)
 operator|.
 name|toString
 argument_list|()
@@ -1303,6 +1320,8 @@ operator|new
 name|CertificateCodec
 argument_list|(
 name|securityConfig
+argument_list|,
+name|COMPONENT
 argument_list|)
 decl_stmt|;
 name|X509Certificate
@@ -1475,7 +1494,9 @@ argument_list|(
 name|securityConfig
 operator|.
 name|getKeyLocation
-argument_list|()
+argument_list|(
+name|COMPONENT
+argument_list|)
 operator|.
 name|toString
 argument_list|()

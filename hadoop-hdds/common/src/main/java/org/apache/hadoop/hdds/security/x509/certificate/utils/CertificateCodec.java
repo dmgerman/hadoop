@@ -26,20 +26,6 @@ end_package
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Preconditions
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -49,20 +35,6 @@ operator|.
 name|io
 operator|.
 name|IOUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|conf
-operator|.
-name|Configuration
 import|;
 end_import
 
@@ -510,7 +482,7 @@ name|toSet
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|/**    * Creates an CertificateCodec.    *    * @param config - Security Config.    * @param component - Component String.    */
+comment|/**    * Creates a CertificateCodec with component name.    *    * @param config - Security Config.    * @param component - Component String.    */
 DECL|method|CertificateCodec (SecurityConfig config, String component)
 specifier|public
 name|CertificateCodec
@@ -538,69 +510,6 @@ name|getCertificateLocation
 argument_list|(
 name|component
 argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Creates an CertificateCodec.    *    * @param config - Security Config.    */
-DECL|method|CertificateCodec (SecurityConfig config)
-specifier|public
-name|CertificateCodec
-parameter_list|(
-name|SecurityConfig
-name|config
-parameter_list|)
-block|{
-name|this
-operator|.
-name|securityConfig
-operator|=
-name|config
-expr_stmt|;
-name|this
-operator|.
-name|location
-operator|=
-name|securityConfig
-operator|.
-name|getCertificateLocation
-argument_list|()
-expr_stmt|;
-block|}
-comment|/**    * Creates an CertificateCodec.    *    * @param configuration - Configuration    */
-DECL|method|CertificateCodec (Configuration configuration)
-specifier|public
-name|CertificateCodec
-parameter_list|(
-name|Configuration
-name|configuration
-parameter_list|)
-block|{
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|configuration
-argument_list|,
-literal|"Config cannot be null"
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|securityConfig
-operator|=
-operator|new
-name|SecurityConfig
-argument_list|(
-name|configuration
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|location
-operator|=
-name|securityConfig
-operator|.
-name|getCertificateLocation
-argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Returns a X509 Certificate from the Certificate Holder.    *    * @param holder - Holder    * @return X509Certificate.    * @throws CertificateException - on Error.    */

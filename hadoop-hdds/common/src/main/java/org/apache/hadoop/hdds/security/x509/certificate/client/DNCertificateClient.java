@@ -132,6 +132,15 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|COMPONENT_NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|COMPONENT_NAME
+init|=
+literal|"dn"
+decl_stmt|;
 DECL|method|DNCertificateClient (SecurityConfig securityConfig, String certSerialId)
 specifier|public
 name|DNCertificateClient
@@ -150,6 +159,8 @@ argument_list|,
 name|LOG
 argument_list|,
 name|certSerialId
+argument_list|,
+name|COMPONENT_NAME
 argument_list|)
 expr_stmt|;
 block|}
@@ -168,6 +179,8 @@ argument_list|,
 name|LOG
 argument_list|,
 literal|null
+argument_list|,
+name|COMPONENT_NAME
 argument_list|)
 expr_stmt|;
 block|}

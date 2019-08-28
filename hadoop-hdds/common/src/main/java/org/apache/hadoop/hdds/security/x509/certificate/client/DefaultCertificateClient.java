@@ -817,7 +817,12 @@ specifier|private
 name|String
 name|certSerialId
 decl_stmt|;
-DECL|method|DefaultCertificateClient (SecurityConfig securityConfig, Logger log, String certSerialId)
+DECL|field|component
+specifier|private
+name|String
+name|component
+decl_stmt|;
+DECL|method|DefaultCertificateClient (SecurityConfig securityConfig, Logger log, String certSerialId, String component)
 name|DefaultCertificateClient
 parameter_list|(
 name|SecurityConfig
@@ -828,6 +833,9 @@ name|log
 parameter_list|,
 name|String
 name|certSerialId
+parameter_list|,
+name|String
+name|component
 parameter_list|)
 block|{
 name|Objects
@@ -849,6 +857,8 @@ operator|new
 name|KeyCodec
 argument_list|(
 name|securityConfig
+argument_list|,
+name|component
 argument_list|)
 expr_stmt|;
 name|this
@@ -872,6 +882,12 @@ name|certSerialId
 operator|=
 name|certSerialId
 expr_stmt|;
+name|this
+operator|.
+name|component
+operator|=
+name|component
+expr_stmt|;
 name|loadAllCertificates
 argument_list|()
 expr_stmt|;
@@ -890,7 +906,9 @@ init|=
 name|securityConfig
 operator|.
 name|getCertificateLocation
-argument_list|()
+argument_list|(
+name|component
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
@@ -945,6 +963,8 @@ operator|new
 name|CertificateCodec
 argument_list|(
 name|securityConfig
+argument_list|,
+name|component
 argument_list|)
 decl_stmt|;
 for|for
@@ -1129,7 +1149,9 @@ init|=
 name|securityConfig
 operator|.
 name|getKeyLocation
-argument_list|()
+argument_list|(
+name|component
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
@@ -1208,7 +1230,9 @@ init|=
 name|securityConfig
 operator|.
 name|getKeyLocation
-argument_list|()
+argument_list|(
+name|component
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
@@ -2247,6 +2271,8 @@ operator|new
 name|CertificateCodec
 argument_list|(
 name|securityConfig
+argument_list|,
+name|component
 argument_list|)
 decl_stmt|;
 try|try
@@ -2257,7 +2283,9 @@ init|=
 name|securityConfig
 operator|.
 name|getCertificateLocation
-argument_list|()
+argument_list|(
+name|component
+argument_list|)
 decl_stmt|;
 name|X509Certificate
 name|cert
@@ -3021,7 +3049,9 @@ init|=
 name|securityConfig
 operator|.
 name|getKeyLocation
-argument_list|()
+argument_list|(
+name|component
+argument_list|)
 decl_stmt|;
 if|if
 condition|(

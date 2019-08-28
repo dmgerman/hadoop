@@ -88,20 +88,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|hdds
 operator|.
 name|security
@@ -578,7 +564,7 @@ name|Boolean
 argument_list|>
 name|isPosixFileSystem
 decl_stmt|;
-comment|/**    * Creates an KeyCodec.    *    * @param config - Security Config.    * @param component - Component String.    */
+comment|/**    * Creates a KeyCodec with component name.    *    * @param config - Security Config.    * @param component - Component String.    */
 DECL|method|KeyCodec (SecurityConfig config, String component)
 specifier|public
 name|KeyCodec
@@ -612,81 +598,6 @@ name|getKeyLocation
 argument_list|(
 name|component
 argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Creates an KeyCodec.    *    * @param config - Security Config.    */
-DECL|method|KeyCodec (SecurityConfig config)
-specifier|public
-name|KeyCodec
-parameter_list|(
-name|SecurityConfig
-name|config
-parameter_list|)
-block|{
-name|this
-operator|.
-name|securityConfig
-operator|=
-name|config
-expr_stmt|;
-name|isPosixFileSystem
-operator|=
-name|KeyCodec
-operator|::
-name|isPosix
-expr_stmt|;
-name|this
-operator|.
-name|location
-operator|=
-name|securityConfig
-operator|.
-name|getKeyLocation
-argument_list|()
-expr_stmt|;
-block|}
-comment|/**    * Creates an HDDS Key Writer.    *    * @param configuration - Configuration    */
-DECL|method|KeyCodec (Configuration configuration)
-specifier|public
-name|KeyCodec
-parameter_list|(
-name|Configuration
-name|configuration
-parameter_list|)
-block|{
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|configuration
-argument_list|,
-literal|"Config cannot be null"
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|securityConfig
-operator|=
-operator|new
-name|SecurityConfig
-argument_list|(
-name|configuration
-argument_list|)
-expr_stmt|;
-name|isPosixFileSystem
-operator|=
-name|KeyCodec
-operator|::
-name|isPosix
-expr_stmt|;
-name|this
-operator|.
-name|location
-operator|=
-name|securityConfig
-operator|.
-name|getKeyLocation
-argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Checks if File System supports posix style security permissions.    *    * @return True if it supports posix.    */

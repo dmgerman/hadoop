@@ -522,6 +522,17 @@ specifier|static
 name|X509CertificateHolder
 name|certHolder
 decl_stmt|;
+DECL|field|DN_COMPONENT
+specifier|private
+specifier|final
+specifier|static
+name|String
+name|DN_COMPONENT
+init|=
+name|DNCertificateClient
+operator|.
+name|COMPONENT_NAME
+decl_stmt|;
 annotation|@
 name|BeforeClass
 DECL|method|setUp ()
@@ -689,6 +700,8 @@ operator|new
 name|CertificateCodec
 argument_list|(
 name|securityConfig
+argument_list|,
+name|DN_COMPONENT
 argument_list|)
 expr_stmt|;
 name|keyCodec
@@ -697,6 +710,8 @@ operator|new
 name|KeyCodec
 argument_list|(
 name|securityConfig
+argument_list|,
+name|DN_COMPONENT
 argument_list|)
 expr_stmt|;
 name|dnLogs
@@ -801,7 +816,9 @@ argument_list|(
 name|securityConfig
 operator|.
 name|getKeyLocation
-argument_list|()
+argument_list|(
+name|DN_COMPONENT
+argument_list|)
 operator|.
 name|toString
 argument_list|()
@@ -827,7 +844,9 @@ argument_list|(
 name|securityConfig
 operator|.
 name|getKeyLocation
-argument_list|()
+argument_list|(
+name|DN_COMPONENT
+argument_list|)
 operator|.
 name|toString
 argument_list|()
@@ -853,7 +872,9 @@ argument_list|(
 name|securityConfig
 operator|.
 name|getCertificateLocation
-argument_list|()
+argument_list|(
+name|DN_COMPONENT
+argument_list|)
 operator|.
 name|toString
 argument_list|()
