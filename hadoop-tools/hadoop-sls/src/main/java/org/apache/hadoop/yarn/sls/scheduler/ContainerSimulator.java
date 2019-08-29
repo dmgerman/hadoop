@@ -166,6 +166,12 @@ specifier|private
 name|long
 name|lifeTime
 decl_stmt|;
+comment|// time(ms) after which container would be requested by AM
+DECL|field|requestDelay
+specifier|private
+name|long
+name|requestDelay
+decl_stmt|;
 comment|// host name
 DECL|field|hostname
 specifier|private
@@ -279,11 +285,18 @@ name|executionType
 argument_list|,
 operator|-
 literal|1
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * invoked when AM schedules containers to allocate.    */
-DECL|method|ContainerSimulator (Resource resource, long lifeTime, String hostname, int priority, String type, ExecutionType executionType, long allocationId)
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"checkstyle:parameternumber"
+argument_list|)
+DECL|method|ContainerSimulator (Resource resource, long lifeTime, String hostname, int priority, String type, ExecutionType executionType, long allocationId, long requestDelay)
 specifier|public
 name|ContainerSimulator
 parameter_list|(
@@ -307,6 +320,9 @@ name|executionType
 parameter_list|,
 name|long
 name|allocationId
+parameter_list|,
+name|long
+name|requestDelay
 parameter_list|)
 block|{
 name|this
@@ -344,6 +360,12 @@ operator|.
 name|executionType
 operator|=
 name|executionType
+expr_stmt|;
+name|this
+operator|.
+name|requestDelay
+operator|=
+name|requestDelay
 expr_stmt|;
 name|this
 operator|.
@@ -588,6 +610,16 @@ parameter_list|()
 block|{
 return|return
 name|allocationId
+return|;
+block|}
+DECL|method|getRequestDelay ()
+specifier|public
+name|long
+name|getRequestDelay
+parameter_list|()
+block|{
+return|return
+name|requestDelay
 return|;
 block|}
 block|}

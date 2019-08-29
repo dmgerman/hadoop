@@ -788,6 +788,17 @@ name|TASK_CONTAINER
 operator|+
 literal|"allocation.id"
 decl_stmt|;
+DECL|field|TASK_REQUEST_DELAY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TASK_REQUEST_DELAY
+init|=
+name|TASK_CONTAINER
+operator|+
+literal|"request.delay"
+decl_stmt|;
 block|}
 end_class
 
