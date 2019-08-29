@@ -1394,6 +1394,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Objects
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|TreeSet
 import|;
 end_import
@@ -5634,7 +5644,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Caught interrupted exception "
+literal|"Caught interrupted exception"
 argument_list|,
 name|ie
 argument_list|)
@@ -5691,7 +5701,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Encountered exception while exiting state "
+literal|"Encountered exception while exiting state"
 argument_list|,
 name|e
 argument_list|)
@@ -6205,14 +6215,12 @@ name|newClusterID
 argument_list|()
 expr_stmt|;
 block|}
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
-literal|"Formatting using clusterid: "
-operator|+
+literal|"Formatting using clusterid: {}"
+argument_list|,
 name|clusterId
 argument_list|)
 expr_stmt|;
@@ -6351,7 +6359,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Encountered exception during format: "
+literal|"Encountered exception during format"
 argument_list|,
 name|ioe
 argument_list|)
@@ -7076,11 +7084,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Beginning to copy stream "
-operator|+
+literal|"Beginning to copy stream {} to shared edits"
+argument_list|,
 name|stream
-operator|+
-literal|" to shared edits"
 argument_list|)
 expr_stmt|;
 name|FSEditLogOp
@@ -7105,24 +7111,15 @@ operator|!=
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"copying op: "
-operator|+
+literal|"copying op: {}"
+argument_list|,
 name|op
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 operator|!
@@ -7179,8 +7176,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"ending log segment because of END_LOG_SEGMENT op in "
-operator|+
+literal|"ending log segment because of END_LOG_SEGMENT op in {}"
+argument_list|,
 name|stream
 argument_list|)
 expr_stmt|;
@@ -7199,8 +7196,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"ending log segment because of end of stream in "
-operator|+
+literal|"ending log segment because of end of stream in {}"
+argument_list|,
 name|stream
 argument_list|)
 expr_stmt|;
@@ -7958,8 +7955,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Unknown upgrade flag "
-operator|+
+literal|"Unknown upgrade flag: {}"
+argument_list|,
 name|flag
 argument_list|)
 expr_stmt|;
@@ -8841,25 +8838,21 @@ comment|// avoid javac warning
 case|case
 name|GENCLUSTERID
 case|:
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"Generating new cluster id:"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
+name|String
+name|clusterID
+init|=
 name|NNStorage
 operator|.
 name|newClusterID
 argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Generated new cluster id: {}"
+argument_list|,
+name|clusterID
 argument_list|)
 expr_stmt|;
 name|terminate
@@ -9233,31 +9226,17 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Setting "
-operator|+
+literal|"Setting {} to {}"
+argument_list|,
 name|FS_DEFAULT_NAME_KEY
-operator|+
-literal|" to "
-operator|+
+argument_list|,
 name|defaultUri
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 comment|/**     * Get the name service Id for the node    * @return name service Id or null if federation is not configured    */
@@ -9862,34 +9841,21 @@ name|String
 name|getNNRole
 parameter_list|()
 block|{
-name|String
-name|roleStr
-init|=
-literal|""
-decl_stmt|;
 name|NamenodeRole
 name|role
 init|=
 name|getRole
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-literal|null
-operator|!=
-name|role
-condition|)
-block|{
-name|roleStr
-operator|=
-name|role
+return|return
+name|Objects
 operator|.
 name|toString
-argument_list|()
-expr_stmt|;
-block|}
-return|return
-name|roleStr
+argument_list|(
+name|role
+argument_list|,
+literal|""
+argument_list|)
 return|;
 block|}
 annotation|@
@@ -9901,34 +9867,21 @@ name|String
 name|getState
 parameter_list|()
 block|{
-name|String
-name|servStateStr
-init|=
-literal|""
-decl_stmt|;
 name|HAServiceState
 name|servState
 init|=
 name|getServiceState
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-literal|null
-operator|!=
-name|servState
-condition|)
-block|{
-name|servStateStr
-operator|=
-name|servState
+return|return
+name|Objects
 operator|.
 name|toString
-argument_list|()
-expr_stmt|;
-block|}
-return|return
-name|servStateStr
+argument_list|(
+name|servState
+argument_list|,
+literal|""
+argument_list|)
 return|;
 block|}
 annotation|@
@@ -10050,20 +10003,15 @@ parameter_list|)
 throws|throws
 name|ExitException
 block|{
-name|String
-name|message
-init|=
-literal|"Error encountered requiring NN shutdown. "
-operator|+
-literal|"Shutting down immediately."
-decl_stmt|;
 try|try
 block|{
 name|LOG
 operator|.
 name|error
 argument_list|(
-name|message
+literal|"Error encountered requiring NN shutdown. "
+operator|+
+literal|"Shutting down immediately."
 argument_list|,
 name|t
 argument_list|)
