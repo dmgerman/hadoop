@@ -549,24 +549,6 @@ import|;
 end_import
 
 begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|server
-operator|.
-name|ServerUtils
-operator|.
-name|updateRPCListenPort
-import|;
-end_import
-
-begin_import
 import|import
 name|org
 operator|.
@@ -687,6 +669,24 @@ operator|.
 name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_HANDLER_COUNT_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|server
+operator|.
+name|ServerUtils
+operator|.
+name|updateRPCListenAddress
 import|;
 end_import
 
@@ -882,16 +882,15 @@ argument_list|)
 expr_stmt|;
 name|blockRpcAddress
 operator|=
-name|updateRPCListenPort
+name|updateRPCListenAddress
 argument_list|(
 name|conf
 argument_list|,
 name|OZONE_SCM_BLOCK_CLIENT_ADDRESS_KEY
 argument_list|,
+name|scmBlockAddress
+argument_list|,
 name|blockRpcServer
-operator|.
-name|getListenerAddress
-argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
