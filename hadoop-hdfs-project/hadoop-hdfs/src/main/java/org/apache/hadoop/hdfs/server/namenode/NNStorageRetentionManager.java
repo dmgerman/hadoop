@@ -918,7 +918,7 @@ block|}
 block|}
 block|}
 comment|/**    * @param inspector inspector that has already inspected all storage dirs    * @return the transaction ID corresponding to the oldest checkpoint    * that should be retained.     */
-DECL|method|getImageTxIdToRetain (FSImageTransactionalStorageInspector inspector)
+DECL|method|getImageTxIdToRetain ( FSImageTransactionalStorageInspector inspector)
 specifier|private
 name|long
 name|getImageTxIdToRetain
@@ -927,6 +927,7 @@ name|FSImageTransactionalStorageInspector
 name|inspector
 parameter_list|)
 block|{
+specifier|final
 name|List
 argument_list|<
 name|FSImageFile
@@ -938,6 +939,18 @@ operator|.
 name|getFoundImages
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|images
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+return|return
+literal|0L
+return|;
+block|}
 name|TreeSet
 argument_list|<
 name|Long
@@ -947,7 +960,12 @@ init|=
 name|Sets
 operator|.
 name|newTreeSet
+argument_list|(
+name|Collections
+operator|.
+name|reverseOrder
 argument_list|()
+argument_list|)
 decl_stmt|;
 for|for
 control|(
@@ -981,25 +999,6 @@ argument_list|(
 name|imageTxIds
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|imageTxIdsList
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-return|return
-literal|0
-return|;
-block|}
-name|Collections
-operator|.
-name|reverse
-argument_list|(
-name|imageTxIdsList
-argument_list|)
-expr_stmt|;
 name|int
 name|toRetain
 init|=
@@ -1031,12 +1030,10 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Going to retain "
-operator|+
+literal|"Going to retain {} images with txid>= {}"
+argument_list|,
 name|toRetain
-operator|+
-literal|" images with txid>= "
-operator|+
+argument_list|,
 name|minTxId
 argument_list|)
 expr_stmt|;
