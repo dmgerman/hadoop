@@ -322,6 +322,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
+name|conf
+operator|.
+name|OzoneConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|OmUtils
@@ -596,23 +612,65 @@ argument_list|(
 literal|"([^\\.]+)\\.([^\\.]+)\\.{0,1}(.*)"
 argument_list|)
 decl_stmt|;
-DECL|field|URI_EXCEPTION_TEXT
+DECL|method|getOzoneConf (Configuration conf)
 specifier|private
-specifier|static
-specifier|final
+name|OzoneConfiguration
+name|getOzoneConf
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+operator|(
+name|conf
+operator|instanceof
+name|OzoneConfiguration
+operator|)
+condition|?
+operator|(
+name|OzoneConfiguration
+operator|)
+name|conf
+else|:
+operator|new
+name|OzoneConfiguration
+argument_list|(
+name|conf
+argument_list|)
+return|;
+block|}
+DECL|method|getUriExceptionText (Configuration conf)
+specifier|private
 name|String
-name|URI_EXCEPTION_TEXT
-init|=
-literal|"Ozone file system URL "
-operator|+
-literal|"should be one of the following formats: "
+name|getUriExceptionText
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+literal|"Ozone file system URL should be one of the following formats: "
 operator|+
 literal|"o3fs://bucket.volume/key  OR "
 operator|+
 literal|"o3fs://bucket.volume.om-host.example.com/key  OR "
 operator|+
-literal|"o3fs://bucket.volume.om-host.example.com:5678/key"
-decl_stmt|;
+literal|"o3fs://bucket.volume.om-host.example.com:"
+operator|+
+name|OmUtils
+operator|.
+name|getOmRpcPort
+argument_list|(
+name|getOzoneConf
+argument_list|(
+name|conf
+argument_list|)
+argument_list|)
+operator|+
+literal|"/key"
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|initialize (URI name, Configuration conf)
@@ -708,7 +766,10 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-name|URI_EXCEPTION_TEXT
+name|getUriExceptionText
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 throw|;
 block|}
@@ -796,7 +857,10 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-name|URI_EXCEPTION_TEXT
+name|getUriExceptionText
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 throw|;
 block|}
@@ -841,7 +905,10 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-name|URI_EXCEPTION_TEXT
+name|getUriExceptionText
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 throw|;
 block|}
