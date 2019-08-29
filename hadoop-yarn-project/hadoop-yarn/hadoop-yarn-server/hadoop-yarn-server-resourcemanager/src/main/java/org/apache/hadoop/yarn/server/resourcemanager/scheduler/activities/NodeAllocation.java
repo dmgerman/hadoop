@@ -157,10 +157,10 @@ specifier|private
 name|NodeId
 name|nodeId
 decl_stmt|;
-DECL|field|timeStamp
+DECL|field|timestamp
 specifier|private
 name|long
-name|timeStamp
+name|timestamp
 decl_stmt|;
 DECL|field|containerId
 specifier|private
@@ -185,6 +185,11 @@ argument_list|<
 name|AllocationActivity
 argument_list|>
 name|allocationOperations
+decl_stmt|;
+DECL|field|partition
+specifier|private
+name|String
+name|partition
 decl_stmt|;
 DECL|field|root
 specifier|private
@@ -233,7 +238,7 @@ argument_list|<>
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|addAllocationActivity (String parentName, String childName, String priority, ActivityState state, String diagnostic, String type, NodeId nId, String allocationRequestId)
+DECL|method|addAllocationActivity (String parentName, String childName, Integer priority, ActivityState state, String diagnostic, ActivityLevel level, NodeId nId, Long allocationRequestId)
 specifier|public
 name|void
 name|addAllocationActivity
@@ -244,7 +249,7 @@ parameter_list|,
 name|String
 name|childName
 parameter_list|,
-name|String
+name|Integer
 name|priority
 parameter_list|,
 name|ActivityState
@@ -253,13 +258,13 @@ parameter_list|,
 name|String
 name|diagnostic
 parameter_list|,
-name|String
-name|type
+name|ActivityLevel
+name|level
 parameter_list|,
 name|NodeId
 name|nId
 parameter_list|,
-name|String
+name|Long
 name|allocationRequestId
 parameter_list|)
 block|{
@@ -279,7 +284,7 @@ name|state
 argument_list|,
 name|diagnostic
 argument_list|,
-name|type
+name|level
 argument_list|,
 name|nId
 argument_list|,
@@ -549,32 +554,32 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|setTimeStamp (long timeStamp)
+DECL|method|setTimestamp (long timestamp)
 specifier|public
 name|void
-name|setTimeStamp
+name|setTimestamp
 parameter_list|(
 name|long
-name|timeStamp
+name|timestamp
 parameter_list|)
 block|{
 name|this
 operator|.
-name|timeStamp
+name|timestamp
 operator|=
-name|timeStamp
+name|timestamp
 expr_stmt|;
 block|}
-DECL|method|getTimeStamp ()
+DECL|method|getTimestamp ()
 specifier|public
 name|long
-name|getTimeStamp
+name|getTimestamp
 parameter_list|()
 block|{
 return|return
 name|this
 operator|.
-name|timeStamp
+name|timestamp
 return|;
 block|}
 DECL|method|getFinalAllocationState ()
@@ -628,6 +633,32 @@ block|{
 return|return
 name|nodeId
 return|;
+block|}
+DECL|method|getPartition ()
+specifier|public
+name|String
+name|getPartition
+parameter_list|()
+block|{
+return|return
+name|partition
+return|;
+block|}
+DECL|method|setPartition (String partition)
+specifier|public
+name|void
+name|setPartition
+parameter_list|(
+name|String
+name|partition
+parameter_list|)
+block|{
+name|this
+operator|.
+name|partition
+operator|=
+name|partition
+expr_stmt|;
 block|}
 block|}
 end_class

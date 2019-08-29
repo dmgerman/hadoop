@@ -147,7 +147,7 @@ import|;
 end_import
 
 begin_comment
-comment|/*  * It contains allocation information for one application within a period of  * time.  * Each application allocation may have several allocation attempts.  */
+comment|/**  * It contains allocation information for one application within a period of  * time.  * Each application allocation may have several allocation attempts.  */
 end_comment
 
 begin_class
@@ -160,8 +160,6 @@ DECL|field|priority
 specifier|private
 name|Priority
 name|priority
-init|=
-literal|null
 decl_stmt|;
 DECL|field|nodeId
 specifier|private
@@ -172,29 +170,21 @@ DECL|field|containerId
 specifier|private
 name|ContainerId
 name|containerId
-init|=
-literal|null
 decl_stmt|;
-DECL|field|appState
+DECL|field|activityState
 specifier|private
 name|ActivityState
-name|appState
-init|=
-literal|null
+name|activityState
 decl_stmt|;
 DECL|field|diagnostic
 specifier|private
 name|String
 name|diagnostic
-init|=
-literal|null
 decl_stmt|;
 DECL|field|queueName
 specifier|private
 name|String
 name|queueName
-init|=
-literal|null
 decl_stmt|;
 DECL|field|allocationAttempts
 specifier|private
@@ -251,13 +241,13 @@ operator|=
 name|queueName
 expr_stmt|;
 block|}
-DECL|method|updateAppContainerStateAndTime (ContainerId containerId, ActivityState appState, long ts, String diagnostic)
+DECL|method|updateAppContainerStateAndTime (ContainerId cId, ActivityState appState, long ts, String diagnostic)
 specifier|public
 name|void
 name|updateAppContainerStateAndTime
 parameter_list|(
 name|ContainerId
-name|containerId
+name|cId
 parameter_list|,
 name|ActivityState
 name|appState
@@ -279,11 +269,11 @@ name|this
 operator|.
 name|containerId
 operator|=
-name|containerId
+name|cId
 expr_stmt|;
 name|this
 operator|.
-name|appState
+name|activityState
 operator|=
 name|appState
 expr_stmt|;
@@ -294,16 +284,16 @@ operator|=
 name|diagnostic
 expr_stmt|;
 block|}
-DECL|method|addAppAllocationActivity (String containerId, String priority, ActivityState state, String diagnose, String type, NodeId nId, String allocationRequestId)
+DECL|method|addAppAllocationActivity (String cId, Integer reqPriority, ActivityState state, String diagnose, ActivityLevel level, NodeId nId, Long allocationRequestId)
 specifier|public
 name|void
 name|addAppAllocationActivity
 parameter_list|(
 name|String
-name|containerId
+name|cId
 parameter_list|,
-name|String
-name|priority
+name|Integer
+name|reqPriority
 parameter_list|,
 name|ActivityState
 name|state
@@ -311,13 +301,13 @@ parameter_list|,
 name|String
 name|diagnose
 parameter_list|,
-name|String
-name|type
+name|ActivityLevel
+name|level
 parameter_list|,
 name|NodeId
 name|nId
 parameter_list|,
-name|String
+name|Long
 name|allocationRequestId
 parameter_list|)
 block|{
@@ -327,17 +317,17 @@ init|=
 operator|new
 name|ActivityNode
 argument_list|(
-name|containerId
+name|cId
 argument_list|,
 literal|null
 argument_list|,
-name|priority
+name|reqPriority
 argument_list|,
 name|state
 argument_list|,
 name|diagnose
 argument_list|,
-name|type
+name|level
 argument_list|,
 name|nId
 argument_list|,
@@ -364,7 +354,7 @@ condition|)
 block|{
 name|this
 operator|.
-name|appState
+name|activityState
 operator|=
 name|ActivityState
 operator|.
@@ -375,7 +365,7 @@ else|else
 block|{
 name|this
 operator|.
-name|appState
+name|activityState
 operator|=
 name|state
 expr_stmt|;
@@ -410,14 +400,14 @@ return|return
 name|queueName
 return|;
 block|}
-DECL|method|getAppState ()
+DECL|method|getActivityState ()
 specifier|public
 name|ActivityState
-name|getAppState
+name|getActivityState
 parameter_list|()
 block|{
 return|return
-name|appState
+name|activityState
 return|;
 block|}
 DECL|method|getPriority ()
@@ -489,20 +479,20 @@ return|return
 name|allocationAttempts
 return|;
 block|}
-DECL|method|filterAllocationAttempts (Set<String> requestPriorities, Set<String> allocationRequestIds)
+DECL|method|filterAllocationAttempts (Set<Integer> requestPriorities, Set<Long> allocationRequestIds)
 specifier|public
 name|AppAllocation
 name|filterAllocationAttempts
 parameter_list|(
 name|Set
 argument_list|<
-name|String
+name|Integer
 argument_list|>
 name|requestPriorities
 parameter_list|,
 name|Set
 argument_list|<
-name|String
+name|Long
 argument_list|>
 name|allocationRequestIds
 parameter_list|)
@@ -528,11 +518,11 @@ argument_list|)
 decl_stmt|;
 name|appAllocation
 operator|.
-name|appState
+name|activityState
 operator|=
 name|this
 operator|.
-name|appState
+name|activityState
 expr_stmt|;
 name|appAllocation
 operator|.

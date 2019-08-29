@@ -5397,14 +5397,7 @@ name|REJECTED
 argument_list|,
 name|ActivityDiagnosticConstant
 operator|.
-name|NOT_ABLE_TO_ACCESS_PARTITION
-operator|+
-literal|" "
-operator|+
-name|candidates
-operator|.
-name|getPartition
-argument_list|()
+name|QUEUE_NOT_ABLE_TO_ACCESS_PARTITION
 argument_list|)
 expr_stmt|;
 return|return
@@ -5620,7 +5613,7 @@ argument_list|()
 argument_list|,
 name|ActivityDiagnosticConstant
 operator|.
-name|QUEUE_MAX_CAPACITY_LIMIT
+name|QUEUE_HIT_MAX_CAPACITY_LIMIT
 argument_list|)
 expr_stmt|;
 name|ActivitiesLogger
@@ -5644,11 +5637,11 @@ argument_list|()
 argument_list|,
 name|ActivityState
 operator|.
-name|SKIPPED
+name|REJECTED
 argument_list|,
 name|ActivityDiagnosticConstant
 operator|.
-name|EMPTY
+name|QUEUE_HIT_MAX_CAPACITY_LIMIT
 argument_list|)
 expr_stmt|;
 return|return
@@ -5884,7 +5877,7 @@ argument_list|()
 argument_list|,
 name|ActivityDiagnosticConstant
 operator|.
-name|USER_CAPACITY_MAXIMUM_LIMIT
+name|QUEUE_HIT_USER_MAX_CAPACITY_LIMIT
 argument_list|)
 expr_stmt|;
 continue|continue;
@@ -6074,11 +6067,20 @@ argument_list|()
 argument_list|,
 name|ActivityState
 operator|.
-name|SKIPPED
+name|REJECTED
 argument_list|,
+parameter_list|()
+lambda|->
 name|ActivityDiagnosticConstant
 operator|.
-name|QUEUE_SKIPPED_HEADROOM
+name|QUEUE_DO_NOT_HAVE_ENOUGH_HEADROOM
+operator|+
+literal|" from "
+operator|+
+name|application
+operator|.
+name|getApplicationId
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
@@ -6114,7 +6116,7 @@ name|SKIPPED
 argument_list|,
 name|ActivityDiagnosticConstant
 operator|.
-name|RESPECT_FIFO
+name|QUEUE_SKIPPED_TO_RESPECT_FIFO
 argument_list|)
 expr_stmt|;
 name|ActivitiesLogger

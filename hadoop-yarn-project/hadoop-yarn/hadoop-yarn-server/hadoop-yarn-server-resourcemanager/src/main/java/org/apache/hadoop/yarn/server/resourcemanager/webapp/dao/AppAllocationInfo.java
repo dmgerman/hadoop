@@ -206,6 +206,16 @@ specifier|private
 name|String
 name|nodeId
 decl_stmt|;
+DECL|field|timestamp
+specifier|private
+name|Long
+name|timestamp
+decl_stmt|;
+DECL|field|dateTime
+specifier|private
+name|String
+name|dateTime
+decl_stmt|;
 DECL|field|queueName
 specifier|private
 name|String
@@ -213,18 +223,8 @@ name|queueName
 decl_stmt|;
 DECL|field|appPriority
 specifier|private
-name|String
+name|Integer
 name|appPriority
-decl_stmt|;
-DECL|field|timestamp
-specifier|private
-name|long
-name|timestamp
-decl_stmt|;
-DECL|field|dateTime
-specifier|private
-name|String
-name|dateTime
 decl_stmt|;
 DECL|field|allocationState
 specifier|private
@@ -236,13 +236,13 @@ specifier|private
 name|String
 name|diagnostic
 decl_stmt|;
-DECL|field|requestAllocation
+DECL|field|children
 specifier|private
 name|List
 argument_list|<
 name|AppRequestAllocationInfo
 argument_list|>
-name|requestAllocation
+name|children
 decl_stmt|;
 DECL|method|AppAllocationInfo ()
 name|AppAllocationInfo
@@ -262,7 +262,7 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|requestAllocation
+name|children
 operator|=
 operator|new
 name|ArrayList
@@ -305,7 +305,7 @@ operator|.
 name|getPriority
 argument_list|()
 operator|.
-name|toString
+name|getPriority
 argument_list|()
 expr_stmt|;
 name|this
@@ -339,7 +339,7 @@ name|allocationState
 operator|=
 name|allocation
 operator|.
-name|getAppState
+name|getActivityState
 argument_list|()
 operator|.
 name|name
@@ -429,7 +429,7 @@ argument_list|)
 decl_stmt|;
 name|this
 operator|.
-name|requestAllocation
+name|children
 operator|.
 name|add
 argument_list|(
@@ -460,7 +460,7 @@ return|;
 block|}
 DECL|method|getAppPriority ()
 specifier|public
-name|String
+name|Integer
 name|getAppPriority
 parameter_list|()
 block|{
@@ -470,7 +470,7 @@ return|;
 block|}
 DECL|method|getTimestamp ()
 specifier|public
-name|long
+name|Long
 name|getTimestamp
 parameter_list|()
 block|{
@@ -498,17 +498,17 @@ return|return
 name|allocationState
 return|;
 block|}
-DECL|method|getRequestAllocation ()
+DECL|method|getChildren ()
 specifier|public
 name|List
 argument_list|<
 name|AppRequestAllocationInfo
 argument_list|>
-name|getRequestAllocation
+name|getChildren
 parameter_list|()
 block|{
 return|return
-name|requestAllocation
+name|children
 return|;
 block|}
 DECL|method|getDiagnostic ()

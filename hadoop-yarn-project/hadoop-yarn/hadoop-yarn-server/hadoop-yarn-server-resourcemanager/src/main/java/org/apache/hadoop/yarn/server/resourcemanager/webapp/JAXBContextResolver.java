@@ -325,6 +325,14 @@ block|,
 name|ResourceInformationsInfo
 operator|.
 name|class
+block|,
+name|ActivitiesInfo
+operator|.
+name|class
+block|,
+name|AppActivitiesInfo
+operator|.
+name|class
 block|}
 decl_stmt|;
 comment|// these dao classes need root unwrapping

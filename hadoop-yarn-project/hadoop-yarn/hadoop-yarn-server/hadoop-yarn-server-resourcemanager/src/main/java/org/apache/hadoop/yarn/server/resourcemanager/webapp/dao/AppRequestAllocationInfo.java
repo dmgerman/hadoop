@@ -175,12 +175,12 @@ name|AppRequestAllocationInfo
 block|{
 DECL|field|requestPriority
 specifier|private
-name|String
+name|Integer
 name|requestPriority
 decl_stmt|;
 DECL|field|allocationRequestId
 specifier|private
-name|String
+name|Long
 name|allocationRequestId
 decl_stmt|;
 DECL|field|allocationState
@@ -188,13 +188,18 @@ specifier|private
 name|String
 name|allocationState
 decl_stmt|;
-DECL|field|allocationAttempt
+DECL|field|diagnostic
+specifier|private
+name|String
+name|diagnostic
+decl_stmt|;
+DECL|field|children
 specifier|private
 name|List
 argument_list|<
 name|ActivityNodeInfo
 argument_list|>
-name|allocationAttempt
+name|children
 decl_stmt|;
 DECL|method|AppRequestAllocationInfo ()
 name|AppRequestAllocationInfo
@@ -255,9 +260,34 @@ operator|.
 name|name
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|lastActivityNode
+operator|.
+name|isRequestType
+argument_list|()
+operator|&&
+name|lastActivityNode
+operator|.
+name|getDiagnostic
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
 name|this
 operator|.
-name|allocationAttempt
+name|diagnostic
+operator|=
+name|lastActivityNode
+operator|.
+name|getDiagnostic
+argument_list|()
+expr_stmt|;
+block|}
+name|this
+operator|.
+name|children
 operator|=
 name|ActivitiesUtils
 operator|.
@@ -271,7 +301,7 @@ expr_stmt|;
 block|}
 DECL|method|getRequestPriority ()
 specifier|public
-name|String
+name|Integer
 name|getRequestPriority
 parameter_list|()
 block|{
@@ -281,7 +311,7 @@ return|;
 block|}
 DECL|method|getAllocationRequestId ()
 specifier|public
-name|String
+name|Long
 name|getAllocationRequestId
 parameter_list|()
 block|{
@@ -299,17 +329,27 @@ return|return
 name|allocationState
 return|;
 block|}
-DECL|method|getAllocationAttempt ()
+DECL|method|getChildren ()
 specifier|public
 name|List
 argument_list|<
 name|ActivityNodeInfo
 argument_list|>
-name|getAllocationAttempt
+name|getChildren
 parameter_list|()
 block|{
 return|return
-name|allocationAttempt
+name|children
+return|;
+block|}
+DECL|method|getDiagnostic ()
+specifier|public
+name|String
+name|getDiagnostic
+parameter_list|()
+block|{
+return|return
+name|diagnostic
 return|;
 block|}
 block|}

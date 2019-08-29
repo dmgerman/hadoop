@@ -46,14 +46,70 @@ name|EMPTY
 init|=
 literal|null
 decl_stmt|;
-DECL|field|NOT_ABLE_TO_ACCESS_PARTITION
+comment|/*    * Initial check diagnostics    */
+DECL|field|INIT_CHECK_SINGLE_NODE_REMOVED
 specifier|public
 specifier|final
 specifier|static
 name|String
-name|NOT_ABLE_TO_ACCESS_PARTITION
+name|INIT_CHECK_SINGLE_NODE_REMOVED
 init|=
-literal|"Not able to access partition"
+literal|"Initial check: node has been removed from scheduler"
+decl_stmt|;
+DECL|field|INIT_CHECK_SINGLE_NODE_RESOURCE_INSUFFICIENT
+specifier|public
+specifier|final
+specifier|static
+name|String
+name|INIT_CHECK_SINGLE_NODE_RESOURCE_INSUFFICIENT
+init|=
+literal|"Initial check: node resource is insufficient for minimum allocation"
+decl_stmt|;
+DECL|field|INIT_CHECK_PARTITION_RESOURCE_INSUFFICIENT
+specifier|public
+specifier|final
+specifier|static
+name|String
+name|INIT_CHECK_PARTITION_RESOURCE_INSUFFICIENT
+init|=
+literal|"Initial check: insufficient resource in partition"
+decl_stmt|;
+comment|/*    * Queue level diagnostics    */
+DECL|field|QUEUE_NOT_ABLE_TO_ACCESS_PARTITION
+specifier|public
+specifier|final
+specifier|static
+name|String
+name|QUEUE_NOT_ABLE_TO_ACCESS_PARTITION
+init|=
+literal|"Queue is not able to access partition"
+decl_stmt|;
+DECL|field|QUEUE_HIT_MAX_CAPACITY_LIMIT
+specifier|public
+specifier|final
+specifier|static
+name|String
+name|QUEUE_HIT_MAX_CAPACITY_LIMIT
+init|=
+literal|"Queue hits max-capacity limit"
+decl_stmt|;
+DECL|field|QUEUE_HIT_USER_MAX_CAPACITY_LIMIT
+specifier|public
+specifier|final
+specifier|static
+name|String
+name|QUEUE_HIT_USER_MAX_CAPACITY_LIMIT
+init|=
+literal|"Queue hits user max-capacity limit"
+decl_stmt|;
+DECL|field|QUEUE_DO_NOT_HAVE_ENOUGH_HEADROOM
+specifier|public
+specifier|final
+specifier|static
+name|String
+name|QUEUE_DO_NOT_HAVE_ENOUGH_HEADROOM
+init|=
+literal|"Queue does not have enough headroom for inner highest-priority request"
 decl_stmt|;
 DECL|field|QUEUE_DO_NOT_NEED_MORE_RESOURCE
 specifier|public
@@ -64,169 +120,53 @@ name|QUEUE_DO_NOT_NEED_MORE_RESOURCE
 init|=
 literal|"Queue does not need more resource"
 decl_stmt|;
-DECL|field|QUEUE_MAX_CAPACITY_LIMIT
+DECL|field|QUEUE_SKIPPED_TO_RESPECT_FIFO
 specifier|public
 specifier|final
 specifier|static
 name|String
-name|QUEUE_MAX_CAPACITY_LIMIT
+name|QUEUE_SKIPPED_TO_RESPECT_FIFO
 init|=
-literal|"Hit queue max-capacity limit"
-decl_stmt|;
-DECL|field|USER_CAPACITY_MAXIMUM_LIMIT
-specifier|public
-specifier|final
-specifier|static
-name|String
-name|USER_CAPACITY_MAXIMUM_LIMIT
-init|=
-literal|"Hit user capacity maximum limit"
-decl_stmt|;
-DECL|field|SKIP_BLACK_LISTED_NODE
-specifier|public
-specifier|final
-specifier|static
-name|String
-name|SKIP_BLACK_LISTED_NODE
-init|=
-literal|"Skip black listed node"
-decl_stmt|;
-DECL|field|PRIORITY_SKIPPED
-specifier|public
-specifier|final
-specifier|static
-name|String
-name|PRIORITY_SKIPPED
-init|=
-literal|"Priority skipped"
-decl_stmt|;
-DECL|field|PRIORITY_SKIPPED_BECAUSE_NULL_ANY_REQUEST
-specifier|public
-specifier|final
-specifier|static
-name|String
-name|PRIORITY_SKIPPED_BECAUSE_NULL_ANY_REQUEST
-init|=
-literal|"Priority skipped because off-switch request is null"
-decl_stmt|;
-DECL|field|SKIP_PRIORITY_BECAUSE_OF_RELAX_LOCALITY
-specifier|public
-specifier|final
-specifier|static
-name|String
-name|SKIP_PRIORITY_BECAUSE_OF_RELAX_LOCALITY
-init|=
-literal|"Priority skipped because of relax locality is not allowed"
-decl_stmt|;
-DECL|field|SKIP_IN_IGNORE_EXCLUSIVITY_MODE
-specifier|public
-specifier|final
-specifier|static
-name|String
-name|SKIP_IN_IGNORE_EXCLUSIVITY_MODE
-init|=
-literal|"Skipping assigning to Node in Ignore Exclusivity mode"
-decl_stmt|;
-DECL|field|DO_NOT_NEED_ALLOCATIONATTEMPTINFOS
-specifier|public
-specifier|final
-specifier|static
-name|String
-name|DO_NOT_NEED_ALLOCATIONATTEMPTINFOS
-init|=
-literal|"Doesn't need containers based on reservation algo!"
-decl_stmt|;
-DECL|field|QUEUE_SKIPPED_HEADROOM
-specifier|public
-specifier|final
-specifier|static
-name|String
-name|QUEUE_SKIPPED_HEADROOM
-init|=
-literal|"Queue skipped because of headroom"
-decl_stmt|;
-DECL|field|NON_PARTITIONED_PARTITION_FIRST
-specifier|public
-specifier|final
-specifier|static
-name|String
-name|NON_PARTITIONED_PARTITION_FIRST
-init|=
-literal|"Non-partitioned resource request should be scheduled to "
+literal|"Queue skipped "
 operator|+
-literal|"non-partitioned partition first"
+literal|"to respect FIFO of applications"
 decl_stmt|;
-DECL|field|SKIP_NODE_LOCAL_REQUEST
+DECL|field|QUEUE_SKIPPED_BECAUSE_SINGLE_NODE_RESERVED
 specifier|public
 specifier|final
 specifier|static
 name|String
-name|SKIP_NODE_LOCAL_REQUEST
+name|QUEUE_SKIPPED_BECAUSE_SINGLE_NODE_RESERVED
 init|=
-literal|"Skip node-local request"
+literal|"Queue skipped because node has been reserved"
 decl_stmt|;
-DECL|field|SKIP_RACK_LOCAL_REQUEST
 specifier|public
 specifier|final
 specifier|static
 name|String
-name|SKIP_RACK_LOCAL_REQUEST
+DECL|field|QUEUE_SKIPPED_BECAUSE_SINGLE_NODE_RESOURCE_INSUFFICIENT
+name|QUEUE_SKIPPED_BECAUSE_SINGLE_NODE_RESOURCE_INSUFFICIENT
 init|=
-literal|"Skip rack-local request"
+literal|"Queue skipped because node resource is insufficient"
 decl_stmt|;
-DECL|field|SKIP_OFF_SWITCH_REQUEST
+comment|/*    * Application level diagnostics    */
+DECL|field|APPLICATION_FAIL_TO_ALLOCATE
 specifier|public
 specifier|final
 specifier|static
 name|String
-name|SKIP_OFF_SWITCH_REQUEST
+name|APPLICATION_FAIL_TO_ALLOCATE
 init|=
-literal|"Skip offswitch request"
+literal|"Application fails to allocate"
 decl_stmt|;
-DECL|field|REQUEST_CAN_NOT_ACCESS_NODE_LABEL
+DECL|field|APPLICATION_COULD_NOT_GET_CONTAINER
 specifier|public
 specifier|final
 specifier|static
 name|String
-name|REQUEST_CAN_NOT_ACCESS_NODE_LABEL
+name|APPLICATION_COULD_NOT_GET_CONTAINER
 init|=
-literal|"Resource request can not access the label"
-decl_stmt|;
-DECL|field|NOT_SUFFICIENT_RESOURCE
-specifier|public
-specifier|final
-specifier|static
-name|String
-name|NOT_SUFFICIENT_RESOURCE
-init|=
-literal|"Node does not have sufficient resource for request"
-decl_stmt|;
-DECL|field|LOCALITY_SKIPPED
-specifier|public
-specifier|final
-specifier|static
-name|String
-name|LOCALITY_SKIPPED
-init|=
-literal|"Locality skipped"
-decl_stmt|;
-DECL|field|FAIL_TO_ALLOCATE
-specifier|public
-specifier|final
-specifier|static
-name|String
-name|FAIL_TO_ALLOCATE
-init|=
-literal|"Fail to allocate"
-decl_stmt|;
-DECL|field|COULD_NOT_GET_CONTAINER
-specifier|public
-specifier|final
-specifier|static
-name|String
-name|COULD_NOT_GET_CONTAINER
-init|=
-literal|"Couldn't get container for allocation"
+literal|"Application couldn't get container for allocation"
 decl_stmt|;
 DECL|field|APPLICATION_DO_NOT_NEED_RESOURCE
 specifier|public
@@ -237,34 +177,108 @@ name|APPLICATION_DO_NOT_NEED_RESOURCE
 init|=
 literal|"Application does not need more resource"
 decl_stmt|;
-DECL|field|APPLICATION_PRIORITY_DO_NOT_NEED_RESOURCE
+comment|/*    * Request level diagnostics    */
+DECL|field|REQUEST_SKIPPED_BECAUSE_NULL_ANY_REQUEST
 specifier|public
 specifier|final
 specifier|static
 name|String
-name|APPLICATION_PRIORITY_DO_NOT_NEED_RESOURCE
+name|REQUEST_SKIPPED_BECAUSE_NULL_ANY_REQUEST
 init|=
-literal|"Application priority does not need more resource"
+literal|"Request skipped because off-switch request is null"
 decl_stmt|;
-DECL|field|SKIPPED_ALL_PRIORITIES
+DECL|field|REQUEST_SKIPPED_IN_IGNORE_EXCLUSIVITY_MODE
 specifier|public
 specifier|final
 specifier|static
 name|String
-name|SKIPPED_ALL_PRIORITIES
+name|REQUEST_SKIPPED_IN_IGNORE_EXCLUSIVITY_MODE
 init|=
-literal|"All priorities are skipped of the app"
+literal|"Request skipped in Ignore Exclusivity mode for AM allocation"
 decl_stmt|;
-DECL|field|RESPECT_FIFO
+DECL|field|REQUEST_SKIPPED_BECAUSE_OF_RESERVATION
 specifier|public
 specifier|final
 specifier|static
 name|String
-name|RESPECT_FIFO
+name|REQUEST_SKIPPED_BECAUSE_OF_RESERVATION
 init|=
-literal|"To respect FIFO of applications, "
+literal|"Request skipped based on reservation algo"
+decl_stmt|;
+specifier|public
+specifier|final
+specifier|static
+name|String
+DECL|field|REQUEST_SKIPPED_BECAUSE_NON_PARTITIONED_PARTITION_FIRST
+name|REQUEST_SKIPPED_BECAUSE_NON_PARTITIONED_PARTITION_FIRST
+init|=
+literal|"Request skipped because non-partitioned resource request should be "
 operator|+
-literal|"skipped following applications in the queue"
+literal|"scheduled to non-partitioned partition first"
+decl_stmt|;
+DECL|field|REQUEST_DO_NOT_NEED_RESOURCE
+specifier|public
+specifier|final
+specifier|static
+name|String
+name|REQUEST_DO_NOT_NEED_RESOURCE
+init|=
+literal|"Request does not need more resource"
+decl_stmt|;
+comment|/*    * Node level diagnostics    */
+specifier|public
+specifier|final
+specifier|static
+name|String
+DECL|field|NODE_SKIPPED_BECAUSE_OF_NO_OFF_SWITCH_AND_LOCALITY_VIOLATION
+name|NODE_SKIPPED_BECAUSE_OF_NO_OFF_SWITCH_AND_LOCALITY_VIOLATION
+init|=
+literal|"Node skipped because node/rack locality cannot be satisfied"
+decl_stmt|;
+DECL|field|NODE_SKIPPED_BECAUSE_OF_OFF_SWITCH_DELAY
+specifier|public
+specifier|final
+specifier|static
+name|String
+name|NODE_SKIPPED_BECAUSE_OF_OFF_SWITCH_DELAY
+init|=
+literal|"Node skipped because of off-switch delay"
+decl_stmt|;
+DECL|field|NODE_SKIPPED_BECAUSE_OF_RELAX_LOCALITY
+specifier|public
+specifier|final
+specifier|static
+name|String
+name|NODE_SKIPPED_BECAUSE_OF_RELAX_LOCALITY
+init|=
+literal|"Node skipped because relax locality is not allowed"
+decl_stmt|;
+DECL|field|NODE_TOTAL_RESOURCE_INSUFFICIENT_FOR_REQUEST
+specifier|public
+specifier|final
+specifier|static
+name|String
+name|NODE_TOTAL_RESOURCE_INSUFFICIENT_FOR_REQUEST
+init|=
+literal|"Node's total resource is insufficient for request"
+decl_stmt|;
+DECL|field|NODE_DO_NOT_HAVE_SUFFICIENT_RESOURCE
+specifier|public
+specifier|final
+specifier|static
+name|String
+name|NODE_DO_NOT_HAVE_SUFFICIENT_RESOURCE
+init|=
+literal|"Node does not have sufficient resource for request"
+decl_stmt|;
+DECL|field|NODE_IS_BLACKLISTED
+specifier|public
+specifier|final
+specifier|static
+name|String
+name|NODE_IS_BLACKLISTED
+init|=
+literal|"Node is blacklisted"
 decl_stmt|;
 specifier|public
 specifier|final

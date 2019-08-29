@@ -907,7 +907,7 @@ operator|=
 name|configuredAppActivitiesMaxQueueLength
 expr_stmt|;
 block|}
-DECL|method|getAppActivitiesInfo (ApplicationId applicationId, Set<String> requestPriorities, Set<String> allocationRequestIds, RMWSConsts.ActivitiesGroupBy groupBy, int limit, boolean summarize, double maxTimeInSeconds)
+DECL|method|getAppActivitiesInfo (ApplicationId applicationId, Set<Integer> requestPriorities, Set<Long> allocationRequestIds, RMWSConsts.ActivitiesGroupBy groupBy, int limit, boolean summarize, double maxTimeInSeconds)
 specifier|public
 name|AppActivitiesInfo
 name|getAppActivitiesInfo
@@ -917,13 +917,13 @@ name|applicationId
 parameter_list|,
 name|Set
 argument_list|<
-name|String
+name|Integer
 argument_list|>
 name|requestPriorities
 parameter_list|,
 name|Set
 argument_list|<
-name|String
+name|Long
 argument_list|>
 name|allocationRequestIds
 parameter_list|,
@@ -1308,16 +1308,6 @@ range|:
 name|activityNodes
 control|)
 block|{
-if|if
-condition|(
-name|an
-operator|.
-name|getNodeId
-argument_list|()
-operator|!=
-literal|null
-condition|)
-block|{
 name|nodeActivities
 operator|.
 name|putIfAbsent
@@ -1344,7 +1334,6 @@ argument_list|,
 name|an
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 name|AppAllocation
@@ -1389,7 +1378,7 @@ literal|null
 argument_list|,
 name|lastAppAllocation
 operator|.
-name|getAppState
+name|getActivityState
 argument_list|()
 argument_list|,
 name|lastAppAllocation
@@ -1872,7 +1861,7 @@ argument_list|(
 literal|0
 argument_list|)
 operator|.
-name|getTimeStamp
+name|getTimestamp
 argument_list|()
 operator|>
 name|schedulerActivitiesTTL
@@ -2339,7 +2328,7 @@ block|}
 block|}
 block|}
 comment|// Add queue, application or container activity into specific node allocation.
-DECL|method|addSchedulingActivityForNode (NodeId nodeId, String parentName, String childName, String priority, ActivityState state, String diagnostic, String type, String allocationRequestId)
+DECL|method|addSchedulingActivityForNode (NodeId nodeId, String parentName, String childName, Integer priority, ActivityState state, String diagnostic, ActivityLevel level, Long allocationRequestId)
 name|void
 name|addSchedulingActivityForNode
 parameter_list|(
@@ -2352,7 +2341,7 @@ parameter_list|,
 name|String
 name|childName
 parameter_list|,
-name|String
+name|Integer
 name|priority
 parameter_list|,
 name|ActivityState
@@ -2361,10 +2350,10 @@ parameter_list|,
 name|String
 name|diagnostic
 parameter_list|,
-name|String
-name|type
+name|ActivityLevel
+name|level
 parameter_list|,
-name|String
+name|Long
 name|allocationRequestId
 parameter_list|)
 block|{
@@ -2398,7 +2387,7 @@ name|state
 argument_list|,
 name|diagnostic
 argument_list|,
-name|type
+name|level
 argument_list|,
 name|nodeId
 argument_list|,
@@ -2409,7 +2398,7 @@ block|}
 block|}
 comment|// Add queue, application or container activity into specific application
 comment|// allocation.
-DECL|method|addSchedulingActivityForApp (ApplicationId applicationId, ContainerId containerId, String priority, ActivityState state, String diagnostic, String type, NodeId nodeId, String allocationRequestId)
+DECL|method|addSchedulingActivityForApp (ApplicationId applicationId, ContainerId containerId, Integer priority, ActivityState state, String diagnostic, ActivityLevel level, NodeId nodeId, Long allocationRequestId)
 name|void
 name|addSchedulingActivityForApp
 parameter_list|(
@@ -2419,7 +2408,7 @@ parameter_list|,
 name|ContainerId
 name|containerId
 parameter_list|,
-name|String
+name|Integer
 name|priority
 parameter_list|,
 name|ActivityState
@@ -2428,13 +2417,13 @@ parameter_list|,
 name|String
 name|diagnostic
 parameter_list|,
-name|String
-name|type
+name|ActivityLevel
+name|level
 parameter_list|,
 name|NodeId
 name|nodeId
 parameter_list|,
-name|String
+name|Long
 name|allocationRequestId
 parameter_list|)
 block|{
@@ -2480,7 +2469,7 @@ name|state
 argument_list|,
 name|diagnostic
 argument_list|,
-name|type
+name|level
 argument_list|,
 name|nodeId
 argument_list|,
@@ -2710,12 +2699,15 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|finishNodeUpdateRecording (NodeId nodeID)
+DECL|method|finishNodeUpdateRecording (NodeId nodeID, String partition)
 name|void
 name|finishNodeUpdateRecording
 parameter_list|(
 name|NodeId
 name|nodeID
+parameter_list|,
+name|String
+name|partition
 parameter_list|)
 block|{
 name|List
@@ -2735,7 +2727,7 @@ name|nodeID
 argument_list|)
 decl_stmt|;
 name|long
-name|timeStamp
+name|timestamp
 init|=
 name|SystemClock
 operator|.
@@ -2781,9 +2773,16 @@ argument_list|()
 expr_stmt|;
 name|allocation
 operator|.
-name|setTimeStamp
+name|setTimestamp
 argument_list|(
-name|timeStamp
+name|timestamp
+argument_list|)
+expr_stmt|;
+name|allocation
+operator|.
+name|setPartition
+argument_list|(
+name|partition
 argument_list|)
 expr_stmt|;
 block|}

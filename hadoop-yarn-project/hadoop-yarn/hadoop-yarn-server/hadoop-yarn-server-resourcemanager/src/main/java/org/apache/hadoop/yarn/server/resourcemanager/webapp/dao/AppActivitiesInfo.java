@@ -207,12 +207,17 @@ import|;
 end_import
 
 begin_comment
-comment|/*  * DAO object to display application activity.  */
+comment|/**  * DAO object to display application activity.  */
 end_comment
 
 begin_class
 annotation|@
 name|XmlRootElement
+argument_list|(
+name|name
+operator|=
+literal|"appActivities"
+argument_list|)
 annotation|@
 name|XmlAccessorType
 argument_list|(
@@ -226,22 +231,27 @@ class|class
 name|AppActivitiesInfo
 block|{
 DECL|field|applicationId
-specifier|protected
+specifier|private
 name|String
 name|applicationId
 decl_stmt|;
 DECL|field|diagnostic
-specifier|protected
+specifier|private
 name|String
 name|diagnostic
 decl_stmt|;
-DECL|field|timeStamp
-specifier|protected
+DECL|field|timestamp
+specifier|private
+name|Long
+name|timestamp
+decl_stmt|;
+DECL|field|dateTime
+specifier|private
 name|String
-name|timeStamp
+name|dateTime
 decl_stmt|;
 DECL|field|allocations
-specifier|protected
+specifier|private
 name|List
 argument_list|<
 name|AppAllocationInfo
@@ -292,15 +302,6 @@ name|applicationId
 operator|=
 name|applicationId
 expr_stmt|;
-name|Date
-name|date
-init|=
-operator|new
-name|Date
-argument_list|()
-decl_stmt|;
-name|date
-operator|.
 name|setTime
 argument_list|(
 name|SystemClock
@@ -311,15 +312,6 @@ operator|.
 name|getTime
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|timeStamp
-operator|=
-name|date
-operator|.
-name|toString
-argument_list|()
 expr_stmt|;
 block|}
 DECL|method|AppActivitiesInfo (List<AppAllocation> appAllocations, ApplicationId applicationId, RMWSConsts.ActivitiesGroupBy groupBy)
@@ -370,15 +362,6 @@ name|diagnostic
 operator|=
 literal|"waiting for display"
 expr_stmt|;
-name|Date
-name|date
-init|=
-operator|new
-name|Date
-argument_list|()
-decl_stmt|;
-name|date
-operator|.
 name|setTime
 argument_list|(
 name|SystemClock
@@ -389,15 +372,6 @@ operator|.
 name|getTime
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|timeStamp
-operator|=
-name|date
-operator|.
-name|toString
-argument_list|()
 expr_stmt|;
 block|}
 else|else
@@ -456,6 +430,35 @@ expr_stmt|;
 block|}
 block|}
 block|}
+DECL|method|setTime (long ts)
+specifier|private
+name|void
+name|setTime
+parameter_list|(
+name|long
+name|ts
+parameter_list|)
+block|{
+name|this
+operator|.
+name|timestamp
+operator|=
+name|ts
+expr_stmt|;
+name|this
+operator|.
+name|dateTime
+operator|=
+operator|new
+name|Date
+argument_list|(
+name|ts
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+expr_stmt|;
+block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getAllocations ()
@@ -469,6 +472,46 @@ parameter_list|()
 block|{
 return|return
 name|allocations
+return|;
+block|}
+DECL|method|getTimestamp ()
+specifier|public
+name|Long
+name|getTimestamp
+parameter_list|()
+block|{
+return|return
+name|timestamp
+return|;
+block|}
+DECL|method|getDateTime ()
+specifier|public
+name|String
+name|getDateTime
+parameter_list|()
+block|{
+return|return
+name|dateTime
+return|;
+block|}
+DECL|method|getApplicationId ()
+specifier|public
+name|String
+name|getApplicationId
+parameter_list|()
+block|{
+return|return
+name|applicationId
+return|;
+block|}
+DECL|method|getDiagnostic ()
+specifier|public
+name|String
+name|getDiagnostic
+parameter_list|()
+block|{
+return|return
+name|diagnostic
 return|;
 block|}
 block|}

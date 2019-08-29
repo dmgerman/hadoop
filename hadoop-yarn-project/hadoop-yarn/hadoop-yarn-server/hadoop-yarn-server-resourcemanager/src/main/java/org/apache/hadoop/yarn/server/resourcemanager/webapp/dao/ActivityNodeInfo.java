@@ -226,28 +226,33 @@ class|class
 name|ActivityNodeInfo
 block|{
 DECL|field|name
-specifier|protected
+specifier|private
 name|String
 name|name
 decl_stmt|;
 comment|// The name for activity node
 DECL|field|appPriority
-specifier|protected
-name|String
+specifier|private
+name|Integer
 name|appPriority
 decl_stmt|;
 DECL|field|requestPriority
-specifier|protected
-name|String
+specifier|private
+name|Integer
 name|requestPriority
 decl_stmt|;
+DECL|field|allocationRequestId
+specifier|private
+name|Long
+name|allocationRequestId
+decl_stmt|;
 DECL|field|allocationState
-specifier|protected
+specifier|private
 name|String
 name|allocationState
 decl_stmt|;
 DECL|field|diagnostic
-specifier|protected
+specifier|private
 name|String
 name|diagnostic
 decl_stmt|;
@@ -256,15 +261,10 @@ specifier|private
 name|String
 name|nodeId
 decl_stmt|;
-DECL|field|allocationRequestId
-specifier|private
-name|String
-name|allocationRequestId
-decl_stmt|;
 comment|// Used for groups of activities
 DECL|field|count
 specifier|private
-name|String
+name|Integer
 name|count
 decl_stmt|;
 DECL|field|nodeIds
@@ -287,7 +287,7 @@ DECL|method|ActivityNodeInfo ()
 name|ActivityNodeInfo
 parameter_list|()
 block|{   }
-DECL|method|ActivityNodeInfo (String name, ActivityState allocationState, String diagnostic, NodeId nId)
+DECL|method|ActivityNodeInfo (String name, ActivityState activityState, String diagnostic, NodeId nId)
 specifier|public
 name|ActivityNodeInfo
 parameter_list|(
@@ -295,7 +295,7 @@ name|String
 name|name
 parameter_list|,
 name|ActivityState
-name|allocationState
+name|activityState
 parameter_list|,
 name|String
 name|diagnostic
@@ -314,7 +314,7 @@ name|this
 operator|.
 name|allocationState
 operator|=
-name|allocationState
+name|activityState
 operator|.
 name|name
 argument_list|()
@@ -331,12 +331,12 @@ name|nId
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|ActivityNodeInfo (ActivityState groupAllocationState, String groupDiagnostic, List<String> groupNodeIds)
+DECL|method|ActivityNodeInfo (ActivityState groupActivityState, String groupDiagnostic, List<String> groupNodeIds)
 specifier|public
 name|ActivityNodeInfo
 parameter_list|(
 name|ActivityState
-name|groupAllocationState
+name|groupActivityState
 parameter_list|,
 name|String
 name|groupDiagnostic
@@ -352,7 +352,7 @@ name|this
 operator|.
 name|allocationState
 operator|=
-name|groupAllocationState
+name|groupActivityState
 operator|.
 name|name
 argument_list|()
@@ -367,15 +367,10 @@ name|this
 operator|.
 name|count
 operator|=
-name|String
-operator|.
-name|valueOf
-argument_list|(
 name|groupNodeIds
 operator|.
 name|size
 argument_list|()
-argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -629,7 +624,7 @@ expr_stmt|;
 block|}
 DECL|method|getAllocationRequestId ()
 specifier|public
-name|String
+name|Long
 name|getAllocationRequestId
 parameter_list|()
 block|{
@@ -639,7 +634,7 @@ return|;
 block|}
 DECL|method|getCount ()
 specifier|public
-name|String
+name|Integer
 name|getCount
 parameter_list|()
 block|{
@@ -671,6 +666,56 @@ parameter_list|()
 block|{
 return|return
 name|children
+return|;
+block|}
+DECL|method|getAllocationState ()
+specifier|public
+name|String
+name|getAllocationState
+parameter_list|()
+block|{
+return|return
+name|allocationState
+return|;
+block|}
+DECL|method|getName ()
+specifier|public
+name|String
+name|getName
+parameter_list|()
+block|{
+return|return
+name|name
+return|;
+block|}
+DECL|method|getAppPriority ()
+specifier|public
+name|Integer
+name|getAppPriority
+parameter_list|()
+block|{
+return|return
+name|appPriority
+return|;
+block|}
+DECL|method|getRequestPriority ()
+specifier|public
+name|Integer
+name|getRequestPriority
+parameter_list|()
+block|{
+return|return
+name|requestPriority
+return|;
+block|}
+DECL|method|getDiagnostic ()
+specifier|public
+name|String
+name|getDiagnostic
+parameter_list|()
+block|{
+return|return
+name|diagnostic
 return|;
 block|}
 block|}
