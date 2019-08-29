@@ -1043,7 +1043,6 @@ return|;
 block|}
 comment|/**    * Interface responsible for disposing of old checkpoints and edit logs.    */
 DECL|interface|StoragePurger
-specifier|static
 interface|interface
 name|StoragePurger
 block|{
@@ -1061,6 +1060,14 @@ name|purgeImage
 parameter_list|(
 name|FSImageFile
 name|image
+parameter_list|)
+function_decl|;
+DECL|method|markStale (EditLogFile log)
+name|void
+name|markStale
+parameter_list|(
+name|EditLogFile
+name|log
 parameter_list|)
 function_decl|;
 block|}
@@ -1086,8 +1093,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Purging old edit log "
-operator|+
+literal|"Purging old edit log {}"
+argument_list|,
 name|log
 argument_list|)
 expr_stmt|;
@@ -1115,8 +1122,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Purging old image "
-operator|+
+literal|"Purging old image {}"
+argument_list|,
 name|image
 argument_list|)
 expr_stmt|;
@@ -1167,9 +1174,47 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Could not delete "
-operator|+
+literal|"Could not delete {}"
+argument_list|,
 name|file
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+DECL|method|markStale (EditLogFile log)
+specifier|public
+name|void
+name|markStale
+parameter_list|(
+name|EditLogFile
+name|log
+parameter_list|)
+block|{
+try|try
+block|{
+name|log
+operator|.
+name|moveAsideStaleInprogressFile
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+comment|// It is ok to just log the rename failure and go on, we will try next
+comment|// time just as with deletions.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Could not mark {} as stale"
+argument_list|,
+name|log
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 block|}

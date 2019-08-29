@@ -582,8 +582,9 @@ operator|+
 literal|"_(\\d+).*(\\S+)"
 argument_list|)
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
 DECL|field|currentInProgress
-specifier|private
 name|File
 name|currentInProgress
 init|=
@@ -973,6 +974,7 @@ operator|=
 name|id
 expr_stmt|;
 block|}
+comment|/**    * Purges the unnecessary edits and edits_inprogress files.    *    * Edits files that are ending before the minTxIdToKeep are purged.    * Edits in progress files that are starting before minTxIdToKeep are purged.    * Edits in progress files that are marked as empty, trash, corrupted or    * stale by file extension and starting before minTxIdToKeep are purged.    * Edits in progress files that are after minTxIdToKeep, but before the    * current edits in progress files are marked as stale for clarity.    *    * In case file removal or rename is failing a warning is logged, but that    * does not fail the operation.    *    * @param minTxIdToKeep the lowest transaction ID that should be retained    * @throws IOException if listing the storage directory fails.    */
 annotation|@
 name|Override
 DECL|method|purgeLogsOlderThan (long minTxIdToKeep)
@@ -1022,6 +1024,11 @@ argument_list|,
 literal|true
 argument_list|)
 decl_stmt|;
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
 for|for
 control|(
 name|EditLogFile
@@ -1055,7 +1062,83 @@ name|log
 argument_list|)
 expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+name|isStaleInProgressLog
+argument_list|(
+name|minTxIdToKeep
+argument_list|,
+name|log
+argument_list|)
+condition|)
+block|{
+name|purger
+operator|.
+name|markStale
+argument_list|(
+name|log
+argument_list|)
+expr_stmt|;
 block|}
+block|}
+block|}
+block|}
+DECL|method|isStaleInProgressLog (long minTxIdToKeep, EditLogFile log)
+specifier|private
+name|boolean
+name|isStaleInProgressLog
+parameter_list|(
+name|long
+name|minTxIdToKeep
+parameter_list|,
+name|EditLogFile
+name|log
+parameter_list|)
+block|{
+return|return
+name|log
+operator|.
+name|isInProgress
+argument_list|()
+operator|&&
+operator|!
+name|log
+operator|.
+name|getFile
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|currentInProgress
+argument_list|)
+operator|&&
+name|log
+operator|.
+name|getFirstTxId
+argument_list|()
+operator|>=
+name|minTxIdToKeep
+operator|&&
+comment|// at last we check if this segment is not already marked as .trash,
+comment|// .empty or .corrupted, in which case it does not match the strict
+comment|// regex pattern.
+name|EDITS_INPROGRESS_REGEX
+operator|.
+name|matcher
+argument_list|(
+name|log
+operator|.
+name|getFile
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+operator|.
+name|matches
+argument_list|()
+return|;
 block|}
 comment|/**    * Find all editlog segments starting at or above the given txid.    * @param firstTxId the txnid which to start looking    * @param inProgressOk whether or not to include the in-progress edit log     *        segment           * @return a list of remote edit logs    * @throws IOException if edit logs cannot be listed.    */
 DECL|method|getRemoteEditLogs (long firstTxId, boolean inProgressOk)
@@ -3030,6 +3113,23 @@ assert|;
 name|renameSelf
 argument_list|(
 literal|".empty"
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|moveAsideStaleInprogressFile ()
+specifier|public
+name|void
+name|moveAsideStaleInprogressFile
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+assert|assert
+name|isInProgress
+assert|;
+name|renameSelf
+argument_list|(
+literal|".stale"
 argument_list|)
 expr_stmt|;
 block|}
