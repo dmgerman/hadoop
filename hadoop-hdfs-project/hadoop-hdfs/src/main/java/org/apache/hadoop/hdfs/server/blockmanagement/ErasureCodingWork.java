@@ -231,8 +231,6 @@ name|liveBlockIndicies
 operator|=
 name|liveBlockIndicies
 expr_stmt|;
-name|BlockManager
-operator|.
 name|LOG
 operator|.
 name|debug
@@ -908,18 +906,6 @@ name|target
 block|}
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|BlockManager
-operator|.
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|BlockManager
-operator|.
 name|LOG
 operator|.
 name|debug
@@ -935,7 +921,6 @@ argument_list|,
 name|targetBlk
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 DECL|method|findLeavingServiceSources ()
 specifier|private

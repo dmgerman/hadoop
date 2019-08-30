@@ -130,8 +130,6 @@ operator|.
 name|incrementPendingReplicationWithoutTargets
 argument_list|()
 expr_stmt|;
-name|BlockManager
-operator|.
 name|LOG
 operator|.
 name|debug
