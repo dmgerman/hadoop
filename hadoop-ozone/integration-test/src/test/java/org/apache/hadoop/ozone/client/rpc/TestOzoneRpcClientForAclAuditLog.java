@@ -783,7 +783,7 @@ name|setProperty
 argument_list|(
 literal|"log4j.configurationFile"
 argument_list|,
-literal|"log4j2.properties"
+literal|"auditlog.properties"
 argument_list|)
 expr_stmt|;
 name|ugi
