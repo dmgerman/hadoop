@@ -1575,13 +1575,6 @@ operator|.
 name|getScmSecurityClient
 argument_list|(
 name|config
-argument_list|,
-name|HddsUtils
-operator|.
-name|getScmAddressForSecurityProtocol
-argument_list|(
-name|config
-argument_list|)
 argument_list|)
 decl_stmt|;
 name|SCMGetCertResponseProto

@@ -142,6 +142,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -325,6 +337,38 @@ operator|.
 name|hdfs
 operator|.
 name|DFSConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|retry
+operator|.
+name|RetryPolicies
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|retry
+operator|.
+name|RetryPolicy
 import|;
 end_import
 
@@ -1002,8 +1046,8 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a scm security client.    * @param conf    - Ozone configuration.    * @param address - inet socket address of scm.    *    * @return {@link SCMSecurityProtocol}    * @throws IOException    */
-DECL|method|getScmSecurityClient ( OzoneConfiguration conf, InetSocketAddress address)
+comment|/**    * Create a scm security client.    * @param conf    - Ozone configuration.    *    * @return {@link SCMSecurityProtocol}    * @throws IOException    */
+DECL|method|getScmSecurityClient ( OzoneConfiguration conf)
 specifier|public
 specifier|static
 name|SCMSecurityProtocolClientSideTranslatorPB
@@ -1011,9 +1055,6 @@ name|getScmSecurityClient
 parameter_list|(
 name|OzoneConfiguration
 name|conf
-parameter_list|,
-name|InetSocketAddress
-name|address
 parameter_list|)
 throws|throws
 name|IOException
@@ -1045,6 +1086,28 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+name|InetSocketAddress
+name|address
+init|=
+name|getScmAddressForSecurityProtocol
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+name|RetryPolicy
+name|retryPolicy
+init|=
+name|RetryPolicies
+operator|.
+name|retryForeverWithFixedSleep
+argument_list|(
+literal|1000
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+argument_list|)
+decl_stmt|;
 name|SCMSecurityProtocolClientSideTranslatorPB
 name|scmSecurityClient
 init|=
@@ -1053,7 +1116,7 @@ name|SCMSecurityProtocolClientSideTranslatorPB
 argument_list|(
 name|RPC
 operator|.
-name|getProxy
+name|getProtocolProxy
 argument_list|(
 name|SCMSecurityProtocolPB
 operator|.
@@ -1083,7 +1146,12 @@ name|getRpcTimeout
 argument_list|(
 name|conf
 argument_list|)
+argument_list|,
+name|retryPolicy
 argument_list|)
+operator|.
+name|getProxy
+argument_list|()
 argument_list|)
 decl_stmt|;
 return|return
