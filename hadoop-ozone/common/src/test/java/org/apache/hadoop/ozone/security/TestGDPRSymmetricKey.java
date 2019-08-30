@@ -24,6 +24,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|lang3
+operator|.
+name|RandomStringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|ozone
@@ -142,7 +156,12 @@ init|=
 operator|new
 name|GDPRSymmetricKey
 argument_list|(
-literal|"ApacheHadoopOzoneIsAnObjectStore"
+name|RandomStringUtils
+operator|.
+name|randomAlphabetic
+argument_list|(
+literal|16
+argument_list|)
 argument_list|,
 name|OzoneConsts
 operator|.
@@ -218,7 +237,12 @@ operator|=
 operator|new
 name|GDPRSymmetricKey
 argument_list|(
-literal|"ozone"
+name|RandomStringUtils
+operator|.
+name|randomAlphabetic
+argument_list|(
+literal|5
+argument_list|)
 argument_list|,
 name|OzoneConsts
 operator|.
@@ -243,7 +267,7 @@ argument_list|()
 operator|.
 name|equalsIgnoreCase
 argument_list|(
-literal|"Secret must be exactly 32 characters"
+literal|"Secret must be exactly 16 characters"
 argument_list|)
 argument_list|)
 expr_stmt|;

@@ -174,7 +174,7 @@ name|randomAlphabetic
 argument_list|(
 name|OzoneConsts
 operator|.
-name|GDPR_RANDOM_SECRET_LENGTH
+name|GDPR_DEFAULT_RANDOM_SECRET_LENGTH
 argument_list|)
 expr_stmt|;
 name|this
@@ -224,6 +224,17 @@ name|Exception
 block|{
 name|Preconditions
 operator|.
+name|checkNotNull
+argument_list|(
+name|secret
+argument_list|,
+literal|"Secret cannot be null"
+argument_list|)
+expr_stmt|;
+comment|//TODO: When we add feature to allow users to customize the secret length,
+comment|// we need to update this length check Precondition
+name|Preconditions
+operator|.
 name|checkArgument
 argument_list|(
 name|secret
@@ -231,9 +242,18 @@ operator|.
 name|length
 argument_list|()
 operator|==
-literal|32
+literal|16
 argument_list|,
-literal|"Secret must be exactly 32 characters"
+literal|"Secret must be exactly 16 characters"
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|algorithm
+argument_list|,
+literal|"Algorithm cannot be null"
 argument_list|)
 expr_stmt|;
 name|this
