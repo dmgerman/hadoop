@@ -578,6 +578,19 @@ operator|.
 name|getBlockStoragePolicySuite
 argument_list|()
 decl_stmt|;
+comment|// Assume dstParent existence check done by callers.
+name|INode
+name|dstParent
+init|=
+name|dst
+operator|.
+name|getINode
+argument_list|(
+operator|-
+literal|2
+argument_list|)
+decl_stmt|;
+comment|// Use the destination parent's storage policy for quota delta verify.
 specifier|final
 name|QuotaCounts
 name|delta
@@ -590,6 +603,17 @@ operator|.
 name|computeQuotaUsage
 argument_list|(
 name|bsps
+argument_list|,
+name|dstParent
+operator|.
+name|getStoragePolicyID
+argument_list|()
+argument_list|,
+literal|false
+argument_list|,
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 decl_stmt|;
 comment|// Reduce the required quota by dst that is being removed
