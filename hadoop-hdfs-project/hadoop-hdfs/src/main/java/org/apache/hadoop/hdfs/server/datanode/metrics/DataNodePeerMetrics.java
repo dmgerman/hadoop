@@ -24,20 +24,6 @@ end_package
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -61,6 +47,20 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
 import|;
 end_import
 
@@ -136,6 +136,38 @@ name|ThreadLocalRandom
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_PEER_METRICS_MIN_OUTLIER_DETECTION_SAMPLES_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_PEER_METRICS_MIN_OUTLIER_DETECTION_SAMPLES_KEY
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class maintains DataNode peer metrics (e.g. numOps, AvgTime, etc.) for  * various peer operations.  */
 end_comment
@@ -208,23 +240,22 @@ name|OutlierDetector
 name|slowNodeDetector
 decl_stmt|;
 comment|/**    * Minimum number of packet send samples which are required to qualify    * for outlier detection. If the number of samples is below this then    * outlier detection is skipped.    */
-annotation|@
-name|VisibleForTesting
-DECL|field|MIN_OUTLIER_DETECTION_SAMPLES
-specifier|static
+DECL|field|minOutlierDetectionSamples
+specifier|private
 specifier|final
 name|long
-name|MIN_OUTLIER_DETECTION_SAMPLES
-init|=
-literal|1000
+name|minOutlierDetectionSamples
 decl_stmt|;
-DECL|method|DataNodePeerMetrics (final String name)
+DECL|method|DataNodePeerMetrics (final String name, Configuration conf)
 specifier|public
 name|DataNodePeerMetrics
 parameter_list|(
 specifier|final
 name|String
 name|name
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|this
@@ -232,6 +263,17 @@ operator|.
 name|name
 operator|=
 name|name
+expr_stmt|;
+name|minOutlierDetectionSamples
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFS_DATANODE_PEER_METRICS_MIN_OUTLIER_DETECTION_SAMPLES_KEY
+argument_list|,
+name|DFS_DATANODE_PEER_METRICS_MIN_OUTLIER_DETECTION_SAMPLES_DEFAULT
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -264,8 +306,17 @@ return|return
 name|name
 return|;
 block|}
+DECL|method|getMinOutlierDetectionSamples ()
+name|long
+name|getMinOutlierDetectionSamples
+parameter_list|()
+block|{
+return|return
+name|minOutlierDetectionSamples
+return|;
+block|}
 comment|/**    * Creates an instance of DataNodePeerMetrics, used for registration.    */
-DECL|method|create (String dnName)
+DECL|method|create (String dnName, Configuration conf)
 specifier|public
 specifier|static
 name|DataNodePeerMetrics
@@ -273,6 +324,9 @@ name|create
 parameter_list|(
 name|String
 name|dnName
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 specifier|final
@@ -312,6 +366,8 @@ operator|new
 name|DataNodePeerMetrics
 argument_list|(
 name|name
+argument_list|,
+name|conf
 argument_list|)
 return|;
 block|}
@@ -413,7 +469,7 @@ name|sendPacketDownstreamRollingAverages
 operator|.
 name|getStats
 argument_list|(
-name|MIN_OUTLIER_DETECTION_SAMPLES
+name|minOutlierDetectionSamples
 argument_list|)
 decl_stmt|;
 name|LOG

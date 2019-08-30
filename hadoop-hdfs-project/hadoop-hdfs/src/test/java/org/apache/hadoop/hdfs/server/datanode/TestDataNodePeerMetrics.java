@@ -249,6 +249,8 @@ operator|.
 name|create
 argument_list|(
 literal|"Sample-DataNode"
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 name|MetricsTestHelper
