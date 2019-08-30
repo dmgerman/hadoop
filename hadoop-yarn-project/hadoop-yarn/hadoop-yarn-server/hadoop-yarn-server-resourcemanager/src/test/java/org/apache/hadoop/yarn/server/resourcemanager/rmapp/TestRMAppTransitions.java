@@ -4566,6 +4566,11 @@ argument_list|(
 name|finishedEvent
 argument_list|)
 expr_stmt|;
+name|rmDispatcher
+operator|.
+name|await
+argument_list|()
+expr_stmt|;
 comment|//only run this verification if we created a finishing app
 if|if
 condition|(
