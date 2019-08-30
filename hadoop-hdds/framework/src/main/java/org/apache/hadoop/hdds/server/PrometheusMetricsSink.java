@@ -537,6 +537,23 @@ argument_list|(
 name|metricName
 argument_list|)
 decl_stmt|;
+return|return
+name|normalizeName
+argument_list|(
+name|baseName
+argument_list|)
+return|;
+block|}
+DECL|method|normalizeName (String baseName)
+specifier|public
+specifier|static
+name|String
+name|normalizeName
+parameter_list|(
+name|String
+name|baseName
+parameter_list|)
+block|{
 name|String
 index|[]
 name|parts

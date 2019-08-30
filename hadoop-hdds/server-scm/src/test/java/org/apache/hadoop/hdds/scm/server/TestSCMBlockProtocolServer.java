@@ -130,6 +130,22 @@ name|ozone
 operator|.
 name|protocolPB
 operator|.
+name|ProtocolMessageMetrics
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocolPB
+operator|.
 name|ScmBlockLocationProtocolServerSideTranslatorPB
 import|;
 end_import
@@ -190,6 +206,16 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -229,7 +255,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Test class for @{@link SCMBlockProtocolServer}.  * */
+comment|/**  * Test class for @{@link SCMBlockProtocolServer}.  */
 end_comment
 
 begin_class
@@ -388,6 +414,15 @@ operator|new
 name|ScmBlockLocationProtocolServerSideTranslatorPB
 argument_list|(
 name|server
+argument_list|,
+name|Mockito
+operator|.
+name|mock
+argument_list|(
+name|ProtocolMessageMetrics
+operator|.
+name|class
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

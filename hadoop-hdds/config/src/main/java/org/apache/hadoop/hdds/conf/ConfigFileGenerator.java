@@ -498,6 +498,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
+block|}
 name|FileObject
 name|resource
 init|=
@@ -540,7 +541,6 @@ argument_list|(
 name|writer
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 catch|catch

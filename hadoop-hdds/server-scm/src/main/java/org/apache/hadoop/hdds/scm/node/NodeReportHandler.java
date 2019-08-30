@@ -225,15 +225,6 @@ operator|+
 literal|"missing DatanodeDetails."
 argument_list|)
 expr_stmt|;
-name|LOGGER
-operator|.
-name|trace
-argument_list|(
-literal|"Processing node report for dn: {}"
-argument_list|,
-name|dn
-argument_list|)
-expr_stmt|;
 name|nodeManager
 operator|.
 name|processNodeReport
