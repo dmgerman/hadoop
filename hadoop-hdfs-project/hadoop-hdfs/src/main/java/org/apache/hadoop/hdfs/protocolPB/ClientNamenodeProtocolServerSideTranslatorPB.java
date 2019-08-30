@@ -7211,6 +7211,11 @@ name|req
 operator|.
 name|hasMoveToTrash
 argument_list|()
+operator|&&
+name|req
+operator|.
+name|getMoveToTrash
+argument_list|()
 condition|)
 block|{
 name|optionList
