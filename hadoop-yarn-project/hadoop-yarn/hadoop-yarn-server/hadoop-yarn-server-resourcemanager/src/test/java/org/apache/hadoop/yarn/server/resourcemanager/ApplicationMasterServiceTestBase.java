@@ -2531,6 +2531,11 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+name|rm
+operator|.
+name|drainEvents
+argument_list|()
+expr_stmt|;
 name|Assert
 operator|.
 name|assertEquals
