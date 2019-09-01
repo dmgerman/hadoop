@@ -16132,6 +16132,14 @@ literal|0
 condition|)
 block|{
 return|return
+operator|(
+name|lifetimeRequestedByApp
+operator|<=
+literal|0
+operator|)
+condition|?
+name|defaultApplicationLifetime
+else|:
 name|lifetimeRequestedByApp
 return|;
 block|}

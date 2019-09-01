@@ -1885,6 +1885,10 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
+name|maxApplicationLifetime
+operator|>
+literal|0
+operator|&&
 name|defaultApplicationLifetime
 operator|>
 name|maxApplicationLifetime
