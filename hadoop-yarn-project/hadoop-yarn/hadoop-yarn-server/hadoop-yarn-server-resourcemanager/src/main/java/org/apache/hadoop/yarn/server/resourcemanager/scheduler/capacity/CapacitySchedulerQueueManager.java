@@ -1741,13 +1741,11 @@ operator|.
 name|getQueuePath
 argument_list|()
 operator|+
-literal|" is deleted from"
+literal|" cannot be"
 operator|+
-literal|" the new capacity scheduler configuration, but the"
+literal|" deleted from the capacity scheduler configuration, as the"
 operator|+
-literal|" queue is not yet in stopped state. "
-operator|+
-literal|"Current State : "
+literal|" queue is not yet in stopped state. Current State : "
 operator|+
 name|oldQueue
 operator|.

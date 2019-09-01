@@ -3429,11 +3429,11 @@ operator|.
 name|getQueueName
 argument_list|()
 operator|+
-literal|" state is STOPPED, child queue:"
+literal|" cannot be STOPPED as the child queue:"
 operator|+
 name|queueName
 operator|+
-literal|" state cannot be RUNNING."
+literal|" is in RUNNING state."
 argument_list|)
 throw|;
 block|}

@@ -838,9 +838,9 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"The parent queue:q1 state is STOPPED, "
+literal|"The parent queue:q1 cannot be STOPPED as the child"
 operator|+
-literal|"child queue:q2 state cannot be RUNNING."
+literal|" queue:q2 is in RUNNING state."
 argument_list|)
 argument_list|)
 expr_stmt|;
