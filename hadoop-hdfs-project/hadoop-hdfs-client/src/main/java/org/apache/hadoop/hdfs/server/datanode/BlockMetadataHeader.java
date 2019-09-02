@@ -192,6 +192,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|InvalidChecksumSizeException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -473,7 +487,10 @@ name|read
 argument_list|(
 name|buf
 argument_list|,
-literal|0
+name|buf
+operator|.
+name|position
+argument_list|()
 argument_list|)
 operator|<=
 literal|0
@@ -481,11 +498,11 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|EOFException
+name|CorruptMetaHeaderException
 argument_list|(
-literal|"unexpected EOF while reading "
+literal|"EOF while reading header from "
 operator|+
-literal|"metadata file header"
+literal|"the metadata file. The meta file may be truncated or corrupt"
 argument_list|)
 throw|;
 block|}
@@ -518,7 +535,11 @@ argument_list|)
 decl_stmt|;
 name|DataChecksum
 name|dataChecksum
-init|=
+decl_stmt|;
+try|try
+block|{
+name|dataChecksum
+operator|=
 name|DataChecksum
 operator|.
 name|newDataChecksum
@@ -527,7 +548,26 @@ name|arr
 argument_list|,
 literal|2
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InvalidChecksumSizeException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|CorruptMetaHeaderException
+argument_list|(
+literal|"The block meta file header is "
+operator|+
+literal|"corrupt"
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
 return|return
 operator|new
 name|BlockMetadataHeader
@@ -551,6 +591,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
 return|return
 name|readHeader
 argument_list|(
@@ -562,6 +604,27 @@ argument_list|,
 name|in
 argument_list|)
 return|;
+block|}
+catch|catch
+parameter_list|(
+name|EOFException
+name|eof
+parameter_list|)
+block|{
+comment|// The attempt to read the header threw EOF, indicating there are not
+comment|// enough bytes in the meta file for the header.
+throw|throw
+operator|new
+name|CorruptMetaHeaderException
+argument_list|(
+literal|"EOF while reading header from meta"
+operator|+
+literal|". The meta file may be truncated or corrupt"
+argument_list|,
+name|eof
+argument_list|)
+throw|;
+block|}
 block|}
 comment|/**    * Reads header at the top of metadata file and returns the header.    * Closes the input stream after reading the header.    *    * @return metadata header for the block    * @throws IOException    */
 DECL|method|readHeader ( FileInputStream fis)
@@ -678,13 +741,38 @@ block|{
 name|DataChecksum
 name|checksum
 init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|checksum
+operator|=
 name|DataChecksum
 operator|.
 name|newDataChecksum
 argument_list|(
 name|in
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InvalidChecksumSizeException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|CorruptMetaHeaderException
+argument_list|(
+literal|"The block meta file header is "
+operator|+
+literal|"corrupt"
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
 return|return
 operator|new
 name|BlockMetadataHeader

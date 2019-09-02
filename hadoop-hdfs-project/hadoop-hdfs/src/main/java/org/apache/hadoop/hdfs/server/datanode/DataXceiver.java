@@ -4121,6 +4121,22 @@ name|incrDatanodeNetworkErrors
 argument_list|()
 expr_stmt|;
 block|}
+comment|// Normally the client reports a bad block to the NN. However if the
+comment|// meta file is corrupt or an disk error occurs (EIO), then the client
+comment|// never gets a chance to do validation, and hence will never report
+comment|// the block as bad. For some classes of IO exception, the DN should
+comment|// report the block as bad, via the handleBadBlock() method
+name|datanode
+operator|.
+name|handleBadBlock
+argument_list|(
+name|block
+argument_list|,
+name|ioe
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
 throw|throw
 name|ioe
 throw|;
@@ -6643,6 +6659,22 @@ argument_list|)
 expr_stmt|;
 name|incrDatanodeNetworkErrors
 argument_list|()
+expr_stmt|;
+comment|// Normally the client reports a bad block to the NN. However if the
+comment|// meta file is corrupt or an disk error occurs (EIO), then the client
+comment|// never gets a chance to do validation, and hence will never report
+comment|// the block as bad. For some classes of IO exception, the DN should
+comment|// report the block as bad, via the handleBadBlock() method
+name|datanode
+operator|.
+name|handleBadBlock
+argument_list|(
+name|block
+argument_list|,
+name|ioe
+argument_list|,
+literal|false
+argument_list|)
 expr_stmt|;
 throw|throw
 name|ioe

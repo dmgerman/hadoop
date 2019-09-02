@@ -1422,6 +1422,14 @@ comment|// Checksum verification is not performed for replicas on transient
 comment|// storage.  The header is important for determining the checksum
 comment|// type later when lazy persistence copies the block to non-transient
 comment|// storage and computes the checksum.
+name|int
+name|expectedHeaderSize
+init|=
+name|BlockMetadataHeader
+operator|.
+name|getHeaderSize
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 operator|!
@@ -1435,10 +1443,7 @@ operator|.
 name|getLength
 argument_list|()
 operator|>=
-name|BlockMetadataHeader
-operator|.
-name|getHeaderSize
-argument_list|()
+name|expectedHeaderSize
 condition|)
 block|{
 name|checksumIn
@@ -1470,6 +1475,56 @@ name|keepMetaInOpen
 operator|=
 literal|true
 expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+operator|!
+name|replica
+operator|.
+name|isOnTransientStorage
+argument_list|()
+operator|&&
+name|metaIn
+operator|.
+name|getLength
+argument_list|()
+operator|<
+name|expectedHeaderSize
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"The meta file length {} is less than the expected "
+operator|+
+literal|"header length {}, indicating the meta file is corrupt"
+argument_list|,
+name|metaIn
+operator|.
+name|getLength
+argument_list|()
+argument_list|,
+name|expectedHeaderSize
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|CorruptMetaHeaderException
+argument_list|(
+literal|"The meta file length "
+operator|+
+name|metaIn
+operator|.
+name|getLength
+argument_list|()
+operator|+
+literal|" is less than the expected length "
+operator|+
+name|expectedHeaderSize
+argument_list|)
+throw|;
 block|}
 block|}
 else|else

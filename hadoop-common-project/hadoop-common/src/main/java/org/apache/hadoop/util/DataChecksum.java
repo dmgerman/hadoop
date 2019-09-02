@@ -610,19 +610,21 @@ return|;
 block|}
 block|}
 comment|/**    * Creates a DataChecksum from HEADER_LEN bytes from arr[offset].    * @return DataChecksum of the type in the array or null in case of an error.    */
-DECL|method|newDataChecksum ( byte bytes[], int offset )
+DECL|method|newDataChecksum (byte[] bytes, int offset)
 specifier|public
 specifier|static
 name|DataChecksum
 name|newDataChecksum
 parameter_list|(
 name|byte
-name|bytes
 index|[]
+name|bytes
 parameter_list|,
 name|int
 name|offset
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 if|if
 condition|(
@@ -640,9 +642,23 @@ name|getChecksumHeaderSize
 argument_list|()
 condition|)
 block|{
-return|return
-literal|null
-return|;
+throw|throw
+operator|new
+name|InvalidChecksumSizeException
+argument_list|(
+literal|"Could not create DataChecksum "
+operator|+
+literal|" from the byte array of length "
+operator|+
+name|bytes
+operator|.
+name|length
+operator|+
+literal|" and offset "
+operator|+
+name|offset
+argument_list|)
+throw|;
 block|}
 comment|// like readInt():
 name|int
@@ -706,12 +722,12 @@ literal|0xff
 operator|)
 operator|)
 decl_stmt|;
-return|return
+name|DataChecksum
+name|csum
+init|=
 name|newDataChecksum
 argument_list|(
-name|Type
-operator|.
-name|valueOf
+name|mapByteToChecksumType
 argument_list|(
 name|bytes
 index|[
@@ -721,6 +737,36 @@ argument_list|)
 argument_list|,
 name|bytesPerChecksum
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|csum
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|InvalidChecksumSizeException
+argument_list|(
+operator|(
+literal|"Could not create DataChecksum "
+operator|+
+literal|" from the byte array of length "
+operator|+
+name|bytes
+operator|.
+name|length
+operator|+
+literal|" and bytesPerCheckSum of "
+operator|+
+name|bytesPerChecksum
+operator|)
+argument_list|)
+throw|;
+block|}
+return|return
+name|csum
 return|;
 block|}
 comment|/**    * This constructs a DataChecksum by reading HEADER_LEN bytes from input    * stream<i>in</i>    */
@@ -757,9 +803,7 @@ name|summer
 init|=
 name|newDataChecksum
 argument_list|(
-name|Type
-operator|.
-name|valueOf
+name|mapByteToChecksumType
 argument_list|(
 name|type
 argument_list|)
@@ -793,6 +837,50 @@ block|}
 return|return
 name|summer
 return|;
+block|}
+DECL|method|mapByteToChecksumType (int type)
+specifier|private
+specifier|static
+name|Type
+name|mapByteToChecksumType
+parameter_list|(
+name|int
+name|type
+parameter_list|)
+throws|throws
+name|InvalidChecksumSizeException
+block|{
+try|try
+block|{
+return|return
+name|Type
+operator|.
+name|valueOf
+argument_list|(
+name|type
+argument_list|)
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|InvalidChecksumSizeException
+argument_list|(
+literal|"The value "
+operator|+
+name|type
+operator|+
+literal|" does not map"
+operator|+
+literal|" to a valid checksum Type"
+argument_list|)
+throw|;
+block|}
 block|}
 comment|/**    * Writes the checksum header to the output stream<i>out</i>.    */
 DECL|method|writeHeader ( DataOutputStream out )
