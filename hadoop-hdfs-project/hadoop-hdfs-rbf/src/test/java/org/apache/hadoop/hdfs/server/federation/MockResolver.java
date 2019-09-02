@@ -457,6 +457,14 @@ name|disableDefaultNamespace
 init|=
 literal|false
 decl_stmt|;
+DECL|field|disableRegistration
+specifier|private
+specifier|volatile
+name|boolean
+name|disableRegistration
+init|=
+literal|false
+decl_stmt|;
 DECL|method|MockResolver ()
 specifier|public
 name|MockResolver
@@ -642,6 +650,21 @@ argument_list|<>
 argument_list|()
 expr_stmt|;
 block|}
+comment|/*    * Disable NameNode auto registration for test. This method usually used after    * {@link MockResolver#cleanRegistrations()}, and before {@link    * MockResolver#registerNamenode()}    */
+DECL|method|setDisableRegistration (boolean isDisable)
+specifier|public
+name|void
+name|setDisableRegistration
+parameter_list|(
+name|boolean
+name|isDisable
+parameter_list|)
+block|{
+name|disableRegistration
+operator|=
+name|isDisable
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|updateActiveNamenode ( String nsId, InetSocketAddress successfulAddress)
@@ -774,6 +797,7 @@ block|}
 annotation|@
 name|Override
 specifier|public
+specifier|synchronized
 name|List
 argument_list|<
 name|?
@@ -836,14 +860,15 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getNamenodesForBlockPoolId ( String blockPoolId)
 specifier|public
+specifier|synchronized
 name|List
 argument_list|<
 name|?
 extends|extends
 name|FederationNamenodeContext
 argument_list|>
+DECL|method|getNamenodesForBlockPoolId (String blockPoolId)
 name|getNamenodesForBlockPoolId
 parameter_list|(
 name|String
@@ -1163,6 +1188,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|disableRegistration
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
 name|MockNamenodeContext
 name|context
 init|=
@@ -1414,6 +1448,7 @@ annotation|@
 name|Override
 DECL|method|getNamespaces ()
 specifier|public
+specifier|synchronized
 name|Set
 argument_list|<
 name|FederationNamespaceInfo
@@ -1424,9 +1459,14 @@ throws|throws
 name|IOException
 block|{
 return|return
+name|Collections
+operator|.
+name|unmodifiableSet
+argument_list|(
 name|this
 operator|.
 name|namespaces
+argument_list|)
 return|;
 block|}
 annotation|@

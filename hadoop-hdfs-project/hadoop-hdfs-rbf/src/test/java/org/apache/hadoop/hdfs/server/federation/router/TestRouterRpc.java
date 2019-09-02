@@ -9380,6 +9380,7 @@ name|SAFEMODE_LEAVE
 argument_list|)
 expr_stmt|;
 block|}
+comment|/*    * This case is used to test NameNodeMetrics on 2 purposes:    * 1. NameNodeMetrics should be cached, since the cost of gathering the    * metrics is expensive    * 2. Metrics cache should updated regularly    * 3. Without any subcluster available, we should return an empty list    */
 annotation|@
 name|Test
 DECL|method|testNamenodeMetrics ()
@@ -9530,6 +9531,15 @@ operator|.
 name|cleanRegistrations
 argument_list|()
 expr_stmt|;
+name|resolver
+operator|.
+name|setDisableRegistration
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+try|try
+block|{
 name|GenericTestUtils
 operator|.
 name|waitFor
@@ -9580,7 +9590,17 @@ name|getLiveNodes
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
 comment|// Reset the registrations again
+name|resolver
+operator|.
+name|setDisableRegistration
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
 name|cluster
 operator|.
 name|registerNamenodes
@@ -9591,6 +9611,7 @@ operator|.
 name|waitNamenodeRegistration
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Test
