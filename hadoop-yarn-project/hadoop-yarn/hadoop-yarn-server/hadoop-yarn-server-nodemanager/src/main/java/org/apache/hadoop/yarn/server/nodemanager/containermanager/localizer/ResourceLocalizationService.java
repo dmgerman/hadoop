@@ -7465,10 +7465,12 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
+literal|"{} failed for {} : {}"
+argument_list|,
 name|req
-operator|+
-literal|" failed: "
-operator|+
+argument_list|,
+name|localizerId
+argument_list|,
 name|diagnostics
 argument_list|)
 expr_stmt|;
