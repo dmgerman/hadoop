@@ -882,11 +882,7 @@ name|reader
 operator|.
 name|getEntityTypes
 argument_list|(
-operator|new
-name|TimelineReaderContext
-argument_list|(
 name|context
-argument_list|)
 argument_list|)
 return|;
 block|}
