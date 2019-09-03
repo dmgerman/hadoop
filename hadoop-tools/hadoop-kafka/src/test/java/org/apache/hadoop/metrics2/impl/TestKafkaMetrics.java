@@ -306,18 +306,6 @@ begin_import
 import|import static
 name|org
 operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
 name|mockito
 operator|.
 name|ArgumentMatchers
@@ -359,6 +347,22 @@ operator|.
 name|Mockito
 operator|.
 name|when
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
 import|;
 end_import
 
@@ -889,13 +893,16 @@ name|jsonResult
 argument_list|)
 expr_stmt|;
 block|}
-name|assertEquals
+name|assertThat
 argument_list|(
 name|jsonLines
 operator|.
 name|toString
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 name|jsonResult
 argument_list|)
 expr_stmt|;

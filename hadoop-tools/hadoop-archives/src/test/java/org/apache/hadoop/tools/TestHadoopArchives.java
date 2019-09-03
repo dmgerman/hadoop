@@ -397,6 +397,22 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -2801,13 +2817,16 @@ operator|++
 expr_stmt|;
 block|}
 block|}
-name|assertEquals
+name|assertThat
 argument_list|(
 name|fileList
 operator|.
 name|size
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 name|readFileCount
 argument_list|)
 expr_stmt|;
