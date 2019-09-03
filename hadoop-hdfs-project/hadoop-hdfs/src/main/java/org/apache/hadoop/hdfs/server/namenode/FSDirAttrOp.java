@@ -2899,9 +2899,8 @@ decl_stmt|;
 if|if
 condition|(
 name|mtime
-operator|!=
-operator|-
-literal|1
+operator|>=
+literal|0
 condition|)
 block|{
 name|inode
@@ -2925,9 +2924,8 @@ comment|// then no need to store access time
 if|if
 condition|(
 name|atime
-operator|!=
-operator|-
-literal|1
+operator|>=
+literal|0
 operator|&&
 operator|(
 name|status
