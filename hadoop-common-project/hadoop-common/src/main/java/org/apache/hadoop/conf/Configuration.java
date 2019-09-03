@@ -6946,21 +6946,6 @@ operator|==
 name|vUnit
 condition|)
 block|{
-name|logDeprecation
-argument_list|(
-literal|"No unit for "
-operator|+
-name|name
-operator|+
-literal|"("
-operator|+
-name|vStr
-operator|+
-literal|") assuming "
-operator|+
-name|defaultUnit
-argument_list|)
-expr_stmt|;
 name|vUnit
 operator|=
 name|ParsedTimeDuration
