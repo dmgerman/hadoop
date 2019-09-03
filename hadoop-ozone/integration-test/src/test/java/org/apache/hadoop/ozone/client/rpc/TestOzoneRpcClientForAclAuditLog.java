@@ -362,6 +362,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Ignore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -625,6 +635,13 @@ argument_list|(
 name|MethodSorters
 operator|.
 name|NAME_ASCENDING
+argument_list|)
+annotation|@
+name|Ignore
+argument_list|(
+literal|"Fix this after adding audit support for HA Acl code. This will be "
+operator|+
+literal|"fixed by HDDS-2038"
 argument_list|)
 DECL|class|TestOzoneRpcClientForAclAuditLog
 specifier|public

@@ -1054,7 +1054,7 @@ name|OzoneObj
 operator|.
 name|ResourceType
 operator|.
-name|BUCKET
+name|VOLUME
 argument_list|,
 name|OzoneObj
 operator|.

@@ -594,15 +594,6 @@ operator|.
 name|getAclMap
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
-name|assertNotEquals
-argument_list|(
-name|aclMapBeforeSet
-argument_list|,
-name|aclMapAfterSet
-argument_list|)
-expr_stmt|;
 comment|// Acl is added to aclMapAfterSet
 name|Assert
 operator|.

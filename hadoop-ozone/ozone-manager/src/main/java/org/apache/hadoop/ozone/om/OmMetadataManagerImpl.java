@@ -1660,26 +1660,16 @@ argument_list|,
 name|USER_TABLE
 argument_list|)
 expr_stmt|;
-comment|// As now we have eviction policies, and for non-HA code path we don't
-comment|// support cache and cleanup policies setting cache to manual.
 name|TableCacheImpl
 operator|.
 name|CacheCleanupPolicy
 name|cleanupPolicy
 init|=
-name|isRatisEnabled
-condition|?
 name|TableCacheImpl
 operator|.
 name|CacheCleanupPolicy
 operator|.
 name|NEVER
-else|:
-name|TableCacheImpl
-operator|.
-name|CacheCleanupPolicy
-operator|.
-name|MANUAL
 decl_stmt|;
 name|volumeTable
 operator|=

@@ -867,6 +867,12 @@ argument_list|(
 name|newCreateDirectoryRequest
 argument_list|)
 operator|.
+name|setUserInfo
+argument_list|(
+name|getUserInfo
+argument_list|()
+argument_list|)
+operator|.
 name|build
 argument_list|()
 return|;

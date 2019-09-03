@@ -592,37 +592,6 @@ name|CACHEKEY
 name|cachekey
 parameter_list|)
 block|{
-comment|// TODO: Remove this check once HA and Non-HA code is merged and all
-comment|//  requests are converted to use cache and double buffer.
-comment|// This is to done as temporary instead of passing ratis enabled flag
-comment|// which requires more code changes. We cannot use ratis enabled flag
-comment|// also because some of the requests in OM HA are not modified to use
-comment|// double buffer and cache.
-if|if
-condition|(
-name|cache
-operator|.
-name|size
-argument_list|()
-operator|==
-literal|0
-condition|)
-block|{
-return|return
-operator|new
-name|CacheResult
-argument_list|<>
-argument_list|(
-name|CacheResult
-operator|.
-name|CacheStatus
-operator|.
-name|MAY_EXIST
-argument_list|,
-literal|null
-argument_list|)
-return|;
-block|}
 name|CACHEVALUE
 name|cachevalue
 init|=

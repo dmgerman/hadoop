@@ -259,6 +259,10 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
+name|ozoneTokenIdentifier
+operator|!=
+literal|null
+operator|&&
 name|getOMResponse
 argument_list|()
 operator|.

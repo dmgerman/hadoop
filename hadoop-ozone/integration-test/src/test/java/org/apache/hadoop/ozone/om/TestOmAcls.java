@@ -811,7 +811,7 @@ name|contains
 argument_list|(
 literal|"doesn't have WRITE "
 operator|+
-literal|"permission to access key"
+literal|"permission to access bucket"
 argument_list|)
 argument_list|)
 expr_stmt|;

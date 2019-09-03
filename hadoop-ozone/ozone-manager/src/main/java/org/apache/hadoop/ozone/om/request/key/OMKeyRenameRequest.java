@@ -1162,6 +1162,14 @@ return|;
 block|}
 else|else
 block|{
+name|ozoneManager
+operator|.
+name|getMetrics
+argument_list|()
+operator|.
+name|incNumKeyRenameFails
+argument_list|()
+expr_stmt|;
 name|LOG
 operator|.
 name|error

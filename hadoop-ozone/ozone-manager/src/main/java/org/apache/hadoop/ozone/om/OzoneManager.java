@@ -17569,6 +17569,20 @@ return|return
 name|delegationTokenMgr
 return|;
 block|}
+comment|/**    * Return list of OzoneAdministrators.    */
+DECL|method|getOzoneAdmins ()
+specifier|public
+name|Collection
+argument_list|<
+name|String
+argument_list|>
+name|getOzoneAdmins
+parameter_list|()
+block|{
+return|return
+name|ozAdmins
+return|;
+block|}
 block|}
 end_class
 

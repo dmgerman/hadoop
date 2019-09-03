@@ -1161,7 +1161,7 @@ operator|.
 name|getLock
 argument_list|()
 operator|.
-name|acquireLock
+name|releaseLock
 argument_list|(
 name|VOLUME_LOCK
 argument_list|,
