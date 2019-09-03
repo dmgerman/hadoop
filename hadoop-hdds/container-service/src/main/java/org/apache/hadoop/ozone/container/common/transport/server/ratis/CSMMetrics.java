@@ -357,6 +357,20 @@ name|Metric
 name|MutableCounterLong
 name|numContainerNotOpenVerifyFailures
 decl_stmt|;
+DECL|field|applyTransaction
+specifier|private
+annotation|@
+name|Metric
+name|MutableRate
+name|applyTransaction
+decl_stmt|;
+DECL|field|writeStateMachineData
+specifier|private
+annotation|@
+name|Metric
+name|MutableRate
+name|writeStateMachineData
+decl_stmt|;
 DECL|method|CSMMetrics ()
 specifier|public
 name|CSMMetrics
@@ -825,6 +839,16 @@ name|value
 argument_list|()
 return|;
 block|}
+DECL|method|getApplyTransactionLatency ()
+specifier|public
+name|MutableRate
+name|getApplyTransactionLatency
+parameter_list|()
+block|{
+return|return
+name|applyTransaction
+return|;
+block|}
 DECL|method|incPipelineLatency (ContainerProtos.Type type, long latencyNanos)
 specifier|public
 name|void
@@ -882,6 +906,40 @@ name|numContainerNotOpenVerifyFailures
 operator|.
 name|incr
 argument_list|()
+expr_stmt|;
+block|}
+DECL|method|recordApplyTransactionCompletion (long latencyNanos)
+specifier|public
+name|void
+name|recordApplyTransactionCompletion
+parameter_list|(
+name|long
+name|latencyNanos
+parameter_list|)
+block|{
+name|applyTransaction
+operator|.
+name|add
+argument_list|(
+name|latencyNanos
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|recordWriteStateMachineCompletion (long latencyNanos)
+specifier|public
+name|void
+name|recordWriteStateMachineCompletion
+parameter_list|(
+name|long
+name|latencyNanos
+parameter_list|)
+block|{
+name|writeStateMachineData
+operator|.
+name|add
+argument_list|(
+name|latencyNanos
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|unRegister ()
