@@ -382,6 +382,32 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Activates a dormant pipeline.    *    * @param pipelineID ID of the pipeline to activate.    * @throws IOException in case of any Exception    */
+DECL|method|activatePipeline (HddsProtos.PipelineID pipelineID)
+name|void
+name|activatePipeline
+parameter_list|(
+name|HddsProtos
+operator|.
+name|PipelineID
+name|pipelineID
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Deactivates an active pipeline.    *    * @param pipelineID ID of the pipeline to deactivate.    * @throws IOException in case of any Exception    */
+DECL|method|deactivatePipeline (HddsProtos.PipelineID pipelineID)
+name|void
+name|deactivatePipeline
+parameter_list|(
+name|HddsProtos
+operator|.
+name|PipelineID
+name|pipelineID
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Closes a pipeline given the pipelineID.    *    * @param pipelineID ID of the pipeline to demolish    * @throws IOException    */
 DECL|method|closePipeline (HddsProtos.PipelineID pipelineID)
 name|void

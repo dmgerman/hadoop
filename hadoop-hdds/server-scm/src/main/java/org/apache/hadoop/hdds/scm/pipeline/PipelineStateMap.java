@@ -1666,18 +1666,7 @@ name|updatedPipeline
 argument_list|)
 expr_stmt|;
 block|}
-elseif|else
-if|if
-condition|(
-name|updatedPipeline
-operator|.
-name|getPipelineState
-argument_list|()
-operator|==
-name|PipelineState
-operator|.
-name|CLOSED
-condition|)
+else|else
 block|{
 comment|// for transition from OPEN to CLOSED state remove pipeline from
 comment|// query2OpenPipelines

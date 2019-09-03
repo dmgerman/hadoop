@@ -711,6 +711,54 @@ return|return
 name|pipeline
 return|;
 block|}
+comment|/**    * Activates a dormant pipeline.    *    * @param pipelineID ID of the pipeline to activate.    * @throws IOException in case of any Exception    */
+DECL|method|activatePipeline (PipelineID pipelineID)
+specifier|public
+name|void
+name|activatePipeline
+parameter_list|(
+name|PipelineID
+name|pipelineID
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|pipelineStateMap
+operator|.
+name|updatePipelineState
+argument_list|(
+name|pipelineID
+argument_list|,
+name|PipelineState
+operator|.
+name|OPEN
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Deactivates an active pipeline.    *    * @param pipelineID ID of the pipeline to deactivate.    * @throws IOException in case of any Exception    */
+DECL|method|deactivatePipeline (PipelineID pipelineID)
+specifier|public
+name|void
+name|deactivatePipeline
+parameter_list|(
+name|PipelineID
+name|pipelineID
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|pipelineStateMap
+operator|.
+name|updatePipelineState
+argument_list|(
+name|pipelineID
+argument_list|,
+name|PipelineState
+operator|.
+name|DORMANT
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

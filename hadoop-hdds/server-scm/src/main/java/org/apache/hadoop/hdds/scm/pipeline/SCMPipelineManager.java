@@ -28,6 +28,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|base
 operator|.
 name|Preconditions
@@ -808,6 +822,8 @@ return|return
 name|stateManager
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|setPipelineProvider (ReplicationType replicationType, PipelineProvider provider)
 specifier|public
 name|void
@@ -1911,6 +1927,50 @@ name|backgroundPipelineCreator
 operator|.
 name|triggerPipelineCreation
 argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Activates a dormant pipeline.    *    * @param pipelineID ID of the pipeline to activate.    * @throws IOException in case of any Exception    */
+annotation|@
+name|Override
+DECL|method|activatePipeline (PipelineID pipelineID)
+specifier|public
+name|void
+name|activatePipeline
+parameter_list|(
+name|PipelineID
+name|pipelineID
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|stateManager
+operator|.
+name|activatePipeline
+argument_list|(
+name|pipelineID
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Deactivates an active pipeline.    *    * @param pipelineID ID of the pipeline to deactivate.    * @throws IOException in case of any Exception    */
+annotation|@
+name|Override
+DECL|method|deactivatePipeline (PipelineID pipelineID)
+specifier|public
+name|void
+name|deactivatePipeline
+parameter_list|(
+name|PipelineID
+name|pipelineID
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|stateManager
+operator|.
+name|deactivatePipeline
+argument_list|(
+name|pipelineID
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Moves the pipeline to CLOSED state and sends close container command for    * all the containers in the pipeline.    *    * @param pipelineId - ID of the pipeline to be moved to CLOSED state.    * @throws IOException    */

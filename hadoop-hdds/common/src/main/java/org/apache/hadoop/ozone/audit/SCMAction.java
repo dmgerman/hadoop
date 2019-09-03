@@ -66,6 +66,12 @@ block|,
 DECL|enumConstant|CLOSE_PIPELINE
 name|CLOSE_PIPELINE
 block|,
+DECL|enumConstant|ACTIVATE_PIPELINE
+name|ACTIVATE_PIPELINE
+block|,
+DECL|enumConstant|DEACTIVATE_PIPELINE
+name|DEACTIVATE_PIPELINE
+block|,
 DECL|enumConstant|DELETE_CONTAINER
 name|DELETE_CONTAINER
 block|,

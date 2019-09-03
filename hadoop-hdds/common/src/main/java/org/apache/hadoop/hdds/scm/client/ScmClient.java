@@ -401,6 +401,32 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Activates the pipeline given a pipeline ID.    *    * @param pipelineID PipelineID to activate.    * @throws IOException In case of exception while activating the pipeline    */
+DECL|method|activatePipeline (HddsProtos.PipelineID pipelineID)
+name|void
+name|activatePipeline
+parameter_list|(
+name|HddsProtos
+operator|.
+name|PipelineID
+name|pipelineID
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Deactivates the pipeline given a pipeline ID.    *    * @param pipelineID PipelineID to deactivate.    * @throws IOException In case of exception while deactivating the pipeline    */
+DECL|method|deactivatePipeline (HddsProtos.PipelineID pipelineID)
+name|void
+name|deactivatePipeline
+parameter_list|(
+name|HddsProtos
+operator|.
+name|PipelineID
+name|pipelineID
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Closes the pipeline given a pipeline ID.    *    * @param pipelineID PipelineID to close.    * @throws IOException In case of exception while closing the pipeline    */
 DECL|method|closePipeline (HddsProtos.PipelineID pipelineID)
 name|void

@@ -371,6 +371,28 @@ name|PipelineID
 name|id
 parameter_list|)
 function_decl|;
+comment|/**    * Activates a dormant pipeline.    *    * @param pipelineID ID of the pipeline to activate.    * @throws IOException in case of any Exception    */
+DECL|method|activatePipeline (PipelineID pipelineID)
+name|void
+name|activatePipeline
+parameter_list|(
+name|PipelineID
+name|pipelineID
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Deactivates an active pipeline.    *    * @param pipelineID ID of the pipeline to deactivate.    * @throws IOException in case of any Exception    */
+DECL|method|deactivatePipeline (PipelineID pipelineID)
+name|void
+name|deactivatePipeline
+parameter_list|(
+name|PipelineID
+name|pipelineID
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 
