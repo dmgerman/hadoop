@@ -350,6 +350,11 @@ specifier|volatile
 name|boolean
 name|clientBackOffEnabled
 decl_stmt|;
+DECL|field|serverFailOverEnabled
+specifier|private
+name|boolean
+name|serverFailOverEnabled
+decl_stmt|;
 comment|// Atomic refs point to active callQueue
 comment|// We have two so we can better control swapping
 DECL|field|putRef
@@ -469,6 +474,27 @@ name|clientBackOffEnabled
 expr_stmt|;
 name|this
 operator|.
+name|serverFailOverEnabled
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|namespace
+operator|+
+literal|"."
+operator|+
+name|CommonConfigurationKeys
+operator|.
+name|IPC_CALLQUEUE_SERVER_FAILOVER_ENABLE
+argument_list|,
+name|CommonConfigurationKeys
+operator|.
+name|IPC_CALLQUEUE_SERVER_FAILOVER_ENABLE_DEFAULT
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
 name|putRef
 operator|=
 operator|new
@@ -520,7 +546,7 @@ block|}
 annotation|@
 name|VisibleForTesting
 comment|// only!
-DECL|method|CallQueueManager (BlockingQueue<E> queue, RpcScheduler scheduler, boolean clientBackOffEnabled)
+DECL|method|CallQueueManager (BlockingQueue<E> queue, RpcScheduler scheduler, boolean clientBackOffEnabled, boolean serverFailOverEnabled)
 name|CallQueueManager
 parameter_list|(
 name|BlockingQueue
@@ -534,6 +560,9 @@ name|scheduler
 parameter_list|,
 name|boolean
 name|clientBackOffEnabled
+parameter_list|,
+name|boolean
+name|serverFailOverEnabled
 parameter_list|)
 block|{
 name|this
@@ -579,6 +608,12 @@ operator|.
 name|clientBackOffEnabled
 operator|=
 name|clientBackOffEnabled
+expr_stmt|;
+name|this
+operator|.
+name|serverFailOverEnabled
+operator|=
+name|serverFailOverEnabled
 expr_stmt|;
 block|}
 DECL|method|createScheduler ( Class<T> theClass, int priorityLevels, String ns, Configuration conf)
@@ -1328,6 +1363,12 @@ throws|throws
 name|IllegalStateException
 block|{
 throw|throw
+name|serverFailOverEnabled
+condition|?
+name|CallQueueOverflowException
+operator|.
+name|FAILOVER
+else|:
 name|CallQueueOverflowException
 operator|.
 name|DISCONNECT
@@ -2042,6 +2083,28 @@ argument_list|(
 name|TOO_BUSY
 operator|+
 literal|" - disconnecting"
+argument_list|)
+argument_list|,
+name|RpcStatusProto
+operator|.
+name|FATAL
+argument_list|)
+decl_stmt|;
+DECL|field|FAILOVER
+specifier|static
+specifier|final
+name|CallQueueOverflowException
+name|FAILOVER
+init|=
+operator|new
+name|CallQueueOverflowException
+argument_list|(
+operator|new
+name|StandbyException
+argument_list|(
+name|TOO_BUSY
+operator|+
+literal|" - disconnect and failover"
 argument_list|)
 argument_list|,
 name|RpcStatusProto

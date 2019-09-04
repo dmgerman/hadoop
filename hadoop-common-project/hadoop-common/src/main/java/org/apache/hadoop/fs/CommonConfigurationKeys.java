@@ -403,6 +403,25 @@ name|IPC_BACKOFF_ENABLE_DEFAULT
 init|=
 literal|false
 decl_stmt|;
+comment|// Callqueue overflow trigger failover for stateless servers.
+DECL|field|IPC_CALLQUEUE_SERVER_FAILOVER_ENABLE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IPC_CALLQUEUE_SERVER_FAILOVER_ENABLE
+init|=
+literal|"callqueue.overflow.trigger.failover"
+decl_stmt|;
+DECL|field|IPC_CALLQUEUE_SERVER_FAILOVER_ENABLE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|IPC_CALLQUEUE_SERVER_FAILOVER_ENABLE_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * IPC scheduler priority levels.    */
 DECL|field|IPC_SCHEDULER_PRIORITY_LEVELS_KEY
 specifier|public
