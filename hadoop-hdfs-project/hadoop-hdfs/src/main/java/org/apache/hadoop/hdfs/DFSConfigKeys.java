@@ -691,6 +691,25 @@ name|DFS_DATANODE_BALANCE_MAX_NUM_CONCURRENT_MOVES_DEFAULT
 init|=
 literal|100
 decl_stmt|;
+DECL|field|DFS_DATANODE_DATA_TRANSFER_BANDWIDTHPERSEC_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_DATANODE_DATA_TRANSFER_BANDWIDTHPERSEC_KEY
+init|=
+literal|"dfs.datanode.data.transfer.bandwidthPerSec"
+decl_stmt|;
+DECL|field|DFS_DATANODE_DATA_TRANSFER_BANDWIDTHPERSEC_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DFS_DATANODE_DATA_TRANSFER_BANDWIDTHPERSEC_DEFAULT
+init|=
+literal|0
+decl_stmt|;
+comment|// A value of zero indicates no limit
 annotation|@
 name|Deprecated
 DECL|field|DFS_DATANODE_READAHEAD_BYTES_KEY

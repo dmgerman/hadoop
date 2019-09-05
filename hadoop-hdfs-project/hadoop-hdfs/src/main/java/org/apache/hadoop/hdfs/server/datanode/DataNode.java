@@ -1222,6 +1222,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|util
+operator|.
+name|DataTransferThrottler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|AutoCloseableLock
@@ -12244,6 +12260,12 @@ specifier|final
 name|CachingStrategy
 name|cachingStrategy
 decl_stmt|;
+comment|/** Throttle to block replication when data transfers. */
+DECL|field|transferThrottler
+specifier|private
+name|DataTransferThrottler
+name|transferThrottler
+decl_stmt|;
 comment|/**      * Connect to the first item in the target list.  Pass along the       * entire target list, the block, and the data.      */
 DECL|method|DataTransfer (DatanodeInfo targets[], StorageType[] targetStorageTypes, String[] targetStorageIds, ExtendedBlock b, BlockConstructionStage stage, final String clientname)
 name|DataTransfer
@@ -12415,6 +12437,35 @@ operator|.
 name|readaheadLength
 argument_list|)
 expr_stmt|;
+comment|// 1. the stage is PIPELINE_SETUP_CREATEï¼that is moving blocks, set
+comment|// throttler.
+comment|// 2. the stage is PIPELINE_SETUP_APPEND_RECOVERY or
+comment|// PIPELINE_SETUP_STREAMING_RECOVERY,
+comment|// that is writing and recovering pipeline, don't set throttle.
+if|if
+condition|(
+name|stage
+operator|==
+name|BlockConstructionStage
+operator|.
+name|PIPELINE_SETUP_CREATE
+operator|&&
+name|clientname
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|this
+operator|.
+name|transferThrottler
+operator|=
+name|xserver
+operator|.
+name|getTransferThrottler
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**      * Do the deed, write the bytes      */
 annotation|@
@@ -12795,7 +12846,7 @@ name|out
 argument_list|,
 name|unbufOut
 argument_list|,
-literal|null
+name|transferThrottler
 argument_list|)
 expr_stmt|;
 comment|// no response necessary
