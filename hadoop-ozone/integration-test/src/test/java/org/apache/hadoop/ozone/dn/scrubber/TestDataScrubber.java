@@ -1286,6 +1286,8 @@ init|=
 operator|new
 name|ContainerMetadataScanner
 argument_list|(
+name|ozoneConfig
+argument_list|,
 name|oc
 operator|.
 name|getController

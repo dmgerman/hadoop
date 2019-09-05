@@ -1124,6 +1124,8 @@ operator|=
 operator|new
 name|ContainerMetadataScanner
 argument_list|(
+name|config
+argument_list|,
 name|controller
 argument_list|,
 name|metadataScanInterval
@@ -1161,6 +1163,8 @@ init|=
 operator|new
 name|ContainerDataScanner
 argument_list|(
+name|config
+argument_list|,
 name|controller
 argument_list|,
 name|v
