@@ -1322,7 +1322,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Service {} not enabled: depenendent service(s) {} not enabled."
+literal|"Service {} not enabled: dependent service(s) {} not enabled."
 argument_list|,
 name|MountTableRefresherService
 operator|.

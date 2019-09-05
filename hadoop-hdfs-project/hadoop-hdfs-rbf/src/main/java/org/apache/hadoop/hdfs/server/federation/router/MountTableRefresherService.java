@@ -172,6 +172,26 @@ name|federation
 operator|.
 name|store
 operator|.
+name|RouterStore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|federation
+operator|.
+name|store
+operator|.
 name|StateStoreUnavailableException
 import|;
 end_import
@@ -385,7 +405,7 @@ specifier|final
 name|String
 name|ROUTER_CONNECT_ERROR_MSG
 init|=
-literal|"Router {} connection failed. Mount table cache will not refesh."
+literal|"Router {} connection failed. Mount table cache will not refresh."
 decl_stmt|;
 DECL|field|LOG
 specifier|private
@@ -417,10 +437,10 @@ name|MountTableStore
 name|mountTableStore
 decl_stmt|;
 comment|/** Local router admin address in the form of host:port. */
-DECL|field|localAdminAdress
+DECL|field|localAdminAddress
 specifier|private
 name|String
-name|localAdminAdress
+name|localAdminAddress
 decl_stmt|;
 comment|/** Timeout in ms to update mount table cache on all the routers. */
 DECL|field|cacheUpdateTimeout
@@ -498,7 +518,7 @@ operator|=
 name|getMountTableStore
 argument_list|()
 expr_stmt|;
-comment|// attach this service to mount table store.
+comment|// Attach this service to mount table store.
 name|this
 operator|.
 name|mountTableStore
@@ -510,7 +530,7 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|localAdminAdress
+name|localAdminAddress
 operator|=
 name|StateStoreUtils
 operator|.
@@ -917,16 +937,47 @@ parameter_list|()
 throws|throws
 name|StateStoreUnavailableException
 block|{
+name|RouterStore
+name|routerStore
+init|=
+name|router
+operator|.
+name|getRouterStateManager
+argument_list|()
+decl_stmt|;
+try|try
+block|{
+name|routerStore
+operator|.
+name|loadCache
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"RouterStore load cache failed,"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 name|List
 argument_list|<
 name|RouterState
 argument_list|>
 name|cachedRecords
 init|=
-name|router
-operator|.
-name|getRouterStateManager
-argument_list|()
+name|routerStore
 operator|.
 name|getCachedRecords
 argument_list|()
@@ -972,7 +1023,7 @@ operator|==
 literal|0
 condition|)
 block|{
-comment|// this router has not enabled router admin
+comment|// this router has not enabled router admin.
 continue|continue;
 block|}
 comment|// No use of calling refresh on router which is not running state
@@ -992,7 +1043,12 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Router {} is not running. Mount table cache will not refesh."
+literal|"Router {} is not running. Mount table cache will not refresh."
+argument_list|,
+name|routerState
+operator|.
+name|getAddress
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// remove if RouterClient is cached.
@@ -1246,7 +1302,7 @@ name|adminAddress
 operator|.
 name|contentEquals
 argument_list|(
-name|localAdminAdress
+name|localAdminAddress
 argument_list|)
 return|;
 block|}
@@ -1263,7 +1319,7 @@ name|refreshThreads
 parameter_list|)
 block|{
 name|int
-name|succesCount
+name|successCount
 init|=
 literal|0
 decl_stmt|;
@@ -1288,7 +1344,7 @@ name|isSuccess
 argument_list|()
 condition|)
 block|{
-name|succesCount
+name|successCount
 operator|++
 expr_stmt|;
 block|}
@@ -1312,9 +1368,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Mount table entries cache refresh succesCount={},failureCount={}"
+literal|"Mount table entries cache refresh successCount={},failureCount={}"
 argument_list|,
-name|succesCount
+name|successCount
 argument_list|,
 name|failureCount
 argument_list|)
