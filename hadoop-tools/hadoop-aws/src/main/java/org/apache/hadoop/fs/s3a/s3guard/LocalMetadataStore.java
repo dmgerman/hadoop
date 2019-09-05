@@ -648,13 +648,17 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|delete (Path p)
+DECL|method|delete (Path p, final BulkOperationState operationState)
 specifier|public
 name|void
 name|delete
 parameter_list|(
 name|Path
 name|p
+parameter_list|,
+specifier|final
+name|BulkOperationState
+name|operationState
 parameter_list|)
 throws|throws
 name|IOException
@@ -694,13 +698,17 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|deleteSubtree (Path path)
+DECL|method|deleteSubtree (Path path, final BulkOperationState operationState)
 specifier|public
 name|void
 name|deleteSubtree
 parameter_list|(
 name|Path
 name|path
+parameter_list|,
+specifier|final
+name|BulkOperationState
+name|operationState
 parameter_list|)
 throws|throws
 name|IOException
@@ -762,6 +770,48 @@ argument_list|,
 name|tombstone
 argument_list|,
 name|ttlTimeProvider
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Override
+DECL|method|deletePaths (final Collection<Path> paths, @Nullable final BulkOperationState operationState)
+specifier|public
+name|void
+name|deletePaths
+parameter_list|(
+specifier|final
+name|Collection
+argument_list|<
+name|Path
+argument_list|>
+name|paths
+parameter_list|,
+annotation|@
+name|Nullable
+specifier|final
+name|BulkOperationState
+name|operationState
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+for|for
+control|(
+name|Path
+name|path
+range|:
+name|paths
+control|)
+block|{
+name|doDelete
+argument_list|(
+name|path
+argument_list|,
+literal|false
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -1124,6 +1174,8 @@ expr_stmt|;
 name|delete
 argument_list|(
 name|meta
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}

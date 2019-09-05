@@ -1699,18 +1699,23 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Revert a commit by deleting the file.    * Relies on retry code in filesystem    * @throws IOException on problems    * @param destKey destination key    */
+comment|/**    * Revert a commit by deleting the file.    * Relies on retry code in filesystem    * @throws IOException on problems    * @param destKey destination key    * @param operationState operational state for a bulk update    */
 annotation|@
 name|Retries
 operator|.
 name|OnceTranslated
-DECL|method|revertCommit (String destKey)
+DECL|method|revertCommit (String destKey, @Nullable BulkOperationState operationState)
 specifier|public
 name|void
 name|revertCommit
 parameter_list|(
 name|String
 name|destKey
+parameter_list|,
+annotation|@
+name|Nullable
+name|BulkOperationState
+name|operationState
 parameter_list|)
 throws|throws
 name|IOException
@@ -1743,6 +1748,8 @@ argument_list|,
 name|destKey
 argument_list|,
 literal|true
+argument_list|,
+name|operationState
 argument_list|)
 expr_stmt|;
 name|owner

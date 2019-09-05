@@ -254,6 +254,24 @@ name|s3a
 operator|.
 name|s3guard
 operator|.
+name|BulkOperationState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|s3guard
+operator|.
 name|MetadataStore
 import|;
 end_import
@@ -303,20 +321,36 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Initiate with a store context.    * @param context store context.    */
-DECL|method|MultiObjectDeleteSupport (final StoreContext context)
+DECL|field|operationState
+specifier|private
+specifier|final
+name|BulkOperationState
+name|operationState
+decl_stmt|;
+comment|/**    * Initiate with a store context.    * @param context store context.    * @param operationState any ongoing bulk operation.    */
+DECL|method|MultiObjectDeleteSupport (final StoreContext context, final BulkOperationState operationState)
 specifier|public
 name|MultiObjectDeleteSupport
 parameter_list|(
 specifier|final
 name|StoreContext
 name|context
+parameter_list|,
+specifier|final
+name|BulkOperationState
+name|operationState
 parameter_list|)
 block|{
 name|super
 argument_list|(
 name|context
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|operationState
+operator|=
+name|operationState
 expr_stmt|;
 block|}
 comment|/**    * This is the exception exit code if access was denied on a delete.    * {@value}.    */
@@ -824,6 +858,8 @@ operator|.
 name|delete
 argument_list|(
 name|path
+argument_list|,
+name|operationState
 argument_list|)
 expr_stmt|;
 block|}

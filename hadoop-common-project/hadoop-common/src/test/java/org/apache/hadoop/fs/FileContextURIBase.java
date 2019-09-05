@@ -462,7 +462,7 @@ block|{
 name|String
 name|fileName
 init|=
-literal|"testFile"
+literal|"testCreateExistingFile"
 decl_stmt|;
 name|Path
 name|testPath
@@ -548,7 +548,7 @@ block|{
 name|String
 name|fileName
 init|=
-literal|"testDir/testFile"
+literal|"testCreateFileInNonExistingDirectory/testFile"
 decl_stmt|;
 name|Path
 name|testPath
@@ -601,7 +601,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"testDir"
+literal|"testCreateFileInNonExistingDirectory"
 argument_list|,
 name|testPath
 operator|.
@@ -1308,7 +1308,7 @@ name|testPath
 init|=
 name|qualifiedPath
 argument_list|(
-literal|"testFile"
+literal|"testDeleteFile"
 argument_list|,
 name|fc2
 argument_list|)
@@ -1384,7 +1384,7 @@ block|{
 name|String
 name|testFileName
 init|=
-literal|"testFile"
+literal|"testDeleteNonExistingFile"
 decl_stmt|;
 name|Path
 name|testPath
@@ -1504,7 +1504,7 @@ block|{
 name|String
 name|testFileInDir
 init|=
-literal|"testDir/testDir/TestFile"
+literal|"testDeleteNonExistingFileInDir/testDir/TestFile"
 decl_stmt|;
 name|Path
 name|testPath
@@ -1878,7 +1878,7 @@ block|{
 name|String
 name|testDirName
 init|=
-literal|"testFile"
+literal|"testDeleteNonExistingDirectory"
 decl_stmt|;
 name|Path
 name|testPath
@@ -2005,7 +2005,7 @@ block|{
 name|String
 name|testFile
 init|=
-literal|"file1"
+literal|"testModificationTime"
 decl_stmt|;
 name|long
 name|fc2ModificationTime
@@ -2079,7 +2079,7 @@ block|{
 name|String
 name|fileName
 init|=
-literal|"file1"
+literal|"testModificationTime"
 decl_stmt|;
 name|Path
 name|path2

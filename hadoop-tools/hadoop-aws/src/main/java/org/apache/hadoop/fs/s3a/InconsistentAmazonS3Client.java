@@ -981,6 +981,13 @@ block|{
 name|maybeFail
 argument_list|()
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"registering bulk delete of objects"
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|DeleteObjectsRequest
@@ -1324,6 +1331,15 @@ argument_list|)
 condition|)
 block|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Reinstate summary {}"
+argument_list|,
+name|key
+argument_list|)
+expr_stmt|;
 name|list
 operator|.
 name|add
@@ -1445,6 +1461,15 @@ name|prefix
 argument_list|)
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Reinstate prefix {}"
+argument_list|,
+name|prefix
+argument_list|)
+expr_stmt|;
 name|prefixes
 operator|.
 name|add
@@ -1868,6 +1893,15 @@ block|}
 else|else
 block|{
 comment|// Clean up any expired entries
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Remove expired key {}"
+argument_list|,
+name|key
+argument_list|)
+expr_stmt|;
 name|delayedDeletes
 operator|.
 name|remove
@@ -2232,6 +2266,45 @@ name|key
 argument_list|)
 condition|)
 block|{
+name|Delete
+name|delete
+init|=
+name|delayedDeletes
+operator|.
+name|get
+argument_list|(
+name|key
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|delete
+operator|!=
+literal|null
+operator|&&
+name|isKeyDelayed
+argument_list|(
+name|delete
+operator|.
+name|time
+argument_list|()
+argument_list|,
+name|key
+argument_list|)
+condition|)
+block|{
+comment|// there is already an entry in the delayed delete list,
+comment|// so ignore the operation
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Ignoring delete of already deleted object"
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 comment|// Record summary so we can add it back for some time post-deletion
 name|ListObjectsRequest
 name|request
@@ -2305,6 +2378,7 @@ name|summary
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 end_function

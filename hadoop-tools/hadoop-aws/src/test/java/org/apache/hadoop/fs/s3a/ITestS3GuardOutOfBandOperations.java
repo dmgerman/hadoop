@@ -108,13 +108,13 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|assertj
 operator|.
-name|hadoop
+name|core
 operator|.
-name|test
+name|api
 operator|.
-name|LambdaTestUtils
+name|Assertions
 import|;
 end_import
 
@@ -415,6 +415,20 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|LambdaTestUtils
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -465,42 +479,6 @@ operator|.
 name|ContractTestUtils
 operator|.
 name|writeTextFile
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|s3a
-operator|.
-name|Constants
-operator|.
-name|CHANGE_DETECT_MODE
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|s3a
-operator|.
-name|Constants
-operator|.
-name|CHANGE_DETECT_SOURCE
 import|;
 end_import
 
@@ -1058,6 +1036,9 @@ operator|.
 name|hasMetadataStore
 argument_list|()
 argument_list|)
+expr_stmt|;
+name|nameThread
+argument_list|()
 expr_stmt|;
 block|}
 annotation|@
@@ -3247,7 +3228,7 @@ index|]
 decl_stmt|;
 name|assertNotNull
 argument_list|(
-literal|"No etag in origGuardedFileStatus"
+literal|"No etag in origGuardedFileStatus "
 operator|+
 name|origGuardedFileStatus
 argument_list|,
@@ -4240,6 +4221,245 @@ name|testFilePath
 argument_list|)
 argument_list|)
 return|;
+block|}
+annotation|@
+name|Test
+DECL|method|testDeleteIgnoresTombstones ()
+specifier|public
+name|void
+name|testDeleteIgnoresTombstones
+parameter_list|()
+throws|throws
+name|Throwable
+block|{
+name|describe
+argument_list|(
+literal|"Verify that directory delete goes behind tombstones"
+argument_list|)
+expr_stmt|;
+name|Path
+name|dir
+init|=
+name|path
+argument_list|(
+literal|"oobdir"
+argument_list|)
+decl_stmt|;
+name|Path
+name|testFilePath
+init|=
+operator|new
+name|Path
+argument_list|(
+name|dir
+argument_list|,
+literal|"file"
+argument_list|)
+decl_stmt|;
+comment|// create a file under the store
+name|createAndAwaitFs
+argument_list|(
+name|guardedFs
+argument_list|,
+name|testFilePath
+argument_list|,
+literal|"Original File is long"
+argument_list|)
+expr_stmt|;
+comment|// Delete the file leaving a tombstone in the metastore
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Initial delete of guarded FS dir {}"
+argument_list|,
+name|dir
+argument_list|)
+expr_stmt|;
+name|guardedFs
+operator|.
+name|delete
+argument_list|(
+name|dir
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+comment|//    deleteFile(guardedFs, testFilePath);
+name|awaitDeletedFileDisappearance
+argument_list|(
+name|guardedFs
+argument_list|,
+name|testFilePath
+argument_list|)
+expr_stmt|;
+comment|// add a new file in raw
+name|createAndAwaitFs
+argument_list|(
+name|rawFS
+argument_list|,
+name|testFilePath
+argument_list|,
+literal|"hi!"
+argument_list|)
+expr_stmt|;
+comment|// now we need to be sure that the file appears in a listing
+name|awaitListingContainsChild
+argument_list|(
+name|rawFS
+argument_list|,
+name|dir
+argument_list|,
+name|testFilePath
+argument_list|)
+expr_stmt|;
+comment|// now a hack to remove the empty dir up the tree
+name|Path
+name|sibling
+init|=
+operator|new
+name|Path
+argument_list|(
+name|dir
+argument_list|,
+literal|"sibling"
+argument_list|)
+decl_stmt|;
+name|guardedFs
+operator|.
+name|mkdirs
+argument_list|(
+name|sibling
+argument_list|)
+expr_stmt|;
+comment|// now do a delete of the parent dir. This is required to also
+comment|// check the underlying fs.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Deleting guarded FS dir {} with OOB child"
+argument_list|,
+name|dir
+argument_list|)
+expr_stmt|;
+name|guardedFs
+operator|.
+name|delete
+argument_list|(
+name|dir
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Now waiting for child to be deleted in raw fs: {}"
+argument_list|,
+name|testFilePath
+argument_list|)
+expr_stmt|;
+comment|// so eventually the file will go away.
+comment|// this is required to be true in auth as well as non-auth.
+name|awaitDeletedFileDisappearance
+argument_list|(
+name|rawFS
+argument_list|,
+name|testFilePath
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Wait for a file to be visible.    * @param fs filesystem    * @param testFilePath path to query    * @throws Exception failure    */
+DECL|method|awaitListingContainsChild (S3AFileSystem fs, final Path dir, final Path testFilePath)
+specifier|private
+name|void
+name|awaitListingContainsChild
+parameter_list|(
+name|S3AFileSystem
+name|fs
+parameter_list|,
+specifier|final
+name|Path
+name|dir
+parameter_list|,
+specifier|final
+name|Path
+name|testFilePath
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Awaiting list of {} to include {}"
+argument_list|,
+name|dir
+argument_list|,
+name|testFilePath
+argument_list|)
+expr_stmt|;
+name|eventually
+argument_list|(
+name|STABILIZATION_TIME
+argument_list|,
+name|PROBE_INTERVAL_MILLIS
+argument_list|,
+parameter_list|()
+lambda|->
+block|{
+name|FileStatus
+index|[]
+name|stats
+init|=
+name|fs
+operator|.
+name|listStatus
+argument_list|(
+name|dir
+argument_list|)
+decl_stmt|;
+name|Assertions
+operator|.
+name|assertThat
+argument_list|(
+name|stats
+argument_list|)
+operator|.
+name|describedAs
+argument_list|(
+literal|"listing of %s"
+argument_list|,
+name|dir
+argument_list|)
+operator|.
+name|filteredOn
+argument_list|(
+name|s
+lambda|->
+name|s
+operator|.
+name|getPath
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|testFilePath
+argument_list|)
+argument_list|)
+operator|.
+name|isNotEmpty
+argument_list|()
+expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|createNonRecursive (FileSystem fs, Path path)
 specifier|private

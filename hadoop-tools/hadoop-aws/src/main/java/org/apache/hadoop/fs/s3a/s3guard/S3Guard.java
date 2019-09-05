@@ -2792,6 +2792,10 @@ literal|null
 return|;
 block|}
 comment|/**    * List children; mark the result as non-auth if the TTL has expired.    * @param ms metastore    * @param path path to look up.    * @param timeProvider nullable time provider    * @return the listing of entries under a path, or null if there as no entry.    * @throws IOException failure.    */
+annotation|@
+name|Retries
+operator|.
+name|RetryTranslated
 DECL|method|listChildrenWithTtl (MetadataStore ms, Path path, @Nullable ITtlTimeProvider timeProvider)
 specifier|public
 specifier|static
@@ -2988,6 +2992,7 @@ return|return
 name|authoritativePaths
 return|;
 block|}
+comment|/**    * Is the path for the given FS instance authoritative?    * @param p path    * @param fs filesystem    * @param authMetadataStore is the MS authoritative.    * @param authPaths possibly empty list of authoritative paths    * @return true iff the path is authoritative    */
 DECL|method|allowAuthoritative (Path p, S3AFileSystem fs, boolean authMetadataStore, Collection<String> authPaths)
 specifier|public
 specifier|static

@@ -725,6 +725,17 @@ name|getOperationState
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|getMetadataStore
+argument_list|()
+operator|.
+name|deletePaths
+argument_list|(
+name|paths
+argument_list|,
+name|getOperationState
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 annotation|@
@@ -738,7 +749,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-comment|// and finish off; by deleting source directories.
+comment|// and finish off by deleting source directories.
 name|sourceObjectsDeleted
 argument_list|(
 name|pathsToDelete

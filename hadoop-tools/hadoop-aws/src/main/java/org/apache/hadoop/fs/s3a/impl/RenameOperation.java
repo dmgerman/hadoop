@@ -34,16 +34,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|io
-operator|.
-name|InterruptedIOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|ArrayList
@@ -69,20 +59,6 @@ operator|.
 name|concurrent
 operator|.
 name|CompletableFuture
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|atomic
-operator|.
-name|AtomicBoolean
 import|;
 end_import
 
@@ -136,41 +112,11 @@ name|services
 operator|.
 name|s3
 operator|.
-name|model
-operator|.
-name|MultiObjectDeleteException
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|amazonaws
-operator|.
-name|services
-operator|.
-name|s3
-operator|.
 name|transfer
 operator|.
 name|model
 operator|.
 name|CopyResult
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Preconditions
 import|;
 end_import
 
@@ -205,34 +151,6 @@ operator|.
 name|slf4j
 operator|.
 name|LoggerFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FileStatus
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|InvalidRequestException
 import|;
 end_import
 
@@ -588,7 +506,10 @@ specifier|public
 class|class
 name|RenameOperation
 extends|extends
-name|AbstractStoreOperation
+name|ExecutingStoreOperation
+argument_list|<
+name|Long
+argument_list|>
 block|{
 DECL|field|LOG
 specifier|private
@@ -604,19 +525,6 @@ argument_list|(
 name|RenameOperation
 operator|.
 name|class
-argument_list|)
-decl_stmt|;
-comment|/**    * Used to stop any re-entrancy of the rename.    * This is an execute-once operation.    */
-DECL|field|executed
-specifier|private
-specifier|final
-name|AtomicBoolean
-name|executed
-init|=
-operator|new
-name|AtomicBoolean
-argument_list|(
-literal|false
 argument_list|)
 decl_stmt|;
 DECL|field|sourcePath
@@ -659,7 +567,7 @@ comment|/**    * Callbacks into the filesystem.    */
 DECL|field|callbacks
 specifier|private
 specifier|final
-name|RenameOperationCallbacks
+name|OperationCallbacks
 name|callbacks
 decl_stmt|;
 comment|/**    * Counter of bytes copied.    */
@@ -738,7 +646,7 @@ name|long
 name|blocksize
 decl_stmt|;
 comment|/**    * Initiate the rename.    *    * @param storeContext store context    * @param sourcePath source path    * @param sourceKey key of source    * @param sourceStatus pre-fetched source status    * @param destPath destination path.    * @param destKey destination key    * @param destStatus destination status.    * @param callbacks callback provider    */
-DECL|method|RenameOperation ( final StoreContext storeContext, final Path sourcePath, final String sourceKey, final S3AFileStatus sourceStatus, final Path destPath, final String destKey, final S3AFileStatus destStatus, final RenameOperationCallbacks callbacks)
+DECL|method|RenameOperation ( final StoreContext storeContext, final Path sourcePath, final String sourceKey, final S3AFileStatus sourceStatus, final Path destPath, final String destKey, final S3AFileStatus destStatus, final OperationCallbacks callbacks)
 specifier|public
 name|RenameOperation
 parameter_list|(
@@ -771,7 +679,7 @@ name|S3AFileStatus
 name|destStatus
 parameter_list|,
 specifier|final
-name|RenameOperationCallbacks
+name|OperationCallbacks
 name|callbacks
 parameter_list|)
 block|{
@@ -837,7 +745,11 @@ name|DEFAULT_BLOCKSIZE
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Wait for the active copies to complete then reset the list.    * @param reason for messages    */
+comment|/**    * Wait for the active copies to complete then reset the list.    * @param reason for messages    * @throws IOException if one of the called futures raised an IOE.    * @throws RuntimeException if one of the futures raised one.    */
+annotation|@
+name|Retries
+operator|.
+name|OnceTranslated
 DECL|method|completeActiveCopies (String reason)
 specifier|private
 name|void
@@ -874,7 +786,7 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Queue and object for deletion.    * @param path path to the object    * @param key key of the object.    */
+comment|/**    * Queue an object for deletion.    * @param path path to the object    * @param key key of the object.    */
 DECL|method|queueToDelete (Path path, String key)
 specifier|private
 name|void
@@ -909,6 +821,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Block waiting for ay active copies to finish    * then delete all queued keys + paths to delete.    * @param reason reason for logs    * @throws IOException failure.    */
+annotation|@
+name|Retries
+operator|.
+name|RetryTranslated
 DECL|method|completeActiveCopiesAndDeleteSources (String reason)
 specifier|private
 name|void
@@ -948,28 +864,16 @@ annotation|@
 name|Retries
 operator|.
 name|RetryMixed
-DECL|method|executeRename ()
+DECL|method|execute ()
 specifier|public
-name|long
-name|executeRename
+name|Long
+name|execute
 parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
-operator|!
-name|executed
-operator|.
-name|getAndSet
-argument_list|(
-literal|true
-argument_list|)
-argument_list|,
-literal|"Rename attempted twice"
-argument_list|)
+name|executeOnlyOnce
+argument_list|()
 expr_stmt|;
 specifier|final
 name|StoreContext
@@ -1265,6 +1169,8 @@ argument_list|,
 name|sourceKey
 argument_list|,
 literal|true
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// and update the tracker
@@ -1392,6 +1298,8 @@ argument_list|,
 name|dstKey
 argument_list|,
 literal|false
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -1417,6 +1325,12 @@ operator|.
 name|listFilesAndEmptyDirectories
 argument_list|(
 name|parentPath
+argument_list|,
+name|sourceStatus
+argument_list|,
+literal|true
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 while|while
@@ -1879,7 +1793,7 @@ comment|/**    * Remove source objects and update the metastore by way of    * t
 annotation|@
 name|Retries
 operator|.
-name|RetryMixed
+name|RetryTranslated
 DECL|method|removeSourceObjects ( final List<DeleteObjectsRequest.KeyVersion> keys, final List<Path> paths)
 specifier|private
 name|void
@@ -1929,6 +1843,13 @@ argument_list|,
 literal|false
 argument_list|,
 name|undeletedObjects
+argument_list|,
+name|renameTracker
+operator|.
+name|getOperationState
+argument_list|()
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 comment|// and clear the list.
@@ -1946,7 +1867,8 @@ comment|// Notify the rename operation.
 comment|// removeKeys will have already purged the metastore of
 comment|// all keys it has known to delete; this is just a final
 comment|// bit of housekeeping and a chance to tune exception
-comment|// reporting
+comment|// reporting.
+comment|// The returned IOE is rethrown.
 throw|throw
 name|renameTracker
 operator|.
@@ -2007,155 +1929,6 @@ return|return
 name|key
 return|;
 block|}
-block|}
-comment|/**    * These are all the callbacks which the rename operation needs,    * derived from the appropriate S3AFileSystem methods.    */
-DECL|interface|RenameOperationCallbacks
-specifier|public
-interface|interface
-name|RenameOperationCallbacks
-block|{
-comment|/**      * Create the attributes of an object for subsequent use.      * @param path path path of the request.      * @param eTag the eTag of the S3 object      * @param versionId S3 object version ID      * @param len length of the file      * @return attributes to use when building the query.      */
-DECL|method|createObjectAttributes ( Path path, String eTag, String versionId, long len)
-name|S3ObjectAttributes
-name|createObjectAttributes
-parameter_list|(
-name|Path
-name|path
-parameter_list|,
-name|String
-name|eTag
-parameter_list|,
-name|String
-name|versionId
-parameter_list|,
-name|long
-name|len
-parameter_list|)
-function_decl|;
-comment|/**      * Create the attributes of an object for subsequent use.      * @param fileStatus file status to build from.      * @return attributes to use when building the query.      */
-DECL|method|createObjectAttributes ( S3AFileStatus fileStatus)
-name|S3ObjectAttributes
-name|createObjectAttributes
-parameter_list|(
-name|S3AFileStatus
-name|fileStatus
-parameter_list|)
-function_decl|;
-comment|/**      * Create the read context for reading from the referenced file,      * using FS state as well as the status.      * @param fileStatus file status.      * @return a context for read and select operations.      */
-DECL|method|createReadContext ( FileStatus fileStatus)
-name|S3AReadOpContext
-name|createReadContext
-parameter_list|(
-name|FileStatus
-name|fileStatus
-parameter_list|)
-function_decl|;
-comment|/**      * The rename has finished; perform any store cleanup operations      * such as creating/deleting directory markers.      * @param sourceRenamed renamed source      * @param destCreated destination file created.      * @throws IOException failure      */
-DECL|method|finishRename (Path sourceRenamed, Path destCreated)
-name|void
-name|finishRename
-parameter_list|(
-name|Path
-name|sourceRenamed
-parameter_list|,
-name|Path
-name|destCreated
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-comment|/**      * Delete an object, also updating the metastore.      * This call does<i>not</i> create any mock parent entries.      * Retry policy: retry untranslated; delete considered idempotent.      * @param path path to delete      * @param key key of entry      * @param isFile is the path a file (used for instrumentation only)      * @throws AmazonClientException problems working with S3      * @throws IOException IO failure in the metastore      */
-annotation|@
-name|Retries
-operator|.
-name|RetryMixed
-DECL|method|deleteObjectAtPath (Path path, String key, boolean isFile)
-name|void
-name|deleteObjectAtPath
-parameter_list|(
-name|Path
-name|path
-parameter_list|,
-name|String
-name|key
-parameter_list|,
-name|boolean
-name|isFile
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-comment|/**      * Recursive list of files and empty directories.      * @param path path to list from      * @return an iterator.      * @throws IOException failure      */
-DECL|method|listFilesAndEmptyDirectories ( Path path)
-name|RemoteIterator
-argument_list|<
-name|S3ALocatedFileStatus
-argument_list|>
-name|listFilesAndEmptyDirectories
-parameter_list|(
-name|Path
-name|path
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-comment|/**      * Copy a single object in the bucket via a COPY operation.      * There's no update of metadata, directory markers, etc.      * Callers must implement.      * @param srcKey source object path      * @param srcAttributes S3 attributes of the source object      * @param readContext the read context      * @return the result of the copy      * @throws InterruptedIOException the operation was interrupted      * @throws IOException Other IO problems      */
-annotation|@
-name|Retries
-operator|.
-name|RetryTranslated
-DECL|method|copyFile (String srcKey, String destKey, S3ObjectAttributes srcAttributes, S3AReadOpContext readContext)
-name|CopyResult
-name|copyFile
-parameter_list|(
-name|String
-name|srcKey
-parameter_list|,
-name|String
-name|destKey
-parameter_list|,
-name|S3ObjectAttributes
-name|srcAttributes
-parameter_list|,
-name|S3AReadOpContext
-name|readContext
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-comment|/**      * Remove keys from the store, updating the metastore on a      * partial delete represented as a MultiObjectDeleteException failure by      * deleting all those entries successfully deleted and then rethrowing      * the MultiObjectDeleteException.      * @param keysToDelete collection of keys to delete on the s3-backend.      *        if empty, no request is made of the object store.      * @param deleteFakeDir indicates whether this is for deleting fake dirs.      * @param undeletedObjectsOnFailure List which will be built up of all      * files that were not deleted. This happens even as an exception      * is raised.      * @throws InvalidRequestException if the request was rejected due to      * a mistaken attempt to delete the root directory.      * @throws MultiObjectDeleteException one or more of the keys could not      * be deleted in a multiple object delete operation.      * @throws AmazonClientException amazon-layer failure.      * @throws IOException other IO Exception.      */
-annotation|@
-name|Retries
-operator|.
-name|RetryMixed
-DECL|method|removeKeys ( List<DeleteObjectsRequest.KeyVersion> keysToDelete, boolean deleteFakeDir, List<Path> undeletedObjectsOnFailure)
-name|void
-name|removeKeys
-parameter_list|(
-name|List
-argument_list|<
-name|DeleteObjectsRequest
-operator|.
-name|KeyVersion
-argument_list|>
-name|keysToDelete
-parameter_list|,
-name|boolean
-name|deleteFakeDir
-parameter_list|,
-name|List
-argument_list|<
-name|Path
-argument_list|>
-name|undeletedObjectsOnFailure
-parameter_list|)
-throws|throws
-name|MultiObjectDeleteException
-throws|,
-name|AmazonClientException
-throws|,
-name|IOException
-function_decl|;
 block|}
 block|}
 end_class

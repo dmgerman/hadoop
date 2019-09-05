@@ -842,6 +842,8 @@ operator|new
 name|MultiObjectDeleteSupport
 argument_list|(
 name|context
+argument_list|,
+literal|null
 argument_list|)
 operator|.
 name|splitUndeletedKeys
@@ -1228,6 +1230,8 @@ operator|new
 name|MultiObjectDeleteSupport
 argument_list|(
 name|storeContext
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|Triple
@@ -1822,7 +1826,7 @@ parameter_list|()
 block|{     }
 annotation|@
 name|Override
-DECL|method|delete (final Path path)
+DECL|method|delete (final Path path, final BulkOperationState operationState)
 specifier|public
 name|void
 name|delete
@@ -1830,6 +1834,10 @@ parameter_list|(
 specifier|final
 name|Path
 name|path
+parameter_list|,
+specifier|final
+name|BulkOperationState
+name|operationState
 parameter_list|)
 block|{
 name|deleted
@@ -1842,7 +1850,38 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|deleteSubtree (final Path path)
+DECL|method|deletePaths (final Collection<Path> paths, @Nullable final BulkOperationState operationState)
+specifier|public
+name|void
+name|deletePaths
+parameter_list|(
+specifier|final
+name|Collection
+argument_list|<
+name|Path
+argument_list|>
+name|paths
+parameter_list|,
+annotation|@
+name|Nullable
+specifier|final
+name|BulkOperationState
+name|operationState
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|deleted
+operator|.
+name|addAll
+argument_list|(
+name|paths
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|deleteSubtree (final Path path, final BulkOperationState operationState)
 specifier|public
 name|void
 name|deleteSubtree
@@ -1850,6 +1889,10 @@ parameter_list|(
 specifier|final
 name|Path
 name|path
+parameter_list|,
+specifier|final
+name|BulkOperationState
+name|operationState
 parameter_list|)
 block|{      }
 annotation|@

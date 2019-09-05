@@ -20,6 +20,16 @@ end_package
 
 begin_import
 import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nullable
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|amazonaws
@@ -386,6 +396,16 @@ init|=
 name|S3AFileSystem
 operator|.
 name|LOG
+decl_stmt|;
+DECL|field|ACCEPT_ALL_BUT_S3N
+specifier|static
+specifier|final
+name|FileStatusAcceptor
+name|ACCEPT_ALL_BUT_S3N
+init|=
+operator|new
+name|AcceptAllButS3nDirs
+argument_list|()
 decl_stmt|;
 DECL|method|Listing (S3AFileSystem owner)
 specifier|public
@@ -934,7 +954,7 @@ annotation|@
 name|Retries
 operator|.
 name|RetryTranslated
-DECL|method|FileStatusListingIterator (ObjectListingIterator source, PathFilter filter, FileStatusAcceptor acceptor, RemoteIterator<S3AFileStatus> providedStatus)
+DECL|method|FileStatusListingIterator (ObjectListingIterator source, PathFilter filter, FileStatusAcceptor acceptor, @Nullable RemoteIterator<S3AFileStatus> providedStatus)
 name|FileStatusListingIterator
 parameter_list|(
 name|ObjectListingIterator
@@ -946,6 +966,8 @@ parameter_list|,
 name|FileStatusAcceptor
 name|acceptor
 parameter_list|,
+annotation|@
+name|Nullable
 name|RemoteIterator
 argument_list|<
 name|S3AFileStatus

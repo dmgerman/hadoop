@@ -111,6 +111,15 @@ name|SCALE_TEST
 operator|+
 literal|"directory.count"
 decl_stmt|;
+comment|/**    * The file count to use in rename/delete tests: {@value}.    */
+DECL|field|KEY_FILE_COUNT
+name|String
+name|KEY_FILE_COUNT
+init|=
+name|SCALE_TEST
+operator|+
+literal|"file.count"
+decl_stmt|;
 comment|/**    * The readahead buffer: {@value}.    */
 DECL|field|KEY_READ_BUFFER_SIZE
 name|String
@@ -196,6 +205,13 @@ name|int
 name|DEFAULT_DIRECTORY_COUNT
 init|=
 literal|2
+decl_stmt|;
+comment|/**    * Default number of files to create when performing    * delete/rename tests.    */
+DECL|field|DEFAULT_FILE_COUNT
+name|int
+name|DEFAULT_FILE_COUNT
+init|=
+literal|50
 decl_stmt|;
 comment|/**    * Default policy on scale tests: {@value}.    */
 DECL|field|DEFAULT_SCALE_TESTS_ENABLED

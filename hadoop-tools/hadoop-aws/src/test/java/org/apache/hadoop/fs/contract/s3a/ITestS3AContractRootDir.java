@@ -334,6 +334,8 @@ argument_list|,
 name|attempt
 argument_list|,
 name|maxAttempts
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 try|try

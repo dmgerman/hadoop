@@ -1389,7 +1389,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|deleteObjectAtPath (Path f, String key, boolean isFile)
+DECL|method|deleteObjectAtPath (Path f, String key, boolean isFile, final BulkOperationState operationState)
 name|void
 name|deleteObjectAtPath
 parameter_list|(
@@ -1401,6 +1401,10 @@ name|key
 parameter_list|,
 name|boolean
 name|isFile
+parameter_list|,
+specifier|final
+name|BulkOperationState
+name|operationState
 parameter_list|)
 throws|throws
 name|AmazonClientException

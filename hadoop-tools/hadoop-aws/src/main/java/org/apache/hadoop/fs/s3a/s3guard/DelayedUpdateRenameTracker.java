@@ -662,6 +662,9 @@ operator|.
 name|delete
 argument_list|(
 name|deletedPath
+argument_list|,
+name|getOperationState
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -821,6 +824,9 @@ operator|.
 name|delete
 argument_list|(
 name|parent
+argument_list|,
+name|getOperationState
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

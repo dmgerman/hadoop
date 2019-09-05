@@ -2672,6 +2672,8 @@ operator|.
 name|revertCommit
 argument_list|(
 name|commit
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|resetFailures
@@ -2754,6 +2756,8 @@ operator|.
 name|revertCommit
 argument_list|(
 name|commit
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|assertPathExists

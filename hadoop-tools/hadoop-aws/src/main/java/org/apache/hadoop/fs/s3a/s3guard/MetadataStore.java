@@ -167,6 +167,22 @@ operator|.
 name|s3a
 operator|.
 name|Retries
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|Retries
 operator|.
 name|RetryTranslated
 import|;
@@ -254,18 +270,23 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Deletes exactly one path, leaving a tombstone to prevent lingering,    * inconsistent copies of it from being listed.    *    * Deleting an entry with a tombstone needs a    * {@link org.apache.hadoop.fs.s3a.s3guard.S3Guard.TtlTimeProvider} because    * the lastUpdated field of the record has to be updated to<pre>now</pre>.    *    * @param path the path to delete    * @throws IOException if there is an error    */
-DECL|method|delete (Path path)
+comment|/**    * Deletes exactly one path, leaving a tombstone to prevent lingering,    * inconsistent copies of it from being listed.    *    * Deleting an entry with a tombstone needs a    * {@link org.apache.hadoop.fs.s3a.s3guard.S3Guard.TtlTimeProvider} because    * the lastUpdated field of the record has to be updated to<pre>now</pre>.    *    * @param path the path to delete    * @param operationState (nullable) operational state for a bulk update    * @throws IOException if there is an error    */
+DECL|method|delete (Path path, @Nullable BulkOperationState operationState)
 name|void
 name|delete
 parameter_list|(
 name|Path
 name|path
+parameter_list|,
+annotation|@
+name|Nullable
+name|BulkOperationState
+name|operationState
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Removes the record of exactly one path.  Does not leave a tombstone (see    * {@link MetadataStore#delete(Path)}. It is currently    * intended for testing only, and a need to use it as part of normal    * FileSystem usage is not anticipated.    *    * @param path the path to delete    * @throws IOException if there is an error    */
+comment|/**    * Removes the record of exactly one path.  Does not leave a tombstone (see    * {@link MetadataStore#delete(Path, BulkOperationState)}. It is currently    * intended for testing only, and a need to use it as part of normal    * FileSystem usage is not anticipated.    *    * @param path the path to delete    * @throws IOException if there is an error    */
 annotation|@
 name|VisibleForTesting
 DECL|method|forgetMetadata (Path path)
@@ -278,13 +299,43 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Deletes the entire sub-tree rooted at the given path, leaving tombstones    * to prevent lingering, inconsistent copies of it from being listed.    *    * In addition to affecting future calls to {@link #get(Path)},    * implementations must also update any stored {@code DirListingMetadata}    * objects which track the parent of this file.    *    * Deleting a subtree with a tombstone needs a    * {@link org.apache.hadoop.fs.s3a.s3guard.S3Guard.TtlTimeProvider} because    * the lastUpdated field of all records have to be updated to<pre>now</pre>.    *    * @param path the root of the sub-tree to delete    * @throws IOException if there is an error    */
-DECL|method|deleteSubtree (Path path)
+comment|/**    * Deletes the entire sub-tree rooted at the given path, leaving tombstones    * to prevent lingering, inconsistent copies of it from being listed.    *    * In addition to affecting future calls to {@link #get(Path)},    * implementations must also update any stored {@code DirListingMetadata}    * objects which track the parent of this file.    *    * Deleting a subtree with a tombstone needs a    * {@link org.apache.hadoop.fs.s3a.s3guard.S3Guard.TtlTimeProvider} because    * the lastUpdated field of all records have to be updated to<pre>now</pre>.    *    * @param path the root of the sub-tree to delete    * @param operationState (nullable) operational state for a bulk update    * @throws IOException if there is an error    */
+annotation|@
+name|Retries
+operator|.
+name|RetryTranslated
+DECL|method|deleteSubtree (Path path, @Nullable BulkOperationState operationState)
 name|void
 name|deleteSubtree
 parameter_list|(
 name|Path
 name|path
+parameter_list|,
+annotation|@
+name|Nullable
+name|BulkOperationState
+name|operationState
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Delete the paths.    * There's no attempt to order the paths: they are    * deleted in the order passed in.    * @param paths paths to delete.    * @param operationState Nullable operation state    * @throws IOException failure    */
+annotation|@
+name|RetryTranslated
+DECL|method|deletePaths (Collection<Path> paths, @Nullable BulkOperationState operationState)
+name|void
+name|deletePaths
+parameter_list|(
+name|Collection
+argument_list|<
+name|Path
+argument_list|>
+name|paths
+parameter_list|,
+annotation|@
+name|Nullable
+name|BulkOperationState
+name|operationState
 parameter_list|)
 throws|throws
 name|IOException
@@ -315,6 +366,10 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Lists metadata for all direct children of a path.    *    * @param path the path to list    * @return metadata for all direct children of {@code path} which are being    *     tracked by the MetadataStore, or {@code null} if the path was not found    *     in the MetadataStore.    * @throws IOException if there is an error    */
+annotation|@
+name|Retries
+operator|.
+name|RetryTranslated
 DECL|method|listChildren (Path path)
 name|DirListingMetadata
 name|listChildren

@@ -397,6 +397,7 @@ return|return
 name|testPath
 return|;
 block|}
+comment|/**    * Get the configured operation count.    * @return the number of times to perform the operation being tested    */
 DECL|method|getOperationCount ()
 specifier|protected
 name|long

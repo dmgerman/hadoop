@@ -218,13 +218,17 @@ name|IOException
 block|{   }
 annotation|@
 name|Override
-DECL|method|delete (Path path)
+DECL|method|delete (Path path, final BulkOperationState operationState)
 specifier|public
 name|void
 name|delete
 parameter_list|(
 name|Path
 name|path
+parameter_list|,
+specifier|final
+name|BulkOperationState
+name|operationState
 parameter_list|)
 throws|throws
 name|IOException
@@ -244,17 +248,44 @@ name|IOException
 block|{   }
 annotation|@
 name|Override
-DECL|method|deleteSubtree (Path path)
+DECL|method|deleteSubtree (Path path, final BulkOperationState operationState)
 specifier|public
 name|void
 name|deleteSubtree
 parameter_list|(
 name|Path
 name|path
+parameter_list|,
+specifier|final
+name|BulkOperationState
+name|operationState
 parameter_list|)
 throws|throws
 name|IOException
 block|{   }
+annotation|@
+name|Override
+DECL|method|deletePaths (final Collection<Path> paths, @Nullable final BulkOperationState operationState)
+specifier|public
+name|void
+name|deletePaths
+parameter_list|(
+specifier|final
+name|Collection
+argument_list|<
+name|Path
+argument_list|>
+name|paths
+parameter_list|,
+annotation|@
+name|Nullable
+specifier|final
+name|BulkOperationState
+name|operationState
+parameter_list|)
+throws|throws
+name|IOException
+block|{    }
 annotation|@
 name|Override
 DECL|method|get (Path path)

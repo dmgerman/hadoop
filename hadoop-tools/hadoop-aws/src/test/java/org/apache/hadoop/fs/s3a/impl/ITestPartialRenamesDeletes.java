@@ -996,6 +996,15 @@ name|DEPTH_SCALED
 init|=
 literal|2
 decl_stmt|;
+DECL|field|PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|PREFIX
+init|=
+literal|"file-"
+decl_stmt|;
 comment|/**    * A role FS; if non-null it is closed in teardown.    */
 DECL|field|roleFS
 specifier|private
@@ -3668,7 +3677,7 @@ block|{
 name|String
 name|name
 init|=
-literal|"file-"
+name|PREFIX
 operator|+
 name|i
 decl_stmt|;

@@ -1861,14 +1861,17 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Revert a pending commit by deleting the destination.    * @param commit pending commit    * @throws IOException failure    */
-DECL|method|revertCommit (SinglePendingCommit commit)
+comment|/**    * Revert a pending commit by deleting the destination.    * @param commit pending commit    * @param operationState nullable operational state for a bulk update    * @throws IOException failure    */
+DECL|method|revertCommit (SinglePendingCommit commit, BulkOperationState operationState)
 specifier|public
 name|void
 name|revertCommit
 parameter_list|(
 name|SinglePendingCommit
 name|commit
+parameter_list|,
+name|BulkOperationState
+name|operationState
 parameter_list|)
 throws|throws
 name|IOException
@@ -1892,6 +1895,8 @@ name|commit
 operator|.
 name|getDestinationKey
 argument_list|()
+argument_list|,
+name|operationState
 argument_list|)
 expr_stmt|;
 block|}
@@ -2536,6 +2541,8 @@ operator|.
 name|revertCommit
 argument_list|(
 name|commit
+argument_list|,
+name|operationState
 argument_list|)
 expr_stmt|;
 block|}
