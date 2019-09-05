@@ -8131,6 +8131,14 @@ operator|+=
 name|DEFAULT_AM_JVM_XMX
 expr_stmt|;
 block|}
+comment|// validate possible command injection.
+name|ServiceApiUtil
+operator|.
+name|validateJvmOpts
+argument_list|(
+name|jvmOpts
+argument_list|)
+expr_stmt|;
 name|CLI
 operator|.
 name|setJVMOpts

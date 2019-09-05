@@ -4628,6 +4628,34 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
+argument_list|(
+name|expected
+operator|=
+name|IllegalArgumentException
+operator|.
+name|class
+argument_list|)
+DECL|method|testJvmOpts ()
+specifier|public
+name|void
+name|testJvmOpts
+parameter_list|()
+block|{
+name|String
+name|jvmOpts
+init|=
+literal|"`ping -c 3 example.com`"
+decl_stmt|;
+name|ServiceApiUtil
+operator|.
+name|validateJvmOpts
+argument_list|(
+name|jvmOpts
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|createExampleApplication ()
 specifier|public
 specifier|static

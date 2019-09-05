@@ -376,6 +376,12 @@ literal|"Kerberos principal or keytab is"
 operator|+
 literal|" missing."
 decl_stmt|;
+DECL|field|ERROR_JVM_OPTS
+name|String
+name|ERROR_JVM_OPTS
+init|=
+literal|"Invalid character in yarn.service.am.java.opts."
+decl_stmt|;
 block|}
 end_interface
 
