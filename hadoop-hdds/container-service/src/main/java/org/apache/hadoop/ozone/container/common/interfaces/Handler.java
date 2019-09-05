@@ -28,7 +28,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileInputStream
+name|IOException
 import|;
 end_import
 
@@ -38,7 +38,17 @@ name|java
 operator|.
 name|io
 operator|.
-name|IOException
+name|InputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|OutputStream
 import|;
 end_import
 
@@ -583,8 +593,8 @@ name|DispatcherContext
 name|dispatcherContext
 parameter_list|)
 function_decl|;
-comment|/**    * Import container data from a raw input stream.    */
-DECL|method|importContainer ( long containerID, long maxSize, String originPipelineId, String originNodeId, FileInputStream rawContainerStream, TarContainerPacker packer)
+comment|/**    * Imports container from a raw input stream.    */
+DECL|method|importContainer ( long containerID, long maxSize, String originPipelineId, String originNodeId, InputStream rawContainerStream, TarContainerPacker packer)
 specifier|public
 specifier|abstract
 name|Container
@@ -602,8 +612,27 @@ parameter_list|,
 name|String
 name|originNodeId
 parameter_list|,
-name|FileInputStream
+name|InputStream
 name|rawContainerStream
+parameter_list|,
+name|TarContainerPacker
+name|packer
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Exports container to the output stream.    */
+DECL|method|exportContainer ( Container container, OutputStream outputStream, TarContainerPacker packer)
+specifier|public
+specifier|abstract
+name|void
+name|exportContainer
+parameter_list|(
+name|Container
+name|container
+parameter_list|,
+name|OutputStream
+name|outputStream
 parameter_list|,
 name|TarContainerPacker
 name|packer

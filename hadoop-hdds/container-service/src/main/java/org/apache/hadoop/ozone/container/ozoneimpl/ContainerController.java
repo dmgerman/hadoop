@@ -190,7 +190,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileInputStream
+name|IOException
 import|;
 end_import
 
@@ -200,7 +200,17 @@ name|java
 operator|.
 name|io
 operator|.
-name|IOException
+name|InputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|OutputStream
 import|;
 end_import
 
@@ -469,7 +479,7 @@ name|container
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|importContainer (final ContainerType type, final long containerId, final long maxSize, final String originPipelineId, final String originNodeId, final FileInputStream rawContainerStream, final TarContainerPacker packer)
+DECL|method|importContainer (final ContainerType type, final long containerId, final long maxSize, final String originPipelineId, final String originNodeId, final InputStream rawContainerStream, final TarContainerPacker packer)
 specifier|public
 name|Container
 name|importContainer
@@ -495,7 +505,7 @@ name|String
 name|originNodeId
 parameter_list|,
 specifier|final
-name|FileInputStream
+name|InputStream
 name|rawContainerStream
 parameter_list|,
 specifier|final
@@ -528,6 +538,52 @@ argument_list|,
 name|packer
 argument_list|)
 return|;
+block|}
+DECL|method|exportContainer (final ContainerType type, final long containerId, final OutputStream outputStream, final TarContainerPacker packer)
+specifier|public
+name|void
+name|exportContainer
+parameter_list|(
+specifier|final
+name|ContainerType
+name|type
+parameter_list|,
+specifier|final
+name|long
+name|containerId
+parameter_list|,
+specifier|final
+name|OutputStream
+name|outputStream
+parameter_list|,
+specifier|final
+name|TarContainerPacker
+name|packer
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|handlers
+operator|.
+name|get
+argument_list|(
+name|type
+argument_list|)
+operator|.
+name|exportContainer
+argument_list|(
+name|containerSet
+operator|.
+name|getContainer
+argument_list|(
+name|containerId
+argument_list|)
+argument_list|,
+name|outputStream
+argument_list|,
+name|packer
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Deletes a container given its Id.    * @param containerId Id of the container to be deleted    * @param force if this is set to true, we delete container without checking    * state of the container.    * @throws IOException    */
 DECL|method|deleteContainer (final long containerId, boolean force)

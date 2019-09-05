@@ -1844,6 +1844,23 @@ name|writeUnlock
 argument_list|()
 expr_stmt|;
 block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Container {} is closed with bcsId {}."
+argument_list|,
+name|containerData
+operator|.
+name|getContainerID
+argument_list|()
+argument_list|,
+name|containerData
+operator|.
+name|getBlockCommitSequenceId
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    *    * Must be invoked with the writeLock held.    *    * @param update    * @throws StorageContainerException    */
 DECL|method|updateContainerData (Runnable update)
@@ -1939,6 +1956,7 @@ throw|;
 block|}
 block|}
 DECL|method|compactDB ()
+specifier|private
 name|void
 name|compactDB
 parameter_list|()
@@ -1969,23 +1987,6 @@ argument_list|()
 operator|.
 name|compactDB
 argument_list|()
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Container {} is closed with bcsId {}."
-argument_list|,
-name|containerData
-operator|.
-name|getContainerID
-argument_list|()
-argument_list|,
-name|containerData
-operator|.
-name|getBlockCommitSequenceId
-argument_list|()
-argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -2683,6 +2684,9 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
+name|compactDB
+argument_list|()
+expr_stmt|;
 name|packer
 operator|.
 name|pack
