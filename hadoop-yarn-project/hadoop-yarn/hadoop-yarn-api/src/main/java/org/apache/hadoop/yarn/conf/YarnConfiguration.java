@@ -7996,6 +7996,27 @@ name|DEFAULT_DISPATCHER_DRAIN_EVENTS_TIMEOUT
 init|=
 literal|300000
 decl_stmt|;
+comment|/**    * The threshold used to trigger the logging of event types and counts    *  in RM's main event dispatcher. Default value is 5000,    *  which means RM will print events info when the queue size cumulatively    *  reaches 5000 every time. Such info can be used to reveal what    *  kind of events that RM is stuck at processing mostly,    *  it can help to narrow down certain performance issues.    */
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|YARN_DISPATCHER_PRINT_EVENTS_INFO_THRESHOLD
+name|YARN_DISPATCHER_PRINT_EVENTS_INFO_THRESHOLD
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"dispatcher.print-events-info.threshold"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|int
+DECL|field|DEFAULT_YARN_DISPATCHER_PRINT_EVENTS_INFO_THRESHOLD
+name|DEFAULT_YARN_DISPATCHER_PRINT_EVENTS_INFO_THRESHOLD
+init|=
+literal|5000
+decl_stmt|;
 comment|/**    * CLASSPATH for YARN applications. A comma-separated list of CLASSPATH    * entries    */
 DECL|field|YARN_APPLICATION_CLASSPATH
 specifier|public
