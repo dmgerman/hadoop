@@ -2440,9 +2440,9 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|JsonUtilClient
+name|WebHdfsTestUtil
 operator|.
-name|toDelegationToken
+name|convertJsonToDelegationToken
 argument_list|(
 name|json
 argument_list|)
