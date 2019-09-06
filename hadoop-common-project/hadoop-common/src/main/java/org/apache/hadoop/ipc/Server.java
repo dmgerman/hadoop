@@ -2833,8 +2833,8 @@ operator|=
 name|logSlowRPCFlag
 expr_stmt|;
 block|}
-comment|/**    * Logs a Slow RPC Request.    *    * @param methodName - RPC Request method name    * @param processingTime - Processing Time.    *    * if this request took too much time relative to other requests    * we consider that as a slow RPC. 3 is a magic number that comes    * from 3 sigma deviation. A very simple explanation can be found    * by searching for 68-95-99.7 rule. We flag an RPC as slow RPC    * if and only if it falls above 99.7% of requests. We start this logic    * only once we have enough sample size.    */
-DECL|method|logSlowRpcCalls (String methodName, Call call, long processingTime)
+comment|/**    * Logs a Slow RPC Request.    *    * @param methodName - RPC Request method name    * @param details - Processing Detail.    *    * if this request took too much time relative to other requests    * we consider that as a slow RPC. 3 is a magic number that comes    * from 3 sigma deviation. A very simple explanation can be found    * by searching for 68-95-99.7 rule. We flag an RPC as slow RPC    * if and only if it falls above 99.7% of requests. We start this logic    * only once we have enough sample size.    */
+DECL|method|logSlowRpcCalls (String methodName, Call call, ProcessingDetails details)
 name|void
 name|logSlowRpcCalls
 parameter_list|(
@@ -2844,8 +2844,8 @@ parameter_list|,
 name|Call
 name|call
 parameter_list|,
-name|long
-name|processingTime
+name|ProcessingDetails
+name|details
 parameter_list|)
 block|{
 specifier|final
@@ -2882,6 +2882,22 @@ operator|*
 name|deviation
 operator|)
 decl_stmt|;
+name|long
+name|processingTime
+init|=
+name|details
+operator|.
+name|get
+argument_list|(
+name|Timing
+operator|.
+name|PROCESSING
+argument_list|,
+name|RpcMetrics
+operator|.
+name|TIMEUNIT
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 operator|(
@@ -2904,7 +2920,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Slow RPC : {} took {} {} to process from client {}"
+literal|"Slow RPC : {} took {} {} to process from client {},"
+operator|+
+literal|" the processing detail is {}"
 argument_list|,
 name|methodName
 argument_list|,
@@ -2915,6 +2933,11 @@ operator|.
 name|TIMEUNIT
 argument_list|,
 name|call
+argument_list|,
+name|details
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|rpcMetrics
@@ -3148,7 +3171,7 @@ name|name
 argument_list|,
 name|call
 argument_list|,
-name|processingTime
+name|details
 argument_list|)
 expr_stmt|;
 block|}
