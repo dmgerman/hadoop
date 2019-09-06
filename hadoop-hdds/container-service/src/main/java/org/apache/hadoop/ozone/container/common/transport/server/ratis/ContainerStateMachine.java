@@ -246,6 +246,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|ozoneimpl
+operator|.
+name|ContainerController
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|Time
@@ -1065,6 +1083,12 @@ specifier|final
 name|ContainerDispatcher
 name|dispatcher
 decl_stmt|;
+DECL|field|containerController
+specifier|private
+specifier|final
+name|ContainerController
+name|containerController
+decl_stmt|;
 DECL|field|chunkExecutor
 specifier|private
 name|ThreadPoolExecutor
@@ -1164,7 +1188,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"parameternumber"
 argument_list|)
-DECL|method|ContainerStateMachine (RaftGroupId gid, ContainerDispatcher dispatcher, ThreadPoolExecutor chunkExecutor, XceiverServerRatis ratisServer, long expiryInterval, boolean isBlockTokenEnabled, TokenVerifier tokenVerifier, Configuration conf)
+DECL|method|ContainerStateMachine (RaftGroupId gid, ContainerDispatcher dispatcher, ContainerController containerController, ThreadPoolExecutor chunkExecutor, XceiverServerRatis ratisServer, long expiryInterval, boolean isBlockTokenEnabled, TokenVerifier tokenVerifier, Configuration conf)
 specifier|public
 name|ContainerStateMachine
 parameter_list|(
@@ -1173,6 +1197,9 @@ name|gid
 parameter_list|,
 name|ContainerDispatcher
 name|dispatcher
+parameter_list|,
+name|ContainerController
+name|containerController
 parameter_list|,
 name|ThreadPoolExecutor
 name|chunkExecutor
@@ -1204,6 +1231,12 @@ operator|.
 name|dispatcher
 operator|=
 name|dispatcher
+expr_stmt|;
+name|this
+operator|.
+name|containerController
+operator|=
+name|containerController
 expr_stmt|;
 name|this
 operator|.
@@ -1469,6 +1502,13 @@ operator|.
 name|init
 argument_list|(
 name|raftStorage
+argument_list|)
+expr_stmt|;
+name|ratisServer
+operator|.
+name|notifyGroupAdd
+argument_list|(
+name|gid
 argument_list|)
 expr_stmt|;
 name|loadSnapshot
@@ -4473,6 +4513,57 @@ expr_stmt|;
 return|return
 name|future
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|notifyGroupRemove ()
+specifier|public
+name|void
+name|notifyGroupRemove
+parameter_list|()
+block|{
+name|ratisServer
+operator|.
+name|notifyGroupRemove
+argument_list|(
+name|gid
+argument_list|)
+expr_stmt|;
+comment|// Make best effort to quasi-close all the containers on group removal.
+comment|// Containers already in terminal state like CLOSED or UNHEALTHY will not
+comment|// be affected.
+for|for
+control|(
+name|Long
+name|cid
+range|:
+name|createContainerSet
+control|)
+block|{
+try|try
+block|{
+name|containerController
+operator|.
+name|markContainerForClose
+argument_list|(
+name|cid
+argument_list|)
+expr_stmt|;
+name|containerController
+operator|.
+name|quasiCloseContainer
+argument_list|(
+name|cid
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{       }
+block|}
 block|}
 annotation|@
 name|Override

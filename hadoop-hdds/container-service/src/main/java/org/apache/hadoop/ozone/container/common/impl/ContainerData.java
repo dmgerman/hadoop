@@ -1084,6 +1084,24 @@ operator|==
 name|state
 return|;
 block|}
+comment|/**    * checks if the container is unhealthy.    * @return - boolean    */
+DECL|method|isUnhealthy ()
+specifier|public
+specifier|synchronized
+name|boolean
+name|isUnhealthy
+parameter_list|()
+block|{
+return|return
+name|ContainerDataProto
+operator|.
+name|State
+operator|.
+name|UNHEALTHY
+operator|==
+name|state
+return|;
+block|}
 comment|/**    * Marks this container as quasi closed.    */
 DECL|method|quasiCloseContainer ()
 specifier|public

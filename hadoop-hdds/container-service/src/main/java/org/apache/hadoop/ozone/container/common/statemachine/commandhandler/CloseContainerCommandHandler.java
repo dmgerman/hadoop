@@ -489,26 +489,7 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
-if|if
-condition|(
-name|container
-operator|.
-name|getContainerState
-argument_list|()
-operator|==
-name|ContainerProtos
-operator|.
-name|ContainerDataProto
-operator|.
-name|State
-operator|.
-name|CLOSED
-condition|)
-block|{
-comment|// Closing a container is an idempotent operation.
-return|return;
-block|}
-comment|// Move the container to CLOSING state
+comment|// move the container to CLOSING if in OPEN state
 name|controller
 operator|.
 name|markContainerForClose
@@ -516,6 +497,20 @@ argument_list|(
 name|containerId
 argument_list|)
 expr_stmt|;
+switch|switch
+condition|(
+name|container
+operator|.
+name|getContainerState
+argument_list|()
+condition|)
+block|{
+case|case
+name|OPEN
+case|:
+case|case
+name|CLOSING
+case|:
 comment|// If the container is part of open pipeline, close it via write channel
 if|if
 condition|(
@@ -533,25 +528,6 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|closeCommand
-operator|.
-name|getForce
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Cannot force close a container when the container is"
-operator|+
-literal|" part of an active pipeline."
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
 name|ContainerCommandRequestProto
 name|request
 init|=
@@ -580,30 +556,30 @@ name|getPipelineID
 argument_list|()
 argument_list|)
 expr_stmt|;
-return|return;
 block|}
-comment|// If we reach here, there is no active pipeline for this container.
+else|else
+block|{
+comment|// Container should not exist in CLOSING state without a pipeline
+name|controller
+operator|.
+name|markContainerUnhealthy
+argument_list|(
+name|containerId
+argument_list|)
+expr_stmt|;
+block|}
+break|break;
+case|case
+name|QUASI_CLOSED
+case|:
 if|if
 condition|(
-operator|!
 name|closeCommand
 operator|.
 name|getForce
 argument_list|()
 condition|)
 block|{
-comment|// QUASI_CLOSE the container.
-name|controller
-operator|.
-name|quasiCloseContainer
-argument_list|(
-name|containerId
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-comment|// SCM told us to force close the container.
 name|controller
 operator|.
 name|closeContainer
@@ -611,6 +587,36 @@ argument_list|(
 name|containerId
 argument_list|)
 expr_stmt|;
+break|break;
+block|}
+case|case
+name|CLOSED
+case|:
+break|break;
+case|case
+name|UNHEALTHY
+case|:
+case|case
+name|INVALID
+case|:
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Cannot close the container #{}, the container is"
+operator|+
+literal|" in {} state."
+argument_list|,
+name|containerId
+argument_list|,
+name|container
+operator|.
+name|getContainerState
+argument_list|()
+argument_list|)
+expr_stmt|;
+default|default:
+break|break;
 block|}
 block|}
 catch|catch

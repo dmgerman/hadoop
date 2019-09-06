@@ -2652,7 +2652,9 @@ argument_list|)
 decl_stmt|;
 name|RaftServerConfigKeys
 operator|.
-name|setLeaderElectionTimeout
+name|Notification
+operator|.
+name|setNoLeaderTimeout
 argument_list|(
 name|properties
 argument_list|,

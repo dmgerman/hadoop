@@ -867,12 +867,14 @@ name|any
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Container in CLOSING state is moved to UNHEALTHY if pipeline does not
+comment|// exist. Container should not exist in CLOSING state without a pipeline.
 name|verify
 argument_list|(
 name|containerHandler
 argument_list|)
 operator|.
-name|quasiCloseContainer
+name|markContainerUnhealthy
 argument_list|(
 name|container
 argument_list|)
@@ -989,12 +991,14 @@ name|any
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Container in CLOSING state is moved to UNHEALTHY if pipeline does not
+comment|// exist. Container should not exist in CLOSING state without a pipeline.
 name|verify
 argument_list|(
 name|containerHandler
 argument_list|)
 operator|.
-name|closeContainer
+name|markContainerUnhealthy
 argument_list|(
 name|container
 argument_list|)
@@ -1038,9 +1042,6 @@ expr_stmt|;
 name|verify
 argument_list|(
 name|writeChannel
-argument_list|,
-name|never
-argument_list|()
 argument_list|)
 operator|.
 name|submitRequest
