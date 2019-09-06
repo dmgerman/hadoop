@@ -101,7 +101,7 @@ specifier|private
 name|ClusterMetrics
 name|metrics
 decl_stmt|;
-comment|/**    * Test aMLaunchDelay and aMRegisterDelay Metrics    */
+comment|/**    * Test below metrics    *  - aMLaunchDelay    *  - aMRegisterDelay    *  - aMContainerAllocationDelay    */
 annotation|@
 name|Test
 DECL|method|testAmMetrics ()
@@ -145,6 +145,20 @@ name|changed
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+operator|!
+name|metrics
+operator|.
+name|getAMContainerAllocationDelay
+argument_list|()
+operator|.
+name|changed
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|metrics
 operator|.
 name|addAMLaunchDelay
@@ -155,6 +169,13 @@ expr_stmt|;
 name|metrics
 operator|.
 name|addAMRegisterDelay
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
+name|metrics
+operator|.
+name|addAMContainerAllocationDelay
 argument_list|(
 literal|1
 argument_list|)
@@ -178,6 +199,19 @@ argument_list|(
 name|metrics
 operator|.
 name|aMRegisterDelay
+operator|.
+name|changed
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|metrics
+operator|.
+name|getAMContainerAllocationDelay
+argument_list|()
 operator|.
 name|changed
 argument_list|()

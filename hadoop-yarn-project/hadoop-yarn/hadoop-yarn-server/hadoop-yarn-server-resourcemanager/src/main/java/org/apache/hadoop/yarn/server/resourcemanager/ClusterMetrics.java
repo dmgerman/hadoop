@@ -314,6 +314,16 @@ argument_list|)
 name|MutableRate
 name|aMRegisterDelay
 decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"AM container allocation delay"
+argument_list|)
+DECL|field|aMContainerAllocationDelay
+specifier|private
+name|MutableRate
+name|aMContainerAllocationDelay
+decl_stmt|;
 DECL|field|RECORD_INFO
 specifier|private
 specifier|static
@@ -802,6 +812,33 @@ argument_list|(
 name|delay
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|addAMContainerAllocationDelay (long delay)
+specifier|public
+name|void
+name|addAMContainerAllocationDelay
+parameter_list|(
+name|long
+name|delay
+parameter_list|)
+block|{
+name|aMContainerAllocationDelay
+operator|.
+name|add
+argument_list|(
+name|delay
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|getAMContainerAllocationDelay ()
+specifier|public
+name|MutableRate
+name|getAMContainerAllocationDelay
+parameter_list|()
+block|{
+return|return
+name|aMContainerAllocationDelay
+return|;
 block|}
 block|}
 end_class
