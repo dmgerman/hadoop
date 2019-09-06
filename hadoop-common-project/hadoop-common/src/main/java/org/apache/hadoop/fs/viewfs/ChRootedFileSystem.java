@@ -598,31 +598,23 @@ name|path
 argument_list|)
 return|;
 block|}
-comment|/**    * Constructor    * @param uri base file system    * @param conf configuration    * @throws IOException     */
-DECL|method|ChRootedFileSystem (final URI uri, Configuration conf)
-specifier|public
+comment|/**    * Constructor    * @param fs base file system    * @param uri base uri    * @throws IOException     */
+DECL|method|ChRootedFileSystem (final FileSystem fs, URI uri)
 name|ChRootedFileSystem
 parameter_list|(
 specifier|final
+name|FileSystem
+name|fs
+parameter_list|,
 name|URI
 name|uri
-parameter_list|,
-name|Configuration
-name|conf
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 name|super
 argument_list|(
-name|FileSystem
-operator|.
-name|get
-argument_list|(
-name|uri
-argument_list|,
-name|conf
-argument_list|)
+name|fs
 argument_list|)
 expr_stmt|;
 name|String
@@ -674,6 +666,36 @@ name|getHomeDirectory
 argument_list|()
 expr_stmt|;
 comment|// We don't use the wd of the myFs
+block|}
+comment|/**    * Constructor.    * @param uri base file system    * @param conf configuration    * @throws IOException    */
+DECL|method|ChRootedFileSystem (final URI uri, Configuration conf)
+specifier|public
+name|ChRootedFileSystem
+parameter_list|(
+specifier|final
+name|URI
+name|uri
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|this
+argument_list|(
+name|FileSystem
+operator|.
+name|get
+argument_list|(
+name|uri
+argument_list|,
+name|conf
+argument_list|)
+argument_list|,
+name|uri
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**     * Called after a new FileSystem instance is constructed.    * @param name a uri whose authority section names the host, port, etc.    *   for this FileSystem    * @param conf the configuration    */
 annotation|@

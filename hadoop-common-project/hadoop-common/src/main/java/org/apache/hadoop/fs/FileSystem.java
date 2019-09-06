@@ -1154,6 +1154,23 @@ name|fs
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|cacheSize ()
+specifier|static
+name|int
+name|cacheSize
+parameter_list|()
+block|{
+return|return
+name|CACHE
+operator|.
+name|map
+operator|.
+name|size
+argument_list|()
+return|;
+block|}
 comment|/**    * Get a FileSystem instance based on the uri, the passed in    * configuration and the user.    * @param uri of the filesystem    * @param conf the configuration to use    * @param user to perform the get as    * @return the filesystem instance    * @throws IOException failure to load    * @throws InterruptedException If the {@code UGI.doAs()} call was    * somehow interrupted.    */
 DECL|method|get (final URI uri, final Configuration conf, final String user)
 specifier|public

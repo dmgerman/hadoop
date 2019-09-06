@@ -8521,6 +8521,21 @@ name|delete
 argument_list|()
 expr_stmt|;
 block|}
+comment|/**    * The size of FileSystem cache.    */
+DECL|method|getCacheSize ()
+specifier|public
+specifier|static
+name|int
+name|getCacheSize
+parameter_list|()
+block|{
+return|return
+name|FileSystem
+operator|.
+name|cacheSize
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

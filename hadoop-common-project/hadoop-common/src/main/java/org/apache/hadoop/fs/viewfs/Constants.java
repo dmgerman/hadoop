@@ -142,6 +142,19 @@ name|CONFIG_VIEWFS_RENAME_STRATEGY
 init|=
 literal|"fs.viewfs.rename.strategy"
 decl_stmt|;
+comment|/**    * Enable ViewFileSystem to cache all children filesystems in inner cache.    */
+DECL|field|CONFIG_VIEWFS_ENABLE_INNER_CACHE
+name|String
+name|CONFIG_VIEWFS_ENABLE_INNER_CACHE
+init|=
+literal|"fs.viewfs.enable.inner.cache"
+decl_stmt|;
+DECL|field|CONFIG_VIEWFS_ENABLE_INNER_CACHE_DEFAULT
+name|boolean
+name|CONFIG_VIEWFS_ENABLE_INNER_CACHE_DEFAULT
+init|=
+literal|true
+decl_stmt|;
 block|}
 end_interface
 

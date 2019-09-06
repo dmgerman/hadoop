@@ -665,6 +665,17 @@ operator|.
 name|createConfig
 argument_list|()
 decl_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|DFS_REPLICATION_KEY
+argument_list|,
+name|DFS_REPLICATION_DEFAULT
+operator|+
+literal|1
+argument_list|)
+expr_stmt|;
 name|ConfigUtil
 operator|.
 name|addLink
