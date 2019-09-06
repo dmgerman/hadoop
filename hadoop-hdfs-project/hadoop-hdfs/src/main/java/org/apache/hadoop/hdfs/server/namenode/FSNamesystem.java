@@ -21253,9 +21253,17 @@ name|FSNamesystem
 operator|.
 name|LOG
 operator|.
-name|error
+name|warn
 argument_list|(
-literal|"Ignoring exception in LazyPersistFileScrubber:"
+literal|"LazyPersistFileScrubber encountered an exception while "
+operator|+
+literal|"scanning for lazyPersist files with missing blocks. "
+operator|+
+literal|"Scanning will retry in "
+operator|+
+name|scrubIntervalSec
+operator|+
+literal|" seconds. Exception: "
 argument_list|,
 name|e
 argument_list|)
