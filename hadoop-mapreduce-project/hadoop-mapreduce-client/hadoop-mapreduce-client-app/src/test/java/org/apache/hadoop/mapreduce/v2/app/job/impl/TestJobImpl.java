@@ -3949,6 +3949,13 @@ operator|new
 name|AsyncDispatcher
 argument_list|()
 decl_stmt|;
+name|dispatcher
+operator|.
+name|init
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|OutputCommitter
 name|committer
 init|=
@@ -7117,6 +7124,13 @@ operator|new
 name|AsyncDispatcher
 argument_list|()
 decl_stmt|;
+name|dispatcher
+operator|.
+name|init
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|Priority
 name|submittedPriority
 init|=
