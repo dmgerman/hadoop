@@ -5080,7 +5080,7 @@ name|analysis
 operator|.
 name|append
 argument_list|(
-literal|"Please check whether your etc/hadoop/mapred-site.xml "
+literal|"Please check whether your<HADOOP_HOME>/etc/hadoop/mapred-site.xml "
 operator|+
 literal|"contains the below configuration:\n"
 argument_list|)
