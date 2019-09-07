@@ -755,6 +755,11 @@ argument_list|,
 name|cluster
 argument_list|,
 literal|true
+argument_list|,
+name|SCMContainerPlacementMetrics
+operator|.
+name|create
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|int
@@ -890,6 +895,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|true
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -995,6 +1002,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|true
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -1038,6 +1047,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|true
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}

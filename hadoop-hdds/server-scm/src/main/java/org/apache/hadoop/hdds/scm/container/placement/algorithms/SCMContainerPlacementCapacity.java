@@ -205,7 +205,7 @@ name|class
 argument_list|)
 decl_stmt|;
 comment|/**    * Constructs a Container Placement with considering only capacity.    * That is this policy tries to place containers based on node weight.    *    * @param nodeManager Node Manager    * @param conf Configuration    */
-DECL|method|SCMContainerPlacementCapacity (final NodeManager nodeManager, final Configuration conf, final NetworkTopology networkTopology, final boolean fallback)
+DECL|method|SCMContainerPlacementCapacity (final NodeManager nodeManager, final Configuration conf, final NetworkTopology networkTopology, final boolean fallback, final SCMContainerPlacementMetrics metrics)
 specifier|public
 name|SCMContainerPlacementCapacity
 parameter_list|(
@@ -224,6 +224,10 @@ parameter_list|,
 specifier|final
 name|boolean
 name|fallback
+parameter_list|,
+specifier|final
+name|SCMContainerPlacementMetrics
+name|metrics
 parameter_list|)
 block|{
 name|super

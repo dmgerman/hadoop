@@ -281,8 +281,14 @@ name|MAX_RETRY
 init|=
 literal|3
 decl_stmt|;
+DECL|field|metrics
+specifier|private
+specifier|final
+name|SCMContainerPlacementMetrics
+name|metrics
+decl_stmt|;
 comment|/**    * Constructs a Container Placement with rack awareness.    *    * @param nodeManager Node Manager    * @param conf Configuration    * @param fallback Whether reducing constrains to choose a data node when    *                 there is no node which satisfy all constrains.    *                 Basically, false for open container placement, and true    *                 for closed container placement.    */
-DECL|method|SCMContainerPlacementRackAware (final NodeManager nodeManager, final Configuration conf, final NetworkTopology networkTopology, final boolean fallback)
+DECL|method|SCMContainerPlacementRackAware (final NodeManager nodeManager, final Configuration conf, final NetworkTopology networkTopology, final boolean fallback, final SCMContainerPlacementMetrics metrics)
 specifier|public
 name|SCMContainerPlacementRackAware
 parameter_list|(
@@ -301,6 +307,10 @@ parameter_list|,
 specifier|final
 name|boolean
 name|fallback
+parameter_list|,
+specifier|final
+name|SCMContainerPlacementMetrics
+name|metrics
 parameter_list|)
 block|{
 name|super
@@ -321,6 +331,12 @@ operator|.
 name|fallback
 operator|=
 name|fallback
+expr_stmt|;
+name|this
+operator|.
+name|metrics
+operator|=
+name|metrics
 expr_stmt|;
 block|}
 comment|/**    * Called by SCM to choose datanodes.    * There are two scenarios, one is choosing all nodes for a new pipeline.    * Another is choosing node to meet replication requirement.    *    *    * @param excludedNodes - list of the datanodes to exclude.    * @param favoredNodes - list of nodes preferred. This is a hint to the    *                     allocator, whether the favored nodes will be used    *                     depends on whether the nodes meets the allocator's    *                     requirement.    * @param nodesRequired - number of datanodes required.    * @param sizeRequired - size required for the container or block.    * @return List of datanodes.    * @throws SCMException  SCMException    */
@@ -363,6 +379,13 @@ argument_list|(
 name|nodesRequired
 operator|>
 literal|0
+argument_list|)
+expr_stmt|;
+name|metrics
+operator|.
+name|incrDatanodeRequestCount
+argument_list|(
+name|nodesRequired
 argument_list|)
 expr_stmt|;
 name|int
@@ -1119,6 +1142,11 @@ name|excludedNodesForCapacity
 init|=
 literal|null
 decl_stmt|;
+name|boolean
+name|isFallbacked
+init|=
+literal|false
+decl_stmt|;
 while|while
 condition|(
 literal|true
@@ -1144,6 +1172,11 @@ argument_list|,
 name|ancestorGen
 argument_list|)
 decl_stmt|;
+name|metrics
+operator|.
+name|incrDatanodeChooseAttemptCount
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|node
@@ -1192,6 +1225,10 @@ condition|(
 name|fallback
 condition|)
 block|{
+name|isFallbacked
+operator|=
+literal|true
+expr_stmt|;
 comment|// fallback, don't consider the affinity node
 if|if
 condition|(
@@ -1248,7 +1285,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|debug
+name|warn
 argument_list|(
 literal|"Datanode {} is chosen. Required size is {}"
 argument_list|,
@@ -1277,6 +1314,22 @@ name|removeAll
 argument_list|(
 name|excludedNodesForCapacity
 argument_list|)
+expr_stmt|;
+block|}
+name|metrics
+operator|.
+name|incrDatanodeChooseSuccessCount
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+name|isFallbacked
+condition|)
+block|{
+name|metrics
+operator|.
+name|incrDatanodeChooseFallbackCount
+argument_list|()
 expr_stmt|;
 block|}
 return|return

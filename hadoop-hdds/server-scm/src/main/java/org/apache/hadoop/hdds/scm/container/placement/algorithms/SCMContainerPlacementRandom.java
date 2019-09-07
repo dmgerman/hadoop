@@ -185,7 +185,7 @@ name|class
 argument_list|)
 decl_stmt|;
 comment|/**    * Construct a random Block Placement policy.    *    * @param nodeManager nodeManager    * @param conf Config    */
-DECL|method|SCMContainerPlacementRandom (final NodeManager nodeManager, final Configuration conf, final NetworkTopology networkTopology, final boolean fallback)
+DECL|method|SCMContainerPlacementRandom (final NodeManager nodeManager, final Configuration conf, final NetworkTopology networkTopology, final boolean fallback, final SCMContainerPlacementMetrics metrics)
 specifier|public
 name|SCMContainerPlacementRandom
 parameter_list|(
@@ -204,6 +204,10 @@ parameter_list|,
 specifier|final
 name|boolean
 name|fallback
+parameter_list|,
+specifier|final
+name|SCMContainerPlacementMetrics
+name|metrics
 parameter_list|)
 block|{
 name|super

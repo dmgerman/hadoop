@@ -970,6 +970,7 @@ operator|=
 literal|"Used only for testing"
 argument_list|)
 DECL|method|processContainersNow ()
+specifier|public
 specifier|synchronized
 name|void
 name|processContainersNow

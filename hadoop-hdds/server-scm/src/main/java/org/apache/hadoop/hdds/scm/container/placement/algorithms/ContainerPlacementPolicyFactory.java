@@ -188,7 +188,7 @@ specifier|private
 name|ContainerPlacementPolicyFactory
 parameter_list|()
 block|{   }
-DECL|method|getPolicy (Configuration conf, final NodeManager nodeManager, NetworkTopology clusterMap, final boolean fallback)
+DECL|method|getPolicy (Configuration conf, final NodeManager nodeManager, NetworkTopology clusterMap, final boolean fallback, SCMContainerPlacementMetrics metrics)
 specifier|public
 specifier|static
 name|ContainerPlacementPolicy
@@ -207,6 +207,9 @@ parameter_list|,
 specifier|final
 name|boolean
 name|fallback
+parameter_list|,
+name|SCMContainerPlacementMetrics
+name|metrics
 parameter_list|)
 throws|throws
 name|SCMException
@@ -264,6 +267,10 @@ operator|.
 name|class
 argument_list|,
 name|boolean
+operator|.
+name|class
+argument_list|,
+name|SCMContainerPlacementMetrics
 operator|.
 name|class
 argument_list|)
@@ -334,6 +341,8 @@ argument_list|,
 name|clusterMap
 argument_list|,
 name|fallback
+argument_list|,
+name|metrics
 argument_list|)
 return|;
 block|}
