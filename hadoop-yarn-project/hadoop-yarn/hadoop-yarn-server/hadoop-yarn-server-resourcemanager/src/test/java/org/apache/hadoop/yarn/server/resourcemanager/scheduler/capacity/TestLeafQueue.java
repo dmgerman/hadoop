@@ -2178,11 +2178,6 @@ argument_list|(
 name|rC
 argument_list|)
 expr_stmt|;
-name|cs
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
 name|when
 argument_list|(
 name|spyRMContext
@@ -2223,6 +2218,11 @@ name|thenReturn
 argument_list|(
 literal|3
 argument_list|)
+expr_stmt|;
+name|cs
+operator|.
+name|start
+argument_list|()
 expr_stmt|;
 block|}
 DECL|field|A
