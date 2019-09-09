@@ -1239,6 +1239,11 @@ name|build
 argument_list|()
 decl_stmt|;
 comment|// Starts a single node Ratis server
+name|omRatisServer
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
 name|OzoneManagerRatisServer
 name|newOmRatisServer
 init|=
@@ -1335,6 +1340,11 @@ argument_list|()
 argument_list|,
 literal|16
 argument_list|)
+expr_stmt|;
+name|newOmRatisServer
+operator|.
+name|stop
+argument_list|()
 expr_stmt|;
 block|}
 block|}
