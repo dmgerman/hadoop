@@ -419,6 +419,15 @@ name|ADL_HTTP_TIMEOUT
 init|=
 literal|"adl.http.timeout"
 decl_stmt|;
+DECL|field|ADL_SSL_CHANNEL_MODE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ADL_SSL_CHANNEL_MODE
+init|=
+literal|"adl.ssl.channel.mode"
+decl_stmt|;
 DECL|method|addDeprecatedKeys ()
 specifier|public
 specifier|static
