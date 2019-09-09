@@ -2920,6 +2920,21 @@ name|blockCommitSequenceId
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|getBlockCommitSequenceId ()
+specifier|public
+name|long
+name|getBlockCommitSequenceId
+parameter_list|()
+block|{
+return|return
+name|containerData
+operator|.
+name|getBlockCommitSequenceId
+argument_list|()
+return|;
+block|}
 comment|/**    * Returns KeyValueContainerReport for the KeyValueContainer.    */
 annotation|@
 name|Override

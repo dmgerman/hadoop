@@ -985,34 +985,156 @@ return|return
 name|missingContainerSet
 return|;
 block|}
-comment|/**    * Builds the missing container set by taking a diff total no containers    * actually found and number of containers which actually got created.    * This will only be called during the initialization of Datanode Service    * when  it still not a part of any write Pipeline.    * @param createdContainerSet ContainerId set persisted in the Ratis snapshot    */
-DECL|method|buildMissingContainerSet (Set<Long> createdContainerSet)
+comment|/**    * Builds the missing container set by taking a diff between total no    * containers actually found and number of containers which actually    * got created. It also validates the BCSID stored in the snapshot file    * for each container as against what is reported in containerScan.    * This will only be called during the initialization of Datanode Service    * when  it still not a part of any write Pipeline.    * @param container2BCSIDMap Map of containerId to BCSID persisted in the    *                           Ratis snapshot    */
+DECL|method|buildMissingContainerSetAndValidate ( Map<Long, Long> container2BCSIDMap)
 specifier|public
 name|void
-name|buildMissingContainerSet
+name|buildMissingContainerSetAndValidate
 parameter_list|(
-name|Set
+name|Map
 argument_list|<
 name|Long
+argument_list|,
+name|Long
 argument_list|>
-name|createdContainerSet
+name|container2BCSIDMap
 parameter_list|)
 block|{
-name|missingContainerSet
+name|container2BCSIDMap
 operator|.
-name|addAll
+name|entrySet
+argument_list|()
+operator|.
+name|parallelStream
+argument_list|()
+operator|.
+name|forEach
 argument_list|(
-name|createdContainerSet
+parameter_list|(
+name|mapEntry
+parameter_list|)
+lambda|->
+block|{
+name|long
+name|id
+init|=
+name|mapEntry
+operator|.
+name|getKey
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|containerMap
+operator|.
+name|containsKey
+argument_list|(
+name|id
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Adding container {} to missing container set."
+argument_list|,
+name|id
 argument_list|)
 expr_stmt|;
 name|missingContainerSet
 operator|.
-name|removeAll
+name|add
 argument_list|(
+name|id
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|Container
+name|container
+init|=
 name|containerMap
 operator|.
-name|keySet
+name|get
+argument_list|(
+name|id
+argument_list|)
+decl_stmt|;
+name|long
+name|containerBCSID
+init|=
+name|container
+operator|.
+name|getBlockCommitSequenceId
 argument_list|()
+decl_stmt|;
+name|long
+name|snapshotBCSID
+init|=
+name|mapEntry
+operator|.
+name|getValue
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|containerBCSID
+operator|<
+name|snapshotBCSID
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Marking container {} unhealthy as reported BCSID {} is smaller"
+operator|+
+literal|" than ratis snapshot recorded value {}"
+argument_list|,
+name|id
+argument_list|,
+name|containerBCSID
+argument_list|,
+name|snapshotBCSID
+argument_list|)
+expr_stmt|;
+comment|// just mark the container unhealthy. Once the DatanodeStateMachine
+comment|// thread starts it will send container report to SCM where these
+comment|// unhealthy containers would be detected
+try|try
+block|{
+name|container
+operator|.
+name|markContainerUnhealthy
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|StorageContainerException
+name|sce
+parameter_list|)
+block|{
+comment|// The container will still be marked unhealthy in memory even if
+comment|// exception occurs. It won't accept any new transactions and will
+comment|// be handled by SCM. Eve if dn restarts, it will still be detected
+comment|// as unheathy as its BCSID won't change.
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Unable to persist unhealthy state for container {}"
+argument_list|,
+name|id
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+block|}
 argument_list|)
 expr_stmt|;
 block|}

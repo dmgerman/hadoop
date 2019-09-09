@@ -138,7 +138,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Set
+name|Map
 import|;
 end_import
 
@@ -181,16 +181,18 @@ name|void
 name|init
 parameter_list|()
 function_decl|;
-comment|/**    * finds and builds the missing containers in case of a lost disk etc    * in the ContainerSet.    */
-DECL|method|buildMissingContainerSet (Set<Long> createdContainers)
+comment|/**    * finds and builds the missing containers in case of a lost disk etc    * in the ContainerSet. It also validates the BCSID of the containers found.    */
+DECL|method|buildMissingContainerSetAndValidate (Map<Long, Long> container2BCSIDMap)
 name|void
-name|buildMissingContainerSet
+name|buildMissingContainerSetAndValidate
 parameter_list|(
-name|Set
+name|Map
 argument_list|<
 name|Long
+argument_list|,
+name|Long
 argument_list|>
-name|createdContainers
+name|container2BCSIDMap
 parameter_list|)
 function_decl|;
 comment|/**    * Shutdown Dispatcher services.    */

@@ -413,7 +413,13 @@ name|long
 name|blockCommitSequenceId
 parameter_list|)
 function_decl|;
-comment|/**    * Scan the container metadata to detect corruption.    */
+comment|/**    * Returns the blockCommitSequenceId.    */
+DECL|method|getBlockCommitSequenceId ()
+name|long
+name|getBlockCommitSequenceId
+parameter_list|()
+function_decl|;
+comment|/**    * check and report the structural integrity of the container.    * @return true if the integrity checks pass    * Scan the container metadata to detect corruption.    */
 DECL|method|scanMetaData ()
 name|boolean
 name|scanMetaData

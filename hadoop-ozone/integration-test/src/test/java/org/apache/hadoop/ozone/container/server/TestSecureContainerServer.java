@@ -854,7 +854,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Set
+name|Map
 import|;
 end_import
 
@@ -2060,16 +2060,18 @@ parameter_list|)
 block|{     }
 annotation|@
 name|Override
-DECL|method|buildMissingContainerSet (Set<Long> createdContainerSet)
+DECL|method|buildMissingContainerSetAndValidate ( Map<Long, Long> container2BCSIDMap)
 specifier|public
 name|void
-name|buildMissingContainerSet
+name|buildMissingContainerSetAndValidate
 parameter_list|(
-name|Set
+name|Map
 argument_list|<
 name|Long
+argument_list|,
+name|Long
 argument_list|>
-name|createdContainerSet
+name|container2BCSIDMap
 parameter_list|)
 block|{     }
 block|}

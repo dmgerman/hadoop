@@ -60,7 +60,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Set
+name|Map
 import|;
 end_import
 
@@ -126,16 +126,18 @@ specifier|final
 name|long
 name|logIndex
 decl_stmt|;
-DECL|field|createContainerSet
+DECL|field|container2BCSIDMap
 specifier|private
 specifier|final
-name|Set
+name|Map
 argument_list|<
 name|Long
+argument_list|,
+name|Long
 argument_list|>
-name|createContainerSet
+name|container2BCSIDMap
 decl_stmt|;
-DECL|method|DispatcherContext (long term, long index, WriteChunkStage stage, boolean readFromTmpFile, Set<Long> containerSet)
+DECL|method|DispatcherContext (long term, long index, WriteChunkStage stage, boolean readFromTmpFile, Map<Long, Long> container2BCSIDMap)
 specifier|private
 name|DispatcherContext
 parameter_list|(
@@ -151,11 +153,13 @@ parameter_list|,
 name|boolean
 name|readFromTmpFile
 parameter_list|,
-name|Set
+name|Map
 argument_list|<
 name|Long
+argument_list|,
+name|Long
 argument_list|>
-name|containerSet
+name|container2BCSIDMap
 parameter_list|)
 block|{
 name|this
@@ -184,9 +188,9 @@ name|readFromTmpFile
 expr_stmt|;
 name|this
 operator|.
-name|createContainerSet
+name|container2BCSIDMap
 operator|=
-name|containerSet
+name|container2BCSIDMap
 expr_stmt|;
 block|}
 DECL|method|getLogIndex ()
@@ -229,17 +233,19 @@ return|return
 name|stage
 return|;
 block|}
-DECL|method|getCreateContainerSet ()
+DECL|method|getContainer2BCSIDMap ()
 specifier|public
-name|Set
+name|Map
 argument_list|<
 name|Long
+argument_list|,
+name|Long
 argument_list|>
-name|getCreateContainerSet
+name|getContainer2BCSIDMap
 parameter_list|()
 block|{
 return|return
-name|createContainerSet
+name|container2BCSIDMap
 return|;
 block|}
 comment|/**    * Builder class for building DispatcherContext.    */
@@ -276,13 +282,15 @@ specifier|private
 name|long
 name|logIndex
 decl_stmt|;
-DECL|field|createContainerSet
+DECL|field|container2BCSIDMap
 specifier|private
-name|Set
+name|Map
 argument_list|<
 name|Long
+argument_list|,
+name|Long
 argument_list|>
-name|createContainerSet
+name|container2BCSIDMap
 decl_stmt|;
 comment|/**      * Sets the WriteChunkStage.      *      * @param writeChunkStage WriteChunk Stage      * @return DispatcherContext.Builder      */
 DECL|method|setStage (WriteChunkStage writeChunkStage)
@@ -364,24 +372,26 @@ return|return
 name|this
 return|;
 block|}
-comment|/**      * Sets the createContainerSet to contain all the containerIds per      * RaftGroup.      * @param set createContainerSet      * @return Builder      */
-DECL|method|setCreateContainerSet (Set<Long> set)
+comment|/**      * Sets the container2BCSIDMap to contain all the containerIds per      * RaftGroup.      * @param map container2BCSIDMap      * @return Builder      */
+DECL|method|setContainer2BCSIDMap (Map<Long, Long> map)
 specifier|public
 name|Builder
-name|setCreateContainerSet
+name|setContainer2BCSIDMap
 parameter_list|(
-name|Set
+name|Map
 argument_list|<
 name|Long
+argument_list|,
+name|Long
 argument_list|>
-name|set
+name|map
 parameter_list|)
 block|{
 name|this
 operator|.
-name|createContainerSet
+name|container2BCSIDMap
 operator|=
-name|set
+name|map
 expr_stmt|;
 return|return
 name|this
@@ -406,7 +416,7 @@ name|stage
 argument_list|,
 name|readFromTmpFile
 argument_list|,
-name|createContainerSet
+name|container2BCSIDMap
 argument_list|)
 return|;
 block|}
