@@ -195,13 +195,6 @@ argument_list|(
 literal|"ozone.om.nodes.EXAMPLEOMSERVICEID"
 argument_list|)
 expr_stmt|;
-name|xmlPropsToSkipCompare
-operator|.
-name|add
-argument_list|(
-literal|"hdds.containerscrub.enabled"
-argument_list|)
-expr_stmt|;
 name|addPropertiesNotInXml
 argument_list|()
 expr_stmt|;

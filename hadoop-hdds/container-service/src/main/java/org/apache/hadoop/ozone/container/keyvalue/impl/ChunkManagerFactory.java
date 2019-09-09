@@ -122,6 +122,38 @@ name|HDDS_CONTAINER_PERSISTDATA_DEFAULT
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|HddsConfigKeys
+operator|.
+name|HDDS_CONTAINER_SCRUB_ENABLED
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|HddsConfigKeys
+operator|.
+name|HDDS_CONTAINER_SCRUB_ENABLED_DEFAULT
+import|;
+end_import
+
 begin_comment
 comment|/**  * Select an appropriate ChunkManager implementation as per config setting.  * Ozone ChunkManager is a Singleton  */
 end_comment
@@ -280,9 +312,9 @@ name|config
 operator|.
 name|getBoolean
 argument_list|(
-literal|"hdds.containerscrub.enabled"
+name|HDDS_CONTAINER_SCRUB_ENABLED
 argument_list|,
-literal|false
+name|HDDS_CONTAINER_SCRUB_ENABLED_DEFAULT
 argument_list|)
 decl_stmt|;
 if|if
@@ -301,7 +333,9 @@ name|HDDS_CONTAINER_PERSISTDATA
 operator|+
 literal|" to false."
 operator|+
-literal|" Please set hdds.containerscrub.enabled"
+literal|" Please set "
+operator|+
+name|HDDS_CONTAINER_SCRUB_ENABLED
 operator|+
 literal|" also to false to enable non-persistent containers."
 argument_list|)
