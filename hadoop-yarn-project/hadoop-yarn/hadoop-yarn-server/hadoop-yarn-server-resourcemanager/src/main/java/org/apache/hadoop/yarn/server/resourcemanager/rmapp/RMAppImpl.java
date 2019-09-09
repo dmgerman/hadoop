@@ -6333,6 +6333,8 @@ operator|.
 name|updateApplicationState
 argument_list|(
 name|appState
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|app

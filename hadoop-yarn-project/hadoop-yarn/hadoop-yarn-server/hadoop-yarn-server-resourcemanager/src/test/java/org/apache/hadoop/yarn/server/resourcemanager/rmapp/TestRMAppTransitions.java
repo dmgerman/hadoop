@@ -1426,6 +1426,18 @@ begin_import
 import|import static
 name|org
 operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|mockito
 operator|.
 name|ArgumentMatchers
@@ -3639,6 +3651,21 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+name|ArgumentCaptor
+argument_list|<
+name|Boolean
+argument_list|>
+name|notifyApp
+init|=
+name|ArgumentCaptor
+operator|.
+name|forClass
+argument_list|(
+name|Boolean
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 name|verify
 argument_list|(
 name|store
@@ -3655,6 +3682,11 @@ name|state
 operator|.
 name|capture
 argument_list|()
+argument_list|,
+name|notifyApp
+operator|.
+name|capture
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -3667,6 +3699,14 @@ name|getValue
 argument_list|()
 operator|.
 name|getLaunchTime
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+name|notifyApp
+operator|.
+name|getValue
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -97,6 +97,25 @@ name|ApplicationStateData
 name|appState
 parameter_list|)
 block|{
+name|this
+argument_list|(
+name|appState
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|RMStateUpdateAppEvent (ApplicationStateData appState, boolean notifyApplication)
+specifier|public
+name|RMStateUpdateAppEvent
+parameter_list|(
+name|ApplicationStateData
+name|appState
+parameter_list|,
+name|boolean
+name|notifyApplication
+parameter_list|)
+block|{
 name|super
 argument_list|(
 name|RMStateStoreEventType
@@ -114,7 +133,7 @@ name|this
 operator|.
 name|notifyApplication
 operator|=
-literal|true
+name|notifyApplication
 expr_stmt|;
 name|this
 operator|.
