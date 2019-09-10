@@ -833,7 +833,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Class to perform KeyValue Container operations.  */
+comment|/**  * Class to perform KeyValue Container operations. Any modifications to  * KeyValueContainer object should ideally be done via api exposed in  * KeyValueHandler class.  */
 end_comment
 
 begin_class
@@ -2759,6 +2759,8 @@ name|void
 name|writeLock
 parameter_list|()
 block|{
+comment|// TODO: The lock for KeyValueContainer object should not be exposed
+comment|// publicly.
 name|this
 operator|.
 name|lock

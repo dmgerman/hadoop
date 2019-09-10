@@ -1336,6 +1336,8 @@ operator|.
 name|readLock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|List
 argument_list|<
 name|BlockData
@@ -1473,6 +1475,15 @@ block|}
 return|return
 name|result
 return|;
+block|}
+block|}
+finally|finally
+block|{
+name|container
+operator|.
+name|readUnlock
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Shutdown KeyValueContainerManager.    */

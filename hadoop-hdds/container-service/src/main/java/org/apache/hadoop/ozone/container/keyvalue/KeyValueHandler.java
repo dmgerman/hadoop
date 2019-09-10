@@ -4524,6 +4524,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|container
+operator|.
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
 comment|// Move the container to CLOSING state only if it's OPEN
 if|if
 condition|(
@@ -4549,6 +4556,15 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+finally|finally
+block|{
+name|container
+operator|.
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|markContainerUnhealthy (Container container)
@@ -4561,6 +4577,13 @@ name|container
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+name|container
+operator|.
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
 block|{
 if|if
 condition|(
@@ -4625,6 +4648,15 @@ expr_stmt|;
 block|}
 block|}
 block|}
+finally|finally
+block|{
+name|container
+operator|.
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|quasiCloseContainer (Container container)
@@ -4637,6 +4669,13 @@ name|container
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+name|container
+operator|.
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
 block|{
 specifier|final
 name|State
@@ -4719,6 +4758,15 @@ name|container
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|container
+operator|.
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|closeContainer (Container container)
@@ -4731,6 +4779,13 @@ name|container
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+name|container
+operator|.
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
 block|{
 specifier|final
 name|State
@@ -4855,6 +4910,15 @@ argument_list|(
 name|container
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|container
+operator|.
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
