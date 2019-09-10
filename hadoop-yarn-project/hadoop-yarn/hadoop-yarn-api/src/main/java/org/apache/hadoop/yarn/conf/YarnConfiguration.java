@@ -12591,6 +12591,24 @@ name|DEFAULT_DISPLAY_APPS_FOR_LOGGED_IN_USER
 init|=
 literal|false
 decl_stmt|;
+DECL|field|FILTER_INVALID_XML_CHARS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FILTER_INVALID_XML_CHARS
+init|=
+literal|"yarn.webapp.filter-invalid-xml-chars"
+decl_stmt|;
+DECL|field|DEFAULT_FILTER_INVALID_XML_CHARS
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_FILTER_INVALID_XML_CHARS
+init|=
+literal|false
+decl_stmt|;
 comment|// RM and NM CSRF props
 DECL|field|REST_CSRF
 specifier|public

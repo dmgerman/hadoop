@@ -2282,6 +2282,22 @@ operator|.
 name|diagnostics
 return|;
 block|}
+DECL|method|setNote (String diagnosticsMsg)
+specifier|public
+name|void
+name|setNote
+parameter_list|(
+name|String
+name|diagnosticsMsg
+parameter_list|)
+block|{
+name|this
+operator|.
+name|diagnostics
+operator|=
+name|diagnosticsMsg
+expr_stmt|;
+block|}
 DECL|method|getFinalStatus ()
 specifier|public
 name|FinalApplicationStatus
