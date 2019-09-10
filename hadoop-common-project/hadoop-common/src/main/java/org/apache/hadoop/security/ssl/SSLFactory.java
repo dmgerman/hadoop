@@ -413,7 +413,7 @@ specifier|final
 name|String
 name|SSL_ENABLED_PROTOCOLS_DEFAULT
 init|=
-literal|"TLSv1.1,TLSv1.2"
+literal|"TLSv1.2"
 decl_stmt|;
 DECL|field|SSL_SERVER_NEED_CLIENT_AUTH
 specifier|public
