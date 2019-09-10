@@ -2521,7 +2521,7 @@ name|commit
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * See {@link CommitOperations#revertCommit(SinglePendingCommit)}.      * @param commit pending commit      * @throws IOException failure      */
+comment|/**      * See {@link CommitOperations#revertCommit(SinglePendingCommit, BulkOperationState)}.      * @param commit pending commit      * @throws IOException failure      */
 DECL|method|revertCommit (final SinglePendingCommit commit)
 specifier|public
 name|void
