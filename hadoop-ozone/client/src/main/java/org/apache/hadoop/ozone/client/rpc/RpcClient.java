@@ -1571,6 +1571,10 @@ name|this
 operator|.
 name|ozoneManagerClient
 operator|=
+name|TracingUtil
+operator|.
+name|createProxy
+argument_list|(
 operator|new
 name|OzoneManagerProtocolClientSideTranslatorPB
 argument_list|(
@@ -1584,6 +1588,13 @@ name|toString
 argument_list|()
 argument_list|,
 name|ugi
+argument_list|)
+argument_list|,
+name|OzoneManagerProtocol
+operator|.
+name|class
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 name|long
