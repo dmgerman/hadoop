@@ -511,6 +511,10 @@ decl_stmt|;
 if|if
 condition|(
 name|acls
+operator|!=
+literal|null
+operator|&&
+name|acls
 operator|.
 name|containsKey
 argument_list|(
