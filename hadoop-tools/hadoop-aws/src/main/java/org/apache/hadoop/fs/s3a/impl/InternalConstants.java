@@ -178,6 +178,16 @@ argument_list|)
 argument_list|)
 argument_list|)
 decl_stmt|;
+comment|/** 404 error code. */
+DECL|field|SC_404
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|SC_404
+init|=
+literal|404
+decl_stmt|;
 block|}
 end_class
 

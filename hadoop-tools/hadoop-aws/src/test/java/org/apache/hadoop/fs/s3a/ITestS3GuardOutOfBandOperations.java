@@ -496,6 +496,24 @@ name|s3a
 operator|.
 name|Constants
 operator|.
+name|AUTHORITATIVE_PATH
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|Constants
+operator|.
 name|DEFAULT_METADATASTORE_METADATA_TTL
 import|;
 end_import
@@ -1144,6 +1162,8 @@ argument_list|,
 name|METADATASTORE_AUTHORITATIVE
 argument_list|,
 name|METADATASTORE_METADATA_TTL
+argument_list|,
+name|AUTHORITATIVE_PATH
 argument_list|)
 expr_stmt|;
 name|config
@@ -1244,6 +1264,8 @@ argument_list|,
 name|config
 argument_list|,
 name|METADATASTORE_AUTHORITATIVE
+argument_list|,
+name|AUTHORITATIVE_PATH
 argument_list|)
 expr_stmt|;
 return|return

@@ -1732,6 +1732,46 @@ name|CHANGE_DETECT_REQUIRE_VERSION_DEFAULT
 init|=
 literal|true
 decl_stmt|;
+comment|/**    * Number of times to retry any repeatable S3 client request on failure,    * excluding throttling requests: {@value}.    */
+DECL|field|S3GUARD_CONSISTENCY_RETRY_LIMIT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|S3GUARD_CONSISTENCY_RETRY_LIMIT
+init|=
+literal|"fs.s3a.s3guard.consistency.retry.limit"
+decl_stmt|;
+comment|/**    * Default retry limit: {@value}.    */
+DECL|field|S3GUARD_CONSISTENCY_RETRY_LIMIT_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|S3GUARD_CONSISTENCY_RETRY_LIMIT_DEFAULT
+init|=
+literal|7
+decl_stmt|;
+comment|/**    * Initial retry interval: {@value}.    */
+DECL|field|S3GUARD_CONSISTENCY_RETRY_INTERVAL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|S3GUARD_CONSISTENCY_RETRY_INTERVAL
+init|=
+literal|"fs.s3a.s3guard.consistency.retry.interval"
+decl_stmt|;
+comment|/**    * Default initial retry interval: {@value}.    * The consistency retry probe uses exponential backoff, because    * each probe can cause the S3 load balancers to retain any 404 in    * its cache for longer. See HADOOP-16490.    */
+DECL|field|S3GUARD_CONSISTENCY_RETRY_INTERVAL_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|S3GUARD_CONSISTENCY_RETRY_INTERVAL_DEFAULT
+init|=
+literal|"2s"
+decl_stmt|;
 block|}
 end_class
 

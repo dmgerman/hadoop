@@ -2145,10 +2145,12 @@ block|{
 name|FileStatus
 name|fileStatus
 init|=
-name|fs
-operator|.
-name|getFileStatus
+name|verifyPathExists
 argument_list|(
+name|fs
+argument_list|,
+literal|"Expected to find a directory"
+argument_list|,
 name|path
 argument_list|)
 decl_stmt|;

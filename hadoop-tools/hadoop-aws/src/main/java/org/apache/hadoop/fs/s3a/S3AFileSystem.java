@@ -1152,6 +1152,24 @@ name|s3a
 operator|.
 name|impl
 operator|.
+name|StatusProbeEnum
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|impl
+operator|.
 name|StoreContext
 import|;
 end_import
@@ -2089,6 +2107,26 @@ operator|.
 name|S3ADelegationTokens
 operator|.
 name|hasDelegationTokenBinding
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|impl
+operator|.
+name|InternalConstants
+operator|.
+name|SC_404
 import|;
 end_import
 
@@ -5034,12 +5072,27 @@ literal|null
 decl_stmt|;
 try|try
 block|{
-comment|// get the status or throw an FNFE
+comment|// get the status or throw an FNFE.
+comment|// when overwriting, there is no need to look for any existing file,
+comment|// and attempting to do so can poison the load balancers with 404
+comment|// entries.
 name|status
 operator|=
-name|getFileStatus
+name|innerGetFileStatus
 argument_list|(
 name|path
+argument_list|,
+literal|false
+argument_list|,
+name|overwrite
+condition|?
+name|StatusProbeEnum
+operator|.
+name|DIRECTORIES
+else|:
+name|StatusProbeEnum
+operator|.
+name|ALL
 argument_list|)
 expr_stmt|;
 comment|// if the thread reaches here, there is something at the path
@@ -5537,6 +5590,10 @@ argument_list|(
 name|src
 argument_list|,
 literal|true
+argument_list|,
+name|StatusProbeEnum
+operator|.
+name|ALL
 argument_list|)
 decl_stmt|;
 if|if
@@ -5592,6 +5649,10 @@ argument_list|(
 name|dst
 argument_list|,
 literal|true
+argument_list|,
+name|StatusProbeEnum
+operator|.
+name|ALL
 argument_list|)
 expr_stmt|;
 comment|// if there is no destination entry, an exception is raised.
@@ -5746,6 +5807,10 @@ name|getParent
 argument_list|()
 argument_list|,
 literal|false
+argument_list|,
+name|StatusProbeEnum
+operator|.
+name|ALL
 argument_list|)
 decl_stmt|;
 if|if
@@ -6928,6 +6993,17 @@ block|{
 name|incrementStatistic
 argument_list|(
 name|OBJECT_METADATA_REQUESTS
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"HEAD {} with change tracker {}"
+argument_list|,
+name|key
+argument_list|,
+name|changeTracker
 argument_list|)
 expr_stmt|;
 if|if
@@ -8783,6 +8859,10 @@ argument_list|(
 name|f
 argument_list|,
 literal|true
+argument_list|,
+name|StatusProbeEnum
+operator|.
+name|ALL
 argument_list|)
 argument_list|,
 name|recursive
@@ -8902,7 +8982,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Create a fake directory if required.    * That is: it is not the root path and the path does not exist.    * Retry policy: retrying; untranslated.    * @param f path to create    * @throws IOException IO problem    * @throws AmazonClientException untranslated AWS client problem    */
+comment|/**    * Create a fake directory if required.    * That is: it is not the root path and the path does not exist.    * Retry policy: retrying; untranslated.    * @param f path to create    * @throws IOException IO problem    */
 annotation|@
 name|Retries
 operator|.
@@ -8928,6 +9008,9 @@ argument_list|(
 name|f
 argument_list|)
 decl_stmt|;
+comment|// we only make the LIST call; the codepaths to get here should not
+comment|// be reached if there is an empty dir marker -and if they do, it
+comment|// is mostly harmless to create a new one.
 if|if
 condition|(
 operator|!
@@ -8940,6 +9023,15 @@ operator|!
 name|s3Exists
 argument_list|(
 name|f
+argument_list|,
+name|EnumSet
+operator|.
+name|of
+argument_list|(
+name|StatusProbeEnum
+operator|.
+name|List
+argument_list|)
 argument_list|)
 condition|)
 block|{
@@ -8959,7 +9051,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Create a fake parent directory if required.    * That is: it parent is not the root path and does not yet exist.    * @param path whose parent is created if needed.    * @throws IOException IO problem    * @throws AmazonClientException untranslated AWS client problem    */
+comment|/**    * Create a fake parent directory if required.    * That is: it parent is not the root path and does not yet exist.    * @param path whose parent is created if needed.    * @throws IOException IO problem    */
 annotation|@
 name|Retries
 operator|.
@@ -9790,23 +9882,32 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|entryPoint
+argument_list|(
+name|INVOCATION_GET_FILE_STATUS
+argument_list|)
+expr_stmt|;
 return|return
 name|innerGetFileStatus
 argument_list|(
 name|f
 argument_list|,
 literal|false
+argument_list|,
+name|StatusProbeEnum
+operator|.
+name|ALL
 argument_list|)
 return|;
 block|}
-comment|/**    * Internal version of {@link #getFileStatus(Path)}.    * @param f The path we want information from    * @param needEmptyDirectoryFlag if true, implementation will calculate    *        a TRUE or FALSE value for {@link S3AFileStatus#isEmptyDirectory()}    * @return a S3AFileStatus object    * @throws FileNotFoundException when the path does not exist    * @throws IOException on other problems.    */
+comment|/**    * Get the status of a file or directory, first through S3Guard and then    * through S3.    * The S3 probes can leave 404 responses in the S3 load balancers; if    * a check is only needed for a directory, declaring this saves time and    * avoids creating one for the object.    * When only probing for directories, if an entry for a file is found in    * S3Guard it is returned, but checks for updated values are skipped.    * Internal version of {@link #getFileStatus(Path)}.    * @param f The path we want information from    * @param needEmptyDirectoryFlag if true, implementation will calculate    *        a TRUE or FALSE value for {@link S3AFileStatus#isEmptyDirectory()}    * @param probes probes to make    * @return a S3AFileStatus object    * @throws FileNotFoundException when the path does not exist    * @throws IOException on other problems.    */
 annotation|@
 name|VisibleForTesting
 annotation|@
 name|Retries
 operator|.
 name|RetryTranslated
-DECL|method|innerGetFileStatus (final Path f, boolean needEmptyDirectoryFlag)
+DECL|method|innerGetFileStatus (final Path f, final boolean needEmptyDirectoryFlag, final Set<StatusProbeEnum> probes)
 name|S3AFileStatus
 name|innerGetFileStatus
 parameter_list|(
@@ -9814,20 +9915,20 @@ specifier|final
 name|Path
 name|f
 parameter_list|,
+specifier|final
 name|boolean
 name|needEmptyDirectoryFlag
+parameter_list|,
+specifier|final
+name|Set
+argument_list|<
+name|StatusProbeEnum
+argument_list|>
+name|probes
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|entryPoint
-argument_list|(
-name|INVOCATION_GET_FILE_STATUS
-argument_list|)
-expr_stmt|;
-name|checkNotClosed
-argument_list|()
-expr_stmt|;
 specifier|final
 name|Path
 name|path
@@ -9941,7 +10042,7 @@ name|FileNotFoundException
 argument_list|(
 literal|"Path "
 operator|+
-name|f
+name|path
 operator|+
 literal|" is recorded as "
 operator|+
@@ -9962,7 +10063,7 @@ name|allowAuthoritative
 init|=
 name|allowAuthoritative
 argument_list|(
-name|f
+name|path
 argument_list|)
 decl_stmt|;
 if|if
@@ -9978,8 +10079,19 @@ argument_list|()
 operator|&&
 operator|!
 name|allowAuthoritative
+operator|&&
+name|probes
+operator|.
+name|contains
+argument_list|(
+name|StatusProbeEnum
+operator|.
+name|Head
+argument_list|)
 condition|)
 block|{
+comment|// a file has been found in a non-auth path and the caller has not said
+comment|// they only care about directories
 name|LOG
 operator|.
 name|debug
@@ -10013,6 +10125,8 @@ argument_list|(
 name|path
 argument_list|,
 name|key
+argument_list|,
+name|probes
 argument_list|,
 name|tombstones
 argument_list|)
@@ -10195,6 +10309,8 @@ name|path
 argument_list|,
 name|key
 argument_list|,
+name|probes
+argument_list|,
 name|tombstones
 argument_list|)
 expr_stmt|;
@@ -10255,6 +10371,10 @@ name|path
 argument_list|,
 name|key
 argument_list|,
+name|StatusProbeEnum
+operator|.
+name|ALL
+argument_list|,
 name|tombstones
 argument_list|)
 argument_list|,
@@ -10265,12 +10385,12 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Raw {@code getFileStatus} that talks direct to S3.    * Used to implement {@link #innerGetFileStatus(Path, boolean)},    * and for direct management of empty directory blobs.    * Retry policy: retry translated.    * @param path Qualified path    * @param key  Key string for the path    * @return Status    * @throws FileNotFoundException when the path does not exist    * @throws IOException on other problems.    */
+comment|/**    * Raw {@code getFileStatus} that talks direct to S3.    * Used to implement {@link #innerGetFileStatus(Path, boolean)},    * and for direct management of empty directory blobs.    * Retry policy: retry translated.    * @param path Qualified path    * @param key  Key string for the path    * @param probes probes to make    * @param tombstones tombstones to filter    * @return Status    * @throws FileNotFoundException when the path does not exist    * @throws IOException on other problems.    */
 annotation|@
 name|Retries
 operator|.
 name|RetryTranslated
-DECL|method|s3GetFileStatus (final Path path, String key, Set<Path> tombstones)
+DECL|method|s3GetFileStatus (final Path path, String key, final Set<StatusProbeEnum> probes, final Set<Path> tombstones)
 specifier|private
 name|S3AFileStatus
 name|s3GetFileStatus
@@ -10282,6 +10402,14 @@ parameter_list|,
 name|String
 name|key
 parameter_list|,
+specifier|final
+name|Set
+argument_list|<
+name|StatusProbeEnum
+argument_list|>
+name|probes
+parameter_list|,
+specifier|final
 name|Set
 argument_list|<
 name|Path
@@ -10298,6 +10426,15 @@ name|key
 operator|.
 name|isEmpty
 argument_list|()
+operator|&&
+name|probes
+operator|.
+name|contains
+argument_list|(
+name|StatusProbeEnum
+operator|.
+name|Head
+argument_list|)
 condition|)
 block|{
 try|try
@@ -10405,7 +10542,7 @@ operator|.
 name|getStatusCode
 argument_list|()
 operator|!=
-literal|404
+name|SC_404
 condition|)
 block|{
 throw|throw
@@ -10437,7 +10574,7 @@ name|e
 argument_list|)
 throw|;
 block|}
-comment|// Necessary?
+comment|// Look for the dir marker
 if|if
 condition|(
 operator|!
@@ -10446,6 +10583,15 @@ operator|.
 name|endsWith
 argument_list|(
 literal|"/"
+argument_list|)
+operator|&&
+name|probes
+operator|.
+name|contains
+argument_list|(
+name|StatusProbeEnum
+operator|.
+name|DirMarker
 argument_list|)
 condition|)
 block|{
@@ -10563,7 +10709,7 @@ operator|.
 name|getStatusCode
 argument_list|()
 operator|!=
-literal|404
+name|SC_404
 condition|)
 block|{
 throw|throw
@@ -10597,6 +10743,19 @@ throw|;
 block|}
 block|}
 block|}
+comment|// execute the list
+if|if
+condition|(
+name|probes
+operator|.
+name|contains
+argument_list|(
+name|StatusProbeEnum
+operator|.
+name|List
+argument_list|)
+condition|)
+block|{
 try|try
 block|{
 name|key
@@ -10795,7 +10954,7 @@ operator|.
 name|getStatusCode
 argument_list|()
 operator|!=
-literal|404
+name|SC_404
 condition|)
 block|{
 throw|throw
@@ -10826,6 +10985,7 @@ argument_list|,
 name|e
 argument_list|)
 throw|;
+block|}
 block|}
 name|LOG
 operator|.
@@ -10992,31 +11152,30 @@ name|tombstones
 argument_list|)
 return|;
 block|}
-comment|/**    * Raw version of {@link FileSystem#exists(Path)} which uses S3 only:    * S3Guard MetadataStore, if any, will be skipped.    * Retry policy: retrying; translated.    * @return true if path exists in S3    * @throws IOException IO failure    */
+comment|/**    * Raw version of {@link FileSystem#exists(Path)} which uses S3 only:    * S3Guard MetadataStore, if any, will be skipped.    * Retry policy: retrying; translated.    * @param path qualified path to look for    * @param probes probes to make    * @return true if path exists in S3    * @throws IOException IO failure    */
 annotation|@
 name|Retries
 operator|.
 name|RetryTranslated
-DECL|method|s3Exists (final Path f)
+DECL|method|s3Exists (final Path path, final Set<StatusProbeEnum> probes)
 specifier|private
 name|boolean
 name|s3Exists
 parameter_list|(
 specifier|final
 name|Path
-name|f
+name|path
+parameter_list|,
+specifier|final
+name|Set
+argument_list|<
+name|StatusProbeEnum
+argument_list|>
+name|probes
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|Path
-name|path
-init|=
-name|qualify
-argument_list|(
-name|f
-argument_list|)
-decl_stmt|;
 name|String
 name|key
 init|=
@@ -11032,6 +11191,8 @@ argument_list|(
 name|path
 argument_list|,
 name|key
+argument_list|,
+name|probes
 argument_list|,
 literal|null
 argument_list|)
@@ -12055,7 +12216,11 @@ argument_list|()
 decl_stmt|;
 name|ObjectMetadata
 name|srcom
-init|=
+decl_stmt|;
+try|try
+block|{
+name|srcom
+operator|=
 name|once
 argument_list|(
 name|action
@@ -12075,7 +12240,67 @@ argument_list|,
 literal|"copy"
 argument_list|)
 argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|e
+parameter_list|)
+block|{
+comment|// if rename fails at this point it means that the expected file was not
+comment|// found.
+comment|// The cause is believed to always be one of
+comment|//  - File was deleted since LIST/S3Guard metastore.list.() knew of it.
+comment|//  - S3Guard is asking for a specific version and it's been removed by
+comment|//    lifecycle rules.
+comment|//  - there's a 404 cached in the S3 load balancers.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"getObjectMetadata({}) failed to find an expected file"
+argument_list|,
+name|srcKey
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+comment|// We create an exception, but the text depends on the S3Guard state
+name|String
+name|message
+init|=
+name|hasMetadataStore
+argument_list|()
+condition|?
+name|RemoteFileChangedException
+operator|.
+name|FILE_NEVER_FOUND
+else|:
+name|RemoteFileChangedException
+operator|.
+name|FILE_NOT_FOUND_SINGLE_ATTEMPT
 decl_stmt|;
+throw|throw
+operator|new
+name|RemoteFileChangedException
+argument_list|(
+name|keyToQualifiedPath
+argument_list|(
+name|srcKey
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|action
+argument_list|,
+name|message
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
 name|ObjectMetadata
 name|dstom
 init|=

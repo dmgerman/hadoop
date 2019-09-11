@@ -298,7 +298,7 @@ specifier|final
 name|String
 name|CHANGE_DETECTED
 init|=
-literal|"change detected  on client"
+literal|"change detected on client"
 decl_stmt|;
 DECL|field|mode
 specifier|private
@@ -827,6 +827,33 @@ block|}
 end_function
 
 begin_comment
+comment|/**    * String value for logging.    * @return source and mode.    */
+end_comment
+
+begin_function
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"Policy "
+operator|+
+name|getSource
+argument_list|()
+operator|+
+literal|"/"
+operator|+
+name|getMode
+argument_list|()
+return|;
+block|}
+end_function
+
+begin_comment
 comment|/**    * Pulls the attribute this policy uses to detect change out of the S3 object    * metadata.  The policy generically refers to this attribute as    * {@code revisionId}.    *    * @param objectMetadata the s3 object metadata    * @param uri the URI of the object    * @return the revisionId string as interpreted by this policy, or potentially    * null if the attribute is unavailable (such as when the policy says to use    * versionId but object versioning is not enabled for the bucket).    */
 end_comment
 
@@ -1243,6 +1270,16 @@ name|revisionId
 argument_list|)
 expr_stmt|;
 block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"No etag revision ID to use as a constraint"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -1282,6 +1319,16 @@ name|revisionId
 argument_list|)
 expr_stmt|;
 block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"No etag revision ID to use as a constraint"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -1297,7 +1344,13 @@ name|String
 name|revisionId
 parameter_list|)
 block|{
-comment|// GetObjectMetadataRequest doesn't support eTag qualification
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Unable to restrict HEAD request to etag; will check later"
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -1493,6 +1546,16 @@ name|revisionId
 argument_list|)
 expr_stmt|;
 block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"No version ID to use as a constraint"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -1532,6 +1595,16 @@ name|revisionId
 argument_list|)
 expr_stmt|;
 block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"No version ID to use as a constraint"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -1568,6 +1641,16 @@ operator|.
 name|withVersionId
 argument_list|(
 name|revisionId
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"No version ID to use as a constraint"
 argument_list|)
 expr_stmt|;
 block|}

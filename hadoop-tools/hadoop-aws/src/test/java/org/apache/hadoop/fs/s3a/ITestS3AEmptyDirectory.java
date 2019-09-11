@@ -52,6 +52,24 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|impl
+operator|.
+name|StatusProbeEnum
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Test
@@ -302,7 +320,10 @@ argument_list|(
 name|p
 argument_list|,
 literal|true
-comment|/* want isEmptyDirectory value */
+argument_list|,
+name|StatusProbeEnum
+operator|.
+name|ALL
 argument_list|)
 return|;
 block|}

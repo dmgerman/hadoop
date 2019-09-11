@@ -1387,6 +1387,18 @@ name|CommandInterruptException
 argument_list|()
 throw|;
 block|}
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"{} failure"
+argument_list|,
+name|getName
+argument_list|()
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 name|String
 name|errorMessage
 init|=

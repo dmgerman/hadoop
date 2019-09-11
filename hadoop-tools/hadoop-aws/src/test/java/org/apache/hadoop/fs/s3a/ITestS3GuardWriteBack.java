@@ -565,6 +565,13 @@ argument_list|,
 name|authoritativeMeta
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|unset
+argument_list|(
+name|AUTHORITATIVE_PATH
+argument_list|)
+expr_stmt|;
 name|S3AUtils
 operator|.
 name|setBucketOption

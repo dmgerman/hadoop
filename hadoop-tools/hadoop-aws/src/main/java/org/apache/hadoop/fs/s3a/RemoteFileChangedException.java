@@ -61,7 +61,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Indicates the S3 object is out of sync with the expected version.  Thrown in  * cases such as when the object is updated while an {@link S3AInputStream} is  * open.  */
+comment|/**  * Indicates the S3 object is out of sync with the expected version.  Thrown in  * cases such as when the object is updated while an {@link S3AInputStream} is  * open, or when a file expected was never found.  */
 end_comment
 
 begin_class
@@ -93,6 +93,26 @@ name|String
 name|PRECONDITIONS_FAILED
 init|=
 literal|"Constraints of request were unsatisfiable"
+decl_stmt|;
+comment|/**    * While trying to get information on a file known to S3Guard, the    * file never became visible in S3.    */
+DECL|field|FILE_NEVER_FOUND
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FILE_NEVER_FOUND
+init|=
+literal|"File to rename not found on guarded S3 store after repeated attempts"
+decl_stmt|;
+comment|/**    * The file wasn't found in rename after a single attempt -the unguarded    * codepath.    */
+DECL|field|FILE_NOT_FOUND_SINGLE_ATTEMPT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FILE_NOT_FOUND_SINGLE_ATTEMPT
+init|=
+literal|"File to rename not found on unguarded S3 store"
 decl_stmt|;
 comment|/**    * Constructs a RemoteFileChangedException.    *    * @param path the path accessed when the change was detected    * @param operation the operation (e.g. open, re-open) performed when the    * change was detected    * @param message a message providing more details about the condition    */
 DECL|method|RemoteFileChangedException (String path, String operation, String message)

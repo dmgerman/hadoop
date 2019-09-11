@@ -176,6 +176,26 @@ begin_import
 import|import
 name|org
 operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|apache
 operator|.
 name|hadoop
@@ -332,6 +352,28 @@ name|S3ARetryPolicy
 implements|implements
 name|RetryPolicy
 block|{
+DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
+name|Logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|S3ARetryPolicy
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+DECL|field|configuration
+specifier|private
+specifier|final
+name|Configuration
+name|configuration
+decl_stmt|;
 comment|/** Final retry policy we end up with. */
 DECL|field|retryPolicy
 specifier|private
@@ -340,14 +382,14 @@ name|RetryPolicy
 name|retryPolicy
 decl_stmt|;
 comment|// Retry policies for mapping exceptions to
-comment|/** Base policy from configuration. */
-DECL|field|fixedRetries
+comment|/** Exponential policy for the base of normal failures. */
+DECL|field|baseExponentialRetry
 specifier|protected
 specifier|final
 name|RetryPolicy
-name|fixedRetries
+name|baseExponentialRetry
 decl_stmt|;
-comment|/** Rejection of all non-idempotent calls except specific failures. */
+comment|/** Idempotent calls which raise IOEs are retried.    *  */
 DECL|field|retryIdempotentCalls
 specifier|protected
 specifier|final
@@ -372,7 +414,7 @@ name|RetryPolicies
 operator|.
 name|TRY_ONCE_THEN_FAIL
 decl_stmt|;
-comment|/** Client connectivity: fixed retries without care for idempotency. */
+comment|/**    * Client connectivity: baseExponentialRetry without worrying about whether    * or not the command is idempotent.    */
 DECL|field|connectivityFailure
 specifier|protected
 specifier|final
@@ -399,11 +441,16 @@ argument_list|,
 literal|"Null configuration"
 argument_list|)
 expr_stmt|;
-comment|// base policy from configuration
-name|fixedRetries
+name|this
+operator|.
+name|configuration
 operator|=
-name|exponentialBackoffRetry
-argument_list|(
+name|conf
+expr_stmt|;
+comment|// base policy from configuration
+name|int
+name|limit
+init|=
 name|conf
 operator|.
 name|getInt
@@ -412,7 +459,10 @@ name|RETRY_LIMIT
 argument_list|,
 name|RETRY_LIMIT_DEFAULT
 argument_list|)
-argument_list|,
+decl_stmt|;
+name|long
+name|interval
+init|=
 name|conf
 operator|.
 name|getTimeDuration
@@ -425,14 +475,36 @@ name|TimeUnit
 operator|.
 name|MILLISECONDS
 argument_list|)
+decl_stmt|;
+name|baseExponentialRetry
+operator|=
+name|exponentialBackoffRetry
+argument_list|(
+name|limit
+argument_list|,
+name|interval
 argument_list|,
 name|TimeUnit
 operator|.
 name|MILLISECONDS
 argument_list|)
 expr_stmt|;
-comment|// which is wrapped by a rejection of all non-idempotent calls except
-comment|// for specific failures.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Retrying on recoverable AWS failures {} times with an"
+operator|+
+literal|" initial interval of {}ms"
+argument_list|,
+name|limit
+argument_list|,
+name|interval
+argument_list|)
+expr_stmt|;
+comment|// which is wrapped by a rejection of failures of non-idempotent calls
+comment|// except for specific exceptions considered recoverable.
+comment|// idempotent calls are retried on IOEs but not other exceptions
 name|retryIdempotentCalls
 operator|=
 operator|new
@@ -441,7 +513,7 @@ argument_list|(
 operator|new
 name|IdempotencyRetryFilter
 argument_list|(
-name|fixedRetries
+name|baseExponentialRetry
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -458,7 +530,7 @@ expr_stmt|;
 comment|// client connectivity: fixed retries without care for idempotency
 name|connectivityFailure
 operator|=
-name|fixedRetries
+name|baseExponentialRetry
 expr_stmt|;
 name|Map
 argument_list|<
@@ -923,6 +995,17 @@ name|failovers
 argument_list|,
 name|idempotent
 argument_list|)
+return|;
+block|}
+comment|/**    * Get the configuration this policy was created from.    * @return the configuration.    */
+DECL|method|getConfiguration ()
+specifier|protected
+name|Configuration
+name|getConfiguration
+parameter_list|()
+block|{
+return|return
+name|configuration
 return|;
 block|}
 comment|/**    * Policy which fails fast any non-idempotent call; hands off    * all idempotent calls to the next retry policy.    */

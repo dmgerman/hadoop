@@ -453,7 +453,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Revision ID for object at {}: {}"
+literal|"Tracker {} has revision ID for object at {}: {}"
+argument_list|,
+name|policy
 argument_list|,
 name|uri
 argument_list|,
@@ -1112,11 +1114,6 @@ literal|"ChangeTracker{"
 argument_list|)
 decl_stmt|;
 name|sb
-operator|.
-name|append
-argument_list|(
-literal|"changeDetectionPolicy="
-argument_list|)
 operator|.
 name|append
 argument_list|(
