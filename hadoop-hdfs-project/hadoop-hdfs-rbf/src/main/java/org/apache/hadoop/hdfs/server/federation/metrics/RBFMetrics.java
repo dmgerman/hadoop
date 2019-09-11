@@ -3612,7 +3612,7 @@ name|this
 operator|.
 name|router
 operator|.
-name|getHttpServerAddress
+name|getRpcServerAddress
 argument_list|()
 decl_stmt|;
 if|if
