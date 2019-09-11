@@ -365,6 +365,8 @@ parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|AuthenticationMethod
 name|authMethodConfigured
@@ -404,6 +406,23 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|this
+operator|.
+name|dtSecretManager
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Failed to create SecretManager"
+argument_list|)
+throw|;
+block|}
 block|}
 block|}
 annotation|@
