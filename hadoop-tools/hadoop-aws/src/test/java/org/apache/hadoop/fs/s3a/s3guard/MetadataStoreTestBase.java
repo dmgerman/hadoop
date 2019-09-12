@@ -6020,7 +6020,8 @@ argument_list|)
 return|;
 block|}
 DECL|method|basicFileStatus (int size, boolean isDir, long blockSize, long modificationTime, Path path)
-specifier|protected
+specifier|public
+specifier|static
 name|S3AFileStatus
 name|basicFileStatus
 parameter_list|(

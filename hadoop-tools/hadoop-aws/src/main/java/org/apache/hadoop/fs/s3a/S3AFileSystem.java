@@ -6617,6 +6617,7 @@ comment|/**    * Does the filesystem have an authoritative metadata store?    * 
 annotation|@
 name|VisibleForTesting
 DECL|method|hasAuthoritativeMetadataStore ()
+specifier|public
 name|boolean
 name|hasAuthoritativeMetadataStore
 parameter_list|()
