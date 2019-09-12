@@ -1575,6 +1575,11 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
+synchronized|synchronized
+init|(
+name|invalidateBlocks
+init|)
+block|{
 name|this
 operator|.
 name|invalidateBlocks
@@ -1582,6 +1587,7 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
+block|}
 name|this
 operator|.
 name|volumeFailures
