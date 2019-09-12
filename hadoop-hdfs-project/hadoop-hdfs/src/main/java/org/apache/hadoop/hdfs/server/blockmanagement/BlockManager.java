@@ -16321,18 +16321,12 @@ name|numCurrent
 operator|>
 name|expectedNum
 operator|||
-operator|(
-name|numCurrent
-operator|==
-name|expectedNum
-operator|&&
 name|num
 operator|.
 name|redundantInternalBlocks
 argument_list|()
 operator|>
 literal|0
-operator|)
 return|;
 block|}
 comment|/**    * Invalidate corrupt replicas.    *<p>    * This will remove the replicas from the block's location list,    * add them to {@link #invalidateBlocks} so that they could be further    * deleted from the respective data-nodes,    * and remove the block from corruptReplicasMap.    *<p>    * This method should be called when the block has sufficient    * number of live replicas.    *    * @param blk Block whose corrupt replicas need to be invalidated    */
