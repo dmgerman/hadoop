@@ -492,6 +492,26 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|OpportunisticContainersStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|utils
 operator|.
 name|BuilderUtils
@@ -1609,6 +1629,7 @@ name|responseId
 argument_list|)
 return|;
 block|}
+comment|/**    * Sends the heartbeat of the node.    * @param isHealthy whether node is healthy.    * @param resId response id.    * @return response of the heartbeat.    * @throws Exception    */
 DECL|method|nodeHeartbeat (Map<ApplicationId, List<ContainerStatus>> conts, boolean isHealthy, int resId)
 specifier|public
 name|NodeHeartbeatResponse
@@ -1688,6 +1709,7 @@ name|resId
 argument_list|)
 return|;
 block|}
+comment|/**    * Sends the heartbeat of the node.    * @param updatedStats containers with updated status.    * @param isHealthy whether node is healthy.    * @return response of the heartbeat.    * @throws Exception    */
 DECL|method|nodeHeartbeat ( List<ContainerStatus> updatedStats, boolean isHealthy)
 specifier|public
 name|NodeHeartbeatResponse
@@ -1724,7 +1746,44 @@ name|responseId
 argument_list|)
 return|;
 block|}
-DECL|method|nodeHeartbeat (List<ContainerStatus> updatedStats, List<Container> increasedConts, boolean isHealthy, int resId)
+comment|/**    * Sends the heartbeat of the node.    * @param oppContainersStatus opportunistic containers status.    * @param isHealthy whether node is healthy.    * @return response of the heartbeat.    * @throws Exception    */
+DECL|method|nodeHeartbeat ( OpportunisticContainersStatus oppContainersStatus, boolean isHealthy)
+specifier|public
+name|NodeHeartbeatResponse
+name|nodeHeartbeat
+parameter_list|(
+name|OpportunisticContainersStatus
+name|oppContainersStatus
+parameter_list|,
+name|boolean
+name|isHealthy
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+return|return
+name|nodeHeartbeat
+argument_list|(
+name|Collections
+operator|.
+name|emptyList
+argument_list|()
+argument_list|,
+name|Collections
+operator|.
+name|emptyList
+argument_list|()
+argument_list|,
+name|isHealthy
+argument_list|,
+name|responseId
+argument_list|,
+name|oppContainersStatus
+argument_list|)
+return|;
+block|}
+comment|/**    * Sends the heartbeat of the node.    * @param updatedStats containers with updated status.    * @param increasedConts containers whose resource has been increased.    * @param isHealthy whether node is healthy.    * @param resId response id.    * @return response of the heartbeat.    * @throws Exception    */
+DECL|method|nodeHeartbeat ( List<ContainerStatus> updatedStats, List<Container> increasedConts, boolean isHealthy, int resId)
 specifier|public
 name|NodeHeartbeatResponse
 name|nodeHeartbeat
@@ -1746,6 +1805,51 @@ name|isHealthy
 parameter_list|,
 name|int
 name|resId
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+return|return
+name|nodeHeartbeat
+argument_list|(
+name|updatedStats
+argument_list|,
+name|increasedConts
+argument_list|,
+name|isHealthy
+argument_list|,
+name|resId
+argument_list|,
+literal|null
+argument_list|)
+return|;
+block|}
+comment|/**    * Sends the heartbeat of the node.    * @param updatedStats containers with updated status.    * @param increasedConts containers whose resource has been increased.    * @param isHealthy whether node is healthy.    * @param resId response id.    * @param oppContainersStatus opportunistic containers status.    * @return response of the heartbeat.    * @throws Exception    */
+DECL|method|nodeHeartbeat (List<ContainerStatus> updatedStats, List<Container> increasedConts, boolean isHealthy, int resId, OpportunisticContainersStatus oppContainersStatus)
+specifier|public
+name|NodeHeartbeatResponse
+name|nodeHeartbeat
+parameter_list|(
+name|List
+argument_list|<
+name|ContainerStatus
+argument_list|>
+name|updatedStats
+parameter_list|,
+name|List
+argument_list|<
+name|Container
+argument_list|>
+name|increasedConts
+parameter_list|,
+name|boolean
+name|isHealthy
+parameter_list|,
+name|int
+name|resId
+parameter_list|,
+name|OpportunisticContainersStatus
+name|oppContainersStatus
 parameter_list|)
 throws|throws
 name|Exception
@@ -1883,6 +1987,13 @@ operator|.
 name|setIncreasedContainers
 argument_list|(
 name|increasedConts
+argument_list|)
+expr_stmt|;
+name|status
+operator|.
+name|setOpportunisticContainersStatus
+argument_list|(
+name|oppContainersStatus
 argument_list|)
 expr_stmt|;
 name|NodeHealthStatus
