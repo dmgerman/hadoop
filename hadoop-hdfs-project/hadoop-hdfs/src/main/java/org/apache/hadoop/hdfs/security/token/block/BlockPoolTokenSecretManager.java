@@ -48,7 +48,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
+name|Map
 import|;
 end_import
 
@@ -58,7 +58,9 @@ name|java
 operator|.
 name|util
 operator|.
-name|Map
+name|concurrent
+operator|.
+name|ConcurrentHashMap
 import|;
 end_import
 
@@ -187,18 +189,13 @@ argument_list|>
 name|map
 init|=
 operator|new
-name|HashMap
-argument_list|<
-name|String
-argument_list|,
-name|BlockTokenSecretManager
-argument_list|>
+name|ConcurrentHashMap
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|/**    * Add a block pool Id and corresponding {@link BlockTokenSecretManager} to map    * @param bpid block pool Id    * @param secretMgr {@link BlockTokenSecretManager}    */
 DECL|method|addBlockPool (String bpid, BlockTokenSecretManager secretMgr)
 specifier|public
-specifier|synchronized
 name|void
 name|addBlockPool
 parameter_list|(
@@ -223,7 +220,6 @@ annotation|@
 name|VisibleForTesting
 DECL|method|get (String bpid)
 specifier|public
-specifier|synchronized
 name|BlockTokenSecretManager
 name|get
 parameter_list|(
@@ -266,7 +262,6 @@ return|;
 block|}
 DECL|method|isBlockPoolRegistered (String bpid)
 specifier|public
-specifier|synchronized
 name|boolean
 name|isBlockPoolRegistered
 parameter_list|(
