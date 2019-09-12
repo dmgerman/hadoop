@@ -2493,6 +2493,14 @@ expr_stmt|;
 block|}
 else|else
 block|{
+if|if
+condition|(
+name|stat
+operator|.
+name|isDirectory
+argument_list|()
+condition|)
+block|{
 name|logsToScanCount
 operator|+=
 name|scanActiveLogs
@@ -2503,6 +2511,22 @@ name|getPath
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Ignoring unexpected file in active directory {}"
+argument_list|,
+name|stat
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 return|return
