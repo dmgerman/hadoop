@@ -5639,7 +5639,7 @@ specifier|final
 name|boolean
 name|DFS_IMAGE_PARALLEL_LOAD_DEFAULT
 init|=
-literal|true
+literal|false
 decl_stmt|;
 DECL|field|DFS_IMAGE_PARALLEL_TARGET_SECTIONS_KEY
 specifier|public
