@@ -50,7 +50,7 @@ name|hadoop
 operator|.
 name|conf
 operator|.
-name|Configuration
+name|StorageUnit
 import|;
 end_import
 
@@ -62,9 +62,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|conf
 operator|.
-name|StorageUnit
+name|OzoneConfiguration
 import|;
 end_import
 
@@ -960,7 +962,7 @@ decl_stmt|;
 DECL|field|conf
 specifier|private
 specifier|final
-name|Configuration
+name|OzoneConfiguration
 name|conf
 decl_stmt|;
 comment|// TODO: Remove the gids set when Ratis supports an api to query active
@@ -984,7 +986,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"parameternumber"
 argument_list|)
-DECL|method|XceiverServerRatis (DatanodeDetails dd, int port, ContainerDispatcher dispatcher, ContainerController containerController, StateContext context, GrpcTlsConfig tlsConfig, CertificateClient caClient, Configuration conf)
+DECL|method|XceiverServerRatis (DatanodeDetails dd, int port, ContainerDispatcher dispatcher, ContainerController containerController, StateContext context, GrpcTlsConfig tlsConfig, CertificateClient caClient, OzoneConfiguration conf)
 specifier|private
 name|XceiverServerRatis
 parameter_list|(
@@ -1009,7 +1011,7 @@ parameter_list|,
 name|CertificateClient
 name|caClient
 parameter_list|,
-name|Configuration
+name|OzoneConfiguration
 name|conf
 parameter_list|)
 throws|throws
@@ -1687,6 +1689,38 @@ argument_list|,
 name|purgeGap
 argument_list|)
 expr_stmt|;
+comment|//Set the number of Snapshots Retained.
+name|RatisServerConfiguration
+name|ratisServerConfiguration
+init|=
+name|conf
+operator|.
+name|getObject
+argument_list|(
+name|RatisServerConfiguration
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|int
+name|numSnapshotsRetained
+init|=
+name|ratisServerConfiguration
+operator|.
+name|getNumSnapshotsRetained
+argument_list|()
+decl_stmt|;
+name|RaftServerConfigKeys
+operator|.
+name|Snapshot
+operator|.
+name|setSnapshotRetentionPolicy
+argument_list|(
+name|properties
+argument_list|,
+name|numSnapshotsRetained
+argument_list|)
+expr_stmt|;
 return|return
 name|properties
 return|;
@@ -2284,7 +2318,7 @@ return|return
 name|rpc
 return|;
 block|}
-DECL|method|newXceiverServerRatis ( DatanodeDetails datanodeDetails, Configuration ozoneConf, ContainerDispatcher dispatcher, ContainerController containerController, CertificateClient caClient, StateContext context)
+DECL|method|newXceiverServerRatis ( DatanodeDetails datanodeDetails, OzoneConfiguration ozoneConf, ContainerDispatcher dispatcher, ContainerController containerController, CertificateClient caClient, StateContext context)
 specifier|public
 specifier|static
 name|XceiverServerRatis
@@ -2293,7 +2327,7 @@ parameter_list|(
 name|DatanodeDetails
 name|datanodeDetails
 parameter_list|,
-name|Configuration
+name|OzoneConfiguration
 name|ozoneConf
 parameter_list|,
 name|ContainerDispatcher
