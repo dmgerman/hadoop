@@ -2566,7 +2566,7 @@ literal|null
 expr_stmt|;
 block|}
 comment|/**    * Constructor for OM Protocol Client. This creates a {@link RetryProxy}    * over {@link OMFailoverProxyProvider} proxy. OMFailoverProxyProvider has    * one {@link OzoneManagerProtocolPB} proxy pointing to each OM node in the    * cluster.    */
-DECL|method|OzoneManagerProtocolClientSideTranslatorPB (OzoneConfiguration conf, String clientId, UserGroupInformation ugi)
+DECL|method|OzoneManagerProtocolClientSideTranslatorPB (OzoneConfiguration conf, String clientId, String omServiceId, UserGroupInformation ugi)
 specifier|public
 name|OzoneManagerProtocolClientSideTranslatorPB
 parameter_list|(
@@ -2575,6 +2575,9 @@ name|conf
 parameter_list|,
 name|String
 name|clientId
+parameter_list|,
+name|String
+name|omServiceId
 parameter_list|,
 name|UserGroupInformation
 name|ugi
@@ -2592,6 +2595,8 @@ argument_list|(
 name|conf
 argument_list|,
 name|ugi
+argument_list|,
+name|omServiceId
 argument_list|)
 expr_stmt|;
 name|int

@@ -1497,13 +1497,16 @@ specifier|final
 name|boolean
 name|topologyAwareReadEnabled
 decl_stmt|;
-comment|/**     * Creates RpcClient instance with the given configuration.     * @param conf     * @throws IOException     */
-DECL|method|RpcClient (Configuration conf)
+comment|/**     * Creates RpcClient instance with the given configuration.     * @param conf Configuration     * @param omServiceId OM HA Service ID, set this to null if not HA     * @throws IOException     */
+DECL|method|RpcClient (Configuration conf, String omServiceId)
 specifier|public
 name|RpcClient
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+name|String
+name|omServiceId
 parameter_list|)
 throws|throws
 name|IOException
@@ -1586,6 +1589,8 @@ name|clientId
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+name|omServiceId
 argument_list|,
 name|ugi
 argument_list|)

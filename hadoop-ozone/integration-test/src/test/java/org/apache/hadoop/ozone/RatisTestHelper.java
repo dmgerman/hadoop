@@ -458,6 +458,8 @@ operator|new
 name|RpcClient
 argument_list|(
 name|conf
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}

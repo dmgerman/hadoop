@@ -264,6 +264,20 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|OmUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|OzoneConfigKeys
 import|;
 end_import
@@ -739,6 +753,88 @@ name|hadoopConf
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|omHost
+operator|==
+literal|null
+operator|&&
+name|OmUtils
+operator|.
+name|isServiceIdsDefined
+argument_list|(
+name|conf
+argument_list|)
+condition|)
+block|{
+comment|// When the host name or service id isn't given
+comment|// but ozone.om.service.ids is defined, declare failure.
+comment|// This is a safety precaution that prevents the client from
+comment|// accidentally failing over to an unintended OM.
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Service ID or host name must not"
+operator|+
+literal|" be omitted when ozone.om.service.ids is defined."
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|omPort
+operator|!=
+operator|-
+literal|1
+condition|)
+block|{
+comment|// When the port number is specified, perform the following check
+if|if
+condition|(
+name|OmUtils
+operator|.
+name|isOmHAServiceId
+argument_list|(
+name|conf
+argument_list|,
+name|omHost
+argument_list|)
+condition|)
+block|{
+comment|// If omHost is a service id, it shouldn't use a port
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Port "
+operator|+
+name|omPort
+operator|+
+literal|" specified in URI but host '"
+operator|+
+name|omHost
+operator|+
+literal|"' is "
+operator|+
+literal|"a logical (HA) OzoneManager and does not use port information."
+argument_list|)
+throw|;
+block|}
+block|}
+else|else
+block|{
+comment|// When port number is not specified, read it from config
+name|omPort
+operator|=
+name|OmUtils
+operator|.
+name|getOmRpcPort
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
 name|SecurityConfig
 name|secConfig
 init|=
@@ -797,6 +893,35 @@ operator|.
 name|OZONE_REPLICATION_DEFAULT
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|OmUtils
+operator|.
+name|isOmHAServiceId
+argument_list|(
+name|conf
+argument_list|,
+name|omHost
+argument_list|)
+condition|)
+block|{
+comment|// omHost is listed as one of the service ids in the config,
+comment|// thus we should treat omHost as omServiceId
+name|this
+operator|.
+name|ozoneClient
+operator|=
+name|OzoneClientFactory
+operator|.
+name|getRpcClient
+argument_list|(
+name|omHost
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
 if|if
 condition|(
 name|StringUtils

@@ -90,6 +90,38 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|client
+operator|.
+name|OzoneClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|client
+operator|.
+name|OzoneClientFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|om
 operator|.
 name|OMConfigKeys
@@ -311,6 +343,11 @@ name|OzoneManager
 argument_list|>
 name|ozoneManagers
 decl_stmt|;
+DECL|field|omServiceId
+specifier|private
+name|String
+name|omServiceId
+decl_stmt|;
 comment|// Active OMs denote OMs which are up and running
 DECL|field|activeOMs
 specifier|private
@@ -360,7 +397,7 @@ literal|2000
 decl_stmt|;
 comment|// 2 seconds
 comment|/**    * Creates a new MiniOzoneCluster with OM HA.    *    * @throws IOException if there is an I/O error    */
-DECL|method|MiniOzoneHAClusterImpl ( OzoneConfiguration conf, Map<String, OzoneManager> omMap, List<OzoneManager> activeOMList, List<OzoneManager> inactiveOMList, StorageContainerManager scm, List<HddsDatanodeService> hddsDatanodes)
+DECL|method|MiniOzoneHAClusterImpl ( OzoneConfiguration conf, Map<String, OzoneManager> omMap, List<OzoneManager> activeOMList, List<OzoneManager> inactiveOMList, StorageContainerManager scm, List<HddsDatanodeService> hddsDatanodes, String omServiceId)
 specifier|private
 name|MiniOzoneHAClusterImpl
 parameter_list|(
@@ -395,6 +432,9 @@ argument_list|<
 name|HddsDatanodeService
 argument_list|>
 name|hddsDatanodes
+parameter_list|,
+name|String
+name|omServiceId
 parameter_list|)
 block|{
 name|super
@@ -438,6 +478,24 @@ name|inactiveOMs
 operator|=
 name|inactiveOMList
 expr_stmt|;
+name|this
+operator|.
+name|omServiceId
+operator|=
+name|omServiceId
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getServiceId ()
+specifier|public
+name|String
+name|getServiceId
+parameter_list|()
+block|{
+return|return
+name|omServiceId
+return|;
 block|}
 comment|/**    * Returns the first OzoneManager from the list.    * @return    */
 annotation|@
@@ -456,6 +514,29 @@ operator|.
 name|get
 argument_list|(
 literal|0
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getRpcClient ()
+specifier|public
+name|OzoneClient
+name|getRpcClient
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|OzoneClientFactory
+operator|.
+name|getRpcClient
+argument_list|(
+name|getServiceId
+argument_list|()
+argument_list|,
+name|getConf
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -893,6 +974,8 @@ argument_list|,
 name|scm
 argument_list|,
 name|hddsDatanodes
+argument_list|,
+name|omServiceId
 argument_list|)
 decl_stmt|;
 if|if

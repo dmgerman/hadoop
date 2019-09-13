@@ -928,6 +928,8 @@ operator|.
 name|toString
 argument_list|()
 argument_list|,
+literal|null
+argument_list|,
 name|ugi
 argument_list|)
 expr_stmt|;

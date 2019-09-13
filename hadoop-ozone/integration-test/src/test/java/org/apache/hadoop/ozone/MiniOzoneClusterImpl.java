@@ -876,6 +876,17 @@ return|return
 name|conf
 return|;
 block|}
+DECL|method|getServiceId ()
+specifier|public
+name|String
+name|getServiceId
+parameter_list|()
+block|{
+comment|// Non-HA cluster doesn't have OM Service Id.
+return|return
+literal|null
+return|;
+block|}
 comment|/**    * Waits for the Ozone cluster to be ready for processing requests.    */
 annotation|@
 name|Override

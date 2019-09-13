@@ -335,6 +335,12 @@ name|TimeoutException
 throws|,
 name|InterruptedException
 function_decl|;
+comment|/**    * Returns OzoneManager Service ID.    *    * @return Service ID String    */
+DECL|method|getServiceId ()
+name|String
+name|getServiceId
+parameter_list|()
+function_decl|;
 comment|/**    * Returns {@link StorageContainerManager} associated with this    * {@link MiniOzoneCluster} instance.    *    * @return {@link StorageContainerManager} instance    */
 DECL|method|getStorageContainerManager ()
 name|StorageContainerManager

@@ -743,6 +743,23 @@ operator|.
 name|getAuthority
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|authority
+operator|==
+literal|null
+condition|)
+block|{
+comment|// authority is null when fs.defaultFS is not a qualified o3fs URI and
+comment|// o3fs:/// is passed to the client. matcher will NPE if authority is null
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+name|URI_EXCEPTION_TEXT
+argument_list|)
+throw|;
+block|}
 name|Matcher
 name|matcher
 init|=
@@ -843,7 +860,7 @@ argument_list|(
 literal|":"
 argument_list|)
 decl_stmt|;
-comment|// Array length should be either 1(host) or 2(host:port)
+comment|// Array length should be either 1(hostname or service id) or 2(host:port)
 if|if
 condition|(
 name|parts
@@ -912,19 +929,6 @@ argument_list|)
 argument_list|)
 throw|;
 block|}
-block|}
-else|else
-block|{
-comment|// If port number is not specified, read it from config
-name|omPort
-operator|=
-name|OmUtils
-operator|.
-name|getOmRpcPort
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 try|try

@@ -286,6 +286,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashMap
 import|;
 end_import
@@ -325,24 +335,6 @@ operator|.
 name|OMConfigKeys
 operator|.
 name|OZONE_OM_ADDRESS_KEY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|om
-operator|.
-name|OMConfigKeys
-operator|.
-name|OZONE_OM_SERVICE_IDS_KEY
 import|;
 end_import
 
@@ -445,7 +437,13 @@ specifier|final
 name|Text
 name|delegationTokenService
 decl_stmt|;
-DECL|method|OMFailoverProxyProvider (OzoneConfiguration configuration, UserGroupInformation ugi)
+DECL|field|omServiceId
+specifier|private
+specifier|final
+name|String
+name|omServiceId
+decl_stmt|;
+DECL|method|OMFailoverProxyProvider (OzoneConfiguration configuration, UserGroupInformation ugi, String omServiceId)
 specifier|public
 name|OMFailoverProxyProvider
 parameter_list|(
@@ -454,6 +452,9 @@ name|configuration
 parameter_list|,
 name|UserGroupInformation
 name|ugi
+parameter_list|,
+name|String
+name|omServiceId
 parameter_list|)
 throws|throws
 name|IOException
@@ -483,9 +484,19 @@ name|ugi
 operator|=
 name|ugi
 expr_stmt|;
+name|this
+operator|.
+name|omServiceId
+operator|=
+name|omServiceId
+expr_stmt|;
 name|loadOMClientConfigs
 argument_list|(
 name|conf
+argument_list|,
+name|this
+operator|.
+name|omServiceId
 argument_list|)
 expr_stmt|;
 name|this
@@ -509,13 +520,39 @@ name|currentProxyIndex
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|loadOMClientConfigs (Configuration config)
+DECL|method|OMFailoverProxyProvider (OzoneConfiguration configuration, UserGroupInformation ugi)
+specifier|public
+name|OMFailoverProxyProvider
+parameter_list|(
+name|OzoneConfiguration
+name|configuration
+parameter_list|,
+name|UserGroupInformation
+name|ugi
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|this
+argument_list|(
+name|configuration
+argument_list|,
+name|ugi
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|loadOMClientConfigs (Configuration config, String omSvcId)
 specifier|private
 name|void
 name|loadOMClientConfigs
 parameter_list|(
 name|Configuration
 name|config
+parameter_list|,
+name|String
+name|omSvcId
 parameter_list|)
 throws|throws
 name|IOException
@@ -553,35 +590,13 @@ name|String
 argument_list|>
 name|omServiceIds
 init|=
-name|config
+name|Collections
 operator|.
-name|getTrimmedStringCollection
+name|singletonList
 argument_list|(
-name|OZONE_OM_SERVICE_IDS_KEY
+name|omSvcId
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|omServiceIds
-operator|.
-name|size
-argument_list|()
-operator|>
-literal|1
-condition|)
-block|{
-throw|throw
-operator|new
-name|IllegalArgumentException
-argument_list|(
-literal|"Multi-OM Services is not supported."
-operator|+
-literal|" Please configure only one OM Service ID in "
-operator|+
-name|OZONE_OM_SERVICE_IDS_KEY
-argument_list|)
-throw|;
-block|}
 for|for
 control|(
 name|String

@@ -359,6 +359,11 @@ specifier|private
 name|String
 name|scmId
 decl_stmt|;
+DECL|field|omServiceId
+specifier|private
+name|String
+name|omServiceId
+decl_stmt|;
 DECL|field|numOfOMs
 specifier|private
 name|int
@@ -446,6 +451,10 @@ operator|.
 name|toString
 argument_list|()
 expr_stmt|;
+name|omServiceId
+operator|=
+literal|"om-service-test1"
+expr_stmt|;
 name|conf
 operator|.
 name|setLong
@@ -519,6 +528,8 @@ name|OzoneClientFactory
 operator|.
 name|getRpcClient
 argument_list|(
+name|omServiceId
+argument_list|,
 name|conf
 argument_list|)
 operator|.
