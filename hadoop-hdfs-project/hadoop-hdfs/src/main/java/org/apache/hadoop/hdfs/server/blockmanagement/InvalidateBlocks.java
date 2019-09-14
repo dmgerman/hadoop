@@ -574,16 +574,6 @@ name|DatanodeInfo
 name|dn
 parameter_list|)
 block|{
-if|if
-condition|(
-name|nodeToBlocks
-operator|.
-name|containsKey
-argument_list|(
-name|dn
-argument_list|)
-condition|)
-block|{
 return|return
 name|nodeToBlocks
 operator|.
@@ -591,10 +581,6 @@ name|get
 argument_list|(
 name|dn
 argument_list|)
-return|;
-block|}
-return|return
-literal|null
 return|;
 block|}
 DECL|method|getECBlocksSet (final DatanodeInfo dn)
@@ -610,16 +596,6 @@ name|DatanodeInfo
 name|dn
 parameter_list|)
 block|{
-if|if
-condition|(
-name|nodeToECBlocks
-operator|.
-name|containsKey
-argument_list|(
-name|dn
-argument_list|)
-condition|)
-block|{
 return|return
 name|nodeToECBlocks
 operator|.
@@ -627,10 +603,6 @@ name|get
 argument_list|(
 name|dn
 argument_list|)
-return|;
-block|}
-return|return
-literal|null
 return|;
 block|}
 DECL|method|getBlocksSet (final DatanodeInfo dn, final Block block)
