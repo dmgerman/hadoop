@@ -3416,6 +3416,24 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Unexpected error when publishing entity {}"
+argument_list|,
+name|entity
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|class|ApplicationFinishPublishEvent
 specifier|private
