@@ -914,7 +914,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|300_000
+literal|500_000
 argument_list|)
 DECL|method|testDoubleBuffer ()
 specifier|public
@@ -2024,7 +2024,7 @@ block|}
 argument_list|,
 literal|300
 argument_list|,
-literal|40000
+literal|300000
 argument_list|)
 expr_stmt|;
 name|GenericTestUtils
@@ -2077,7 +2077,7 @@ block|}
 argument_list|,
 literal|300
 argument_list|,
-literal|40000
+literal|300000
 argument_list|)
 expr_stmt|;
 name|Assert
