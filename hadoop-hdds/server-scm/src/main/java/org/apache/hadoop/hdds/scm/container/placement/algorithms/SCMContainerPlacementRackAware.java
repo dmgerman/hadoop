@@ -1136,7 +1136,7 @@ name|MAX_RETRY
 decl_stmt|;
 name|List
 argument_list|<
-name|Node
+name|String
 argument_list|>
 name|excludedNodesForCapacity
 init|=
@@ -1152,6 +1152,11 @@ condition|(
 literal|true
 condition|)
 block|{
+name|metrics
+operator|.
+name|incrDatanodeChooseAttemptCount
+argument_list|()
+expr_stmt|;
 name|Node
 name|node
 init|=
@@ -1163,7 +1168,7 @@ name|NetConstants
 operator|.
 name|ROOT
 argument_list|,
-literal|null
+name|excludedNodesForCapacity
 argument_list|,
 name|excludedNodes
 argument_list|,
@@ -1172,11 +1177,6 @@ argument_list|,
 name|ancestorGen
 argument_list|)
 decl_stmt|;
-name|metrics
-operator|.
-name|incrDatanodeChooseAttemptCount
-argument_list|()
-expr_stmt|;
 if|if
 condition|(
 name|node
@@ -1189,7 +1189,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to find the datanode. excludedNodes:"
+literal|"Failed to find the datanode for container. excludedNodes:"
 operator|+
 operator|(
 name|excludedNodes
@@ -1262,7 +1262,7 @@ throw|throw
 operator|new
 name|SCMException
 argument_list|(
-literal|"No satisfied datanode to meet the "
+literal|"No satisfied datanode to meet the"
 operator|+
 literal|" excludedNodes and affinityNode constrains."
 argument_list|,
@@ -1285,9 +1285,9 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|warn
+name|debug
 argument_list|(
-literal|"Datanode {} is chosen. Required size is {}"
+literal|"Datanode {} is chosen for container. Required size is {}"
 argument_list|,
 name|node
 operator|.
@@ -1297,25 +1297,6 @@ argument_list|,
 name|sizeRequired
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|excludedNodes
-operator|!=
-literal|null
-operator|&&
-name|excludedNodesForCapacity
-operator|!=
-literal|null
-condition|)
-block|{
-name|excludedNodes
-operator|.
-name|removeAll
-argument_list|(
-name|excludedNodesForCapacity
-argument_list|)
-expr_stmt|;
-block|}
 name|metrics
 operator|.
 name|incrDatanodeChooseSuccessCount
@@ -1395,30 +1376,11 @@ operator|.
 name|add
 argument_list|(
 name|node
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|excludedNodes
-operator|==
-literal|null
-condition|)
-block|{
-name|excludedNodes
-operator|=
-name|excludedNodesForCapacity
-expr_stmt|;
-block|}
-else|else
-block|{
-name|excludedNodes
 operator|.
-name|add
-argument_list|(
-name|node
+name|getNetworkFullPath
+argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}

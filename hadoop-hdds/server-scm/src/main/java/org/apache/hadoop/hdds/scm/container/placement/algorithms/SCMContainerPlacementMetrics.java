@@ -240,7 +240,7 @@ name|info
 argument_list|(
 name|SOURCE_NAME
 argument_list|,
-literal|"SCM Placement Metrics"
+literal|"SCM Container Placement Metrics"
 argument_list|)
 decl_stmt|;
 DECL|field|registry
@@ -316,7 +316,7 @@ name|register
 argument_list|(
 name|SOURCE_NAME
 argument_list|,
-literal|"SCM Placement Metrics"
+literal|"SCM Container Placement Metrics"
 argument_list|,
 operator|new
 name|SCMContainerPlacementMetrics
@@ -333,15 +333,6 @@ name|long
 name|count
 parameter_list|)
 block|{
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"request + 1"
-argument_list|)
-expr_stmt|;
 name|this
 operator|.
 name|datanodeRequestCount
@@ -358,15 +349,6 @@ name|void
 name|incrDatanodeChooseSuccessCount
 parameter_list|()
 block|{
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"success + 1"
-argument_list|)
-expr_stmt|;
 name|this
 operator|.
 name|datanodeChooseSuccessCount
@@ -383,15 +365,6 @@ name|void
 name|incrDatanodeChooseFallbackCount
 parameter_list|()
 block|{
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"fallback + 1"
-argument_list|)
-expr_stmt|;
 name|this
 operator|.
 name|datanodeChooseFallbackCount
@@ -408,15 +381,6 @@ name|void
 name|incrDatanodeChooseAttemptCount
 parameter_list|()
 block|{
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"attempt + 1"
-argument_list|)
-expr_stmt|;
 name|this
 operator|.
 name|datanodeChooseAttemptCount

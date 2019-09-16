@@ -66,6 +66,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|collections
+operator|.
+name|CollectionUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -1187,17 +1201,34 @@ name|SCOPE_REVERSE_STR
 argument_list|)
 condition|)
 block|{
-return|return
-name|chooseRandom
+name|ArrayList
+argument_list|<
+name|String
+argument_list|>
+name|excludedScopes
+init|=
+operator|new
+name|ArrayList
+argument_list|()
+decl_stmt|;
+name|excludedScopes
+operator|.
+name|add
 argument_list|(
-name|ROOT
-argument_list|,
 name|scope
 operator|.
 name|substring
 argument_list|(
 literal|1
 argument_list|)
+argument_list|)
+expr_stmt|;
+return|return
+name|chooseRandom
+argument_list|(
+name|ROOT
+argument_list|,
+name|excludedScopes
 argument_list|,
 literal|null
 argument_list|,
@@ -1225,8 +1256,8 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Randomly choose a node in the scope, ano not in the exclude scope.    * @param scope range of nodes from which a node will be chosen. cannot start    *              with ~    * @param excludedScope the chosen node cannot be in this range. cannot    *                      starts with ~    * @return the chosen node    */
-DECL|method|chooseRandom (String scope, String excludedScope)
+comment|/**    * Randomly choose a node in the scope, ano not in the exclude scope.    * @param scope range of nodes from which a node will be chosen. cannot start    *              with ~    * @param excludedScopes the chosen node cannot be in these ranges. cannot    *                      starts with ~    * @return the chosen node    */
+DECL|method|chooseRandom (String scope, List<String> excludedScopes)
 specifier|public
 name|Node
 name|chooseRandom
@@ -1234,8 +1265,11 @@ parameter_list|(
 name|String
 name|scope
 parameter_list|,
+name|List
+argument_list|<
 name|String
-name|excludedScope
+argument_list|>
+name|excludedScopes
 parameter_list|)
 block|{
 return|return
@@ -1243,7 +1277,7 @@ name|chooseRandom
 argument_list|(
 name|scope
 argument_list|,
-name|excludedScope
+name|excludedScopes
 argument_list|,
 literal|null
 argument_list|,
@@ -1291,17 +1325,34 @@ name|SCOPE_REVERSE_STR
 argument_list|)
 condition|)
 block|{
-return|return
-name|chooseRandom
+name|ArrayList
+argument_list|<
+name|String
+argument_list|>
+name|excludedScopes
+init|=
+operator|new
+name|ArrayList
+argument_list|()
+decl_stmt|;
+name|excludedScopes
+operator|.
+name|add
 argument_list|(
-name|ROOT
-argument_list|,
 name|scope
 operator|.
 name|substring
 argument_list|(
 literal|1
 argument_list|)
+argument_list|)
+expr_stmt|;
+return|return
+name|chooseRandom
+argument_list|(
+name|ROOT
+argument_list|,
+name|excludedScopes
 argument_list|,
 name|excludedNodes
 argument_list|,
@@ -1370,17 +1421,34 @@ name|SCOPE_REVERSE_STR
 argument_list|)
 condition|)
 block|{
-return|return
-name|chooseRandom
+name|ArrayList
+argument_list|<
+name|String
+argument_list|>
+name|excludedScopes
+init|=
+operator|new
+name|ArrayList
+argument_list|()
+decl_stmt|;
+name|excludedScopes
+operator|.
+name|add
 argument_list|(
-name|ROOT
-argument_list|,
 name|scope
 operator|.
 name|substring
 argument_list|(
 literal|1
 argument_list|)
+argument_list|)
+expr_stmt|;
+return|return
+name|chooseRandom
+argument_list|(
+name|ROOT
+argument_list|,
+name|excludedScopes
 argument_list|,
 name|excludedNodes
 argument_list|,
@@ -1408,8 +1476,8 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Randomly choose a leaf node.    *    * @param scope range from which a node will be chosen, cannot start with ~    * @param excludedNodes nodes to be excluded    * @param excludedScope excluded node range. Cannot start with ~    * @param ancestorGen matters when excludeNodes is not null. It means the    * ancestor generation that's not allowed to share between chosen node and the    * excludedNodes. For example, if ancestorGen is 1, means chosen node    * cannot share the same parent with excludeNodes. If value is 2, cannot    * share the same grand parent, and so on. If ancestorGen is 0, then no    * effect.    *    * @return the chosen node    */
-DECL|method|chooseRandom (String scope, String excludedScope, Collection<Node> excludedNodes, int ancestorGen)
+comment|/**    * Randomly choose one leaf node from<i>scope</i>, share the same generation    * ancestor with<i>affinityNode</i>, and exclude nodes in    *<i>excludeScope</i> and<i>excludeNodes</i>.    *    * @param scope range of nodes from which a node will be chosen, cannot start    *              with ~    * @param excludedScopes ranges of nodes to be excluded, cannot start with ~    * @param excludedNodes nodes to be excluded    * @param affinityNode  when not null, the chosen node should share the same    *                     ancestor with this node at generation ancestorGen.    *                      Ignored when value is null    * @param ancestorGen If 0, then no same generation ancestor enforcement on    *                     both excludedNodes and affinityNode. If greater than 0,    *                     then apply to affinityNode(if not null), or apply to    *                     excludedNodes if affinityNode is null    * @return the chosen node    */
+DECL|method|chooseRandom (String scope, List<String> excludedScopes, Collection<Node> excludedNodes, Node affinityNode, int ancestorGen)
 specifier|public
 name|Node
 name|chooseRandom
@@ -1417,45 +1485,11 @@ parameter_list|(
 name|String
 name|scope
 parameter_list|,
-name|String
-name|excludedScope
-parameter_list|,
-name|Collection
+name|List
 argument_list|<
-name|Node
+name|String
 argument_list|>
-name|excludedNodes
-parameter_list|,
-name|int
-name|ancestorGen
-parameter_list|)
-block|{
-return|return
-name|chooseRandom
-argument_list|(
-name|scope
-argument_list|,
-name|excludedScope
-argument_list|,
-name|excludedNodes
-argument_list|,
-literal|null
-argument_list|,
-name|ancestorGen
-argument_list|)
-return|;
-block|}
-comment|/**    * Randomly choose one leaf node from<i>scope</i>, share the same generation    * ancestor with<i>affinityNode</i>, and exclude nodes in    *<i>excludeScope</i> and<i>excludeNodes</i>.    *    * @param scope range of nodes from which a node will be chosen, cannot start    *              with ~    * @param excludedScope range of nodes to be excluded, cannot start with ~    * @param excludedNodes nodes to be excluded    * @param affinityNode  when not null, the chosen node should share the same    *                     ancestor with this node at generation ancestorGen.    *                      Ignored when value is null    * @param ancestorGen If 0, then no same generation ancestor enforcement on    *                     both excludedNodes and affinityNode. If greater than 0,    *                     then apply to affinityNode(if not null), or apply to    *                     excludedNodes if affinityNode is null    * @return the chosen node    */
-DECL|method|chooseRandom (String scope, String excludedScope, Collection<Node> excludedNodes, Node affinityNode, int ancestorGen)
-specifier|public
-name|Node
-name|chooseRandom
-parameter_list|(
-name|String
-name|scope
-parameter_list|,
-name|String
-name|excludedScope
+name|excludedScopes
 parameter_list|,
 name|Collection
 argument_list|<
@@ -1487,9 +1521,9 @@ argument_list|(
 name|scope
 argument_list|)
 expr_stmt|;
-name|checkExcludedScope
+name|checkExcludedScopes
 argument_list|(
-name|excludedScope
+name|excludedScopes
 argument_list|)
 expr_stmt|;
 name|checkAffinityNode
@@ -1520,7 +1554,7 @@ argument_list|,
 operator|-
 literal|1
 argument_list|,
-name|excludedScope
+name|excludedScopes
 argument_list|,
 name|excludedNodes
 argument_list|,
@@ -1542,8 +1576,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Choose the leaf node at index<i>index</i> from<i>scope</i>, share the    * same generation ancestor with<i>affinityNode</i>, and exclude nodes in    *<i>excludeScope</i> and<i>excludeNodes</i>.    *    * @param leafIndex node index, exclude nodes in excludedScope and    *                  excludedNodes    * @param scope range of nodes from which a node will be chosen, cannot start    *              with ~    * @param excludedScope range of nodes to be excluded, cannot start with ~    * @param excludedNodes nodes to be excluded    * @param affinityNode  when not null, the chosen node should share the same    *                     ancestor with this node at generation ancestorGen.    *                      Ignored when value is null    * @param ancestorGen If 0, then no same generation ancestor enforcement on    *                     both excludedNodes and affinityNode. If greater than 0,    *                     then apply to affinityNode(if not null), or apply to    *                     excludedNodes if affinityNode is null    * @return the chosen node    * Example:    *    *                                /  --- root    *                              /  \    *                             /    \    *                            /      \    *                           /        \    *                         dc1         dc2    *                        / \         / \    *                       /   \       /   \    *                      /     \     /     \    *                    rack1 rack2  rack1  rack2    *                   / \     / \  / \     / \    *                 n1  n2  n3 n4 n5  n6  n7 n8    *    *   Input:    *   leafIndex = 1    *   excludedScope = /dc2    *   excludedNodes = {/dc1/rack1/n1}    *   affinityNode = /dc1/rack2/n2    *   ancestorGen = 2    *    *   Output:    *   node /dc1/rack2/n4    *    *   Explanation:    *   With affinityNode n2 and ancestorGen 2, it means we can only pick node    *   from subtree /dc1. LeafIndex 1, so we pick the 2nd available node n4.    *    */
-DECL|method|getNode (int leafIndex, String scope, String excludedScope, Collection<Node> excludedNodes, Node affinityNode, int ancestorGen)
+comment|/**    * Choose the leaf node at index<i>index</i> from<i>scope</i>, share the    * same generation ancestor with<i>affinityNode</i>, and exclude nodes in    *<i>excludeScope</i> and<i>excludeNodes</i>.    *    * @param leafIndex node index, exclude nodes in excludedScope and    *                  excludedNodes    * @param scope range of nodes from which a node will be chosen, cannot start    *              with ~    * @param excludedScopes ranges of nodes to be excluded, cannot start with ~    * @param excludedNodes nodes to be excluded    * @param affinityNode  when not null, the chosen node should share the same    *                     ancestor with this node at generation ancestorGen.    *                      Ignored when value is null    * @param ancestorGen If 0, then no same generation ancestor enforcement on    *                     both excludedNodes and affinityNode. If greater than 0,    *                     then apply to affinityNode(if not null), or apply to    *                     excludedNodes if affinityNode is null    * @return the chosen node    * Example:    *    *                                /  --- root    *                              /  \    *                             /    \    *                            /      \    *                           /        \    *                         dc1         dc2    *                        / \         / \    *                       /   \       /   \    *                      /     \     /     \    *                    rack1 rack2  rack1  rack2    *                   / \     / \  / \     / \    *                 n1  n2  n3 n4 n5  n6  n7 n8    *    *   Input:    *   leafIndex = 1    *   excludedScope = /dc2    *   excludedNodes = {/dc1/rack1/n1}    *   affinityNode = /dc1/rack2/n2    *   ancestorGen = 2    *    *   Output:    *   node /dc1/rack2/n4    *    *   Explanation:    *   With affinityNode n2 and ancestorGen 2, it means we can only pick node    *   from subtree /dc1. LeafIndex 1, so we pick the 2nd available node n4.    *    */
+DECL|method|getNode (int leafIndex, String scope, List<String> excludedScopes, Collection<Node> excludedNodes, Node affinityNode, int ancestorGen)
 specifier|public
 name|Node
 name|getNode
@@ -1554,8 +1588,11 @@ parameter_list|,
 name|String
 name|scope
 parameter_list|,
+name|List
+argument_list|<
 name|String
-name|excludedScope
+argument_list|>
+name|excludedScopes
 parameter_list|,
 name|Collection
 argument_list|<
@@ -1596,9 +1633,9 @@ argument_list|(
 name|scope
 argument_list|)
 expr_stmt|;
-name|checkExcludedScope
+name|checkExcludedScopes
 argument_list|(
-name|excludedScope
+name|excludedScopes
 argument_list|)
 expr_stmt|;
 name|checkAffinityNode
@@ -1628,7 +1665,7 @@ name|scope
 argument_list|,
 name|leafIndex
 argument_list|,
-name|excludedScope
+name|excludedScopes
 argument_list|,
 name|excludedNodes
 argument_list|,
@@ -1650,7 +1687,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|chooseNodeInternal (String scope, int leafIndex, String excludedScope, Collection<Node> excludedNodes, Node affinityNode, int ancestorGen)
+DECL|method|chooseNodeInternal (String scope, int leafIndex, List<String> excludedScopes, Collection<Node> excludedNodes, Node affinityNode, int ancestorGen)
 specifier|private
 name|Node
 name|chooseNodeInternal
@@ -1661,8 +1698,11 @@ parameter_list|,
 name|int
 name|leafIndex
 parameter_list|,
+name|List
+argument_list|<
 name|String
-name|excludedScope
+argument_list|>
+name|excludedScopes
 parameter_list|,
 name|Collection
 argument_list|<
@@ -1785,13 +1825,42 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
-comment|// check overlap of excludedScope and finalScope
+comment|// check overlap of excludedScopes and finalScope
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|mutableExcludedScopes
+init|=
+literal|null
+decl_stmt|;
 if|if
 condition|(
-name|excludedScope
+name|excludedScopes
 operator|!=
 literal|null
+operator|&&
+operator|!
+name|excludedScopes
+operator|.
+name|isEmpty
+argument_list|()
 condition|)
+block|{
+name|mutableExcludedScopes
+operator|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+expr_stmt|;
+for|for
+control|(
+name|String
+name|s
+range|:
+name|excludedScopes
+control|)
 block|{
 comment|// excludeScope covers finalScope
 if|if
@@ -1800,7 +1869,7 @@ name|finalScope
 operator|.
 name|startsWith
 argument_list|(
-name|excludedScope
+name|s
 argument_list|)
 condition|)
 block|{
@@ -1808,11 +1877,10 @@ return|return
 literal|null
 return|;
 block|}
-comment|// excludeScope and finalScope share nothing
+comment|// excludeScope and finalScope share nothing case
 if|if
 condition|(
-operator|!
-name|excludedScope
+name|s
 operator|.
 name|startsWith
 argument_list|(
@@ -1820,10 +1888,35 @@ name|finalScope
 argument_list|)
 condition|)
 block|{
-name|excludedScope
-operator|=
-literal|null
-expr_stmt|;
+if|if
+condition|(
+operator|!
+name|mutableExcludedScopes
+operator|.
+name|stream
+argument_list|()
+operator|.
+name|anyMatch
+argument_list|(
+name|e
+lambda|->
+name|s
+operator|.
+name|startsWith
+argument_list|(
+name|e
+argument_list|)
+argument_list|)
+condition|)
+block|{
+name|mutableExcludedScopes
+operator|.
+name|add
+argument_list|(
+name|s
+argument_list|)
+block|;           }
+block|}
 block|}
 block|}
 comment|// clone excludedNodes before remove duplicate in it
@@ -1835,6 +1928,7 @@ name|mutableExNodes
 init|=
 literal|null
 decl_stmt|;
+comment|// Remove duplicate in excludedNodes
 if|if
 condition|(
 name|excludedNodes
@@ -1842,7 +1936,6 @@ operator|!=
 literal|null
 condition|)
 block|{
-comment|// Remove duplicate in excludedNodes
 name|mutableExNodes
 operator|=
 name|excludedNodes
@@ -1862,9 +1955,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|// remove duplicate in mutableExNodes and excludedScope, given ancestorGen
-name|excludedScope
-operator|=
+comment|// remove duplicate in mutableExNodes and mutableExcludedScopes
 name|NetUtils
 operator|.
 name|removeDuplicate
@@ -1873,7 +1964,7 @@ name|this
 argument_list|,
 name|mutableExNodes
 argument_list|,
-name|excludedScope
+name|mutableExcludedScopes
 argument_list|,
 name|ancestorGen
 argument_list|)
@@ -1897,7 +1988,7 @@ operator|.
 name|getNetworkFullPath
 argument_list|()
 argument_list|,
-name|excludedScope
+name|mutableExcludedScopes
 argument_list|,
 name|mutableExNodes
 argument_list|,
@@ -1924,7 +2015,7 @@ operator|.
 name|getNetworkFullPath
 argument_list|()
 argument_list|,
-name|excludedScope
+name|excludedScopes
 argument_list|,
 name|excludedNodes
 argument_list|,
@@ -1982,7 +2073,7 @@ name|getLeaf
 argument_list|(
 name|nodeIndex
 argument_list|,
-name|excludedScope
+name|mutableExcludedScopes
 argument_list|,
 name|mutableExNodes
 argument_list|,
@@ -2017,7 +2108,7 @@ name|getLeaf
 argument_list|(
 name|nodeIndex
 argument_list|,
-name|excludedScope
+name|mutableExcludedScopes
 argument_list|,
 name|mutableExNodes
 argument_list|,
@@ -2053,7 +2144,7 @@ operator|.
 name|getNetworkFullPath
 argument_list|()
 argument_list|,
-name|excludedScope
+name|excludedScopes
 argument_list|,
 name|excludedNodes
 argument_list|)
@@ -2645,8 +2736,8 @@ return|return
 name|ret
 return|;
 block|}
-comment|/**    * Return the number of leaves in<i>scope</i> but not in    *<i>excludedNodes</i> and<i>excludeScope</i>.    * @param scope the scope    * @param excludedScope excluded scope    * @param mutableExcludedNodes a list of excluded nodes, content might be    *                            changed after the call    * @param ancestorGen same generation ancestor prohibit on excludedNodes    * @return number of available nodes    */
-DECL|method|getAvailableNodesCount (String scope, String excludedScope, Collection<Node> mutableExcludedNodes, int ancestorGen)
+comment|/**    * Return the number of leaves in<i>scope</i> but not in    *<i>excludedNodes</i> and<i>excludeScope</i>.    * @param scope the scope    * @param excludedScopes excluded scopes    * @param mutableExcludedNodes a list of excluded nodes, content might be    *                            changed after the call    * @param ancestorGen same generation ancestor prohibit on excludedNodes    * @return number of available nodes    */
+DECL|method|getAvailableNodesCount (String scope, List<String> excludedScopes, Collection<Node> mutableExcludedNodes, int ancestorGen)
 specifier|private
 name|int
 name|getAvailableNodesCount
@@ -2654,8 +2745,11 @@ parameter_list|(
 name|String
 name|scope
 parameter_list|,
+name|List
+argument_list|<
 name|String
-name|excludedScope
+argument_list|>
+name|excludedScopes
 parameter_list|,
 name|Collection
 argument_list|<
@@ -2755,10 +2849,18 @@ literal|0
 decl_stmt|;
 if|if
 condition|(
-name|excludedScope
+name|excludedScopes
 operator|!=
 literal|null
 condition|)
+block|{
+for|for
+control|(
+name|String
+name|excludedScope
+range|:
+name|excludedScopes
+control|)
 block|{
 name|Node
 name|excludedScopeNode
@@ -2807,6 +2909,7 @@ block|{
 return|return
 literal|0
 return|;
+block|}
 block|}
 block|}
 block|}
@@ -3085,29 +3188,47 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|checkExcludedScope (String excludedScope)
+DECL|method|checkExcludedScopes (List<String> excludedScopes)
 specifier|private
 name|void
-name|checkExcludedScope
+name|checkExcludedScopes
 parameter_list|(
+name|List
+argument_list|<
 name|String
-name|excludedScope
+argument_list|>
+name|excludedScopes
 parameter_list|)
 block|{
 if|if
 condition|(
-name|excludedScope
-operator|!=
-literal|null
-operator|&&
-operator|(
-name|excludedScope
+operator|!
+name|CollectionUtils
+operator|.
+name|isEmpty
+argument_list|(
+name|excludedScopes
+argument_list|)
+condition|)
+block|{
+name|excludedScopes
+operator|.
+name|stream
+argument_list|()
+operator|.
+name|forEach
+argument_list|(
+name|scope
+lambda|->
+block|{
+if|if
+condition|(
+name|scope
 operator|.
 name|startsWith
 argument_list|(
 name|SCOPE_REVERSE_STR
 argument_list|)
-operator|)
 condition|)
 block|{
 throw|throw
@@ -3116,13 +3237,17 @@ name|IllegalArgumentException
 argument_list|(
 literal|"excludedScope "
 operator|+
-name|excludedScope
+name|scope
 operator|+
 literal|" cannot start with "
 operator|+
 name|SCOPE_REVERSE_STR
 argument_list|)
 throw|;
+block|}
+block|}
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 DECL|method|checkAffinityNode (Node affinityNode)

@@ -189,16 +189,19 @@ name|String
 name|scope
 parameter_list|)
 function_decl|;
-comment|/**    * Randomly choose a node in the scope, ano not in the exclude scope.    * @param scope range of nodes from which a node will be chosen. cannot start    *              with ~    * @param excludedScope the chosen node cannot be in this range. cannot    *                      starts with ~    * @return the chosen node    */
-DECL|method|chooseRandom (String scope, String excludedScope)
+comment|/**    * Randomly choose a node in the scope, ano not in the exclude scope.    * @param scope range of nodes from which a node will be chosen. cannot start    *              with ~    * @param excludedScopes the chosen nodes cannot be in these ranges. cannot    *                      starts with ~    * @return the chosen node    */
+DECL|method|chooseRandom (String scope, List<String> excludedScopes)
 name|Node
 name|chooseRandom
 parameter_list|(
 name|String
 name|scope
 parameter_list|,
+name|List
+argument_list|<
 name|String
-name|excludedScope
+argument_list|>
+name|excludedScopes
 parameter_list|)
 function_decl|;
 comment|/**    * Randomly choose a leaf node from<i>scope</i>.    *    * If scope starts with ~, choose one from the all nodes except for the    * ones in<i>scope</i>; otherwise, choose nodes from<i>scope</i>.    * If excludedNodes is given, choose a node that's not in excludedNodes.    *    * @param scope range of nodes from which a node will be chosen    * @param excludedNodes nodes to be excluded    *    * @return the chosen node    */
@@ -234,37 +237,19 @@ name|int
 name|ancestorGen
 parameter_list|)
 function_decl|;
-comment|/**    * Randomly choose a leaf node.    *    * @param scope range from which a node will be chosen, cannot start with ~    * @param excludedNodes nodes to be excluded    * @param excludedScope excluded node range. Cannot start with ~    * @param ancestorGen matters when excludeNodes is not null. It means the    * ancestor generation that's not allowed to share between chosen node and the    * excludedNodes. For example, if ancestorGen is 1, means chosen node    * cannot share the same parent with excludeNodes. If value is 2, cannot    * share the same grand parent, and so on. If ancestorGen is 0, then no    * effect.    *    * @return the chosen node    */
-DECL|method|chooseRandom (String scope, String excludedScope, Collection<Node> excludedNodes, int ancestorGen)
+comment|/**    * Randomly choose one node from<i>scope</i>, share the same generation    * ancestor with<i>affinityNode</i>, and exclude nodes in    *<i>excludeScope</i> and<i>excludeNodes</i>.    *    * @param scope range of nodes from which a node will be chosen, cannot start    *              with ~    * @param excludedScopes ranges of nodes to be excluded, cannot start with ~    * @param excludedNodes nodes to be excluded    * @param affinityNode  when not null, the chosen node should share the same    *                     ancestor with this node at generation ancestorGen.    *                      Ignored when value is null    * @param ancestorGen If 0, then no same generation ancestor enforcement on    *                     both excludedNodes and affinityNode. If greater than 0,    *                     then apply to affinityNode(if not null), or apply to    *                     excludedNodes if affinityNode is null    * @return the chosen node    */
+DECL|method|chooseRandom (String scope, List<String> excludedScopes, Collection<Node> excludedNodes, Node affinityNode, int ancestorGen)
 name|Node
 name|chooseRandom
 parameter_list|(
 name|String
 name|scope
 parameter_list|,
-name|String
-name|excludedScope
-parameter_list|,
-name|Collection
+name|List
 argument_list|<
-name|Node
+name|String
 argument_list|>
-name|excludedNodes
-parameter_list|,
-name|int
-name|ancestorGen
-parameter_list|)
-function_decl|;
-comment|/**    * Randomly choose one node from<i>scope</i>, share the same generation    * ancestor with<i>affinityNode</i>, and exclude nodes in    *<i>excludeScope</i> and<i>excludeNodes</i>.    *    * @param scope range of nodes from which a node will be chosen, cannot start    *              with ~    * @param excludedScope range of nodes to be excluded, cannot start with ~    * @param excludedNodes nodes to be excluded    * @param affinityNode  when not null, the chosen node should share the same    *                     ancestor with this node at generation ancestorGen.    *                      Ignored when value is null    * @param ancestorGen If 0, then no same generation ancestor enforcement on    *                     both excludedNodes and affinityNode. If greater than 0,    *                     then apply to affinityNode(if not null), or apply to    *                     excludedNodes if affinityNode is null    * @return the chosen node    */
-DECL|method|chooseRandom (String scope, String excludedScope, Collection<Node> excludedNodes, Node affinityNode, int ancestorGen)
-name|Node
-name|chooseRandom
-parameter_list|(
-name|String
-name|scope
-parameter_list|,
-name|String
-name|excludedScope
+name|excludedScopes
 parameter_list|,
 name|Collection
 argument_list|<
@@ -279,8 +264,8 @@ name|int
 name|ancestorGen
 parameter_list|)
 function_decl|;
-comment|/**    * Choose the node at index<i>index</i> from<i>scope</i>, share the same    * generation ancestor with<i>affinityNode</i>, and exclude nodes in    *<i>excludeScope</i> and<i>excludeNodes</i>.    *    * @param leafIndex node index, exclude nodes in excludedScope and    *                  excludedNodes    * @param scope range of nodes from which a node will be chosen, cannot start    *              with ~    * @param excludedScope range of nodes to be excluded, cannot start with ~    * @param excludedNodes nodes to be excluded    * @param affinityNode  when not null, the chosen node should share the same    *                     ancestor with this node at generation ancestorGen.    *                      Ignored when value is null    * @param ancestorGen If 0, then no same generation ancestor enforcement on    *                     both excludedNodes and affinityNode. If greater than 0,    *                     then apply to affinityNode(if not null), or apply to    *                     excludedNodes if affinityNode is null    * @return the chosen node    */
-DECL|method|getNode (int leafIndex, String scope, String excludedScope, Collection<Node> excludedNodes, Node affinityNode, int ancestorGen)
+comment|/**    * Choose the node at index<i>index</i> from<i>scope</i>, share the same    * generation ancestor with<i>affinityNode</i>, and exclude nodes in    *<i>excludeScope</i> and<i>excludeNodes</i>.    *    * @param leafIndex node index, exclude nodes in excludedScope and    *                  excludedNodes    * @param scope range of nodes from which a node will be chosen, cannot start    *              with ~    * @param excludedScopes ranges of nodes to be excluded, cannot start with ~    * @param excludedNodes nodes to be excluded    * @param affinityNode  when not null, the chosen node should share the same    *                     ancestor with this node at generation ancestorGen.    *                      Ignored when value is null    * @param ancestorGen If 0, then no same generation ancestor enforcement on    *                     both excludedNodes and affinityNode. If greater than 0,    *                     then apply to affinityNode(if not null), or apply to    *                     excludedNodes if affinityNode is null    * @return the chosen node    */
+DECL|method|getNode (int leafIndex, String scope, List<String> excludedScopes, Collection<Node> excludedNodes, Node affinityNode, int ancestorGen)
 name|Node
 name|getNode
 parameter_list|(
@@ -290,8 +275,11 @@ parameter_list|,
 name|String
 name|scope
 parameter_list|,
+name|List
+argument_list|<
 name|String
-name|excludedScope
+argument_list|>
+name|excludedScopes
 parameter_list|,
 name|Collection
 argument_list|<

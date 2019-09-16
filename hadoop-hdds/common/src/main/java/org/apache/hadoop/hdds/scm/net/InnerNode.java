@@ -30,6 +30,16 @@ name|Collection
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
 begin_comment
 comment|/**  * The interface defines an inner node in a network topology.  * An inner node represents network topology entities, such as data center,  * rack, switch or logical group.  */
 end_comment
@@ -119,16 +129,19 @@ name|int
 name|leafIndex
 parameter_list|)
 function_decl|;
-comment|/**    * Get<i>leafIndex</i> leaf of this subtree.    *    * @param leafIndex ode's index, start from 0, skip the nodes in    *                  excludedScope and excludedNodes with ancestorGen    * @param excludedScope the excluded scope    * @param excludedNodes nodes to be excluded. If ancestorGen is not 0,    *                      the chosen node will not share same ancestor with    *                      those in excluded nodes at the specified generation    * @param ancestorGen ignored with value is 0    * @return the leaf node corresponding to the given index    */
-DECL|method|getLeaf (int leafIndex, String excludedScope, Collection<Node> excludedNodes, int ancestorGen)
+comment|/**    * Get<i>leafIndex</i> leaf of this subtree.    *    * @param leafIndex ode's index, start from 0, skip the nodes in    *                  excludedScope and excludedNodes with ancestorGen    * @param excludedScopes the excluded scopes    * @param excludedNodes nodes to be excluded. If ancestorGen is not 0,    *                      the chosen node will not share same ancestor with    *                      those in excluded nodes at the specified generation    * @param ancestorGen ignored with value is 0    * @return the leaf node corresponding to the given index    */
+DECL|method|getLeaf (int leafIndex, List<String> excludedScopes, Collection<Node> excludedNodes, int ancestorGen)
 name|Node
 name|getLeaf
 parameter_list|(
 name|int
 name|leafIndex
 parameter_list|,
+name|List
+argument_list|<
 name|String
-name|excludedScope
+argument_list|>
+name|excludedScopes
 parameter_list|,
 name|Collection
 argument_list|<
