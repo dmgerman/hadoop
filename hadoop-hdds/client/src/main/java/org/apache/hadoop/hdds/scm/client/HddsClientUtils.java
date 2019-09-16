@@ -166,7 +166,9 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|ScmConfigKeys
+name|XceiverClientManager
+operator|.
+name|ScmClientConfig
 import|;
 end_import
 
@@ -1482,18 +1484,22 @@ name|config
 parameter_list|)
 block|{
 return|return
-name|config
+name|OzoneConfiguration
 operator|.
-name|getInt
+name|of
 argument_list|(
-name|ScmConfigKeys
-operator|.
-name|SCM_CONTAINER_CLIENT_MAX_OUTSTANDING_REQUESTS
-argument_list|,
-name|ScmConfigKeys
-operator|.
-name|SCM_CONTAINER_CLIENT_MAX_OUTSTANDING_REQUESTS_DEFAULT
+name|config
 argument_list|)
+operator|.
+name|getObject
+argument_list|(
+name|ScmClientConfig
+operator|.
+name|class
+argument_list|)
+operator|.
+name|getMaxOutstandingRequests
+argument_list|()
 return|;
 block|}
 comment|/**    * Create a scm block client, used by putKey() and getKey().    *    * @return {@link ScmBlockLocationProtocol}    * @throws IOException    */
