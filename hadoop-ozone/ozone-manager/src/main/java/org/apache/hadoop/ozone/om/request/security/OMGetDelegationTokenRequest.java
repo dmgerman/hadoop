@@ -825,10 +825,15 @@ block|{
 name|OzoneTokenIdentifier
 name|ozoneTokenIdentifier
 init|=
+name|OzoneTokenIdentifier
+operator|.
+name|readProtoBuf
+argument_list|(
 name|ozoneTokenIdentifierToken
 operator|.
-name|decodeIdentifier
+name|getIdentifier
 argument_list|()
+argument_list|)
 decl_stmt|;
 comment|// Update in memory map of token.
 name|long
