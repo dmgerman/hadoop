@@ -525,13 +525,6 @@ name|Metric
 name|MutableCounterLong
 name|numBlockAllocateCallFails
 decl_stmt|;
-DECL|field|numAddAllocateBlockCallFails
-specifier|private
-annotation|@
-name|Metric
-name|MutableCounterLong
-name|numAddAllocateBlockCallFails
-decl_stmt|;
 DECL|field|numGetServiceListFails
 specifier|private
 annotation|@
@@ -560,12 +553,12 @@ name|Metric
 name|MutableCounterLong
 name|numCommitMultipartUploadParts
 decl_stmt|;
-DECL|field|getNumCommitMultipartUploadPartFails
+DECL|field|numCommitMultipartUploadPartFails
 specifier|private
 annotation|@
 name|Metric
 name|MutableCounterLong
-name|getNumCommitMultipartUploadPartFails
+name|numCommitMultipartUploadPartFails
 decl_stmt|;
 DECL|field|numCompleteMultipartUploadFails
 specifier|private
@@ -1344,7 +1337,7 @@ name|void
 name|incNumCommitMultipartUploadPartFails
 parameter_list|()
 block|{
-name|numInitiateMultipartUploadFails
+name|numCommitMultipartUploadPartFails
 operator|.
 name|incr
 argument_list|()
