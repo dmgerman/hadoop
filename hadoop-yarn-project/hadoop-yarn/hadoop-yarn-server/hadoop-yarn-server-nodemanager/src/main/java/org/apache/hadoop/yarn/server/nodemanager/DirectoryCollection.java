@@ -370,6 +370,20 @@ name|VisibleForTesting
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|ImmutableList
+import|;
+end_import
+
 begin_comment
 comment|/**  * Manages a list of local storage directories.  */
 end_comment
@@ -941,9 +955,9 @@ expr_stmt|;
 try|try
 block|{
 return|return
-name|Collections
+name|ImmutableList
 operator|.
-name|unmodifiableList
+name|copyOf
 argument_list|(
 name|localDirs
 argument_list|)
@@ -979,9 +993,9 @@ expr_stmt|;
 try|try
 block|{
 return|return
-name|Collections
+name|ImmutableList
 operator|.
-name|unmodifiableList
+name|copyOf
 argument_list|(
 name|DirectoryCollection
 operator|.
@@ -1024,9 +1038,9 @@ expr_stmt|;
 try|try
 block|{
 return|return
-name|Collections
+name|ImmutableList
 operator|.
-name|unmodifiableList
+name|copyOf
 argument_list|(
 name|fullDirs
 argument_list|)
