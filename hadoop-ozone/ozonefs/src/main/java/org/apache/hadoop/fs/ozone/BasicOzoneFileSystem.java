@@ -1933,11 +1933,27 @@ argument_list|,
 name|dst
 argument_list|)
 decl_stmt|;
-return|return
+name|boolean
+name|result
+init|=
 name|iterator
 operator|.
 name|iterate
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|result
+condition|)
+block|{
+name|createFakeParentDirectory
+argument_list|(
+name|src
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|result
 return|;
 block|}
 DECL|class|DeleteIterator
@@ -2307,6 +2323,28 @@ condition|)
 block|{
 comment|// If this delete operation removes all files/directories from the
 comment|// parent direcotry, then an empty parent directory must be created.
+name|createFakeParentDirectory
+argument_list|(
+name|f
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|result
+return|;
+block|}
+comment|/**    * Create a fake parent directory key if it does not already exist and no    * other child of this parent directory exists.    *    * @param f path to the fake parent directory    * @throws IOException    */
+DECL|method|createFakeParentDirectory (Path f)
+specifier|private
+name|void
+name|createFakeParentDirectory
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|Path
 name|parent
 init|=
@@ -2335,11 +2373,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-return|return
-name|result
-return|;
-block|}
-comment|/**    * Create a fake parent directory key if it does not already exist and no    * other child of this parent directory exists.    *    * @param f path to the fake parent directory    * @throws IOException    */
+comment|/**    * Create a fake directory key if it does not already exist.    *    * @param f path to the fake directory    * @throws IOException    */
 DECL|method|createFakeDirectoryIfNecessary (Path f)
 specifier|private
 name|void
