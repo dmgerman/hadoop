@@ -354,6 +354,22 @@ name|Test
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_DATA_WRITE_BANDWIDTHPERSEC_KEY
+import|;
+end_import
+
 begin_comment
 comment|/** Test transferring RBW between datanodes */
 end_comment
@@ -786,6 +802,20 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
+comment|// DataXceiverServer#writeThrottler is null if
+comment|// dfs.datanode.data.write.bandwidthPerSec default value is 0.
+name|Assert
+operator|.
+name|assertNull
+argument_list|(
+name|oldnode
+operator|.
+name|xserver
+operator|.
+name|getWriteThrottler
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|oldrbw
 operator|=
 name|getRbw
@@ -805,6 +835,19 @@ name|oldrbw
 argument_list|)
 expr_stmt|;
 comment|//add a datanode
+name|conf
+operator|.
+name|setLong
+argument_list|(
+name|DFS_DATANODE_DATA_WRITE_BANDWIDTHPERSEC_KEY
+argument_list|,
+literal|1024
+operator|*
+literal|1024
+operator|*
+literal|8
+argument_list|)
+expr_stmt|;
 name|cluster
 operator|.
 name|startDataNodes
@@ -830,6 +873,30 @@ operator|.
 name|get
 argument_list|(
 name|REPLICATION
+argument_list|)
+expr_stmt|;
+comment|// DataXceiverServer#writeThrottler#balancer is equal to
+comment|// dfs.datanode.data.write.bandwidthPerSec value if
+comment|// dfs.datanode.data.write.bandwidthPerSec value is not zero.
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|1024
+operator|*
+literal|1024
+operator|*
+literal|8
+argument_list|,
+name|newnode
+operator|.
+name|xserver
+operator|.
+name|getWriteThrottler
+argument_list|()
+operator|.
+name|getBandwidth
+argument_list|()
 argument_list|)
 expr_stmt|;
 specifier|final

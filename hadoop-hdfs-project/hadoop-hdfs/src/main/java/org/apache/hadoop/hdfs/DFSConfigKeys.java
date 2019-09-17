@@ -710,6 +710,25 @@ init|=
 literal|0
 decl_stmt|;
 comment|// A value of zero indicates no limit
+DECL|field|DFS_DATANODE_DATA_WRITE_BANDWIDTHPERSEC_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_DATANODE_DATA_WRITE_BANDWIDTHPERSEC_KEY
+init|=
+literal|"dfs.datanode.data.write.bandwidthPerSec"
+decl_stmt|;
+comment|// A value of zero indicates no limit
+DECL|field|DFS_DATANODE_DATA_WRITE_BANDWIDTHPERSEC_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DFS_DATANODE_DATA_WRITE_BANDWIDTHPERSEC_DEFAULT
+init|=
+literal|0
+decl_stmt|;
 annotation|@
 name|Deprecated
 DECL|field|DFS_DATANODE_READAHEAD_BYTES_KEY

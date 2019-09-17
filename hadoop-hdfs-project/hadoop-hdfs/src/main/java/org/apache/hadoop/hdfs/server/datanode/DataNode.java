@@ -476,6 +476,66 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|datatransfer
+operator|.
+name|BlockConstructionStage
+operator|.
+name|PIPELINE_SETUP_APPEND_RECOVERY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|datatransfer
+operator|.
+name|BlockConstructionStage
+operator|.
+name|PIPELINE_SETUP_CREATE
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|datatransfer
+operator|.
+name|BlockConstructionStage
+operator|.
+name|PIPELINE_SETUP_STREAMING_RECOVERY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|ExitUtil
@@ -12260,11 +12320,11 @@ specifier|final
 name|CachingStrategy
 name|cachingStrategy
 decl_stmt|;
-comment|/** Throttle to block replication when data transfers. */
-DECL|field|transferThrottler
+comment|/** Throttle to block replication when data transfers or writes. */
+DECL|field|throttler
 specifier|private
 name|DataTransferThrottler
-name|transferThrottler
+name|throttler
 decl_stmt|;
 comment|/**      * Connect to the first item in the target list.  Pass along the       * entire target list, the block, and the data.      */
 DECL|method|DataTransfer (DatanodeInfo targets[], StorageType[] targetStorageTypes, String[] targetStorageIds, ExtendedBlock b, BlockConstructionStage stage, final String clientname)
@@ -12437,32 +12497,42 @@ operator|.
 name|readaheadLength
 argument_list|)
 expr_stmt|;
-comment|// 1. the stage is PIPELINE_SETUP_CREATEï¼that is moving blocks, set
-comment|// throttler.
-comment|// 2. the stage is PIPELINE_SETUP_APPEND_RECOVERY or
-comment|// PIPELINE_SETUP_STREAMING_RECOVERY,
-comment|// that is writing and recovering pipeline, don't set throttle.
 if|if
 condition|(
+name|isTransfer
+argument_list|(
 name|stage
-operator|==
-name|BlockConstructionStage
-operator|.
-name|PIPELINE_SETUP_CREATE
-operator|&&
+argument_list|,
 name|clientname
-operator|.
-name|isEmpty
-argument_list|()
+argument_list|)
 condition|)
 block|{
 name|this
 operator|.
-name|transferThrottler
+name|throttler
 operator|=
 name|xserver
 operator|.
 name|getTransferThrottler
+argument_list|()
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|isWrite
+argument_list|(
+name|stage
+argument_list|)
+condition|)
+block|{
+name|this
+operator|.
+name|throttler
+operator|=
+name|xserver
+operator|.
+name|getWriteThrottler
 argument_list|()
 expr_stmt|;
 block|}
@@ -12846,7 +12916,7 @@ name|out
 argument_list|,
 name|unbufOut
 argument_list|,
-name|transferThrottler
+name|throttler
 argument_list|)
 expr_stmt|;
 comment|// no response necessary
@@ -17468,6 +17538,63 @@ return|return
 name|this
 operator|.
 name|diskBalancer
+return|;
+block|}
+comment|/**    * Construct DataTransfer in {@link DataNode#transferBlock}, the    * BlockConstructionStage is PIPELINE_SETUP_CREATE and clientName is "".    */
+DECL|method|isTransfer (BlockConstructionStage stage, String clientName)
+specifier|private
+specifier|static
+name|boolean
+name|isTransfer
+parameter_list|(
+name|BlockConstructionStage
+name|stage
+parameter_list|,
+name|String
+name|clientName
+parameter_list|)
+block|{
+if|if
+condition|(
+name|stage
+operator|==
+name|PIPELINE_SETUP_CREATE
+operator|&&
+name|clientName
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+return|return
+literal|false
+return|;
+block|}
+comment|/**    * Construct DataTransfer in    * {@link DataNode#transferReplicaForPipelineRecovery}.    *    * When recover pipeline, BlockConstructionStage is    * PIPELINE_SETUP_APPEND_RECOVERY,    * PIPELINE_SETUP_STREAMING_RECOVERY,PIPELINE_CLOSE_RECOVERY. If    * BlockConstructionStage is PIPELINE_CLOSE_RECOVERY, don't need transfer    * replica. So BlockConstructionStage is PIPELINE_SETUP_APPEND_RECOVERY,    * PIPELINE_SETUP_STREAMING_RECOVERY.    */
+DECL|method|isWrite (BlockConstructionStage stage)
+specifier|private
+specifier|static
+name|boolean
+name|isWrite
+parameter_list|(
+name|BlockConstructionStage
+name|stage
+parameter_list|)
+block|{
+return|return
+operator|(
+name|stage
+operator|==
+name|PIPELINE_SETUP_STREAMING_RECOVERY
+operator|||
+name|stage
+operator|==
+name|PIPELINE_SETUP_APPEND_RECOVERY
+operator|)
 return|;
 block|}
 block|}
