@@ -277,6 +277,22 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|ssl
+operator|.
+name|DelegatingSSLSocketFactory
+import|;
+end_import
+
+begin_import
 import|import static
 name|com
 operator|.
@@ -394,6 +410,24 @@ name|fs
 operator|.
 name|s3a
 operator|.
+name|Constants
+operator|.
+name|SSL_CHANNEL_MODE
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
 name|S3ATestConstants
 operator|.
 name|FS_S3A_IMPL_DISABLE_CACHE
@@ -415,6 +449,46 @@ operator|.
 name|S3ATestUtils
 operator|.
 name|maybeEnableS3Guard
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|ssl
+operator|.
+name|DelegatingSSLSocketFactory
+operator|.
+name|SSLChannelMode
+operator|.
+name|Default_JSSE
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|ssl
+operator|.
+name|DelegatingSSLSocketFactory
+operator|.
+name|SSLChannelMode
+operator|.
+name|Default_JSSE_with_GCM
 import|;
 end_import
 
@@ -467,6 +541,14 @@ specifier|private
 specifier|final
 name|String
 name|seekPolicy
+decl_stmt|;
+DECL|field|sslChannelMode
+specifier|private
+specifier|final
+name|DelegatingSSLSocketFactory
+operator|.
+name|SSLChannelMode
+name|sslChannelMode
 decl_stmt|;
 DECL|field|DATASET_LEN
 specifier|public
@@ -525,28 +607,40 @@ index|[]
 index|[]
 block|{
 block|{
+name|INPUT_FADV_SEQUENTIAL
+block|,
+name|Default_JSSE
+block|}
+block|,
+block|{
 name|INPUT_FADV_RANDOM
+block|,
+name|Default_JSSE_with_GCM
 block|}
 block|,
 block|{
 name|INPUT_FADV_NORMAL
-block|}
 block|,
-block|{
-name|INPUT_FADV_SEQUENTIAL
+name|Default_JSSE_with_GCM
 block|}
 block|,     }
 argument_list|)
 return|;
 block|}
 comment|/**    * Run the test with a chosen seek policy.    * @param seekPolicy fadvise policy to use.    */
-DECL|method|ITestS3AContractSeek (final String seekPolicy)
+DECL|method|ITestS3AContractSeek (final String seekPolicy, final DelegatingSSLSocketFactory.SSLChannelMode sslChannelMode)
 specifier|public
 name|ITestS3AContractSeek
 parameter_list|(
 specifier|final
 name|String
 name|seekPolicy
+parameter_list|,
+specifier|final
+name|DelegatingSSLSocketFactory
+operator|.
+name|SSLChannelMode
+name|sslChannelMode
 parameter_list|)
 block|{
 name|this
@@ -554,6 +648,12 @@ operator|.
 name|seekPolicy
 operator|=
 name|seekPolicy
+expr_stmt|;
+name|this
+operator|.
+name|sslChannelMode
+operator|=
+name|sslChannelMode
 expr_stmt|;
 block|}
 comment|/**    * Create a configuration, possibly patching in S3Guard options.    * The FS is set to be uncached and the readahead and seek policies    * of the bucket itself are removed, so as to guarantee that the    * parameterized and test settings are    * @return a configuration    */
@@ -613,6 +713,8 @@ argument_list|,
 name|READAHEAD_RANGE
 argument_list|,
 name|INPUT_FADVISE
+argument_list|,
+name|SSL_CHANNEL_MODE
 argument_list|)
 expr_stmt|;
 block|}
@@ -654,6 +756,18 @@ argument_list|(
 name|INPUT_FADVISE
 argument_list|,
 name|seekPolicy
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|SSL_CHANNEL_MODE
+argument_list|,
+name|sslChannelMode
+operator|.
+name|name
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return

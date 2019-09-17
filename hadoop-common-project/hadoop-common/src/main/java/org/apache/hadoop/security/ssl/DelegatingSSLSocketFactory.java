@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.fs.azurebfs.utils
+DECL|package|org.apache.hadoop.security.ssl
 package|package
 name|org
 operator|.
@@ -12,11 +12,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|security
 operator|.
-name|azurebfs
-operator|.
-name|utils
+name|ssl
 package|;
 end_package
 
@@ -183,19 +181,19 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Extension to use native OpenSSL library instead of JSSE for better  * performance.  *  */
+comment|/**  * A {@link SSLSocketFactory} that can delegate to various SSL implementations.  * Specifically, either OpenSSL or JSSE can be used. OpenSSL offers better  * performance than JSSE and is made available via the  *<a href="https://github.com/wildfly/wildfly-openssl">wildlfy-openssl</a>  * library.  *  *<p>  *   The factory has several different modes of operation:  *<ul>  *<li>OpenSSL: Uses the wildly-openssl library to delegate to the  *     system installed OpenSSL. If the wildfly-openssl integration is not  *     properly setup, an exception is thrown.</li>  *<li>Default: Attempts to use the OpenSSL mode, if it cannot load the  *     necessary libraries, it falls back to the Default_JSEE mode.</li>  *<li>Default_JSSE: Delegates to the JSSE implementation of SSL, but  *     it disables the GCM cipher when running on Java 8.</li>  *<li>Default_JSSE_with_GCM: Delegates to the JSSE implementation of  *     SSL with no modification to the list of enabled ciphers.</li>  *</ul>  *</p>  */
 end_comment
 
 begin_class
-DECL|class|SSLSocketFactoryEx
+DECL|class|DelegatingSSLSocketFactory
 specifier|public
 specifier|final
 class|class
-name|SSLSocketFactoryEx
+name|DelegatingSSLSocketFactory
 extends|extends
 name|SSLSocketFactory
 block|{
-comment|/**    * Default indicates Ordered, preferred OpenSSL, if failed to load then fall    * back to Default_JSSE    */
+comment|/**    * Default indicates Ordered, preferred OpenSSL, if failed to load then fall    * back to Default_JSSE.    *    *<p>    *   Default_JSSE is not truly the the default JSSE implementation because    *   the GCM cipher is disabled when running on Java 8. However, the name    *   was not changed in order to preserve backwards compatibility. Instead,    *   a new mode called Default_JSSE_with_GCM delegates to the default JSSE    *   implementation with no changes to the list of enabled ciphers.    *</p>    */
 DECL|enum|SSLChannelMode
 specifier|public
 enum|enum
@@ -209,11 +207,14 @@ name|Default
 block|,
 DECL|enumConstant|Default_JSSE
 name|Default_JSSE
+block|,
+DECL|enumConstant|Default_JSSE_with_GCM
+name|Default_JSSE_with_GCM
 block|}
 DECL|field|instance
 specifier|private
 specifier|static
-name|SSLSocketFactoryEx
+name|DelegatingSSLSocketFactory
 name|instance
 init|=
 literal|null
@@ -229,7 +230,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|SSLSocketFactoryEx
+name|DelegatingSSLSocketFactory
 operator|.
 name|class
 argument_list|)
@@ -255,6 +256,13 @@ specifier|private
 name|SSLChannelMode
 name|channelMode
 decl_stmt|;
+comment|// This should only be modified within the #initializeDefaultFactory
+comment|// method which is synchronized
+DECL|field|openSSLProviderRegistered
+specifier|private
+name|boolean
+name|openSSLProviderRegistered
+decl_stmt|;
 comment|/**    * Initialize a singleton SSL socket factory.    *    * @param preferredMode applicable only if the instance is not initialized.    * @throws IOException if an error occurs.    */
 DECL|method|initializeDefaultFactory ( SSLChannelMode preferredMode)
 specifier|public
@@ -279,7 +287,7 @@ block|{
 name|instance
 operator|=
 operator|new
-name|SSLSocketFactoryEx
+name|DelegatingSSLSocketFactory
 argument_list|(
 name|preferredMode
 argument_list|)
@@ -290,7 +298,7 @@ comment|/**    * Singletone instance of the SSLSocketFactory.    *    * SSLSocke
 DECL|method|getDefaultFactory ()
 specifier|public
 specifier|static
-name|SSLSocketFactoryEx
+name|DelegatingSSLSocketFactory
 name|getDefaultFactory
 parameter_list|()
 block|{
@@ -298,17 +306,9 @@ return|return
 name|instance
 return|;
 block|}
-static|static
-block|{
-name|OpenSSLProvider
-operator|.
-name|register
-argument_list|()
-expr_stmt|;
-block|}
-DECL|method|SSLSocketFactoryEx (SSLChannelMode preferredChannelMode)
+DECL|method|DelegatingSSLSocketFactory (SSLChannelMode preferredChannelMode)
 specifier|private
-name|SSLSocketFactoryEx
+name|DelegatingSSLSocketFactory
 parameter_list|(
 name|SSLChannelMode
 name|preferredChannelMode
@@ -446,6 +446,22 @@ block|{
 case|case
 name|Default
 case|:
+if|if
+condition|(
+operator|!
+name|openSSLProviderRegistered
+condition|)
+block|{
+name|OpenSSLProvider
+operator|.
+name|register
+argument_list|()
+expr_stmt|;
+name|openSSLProviderRegistered
+operator|=
+literal|true
+expr_stmt|;
+block|}
 try|try
 block|{
 name|java
@@ -504,7 +520,8 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
-comment|// Strong reference needs to be kept to logger until initialization of SSLContext finished (see HADOOP-16174):
+comment|// Strong reference needs to be kept to logger until initialization of
+comment|// SSLContext finished (see HADOOP-16174):
 name|logger
 operator|.
 name|setLevel
@@ -529,7 +546,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|warn
+name|debug
 argument_list|(
 literal|"Failed to load OpenSSL. Falling back to the JSSE default."
 argument_list|)
@@ -552,6 +569,22 @@ break|break;
 case|case
 name|OpenSSL
 case|:
+if|if
+condition|(
+operator|!
+name|openSSLProviderRegistered
+condition|)
+block|{
+name|OpenSSLProvider
+operator|.
+name|register
+argument_list|()
+expr_stmt|;
+name|openSSLProviderRegistered
+operator|=
+literal|true
+expr_stmt|;
+block|}
 name|ctx
 operator|=
 name|SSLContext
@@ -596,10 +629,27 @@ operator|.
 name|Default_JSSE
 expr_stmt|;
 break|break;
+case|case
+name|Default_JSSE_with_GCM
+case|:
+name|ctx
+operator|=
+name|SSLContext
+operator|.
+name|getDefault
+argument_list|()
+expr_stmt|;
+name|channelMode
+operator|=
+name|SSLChannelMode
+operator|.
+name|Default_JSSE_with_GCM
+expr_stmt|;
+break|break;
 default|default:
 throw|throw
 operator|new
-name|AssertionError
+name|NoSuchAlgorithmException
 argument_list|(
 literal|"Unknown channel mode: "
 operator|+
@@ -1032,8 +1082,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Removed Cipher - "
-operator|+
+literal|"Removed Cipher - {} from list of enabled SSLSocket ciphers"
+argument_list|,
 name|defaultCiphers
 index|[
 name|i
