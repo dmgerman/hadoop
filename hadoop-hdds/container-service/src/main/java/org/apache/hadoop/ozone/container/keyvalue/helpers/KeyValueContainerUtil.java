@@ -942,13 +942,13 @@ name|BLOCK_COMMIT_SEQUENCE_ID_PREFIX
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
+if|if
+condition|(
 name|bcsId
-argument_list|)
-expr_stmt|;
+operator|!=
+literal|null
+condition|)
+block|{
 name|kvContainerData
 operator|.
 name|updateBlockCommitSequenceId
@@ -961,6 +961,7 @@ name|bcsId
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * Returns the path where data or chunks live for a given container.    *    * @param kvContainerData - KeyValueContainerData    * @return - Path to the chunks directory    */
