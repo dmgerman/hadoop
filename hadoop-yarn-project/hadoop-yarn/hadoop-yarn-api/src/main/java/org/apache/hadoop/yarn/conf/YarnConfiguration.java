@@ -5194,6 +5194,18 @@ name|DEFAULT_NM_REMOTE_APP_LOG_DIR_INCLUDE_OLDER
 init|=
 literal|true
 decl_stmt|;
+comment|/**    * Specifies the group of the aggregated log directory.    */
+DECL|field|NM_REMOTE_APP_LOG_DIR_GROUPNAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_REMOTE_APP_LOG_DIR_GROUPNAME
+init|=
+name|NM_PREFIX
+operator|+
+literal|"remote-app-log-dir.groupname"
+decl_stmt|;
 DECL|field|YARN_LOG_SERVER_URL
 specifier|public
 specifier|static

@@ -464,22 +464,6 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|exceptions
-operator|.
 name|YarnRuntimeException
 import|;
 end_import
@@ -1418,8 +1402,27 @@ decl_stmt|;
 name|String
 name|primaryGroupName
 init|=
-literal|null
+name|conf
+operator|.
+name|get
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_REMOTE_APP_LOG_DIR_GROUPNAME
+argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|primaryGroupName
+operator|==
+literal|null
+operator|||
+name|primaryGroupName
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
 try|try
 block|{
 name|primaryGroupName
@@ -1442,11 +1445,37 @@ name|warn
 argument_list|(
 literal|"No primary group found. The remote root log directory"
 operator|+
-literal|" will be created with the HDFS superuser being its group "
+literal|" will be created with the HDFS superuser being its "
 operator|+
-literal|"owner. JobHistoryServer may be unable to read the directory."
+literal|"group owner. JobHistoryServer may be unable to read "
+operator|+
+literal|"the directory."
 argument_list|)
 expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"The group of remote root log directory has been "
+operator|+
+literal|"determined by the configuration and set to "
+operator|+
+name|primaryGroupName
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|// set owner on the remote directory only if the primary group exists
 if|if
