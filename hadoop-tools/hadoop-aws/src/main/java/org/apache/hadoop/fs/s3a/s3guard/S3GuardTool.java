@@ -1089,7 +1089,7 @@ name|String
 name|getName
 parameter_list|()
 function_decl|;
-comment|/**    * Parse DynamoDB region from either -m option or a S3 path.    *    * This function should only be called from {@link S3GuardTool.Init} or    * {@link S3GuardTool.Destroy}.    *    * @param paths remaining parameters from CLI.    * @throws IOException on I/O errors.    * @throws ExitUtil.ExitException on validation errors    */
+comment|/**    * Parse DynamoDB region from either -m option or a S3 path.    *    * Note that as a side effect, if the paths included an S3 path,    * and there is no region set on the CLI, then the S3A FS is    * initialized, after which {@link #filesystem} will no longer    * be null.    *    * @param paths remaining parameters from CLI.    * @throws IOException on I/O errors.    * @throws ExitUtil.ExitException on validation errors    */
 DECL|method|parseDynamoDBRegion (List<String> paths)
 specifier|protected
 name|void
@@ -1878,6 +1878,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Initializing S3A FS to {}"
+argument_list|,
+name|path
+argument_list|)
+expr_stmt|;
 name|URI
 name|uri
 init|=
@@ -2025,6 +2034,71 @@ name|S3AFileSystem
 operator|)
 name|fs
 expr_stmt|;
+block|}
+comment|/**    * Initialize the filesystem if there is none bonded to already and    * the command line path list is not empty.    * @param paths path list.    * @return true if at the end of the call, getFilesystem() is not null    * @throws IOException failure to instantiate.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|maybeInitFilesystem (final List<String> paths)
+name|boolean
+name|maybeInitFilesystem
+parameter_list|(
+specifier|final
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|paths
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// is there an S3 FS to create?
+if|if
+condition|(
+name|getFilesystem
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+comment|// none yet -create one
+if|if
+condition|(
+operator|!
+name|paths
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|initS3AFileSystem
+argument_list|(
+name|paths
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"No path on command line, so not instantiating FS"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+return|return
+name|getFilesystem
+argument_list|()
+operator|!=
+literal|null
+return|;
 block|}
 comment|/**    * Parse CLI arguments and returns the position arguments.    * The options are stored in {@link #commandFormat}.    *    * @param args command line arguments.    * @return the position arguments from CLI.    */
 DECL|method|parseArgs (String[] args)
@@ -3058,6 +3132,11 @@ argument_list|(
 name|paths
 argument_list|)
 expr_stmt|;
+name|maybeInitFilesystem
+argument_list|(
+name|paths
+argument_list|)
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -3256,6 +3335,11 @@ name|paths
 argument_list|)
 expr_stmt|;
 name|parseDynamoDBRegion
+argument_list|(
+name|paths
+argument_list|)
+expr_stmt|;
+name|maybeInitFilesystem
 argument_list|(
 name|paths
 argument_list|)
@@ -5140,6 +5224,11 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
+name|checkBucketNameOrDDBTableNameProvided
+argument_list|(
+name|paths
+argument_list|)
+expr_stmt|;
 name|parseDynamoDBRegion
 argument_list|(
 name|paths
@@ -5163,6 +5252,11 @@ throw|throw
 name|e
 throw|;
 block|}
+name|maybeInitFilesystem
+argument_list|(
+name|paths
+argument_list|)
+expr_stmt|;
 name|initMetadataStore
 argument_list|(
 literal|false
