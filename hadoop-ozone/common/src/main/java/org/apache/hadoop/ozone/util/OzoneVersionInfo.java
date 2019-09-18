@@ -68,6 +68,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|utils
 operator|.
 name|HddsVersionInfo
@@ -81,6 +83,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|hdds
 operator|.
 name|utils
 operator|.

@@ -150,6 +150,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|utils
 operator|.
 name|db
@@ -166,6 +168,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|utils
 operator|.
 name|db
@@ -181,6 +185,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|hdds
 operator|.
 name|utils
 operator|.
@@ -217,6 +223,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|hdds
 operator|.
 name|utils
 operator|.
@@ -622,16 +630,6 @@ annotation|@
 name|Override
 DECL|method|getStore ()
 specifier|public
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|utils
-operator|.
-name|db
-operator|.
 name|DBStore
 name|getStore
 parameter_list|()

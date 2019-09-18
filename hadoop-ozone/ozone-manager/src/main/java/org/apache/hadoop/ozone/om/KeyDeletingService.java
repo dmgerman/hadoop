@@ -232,6 +232,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|utils
 operator|.
 name|BackgroundService
@@ -245,6 +247,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|hdds
 operator|.
 name|utils
 operator|.
@@ -260,6 +264,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|utils
 operator|.
 name|BackgroundTaskQueue
@@ -274,6 +280,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|utils
 operator|.
 name|BackgroundTaskResult
@@ -287,6 +295,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|hdds
 operator|.
 name|utils
 operator|.
@@ -354,6 +364,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|utils
 operator|.
 name|db
@@ -370,6 +382,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|utils
 operator|.
 name|db
@@ -385,6 +399,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|hdds
 operator|.
 name|utils
 operator|.

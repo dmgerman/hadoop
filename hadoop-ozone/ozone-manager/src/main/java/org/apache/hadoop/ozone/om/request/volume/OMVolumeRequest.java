@@ -154,6 +154,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
 name|utils
 operator|.
 name|db
@@ -171,6 +173,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|hdds
 operator|.
 name|utils
 operator|.
