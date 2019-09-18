@@ -328,12 +328,12 @@ name|Metric
 name|MutableCounterLong
 name|numKeyCommits
 decl_stmt|;
-DECL|field|numAllocateBlockCalls
+DECL|field|numBlockAllocations
 specifier|private
 annotation|@
 name|Metric
 name|MutableCounterLong
-name|numAllocateBlockCalls
+name|numBlockAllocations
 decl_stmt|;
 DECL|field|numGetServiceLists
 specifier|private
@@ -518,12 +518,12 @@ name|Metric
 name|MutableCounterLong
 name|numKeyCommitFails
 decl_stmt|;
-DECL|field|numBlockAllocateCallFails
+DECL|field|numBlockAllocationFails
 specifier|private
 annotation|@
 name|Metric
 name|MutableCounterLong
-name|numBlockAllocateCallFails
+name|numBlockAllocationFails
 decl_stmt|;
 DECL|field|numGetServiceListFails
 specifier|private
@@ -1876,7 +1876,7 @@ name|void
 name|incNumBlockAllocateCalls
 parameter_list|()
 block|{
-name|numAllocateBlockCalls
+name|numBlockAllocations
 operator|.
 name|incr
 argument_list|()
@@ -1888,7 +1888,7 @@ name|void
 name|incNumBlockAllocateCallFails
 parameter_list|()
 block|{
-name|numBlockAllocateCallFails
+name|numBlockAllocationFails
 operator|.
 name|incr
 argument_list|()
@@ -2578,7 +2578,7 @@ name|getNumBlockAllocates
 parameter_list|()
 block|{
 return|return
-name|numAllocateBlockCalls
+name|numBlockAllocations
 operator|.
 name|value
 argument_list|()
@@ -2593,7 +2593,7 @@ name|getNumBlockAllocateFails
 parameter_list|()
 block|{
 return|return
-name|numBlockAllocateCallFails
+name|numBlockAllocationFails
 operator|.
 name|value
 argument_list|()
