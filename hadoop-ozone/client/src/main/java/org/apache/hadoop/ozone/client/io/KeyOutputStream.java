@@ -168,7 +168,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|ContainerNotOpenException
+name|ExcludeList
 import|;
 end_import
 
@@ -190,7 +190,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|ExcludeList
+name|StorageContainerException
 import|;
 end_import
 
@@ -378,34 +378,6 @@ name|ratis
 operator|.
 name|protocol
 operator|.
-name|GroupMismatchException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|ratis
-operator|.
-name|protocol
-operator|.
-name|NotReplicatedException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|ratis
-operator|.
-name|protocol
-operator|.
 name|RaftRetryFailureException
 import|;
 end_import
@@ -487,18 +459,6 @@ operator|.
 name|util
 operator|.
 name|Map
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|TimeoutException
 import|;
 end_import
 
@@ -1310,6 +1270,13 @@ argument_list|(
 name|exception
 argument_list|)
 decl_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|t
+argument_list|)
+expr_stmt|;
 name|boolean
 name|retryFailure
 init|=
@@ -1319,7 +1286,7 @@ name|t
 argument_list|)
 decl_stmt|;
 name|boolean
-name|closedContainerException
+name|containerExclusionException
 init|=
 literal|false
 decl_stmt|;
@@ -1329,9 +1296,9 @@ operator|!
 name|retryFailure
 condition|)
 block|{
-name|closedContainerException
+name|containerExclusionException
 operator|=
-name|checkIfContainerIsClosed
+name|checkIfContainerToExclude
 argument_list|(
 name|t
 argument_list|)
@@ -1379,7 +1346,7 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|closedContainerException
+name|containerExclusionException
 condition|)
 block|{
 name|LOG
@@ -1504,9 +1471,11 @@ name|failedServers
 argument_list|)
 expr_stmt|;
 block|}
+comment|// if the container needs to be excluded , add the container to the
+comment|// exclusion list , otherwise add the pipeline to the exclusion list
 if|if
 condition|(
-name|closedContainerException
+name|containerExclusionException
 condition|)
 block|{
 name|excludeList
@@ -1522,23 +1491,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-elseif|else
-if|if
-condition|(
-name|retryFailure
-operator|||
-name|t
-operator|instanceof
-name|TimeoutException
-operator|||
-name|t
-operator|instanceof
-name|GroupMismatchException
-operator|||
-name|t
-operator|instanceof
-name|NotReplicatedException
-condition|)
+else|else
 block|{
 name|excludeList
 operator|.
@@ -1561,7 +1514,7 @@ comment|// are in the exclude list so that, the very next retry should never
 comment|// write data on the  closed container/pipeline
 if|if
 condition|(
-name|closedContainerException
+name|containerExclusionException
 condition|)
 block|{
 comment|// discard subsequent pre allocated blocks from the streamEntries list
@@ -1932,10 +1885,12 @@ operator|instanceof
 name|AlreadyClosedException
 return|;
 block|}
-DECL|method|checkIfContainerIsClosed (Throwable t)
+comment|// Every container specific exception from datatnode will be seen as
+comment|// StorageContainerException
+DECL|method|checkIfContainerToExclude (Throwable t)
 specifier|private
 name|boolean
-name|checkIfContainerIsClosed
+name|checkIfContainerToExclude
 parameter_list|(
 name|Throwable
 name|t
@@ -1944,7 +1899,7 @@ block|{
 return|return
 name|t
 operator|instanceof
-name|ContainerNotOpenException
+name|StorageContainerException
 return|;
 block|}
 annotation|@

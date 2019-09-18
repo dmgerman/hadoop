@@ -190,7 +190,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|ContainerNotOpenException
+name|StorageContainerException
 import|;
 end_import
 
@@ -707,7 +707,7 @@ argument_list|)
 expr_stmt|;
 name|add
 argument_list|(
-name|ContainerNotOpenException
+name|StorageContainerException
 operator|.
 name|class
 argument_list|)
@@ -1572,8 +1572,6 @@ parameter_list|(
 name|Exception
 name|e
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|Throwable
 name|t
@@ -1624,22 +1622,9 @@ name|getCause
 argument_list|()
 expr_stmt|;
 block|}
-throw|throw
-name|e
-operator|instanceof
-name|IOException
-condition|?
-operator|(
-name|IOException
-operator|)
-name|e
-else|:
-operator|new
-name|IOException
-argument_list|(
-name|e
-argument_list|)
-throw|;
+return|return
+name|t
+return|;
 block|}
 DECL|method|createRetryPolicy (int maxRetryCount, long retryInterval)
 specifier|public
