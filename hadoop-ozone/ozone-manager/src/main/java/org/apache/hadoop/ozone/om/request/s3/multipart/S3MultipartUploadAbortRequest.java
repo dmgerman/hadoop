@@ -587,6 +587,14 @@ operator|.
 name|getKeyName
 argument_list|()
 decl_stmt|;
+name|ozoneManager
+operator|.
+name|getMetrics
+argument_list|()
+operator|.
+name|incNumAbortMultipartUploads
+argument_list|()
+expr_stmt|;
 name|OMMetadataManager
 name|omMetadataManager
 init|=

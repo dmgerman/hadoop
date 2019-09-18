@@ -15079,7 +15079,7 @@ parameter_list|)
 block|{
 name|metrics
 operator|.
-name|incNumAbortMultipartUploadFails
+name|incNumListMultipartUploadPartFails
 argument_list|()
 expr_stmt|;
 name|AUDIT
