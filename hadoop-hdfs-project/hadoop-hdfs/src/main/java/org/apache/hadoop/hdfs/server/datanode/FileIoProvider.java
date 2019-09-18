@@ -1342,6 +1342,33 @@ name|Exception
 name|e
 parameter_list|)
 block|{
+name|String
+name|em
+init|=
+name|e
+operator|.
+name|getMessage
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|em
+operator|.
+name|startsWith
+argument_list|(
+literal|"Broken pipe"
+argument_list|)
+operator|&&
+operator|!
+name|em
+operator|.
+name|startsWith
+argument_list|(
+literal|"Connection reset"
+argument_list|)
+condition|)
+block|{
 name|onFailure
 argument_list|(
 name|volume
@@ -1349,6 +1376,7 @@ argument_list|,
 name|begin
 argument_list|)
 expr_stmt|;
+block|}
 throw|throw
 name|e
 throw|;
