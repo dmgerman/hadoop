@@ -618,13 +618,15 @@ name|long
 name|getLastSeenStateId
 parameter_list|()
 block|{
+comment|// Should not need to call getCorrectLastAppliedOrWrittenTxId()
+comment|// see HDFS-14822.
 return|return
 name|namesystem
 operator|.
 name|getFSImage
 argument_list|()
 operator|.
-name|getCorrectLastAppliedOrWrittenTxId
+name|getLastAppliedOrWrittenTxId
 argument_list|()
 return|;
 block|}
