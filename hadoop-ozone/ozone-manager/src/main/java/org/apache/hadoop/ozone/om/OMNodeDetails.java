@@ -228,48 +228,6 @@ operator|=
 name|httpsAddress
 expr_stmt|;
 block|}
-annotation|@
-name|Override
-DECL|method|toString ()
-specifier|public
-name|String
-name|toString
-parameter_list|()
-block|{
-return|return
-literal|"OMNodeDetails["
-operator|+
-literal|"omServiceId="
-operator|+
-name|omServiceId
-operator|+
-literal|", omNodeId="
-operator|+
-name|omNodeId
-operator|+
-literal|", rpcAddress="
-operator|+
-name|rpcAddress
-operator|+
-literal|", rpcPort="
-operator|+
-name|rpcPort
-operator|+
-literal|", ratisPort="
-operator|+
-name|ratisPort
-operator|+
-literal|", httpAddress="
-operator|+
-name|httpAddress
-operator|+
-literal|", httpsAddress="
-operator|+
-name|httpsAddress
-operator|+
-literal|"]"
-return|;
-block|}
 comment|/**    * Builder class for OMNodeDetails.    */
 DECL|class|Builder
 specifier|public
