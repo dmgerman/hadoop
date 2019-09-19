@@ -1400,6 +1400,32 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|mkdirs (final Path f)
+specifier|public
+name|boolean
+name|mkdirs
+parameter_list|(
+specifier|final
+name|Path
+name|f
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|super
+operator|.
+name|mkdirs
+argument_list|(
+name|fullPath
+argument_list|(
+name|f
+argument_list|)
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|open (final Path f, final int bufferSize)
 specifier|public
 name|FSDataInputStream

@@ -478,15 +478,6 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-DECL|method|mkdirs (Path f)
-specifier|public
-name|boolean
-name|mkdirs
-parameter_list|(
-name|Path
-name|f
-parameter_list|)
-function_decl|;
 DECL|method|open (Path f)
 specifier|public
 name|FSDataInputStream

@@ -1345,6 +1345,28 @@ name|permission
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|mkdirs (Path f)
+specifier|public
+name|boolean
+name|mkdirs
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|fs
+operator|.
+name|mkdirs
+argument_list|(
+name|f
+argument_list|)
+return|;
+block|}
 comment|/**    * The src file is on the local disk.  Add it to FS at    * the given dst name.    * delSrc indicates if the source should be removed    */
 annotation|@
 name|Override
