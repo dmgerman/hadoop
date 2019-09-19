@@ -32,6 +32,20 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|OzoneConsts
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|client
 operator|.
 name|OzoneBucket
@@ -352,6 +366,33 @@ argument_list|(
 name|keyName
 argument_list|)
 decl_stmt|;
+comment|// For compliance/security, GDPR Secret& Algorithm details are removed
+comment|// from local copy of metadata before printing. This doesn't remove these
+comment|// from Ozone Manager's actual metadata.
+name|key
+operator|.
+name|getMetadata
+argument_list|()
+operator|.
+name|remove
+argument_list|(
+name|OzoneConsts
+operator|.
+name|GDPR_SECRET
+argument_list|)
+expr_stmt|;
+name|key
+operator|.
+name|getMetadata
+argument_list|()
+operator|.
+name|remove
+argument_list|(
+name|OzoneConsts
+operator|.
+name|GDPR_ALGORITHM
+argument_list|)
+expr_stmt|;
 name|ObjectPrinter
 operator|.
 name|printObjectAsJson
