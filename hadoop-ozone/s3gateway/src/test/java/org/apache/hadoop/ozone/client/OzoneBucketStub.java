@@ -1473,7 +1473,11 @@ name|OzoneMultipartUploadPartListParts
 argument_list|(
 name|ReplicationType
 operator|.
-name|STAND_ALONE
+name|RATIS
+argument_list|,
+name|ReplicationFactor
+operator|.
+name|ONE
 argument_list|,
 literal|0
 argument_list|,
@@ -1657,7 +1661,11 @@ name|OzoneMultipartUploadPartListParts
 argument_list|(
 name|ReplicationType
 operator|.
-name|STAND_ALONE
+name|RATIS
+argument_list|,
+name|ReplicationFactor
+operator|.
+name|ONE
 argument_list|,
 name|nextPartNumberMarker
 argument_list|,

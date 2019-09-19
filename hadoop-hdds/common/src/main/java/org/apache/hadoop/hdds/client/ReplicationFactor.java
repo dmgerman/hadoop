@@ -18,6 +18,24 @@ name|client
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HddsProtos
+import|;
+end_import
+
 begin_comment
 comment|/**  * The replication factor to be used while writing key into ozone.  */
 end_comment
@@ -103,6 +121,62 @@ operator|+
 name|value
 argument_list|)
 throw|;
+block|}
+DECL|method|fromProto ( HddsProtos.ReplicationFactor replicationFactor)
+specifier|public
+specifier|static
+name|ReplicationFactor
+name|fromProto
+parameter_list|(
+name|HddsProtos
+operator|.
+name|ReplicationFactor
+name|replicationFactor
+parameter_list|)
+block|{
+if|if
+condition|(
+name|replicationFactor
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+switch|switch
+condition|(
+name|replicationFactor
+condition|)
+block|{
+case|case
+name|ONE
+case|:
+return|return
+name|ReplicationFactor
+operator|.
+name|ONE
+return|;
+case|case
+name|THREE
+case|:
+return|return
+name|ReplicationFactor
+operator|.
+name|THREE
+return|;
+default|default:
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Unsupported ProtoBuf replication factor: "
+operator|+
+name|replicationFactor
+argument_list|)
+throw|;
+block|}
 block|}
 comment|/**    * Returns integer representation of ReplicationFactor.    * @return replication value    */
 DECL|method|getValue ()

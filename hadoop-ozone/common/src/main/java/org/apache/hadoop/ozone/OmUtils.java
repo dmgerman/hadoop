@@ -1136,6 +1136,9 @@ case|:
 case|case
 name|DBUpdates
 case|:
+case|case
+name|ListMultipartUploads
+case|:
 return|return
 literal|true
 return|;

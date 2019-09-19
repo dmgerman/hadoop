@@ -34,6 +34,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|sun
+operator|.
+name|codemodel
+operator|.
+name|internal
+operator|.
+name|JExpression
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -712,6 +726,20 @@ name|Metric
 name|MutableCounterLong
 name|numBucketS3DeleteFails
 decl_stmt|;
+DECL|field|numListMultipartUploadFails
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numListMultipartUploadFails
+decl_stmt|;
+DECL|field|numListMultipartUploads
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numListMultipartUploads
+decl_stmt|;
 DECL|method|OMMetrics ()
 specifier|public
 name|OMMetrics
@@ -1384,6 +1412,35 @@ name|incr
 argument_list|()
 expr_stmt|;
 name|numAbortMultipartUploads
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumListMultipartUploadFails ()
+specifier|public
+name|void
+name|incNumListMultipartUploadFails
+parameter_list|()
+block|{
+name|numListMultipartUploadFails
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumListMultipartUploads ()
+specifier|public
+name|void
+name|incNumListMultipartUploads
+parameter_list|()
+block|{
+name|numKeyOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+name|numListMultipartUploads
 operator|.
 name|incr
 argument_list|()

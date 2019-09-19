@@ -266,6 +266,24 @@ name|om
 operator|.
 name|helpers
 operator|.
+name|OmMultipartUploadCompleteList
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|helpers
+operator|.
 name|OmMultipartUploadList
 import|;
 end_import
@@ -980,14 +998,14 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Complete Multipart upload Request.    * @param omKeyArgs    * @param multipartUploadList    * @return OmMultipartUploadCompleteInfo    * @throws IOException    */
-DECL|method|completeMultipartUpload ( OmKeyArgs omKeyArgs, OmMultipartUploadList multipartUploadList)
+DECL|method|completeMultipartUpload ( OmKeyArgs omKeyArgs, OmMultipartUploadCompleteList multipartUploadList)
 name|OmMultipartUploadCompleteInfo
 name|completeMultipartUpload
 parameter_list|(
 name|OmKeyArgs
 name|omKeyArgs
 parameter_list|,
-name|OmMultipartUploadList
+name|OmMultipartUploadCompleteList
 name|multipartUploadList
 parameter_list|)
 throws|throws
@@ -1026,6 +1044,23 @@ name|partNumberMarker
 parameter_list|,
 name|int
 name|maxParts
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * List in-flight uploads.    */
+DECL|method|listMultipartUploads (String volumeName, String bucketName, String prefix)
+name|OmMultipartUploadList
+name|listMultipartUploads
+parameter_list|(
+name|String
+name|volumeName
+parameter_list|,
+name|String
+name|bucketName
+parameter_list|,
+name|String
+name|prefix
 parameter_list|)
 throws|throws
 name|IOException

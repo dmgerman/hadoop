@@ -84,6 +84,24 @@ name|ozone
 operator|.
 name|om
 operator|.
+name|exceptions
+operator|.
+name|OMException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
 name|helpers
 operator|.
 name|OmKeyArgs
@@ -177,6 +195,24 @@ operator|.
 name|helpers
 operator|.
 name|OmMultipartUploadCompleteInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|helpers
+operator|.
+name|OmMultipartUploadCompleteList
 import|;
 end_import
 
@@ -500,14 +536,14 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Complete Multipart upload Request.    * @param omKeyArgs    * @param multipartUploadList    * @return OmMultipartUploadCompleteInfo    * @throws IOException    */
-DECL|method|completeMultipartUpload (OmKeyArgs omKeyArgs, OmMultipartUploadList multipartUploadList)
+DECL|method|completeMultipartUpload (OmKeyArgs omKeyArgs, OmMultipartUploadCompleteList multipartUploadList)
 name|OmMultipartUploadCompleteInfo
 name|completeMultipartUpload
 parameter_list|(
 name|OmKeyArgs
 name|omKeyArgs
 parameter_list|,
-name|OmMultipartUploadList
+name|OmMultipartUploadCompleteList
 name|multipartUploadList
 parameter_list|)
 throws|throws
@@ -523,6 +559,22 @@ name|omKeyArgs
 parameter_list|)
 throws|throws
 name|IOException
+function_decl|;
+DECL|method|listMultipartUploads (String volumeName, String bucketName, String prefix)
+name|OmMultipartUploadList
+name|listMultipartUploads
+parameter_list|(
+name|String
+name|volumeName
+parameter_list|,
+name|String
+name|bucketName
+parameter_list|,
+name|String
+name|prefix
+parameter_list|)
+throws|throws
+name|OMException
 function_decl|;
 comment|/**    * Returns list of parts of a multipart upload key.    * @param volumeName    * @param bucketName    * @param keyName    * @param uploadID    * @param partNumberMarker    * @param maxParts    * @return OmMultipartUploadListParts    */
 DECL|method|listParts (String volumeName, String bucketName, String keyName, String uploadID, int partNumberMarker, int maxParts)

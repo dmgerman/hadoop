@@ -40,6 +40,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -702,6 +712,26 @@ argument_list|,
 name|VALUE
 argument_list|>
 name|table
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Return the existing upload keys which includes volumeName, bucketName,    * keyName.    */
+DECL|method|getMultipartUploadKeys (String volumeName, String bucketName, String prefix)
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|getMultipartUploadKeys
+parameter_list|(
+name|String
+name|volumeName
+parameter_list|,
+name|String
+name|bucketName
+parameter_list|,
+name|String
+name|prefix
 parameter_list|)
 throws|throws
 name|IOException

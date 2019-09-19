@@ -46,6 +46,46 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HddsProtos
+operator|.
+name|ReplicationFactor
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|HddsProtos
+operator|.
+name|ReplicationType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|protocol
@@ -95,6 +135,13 @@ operator|.
 name|ReplicationType
 name|replicationType
 decl_stmt|;
+DECL|field|replicationFactor
+specifier|private
+name|HddsProtos
+operator|.
+name|ReplicationFactor
+name|replicationFactor
+decl_stmt|;
 comment|//When a list is truncated, this element specifies the last part in the list,
 comment|// as well as the value to use for the part-number-marker request parameter
 comment|// in a subsequent request.
@@ -126,7 +173,7 @@ name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
-DECL|method|OmMultipartUploadListParts (HddsProtos.ReplicationType type, int nextMarker, boolean truncate)
+DECL|method|OmMultipartUploadListParts (HddsProtos.ReplicationType type, HddsProtos.ReplicationFactor factor, int nextMarker, boolean truncate)
 specifier|public
 name|OmMultipartUploadListParts
 parameter_list|(
@@ -134,6 +181,11 @@ name|HddsProtos
 operator|.
 name|ReplicationType
 name|type
+parameter_list|,
+name|HddsProtos
+operator|.
+name|ReplicationFactor
+name|factor
 parameter_list|,
 name|int
 name|nextMarker
@@ -147,6 +199,12 @@ operator|.
 name|replicationType
 operator|=
 name|type
+expr_stmt|;
+name|this
+operator|.
+name|replicationFactor
+operator|=
+name|factor
 expr_stmt|;
 name|this
 operator|.
@@ -239,6 +297,16 @@ parameter_list|()
 block|{
 return|return
 name|partInfoList
+return|;
+block|}
+DECL|method|getReplicationFactor ()
+specifier|public
+name|ReplicationFactor
+name|getReplicationFactor
+parameter_list|()
+block|{
+return|return
+name|replicationFactor
 return|;
 block|}
 DECL|method|addPartList (List<OmPartInfo> partInfos)

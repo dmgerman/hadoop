@@ -1046,6 +1046,23 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Return with the inflight multipart uploads.    */
+DECL|method|listMultipartUploads (String volumename, String bucketName, String prefix)
+name|OzoneMultipartUploadList
+name|listMultipartUploads
+parameter_list|(
+name|String
+name|volumename
+parameter_list|,
+name|String
+name|bucketName
+parameter_list|,
+name|String
+name|prefix
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Get a valid Delegation Token.    *    * @param renewer the designated renewer for the token    * @return Token<OzoneDelegationTokenSelector>    * @throws IOException    */
 DECL|method|getDelegationToken (Text renewer)
 name|Token

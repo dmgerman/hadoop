@@ -28,6 +28,38 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdds
+operator|.
+name|client
+operator|.
+name|ReplicationFactor
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|client
+operator|.
+name|ReplicationType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|protocol
@@ -57,6 +89,16 @@ operator|.
 name|OzoneManagerProtocolProtos
 operator|.
 name|PartKeyInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|time
+operator|.
+name|Instant
 import|;
 end_import
 
@@ -115,7 +157,7 @@ name|PartKeyInfo
 argument_list|>
 name|partKeyInfoList
 decl_stmt|;
-comment|/**    * Construct OmMultipartKeyInfo object which holds multipart upload    * information for a key.    * @param id    * @param list upload parts of a key.    */
+comment|/**    * Construct OmMultipartKeyInfo object which holds multipart upload    * information for a key.    */
 DECL|method|OmMultipartKeyInfo (String id, Map<Integer, PartKeyInfo> list)
 specifier|public
 name|OmMultipartKeyInfo

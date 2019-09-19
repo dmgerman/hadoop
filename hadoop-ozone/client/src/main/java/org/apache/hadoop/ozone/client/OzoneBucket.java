@@ -1780,6 +1780,32 @@ name|numEntries
 argument_list|)
 return|;
 block|}
+comment|/**    * Return with the list of the in-flight multipart uploads.    *    * @param prefix Optional string to filter for the selected keys.    */
+DECL|method|listMultipartUploads (String prefix)
+specifier|public
+name|OzoneMultipartUploadList
+name|listMultipartUploads
+parameter_list|(
+name|String
+name|prefix
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|proxy
+operator|.
+name|listMultipartUploads
+argument_list|(
+name|volumeName
+argument_list|,
+name|getName
+argument_list|()
+argument_list|,
+name|prefix
+argument_list|)
+return|;
+block|}
 comment|/**    * An Iterator to iterate over {@link OzoneKey} list.    */
 DECL|class|KeyIterator
 specifier|private
