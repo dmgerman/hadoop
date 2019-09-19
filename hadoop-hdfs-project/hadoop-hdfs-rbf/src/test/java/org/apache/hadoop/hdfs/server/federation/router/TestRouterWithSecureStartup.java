@@ -140,22 +140,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
-operator|.
-name|DFS_WEB_AUTHENTICATION_KERBEROS_PRINCIPAL_KEY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|server
 operator|.
 name|federation
@@ -178,6 +162,15 @@ specifier|public
 class|class
 name|TestRouterWithSecureStartup
 block|{
+DECL|field|HTTP_KERBEROS_PRINCIPAL_CONF_KEY
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|HTTP_KERBEROS_PRINCIPAL_CONF_KEY
+init|=
+literal|"hadoop.http.authentication.kerberos.principal"
+decl_stmt|;
 annotation|@
 name|Rule
 DECL|field|exceptionRule
@@ -190,6 +183,7 @@ operator|.
 name|none
 argument_list|()
 decl_stmt|;
+comment|/*    * hadoop.http.authentication.kerberos.principal has default value, so if we    * don't config the spnego principal, cluster will still start normally    */
 annotation|@
 name|Test
 DECL|method|testStartupWithoutSpnegoPrincipal ()
@@ -200,11 +194,32 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|testCluster
+name|Configuration
+name|conf
+init|=
+name|initSecurity
+argument_list|()
+decl_stmt|;
+name|conf
+operator|.
+name|unset
 argument_list|(
-name|DFS_WEB_AUTHENTICATION_KERBEROS_PRINCIPAL_KEY
-argument_list|,
-literal|"Unable to initialize WebAppContext"
+name|HTTP_KERBEROS_PRINCIPAL_CONF_KEY
+argument_list|)
+expr_stmt|;
+name|RouterWebHDFSContract
+operator|.
+name|createCluster
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|assertNotNull
+argument_list|(
+name|RouterWebHDFSContract
+operator|.
+name|getCluster
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

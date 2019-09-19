@@ -190,38 +190,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
-operator|.
-name|DFS_WEB_AUTHENTICATION_KERBEROS_KEYTAB_KEY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
-name|DFS_WEB_AUTHENTICATION_KERBEROS_PRINCIPAL_KEY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|client
 operator|.
 name|HdfsClientConfigKeys
@@ -643,6 +611,15 @@ name|ROUTER_USER_NAME
 init|=
 literal|"router"
 decl_stmt|;
+DECL|field|PREFIX
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|PREFIX
+init|=
+literal|"hadoop.http.authentication."
+decl_stmt|;
 DECL|field|spnegoPrincipal
 specifier|private
 specifier|static
@@ -661,6 +638,17 @@ name|SecurityConfUtil
 parameter_list|()
 block|{
 comment|// Utility Class
+block|}
+DECL|method|getRouterUserName ()
+specifier|public
+specifier|static
+name|String
+name|getRouterUserName
+parameter_list|()
+block|{
+return|return
+name|ROUTER_USER_NAME
+return|;
 block|}
 DECL|method|initSecurity ()
 specifier|public
@@ -886,7 +874,20 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFS_WEB_AUTHENTICATION_KERBEROS_PRINCIPAL_KEY
+name|PREFIX
+operator|+
+literal|"type"
+argument_list|,
+literal|"kerberos"
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|PREFIX
+operator|+
+literal|"kerberos.principal"
 argument_list|,
 name|spnegoPrincipal
 argument_list|)
@@ -895,7 +896,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFS_WEB_AUTHENTICATION_KERBEROS_KEYTAB_KEY
+name|PREFIX
+operator|+
+literal|"kerberos.keytab"
 argument_list|,
 name|keytab
 argument_list|)
@@ -1033,7 +1036,7 @@ name|set
 argument_list|(
 name|DFS_ROUTER_KERBEROS_INTERNAL_SPNEGO_PRINCIPAL_KEY
 argument_list|,
-literal|"*"
+name|spnegoPrincipal
 argument_list|)
 expr_stmt|;
 comment|// Setup basic state store
