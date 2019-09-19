@@ -149,7 +149,7 @@ argument_list|>
 name|iterator
 parameter_list|()
 function_decl|;
-comment|/**    * Check key exist in cache or not.    *    * If it exists return CacheResult with value and status as    * {@link CacheResult.CacheStatus#EXISTS}    *    * If it does not exist:    *  If cache clean up policy is    *  {@link TableCacheImpl.CacheCleanupPolicy#NEVER} it means table cache is    *  full cache. It return's {@link CacheResult} with null    *  and status as {@link CacheResult.CacheStatus#NOT_EXIST}.    *    *  If cache clean up policy is {@link TableCacheImpl.CacheCleanupPolicy#MANUAL} it means    *  table cache is partial cache. It return's {@link CacheResult} with    *  null and status as MAY_EXIST.    *    * @param cachekey    */
+comment|/**    * Check key exist in cache or not.    *    * If it exists return CacheResult with value and status as    * {@link CacheResult.CacheStatus#EXISTS}    *    * If it does not exist:    *  If cache clean up policy is    *  {@link TableCacheImpl.CacheCleanupPolicy#NEVER} it means table cache is    *  full cache. It return's {@link CacheResult} with null    *  and status as {@link CacheResult.CacheStatus#NOT_EXIST}.    *    *  If cache clean up policy is    *  {@link TableCacheImpl.CacheCleanupPolicy#MANUAL} it means    *  table cache is partial cache. It return's {@link CacheResult} with    *  null and status as MAY_EXIST.    *    * @param cachekey    */
 DECL|method|lookup (CACHEKEY cachekey)
 name|CacheResult
 argument_list|<

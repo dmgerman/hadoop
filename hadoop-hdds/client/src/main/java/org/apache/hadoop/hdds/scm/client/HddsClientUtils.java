@@ -934,7 +934,9 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Bucket or Volume length is illegal, valid length is 3-63 characters"
+literal|"Bucket or Volume length is illegal, "
+operator|+
+literal|"valid length is 3-63 characters"
 argument_list|)
 throw|;
 block|}
@@ -1002,7 +1004,9 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Bucket or Volume name cannot end with a period or dash"
+literal|"Bucket or Volume name "
+operator|+
+literal|"cannot end with a period or dash"
 argument_list|)
 throw|;
 block|}
