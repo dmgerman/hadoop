@@ -501,13 +501,6 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|bb
-operator|.
-name|setBucketEncryptionKey
-argument_list|(
-name|bekName
-argument_list|)
-expr_stmt|;
 name|System
 operator|.
 name|out
