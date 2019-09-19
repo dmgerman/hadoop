@@ -3411,7 +3411,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to get current user {}, {}"
+literal|"Failed to get current user, {}"
 argument_list|,
 name|e
 argument_list|)

@@ -428,18 +428,13 @@ name|warn
 argument_list|(
 literal|"[{}:{}] response [{}] {}"
 argument_list|,
-operator|new
-name|Object
-index|[]
-block|{
 name|method
-block|,
+argument_list|,
 name|path
-block|,
+argument_list|,
 name|status
-block|,
+argument_list|,
 name|message
-block|}
 argument_list|,
 name|throwable
 argument_list|)

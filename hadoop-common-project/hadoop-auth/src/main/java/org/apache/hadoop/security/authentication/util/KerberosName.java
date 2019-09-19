@@ -1076,11 +1076,11 @@ decl_stmt|;
 if|if
 condition|(
 name|num
-argument_list|<
+operator|<
 literal|0
 operator|||
 name|num
-argument_list|>
+operator|>=
 name|params
 operator|.
 name|length
