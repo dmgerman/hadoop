@@ -446,7 +446,7 @@ name|google
 operator|.
 name|protobuf
 operator|.
-name|GeneratedMessage
+name|GeneratedMessageV3
 import|;
 end_import
 
@@ -466,7 +466,7 @@ name|PlacementConstraint
 operator|.
 name|Visitor
 argument_list|<
-name|GeneratedMessage
+name|GeneratedMessageV3
 argument_list|>
 block|{
 DECL|field|placementConstraint
@@ -514,7 +514,7 @@ annotation|@
 name|Override
 DECL|method|visit (SingleConstraint constraint)
 specifier|public
-name|GeneratedMessage
+name|GeneratedMessageV3
 name|visit
 parameter_list|(
 name|SingleConstraint
@@ -671,7 +671,7 @@ annotation|@
 name|Override
 DECL|method|visit (TargetExpression target)
 specifier|public
-name|GeneratedMessage
+name|GeneratedMessageV3
 name|visit
 parameter_list|(
 name|TargetExpression
@@ -756,7 +756,7 @@ annotation|@
 name|Override
 DECL|method|visit (TargetConstraint constraint)
 specifier|public
-name|GeneratedMessage
+name|GeneratedMessageV3
 name|visit
 parameter_list|(
 name|TargetConstraint
@@ -775,7 +775,7 @@ annotation|@
 name|Override
 DECL|method|visit (CardinalityConstraint constraint)
 specifier|public
-name|GeneratedMessage
+name|GeneratedMessageV3
 name|visit
 parameter_list|(
 name|CardinalityConstraint
@@ -792,7 +792,7 @@ throw|;
 block|}
 DECL|method|visitAndOr ( CompositeConstraint<AbstractConstraint> composite, CompositeType type)
 specifier|private
-name|GeneratedMessage
+name|GeneratedMessageV3
 name|visitAndOr
 parameter_list|(
 name|CompositeConstraint
@@ -886,7 +886,7 @@ annotation|@
 name|Override
 DECL|method|visit (And constraint)
 specifier|public
-name|GeneratedMessage
+name|GeneratedMessageV3
 name|visit
 parameter_list|(
 name|And
@@ -908,7 +908,7 @@ annotation|@
 name|Override
 DECL|method|visit (Or constraint)
 specifier|public
-name|GeneratedMessage
+name|GeneratedMessageV3
 name|visit
 parameter_list|(
 name|Or
@@ -930,7 +930,7 @@ annotation|@
 name|Override
 DECL|method|visit (DelayedOr constraint)
 specifier|public
-name|GeneratedMessage
+name|GeneratedMessageV3
 name|visit
 parameter_list|(
 name|DelayedOr
@@ -1020,7 +1020,7 @@ annotation|@
 name|Override
 DECL|method|visit (TimedPlacementConstraint constraint)
 specifier|public
-name|GeneratedMessage
+name|GeneratedMessageV3
 name|visit
 parameter_list|(
 name|TimedPlacementConstraint

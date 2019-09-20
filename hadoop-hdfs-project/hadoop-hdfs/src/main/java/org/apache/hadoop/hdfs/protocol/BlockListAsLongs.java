@@ -1074,7 +1074,7 @@ argument_list|)
 expr_stmt|;
 name|cos
 operator|.
-name|writeRawVarint64
+name|writeUInt64NoTag
 argument_list|(
 name|replica
 operator|.
@@ -1084,7 +1084,7 @@ argument_list|)
 expr_stmt|;
 name|cos
 operator|.
-name|writeRawVarint64
+name|writeUInt64NoTag
 argument_list|(
 name|replica
 operator|.
@@ -1104,7 +1104,7 @@ comment|// although state is not a 64-bit value, using a long varint to
 comment|// allow for future use of the upper bits
 name|cos
 operator|.
-name|writeRawVarint64
+name|writeUInt64NoTag
 argument_list|(
 name|state
 operator|.

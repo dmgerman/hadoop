@@ -5461,7 +5461,7 @@ name|name
 expr_stmt|;
 block|}
 block|}
-DECL|method|getOndiskTrunkSize (com.google.protobuf.GeneratedMessage s)
+DECL|method|getOndiskTrunkSize ( com.google.protobuf.GeneratedMessageV3 s)
 specifier|private
 specifier|static
 name|int
@@ -5473,14 +5473,14 @@ name|google
 operator|.
 name|protobuf
 operator|.
-name|GeneratedMessage
+name|GeneratedMessageV3
 name|s
 parameter_list|)
 block|{
 return|return
 name|CodedOutputStream
 operator|.
-name|computeRawVarint32Size
+name|computeUInt32SizeNoTag
 argument_list|(
 name|s
 operator|.

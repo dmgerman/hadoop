@@ -15512,7 +15512,7 @@ argument_list|)
 expr_stmt|;
 name|cos
 operator|.
-name|writeRawVarint32
+name|writeUInt32NoTag
 argument_list|(
 name|header
 operator|.
@@ -15536,7 +15536,7 @@ condition|)
 block|{
 name|cos
 operator|.
-name|writeRawVarint32
+name|writeUInt32NoTag
 argument_list|(
 name|payload
 operator|.
@@ -15579,7 +15579,7 @@ name|length
 operator|+
 name|CodedOutputStream
 operator|.
-name|computeRawVarint32Size
+name|computeUInt32SizeNoTag
 argument_list|(
 name|length
 argument_list|)

@@ -469,6 +469,19 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+comment|//protobuf's default limit increased to 2GB from protobuf 3.x onwards.
+comment|//So there will not be any exception thrown from protobuf.
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|IPC_MAXIMUM_DATA_LENGTH
+argument_list|,
+name|IPC_MAXIMUM_DATA_LENGTH_DEFAULT
+operator|/
+literal|2
+argument_list|)
+expr_stmt|;
 name|initCluster
 argument_list|()
 expr_stmt|;

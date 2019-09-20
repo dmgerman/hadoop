@@ -3174,7 +3174,7 @@ name|XAttrProto
 operator|.
 name|XAttrNamespaceProto
 operator|.
-name|valueOf
+name|forNumber
 argument_list|(
 name|ns
 argument_list|)

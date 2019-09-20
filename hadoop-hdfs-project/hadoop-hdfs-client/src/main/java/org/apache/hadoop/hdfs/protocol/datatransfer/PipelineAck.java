@@ -406,7 +406,7 @@ block|{
 return|return
 name|Status
 operator|.
-name|valueOf
+name|forNumber
 argument_list|(
 operator|(
 name|int

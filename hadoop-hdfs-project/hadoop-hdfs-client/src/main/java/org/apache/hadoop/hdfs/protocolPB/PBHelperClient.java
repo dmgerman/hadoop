@@ -3723,7 +3723,7 @@ name|HdfsProtos
 operator|.
 name|ChecksumTypeProto
 operator|.
-name|valueOf
+name|forNumber
 argument_list|(
 name|type
 operator|.
@@ -8946,7 +8946,7 @@ block|{
 return|return
 name|FsActionProto
 operator|.
-name|valueOf
+name|forNumber
 argument_list|(
 name|v
 operator|!=
@@ -9243,7 +9243,7 @@ block|{
 return|return
 name|XAttrNamespaceProto
 operator|.
-name|valueOf
+name|forNumber
 argument_list|(
 name|v
 operator|.
@@ -9757,7 +9757,7 @@ block|{
 return|return
 name|AclEntryScopeProto
 operator|.
-name|valueOf
+name|forNumber
 argument_list|(
 name|v
 operator|.
@@ -9797,7 +9797,7 @@ block|{
 return|return
 name|AclEntryTypeProto
 operator|.
-name|valueOf
+name|forNumber
 argument_list|(
 name|e
 operator|.
@@ -22135,7 +22135,7 @@ name|HdfsProtos
 operator|.
 name|ErasureCodingPolicyState
 operator|.
-name|valueOf
+name|forNumber
 argument_list|(
 name|state
 operator|.
@@ -22789,7 +22789,7 @@ name|abfp
 init|=
 name|AddBlockFlagProto
 operator|.
-name|valueOf
+name|forNumber
 argument_list|(
 name|flag
 operator|.
@@ -23105,7 +23105,7 @@ name|typeProto
 init|=
 name|OpenFilesTypeProto
 operator|.
-name|valueOf
+name|forNumber
 argument_list|(
 name|type
 operator|.

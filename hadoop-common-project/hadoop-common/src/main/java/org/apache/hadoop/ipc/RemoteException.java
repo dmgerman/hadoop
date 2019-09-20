@@ -199,7 +199,7 @@ block|{
 return|return
 name|RpcErrorCodeProto
 operator|.
-name|valueOf
+name|forNumber
 argument_list|(
 name|errorCode
 argument_list|)

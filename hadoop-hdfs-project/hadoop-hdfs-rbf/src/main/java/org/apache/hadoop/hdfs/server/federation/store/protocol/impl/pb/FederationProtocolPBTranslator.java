@@ -74,7 +74,7 @@ name|google
 operator|.
 name|protobuf
 operator|.
-name|GeneratedMessage
+name|GeneratedMessageV3
 import|;
 end_import
 
@@ -128,7 +128,7 @@ name|FederationProtocolPBTranslator
 parameter_list|<
 name|P
 extends|extends
-name|GeneratedMessage
+name|GeneratedMessageV3
 parameter_list|,
 name|B
 extends|extends

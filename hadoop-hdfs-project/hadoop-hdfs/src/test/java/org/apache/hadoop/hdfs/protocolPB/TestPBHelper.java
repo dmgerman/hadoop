@@ -7584,7 +7584,7 @@ name|HdfsProtos
 operator|.
 name|ChecksumTypeProto
 operator|.
-name|valueOf
+name|forNumber
 argument_list|(
 name|DataChecksum
 operator|.

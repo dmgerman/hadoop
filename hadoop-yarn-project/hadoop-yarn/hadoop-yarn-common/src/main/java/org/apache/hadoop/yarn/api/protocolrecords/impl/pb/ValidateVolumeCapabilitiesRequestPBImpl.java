@@ -304,7 +304,7 @@ name|VolumeCapability
 operator|.
 name|AccessMode
 operator|.
-name|valueOf
+name|forNumber
 argument_list|(
 name|volumeCapability
 operator|.
@@ -324,7 +324,7 @@ name|VolumeCapability
 operator|.
 name|VolumeType
 operator|.
-name|valueOf
+name|forNumber
 argument_list|(
 name|volumeCapability
 operator|.

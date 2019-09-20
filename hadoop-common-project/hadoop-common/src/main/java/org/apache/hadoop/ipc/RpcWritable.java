@@ -524,7 +524,7 @@ name|length
 operator|+=
 name|CodedOutputStream
 operator|.
-name|computeRawVarint32Size
+name|computeUInt32SizeNoTag
 argument_list|(
 name|length
 argument_list|)

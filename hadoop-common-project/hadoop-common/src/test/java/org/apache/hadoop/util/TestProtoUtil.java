@@ -347,7 +347,7 @@ argument_list|)
 decl_stmt|;
 name|cout
 operator|.
-name|writeRawVarint32
+name|writeUInt32NoTag
 argument_list|(
 name|value
 argument_list|)
