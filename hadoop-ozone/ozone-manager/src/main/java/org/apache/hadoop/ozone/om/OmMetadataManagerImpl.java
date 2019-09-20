@@ -452,6 +452,24 @@ name|om
 operator|.
 name|codec
 operator|.
+name|RepeatedOmKeyInfoCodec
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|codec
+operator|.
 name|S3SecretValueCodec
 import|;
 end_import
@@ -671,6 +689,24 @@ operator|.
 name|helpers
 operator|.
 name|OzoneFSUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|helpers
+operator|.
+name|RepeatedOmKeyInfo
 import|;
 end_import
 
@@ -928,7 +964,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * OM RocksDB Structure .    *<p>    * OM DB stores metadata as KV pairs in different column families.    *<p>    * OM DB Schema:    * |-------------------------------------------------------------------|    * |  Column Family     |        VALUE                                 |    * |-------------------------------------------------------------------|    * | userTable          |     user->VolumeList                         |    * |-------------------------------------------------------------------|    * | volumeTable        |     /volume->VolumeInfo                      |    * |-------------------------------------------------------------------|    * | bucketTable        |     /volume/bucket-> BucketInfo              |    * |-------------------------------------------------------------------|    * | keyTable           | /volumeName/bucketName/keyName->KeyInfo      |    * |-------------------------------------------------------------------|    * | deletedTable       | /volumeName/bucketName/keyName->KeyInfo      |    * |-------------------------------------------------------------------|    * | openKey            | /volumeName/bucketName/keyName/id->KeyInfo   |    * |-------------------------------------------------------------------|    * | s3Table            | s3BucketName -> /volumeName/bucketName       |    * |-------------------------------------------------------------------|    * | s3SecretTable      | s3g_access_key_id -> s3Secret                |    * |-------------------------------------------------------------------|    * | dTokenTable        | s3g_access_key_id -> s3Secret                |    * |-------------------------------------------------------------------|    * | prefixInfoTable    | prefix -> PrefixInfo                         |    * |-------------------------------------------------------------------|    * |  multipartInfoTable| /volumeName/bucketName/keyName/uploadId ->...|    * |-------------------------------------------------------------------|    */
+comment|/**    * OM RocksDB Structure .    *<p>    * OM DB stores metadata as KV pairs in different column families.    *<p>    * OM DB Schema:    * |----------------------------------------------------------------------|    * |  Column Family     |        VALUE                                    |    * |----------------------------------------------------------------------|    * | userTable          |     user->VolumeList                            |    * |----------------------------------------------------------------------|    * | volumeTable        |     /volume->VolumeInfo                         |    * |----------------------------------------------------------------------|    * | bucketTable        |     /volume/bucket-> BucketInfo                 |    * |----------------------------------------------------------------------|    * | keyTable           | /volumeName/bucketName/keyName->KeyInfo         |    * |----------------------------------------------------------------------|    * | deletedTable       | /volumeName/bucketName/keyName->RepeatedKeyInfo |    * |----------------------------------------------------------------------|    * | openKey            | /volumeName/bucketName/keyName/id->KeyInfo      |    * |----------------------------------------------------------------------|    * | s3Table            | s3BucketName -> /volumeName/bucketName          |    * |----------------------------------------------------------------------|    * | s3SecretTable      | s3g_access_key_id -> s3Secret                   |    * |----------------------------------------------------------------------|    * | dTokenTable        | s3g_access_key_id -> s3Secret                   |    * |----------------------------------------------------------------------|    * | prefixInfoTable    | prefix -> PrefixInfo                            |    * |----------------------------------------------------------------------|    * |  multipartInfoTable| /volumeName/bucketName/keyName/uploadId ->...   |    * |----------------------------------------------------------------------|    */
 DECL|field|USER_TABLE
 specifier|public
 specifier|static
@@ -1285,7 +1321,7 @@ name|Table
 argument_list|<
 name|String
 argument_list|,
-name|OmKeyInfo
+name|RepeatedOmKeyInfo
 argument_list|>
 name|getDeletedTable
 parameter_list|()
@@ -1596,6 +1632,17 @@ argument_list|)
 operator|.
 name|addCodec
 argument_list|(
+name|RepeatedOmKeyInfo
+operator|.
+name|class
+argument_list|,
+operator|new
+name|RepeatedOmKeyInfoCodec
+argument_list|()
+argument_list|)
+operator|.
+name|addCodec
+argument_list|(
 name|OmBucketInfo
 operator|.
 name|class
@@ -1803,7 +1850,7 @@ name|String
 operator|.
 name|class
 argument_list|,
-name|OmKeyInfo
+name|RepeatedOmKeyInfo
 operator|.
 name|class
 argument_list|)
@@ -3946,7 +3993,7 @@ name|KeyValue
 argument_list|<
 name|String
 argument_list|,
-name|OmKeyInfo
+name|RepeatedOmKeyInfo
 argument_list|>
 argument_list|>
 name|keyIter
@@ -3979,7 +4026,7 @@ name|KeyValue
 argument_list|<
 name|String
 argument_list|,
-name|OmKeyInfo
+name|RepeatedOmKeyInfo
 argument_list|>
 name|kv
 init|=
@@ -3995,8 +4042,8 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|OmKeyInfo
-name|info
+name|RepeatedOmKeyInfo
+name|infoList
 init|=
 name|kv
 operator|.
@@ -4004,6 +4051,17 @@ name|getValue
 argument_list|()
 decl_stmt|;
 comment|// Get block keys as a list.
+for|for
+control|(
+name|OmKeyInfo
+name|info
+range|:
+name|infoList
+operator|.
+name|getOmKeyInfoList
+argument_list|()
+control|)
+block|{
 name|OmKeyLocationInfoGroup
 name|latest
 init|=
@@ -4087,6 +4145,7 @@ expr_stmt|;
 name|currentCount
 operator|++
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}

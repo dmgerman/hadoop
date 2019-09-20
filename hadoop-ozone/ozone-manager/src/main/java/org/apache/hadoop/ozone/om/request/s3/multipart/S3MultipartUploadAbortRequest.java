@@ -836,11 +836,6 @@ name|S3MultipartUploadAbortResponse
 argument_list|(
 name|multipartKey
 argument_list|,
-name|keyArgs
-operator|.
-name|getModificationTime
-argument_list|()
-argument_list|,
 name|multipartKeyInfo
 argument_list|,
 name|omResponse
@@ -874,11 +869,6 @@ operator|new
 name|S3MultipartUploadAbortResponse
 argument_list|(
 name|multipartKey
-argument_list|,
-name|keyArgs
-operator|.
-name|getModificationTime
-argument_list|()
 argument_list|,
 name|multipartKeyInfo
 argument_list|,

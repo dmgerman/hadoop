@@ -32,20 +32,6 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|OmUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
 name|om
 operator|.
 name|OMMetadataManager
@@ -85,6 +71,24 @@ operator|.
 name|helpers
 operator|.
 name|OmKeyLocationInfoGroup
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|om
+operator|.
+name|helpers
+operator|.
+name|RepeatedOmKeyInfo
 import|;
 end_import
 
@@ -189,20 +193,12 @@ specifier|private
 name|OmKeyInfo
 name|omKeyInfo
 decl_stmt|;
-DECL|field|deleteTimestamp
-specifier|private
-name|long
-name|deleteTimestamp
-decl_stmt|;
-DECL|method|OMKeyDeleteResponse (OmKeyInfo omKeyInfo, long deletionTime, OMResponse omResponse)
+DECL|method|OMKeyDeleteResponse (OmKeyInfo omKeyInfo, OMResponse omResponse)
 specifier|public
 name|OMKeyDeleteResponse
 parameter_list|(
 name|OmKeyInfo
 name|omKeyInfo
-parameter_list|,
-name|long
-name|deletionTime
 parameter_list|,
 name|OMResponse
 name|omResponse
@@ -218,12 +214,6 @@ operator|.
 name|omKeyInfo
 operator|=
 name|omKeyInfo
-expr_stmt|;
-name|this
-operator|.
-name|deleteTimestamp
-operator|=
-name|deletionTime
 expr_stmt|;
 block|}
 annotation|@
@@ -306,20 +296,52 @@ condition|)
 block|{
 comment|// If a deleted key is put in the table where a key with the same
 comment|// name already exists, then the old deleted key information would be
-comment|// lost. To differentiate between keys with same name in
-comment|// deletedTable, we add the timestamp to the key name.
-name|String
-name|deleteKeyName
+comment|// lost. To avoid this, first check if a key with same name exists.
+comment|// deletedTable in OM Metadata stores<KeyName, RepeatedOMKeyInfo>.
+comment|// The RepeatedOmKeyInfo is the structure that allows us to store a
+comment|// list of OmKeyInfo that can be tied to same key name. For a keyName
+comment|// if RepeatedOMKeyInfo structure is null, we create a new instance,
+comment|// if it is not null, then we simply add to the list and store this
+comment|// instance in deletedTable.
+name|RepeatedOmKeyInfo
+name|repeatedOmKeyInfo
 init|=
-name|OmUtils
+name|omMetadataManager
 operator|.
-name|getDeletedKeyName
+name|getDeletedTable
+argument_list|()
+operator|.
+name|get
 argument_list|(
 name|ozoneKey
-argument_list|,
-name|deleteTimestamp
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|repeatedOmKeyInfo
+operator|==
+literal|null
+condition|)
+block|{
+name|repeatedOmKeyInfo
+operator|=
+operator|new
+name|RepeatedOmKeyInfo
+argument_list|(
+name|omKeyInfo
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|repeatedOmKeyInfo
+operator|.
+name|addOmKeyInfo
+argument_list|(
+name|omKeyInfo
+argument_list|)
+expr_stmt|;
+block|}
 name|omMetadataManager
 operator|.
 name|getDeletedTable
@@ -329,9 +351,9 @@ name|putWithBatch
 argument_list|(
 name|batchOperation
 argument_list|,
-name|deleteKeyName
+name|ozoneKey
 argument_list|,
-name|omKeyInfo
+name|repeatedOmKeyInfo
 argument_list|)
 expr_stmt|;
 block|}

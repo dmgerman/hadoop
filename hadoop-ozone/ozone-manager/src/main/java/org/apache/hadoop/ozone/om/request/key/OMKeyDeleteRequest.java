@@ -862,11 +862,6 @@ name|OMKeyDeleteResponse
 argument_list|(
 name|omKeyInfo
 argument_list|,
-name|deleteKeyArgs
-operator|.
-name|getModificationTime
-argument_list|()
-argument_list|,
 name|omResponse
 operator|.
 name|setDeleteKeyResponse
@@ -898,8 +893,6 @@ operator|new
 name|OMKeyDeleteResponse
 argument_list|(
 literal|null
-argument_list|,
-literal|0
 argument_list|,
 name|createErrorOMResponse
 argument_list|(
