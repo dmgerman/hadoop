@@ -144,6 +144,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|ReadOption
@@ -509,6 +523,42 @@ operator|.
 name|slf4j
 operator|.
 name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_CLIENT_BLOCK_READER_REMOTE_BUFFER_SIZE_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_CLIENT_BLOCK_READER_REMOTE_BUFFER_SIZE_KEY
 import|;
 end_import
 
@@ -1764,7 +1814,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Create a new BlockReader specifically to satisfy a read.    * This method also sends the OP_READ_BLOCK request.    *    * @param file  File location    * @param block  The block object    * @param blockToken  The block token for security    * @param startOffset  The read offset, relative to block head    * @param len  The number of bytes to read    * @param verifyChecksum  Whether to verify checksum    * @param clientName  Client name    * @param peer  The Peer to use    * @param datanodeID  The DatanodeID this peer is connected to    * @return New BlockReader instance, or null on error.    */
-DECL|method|newBlockReader (String file, ExtendedBlock block, Token<BlockTokenIdentifier> blockToken, long startOffset, long len, boolean verifyChecksum, String clientName, Peer peer, DatanodeID datanodeID, PeerCache peerCache, CachingStrategy cachingStrategy, int networkDistance)
+DECL|method|newBlockReader (String file, ExtendedBlock block, Token<BlockTokenIdentifier> blockToken, long startOffset, long len, boolean verifyChecksum, String clientName, Peer peer, DatanodeID datanodeID, PeerCache peerCache, CachingStrategy cachingStrategy, int networkDistance, Configuration configuration)
 specifier|public
 specifier|static
 name|BlockReader
@@ -1808,11 +1858,26 @@ name|cachingStrategy
 parameter_list|,
 name|int
 name|networkDistance
+parameter_list|,
+name|Configuration
+name|configuration
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 comment|// in and out will be closed when sock is closed (by the caller)
+name|int
+name|bufferSize
+init|=
+name|configuration
+operator|.
+name|getInt
+argument_list|(
+name|DFS_CLIENT_BLOCK_READER_REMOTE_BUFFER_SIZE_KEY
+argument_list|,
+name|DFS_CLIENT_BLOCK_READER_REMOTE_BUFFER_SIZE_DEFAULT
+argument_list|)
+decl_stmt|;
 specifier|final
 name|DataOutputStream
 name|out
@@ -1827,6 +1892,8 @@ name|peer
 operator|.
 name|getOutputStream
 argument_list|()
+argument_list|,
+name|bufferSize
 argument_list|)
 argument_list|)
 decl_stmt|;

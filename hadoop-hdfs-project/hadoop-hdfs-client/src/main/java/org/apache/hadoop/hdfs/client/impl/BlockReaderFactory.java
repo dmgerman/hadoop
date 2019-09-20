@@ -3900,6 +3900,8 @@ argument_list|,
 name|cachingStrategy
 argument_list|,
 name|networkDistance
+argument_list|,
+name|configuration
 argument_list|)
 return|;
 block|}

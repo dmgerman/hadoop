@@ -592,6 +592,18 @@ literal|10
 argument_list|)
 decl_stmt|;
 comment|// 10 days
+DECL|field|DFS_CLIENT_BLOCK_READER_REMOTE_BUFFER_SIZE_KEY
+name|String
+name|DFS_CLIENT_BLOCK_READER_REMOTE_BUFFER_SIZE_KEY
+init|=
+literal|"dfs.client.block.reader.remote.buffer.size"
+decl_stmt|;
+DECL|field|DFS_CLIENT_BLOCK_READER_REMOTE_BUFFER_SIZE_DEFAULT
+name|int
+name|DFS_CLIENT_BLOCK_READER_REMOTE_BUFFER_SIZE_DEFAULT
+init|=
+literal|8192
+decl_stmt|;
 DECL|field|DFS_DATANODE_KERBEROS_PRINCIPAL_KEY
 name|String
 name|DFS_DATANODE_KERBEROS_PRINCIPAL_KEY
