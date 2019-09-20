@@ -468,6 +468,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|pid
 specifier|private
+specifier|final
 name|Integer
 name|pid
 decl_stmt|;
@@ -898,8 +899,9 @@ expr_stmt|;
 return|return;
 block|}
 comment|// if pid is explicitly specified, use it else default to current process
-name|pid
-operator|=
+name|Integer
+name|processId
+init|=
 name|getInteger
 argument_list|(
 name|req
@@ -908,12 +910,12 @@ literal|"pid"
 argument_list|,
 name|pid
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 comment|// if pid is not specified in query param and if current process pid
 comment|// cannot be determined
 if|if
 condition|(
-name|pid
+name|processId
 operator|==
 literal|null
 condition|)
@@ -1137,7 +1139,7 @@ name|ProfileServlet
 operator|.
 name|generateFileName
 argument_list|(
-name|pid
+name|processId
 argument_list|,
 name|output
 argument_list|,
@@ -1431,7 +1433,7 @@ name|cmd
 operator|.
 name|add
 argument_list|(
-name|pid
+name|processId
 operator|.
 name|toString
 argument_list|()
