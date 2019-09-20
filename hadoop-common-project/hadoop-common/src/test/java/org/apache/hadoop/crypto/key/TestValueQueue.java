@@ -58,6 +58,18 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|TimeoutException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|TimeUnit
 import|;
 end_import
@@ -171,20 +183,6 @@ operator|.
 name|junit
 operator|.
 name|Test
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Supplier
 import|;
 end_import
 
@@ -368,6 +366,76 @@ argument_list|)
 return|;
 block|}
 block|}
+DECL|method|waitForRefill (ValueQueue<?> valueQueue, String queueName, int queueSize)
+specifier|private
+name|void
+name|waitForRefill
+parameter_list|(
+name|ValueQueue
+argument_list|<
+name|?
+argument_list|>
+name|valueQueue
+parameter_list|,
+name|String
+name|queueName
+parameter_list|,
+name|int
+name|queueSize
+parameter_list|)
+throws|throws
+name|TimeoutException
+throws|,
+name|InterruptedException
+block|{
+name|GenericTestUtils
+operator|.
+name|waitFor
+argument_list|(
+parameter_list|()
+lambda|->
+block|{
+name|int
+name|size
+init|=
+name|valueQueue
+operator|.
+name|getSize
+argument_list|(
+name|queueName
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|size
+operator|!=
+name|queueSize
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Current ValueQueue size is "
+operator|+
+name|size
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
+return|;
+block|}
+return|return
+literal|true
+return|;
+block|}
+argument_list|,
+literal|100
+argument_list|,
+literal|3000
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Verifies that Queue is initially filled to "numInitValues"    */
 annotation|@
 name|Test
@@ -407,7 +475,7 @@ literal|10
 argument_list|,
 literal|0.1f
 argument_list|,
-literal|300
+literal|30000
 argument_list|,
 literal|1
 argument_list|,
@@ -491,7 +559,7 @@ literal|10
 argument_list|,
 literal|0.5f
 argument_list|,
-literal|300
+literal|30000
 argument_list|,
 literal|1
 argument_list|,
@@ -659,11 +727,11 @@ argument_list|<
 name|String
 argument_list|>
 argument_list|(
-literal|10
+literal|100
 argument_list|,
 literal|0.1f
 argument_list|,
-literal|300
+literal|30000
 argument_list|,
 literal|1
 argument_list|,
@@ -674,6 +742,7 @@ argument_list|,
 name|filler
 argument_list|)
 decl_stmt|;
+comment|// Trigger a prefill (10) and an async refill (91)
 name|Assert
 operator|.
 name|assertEquals
@@ -692,43 +761,33 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|1
-argument_list|,
-name|filler
-operator|.
-name|getTop
-argument_list|()
-operator|.
-name|num
-argument_list|)
-expr_stmt|;
-comment|// Trigger refill
-name|vq
-operator|.
-name|getNext
-argument_list|(
-literal|"k1"
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|1
-argument_list|,
-name|filler
-operator|.
-name|getTop
-argument_list|()
-operator|.
-name|num
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
 literal|10
+argument_list|,
+name|filler
+operator|.
+name|getTop
+argument_list|()
+operator|.
+name|num
+argument_list|)
+expr_stmt|;
+comment|// Wait for the async task to finish
+name|waitForRefill
+argument_list|(
+name|vq
+argument_list|,
+literal|"k1"
+argument_list|,
+literal|100
+argument_list|)
+expr_stmt|;
+comment|// Refill task should add 91 values to get to a full queue (10 produced by
+comment|// the prefill to the low watermark, 1 consumed by getNext())
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|91
 argument_list|,
 name|filler
 operator|.
@@ -783,7 +842,7 @@ literal|10
 argument_list|,
 literal|0.5f
 argument_list|,
-literal|300
+literal|30000
 argument_list|,
 literal|1
 argument_list|,
@@ -794,6 +853,7 @@ argument_list|,
 name|filler
 argument_list|)
 decl_stmt|;
+comment|// Trigger a prefill (5) and an async refill (6)
 name|Assert
 operator|.
 name|assertEquals
@@ -822,6 +882,68 @@ operator|.
 name|num
 argument_list|)
 expr_stmt|;
+comment|// Wait for the async task to finish
+name|waitForRefill
+argument_list|(
+name|vq
+argument_list|,
+literal|"k1"
+argument_list|,
+literal|10
+argument_list|)
+expr_stmt|;
+comment|// Refill task should add 6 values to get to a full queue (5 produced by
+comment|// the prefill to the low watermark, 1 consumed by getNext())
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|6
+argument_list|,
+name|filler
+operator|.
+name|getTop
+argument_list|()
+operator|.
+name|num
+argument_list|)
+expr_stmt|;
+comment|// Take another value, queue is still above the watermark
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"test"
+argument_list|,
+name|vq
+operator|.
+name|getNext
+argument_list|(
+literal|"k1"
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Wait a while to make sure that no async refills are triggered
+try|try
+block|{
+name|waitForRefill
+argument_list|(
+name|vq
+argument_list|,
+literal|"k1"
+argument_list|,
+literal|10
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|TimeoutException
+name|ignored
+parameter_list|)
+block|{
+comment|// This is the correct outcome - no refill is expected
+block|}
 name|Assert
 operator|.
 name|assertEquals
@@ -880,7 +1002,7 @@ literal|10
 argument_list|,
 literal|0.1f
 argument_list|,
-literal|300
+literal|30000
 argument_list|,
 literal|1
 argument_list|,
@@ -891,6 +1013,7 @@ argument_list|,
 name|filler
 argument_list|)
 decl_stmt|;
+comment|// Trigger a prefill (1) and an async refill (10)
 name|Assert
 operator|.
 name|assertEquals
@@ -917,6 +1040,71 @@ name|getTop
 argument_list|()
 operator|.
 name|num
+argument_list|)
+expr_stmt|;
+comment|// Wait for the async task to finish
+name|waitForRefill
+argument_list|(
+name|vq
+argument_list|,
+literal|"k1"
+argument_list|,
+literal|10
+argument_list|)
+expr_stmt|;
+comment|// Refill task should add 10 values to get to a full queue (1 produced by
+comment|// the prefill to the low watermark, 1 consumed by getNext())
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|10
+argument_list|,
+name|filler
+operator|.
+name|getTop
+argument_list|()
+operator|.
+name|num
+argument_list|)
+expr_stmt|;
+comment|// Drain completely, no further refills triggered
+name|vq
+operator|.
+name|drain
+argument_list|(
+literal|"k1"
+argument_list|)
+expr_stmt|;
+comment|// Wait a while to make sure that no async refills are triggered
+try|try
+block|{
+name|waitForRefill
+argument_list|(
+name|vq
+argument_list|,
+literal|"k1"
+argument_list|,
+literal|10
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|TimeoutException
+name|ignored
+parameter_list|)
+block|{
+comment|// This is the correct outcome - no refill is expected
+block|}
+name|Assert
+operator|.
+name|assertNull
+argument_list|(
+name|filler
+operator|.
+name|getTop
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Synchronous call:
@@ -960,65 +1148,16 @@ name|num
 argument_list|)
 expr_stmt|;
 comment|// Wait for the async task to finish
-name|GenericTestUtils
-operator|.
-name|waitFor
+name|waitForRefill
 argument_list|(
-operator|new
-name|Supplier
-argument_list|<
-name|Boolean
-argument_list|>
-argument_list|()
-block|{
-annotation|@
-name|Override
-specifier|public
-name|Boolean
-name|get
-parameter_list|()
-block|{
-name|int
-name|size
-init|=
 name|vq
-operator|.
-name|getSize
-argument_list|(
+argument_list|,
 literal|"k1"
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|size
-operator|!=
+argument_list|,
 literal|10
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Current ValueQueue size is "
-operator|+
-name|size
 argument_list|)
 expr_stmt|;
-return|return
-literal|false
-return|;
-block|}
-return|return
-literal|true
-return|;
-block|}
-block|}
-argument_list|,
-literal|100
-argument_list|,
-literal|3000
-argument_list|)
-expr_stmt|;
+comment|// Refill task should add 10 values to get to a full queue
 name|Assert
 operator|.
 name|assertEquals
@@ -1036,28 +1175,30 @@ name|num
 argument_list|)
 expr_stmt|;
 comment|// Drain completely after filled by the async thread
+name|vq
+operator|.
+name|drain
+argument_list|(
+literal|"k1"
+argument_list|)
+expr_stmt|;
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
 literal|"Failed to drain completely after async."
 argument_list|,
-literal|10
+literal|0
 argument_list|,
 name|vq
 operator|.
-name|getAtMost
+name|getSize
 argument_list|(
 literal|"k1"
-argument_list|,
-literal|10
 argument_list|)
-operator|.
-name|size
-argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Synchronous call (No Async call since num> lowWatermark)
+comment|// Synchronous call
 name|Assert
 operator|.
 name|assertEquals
@@ -1140,7 +1281,7 @@ literal|10
 argument_list|,
 literal|0.3f
 argument_list|,
-literal|300
+literal|30000
 argument_list|,
 literal|1
 argument_list|,
@@ -1151,6 +1292,7 @@ argument_list|,
 name|filler
 argument_list|)
 decl_stmt|;
+comment|// Trigger a prefill (3) and an async refill (8)
 name|Assert
 operator|.
 name|assertEquals
@@ -1179,12 +1321,48 @@ operator|.
 name|num
 argument_list|)
 expr_stmt|;
-comment|// Drain completely
+comment|// Wait for the async task to finish
+name|waitForRefill
+argument_list|(
+name|vq
+argument_list|,
+literal|"k1"
+argument_list|,
+literal|10
+argument_list|)
+expr_stmt|;
+comment|// Refill task should add 8 values to get to a full queue (3 produced by
+comment|// the prefill to the low watermark, 1 consumed by getNext())
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|2
+literal|"Failed in async call."
+argument_list|,
+literal|8
+argument_list|,
+name|filler
+operator|.
+name|getTop
+argument_list|()
+operator|.
+name|num
+argument_list|)
+expr_stmt|;
+comment|// Drain completely, no further refills triggered
+name|vq
+operator|.
+name|drain
+argument_list|(
+literal|"k1"
+argument_list|)
+expr_stmt|;
+comment|// Queue is empty, sync will return a single value and trigger a refill
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|1
 argument_list|,
 name|vq
 operator|.
@@ -1199,11 +1377,37 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Asynch Refill call
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+literal|1
+argument_list|,
+name|filler
+operator|.
+name|getTop
+argument_list|()
+operator|.
+name|num
+argument_list|)
+expr_stmt|;
+comment|// Wait for the async task to finish
+name|waitForRefill
+argument_list|(
+name|vq
+argument_list|,
+literal|"k1"
+argument_list|,
+literal|10
+argument_list|)
+expr_stmt|;
+comment|// Refill task should add 10 values to get to a full queue
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"Failed in async call."
+argument_list|,
 literal|10
 argument_list|,
 name|filler
@@ -1259,7 +1463,7 @@ literal|10
 argument_list|,
 literal|0.3f
 argument_list|,
-literal|300
+literal|30000
 argument_list|,
 literal|1
 argument_list|,
@@ -1270,6 +1474,7 @@ argument_list|,
 name|filler
 argument_list|)
 decl_stmt|;
+comment|// Trigger a prefill (3) and an async refill (8)
 name|Assert
 operator|.
 name|assertEquals
@@ -1298,7 +1503,43 @@ operator|.
 name|num
 argument_list|)
 expr_stmt|;
-comment|// Drain completely
+comment|// Wait for the async task to finish
+name|waitForRefill
+argument_list|(
+name|vq
+argument_list|,
+literal|"k1"
+argument_list|,
+literal|10
+argument_list|)
+expr_stmt|;
+comment|// Refill task should add 8 values to get to a full queue (3 produced by
+comment|// the prefill to the low watermark, 1 consumed by getNext())
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"Failed in async call."
+argument_list|,
+literal|8
+argument_list|,
+name|filler
+operator|.
+name|getTop
+argument_list|()
+operator|.
+name|num
+argument_list|)
+expr_stmt|;
+comment|// Drain completely, no further refills triggered
+name|vq
+operator|.
+name|drain
+argument_list|(
+literal|"k1"
+argument_list|)
+expr_stmt|;
+comment|// Queue is empty, sync will return 3 values and trigger a refill
 name|Assert
 operator|.
 name|assertEquals
@@ -1318,12 +1559,11 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Synchronous call
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|1
+literal|3
 argument_list|,
 name|filler
 operator|.
@@ -1333,11 +1573,23 @@ operator|.
 name|num
 argument_list|)
 expr_stmt|;
-comment|// Asynch Refill call
+comment|// Wait for the async task to finish
+name|waitForRefill
+argument_list|(
+name|vq
+argument_list|,
+literal|"k1"
+argument_list|,
+literal|10
+argument_list|)
+expr_stmt|;
+comment|// Refill task should add 10 values to get to a full queue
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+literal|"Failed in async call."
+argument_list|,
 literal|10
 argument_list|,
 name|filler
@@ -1392,7 +1644,7 @@ literal|10
 argument_list|,
 literal|0.1f
 argument_list|,
-literal|300
+literal|30000
 argument_list|,
 literal|1
 argument_list|,
@@ -1403,6 +1655,7 @@ argument_list|,
 name|filler
 argument_list|)
 decl_stmt|;
+comment|// Trigger a prefill (1) and an async refill (10)
 name|Assert
 operator|.
 name|assertEquals
@@ -1431,6 +1684,33 @@ operator|.
 name|num
 argument_list|)
 expr_stmt|;
+comment|// Wait for the async task to finish
+name|waitForRefill
+argument_list|(
+name|vq
+argument_list|,
+literal|"k1"
+argument_list|,
+literal|10
+argument_list|)
+expr_stmt|;
+comment|// Refill task should add 10 values to get to a full queue (1 produced by
+comment|// the prefill to the low watermark, 1 consumed by getNext())
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|10
+argument_list|,
+name|filler
+operator|.
+name|getTop
+argument_list|()
+operator|.
+name|num
+argument_list|)
+expr_stmt|;
+comment|// Drain completely, no further refills triggered
 name|vq
 operator|.
 name|drain
@@ -1438,6 +1718,27 @@ argument_list|(
 literal|"k1"
 argument_list|)
 expr_stmt|;
+comment|// Wait a while to make sure that no async refills are triggered
+try|try
+block|{
+name|waitForRefill
+argument_list|(
+name|vq
+argument_list|,
+literal|"k1"
+argument_list|,
+literal|10
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|TimeoutException
+name|ignored
+parameter_list|)
+block|{
+comment|// This is the correct outcome - no refill is expected
+block|}
 name|Assert
 operator|.
 name|assertNull
