@@ -28,31 +28,9 @@ begin_import
 import|import
 name|java
 operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|HashMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|TimeoutException
 import|;
 end_import
 
@@ -384,7 +362,27 @@ name|org
 operator|.
 name|junit
 operator|.
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Before
 import|;
 end_import
 
@@ -399,7 +397,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Test to behaviour of the datanode when recieve close container command.  */
+comment|/**  * Test to behaviour of the datanode when receive close container command.  */
 end_comment
 
 begin_class
@@ -408,28 +406,33 @@ specifier|public
 class|class
 name|TestCloseContainerHandler
 block|{
-annotation|@
-name|Test
-DECL|method|test ()
-specifier|public
-name|void
-name|test
-parameter_list|()
-throws|throws
-name|IOException
-throws|,
-name|TimeoutException
-throws|,
-name|InterruptedException
-block|{
-comment|//setup a cluster (1G free space is enough for a unit test)
+DECL|field|cluster
+specifier|private
+name|MiniOzoneCluster
+name|cluster
+decl_stmt|;
+DECL|field|conf
+specifier|private
 name|OzoneConfiguration
 name|conf
-init|=
+decl_stmt|;
+annotation|@
+name|Before
+DECL|method|setup ()
+specifier|public
+name|void
+name|setup
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+comment|//setup a cluster (1G free space is enough for a unit test)
+name|conf
+operator|=
 operator|new
 name|OzoneConfiguration
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 name|conf
 operator|.
 name|set
@@ -439,9 +442,8 @@ argument_list|,
 literal|"1GB"
 argument_list|)
 expr_stmt|;
-name|MiniOzoneCluster
 name|cluster
-init|=
+operator|=
 name|MiniOzoneCluster
 operator|.
 name|newBuilder
@@ -456,7 +458,40 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
-decl_stmt|;
+expr_stmt|;
+block|}
+annotation|@
+name|After
+DECL|method|teardown ()
+specifier|public
+name|void
+name|teardown
+parameter_list|()
+block|{
+if|if
+condition|(
+name|cluster
+operator|!=
+literal|null
+condition|)
+block|{
+name|cluster
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Test
+DECL|method|test ()
+specifier|public
+name|void
+name|test
+parameter_list|()
+throws|throws
+name|Exception
+block|{
 name|cluster
 operator|.
 name|waitForClusterToBeReady
@@ -787,6 +822,7 @@ expr_stmt|;
 block|}
 DECL|method|isContainerClosed (MiniOzoneCluster cluster, long containerID)
 specifier|private
+specifier|static
 name|Boolean
 name|isContainerClosed
 parameter_list|(

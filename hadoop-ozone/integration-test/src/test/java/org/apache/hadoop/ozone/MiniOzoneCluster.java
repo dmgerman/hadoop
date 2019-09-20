@@ -554,7 +554,6 @@ name|conf
 decl_stmt|;
 DECL|field|path
 specifier|protected
-specifier|final
 name|String
 name|path
 decl_stmt|;
@@ -774,10 +773,8 @@ name|conf
 operator|=
 name|conf
 expr_stmt|;
-name|this
-operator|.
-name|clusterId
-operator|=
+name|setClusterId
+argument_list|(
 name|UUID
 operator|.
 name|randomUUID
@@ -785,9 +782,23 @@ argument_list|()
 operator|.
 name|toString
 argument_list|()
+argument_list|)
 expr_stmt|;
-name|this
-operator|.
+block|}
+comment|/**      * Sets the cluster Id.      *      * @param id cluster Id      *      * @return MiniOzoneCluster.Builder      */
+DECL|method|setClusterId (String id)
+specifier|public
+name|Builder
+name|setClusterId
+parameter_list|(
+name|String
+name|id
+parameter_list|)
+block|{
+name|clusterId
+operator|=
+name|id
+expr_stmt|;
 name|path
 operator|=
 name|GenericTestUtils
@@ -805,21 +816,6 @@ literal|"-"
 operator|+
 name|clusterId
 argument_list|)
-expr_stmt|;
-block|}
-comment|/**      * Sets the cluster Id.      *      * @param id cluster Id      *      * @return MiniOzoneCluster.Builder      */
-DECL|method|setClusterId (String id)
-specifier|public
-name|Builder
-name|setClusterId
-parameter_list|(
-name|String
-name|id
-parameter_list|)
-block|{
-name|clusterId
-operator|=
-name|id
 expr_stmt|;
 return|return
 name|this

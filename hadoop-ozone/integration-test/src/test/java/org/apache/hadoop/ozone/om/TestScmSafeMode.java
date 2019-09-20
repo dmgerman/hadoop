@@ -2041,7 +2041,7 @@ name|Exception
 block|{
 name|cluster
 operator|.
-name|stop
+name|shutdown
 argument_list|()
 expr_stmt|;
 comment|// If safe mode is disabled, cluster should not be in safe mode even if
