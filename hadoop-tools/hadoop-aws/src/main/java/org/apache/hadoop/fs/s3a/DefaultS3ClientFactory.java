@@ -294,6 +294,10 @@ name|getConf
 argument_list|()
 argument_list|,
 name|bucket
+argument_list|,
+name|Constants
+operator|.
+name|AWS_SERVICE_IDENTIFIER_S3
 argument_list|)
 decl_stmt|;
 if|if

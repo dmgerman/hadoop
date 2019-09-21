@@ -2497,6 +2497,11 @@ specifier|private
 name|AWSCredentialProviderList
 name|credentials
 decl_stmt|;
+DECL|field|signerManager
+specifier|private
+name|SignerManager
+name|signerManager
+decl_stmt|;
 DECL|field|ttlTimeProvider
 specifier|private
 name|ITtlTimeProvider
@@ -2910,6 +2915,19 @@ name|listVersion
 operator|==
 literal|1
 operator|)
+expr_stmt|;
+name|signerManager
+operator|=
+operator|new
+name|SignerManager
+argument_list|()
+expr_stmt|;
+name|signerManager
+operator|.
+name|initCustomSigners
+argument_list|(
+name|conf
+argument_list|)
 expr_stmt|;
 comment|// creates the AWS client, including overriding auth chain if
 comment|// the FS came with a DT
@@ -11819,6 +11837,17 @@ argument_list|(
 literal|null
 argument_list|)
 argument_list|)
+expr_stmt|;
+name|cleanupWithLogger
+argument_list|(
+name|LOG
+argument_list|,
+name|signerManager
+argument_list|)
+expr_stmt|;
+name|signerManager
+operator|=
+literal|null
 expr_stmt|;
 name|credentials
 operator|=

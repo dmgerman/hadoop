@@ -1815,6 +1815,8 @@ argument_list|(
 name|conf
 argument_list|,
 literal|null
+argument_list|,
+name|AWS_SERVICE_IDENTIFIER_STS
 argument_list|)
 decl_stmt|;
 return|return

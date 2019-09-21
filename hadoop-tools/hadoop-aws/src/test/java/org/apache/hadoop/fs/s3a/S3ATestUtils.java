@@ -2537,6 +2537,8 @@ argument_list|(
 name|conf
 argument_list|,
 name|bucket
+argument_list|,
+name|AWS_SERVICE_IDENTIFIER_STS
 argument_list|)
 argument_list|,
 name|conf
