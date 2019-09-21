@@ -89,8 +89,18 @@ specifier|private
 name|ReplicationType
 name|replicationType
 decl_stmt|;
+DECL|field|replicationFactor
+specifier|private
+name|int
+name|replicationFactor
+decl_stmt|;
 comment|/**    * Constructs OzoneKey from OmKeyInfo.    *    */
-DECL|method|OzoneKey (String volumeName, String bucketName, String keyName, long size, long creationTime, long modificationTime, ReplicationType type)
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"parameternumber"
+argument_list|)
+DECL|method|OzoneKey (String volumeName, String bucketName, String keyName, long size, long creationTime, long modificationTime, ReplicationType type, int replicationFactor)
 specifier|public
 name|OzoneKey
 parameter_list|(
@@ -114,6 +124,9 @@ name|modificationTime
 parameter_list|,
 name|ReplicationType
 name|type
+parameter_list|,
+name|int
+name|replicationFactor
 parameter_list|)
 block|{
 name|this
@@ -157,6 +170,12 @@ operator|.
 name|replicationType
 operator|=
 name|type
+expr_stmt|;
+name|this
+operator|.
+name|replicationFactor
+operator|=
+name|replicationFactor
 expr_stmt|;
 block|}
 comment|/**    * Returns Volume Name associated with the Key.    *    * @return volumeName    */
@@ -234,6 +253,17 @@ parameter_list|()
 block|{
 return|return
 name|replicationType
+return|;
+block|}
+comment|/**    * Returns the replication factor of the key.    *    * @return replicationFactor    */
+DECL|method|getReplicationFactor ()
+specifier|public
+name|int
+name|getReplicationFactor
+parameter_list|()
+block|{
+return|return
+name|replicationFactor
 return|;
 block|}
 block|}

@@ -110,7 +110,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"parameternumber"
 argument_list|)
-DECL|method|OzoneKeyDetails (String volumeName, String bucketName, String keyName, long size, long creationTime, long modificationTime, List<OzoneKeyLocation> ozoneKeyLocations, ReplicationType type, Map<String, String> metadata, FileEncryptionInfo feInfo)
+DECL|method|OzoneKeyDetails (String volumeName, String bucketName, String keyName, long size, long creationTime, long modificationTime, List<OzoneKeyLocation> ozoneKeyLocations, ReplicationType type, Map<String, String> metadata, FileEncryptionInfo feInfo, int replicationFactor)
 specifier|public
 name|OzoneKeyDetails
 parameter_list|(
@@ -151,6 +151,9 @@ name|metadata
 parameter_list|,
 name|FileEncryptionInfo
 name|feInfo
+parameter_list|,
+name|int
+name|replicationFactor
 parameter_list|)
 block|{
 name|super
@@ -168,6 +171,8 @@ argument_list|,
 name|modificationTime
 argument_list|,
 name|type
+argument_list|,
+name|replicationFactor
 argument_list|)
 expr_stmt|;
 name|this
