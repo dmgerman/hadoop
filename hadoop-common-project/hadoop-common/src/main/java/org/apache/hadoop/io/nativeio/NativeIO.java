@@ -634,33 +634,36 @@ condition|(
 name|stateCode
 condition|)
 block|{
+comment|// -1 represents UNSUPPORTED.
 case|case
 operator|-
 literal|1
 case|:
 name|msg
 operator|=
-literal|"The native code is built without PMDK support."
+literal|"The native code was built without PMDK support."
 expr_stmt|;
 break|break;
+comment|// 1 represents PMDK_LIB_NOT_FOUND.
 case|case
 literal|1
 case|:
 name|msg
 operator|=
-literal|"The native code is built with PMDK support, but PMDK libs "
+literal|"The native code was built with PMDK support, but PMDK libs "
 operator|+
-literal|"are NOT found in execution environment or failed to be loaded."
+literal|"were NOT found in execution environment or failed to be loaded."
 expr_stmt|;
 break|break;
+comment|// 0 represents SUPPORTED.
 case|case
 literal|0
 case|:
 name|msg
 operator|=
-literal|"The native code is built with PMDK support, and PMDK libs "
+literal|"The native code was built with PMDK support, and PMDK libs "
 operator|+
-literal|"are loaded successfully."
+literal|"were loaded successfully."
 expr_stmt|;
 break|break;
 default|default:
@@ -687,7 +690,7 @@ name|pmdkSupportState
 init|=
 name|SupportState
 operator|.
-name|PMDK_LIB_NOT_FOUND
+name|UNSUPPORTED
 decl_stmt|;
 DECL|field|LOG
 specifier|private
@@ -843,6 +846,40 @@ operator|+
 literal|" is unrecognized!"
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|getPmdkSupportStateMessage ()
+specifier|public
+specifier|static
+name|String
+name|getPmdkSupportStateMessage
+parameter_list|()
+block|{
+if|if
+condition|(
+name|getPmdkLibPath
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+name|pmdkSupportState
+operator|.
+name|getMessage
+argument_list|()
+operator|+
+literal|" The pmdk lib path: "
+operator|+
+name|getPmdkLibPath
+argument_list|()
+return|;
+block|}
+return|return
+name|pmdkSupportState
+operator|.
+name|getMessage
+argument_list|()
+return|;
 block|}
 DECL|method|isPmdkAvailable ()
 specifier|public
@@ -1134,7 +1171,29 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+DECL|method|getPmdkLibPath ()
+specifier|public
+specifier|static
+name|String
+name|getPmdkLibPath
+parameter_list|()
+block|{
+return|return
+name|POSIX
+operator|.
+name|getPmdkLibPath
+argument_list|()
+return|;
 block|}
+block|}
+DECL|method|getPmdkLibPath ()
+specifier|private
+specifier|static
+specifier|native
+name|String
+name|getPmdkLibPath
+parameter_list|()
+function_decl|;
 DECL|method|isPmemCheck (long address, long length)
 specifier|private
 specifier|static

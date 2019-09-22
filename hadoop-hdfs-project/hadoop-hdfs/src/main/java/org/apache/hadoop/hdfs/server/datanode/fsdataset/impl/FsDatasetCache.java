@@ -1314,6 +1314,11 @@ literal|false
 decl_stmt|;
 if|if
 condition|(
+name|cacheLoader
+operator|.
+name|isTransientCache
+argument_list|()
+operator|&&
 operator|!
 name|dataset
 operator|.
@@ -2048,6 +2053,15 @@ argument_list|,
 name|newUsedBytes
 argument_list|)
 expr_stmt|;
+comment|// Only applicable to DRAM cache.
+if|if
+condition|(
+name|cacheLoader
+operator|.
+name|isTransientCache
+argument_list|()
+condition|)
+block|{
 name|dataset
 operator|.
 name|datanode
@@ -2060,6 +2074,7 @@ argument_list|(
 name|key
 argument_list|)
 expr_stmt|;
+block|}
 name|numBlocksCached
 operator|.
 name|addAndGet
@@ -2238,6 +2253,20 @@ name|boolean
 name|shouldDefer
 parameter_list|()
 block|{
+comment|// Currently, defer condition is just checked for DRAM cache case.
+if|if
+condition|(
+operator|!
+name|cacheLoader
+operator|.
+name|isTransientCache
+argument_list|()
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
 comment|/* If revocationTimeMs == 0, this is an immediate uncache request.        * No clients were anchored at the time we made the request. */
 if|if
 condition|(
