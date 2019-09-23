@@ -359,6 +359,33 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
+name|itemParentPath
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|PathNotFoundException
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Item: %s parent's path is null. This can happen if mkdir is "
+operator|+
+literal|"called on root, so there's no parent."
+argument_list|,
+name|itemPath
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
 operator|!
 name|item
 operator|.
@@ -374,10 +401,22 @@ throw|throw
 operator|new
 name|PathNotFoundException
 argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"mkdir failed for path: %s. Item parent path not found: %s."
+argument_list|,
+name|itemPath
+operator|.
+name|toString
+argument_list|()
+argument_list|,
 name|itemParentPath
 operator|.
 name|toString
 argument_list|()
+argument_list|)
 argument_list|)
 throw|;
 block|}
