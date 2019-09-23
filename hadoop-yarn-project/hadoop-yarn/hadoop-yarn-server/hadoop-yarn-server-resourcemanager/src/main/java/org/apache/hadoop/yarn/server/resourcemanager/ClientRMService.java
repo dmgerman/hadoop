@@ -5495,6 +5495,11 @@ name|submissionContext
 operator|.
 name|getQueue
 argument_list|()
+argument_list|,
+name|submissionContext
+operator|.
+name|getNodeLabelExpression
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -5541,6 +5546,11 @@ argument_list|,
 name|submissionContext
 operator|.
 name|getQueue
+argument_list|()
+argument_list|,
+name|submissionContext
+operator|.
+name|getNodeLabelExpression
 argument_list|()
 argument_list|)
 expr_stmt|;
