@@ -74,25 +74,7 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|ScmBlockLocationProtocolProtos
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|protocol
-operator|.
-name|ScmBlockLocationProtocolServerSideTranslatorPB
+name|StorageContainerDatanodeProtocolProtos
 import|;
 end_import
 
@@ -110,7 +92,7 @@ name|scm
 operator|.
 name|server
 operator|.
-name|SCMBlockProtocolServer
+name|SCMDatanodeProtocolServer
 import|;
 end_import
 
@@ -180,15 +162,31 @@ name|MetricGroupDisplay
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocolPB
+operator|.
+name|StorageContainerDatanodeProtocolServerSideTranslatorPB
+import|;
+end_import
+
 begin_comment
-comment|/**  * Insight metric to check the SCM block location protocol behaviour.  */
+comment|/**  * Insight metric to check the SCM datanode protocol behaviour.  */
 end_comment
 
 begin_class
-DECL|class|ScmProtocolBlockLocationInsight
+DECL|class|ScmProtocolDatanodeInsight
 specifier|public
 class|class
-name|ScmProtocolBlockLocationInsight
+name|ScmProtocolDatanodeInsight
 extends|extends
 name|BaseInsightPoint
 block|{
@@ -228,7 +226,7 @@ name|Type
 operator|.
 name|SCM
 argument_list|,
-name|ScmBlockLocationProtocolServerSideTranslatorPB
+name|SCMDatanodeProtocolServer
 operator|.
 name|class
 argument_list|,
@@ -250,7 +248,7 @@ name|Type
 operator|.
 name|SCM
 argument_list|,
-name|SCMBlockProtocolServer
+name|StorageContainerDatanodeProtocolServerSideTranslatorPB
 operator|.
 name|class
 argument_list|,
@@ -306,7 +304,7 @@ name|put
 argument_list|(
 literal|"servername"
 argument_list|,
-literal|"StorageContainerLocationProtocolService"
+literal|"StorageContainerDatanodeProtocolService"
 argument_list|)
 expr_stmt|;
 name|addRpcMetrics
@@ -324,13 +322,13 @@ name|addProtocolMessageMetrics
 argument_list|(
 name|metrics
 argument_list|,
-literal|"scm_block_location_protocol"
+literal|"scm_datanode_protocol"
 argument_list|,
 name|Type
 operator|.
 name|SCM
 argument_list|,
-name|ScmBlockLocationProtocolProtos
+name|StorageContainerDatanodeProtocolProtos
 operator|.
 name|Type
 operator|.
@@ -351,7 +349,7 @@ name|getDescription
 parameter_list|()
 block|{
 return|return
-literal|"SCM Block location protocol endpoint"
+literal|"SCM Datanode protocol endpoint"
 return|;
 block|}
 block|}
