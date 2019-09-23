@@ -872,6 +872,15 @@ argument_list|(
 name|nodeLocation
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|dn
+operator|==
+literal|null
+condition|)
+block|{
+continue|continue;
+block|}
 name|availableCount
 operator|-=
 name|dn
