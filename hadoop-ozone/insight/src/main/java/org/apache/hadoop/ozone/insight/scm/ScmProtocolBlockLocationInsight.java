@@ -170,9 +170,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|hdds
 operator|.
-name|protocolPB
+name|scm
+operator|.
+name|protocol
 operator|.
 name|ScmBlockLocationProtocolServerSideTranslatorPB
 import|;
