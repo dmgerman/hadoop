@@ -3129,6 +3129,12 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|// Cancel any outstanding calls to JN's.
+name|q
+operator|.
+name|cancelCalls
+argument_list|()
+expr_stmt|;
 name|int
 name|maxAllowedTxns
 init|=

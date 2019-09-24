@@ -1097,6 +1097,27 @@ operator|.
 name|node
 return|;
 block|}
+DECL|method|getJournalNodeIpcAddress (int i)
+specifier|public
+name|String
+name|getJournalNodeIpcAddress
+parameter_list|(
+name|int
+name|i
+parameter_list|)
+block|{
+return|return
+name|nodes
+index|[
+name|i
+index|]
+operator|.
+name|ipcAddr
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
 DECL|method|restartJournalNode (int i)
 specifier|public
 name|void
