@@ -569,31 +569,20 @@ block|}
 comment|/**    * Get the next block report lease ID.  Any number is valid except 0.    */
 DECL|method|getNextId ()
 specifier|private
-specifier|synchronized
 name|long
 name|getNextId
 parameter_list|()
 block|{
-name|long
-name|id
-decl_stmt|;
-do|do
-block|{
-name|id
-operator|=
-name|nextId
-operator|++
-expr_stmt|;
-block|}
-do|while
-condition|(
-name|id
-operator|==
-literal|0
-condition|)
-do|;
 return|return
-name|id
+operator|++
+name|nextId
+operator|==
+literal|0L
+condition|?
+operator|++
+name|nextId
+else|:
+name|nextId
 return|;
 block|}
 DECL|method|register (DatanodeDescriptor dn)
