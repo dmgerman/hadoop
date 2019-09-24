@@ -240,9 +240,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|test
+name|tools
 operator|.
-name|GenericTestUtils
+name|CopyListingFileStatus
 import|;
 end_import
 
@@ -256,7 +256,7 @@ name|hadoop
 operator|.
 name|tools
 operator|.
-name|CopyListingFileStatus
+name|DistCpConstants
 import|;
 end_import
 
@@ -615,6 +615,22 @@ operator|.
 name|AclTestHelpers
 operator|.
 name|aclEntry
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|LambdaTestUtils
+operator|.
+name|intercept
 import|;
 end_import
 
@@ -10134,7 +10150,7 @@ name|void
 name|testCompareFileLengthsAndChecksums
 parameter_list|()
 throws|throws
-name|IOException
+name|Throwable
 block|{
 name|String
 name|base
@@ -10237,6 +10253,8 @@ name|DistCpUtils
 operator|.
 name|compareFileLengthsAndChecksums
 argument_list|(
+literal|0
+argument_list|,
 name|fs
 argument_list|,
 name|srcWithLen0
@@ -10248,6 +10266,8 @@ argument_list|,
 name|dstWithLen0
 argument_list|,
 literal|false
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 comment|// different lengths comparison
@@ -10303,12 +10323,24 @@ argument_list|,
 name|srcSeed
 argument_list|)
 expr_stmt|;
-try|try
-block|{
+name|intercept
+argument_list|(
+name|IOException
+operator|.
+name|class
+argument_list|,
+name|DistCpConstants
+operator|.
+name|LENGTH_MISMATCH_ERROR_MSG
+argument_list|,
+parameter_list|()
+lambda|->
 name|DistCpUtils
 operator|.
 name|compareFileLengthsAndChecksums
 argument_list|(
+literal|1
+argument_list|,
 name|fs
 argument_list|,
 name|srcWithLen1
@@ -10320,32 +10352,11 @@ argument_list|,
 name|dstWithLen2
 argument_list|,
 literal|false
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"Expected different lengths comparison to fail!"
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|GenericTestUtils
-operator|.
-name|assertExceptionContains
-argument_list|(
-literal|"Mismatch in length"
 argument_list|,
-name|e
+literal|2
+argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 comment|// checksums matched
 name|Path
 name|srcWithChecksum1
@@ -10403,6 +10414,8 @@ name|DistCpUtils
 operator|.
 name|compareFileLengthsAndChecksums
 argument_list|(
+literal|1024
+argument_list|,
 name|fs
 argument_list|,
 name|srcWithChecksum1
@@ -10414,12 +10427,16 @@ argument_list|,
 name|dstWithChecksum1
 argument_list|,
 literal|false
+argument_list|,
+literal|1024
 argument_list|)
 expr_stmt|;
 name|DistCpUtils
 operator|.
 name|compareFileLengthsAndChecksums
 argument_list|(
+literal|1024
+argument_list|,
 name|fs
 argument_list|,
 name|srcWithChecksum1
@@ -10436,6 +10453,8 @@ argument_list|,
 name|dstWithChecksum1
 argument_list|,
 literal|false
+argument_list|,
+literal|1024
 argument_list|)
 expr_stmt|;
 comment|// checksums mismatched
@@ -10465,12 +10484,24 @@ argument_list|,
 name|dstSeed
 argument_list|)
 expr_stmt|;
-try|try
-block|{
+name|intercept
+argument_list|(
+name|IOException
+operator|.
+name|class
+argument_list|,
+name|DistCpConstants
+operator|.
+name|CHECKSUM_MISMATCH_ERROR_MSG
+argument_list|,
+parameter_list|()
+lambda|->
 name|DistCpUtils
 operator|.
 name|compareFileLengthsAndChecksums
 argument_list|(
+literal|1024
+argument_list|,
 name|fs
 argument_list|,
 name|srcWithChecksum1
@@ -10482,37 +10513,18 @@ argument_list|,
 name|dstWithChecksum2
 argument_list|,
 literal|false
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"Expected different checksums comparison to fail!"
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|GenericTestUtils
-operator|.
-name|assertExceptionContains
-argument_list|(
-literal|"Checksum mismatch"
 argument_list|,
-name|e
+literal|1024
+argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 comment|// checksums mismatched but skipped
 name|DistCpUtils
 operator|.
 name|compareFileLengthsAndChecksums
 argument_list|(
+literal|1024
+argument_list|,
 name|fs
 argument_list|,
 name|srcWithChecksum1
@@ -10524,6 +10536,8 @@ argument_list|,
 name|dstWithChecksum2
 argument_list|,
 literal|true
+argument_list|,
+literal|1024
 argument_list|)
 expr_stmt|;
 block|}

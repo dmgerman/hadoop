@@ -550,6 +550,8 @@ name|DistCpUtils
 operator|.
 name|compareFileLengthsAndChecksums
 argument_list|(
+literal|1024
+argument_list|,
 name|fs
 argument_list|,
 name|src
@@ -561,6 +563,8 @@ argument_list|,
 name|dst
 argument_list|,
 literal|false
+argument_list|,
+literal|1024
 argument_list|)
 expr_stmt|;
 block|}

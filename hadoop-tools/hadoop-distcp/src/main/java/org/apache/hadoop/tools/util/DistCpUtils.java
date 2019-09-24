@@ -248,6 +248,20 @@ name|hadoop
 operator|.
 name|tools
 operator|.
+name|DistCpConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|tools
+operator|.
 name|CopyListing
 operator|.
 name|AclsNotSupportedException
@@ -2435,7 +2449,7 @@ index|]
 return|;
 block|}
 comment|/**    * Utility to compare checksums for the paths specified.    *    * If checksums can't be retrieved, it doesn't fail the test    * Only time the comparison would fail is when checksums are    * available and they don't match    *    * @param sourceFS FileSystem for the source path.    * @param source The source path.    * @param sourceChecksum The checksum of the source file. If it is null we    * still need to retrieve it through sourceFS.    * @param targetFS FileSystem for the target path.    * @param target The target path.    * @return If either checksum couldn't be retrieved, the function returns    * false. If checksums are retrieved, the function returns true if they match,    * and false otherwise.    * @throws IOException if there's an exception while retrieving checksums.    */
-DECL|method|checksumsAreEqual (FileSystem sourceFS, Path source, FileChecksum sourceChecksum, FileSystem targetFS, Path target)
+DECL|method|checksumsAreEqual (FileSystem sourceFS, Path source, FileChecksum sourceChecksum, FileSystem targetFS, Path target, long sourceLen)
 specifier|public
 specifier|static
 name|boolean
@@ -2455,6 +2469,9 @@ name|targetFS
 parameter_list|,
 name|Path
 name|target
+parameter_list|,
+name|long
+name|sourceLen
 parameter_list|)
 throws|throws
 name|IOException
@@ -2479,6 +2496,8 @@ operator|.
 name|getFileChecksum
 argument_list|(
 name|source
+argument_list|,
+name|sourceLen
 argument_list|)
 expr_stmt|;
 if|if
@@ -2542,12 +2561,15 @@ operator|)
 return|;
 block|}
 comment|/**    * Utility to compare file lengths and checksums for source and target.    *    * @param sourceFS FileSystem for the source path.    * @param source The source path.    * @param sourceChecksum The checksum of the source file. If it is null we    * still need to retrieve it through sourceFS.    * @param targetFS FileSystem for the target path.    * @param target The target path.    * @param skipCrc The flag to indicate whether to skip checksums.    * @throws IOException if there's a mismatch in file lengths or checksums.    */
-DECL|method|compareFileLengthsAndChecksums ( FileSystem sourceFS, Path source, FileChecksum sourceChecksum, FileSystem targetFS, Path target, boolean skipCrc)
+DECL|method|compareFileLengthsAndChecksums (long srcLen, FileSystem sourceFS, Path source, FileChecksum sourceChecksum, FileSystem targetFS, Path target, boolean skipCrc, long targetLen)
 specifier|public
 specifier|static
 name|void
 name|compareFileLengthsAndChecksums
 parameter_list|(
+name|long
+name|srcLen
+parameter_list|,
 name|FileSystem
 name|sourceFS
 parameter_list|,
@@ -2565,48 +2587,27 @@ name|target
 parameter_list|,
 name|boolean
 name|skipCrc
+parameter_list|,
+name|long
+name|targetLen
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|long
-name|srcLen
-init|=
-name|sourceFS
-operator|.
-name|getFileStatus
-argument_list|(
-name|source
-argument_list|)
-operator|.
-name|getLen
-argument_list|()
-decl_stmt|;
-name|long
-name|tgtLen
-init|=
-name|targetFS
-operator|.
-name|getFileStatus
-argument_list|(
-name|target
-argument_list|)
-operator|.
-name|getLen
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
 name|srcLen
 operator|!=
-name|tgtLen
+name|targetLen
 condition|)
 block|{
 throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Mismatch in length of source:"
+name|DistCpConstants
+operator|.
+name|LENGTH_MISMATCH_ERROR_MSG
 operator|+
 name|source
 operator|+
@@ -2620,7 +2621,7 @@ name|target
 operator|+
 literal|" ("
 operator|+
-name|tgtLen
+name|targetLen
 operator|+
 literal|")"
 argument_list|)
@@ -2655,6 +2656,8 @@ argument_list|,
 name|targetFS
 argument_list|,
 name|target
+argument_list|,
+name|srcLen
 argument_list|)
 condition|)
 block|{
@@ -2664,7 +2667,9 @@ init|=
 operator|new
 name|StringBuilder
 argument_list|(
-literal|"Checksum mismatch between "
+name|DistCpConstants
+operator|.
+name|CHECKSUM_MISMATCH_ERROR_MSG
 argument_list|)
 operator|.
 name|append

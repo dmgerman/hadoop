@@ -684,6 +684,24 @@ name|TARGET_SORTED_FILE
 init|=
 literal|"target_sorted.seq"
 decl_stmt|;
+DECL|field|LENGTH_MISMATCH_ERROR_MSG
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|LENGTH_MISMATCH_ERROR_MSG
+init|=
+literal|"Mismatch in length of source:"
+decl_stmt|;
+DECL|field|CHECKSUM_MISMATCH_ERROR_MSG
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CHECKSUM_MISMATCH_ERROR_MSG
+init|=
+literal|"Checksum mismatch between "
+decl_stmt|;
 block|}
 end_class
 

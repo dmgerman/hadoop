@@ -1410,6 +1410,8 @@ argument_list|,
 name|targetFile
 argument_list|,
 name|allChunkPaths
+argument_list|,
+name|srcFileStatus
 argument_list|)
 expr_stmt|;
 block|}
@@ -3204,7 +3206,7 @@ throw|;
 block|}
 block|}
 comment|/**    * Concat the passed chunk files into one and rename it the targetFile.    */
-DECL|method|concatFileChunks (Configuration conf, Path sourceFile, Path targetFile, LinkedList<Path> allChunkPaths)
+DECL|method|concatFileChunks (Configuration conf, Path sourceFile, Path targetFile, LinkedList<Path> allChunkPaths, CopyListingFileStatus srcFileStatus)
 specifier|private
 name|void
 name|concatFileChunks
@@ -3223,6 +3225,9 @@ argument_list|<
 name|Path
 argument_list|>
 name|allChunkPaths
+parameter_list|,
+name|CopyListingFileStatus
+name|srcFileStatus
 parameter_list|)
 throws|throws
 name|IOException
@@ -3415,6 +3420,11 @@ name|DistCpUtils
 operator|.
 name|compareFileLengthsAndChecksums
 argument_list|(
+name|srcFileStatus
+operator|.
+name|getLen
+argument_list|()
+argument_list|,
 name|srcfs
 argument_list|,
 name|sourceFile
@@ -3426,6 +3436,11 @@ argument_list|,
 name|targetFile
 argument_list|,
 name|skipCrc
+argument_list|,
+name|srcFileStatus
+operator|.
+name|getLen
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
