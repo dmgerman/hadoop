@@ -24,7 +24,37 @@ name|java
 operator|.
 name|io
 operator|.
-name|*
+name|DataInput
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|DataOutput
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
 import|;
 end_import
 
@@ -49,6 +79,16 @@ operator|.
 name|regex
 operator|.
 name|Pattern
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
 import|;
 end_import
 
@@ -90,22 +130,40 @@ name|hadoop
 operator|.
 name|io
 operator|.
-name|*
+name|Writable
 import|;
 end_import
 
 begin_import
 import|import
-name|javax
+name|org
 operator|.
-name|annotation
+name|apache
 operator|.
-name|Nonnull
+name|hadoop
+operator|.
+name|io
+operator|.
+name|WritableFactories
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|WritableFactory
 import|;
 end_import
 
 begin_comment
-comment|/**************************************************  * A Block is a Hadoop FS primitive, identified by a  * long.  *  **************************************************/
+comment|/**  * A Block is a Hadoop FS primitive, identified by its block ID (a long). A  * block also has an accompanying generation stamp. A generation stamp is a  * monotonically increasing 8-byte number for each block that is maintained  * persistently by the NameNode. However, for the purposes of this class, two  * Blocks are considered equal iff they have the same block ID.  *  * @see Block#equals(Object)  * @see Block#hashCode()  * @see Block#compareTo(Block)  */
 end_comment
 
 begin_class
@@ -622,7 +680,6 @@ operator|=
 name|genStamp
 expr_stmt|;
 block|}
-comment|/**    */
 DECL|method|getBlockId ()
 specifier|public
 name|long
@@ -647,7 +704,7 @@ operator|=
 name|bid
 expr_stmt|;
 block|}
-comment|/**    */
+comment|/**    * Get the block name. The format of the name is in the format:    *<p>    * blk_1, blk_2, blk_3, etc.    *</p>    *    * @return the block name    */
 DECL|method|getBlockName ()
 specifier|public
 name|String
@@ -655,25 +712,11 @@ name|getBlockName
 parameter_list|()
 block|{
 return|return
-operator|new
-name|StringBuilder
-argument_list|()
-operator|.
-name|append
-argument_list|(
 name|BLOCK_FILE_PREFIX
-argument_list|)
-operator|.
-name|append
-argument_list|(
+operator|+
 name|blockId
-argument_list|)
-operator|.
-name|toString
-argument_list|()
 return|;
 block|}
-comment|/**    */
 DECL|method|getNumBytes ()
 specifier|public
 name|long
@@ -736,16 +779,9 @@ name|Block
 name|b
 parameter_list|)
 block|{
-name|StringBuilder
-name|sb
-init|=
+return|return
 operator|new
 name|StringBuilder
-argument_list|()
-decl_stmt|;
-name|sb
-operator|.
-name|append
 argument_list|(
 name|BLOCK_FILE_PREFIX
 argument_list|)
@@ -759,7 +795,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"_"
+literal|'_'
 argument_list|)
 operator|.
 name|append
@@ -768,15 +804,12 @@ name|b
 operator|.
 name|generationStamp
 argument_list|)
-expr_stmt|;
-return|return
-name|sb
 operator|.
 name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    */
+comment|/**    * Get the block name. The format of the name is in the format:    *<p>    * blk_block-id_generation, blk_1_1, blk_1_2, blk_2_1, etc.    *</p>    *    * @return the full block name    */
 annotation|@
 name|Override
 DECL|method|toString ()
@@ -786,6 +819,8 @@ name|toString
 parameter_list|()
 block|{
 return|return
+name|Block
+operator|.
 name|toString
 argument_list|(
 name|this
@@ -815,7 +850,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"_"
+literal|'_'
 argument_list|)
 operator|.
 name|append
@@ -1015,9 +1050,9 @@ name|readLong
 argument_list|()
 expr_stmt|;
 block|}
+comment|/**    * Compares this Block with the specified Block for order. Returns a negative    * integer, zero, or a positive integer as this Block is less than, equal to,    * or greater than the specified Block. Blocks are ordered based on their    * block ID.    *    * @param b the Block to be compared    * @return a negative integer, zero, or a positive integer as this Block is    *         less than, equal to, or greater than the specified Block.    */
 annotation|@
 name|Override
-comment|// Comparable
 DECL|method|compareTo (@onnull Block b)
 specifier|public
 name|int
@@ -1030,59 +1065,92 @@ name|b
 parameter_list|)
 block|{
 return|return
+name|Long
+operator|.
+name|compare
+argument_list|(
 name|blockId
-operator|<
+argument_list|,
 name|b
 operator|.
 name|blockId
-condition|?
-operator|-
-literal|1
-else|:
-name|blockId
-operator|>
-name|b
-operator|.
-name|blockId
-condition|?
-literal|1
-else|:
-literal|0
+argument_list|)
 return|;
 block|}
+comment|/**    * Indicates whether some Block is "equal to" this one. Two blocks are    * considered equal if they have the same block ID.    *    * @param obj the reference object with which to compare.    * @return true if this Block is the same as the argument; false otherwise.    */
 annotation|@
 name|Override
-comment|// Object
-DECL|method|equals (Object o)
+DECL|method|equals (Object obj)
 specifier|public
 name|boolean
 name|equals
 parameter_list|(
 name|Object
-name|o
+name|obj
 parameter_list|)
 block|{
-return|return
+if|if
+condition|(
 name|this
 operator|==
-name|o
-operator|||
-name|o
+name|obj
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+if|if
+condition|(
+operator|!
+operator|(
+name|obj
 operator|instanceof
 name|Block
-operator|&&
-name|compareTo
-argument_list|(
+operator|)
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+name|Block
+name|other
+init|=
 operator|(
 name|Block
 operator|)
-name|o
-argument_list|)
+name|obj
+decl_stmt|;
+return|return
+operator|(
+name|blockId
 operator|==
-literal|0
+name|other
+operator|.
+name|blockId
+operator|)
 return|;
 block|}
-comment|/**    * @return true if the two blocks have the same block ID and the same    * generation stamp, or if both blocks are null.    */
+comment|/**    * Returns a hash code value for the Block. The hash code adheres to the    * general contract of hashCode. If two Blocks are equal according to the    * equals(Object) method, then calling the hashCode method on each of the two    * blocks produce the same integer result.    *    * @return a hash code value for this block    * @see Block#equals(Object)    */
+annotation|@
+name|Override
+DECL|method|hashCode ()
+specifier|public
+name|int
+name|hashCode
+parameter_list|()
+block|{
+return|return
+name|Long
+operator|.
+name|hashCode
+argument_list|(
+name|blockId
+argument_list|)
+return|;
+block|}
+comment|/**    * A helper function to determine if two blocks are equal, based on the block    * ID and the generation stamp. This is a different equalities check than the    * default behavior of the Block class. Two blocks are considered equal by    * this function iff the two blocks have the same block ID and the same    * generation stamp, or if both blocks are null.    *    * @param a an object    * @param b an object to be compared with {@code a} for equality    * @return {@code true} if the blocks are deeply equal to each other and    *         {@code false} otherwise    * @see Block    */
 DECL|method|matchingIdAndGenStamp (Block a, Block b)
 specifier|public
 specifier|static
@@ -1102,14 +1170,14 @@ name|a
 operator|==
 name|b
 condition|)
+block|{
 return|return
 literal|true
 return|;
-comment|// same block, or both null
-comment|// only one null
-return|return
-operator|!
-operator|(
+block|}
+elseif|else
+if|if
+condition|(
 name|a
 operator|==
 literal|null
@@ -1117,8 +1185,15 @@ operator|||
 name|b
 operator|==
 literal|null
-operator|)
-operator|&&
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+else|else
+block|{
+return|return
 name|a
 operator|.
 name|blockId
@@ -1136,30 +1211,6 @@ operator|.
 name|generationStamp
 return|;
 block|}
-annotation|@
-name|Override
-comment|// Object
-DECL|method|hashCode ()
-specifier|public
-name|int
-name|hashCode
-parameter_list|()
-block|{
-comment|//GenerationStamp is IRRELEVANT and should not be used here
-return|return
-call|(
-name|int
-call|)
-argument_list|(
-name|blockId
-operator|^
-operator|(
-name|blockId
-operator|>>>
-literal|32
-operator|)
-argument_list|)
-return|;
 block|}
 block|}
 end_class
