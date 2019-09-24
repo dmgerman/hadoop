@@ -967,7 +967,44 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-comment|// We have 10 DNs in MockNodeManager.
+comment|// We need 9 Healthy DNs in MockNodeManager.
+name|NodeManager
+name|mockNodeManager
+init|=
+operator|new
+name|MockNodeManager
+argument_list|(
+literal|true
+argument_list|,
+literal|12
+argument_list|)
+decl_stmt|;
+name|PipelineStateManager
+name|stateManagerMock
+init|=
+operator|new
+name|PipelineStateManager
+argument_list|(
+operator|new
+name|OzoneConfiguration
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|PipelineProvider
+name|providerMock
+init|=
+operator|new
+name|MockRatisPipelineProvider
+argument_list|(
+name|mockNodeManager
+argument_list|,
+name|stateManagerMock
+argument_list|,
+operator|new
+name|OzoneConfiguration
+argument_list|()
+argument_list|)
+decl_stmt|;
 comment|// Use up first 3 DNs for an open pipeline.
 name|List
 argument_list|<
@@ -975,7 +1012,7 @@ name|DatanodeDetails
 argument_list|>
 name|openPiplineDns
 init|=
-name|nodeManager
+name|mockNodeManager
 operator|.
 name|getAllNodes
 argument_list|()
@@ -1045,7 +1082,7 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|stateManager
+name|stateManagerMock
 operator|.
 name|addPipeline
 argument_list|(
@@ -1059,7 +1096,7 @@ name|DatanodeDetails
 argument_list|>
 name|moreOpenPiplineDns
 init|=
-name|nodeManager
+name|mockNodeManager
 operator|.
 name|getAllNodes
 argument_list|()
@@ -1118,7 +1155,7 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|stateManager
+name|stateManagerMock
 operator|.
 name|addPipeline
 argument_list|(
@@ -1132,7 +1169,7 @@ name|DatanodeDetails
 argument_list|>
 name|closedPiplineDns
 init|=
-name|nodeManager
+name|mockNodeManager
 operator|.
 name|getAllNodes
 argument_list|()
@@ -1191,7 +1228,7 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|stateManager
+name|stateManagerMock
 operator|.
 name|addPipeline
 argument_list|(
@@ -1201,7 +1238,7 @@ expr_stmt|;
 name|Pipeline
 name|pipeline
 init|=
-name|provider
+name|providerMock
 operator|.
 name|create
 argument_list|(
@@ -1318,8 +1355,8 @@ operator|==
 literal|0
 argument_list|)
 expr_stmt|;
-comment|// Since we have only 10 DNs, at least 1 pipeline node should have been
-comment|// from the closed pipeline DN list.
+comment|// Since we have only 9 Healthy DNs, at least 1 pipeline node should have
+comment|// been from the closed pipeline DN list.
 name|Assert
 operator|.
 name|assertTrue
