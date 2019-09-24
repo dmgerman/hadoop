@@ -1397,10 +1397,10 @@ block|}
 block|}
 annotation|@
 name|Test
-DECL|method|testStorageSpaceQuotaaExceed ()
+DECL|method|testStorageSpaceQuotaExceed ()
 specifier|public
 name|void
-name|testStorageSpaceQuotaaExceed
+name|testStorageSpaceQuotaExceed
 parameter_list|()
 throws|throws
 name|Exception
