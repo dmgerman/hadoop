@@ -755,6 +755,23 @@ argument_list|(
 name|volumeInfo
 argument_list|)
 expr_stmt|;
+comment|// when you create a volume, we set both Object ID and update ID to the
+comment|// same ratis transaction ID. The Object ID will never change, but update
+comment|// ID will be set to transactionID each time we update the object.
+name|omVolumeArgs
+operator|.
+name|setUpdateID
+argument_list|(
+name|transactionLogIndex
+argument_list|)
+expr_stmt|;
+name|omVolumeArgs
+operator|.
+name|setObjectID
+argument_list|(
+name|transactionLogIndex
+argument_list|)
+expr_stmt|;
 name|auditMap
 operator|=
 name|omVolumeArgs
