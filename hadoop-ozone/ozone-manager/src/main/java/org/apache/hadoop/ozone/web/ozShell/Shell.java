@@ -112,9 +112,7 @@ name|OZONE_URI_DESCRIPTION
 init|=
 literal|"Ozone URI could start "
 operator|+
-literal|"with o3:// or http(s):// or without prefix. REST protocol will "
-operator|+
-literal|"be used for http(s), RPC otherwise. URI may contain the host and port "
+literal|"with o3:// or without prefix. URI may contain the host and port "
 operator|+
 literal|"of the OM server. Both are optional. "
 operator|+
