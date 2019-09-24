@@ -733,6 +733,14 @@ argument_list|(
 name|OzoneManager
 operator|.
 name|class
+argument_list|,
+name|Mockito
+operator|.
+name|withSettings
+argument_list|()
+operator|.
+name|stubOnly
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|omMetrics
@@ -950,7 +958,7 @@ name|testDoubleBuffer
 argument_list|(
 literal|1000
 argument_list|,
-literal|100
+literal|500
 argument_list|)
 expr_stmt|;
 block|}
@@ -1961,7 +1969,7 @@ name|expectedTransactions
 argument_list|,
 literal|100
 argument_list|,
-literal|120000
+literal|500000
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -2156,33 +2164,6 @@ name|incrementAndGet
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// For every 100 buckets creation adding 100ms delay
-if|if
-condition|(
-name|i
-operator|%
-literal|100
-operator|==
-literal|0
-condition|)
-block|{
-try|try
-block|{
-name|Thread
-operator|.
-name|sleep
-argument_list|(
-literal|100
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|ex
-parameter_list|)
-block|{          }
-block|}
 block|}
 block|}
 comment|/**    * Create OMVolumeCreateResponse for specified volume.    * @param volumeName    * @return OMVolumeCreateResponse    */
