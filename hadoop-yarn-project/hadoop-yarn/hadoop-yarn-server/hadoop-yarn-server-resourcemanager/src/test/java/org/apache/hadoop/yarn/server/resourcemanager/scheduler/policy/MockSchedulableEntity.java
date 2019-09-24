@@ -26,16 +26,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|*
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -67,24 +57,6 @@ operator|.
 name|records
 operator|.
 name|Resource
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|resource
-operator|.
-name|Resources
 import|;
 end_import
 
@@ -153,6 +125,13 @@ DECL|field|isRecovering
 specifier|private
 name|boolean
 name|isRecovering
+decl_stmt|;
+DECL|field|partition
+specifier|private
+name|String
+name|partition
+init|=
+literal|""
 decl_stmt|;
 DECL|method|MockSchedulableEntity ()
 specifier|public
@@ -420,6 +399,34 @@ operator|.
 name|isRecovering
 operator|=
 name|entityRecovering
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getPartition ()
+specifier|public
+name|String
+name|getPartition
+parameter_list|()
+block|{
+return|return
+name|partition
+return|;
+block|}
+DECL|method|setPartition (String partition)
+specifier|public
+name|void
+name|setPartition
+parameter_list|(
+name|String
+name|partition
+parameter_list|)
+block|{
+name|this
+operator|.
+name|partition
+operator|=
+name|partition
 expr_stmt|;
 block|}
 block|}

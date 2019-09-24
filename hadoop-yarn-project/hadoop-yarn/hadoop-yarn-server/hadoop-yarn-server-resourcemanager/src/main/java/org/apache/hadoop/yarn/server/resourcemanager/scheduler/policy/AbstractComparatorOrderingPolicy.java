@@ -216,14 +216,17 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getAssignmentIterator ()
+DECL|method|getAssignmentIterator (IteratorSelector sel)
 specifier|public
 name|Iterator
 argument_list|<
 name|S
 argument_list|>
 name|getAssignmentIterator
-parameter_list|()
+parameter_list|(
+name|IteratorSelector
+name|sel
+parameter_list|)
 block|{
 name|reorderScheduleEntities
 argument_list|()

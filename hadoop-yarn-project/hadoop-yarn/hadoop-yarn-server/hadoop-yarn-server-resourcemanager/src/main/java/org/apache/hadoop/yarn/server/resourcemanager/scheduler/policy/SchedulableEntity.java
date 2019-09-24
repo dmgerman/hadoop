@@ -110,6 +110,12 @@ name|boolean
 name|isRecovering
 parameter_list|()
 function_decl|;
+comment|/**    * Get partition corresponding to this entity.    * @return partition    */
+DECL|method|getPartition ()
+name|String
+name|getPartition
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

@@ -66,6 +66,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|TreeSet
 import|;
 end_import
@@ -1119,6 +1129,14 @@ specifier|private
 name|boolean
 name|nodeLabelsEnabled
 decl_stmt|;
+DECL|field|exclusiveEnforcedPartitions
+specifier|private
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|exclusiveEnforcedPartitions
+decl_stmt|;
 DECL|method|RMAppManager (RMContext context, YarnScheduler scheduler, ApplicationMasterService masterService, ApplicationACLsManager applicationACLsManager, Configuration conf)
 specifier|public
 name|RMAppManager
@@ -1258,6 +1276,15 @@ operator|.
 name|getYarnConfiguration
 argument_list|()
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|exclusiveEnforcedPartitions
+operator|=
+name|context
+operator|.
+name|getExclusiveEnforcedPartitions
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    *  This class is for logging the application summary.    */
@@ -3642,6 +3669,20 @@ name|ANY
 argument_list|)
 throw|;
 block|}
+name|SchedulerUtils
+operator|.
+name|enforcePartitionExclusivity
+argument_list|(
+name|anyReq
+argument_list|,
+name|exclusiveEnforcedPartitions
+argument_list|,
+name|submissionContext
+operator|.
+name|getNodeLabelExpression
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// Make sure that all of the requests agree with the ANY request
 comment|// and have correct values
 for|for

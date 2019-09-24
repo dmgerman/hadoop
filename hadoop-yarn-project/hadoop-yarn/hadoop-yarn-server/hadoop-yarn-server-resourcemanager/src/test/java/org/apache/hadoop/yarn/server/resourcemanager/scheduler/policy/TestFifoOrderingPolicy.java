@@ -295,7 +295,11 @@ argument_list|(
 name|schedOrder
 operator|.
 name|getAssignmentIterator
-argument_list|()
+argument_list|(
+name|IteratorSelector
+operator|.
+name|EMPTY_ITERATOR_SELECTOR
+argument_list|)
 argument_list|,
 operator|new
 name|long

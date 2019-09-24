@@ -80,15 +80,17 @@ argument_list|>
 name|getSchedulableEntities
 parameter_list|()
 function_decl|;
-comment|/**    * Return an iterator over the collection of {@link SchedulableEntity}    * objects which orders them for container assignment.    * @return an iterator over the collection of {@link SchedulableEntity}    * objects    */
-DECL|method|getAssignmentIterator ()
-specifier|public
+comment|/**    * Return an iterator over the collection of {@link SchedulableEntity}    * objects which orders them for container assignment.    * @param sel the {@link IteratorSelector} to filter with    * @return an iterator over the collection of {@link SchedulableEntity}    * objects    */
+DECL|method|getAssignmentIterator (IteratorSelector sel)
 name|Iterator
 argument_list|<
 name|S
 argument_list|>
 name|getAssignmentIterator
-parameter_list|()
+parameter_list|(
+name|IteratorSelector
+name|sel
+parameter_list|)
 function_decl|;
 comment|/**    * Return an iterator over the collection of {@link SchedulableEntity}    * objects which orders them for preemption.    * @return an iterator over the collection of {@link SchedulableEntity}    */
 DECL|method|getPreemptionIterator ()

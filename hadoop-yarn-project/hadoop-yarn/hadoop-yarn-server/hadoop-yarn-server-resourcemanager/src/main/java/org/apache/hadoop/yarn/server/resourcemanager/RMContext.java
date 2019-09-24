@@ -26,6 +26,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|concurrent
 operator|.
 name|ConcurrentMap
@@ -1183,6 +1193,14 @@ function_decl|;
 DECL|method|incrTokenSequenceNo ()
 name|void
 name|incrTokenSequenceNo
+parameter_list|()
+function_decl|;
+DECL|method|getExclusiveEnforcedPartitions ()
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getExclusiveEnforcedPartitions
 parameter_list|()
 function_decl|;
 block|}

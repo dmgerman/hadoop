@@ -1712,6 +1712,11 @@ operator|new
 name|AtomicInteger
 argument_list|()
 decl_stmt|;
+DECL|field|nodeLabelExpression
+specifier|private
+name|String
+name|nodeLabelExpression
+decl_stmt|;
 DECL|method|SchedulerApplicationAttempt (ApplicationAttemptId applicationAttemptId, String user, Queue queue, AbstractUsersManager abstractUsersManager, RMContext rmContext)
 specifier|public
 name|SchedulerApplicationAttempt
@@ -1852,6 +1857,15 @@ operator|=
 name|appSubmissionContext
 operator|.
 name|getLogAggregationContext
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|nodeLabelExpression
+operator|=
+name|appSubmissionContext
+operator|.
+name|getNodeLabelExpression
 argument_list|()
 expr_stmt|;
 block|}
@@ -7003,6 +7017,24 @@ return|return
 name|this
 operator|.
 name|applicationSchedulingEnvs
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getPartition ()
+specifier|public
+name|String
+name|getPartition
+parameter_list|()
+block|{
+return|return
+name|nodeLabelExpression
+operator|==
+literal|null
+condition|?
+literal|""
+else|:
+name|nodeLabelExpression
 return|;
 block|}
 block|}
