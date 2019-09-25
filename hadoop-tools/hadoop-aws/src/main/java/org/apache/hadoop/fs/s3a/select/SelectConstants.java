@@ -110,7 +110,7 @@ specifier|final
 name|String
 name|S3_SELECT_CAPABILITY
 init|=
-literal|"s3a:fs.s3a.select.sql"
+literal|"fs.s3a.capability.select.sql"
 decl_stmt|;
 comment|/**    * Flag: is S3 select enabled?    * Value: {@value}.    */
 DECL|field|FS_S3A_SELECT_ENABLED

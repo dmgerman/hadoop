@@ -2952,8 +2952,13 @@ if|if
 condition|(
 name|fs
 operator|.
-name|hasCapability
+name|hasPathCapability
 argument_list|(
+name|fs
+operator|.
+name|getWorkingDirectory
+argument_list|()
+argument_list|,
 name|CommitConstants
 operator|.
 name|STORE_CAPABILITY_MAGIC_COMMITTER

@@ -5924,8 +5924,14 @@ name|magic
 init|=
 name|fs
 operator|.
-name|hasCapability
+name|hasPathCapability
 argument_list|(
+operator|new
+name|Path
+argument_list|(
+name|s3Path
+argument_list|)
+argument_list|,
 name|CommitConstants
 operator|.
 name|STORE_CAPABILITY_MAGIC_COMMITTER

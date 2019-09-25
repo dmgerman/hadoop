@@ -1863,6 +1863,11 @@ return|;
 block|}
 comment|/**    * Return the stream capabilities.    * This stream always returns false when queried about hflush and hsync.    * If asked about {@link CommitConstants#STREAM_CAPABILITY_MAGIC_OUTPUT}    * it will return true iff this is an active "magic" output stream.    * @param capability string to query the stream support for.    * @return true if the capability is supported by this instance.    */
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|hasCapability (String capability)
 specifier|public
@@ -1891,6 +1896,11 @@ name|CommitConstants
 operator|.
 name|STREAM_CAPABILITY_MAGIC_OUTPUT
 case|:
+case|case
+name|CommitConstants
+operator|.
+name|STREAM_CAPABILITY_MAGIC_OUTPUT_OLD
+case|:
 return|return
 operator|!
 name|putTracker
@@ -1900,10 +1910,14 @@ argument_list|()
 return|;
 comment|// The flush/sync options are absolutely not supported
 case|case
-literal|"hflush"
+name|StreamCapabilities
+operator|.
+name|HFLUSH
 case|:
 case|case
-literal|"hsync"
+name|StreamCapabilities
+operator|.
+name|HSYNC
 case|:
 return|return
 literal|false

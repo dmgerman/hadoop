@@ -2850,20 +2850,9 @@ init|=
 name|getFileSystem
 argument_list|()
 decl_stmt|;
-name|Assume
-operator|.
-name|assumeTrue
+name|assumeMagicCommitEnabled
 argument_list|(
-literal|"Filesystem does not have magic support enabled: "
-operator|+
 name|fs
-argument_list|,
-name|fs
-operator|.
-name|hasCapability
-argument_list|(
-name|STORE_CAPABILITY_MAGIC_COMMITTER
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|Path

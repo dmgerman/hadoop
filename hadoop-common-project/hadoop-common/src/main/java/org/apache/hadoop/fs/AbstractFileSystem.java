@@ -522,6 +522,24 @@ name|LoggerFactory
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|impl
+operator|.
+name|PathCapabilitiesSupport
+operator|.
+name|validatePathCapabilityArgs
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class provides an interface for implementors of a Hadoop file system  * (analogous to the VFS of Unix). Applications do not access this class;  * instead they access files across all file systems using {@link FileContext}.  *   * Pathnames passed to AbstractFileSystem can be fully qualified URI that  * matches the "this" file system (ie same scheme and authority)   * or a Slash-relative name that is assumed to be relative  * to the root of the "this" file system .  */
 end_comment
@@ -540,6 +558,8 @@ specifier|public
 specifier|abstract
 class|class
 name|AbstractFileSystem
+implements|implements
+name|PathCapabilities
 block|{
 DECL|field|LOG
 specifier|static
@@ -4839,6 +4859,52 @@ name|bufferSize
 argument_list|)
 argument_list|)
 return|;
+block|}
+DECL|method|hasPathCapability (final Path path, final String capability)
+specifier|public
+name|boolean
+name|hasPathCapability
+parameter_list|(
+specifier|final
+name|Path
+name|path
+parameter_list|,
+specifier|final
+name|String
+name|capability
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+switch|switch
+condition|(
+name|validatePathCapabilityArgs
+argument_list|(
+name|makeQualified
+argument_list|(
+name|path
+argument_list|)
+argument_list|,
+name|capability
+argument_list|)
+condition|)
+block|{
+case|case
+name|CommonPathCapabilities
+operator|.
+name|FS_SYMLINKS
+case|:
+comment|// delegate to the existing supportsSymlinks() call.
+return|return
+name|supportsSymlinks
+argument_list|()
+return|;
+default|default:
+comment|// the feature is not implemented.
+return|return
+literal|false
+return|;
+block|}
 block|}
 block|}
 end_class

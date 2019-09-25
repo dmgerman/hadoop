@@ -1228,8 +1228,10 @@ operator|!
 name|getFilesystem
 argument_list|()
 operator|.
-name|hasCapability
+name|hasPathCapability
 argument_list|(
+name|path
+argument_list|,
 name|S3_SELECT_CAPABILITY
 argument_list|)
 condition|)

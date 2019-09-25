@@ -167,15 +167,39 @@ specifier|final
 name|String
 name|STREAM_CAPABILITY_MAGIC_OUTPUT
 init|=
-literal|"s3a:magic.output.stream"
+literal|"fs.s3a.capability.magic.output.stream"
 decl_stmt|;
-comment|/**    * Flag to indicate that a store supports magic committers.    * returned in {@code StreamCapabilities}    * Value: {@value}.    */
+comment|/**    * Flag to indicate that a store supports magic committers.    * returned in {@code PathCapabilities}    * Value: {@value}.    */
 DECL|field|STORE_CAPABILITY_MAGIC_COMMITTER
 specifier|public
 specifier|static
 specifier|final
 name|String
 name|STORE_CAPABILITY_MAGIC_COMMITTER
+init|=
+literal|"fs.s3a.capability.magic.committer"
+decl_stmt|;
+comment|/**    * Flag to indicate whether a stream is a magic output stream;    * returned in {@code StreamCapabilities}    * Value: {@value}.    */
+annotation|@
+name|Deprecated
+DECL|field|STREAM_CAPABILITY_MAGIC_OUTPUT_OLD
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|STREAM_CAPABILITY_MAGIC_OUTPUT_OLD
+init|=
+literal|"s3a:magic.output.stream"
+decl_stmt|;
+comment|/**    * Flag to indicate that a store supports magic committers.    * returned in {@code PathCapabilities}    * Value: {@value}.    */
+annotation|@
+name|Deprecated
+DECL|field|STORE_CAPABILITY_MAGIC_COMMITTER_OLD
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|STORE_CAPABILITY_MAGIC_COMMITTER_OLD
 init|=
 literal|"s3a:magic.committer"
 decl_stmt|;

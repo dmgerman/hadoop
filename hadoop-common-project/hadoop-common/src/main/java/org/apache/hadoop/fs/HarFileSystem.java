@@ -218,6 +218,24 @@ name|*
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|impl
+operator|.
+name|PathCapabilitiesSupport
+operator|.
+name|validatePathCapabilityArgs
+import|;
+end_import
+
 begin_comment
 comment|/**  * This is an implementation of the Hadoop Archive   * Filesystem. This archive Filesystem has index files  * of the form _index* and has contents of the form  * part-*. The index files store the indexes of the   * real files. The index files are of the form _masterindex  * and _index. The master index is a level of indirection   * in to the index file to make the look ups faster. the index  * file is sorted with hash code of the paths that it contains   * and the master index contains pointers to the positions in   * index for ranges of hashcodes.  */
 end_comment
@@ -3623,6 +3641,49 @@ argument_list|(
 literal|"Har: setPermission not allowed"
 argument_list|)
 throw|;
+block|}
+comment|/**    * Declare that this filesystem connector is always read only.    * {@inheritDoc}    */
+annotation|@
+name|Override
+DECL|method|hasPathCapability (final Path path, final String capability)
+specifier|public
+name|boolean
+name|hasPathCapability
+parameter_list|(
+specifier|final
+name|Path
+name|path
+parameter_list|,
+specifier|final
+name|String
+name|capability
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+switch|switch
+condition|(
+name|validatePathCapabilityArgs
+argument_list|(
+name|path
+argument_list|,
+name|capability
+argument_list|)
+condition|)
+block|{
+case|case
+name|CommonPathCapabilities
+operator|.
+name|FS_READ_ONLY_CONNECTOR
+case|:
+return|return
+literal|true
+return|;
+default|default:
+return|return
+literal|false
+return|;
+block|}
 block|}
 comment|/**    * Hadoop archives input stream. This input stream fakes EOF     * since archive files are part of bigger part files.    */
 DECL|class|HarFSDataInputStream

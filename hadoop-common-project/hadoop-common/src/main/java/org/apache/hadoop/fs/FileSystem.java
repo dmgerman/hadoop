@@ -888,6 +888,24 @@ name|*
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|impl
+operator|.
+name|PathCapabilitiesSupport
+operator|.
+name|validatePathCapabilityArgs
+import|;
+end_import
+
 begin_comment
 comment|/****************************************************************  * An abstract base class for a fairly generic filesystem.  It  * may be implemented as a distributed filesystem, or as a "local"  * one that reflects the locally-connected disk.  The local version  * exists for small Hadoop instances and for testing.  *  *<p>  *  * All user code that may potentially use the Hadoop Distributed  * File System should be written to use a FileSystem object or its  * successor, {@link FileContext}.  *  *<p>  * The local implementation is {@link LocalFileSystem} and distributed  * implementation is DistributedFileSystem. There are other implementations  * for object stores and (outside the Apache Hadoop codebase),  * third party filesystems.  *<p>  * Notes  *<ol>  *<li>The behaviour of the filesystem is  *<a href="https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/filesystem/filesystem.html">  * specified in the Hadoop documentation.</a>  * However, the normative specification of the behavior of this class is  * actually HDFS: if HDFS does not behave the way these Javadocs or  * the specification in the Hadoop documentations define, assume that  * the documentation is incorrect.  *</li>  *<li>The term {@code FileSystem} refers to an instance of this class.</li>  *<li>The acronym "FS" is used as an abbreviation of FileSystem.</li>  *<li>The term {@code filesystem} refers to the distributed/local filesystem  * itself, rather than the class used to interact with it.</li>  *<li>The term "file" refers to a file in the remote filesystem,  * rather than instances of {@code java.io.File}.</li>  *</ol>  *  * This is a carefully evolving class.  * New methods may be marked as Unstable or Evolving for their initial release,  * as a warning that they are new and may change based on the  * experience of use in applications.  *****************************************************************/
 end_comment
@@ -917,6 +935,8 @@ implements|implements
 name|Closeable
 implements|,
 name|DelegationTokenIssuer
+implements|,
+name|PathCapabilities
 block|{
 DECL|field|FS_DEFAULT_NAME_KEY
 specifier|public
@@ -2510,6 +2530,17 @@ name|Path
 name|path
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|path
+operator|!=
+literal|null
+argument_list|,
+literal|"null path"
+argument_list|)
+expr_stmt|;
 name|URI
 name|uri
 init|=
@@ -8496,6 +8527,56 @@ block|}
 return|return
 name|ret
 return|;
+block|}
+comment|/**    * The base FileSystem implementation generally has no knowledge    * of the capabilities of actual implementations.    * Unless it has a way to explicitly determine the capabilities,    * this method returns false.    * {@inheritDoc}    */
+DECL|method|hasPathCapability (final Path path, final String capability)
+specifier|public
+name|boolean
+name|hasPathCapability
+parameter_list|(
+specifier|final
+name|Path
+name|path
+parameter_list|,
+specifier|final
+name|String
+name|capability
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+switch|switch
+condition|(
+name|validatePathCapabilityArgs
+argument_list|(
+name|makeQualified
+argument_list|(
+name|path
+argument_list|)
+argument_list|,
+name|capability
+argument_list|)
+condition|)
+block|{
+case|case
+name|CommonPathCapabilities
+operator|.
+name|FS_SYMLINKS
+case|:
+comment|// delegate to the existing supportsSymlinks() call.
+return|return
+name|supportsSymlinks
+argument_list|()
+operator|&&
+name|areSymlinksEnabled
+argument_list|()
+return|;
+default|default:
+comment|// the feature is not implemented.
+return|return
+literal|false
+return|;
+block|}
 block|}
 comment|// making it volatile to be able to do a double checked locking
 DECL|field|FILE_SYSTEMS_LOADED

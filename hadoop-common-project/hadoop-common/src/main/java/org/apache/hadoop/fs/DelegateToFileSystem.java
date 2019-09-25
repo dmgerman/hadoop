@@ -1277,6 +1277,35 @@ name|bufferSize
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|hasPathCapability (final Path path, final String capability)
+specifier|public
+name|boolean
+name|hasPathCapability
+parameter_list|(
+specifier|final
+name|Path
+name|path
+parameter_list|,
+specifier|final
+name|String
+name|capability
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|fsImpl
+operator|.
+name|hasPathCapability
+argument_list|(
+name|path
+argument_list|,
+name|capability
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 

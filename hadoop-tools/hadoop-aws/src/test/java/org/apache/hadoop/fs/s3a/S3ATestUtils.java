@@ -4413,6 +4413,8 @@ parameter_list|(
 name|S3AFileSystem
 name|fs
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|assume
 argument_list|(
@@ -4422,8 +4424,13 @@ name|fs
 argument_list|,
 name|fs
 operator|.
-name|hasCapability
+name|hasPathCapability
 argument_list|(
+name|fs
+operator|.
+name|getWorkingDirectory
+argument_list|()
+argument_list|,
 name|CommitConstants
 operator|.
 name|STORE_CAPABILITY_MAGIC_COMMITTER
