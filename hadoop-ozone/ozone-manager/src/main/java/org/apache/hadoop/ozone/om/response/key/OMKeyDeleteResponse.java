@@ -176,6 +176,26 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nullable
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
+import|;
+end_import
+
 begin_comment
 comment|/**  * Response for DeleteKey request.  */
 end_comment
@@ -193,13 +213,17 @@ specifier|private
 name|OmKeyInfo
 name|omKeyInfo
 decl_stmt|;
-DECL|method|OMKeyDeleteResponse (OmKeyInfo omKeyInfo, OMResponse omResponse)
+DECL|method|OMKeyDeleteResponse (@ullable OmKeyInfo omKeyInfo, @Nonnull OMResponse omResponse)
 specifier|public
 name|OMKeyDeleteResponse
 parameter_list|(
+annotation|@
+name|Nullable
 name|OmKeyInfo
 name|omKeyInfo
 parameter_list|,
+annotation|@
+name|Nonnull
 name|OMResponse
 name|omResponse
 parameter_list|)
@@ -360,11 +384,13 @@ block|}
 block|}
 block|}
 comment|/**    * Check if the key is empty or not. Key will be empty if it does not have    * blocks.    * @param keyInfo    * @return if empty true, else false.    */
-DECL|method|isKeyEmpty (OmKeyInfo keyInfo)
+DECL|method|isKeyEmpty (@ullable OmKeyInfo keyInfo)
 specifier|private
 name|boolean
 name|isKeyEmpty
 parameter_list|(
+annotation|@
+name|Nullable
 name|OmKeyInfo
 name|keyInfo
 parameter_list|)

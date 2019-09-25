@@ -152,6 +152,16 @@ name|List
 import|;
 end_import
 
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
+import|;
+end_import
+
 begin_comment
 comment|/**  * Response for {@link OMKeyPurgeRequest} request.  */
 end_comment
@@ -172,7 +182,7 @@ name|String
 argument_list|>
 name|purgeKeyList
 decl_stmt|;
-DECL|method|OMKeyPurgeResponse (List<String> keyList, OMResponse omResponse)
+DECL|method|OMKeyPurgeResponse (List<String> keyList, @Nonnull OMResponse omResponse)
 specifier|public
 name|OMKeyPurgeResponse
 parameter_list|(
@@ -182,6 +192,8 @@ name|String
 argument_list|>
 name|keyList
 parameter_list|,
+annotation|@
+name|Nonnull
 name|OMResponse
 name|omResponse
 parameter_list|)

@@ -140,6 +140,26 @@ name|BatchOperation
 import|;
 end_import
 
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nullable
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
+import|;
+end_import
+
 begin_comment
 comment|/**  * Response for SetBucketProperty request.  */
 end_comment
@@ -157,13 +177,17 @@ specifier|private
 name|OmBucketInfo
 name|omBucketInfo
 decl_stmt|;
-DECL|method|OMBucketSetPropertyResponse (OmBucketInfo omBucketInfo, OMResponse omResponse)
+DECL|method|OMBucketSetPropertyResponse (@ullable OmBucketInfo omBucketInfo, @Nonnull OMResponse omResponse)
 specifier|public
 name|OMBucketSetPropertyResponse
 parameter_list|(
+annotation|@
+name|Nullable
 name|OmBucketInfo
 name|omBucketInfo
 parameter_list|,
+annotation|@
+name|Nonnull
 name|OMResponse
 name|omResponse
 parameter_list|)

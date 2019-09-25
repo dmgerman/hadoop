@@ -120,6 +120,26 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nullable
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
+import|;
+end_import
+
 begin_comment
 comment|/**  * Response for CommitKey request.  */
 end_comment
@@ -142,16 +162,20 @@ specifier|private
 name|long
 name|openKeySessionID
 decl_stmt|;
-DECL|method|OMKeyCommitResponse (OmKeyInfo omKeyInfo, long openKeySessionID, OzoneManagerProtocolProtos.OMResponse omResponse)
+DECL|method|OMKeyCommitResponse (@ullable OmKeyInfo omKeyInfo, long openKeySessionID, @Nonnull OzoneManagerProtocolProtos.OMResponse omResponse)
 specifier|public
 name|OMKeyCommitResponse
 parameter_list|(
+annotation|@
+name|Nullable
 name|OmKeyInfo
 name|omKeyInfo
 parameter_list|,
 name|long
 name|openKeySessionID
 parameter_list|,
+annotation|@
+name|Nonnull
 name|OzoneManagerProtocolProtos
 operator|.
 name|OMResponse

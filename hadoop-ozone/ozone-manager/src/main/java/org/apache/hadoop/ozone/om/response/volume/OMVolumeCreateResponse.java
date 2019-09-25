@@ -174,6 +174,16 @@ name|BatchOperation
 import|;
 end_import
 
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
+import|;
+end_import
+
 begin_comment
 comment|/**  * Response for CreateBucket request.  */
 end_comment
@@ -196,7 +206,7 @@ specifier|private
 name|OmVolumeArgs
 name|omVolumeArgs
 decl_stmt|;
-DECL|method|OMVolumeCreateResponse (OmVolumeArgs omVolumeArgs, VolumeList volumeList, OMResponse omResponse)
+DECL|method|OMVolumeCreateResponse (OmVolumeArgs omVolumeArgs, VolumeList volumeList, @Nonnull OMResponse omResponse)
 specifier|public
 name|OMVolumeCreateResponse
 parameter_list|(
@@ -206,6 +216,8 @@ parameter_list|,
 name|VolumeList
 name|volumeList
 parameter_list|,
+annotation|@
+name|Nonnull
 name|OMResponse
 name|omResponse
 parameter_list|)

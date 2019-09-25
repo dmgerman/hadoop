@@ -152,6 +152,16 @@ name|Nullable
 import|;
 end_import
 
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
+import|;
+end_import
+
 begin_comment
 comment|/**  * Response for Multipart Upload Complete request.  */
 end_comment
@@ -174,7 +184,7 @@ specifier|private
 name|OmKeyInfo
 name|omKeyInfo
 decl_stmt|;
-DECL|method|S3MultipartUploadCompleteResponse (@ullable String multipartKey, @Nullable OmKeyInfo omKeyInfo, OMResponse omResponse)
+DECL|method|S3MultipartUploadCompleteResponse (@ullable String multipartKey, @Nullable OmKeyInfo omKeyInfo, @Nonnull OMResponse omResponse)
 specifier|public
 name|S3MultipartUploadCompleteResponse
 parameter_list|(
@@ -188,6 +198,8 @@ name|Nullable
 name|OmKeyInfo
 name|omKeyInfo
 parameter_list|,
+annotation|@
+name|Nonnull
 name|OMResponse
 name|omResponse
 parameter_list|)

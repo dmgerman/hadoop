@@ -160,6 +160,16 @@ name|BatchOperation
 import|;
 end_import
 
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
+import|;
+end_import
+
 begin_comment
 comment|/**  * Response for set owner request.  */
 end_comment
@@ -192,7 +202,7 @@ specifier|private
 name|OmVolumeArgs
 name|newOwnerVolumeArgs
 decl_stmt|;
-DECL|method|OMVolumeSetOwnerResponse (String oldOwner, VolumeList oldOwnerVolumeList, VolumeList newOwnerVolumeList, OmVolumeArgs newOwnerVolumeArgs, OMResponse omResponse)
+DECL|method|OMVolumeSetOwnerResponse (String oldOwner, VolumeList oldOwnerVolumeList, VolumeList newOwnerVolumeList, OmVolumeArgs newOwnerVolumeArgs, @Nonnull OMResponse omResponse)
 specifier|public
 name|OMVolumeSetOwnerResponse
 parameter_list|(
@@ -208,6 +218,8 @@ parameter_list|,
 name|OmVolumeArgs
 name|newOwnerVolumeArgs
 parameter_list|,
+annotation|@
+name|Nonnull
 name|OMResponse
 name|omResponse
 parameter_list|)

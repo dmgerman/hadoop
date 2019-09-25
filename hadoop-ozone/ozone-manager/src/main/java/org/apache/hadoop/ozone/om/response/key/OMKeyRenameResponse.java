@@ -140,6 +140,26 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nullable
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
+import|;
+end_import
+
 begin_comment
 comment|/**  * Response for RenameKey request.  */
 end_comment
@@ -170,10 +190,12 @@ specifier|final
 name|String
 name|fromKeyName
 decl_stmt|;
-DECL|method|OMKeyRenameResponse (OmKeyInfo renameKeyInfo, String toKeyName, String fromKeyName, OMResponse omResponse)
+DECL|method|OMKeyRenameResponse (@ullable OmKeyInfo renameKeyInfo, String toKeyName, String fromKeyName, @Nonnull OMResponse omResponse)
 specifier|public
 name|OMKeyRenameResponse
 parameter_list|(
+annotation|@
+name|Nullable
 name|OmKeyInfo
 name|renameKeyInfo
 parameter_list|,
@@ -183,6 +205,8 @@ parameter_list|,
 name|String
 name|fromKeyName
 parameter_list|,
+annotation|@
+name|Nonnull
 name|OMResponse
 name|omResponse
 parameter_list|)

@@ -218,6 +218,26 @@ name|TreeMap
 import|;
 end_import
 
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nullable
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
+import|;
+end_import
+
 begin_comment
 comment|/**  * Response for Multipart Abort Request.  */
 end_comment
@@ -240,16 +260,20 @@ specifier|private
 name|OmMultipartKeyInfo
 name|omMultipartKeyInfo
 decl_stmt|;
-DECL|method|S3MultipartUploadAbortResponse (String multipartKey, OmMultipartKeyInfo omMultipartKeyInfo, OMResponse omResponse)
+DECL|method|S3MultipartUploadAbortResponse (String multipartKey, @Nullable OmMultipartKeyInfo omMultipartKeyInfo, @Nonnull OMResponse omResponse)
 specifier|public
 name|S3MultipartUploadAbortResponse
 parameter_list|(
 name|String
 name|multipartKey
 parameter_list|,
+annotation|@
+name|Nullable
 name|OmMultipartKeyInfo
 name|omMultipartKeyInfo
 parameter_list|,
+annotation|@
+name|Nonnull
 name|OMResponse
 name|omResponse
 parameter_list|)

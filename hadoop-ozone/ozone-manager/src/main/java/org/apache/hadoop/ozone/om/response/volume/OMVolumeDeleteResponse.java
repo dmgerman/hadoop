@@ -142,6 +142,16 @@ name|BatchOperation
 import|;
 end_import
 
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
+import|;
+end_import
+
 begin_comment
 comment|/**  * Response for CreateVolume request.  */
 end_comment
@@ -169,7 +179,7 @@ specifier|private
 name|VolumeList
 name|updatedVolumeList
 decl_stmt|;
-DECL|method|OMVolumeDeleteResponse (String volume, String owner, VolumeList updatedVolumeList, OMResponse omResponse)
+DECL|method|OMVolumeDeleteResponse (String volume, String owner, VolumeList updatedVolumeList, @Nonnull OMResponse omResponse)
 specifier|public
 name|OMVolumeDeleteResponse
 parameter_list|(
@@ -182,6 +192,8 @@ parameter_list|,
 name|VolumeList
 name|updatedVolumeList
 parameter_list|,
+annotation|@
+name|Nonnull
 name|OMResponse
 name|omResponse
 parameter_list|)

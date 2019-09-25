@@ -140,6 +140,16 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
+import|;
+end_import
+
 begin_comment
 comment|/**  * Response for set quota request.  */
 end_comment
@@ -157,13 +167,15 @@ specifier|private
 name|OmVolumeArgs
 name|omVolumeArgs
 decl_stmt|;
-DECL|method|OMVolumeSetQuotaResponse (OmVolumeArgs omVolumeArgs, OMResponse omResponse)
+DECL|method|OMVolumeSetQuotaResponse (OmVolumeArgs omVolumeArgs, @Nonnull OMResponse omResponse)
 specifier|public
 name|OMVolumeSetQuotaResponse
 parameter_list|(
 name|OmVolumeArgs
 name|omVolumeArgs
 parameter_list|,
+annotation|@
+name|Nonnull
 name|OMResponse
 name|omResponse
 parameter_list|)

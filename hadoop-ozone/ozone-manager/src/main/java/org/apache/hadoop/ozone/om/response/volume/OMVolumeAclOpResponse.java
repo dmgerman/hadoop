@@ -128,6 +128,16 @@ end_import
 
 begin_import
 import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -153,13 +163,15 @@ specifier|private
 name|OmVolumeArgs
 name|omVolumeArgs
 decl_stmt|;
-DECL|method|OMVolumeAclOpResponse (OmVolumeArgs omVolumeArgs, OMResponse omResponse)
+DECL|method|OMVolumeAclOpResponse (OmVolumeArgs omVolumeArgs, @Nonnull OMResponse omResponse)
 specifier|public
 name|OMVolumeAclOpResponse
 parameter_list|(
 name|OmVolumeArgs
 name|omVolumeArgs
 parameter_list|,
+annotation|@
+name|Nonnull
 name|OMResponse
 name|omResponse
 parameter_list|)

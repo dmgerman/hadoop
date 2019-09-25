@@ -140,6 +140,26 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nullable
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
+import|;
+end_import
+
 begin_comment
 comment|/**  * Response for AllocateBlock request.  */
 end_comment
@@ -164,16 +184,20 @@ specifier|final
 name|long
 name|clientID
 decl_stmt|;
-DECL|method|OMAllocateBlockResponse (OmKeyInfo omKeyInfo, long clientID, OMResponse omResponse)
+DECL|method|OMAllocateBlockResponse (@ullable OmKeyInfo omKeyInfo, long clientID, @Nonnull OMResponse omResponse)
 specifier|public
 name|OMAllocateBlockResponse
 parameter_list|(
+annotation|@
+name|Nullable
 name|OmKeyInfo
 name|omKeyInfo
 parameter_list|,
 name|long
 name|clientID
 parameter_list|,
+annotation|@
+name|Nonnull
 name|OMResponse
 name|omResponse
 parameter_list|)

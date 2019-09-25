@@ -162,6 +162,16 @@ end_import
 
 begin_import
 import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -203,7 +213,7 @@ specifier|private
 name|OmKeyInfo
 name|dirKeyInfo
 decl_stmt|;
-DECL|method|OMDirectoryCreateResponse (@ullable OmKeyInfo dirKeyInfo, OMResponse omResponse)
+DECL|method|OMDirectoryCreateResponse (@ullable OmKeyInfo dirKeyInfo, @Nonnull OMResponse omResponse)
 specifier|public
 name|OMDirectoryCreateResponse
 parameter_list|(
@@ -212,6 +222,8 @@ name|Nullable
 name|OmKeyInfo
 name|dirKeyInfo
 parameter_list|,
+annotation|@
+name|Nonnull
 name|OMResponse
 name|omResponse
 parameter_list|)

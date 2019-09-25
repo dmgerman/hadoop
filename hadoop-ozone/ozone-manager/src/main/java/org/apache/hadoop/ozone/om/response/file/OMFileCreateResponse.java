@@ -34,6 +34,16 @@ end_import
 
 begin_import
 import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -102,7 +112,7 @@ name|OMFileCreateResponse
 extends|extends
 name|OMKeyCreateResponse
 block|{
-DECL|method|OMFileCreateResponse (@ullable OmKeyInfo omKeyInfo, long openKeySessionID, OMResponse omResponse)
+DECL|method|OMFileCreateResponse (@ullable OmKeyInfo omKeyInfo, long openKeySessionID, @Nonnull OMResponse omResponse)
 specifier|public
 name|OMFileCreateResponse
 parameter_list|(
@@ -114,6 +124,8 @@ parameter_list|,
 name|long
 name|openKeySessionID
 parameter_list|,
+annotation|@
+name|Nonnull
 name|OMResponse
 name|omResponse
 parameter_list|)

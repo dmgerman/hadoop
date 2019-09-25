@@ -140,6 +140,26 @@ name|BatchOperation
 import|;
 end_import
 
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nullable
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
+import|;
+end_import
+
 begin_comment
 comment|/**  * Response for CreateBucket request.  */
 end_comment
@@ -159,13 +179,17 @@ specifier|final
 name|OmBucketInfo
 name|omBucketInfo
 decl_stmt|;
-DECL|method|OMBucketCreateResponse (OmBucketInfo omBucketInfo, OMResponse omResponse)
+DECL|method|OMBucketCreateResponse (@ullable OmBucketInfo omBucketInfo, @Nonnull OMResponse omResponse)
 specifier|public
 name|OMBucketCreateResponse
 parameter_list|(
+annotation|@
+name|Nullable
 name|OmBucketInfo
 name|omBucketInfo
 parameter_list|,
+annotation|@
+name|Nonnull
 name|OMResponse
 name|omResponse
 parameter_list|)
@@ -249,6 +273,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Nullable
 DECL|method|getOmBucketInfo ()
 specifier|public
 name|OmBucketInfo

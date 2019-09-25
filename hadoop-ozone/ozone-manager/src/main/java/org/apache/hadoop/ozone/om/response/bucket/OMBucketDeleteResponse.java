@@ -102,6 +102,26 @@ name|BatchOperation
 import|;
 end_import
 
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nullable
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
+import|;
+end_import
+
 begin_comment
 comment|/**  * Response for DeleteBucket request.  */
 end_comment
@@ -125,7 +145,7 @@ specifier|private
 name|String
 name|bucketName
 decl_stmt|;
-DECL|method|OMBucketDeleteResponse ( String volumeName, String bucketName, OzoneManagerProtocolProtos.OMResponse omResponse)
+DECL|method|OMBucketDeleteResponse ( String volumeName, String bucketName, @Nonnull OzoneManagerProtocolProtos.OMResponse omResponse)
 specifier|public
 name|OMBucketDeleteResponse
 parameter_list|(
@@ -135,6 +155,8 @@ parameter_list|,
 name|String
 name|bucketName
 parameter_list|,
+annotation|@
+name|Nonnull
 name|OzoneManagerProtocolProtos
 operator|.
 name|OMResponse

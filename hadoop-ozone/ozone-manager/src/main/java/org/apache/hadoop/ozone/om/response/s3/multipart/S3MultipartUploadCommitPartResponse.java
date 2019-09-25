@@ -222,6 +222,26 @@ name|OK
 import|;
 end_import
 
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nullable
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
+import|;
+end_import
+
 begin_comment
 comment|/**  * Response for S3MultipartUploadCommitPart request.  */
 end_comment
@@ -261,7 +281,7 @@ operator|.
 name|PartKeyInfo
 name|oldMultipartKeyInfo
 decl_stmt|;
-DECL|method|S3MultipartUploadCommitPartResponse (String multipartKey, String openKey, OmKeyInfo deletePartKeyInfo, OmMultipartKeyInfo omMultipartKeyInfo, OzoneManagerProtocolProtos.PartKeyInfo oldPartKeyInfo, OMResponse omResponse)
+DECL|method|S3MultipartUploadCommitPartResponse (String multipartKey, String openKey, @Nullable OmKeyInfo deletePartKeyInfo, @Nullable OmMultipartKeyInfo omMultipartKeyInfo, @Nullable OzoneManagerProtocolProtos.PartKeyInfo oldPartKeyInfo, @Nonnull OMResponse omResponse)
 specifier|public
 name|S3MultipartUploadCommitPartResponse
 parameter_list|(
@@ -271,17 +291,25 @@ parameter_list|,
 name|String
 name|openKey
 parameter_list|,
+annotation|@
+name|Nullable
 name|OmKeyInfo
 name|deletePartKeyInfo
 parameter_list|,
+annotation|@
+name|Nullable
 name|OmMultipartKeyInfo
 name|omMultipartKeyInfo
 parameter_list|,
+annotation|@
+name|Nullable
 name|OzoneManagerProtocolProtos
 operator|.
 name|PartKeyInfo
 name|oldPartKeyInfo
 parameter_list|,
+annotation|@
+name|Nonnull
 name|OMResponse
 name|omResponse
 parameter_list|)
