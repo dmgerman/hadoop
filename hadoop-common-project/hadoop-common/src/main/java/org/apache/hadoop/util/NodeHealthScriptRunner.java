@@ -615,6 +615,7 @@ break|break;
 case|case
 name|FAILED_WITH_EXIT_CODE
 case|:
+comment|// see Javadoc above - we don't report bad health intentionally
 name|setHealthStatus
 argument_list|(
 literal|true

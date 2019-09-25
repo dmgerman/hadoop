@@ -454,6 +454,11 @@ literal|"@echo off\nping -n 4 127.0.0.1>nul\necho \"I am fine\""
 else|:
 literal|"sleep 4\necho \"I am fine\""
 decl_stmt|;
+name|String
+name|exitCodeScript
+init|=
+literal|"exit 127"
+decl_stmt|;
 name|Configuration
 name|conf
 init|=
@@ -644,6 +649,43 @@ argument_list|(
 name|NodeHealthScriptRunner
 operator|.
 name|NODE_HEALTH_SCRIPT_TIMED_OUT_MSG
+argument_list|,
+name|nodeHealthScriptRunner
+operator|.
+name|getHealthReport
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Exit code 127
+name|writeNodeHealthScriptFile
+argument_list|(
+name|exitCodeScript
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|timerTask
+operator|.
+name|run
+argument_list|()
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+literal|"Node health status reported unhealthy"
+argument_list|,
+name|nodeHealthScriptRunner
+operator|.
+name|isHealthy
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|""
 argument_list|,
 name|nodeHealthScriptRunner
 operator|.
