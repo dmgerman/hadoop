@@ -1428,9 +1428,12 @@ name|bucketName
 argument_list|)
 expr_stmt|;
 block|}
+else|else
+block|{
 throw|throw
 name|ex
 throw|;
+block|}
 block|}
 block|}
 block|}
