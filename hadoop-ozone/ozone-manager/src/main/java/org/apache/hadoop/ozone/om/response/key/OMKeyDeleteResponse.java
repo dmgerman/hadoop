@@ -383,7 +383,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Check if the key is empty or not. Key will be empty if it does not have    * blocks.    * @param keyInfo    * @return if empty true, else false.    */
+comment|/**    * Check if the key is empty or not. Key will be empty if it does not have    * blocks.    *    * @param keyInfo    * @return if empty true, else false.    */
 DECL|method|isKeyEmpty (@ullable OmKeyInfo keyInfo)
 specifier|private
 name|boolean
@@ -395,6 +395,17 @@ name|OmKeyInfo
 name|keyInfo
 parameter_list|)
 block|{
+if|if
+condition|(
+name|keyInfo
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
 for|for
 control|(
 name|OmKeyLocationInfoGroup
