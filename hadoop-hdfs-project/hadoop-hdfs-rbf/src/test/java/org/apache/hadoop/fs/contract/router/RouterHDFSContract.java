@@ -208,18 +208,18 @@ name|IOException
 block|{
 name|createCluster
 argument_list|(
-literal|null
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|createCluster (Configuration conf)
+DECL|method|createCluster (boolean security)
 specifier|public
 specifier|static
 name|void
 name|createCluster
 parameter_list|(
-name|Configuration
-name|conf
+name|boolean
+name|security
 parameter_list|)
 throws|throws
 name|IOException
@@ -230,11 +230,11 @@ literal|true
 argument_list|,
 literal|2
 argument_list|,
-name|conf
+name|security
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|createCluster ( boolean ha, int numNameServices, Configuration conf)
+DECL|method|createCluster ( boolean ha, int numNameServices, boolean security)
 specifier|public
 specifier|static
 name|void
@@ -246,14 +246,32 @@ parameter_list|,
 name|int
 name|numNameServices
 parameter_list|,
-name|Configuration
-name|conf
+name|boolean
+name|security
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 try|try
 block|{
+name|Configuration
+name|conf
+init|=
+literal|null
+decl_stmt|;
+if|if
+condition|(
+name|security
+condition|)
+block|{
+name|conf
+operator|=
+name|SecurityConfUtil
+operator|.
+name|initSecurity
+argument_list|()
+expr_stmt|;
+block|}
 name|cluster
 operator|=
 operator|new
@@ -394,6 +412,30 @@ name|cluster
 operator|=
 literal|null
 expr_stmt|;
+block|}
+try|try
+block|{
+name|SecurityConfUtil
+operator|.
+name|destroy
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Cannot destroy security context"
+argument_list|,
+name|e
+argument_list|)
+throw|;
 block|}
 block|}
 DECL|method|getCluster ()

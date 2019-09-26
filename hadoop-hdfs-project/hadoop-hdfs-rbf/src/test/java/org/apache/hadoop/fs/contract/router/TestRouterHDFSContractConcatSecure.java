@@ -110,26 +110,6 @@ name|IOException
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|contract
-operator|.
-name|router
-operator|.
-name|SecurityConfUtil
-operator|.
-name|initSecurity
-import|;
-end_import
-
 begin_comment
 comment|/**  * Test secure concat operations on the Router-based FS.  */
 end_comment
@@ -157,8 +137,7 @@ name|RouterHDFSContract
 operator|.
 name|createCluster
 argument_list|(
-name|initSecurity
-argument_list|()
+literal|true
 argument_list|)
 expr_stmt|;
 comment|// perform a simple operation on the cluster to verify it is up

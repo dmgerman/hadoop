@@ -1063,6 +1063,11 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+name|SecurityConfUtil
+operator|.
+name|destroy
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Test

@@ -96,26 +96,6 @@ name|IOException
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|contract
-operator|.
-name|router
-operator|.
-name|SecurityConfUtil
-operator|.
-name|initSecurity
-import|;
-end_import
-
 begin_comment
 comment|/**  * Test secure dir operations on the Router-based FS.  */
 end_comment
@@ -143,8 +123,7 @@ name|RouterHDFSContract
 operator|.
 name|createCluster
 argument_list|(
-name|initSecurity
-argument_list|()
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
