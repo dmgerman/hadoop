@@ -401,22 +401,10 @@ throw|throw
 operator|new
 name|PathNotFoundException
 argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"mkdir failed for path: %s. Item parent path not found: %s."
-argument_list|,
-name|itemPath
-operator|.
-name|toString
-argument_list|()
-argument_list|,
 name|itemParentPath
 operator|.
 name|toString
 argument_list|()
-argument_list|)
 argument_list|)
 throw|;
 block|}
