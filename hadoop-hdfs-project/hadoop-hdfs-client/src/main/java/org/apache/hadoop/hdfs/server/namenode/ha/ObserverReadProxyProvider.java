@@ -1290,9 +1290,17 @@ operator|=
 name|e
 expr_stmt|;
 block|}
+if|if
+condition|(
 name|LOG
 operator|.
-name|warn
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Failed to connect to {} while fetching HAServiceState"
 argument_list|,
@@ -1304,6 +1312,7 @@ argument_list|,
 name|ioe
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 literal|null
 return|;
@@ -1923,14 +1932,26 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|// Only log message if there are actual observer failures.
+comment|// Getting here with failedObserverCount = 0 could
+comment|// be that there is simply no Observer node running at all.
+if|if
+condition|(
+name|failedObserverCount
+operator|>
+literal|0
+condition|)
+block|{
 comment|// If we get here, it means all observers have failed.
 name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"{} observers have failed for read request {}; also found {} "
+literal|"{} observers have failed for read request {}; "
 operator|+
-literal|"standby, {} active, and {} unreachable. Falling back to active."
+literal|"also found {} standby, {} active, and {} unreachable. "
+operator|+
+literal|"Falling back to active."
 argument_list|,
 name|failedObserverCount
 argument_list|,
@@ -1946,6 +1967,28 @@ argument_list|,
 name|unreachableCount
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Read falling back to active without observer read "
+operator|+
+literal|"fail, is there no observer node running?"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 comment|// Either all observers have failed, observer reads are disabled,
 comment|// or this is a write request. In any case, forward the request to
