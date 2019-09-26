@@ -144,6 +144,26 @@ name|hdds
 operator|.
 name|scm
 operator|.
+name|container
+operator|.
+name|metrics
+operator|.
+name|SCMContainerManagerMetrics
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|scm
+operator|.
 name|exceptions
 operator|.
 name|SCMException
@@ -628,6 +648,12 @@ specifier|final
 name|int
 name|numContainerPerOwnerInPipeline
 decl_stmt|;
+DECL|field|scmContainerManagerMetrics
+specifier|private
+specifier|final
+name|SCMContainerManagerMetrics
+name|scmContainerManagerMetrics
+decl_stmt|;
 comment|/**    * Constructs a mapping class that creates mapping between container names    * and pipelines.    *    * @param nodeManager - NodeManager so that we can get the nodes that are    * healthy to place new    * containers.    * passed to LevelDB and this memory is allocated in Native code space.    * CacheSize is specified    * in MB.    * @param pipelineManager - PipelineManager    * @throws IOException on Failure.    */
 annotation|@
 name|SuppressWarnings
@@ -765,6 +791,13 @@ name|OZONE_SCM_PIPELINE_OWNER_CONTAINER_COUNT_DEFAULT
 argument_list|)
 expr_stmt|;
 name|loadExistingContainers
+argument_list|()
+expr_stmt|;
+name|scmContainerManagerMetrics
+operator|=
+name|SCMContainerManagerMetrics
+operator|.
+name|create
 argument_list|()
 expr_stmt|;
 block|}
@@ -1174,6 +1207,11 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+name|scmContainerManagerMetrics
+operator|.
+name|incNumListContainersOps
+argument_list|()
+expr_stmt|;
 specifier|final
 name|long
 name|startId
@@ -1322,17 +1360,22 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
 name|lock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
-try|try
-block|{
-specifier|final
 name|ContainerInfo
 name|containerInfo
 init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|containerInfo
+operator|=
 name|containerStateManager
 operator|.
 name|allocateContainer
@@ -1345,7 +1388,23 @@ name|replicationFactor
 argument_list|,
 name|owner
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ex
+parameter_list|)
+block|{
+name|scmContainerManagerMetrics
+operator|.
+name|incNumFailureCreateContainers
+argument_list|()
+expr_stmt|;
+throw|throw
+name|ex
+throw|;
+block|}
 comment|// Add container to DB.
 try|try
 block|{
@@ -1491,6 +1550,11 @@ name|containerID
 argument_list|)
 expr_stmt|;
 block|}
+name|scmContainerManagerMetrics
+operator|.
+name|incNumSuccessfulDeleteContainers
+argument_list|()
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -1498,6 +1562,11 @@ name|ContainerNotFoundException
 name|cnfe
 parameter_list|)
 block|{
+name|scmContainerManagerMetrics
+operator|.
+name|incNumFailureDeleteContainers
+argument_list|()
+expr_stmt|;
 throw|throw
 operator|new
 name|SCMException
@@ -2202,6 +2271,16 @@ name|toByteArray
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Incrementing here, as allocateBlock to create a container calls
+comment|// getMatchingContainer() and finally calls this API to add newly
+comment|// created container to DB.
+comment|// Even allocateContainer calls this API to add newly allocated
+comment|// container to DB. So we need to increment metrics here.
+name|scmContainerManagerMetrics
+operator|.
+name|incNumSuccessfulCreateContainers
+argument_list|()
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -2211,6 +2290,11 @@ parameter_list|)
 block|{
 comment|// If adding to containerStore fails, we should remove the container
 comment|// from in-memory map.
+name|scmContainerManagerMetrics
+operator|.
+name|incNumFailureCreateContainers
+argument_list|()
+expr_stmt|;
 name|LOG
 operator|.
 name|error
@@ -2495,6 +2579,21 @@ block|{
 name|containerStore
 operator|.
 name|close
+argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|scmContainerManagerMetrics
+operator|!=
+literal|null
+condition|)
+block|{
+name|this
+operator|.
+name|scmContainerManagerMetrics
+operator|.
+name|unRegister
 argument_list|()
 expr_stmt|;
 block|}
