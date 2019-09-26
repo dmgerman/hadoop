@@ -915,6 +915,8 @@ argument_list|,
 name|volume
 argument_list|,
 name|oldOwner
+argument_list|,
+name|transactionLogIndex
 argument_list|)
 expr_stmt|;
 name|newOwnerVolumeList
@@ -940,6 +942,8 @@ argument_list|,
 name|newOwner
 argument_list|,
 name|maxUserVolumeCount
+argument_list|,
+name|transactionLogIndex
 argument_list|)
 expr_stmt|;
 comment|// Set owner with new owner name.
@@ -948,6 +952,13 @@ operator|.
 name|setOwnerName
 argument_list|(
 name|newOwner
+argument_list|)
+expr_stmt|;
+name|omVolumeArgs
+operator|.
+name|setUpdateID
+argument_list|(
+name|transactionLogIndex
 argument_list|)
 expr_stmt|;
 comment|// Update cache.

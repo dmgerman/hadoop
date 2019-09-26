@@ -243,8 +243,8 @@ name|omRequest
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Delete volume from user volume list. This method should be called after    * acquiring user lock.    * @param volumeList - current volume list owned by user.    * @param volume - volume which needs to deleted from the volume list.    * @param owner    * @return VolumeList - updated volume list for the user.    * @throws IOException    */
-DECL|method|delVolumeFromOwnerList (VolumeList volumeList, String volume, String owner)
+comment|/**    * Delete volume from user volume list. This method should be called after    * acquiring user lock.    * @param volumeList - current volume list owned by user.    * @param volume - volume which needs to deleted from the volume list.    * @param owner - Name of the Owner.    * @param txID - The transaction ID that is updating this value.    * @return VolumeList - updated volume list for the user.    * @throws IOException    */
+DECL|method|delVolumeFromOwnerList (VolumeList volumeList, String volume, String owner, long txID)
 specifier|protected
 name|VolumeList
 name|delVolumeFromOwnerList
@@ -257,6 +257,9 @@ name|volume
 parameter_list|,
 name|String
 name|owner
+parameter_list|,
+name|long
+name|txID
 parameter_list|)
 throws|throws
 name|IOException
@@ -330,6 +333,19 @@ argument_list|(
 name|prevVolList
 argument_list|)
 operator|.
+name|setObjectID
+argument_list|(
+name|volumeList
+operator|.
+name|getObjectID
+argument_list|()
+argument_list|)
+operator|.
+name|setUpdateID
+argument_list|(
+name|txID
+argument_list|)
+operator|.
 name|build
 argument_list|()
 decl_stmt|;
@@ -338,7 +354,7 @@ name|newVolList
 return|;
 block|}
 comment|/**    * Add volume to user volume list. This method should be called after    * acquiring user lock.    * @param volumeList - current volume list owned by user.    * @param volume - volume which needs to be added to this list.    * @param owner    * @param maxUserVolumeCount    * @return VolumeList - which is updated volume list.    * @throws OMException - if user has volumes greater than    * maxUserVolumeCount, an exception is thrown.    */
-DECL|method|addVolumeToOwnerList (VolumeList volumeList, String volume, String owner, long maxUserVolumeCount)
+DECL|method|addVolumeToOwnerList (VolumeList volumeList, String volume, String owner, long maxUserVolumeCount, long txID)
 specifier|protected
 name|VolumeList
 name|addVolumeToOwnerList
@@ -354,6 +370,9 @@ name|owner
 parameter_list|,
 name|long
 name|maxUserVolumeCount
+parameter_list|,
+name|long
+name|txID
 parameter_list|)
 throws|throws
 name|IOException
@@ -403,6 +422,11 @@ name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
+name|long
+name|objectID
+init|=
+name|txID
+decl_stmt|;
 if|if
 condition|(
 name|volumeList
@@ -420,6 +444,13 @@ name|getVolumeNamesList
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|objectID
+operator|=
+name|volumeList
+operator|.
+name|getObjectID
+argument_list|()
+expr_stmt|;
 block|}
 comment|// Add the new volume to the list
 name|prevVolList
@@ -436,6 +467,16 @@ name|VolumeList
 operator|.
 name|newBuilder
 argument_list|()
+operator|.
+name|setObjectID
+argument_list|(
+name|objectID
+argument_list|)
+operator|.
+name|setUpdateID
+argument_list|(
+name|txID
+argument_list|)
 operator|.
 name|addAllVolumeNames
 argument_list|(

@@ -1544,6 +1544,16 @@ argument_list|(
 name|volumeName
 argument_list|)
 operator|.
+name|setObjectID
+argument_list|(
+literal|1
+argument_list|)
+operator|.
+name|setUpdateID
+argument_list|(
+literal|1
+argument_list|)
+operator|.
 name|build
 argument_list|()
 decl_stmt|;

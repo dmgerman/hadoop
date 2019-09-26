@@ -786,6 +786,8 @@ argument_list|,
 name|volume
 argument_list|,
 name|owner
+argument_list|,
+name|transactionLogIndex
 argument_list|)
 expr_stmt|;
 name|omMetadataManager

@@ -318,6 +318,16 @@ operator|.
 name|newBuilder
 argument_list|()
 operator|.
+name|setObjectID
+argument_list|(
+literal|1
+argument_list|)
+operator|.
+name|setUpdateID
+argument_list|(
+literal|1
+argument_list|)
+operator|.
 name|addVolumeNames
 argument_list|(
 name|volumeName

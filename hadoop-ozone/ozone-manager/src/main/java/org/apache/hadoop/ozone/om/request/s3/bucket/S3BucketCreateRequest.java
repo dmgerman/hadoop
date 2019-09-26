@@ -1222,6 +1222,8 @@ name|ozoneManager
 operator|.
 name|getMaxUserVolumeCount
 argument_list|()
+argument_list|,
+name|transactionLogIndex
 argument_list|)
 expr_stmt|;
 name|createVolume
