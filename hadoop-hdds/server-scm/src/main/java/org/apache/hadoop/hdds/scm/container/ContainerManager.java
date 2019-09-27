@@ -341,6 +341,18 @@ argument_list|>
 name|excludedContainerIDS
 parameter_list|)
 function_decl|;
+comment|/**    * Once after report processor handler completes, call this to notify    * container manager to increment metrics.    * @param isFullReport    * @param success    */
+DECL|method|notifyContainerReportProcessing (boolean isFullReport, boolean success)
+name|void
+name|notifyContainerReportProcessing
+parameter_list|(
+name|boolean
+name|isFullReport
+parameter_list|,
+name|boolean
+name|success
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

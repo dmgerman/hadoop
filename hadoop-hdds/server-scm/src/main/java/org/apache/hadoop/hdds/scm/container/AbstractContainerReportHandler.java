@@ -744,6 +744,17 @@ operator|.
 name|UNHEALTHY
 return|;
 block|}
+comment|/**    * Return ContainerManager.    * @return {@link ContainerManager}    */
+DECL|method|getContainerManager ()
+specifier|protected
+name|ContainerManager
+name|getContainerManager
+parameter_list|()
+block|{
+return|return
+name|containerManager
+return|;
+block|}
 block|}
 end_class
 
