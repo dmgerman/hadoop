@@ -1622,9 +1622,15 @@ throw|throw
 operator|new
 name|UnsupportedOperationException
 argument_list|(
-literal|"This stream does not support "
+name|in
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getCanonicalName
+argument_list|()
 operator|+
-literal|"positioned read."
+literal|" does not support positioned read."
 argument_list|)
 throw|;
 block|}
@@ -1709,9 +1715,15 @@ throw|throw
 operator|new
 name|UnsupportedOperationException
 argument_list|(
-literal|"This stream does not support "
+name|in
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getCanonicalName
+argument_list|()
 operator|+
-literal|"positioned reads with byte buffers."
+literal|" does not support positioned reads with byte buffers."
 argument_list|)
 throw|;
 block|}
@@ -1764,6 +1776,107 @@ block|}
 return|return
 name|n
 return|;
+block|}
+comment|/**    * Positioned readFully using {@link ByteBuffer}s. This method is thread-safe.    */
+annotation|@
+name|Override
+DECL|method|readFully (long position, final ByteBuffer buf)
+specifier|public
+name|void
+name|readFully
+parameter_list|(
+name|long
+name|position
+parameter_list|,
+specifier|final
+name|ByteBuffer
+name|buf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|checkStream
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+operator|!
+operator|(
+name|in
+operator|instanceof
+name|ByteBufferPositionedReadable
+operator|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+name|in
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getCanonicalName
+argument_list|()
+operator|+
+literal|" does not support positioned reads with byte buffers."
+argument_list|)
+throw|;
+block|}
+name|int
+name|bufPos
+init|=
+name|buf
+operator|.
+name|position
+argument_list|()
+decl_stmt|;
+operator|(
+operator|(
+name|ByteBufferPositionedReadable
+operator|)
+name|in
+operator|)
+operator|.
+name|readFully
+argument_list|(
+name|position
+argument_list|,
+name|buf
+argument_list|)
+expr_stmt|;
+specifier|final
+name|int
+name|n
+init|=
+name|buf
+operator|.
+name|position
+argument_list|()
+operator|-
+name|bufPos
+decl_stmt|;
+if|if
+condition|(
+name|n
+operator|>
+literal|0
+condition|)
+block|{
+comment|// This operation does not change the current offset of the file
+name|decrypt
+argument_list|(
+name|position
+argument_list|,
+name|buf
+argument_list|,
+name|n
+argument_list|,
+name|bufPos
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Decrypt length bytes in buffer starting at offset. Output is also put     * into buffer starting at offset. It is thread-safe.    */
 DECL|method|decrypt (long position, byte[] buffer, int offset, int length)
@@ -2234,9 +2347,15 @@ throw|throw
 operator|new
 name|UnsupportedOperationException
 argument_list|(
-literal|"This stream does not support "
+name|in
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getCanonicalName
+argument_list|()
 operator|+
-literal|"positioned readFully."
+literal|" does not support positioned readFully."
 argument_list|)
 throw|;
 block|}
@@ -2419,9 +2538,15 @@ throw|throw
 operator|new
 name|UnsupportedOperationException
 argument_list|(
-literal|"This stream does not "
+name|in
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getCanonicalName
+argument_list|()
 operator|+
-literal|"support seek."
+literal|" does not support seek."
 argument_list|)
 throw|;
 block|}
@@ -3157,9 +3282,15 @@ throw|throw
 operator|new
 name|UnsupportedOperationException
 argument_list|(
-literal|"This stream does not support "
+name|in
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getCanonicalName
+argument_list|()
 operator|+
-literal|"seekToNewSource."
+literal|" does not support seekToNewSource."
 argument_list|)
 throw|;
 block|}
@@ -3238,9 +3369,15 @@ throw|throw
 operator|new
 name|UnsupportedOperationException
 argument_list|(
-literal|"This stream does not "
+name|in
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getCanonicalName
+argument_list|()
 operator|+
-literal|"support seek."
+literal|" does not support seek."
 argument_list|)
 throw|;
 block|}
@@ -3279,9 +3416,15 @@ throw|throw
 operator|new
 name|UnsupportedOperationException
 argument_list|(
-literal|"This stream does not support "
+name|in
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getCanonicalName
+argument_list|()
 operator|+
-literal|"enhanced byte buffer access."
+literal|" does not support enhanced byte buffer access."
 argument_list|)
 throw|;
 block|}
@@ -3385,9 +3528,15 @@ throw|throw
 operator|new
 name|UnsupportedOperationException
 argument_list|(
-literal|"This stream does not support "
+name|in
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getCanonicalName
+argument_list|()
 operator|+
-literal|"release buffer."
+literal|" does not support release buffer."
 argument_list|)
 throw|;
 block|}
@@ -3433,9 +3582,15 @@ throw|throw
 operator|new
 name|UnsupportedOperationException
 argument_list|(
-literal|"This stream does not support "
+name|in
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getCanonicalName
+argument_list|()
 operator|+
-literal|"setting the readahead caching strategy."
+literal|" does not support setting the readahead caching strategy."
 argument_list|)
 throw|;
 block|}
@@ -3481,9 +3636,17 @@ throw|throw
 operator|new
 name|UnsupportedOperationException
 argument_list|(
-literal|"This stream does not "
+name|in
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getCanonicalName
+argument_list|()
 operator|+
-literal|"support setting the drop-behind caching setting."
+literal|" stream does not support setting the drop-behind caching"
+operator|+
+literal|" setting."
 argument_list|)
 throw|;
 block|}
@@ -3930,9 +4093,15 @@ throw|throw
 operator|new
 name|UnsupportedOperationException
 argument_list|(
-literal|"This stream does not expose "
+name|in
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getCanonicalName
+argument_list|()
 operator|+
-literal|"its stream capabilities."
+literal|" does not expose its stream capabilities."
 argument_list|)
 throw|;
 block|}

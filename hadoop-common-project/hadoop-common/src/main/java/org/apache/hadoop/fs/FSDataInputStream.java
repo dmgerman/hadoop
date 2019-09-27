@@ -249,7 +249,15 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"In is not an instance of Seekable or PositionedReadable"
+name|in
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getCanonicalName
+argument_list|()
+operator|+
+literal|" is not an instance of Seekable or PositionedReadable"
 argument_list|)
 throw|;
 block|}
@@ -518,7 +526,15 @@ name|UnsupportedOperationException
 argument_list|(
 literal|"Byte-buffer read unsupported "
 operator|+
-literal|"by input stream"
+literal|"by "
+operator|+
+name|in
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getCanonicalName
+argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -618,9 +634,15 @@ throw|throw
 operator|new
 name|UnsupportedOperationException
 argument_list|(
-literal|"this stream does not support setting the readahead "
+name|in
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getCanonicalName
+argument_list|()
 operator|+
-literal|"caching strategy."
+literal|" does not support setting the readahead caching strategy."
 argument_list|)
 throw|;
 block|}
@@ -990,9 +1012,76 @@ name|UnsupportedOperationException
 argument_list|(
 literal|"Byte-buffer pread unsupported "
 operator|+
-literal|"by input stream"
+literal|"by "
+operator|+
+name|in
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getCanonicalName
+argument_list|()
 argument_list|)
 throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|readFully (long position, ByteBuffer buf)
+specifier|public
+name|void
+name|readFully
+parameter_list|(
+name|long
+name|position
+parameter_list|,
+name|ByteBuffer
+name|buf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|in
+operator|instanceof
+name|ByteBufferPositionedReadable
+condition|)
+block|{
+operator|(
+operator|(
+name|ByteBufferPositionedReadable
+operator|)
+name|in
+operator|)
+operator|.
+name|readFully
+argument_list|(
+name|position
+argument_list|,
+name|buf
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Byte-buffer pread "
+operator|+
+literal|"unsupported by "
+operator|+
+name|in
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getCanonicalName
+argument_list|()
+argument_list|)
+throw|;
+block|}
 block|}
 block|}
 end_class

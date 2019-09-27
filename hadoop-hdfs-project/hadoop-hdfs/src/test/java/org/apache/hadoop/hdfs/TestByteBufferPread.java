@@ -451,6 +451,16 @@ name|FILE_SIZE
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|testPreadFullyWithByteBuffer
+argument_list|(
+name|ByteBuffer
+operator|.
+name|allocate
+argument_list|(
+name|FILE_SIZE
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Test preads with {@link java.nio.DirectByteBuffer}s.    */
 annotation|@
@@ -504,6 +514,16 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 name|testPositionedPreadWithByteBuffer
+argument_list|(
+name|ByteBuffer
+operator|.
+name|allocateDirect
+argument_list|(
+name|FILE_SIZE
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|testPreadFullyWithByteBuffer
 argument_list|(
 name|ByteBuffer
 operator|.
@@ -624,16 +644,6 @@ argument_list|,
 name|fileContents
 argument_list|)
 expr_stmt|;
-name|buffer
-operator|.
-name|position
-argument_list|(
-name|buffer
-operator|.
-name|limit
-argument_list|()
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 comment|/**    * Attempts to read the testFile into a {@link ByteBuffer} that is already    * full, and validates that doing so does not change the contents of the    * supplied {@link ByteBuffer}.    */
@@ -752,7 +762,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Reads half of the testFile into the {@link ByteBuffer} by setting a    * {@link ByteBuffer#limit} on the buffer. Validates that only half of the    * testFile is loaded into the buffer.    */
+comment|/**    * Reads half of the testFile into the {@link ByteBuffer} by setting a    * {@link ByteBuffer#limit()} on the buffer. Validates that only half of the    * testFile is loaded into the buffer.    */
 DECL|method|testPreadWithLimitedByteBuffer ( ByteBuffer buffer)
 specifier|private
 name|void
@@ -897,7 +907,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Reads half of the testFile into the {@link ByteBuffer} by setting the    * {@link ByteBuffer#position} the half the size of the file. Validates that    * only half of the testFile is loaded into the buffer.    */
+comment|/**    * Reads half of the testFile into the {@link ByteBuffer} by setting the    * {@link ByteBuffer#position()} the half the size of the file. Validates that    * only half of the testFile is loaded into the buffer.    */
 DECL|method|testPreadWithPositionedByteBuffer ( ByteBuffer buffer)
 specifier|private
 name|void
@@ -1195,6 +1205,89 @@ literal|2
 argument_list|,
 name|FILE_SIZE
 argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Reads the entire testFile using the preadFully API and validates that its    * contents are properly loaded into the supplied {@link ByteBuffer}.    */
+DECL|method|testPreadFullyWithByteBuffer (ByteBuffer buffer)
+specifier|private
+name|void
+name|testPreadFullyWithByteBuffer
+parameter_list|(
+name|ByteBuffer
+name|buffer
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|int
+name|totalBytesRead
+init|=
+literal|0
+decl_stmt|;
+try|try
+init|(
+name|FSDataInputStream
+name|in
+init|=
+name|fs
+operator|.
+name|open
+argument_list|(
+name|testFile
+argument_list|)
+init|)
+block|{
+name|in
+operator|.
+name|readFully
+argument_list|(
+name|totalBytesRead
+argument_list|,
+name|buffer
+argument_list|)
+expr_stmt|;
+comment|// Make sure the buffer is full
+name|assertFalse
+argument_list|(
+name|buffer
+operator|.
+name|hasRemaining
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Make sure the contents of the read buffer equal the contents of the
+comment|// file
+name|buffer
+operator|.
+name|position
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+name|byte
+index|[]
+name|bufferContents
+init|=
+operator|new
+name|byte
+index|[
+name|FILE_SIZE
+index|]
+decl_stmt|;
+name|buffer
+operator|.
+name|get
+argument_list|(
+name|bufferContents
+argument_list|)
+expr_stmt|;
+name|assertArrayEquals
+argument_list|(
+name|bufferContents
+argument_list|,
+name|fileContents
 argument_list|)
 expr_stmt|;
 block|}
