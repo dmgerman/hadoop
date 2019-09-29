@@ -341,6 +341,11 @@ specifier|private
 name|boolean
 name|supportFlush
 decl_stmt|;
+DECL|field|disableOutputStreamFlush
+specifier|private
+name|boolean
+name|disableOutputStreamFlush
+decl_stmt|;
 DECL|field|lastError
 specifier|private
 specifier|volatile
@@ -416,7 +421,7 @@ operator|new
 name|ElasticByteBufferPool
 argument_list|()
 decl_stmt|;
-DECL|method|AbfsOutputStream ( final AbfsClient client, final String path, final long position, final int bufferSize, final boolean supportFlush)
+DECL|method|AbfsOutputStream ( final AbfsClient client, final String path, final long position, final int bufferSize, final boolean supportFlush, final boolean disableOutputStreamFlush)
 specifier|public
 name|AbfsOutputStream
 parameter_list|(
@@ -439,6 +444,10 @@ parameter_list|,
 specifier|final
 name|boolean
 name|supportFlush
+parameter_list|,
+specifier|final
+name|boolean
+name|disableOutputStreamFlush
 parameter_list|)
 block|{
 name|this
@@ -470,6 +479,12 @@ operator|.
 name|supportFlush
 operator|=
 name|supportFlush
+expr_stmt|;
+name|this
+operator|.
+name|disableOutputStreamFlush
+operator|=
+name|disableOutputStreamFlush
 expr_stmt|;
 name|this
 operator|.
@@ -843,7 +858,8 @@ name|IOException
 block|{
 if|if
 condition|(
-name|supportFlush
+operator|!
+name|disableOutputStreamFlush
 condition|)
 block|{
 name|flushInternalAsync

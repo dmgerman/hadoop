@@ -1206,26 +1206,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testFlushWithFlushEnabled ()
+DECL|method|testFlushWithOutputStreamFlushEnabled ()
 specifier|public
 name|void
-name|testFlushWithFlushEnabled
-parameter_list|()
-throws|throws
-name|Exception
-block|{
-name|testFlush
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|Test
-DECL|method|testFlushWithFlushDisabled ()
-specifier|public
-name|void
-name|testFlushWithFlushDisabled
+name|testFlushWithOutputStreamFlushEnabled
 parameter_list|()
 throws|throws
 name|Exception
@@ -1236,13 +1220,29 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testFlush (boolean flushEnabled)
+annotation|@
+name|Test
+DECL|method|testFlushWithOutputStreamFlushDisabled ()
+specifier|public
+name|void
+name|testFlushWithOutputStreamFlushDisabled
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|testFlush
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|testFlush (boolean disableOutputStreamFlush)
 specifier|private
 name|void
 name|testFlush
 parameter_list|(
 name|boolean
-name|flushEnabled
+name|disableOutputStreamFlush
 parameter_list|)
 throws|throws
 name|Exception
@@ -1257,7 +1257,7 @@ operator|)
 name|getFileSystem
 argument_list|()
 decl_stmt|;
-comment|// Simulate setting "fs.azure.enable.flush" to true or false
+comment|// Simulate setting "fs.azure.disable.outputstream.flush" to true or false
 name|fs
 operator|.
 name|getAbfsStore
@@ -1266,9 +1266,9 @@ operator|.
 name|getAbfsConfiguration
 argument_list|()
 operator|.
-name|setEnableFlush
+name|setDisableOutputStreamFlush
 argument_list|(
-name|flushEnabled
+name|disableOutputStreamFlush
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -1353,8 +1353,8 @@ operator|.
 name|flush
 argument_list|()
 expr_stmt|;
-comment|// Verify that the data can be read if flushEnabled is true; and otherwise
-comment|// cannot be read.
+comment|// Verify that the data can be read if disableOutputStreamFlush is
+comment|// false; and otherwise cannot be read.
 name|validate
 argument_list|(
 name|fs
@@ -1366,7 +1366,8 @@ argument_list|)
 argument_list|,
 name|buffer
 argument_list|,
-name|flushEnabled
+operator|!
+name|disableOutputStreamFlush
 argument_list|)
 expr_stmt|;
 block|}

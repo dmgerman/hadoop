@@ -1069,6 +1069,22 @@ name|BooleanConfigurationValidatorAnnotation
 argument_list|(
 name|ConfigurationKey
 operator|=
+name|FS_AZURE_DISABLE_OUTPUTSTREAM_FLUSH
+argument_list|,
+name|DefaultValue
+operator|=
+name|DEFAULT_DISABLE_OUTPUTSTREAM_FLUSH
+argument_list|)
+DECL|field|disableOutputStreamFlush
+specifier|private
+name|boolean
+name|disableOutputStreamFlush
+decl_stmt|;
+annotation|@
+name|BooleanConfigurationValidatorAnnotation
+argument_list|(
+name|ConfigurationKey
+operator|=
 name|FS_AZURE_ENABLE_AUTOTHROTTLING
 argument_list|,
 name|DefaultValue
@@ -2108,6 +2124,18 @@ return|return
 name|this
 operator|.
 name|enableFlush
+return|;
+block|}
+DECL|method|isOutputStreamFlushDisabled ()
+specifier|public
+name|boolean
+name|isOutputStreamFlushDisabled
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|disableOutputStreamFlush
 return|;
 block|}
 DECL|method|isAutoThrottlingEnabled ()
@@ -3218,6 +3246,23 @@ operator|.
 name|enableFlush
 operator|=
 name|enableFlush
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setDisableOutputStreamFlush (boolean disableOutputStreamFlush)
+name|void
+name|setDisableOutputStreamFlush
+parameter_list|(
+name|boolean
+name|disableOutputStreamFlush
+parameter_list|)
+block|{
+name|this
+operator|.
+name|disableOutputStreamFlush
+operator|=
+name|disableOutputStreamFlush
 expr_stmt|;
 block|}
 block|}

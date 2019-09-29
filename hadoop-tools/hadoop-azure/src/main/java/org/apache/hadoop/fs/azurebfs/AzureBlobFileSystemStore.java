@@ -2620,6 +2620,11 @@ name|abfsConfiguration
 operator|.
 name|isFlushEnabled
 argument_list|()
+argument_list|,
+name|abfsConfiguration
+operator|.
+name|isOutputStreamFlushDisabled
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -3034,6 +3039,11 @@ argument_list|,
 name|abfsConfiguration
 operator|.
 name|isFlushEnabled
+argument_list|()
+argument_list|,
+name|abfsConfiguration
+operator|.
+name|isOutputStreamFlushDisabled
 argument_list|()
 argument_list|)
 return|;

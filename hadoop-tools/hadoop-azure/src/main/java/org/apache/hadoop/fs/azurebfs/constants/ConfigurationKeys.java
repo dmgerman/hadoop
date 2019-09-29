@@ -249,6 +249,7 @@ name|FS_AZURE_READ_AHEAD_QUEUE_DEPTH
 init|=
 literal|"fs.azure.readaheadqueue.depth"
 decl_stmt|;
+comment|/** Provides a config control to enable or disable ABFS Flush operations -    *  HFlush and HSync. Default is true. **/
 DECL|field|FS_AZURE_ENABLE_FLUSH
 specifier|public
 specifier|static
@@ -257,6 +258,16 @@ name|String
 name|FS_AZURE_ENABLE_FLUSH
 init|=
 literal|"fs.azure.enable.flush"
+decl_stmt|;
+comment|/** Provides a config control to disable or enable OutputStream Flush API    *  operations in AbfsOutputStream. Flush() will trigger actions that    *  guarantee that buffered data is persistent with a perf cost while the API    *  documentation does not have such expectations of data being persisted.    *  Default value of this config is true. **/
+DECL|field|FS_AZURE_DISABLE_OUTPUTSTREAM_FLUSH
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_AZURE_DISABLE_OUTPUTSTREAM_FLUSH
+init|=
+literal|"fs.azure.disable.outputstream.flush"
 decl_stmt|;
 DECL|field|FS_AZURE_USER_AGENT_PREFIX_KEY
 specifier|public

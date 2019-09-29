@@ -303,6 +303,15 @@ name|DEFAULT_ENABLE_FLUSH
 init|=
 literal|true
 decl_stmt|;
+DECL|field|DEFAULT_DISABLE_OUTPUTSTREAM_FLUSH
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_DISABLE_OUTPUTSTREAM_FLUSH
+init|=
+literal|true
+decl_stmt|;
 DECL|field|DEFAULT_ENABLE_AUTOTHROTTLING
 specifier|public
 specifier|static
