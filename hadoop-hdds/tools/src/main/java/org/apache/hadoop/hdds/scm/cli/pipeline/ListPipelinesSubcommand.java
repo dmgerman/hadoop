@@ -50,24 +50,6 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|cli
-operator|.
-name|SCMCLI
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
 name|client
 operator|.
 name|ScmClient
@@ -95,7 +77,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Handler of listPipelines command.  */
+comment|/**  * Handler of list pipelines command.  */
 end_comment
 
 begin_class
@@ -106,7 +88,7 @@ name|Command
 argument_list|(
 name|name
 operator|=
-literal|"listPipelines"
+literal|"list"
 argument_list|,
 name|description
 operator|=
@@ -138,7 +120,7 @@ operator|.
 name|ParentCommand
 DECL|field|parent
 specifier|private
-name|SCMCLI
+name|PipelineCommands
 name|parent
 decl_stmt|;
 annotation|@
@@ -217,6 +199,9 @@ name|ScmClient
 name|scmClient
 init|=
 name|parent
+operator|.
+name|getParent
+argument_list|()
 operator|.
 name|createScmClient
 argument_list|()

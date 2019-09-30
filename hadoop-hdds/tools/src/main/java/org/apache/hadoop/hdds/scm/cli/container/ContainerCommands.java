@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdds.scm.cli.pipeline
+DECL|package|org.apache.hadoop.hdds.scm.cli.container
 package|package
 name|org
 operator|.
@@ -18,7 +18,7 @@ name|scm
 operator|.
 name|cli
 operator|.
-name|pipeline
+name|container
 package|;
 end_package
 
@@ -48,11 +48,9 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|protocol
+name|cli
 operator|.
-name|proto
-operator|.
-name|HddsProtos
+name|MissingSubcommandException
 import|;
 end_import
 
@@ -68,9 +66,9 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|client
+name|cli
 operator|.
-name|ScmClient
+name|SCMCLI
 import|;
 end_import
 
@@ -79,6 +77,18 @@ import|import
 name|picocli
 operator|.
 name|CommandLine
+operator|.
+name|Command
+import|;
+end_import
+
+begin_import
+import|import
+name|picocli
+operator|.
+name|CommandLine
+operator|.
+name|ParentCommand
 import|;
 end_import
 
@@ -95,22 +105,20 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Handler of activate pipeline command.  */
+comment|/**  * Subcommand to group container related operations.  */
 end_comment
 
 begin_class
 annotation|@
-name|CommandLine
-operator|.
 name|Command
 argument_list|(
 name|name
 operator|=
-literal|"activate"
+literal|"container"
 argument_list|,
 name|description
 operator|=
-literal|"Activates the given Pipeline"
+literal|"Container specific operations"
 argument_list|,
 name|mixinStandardHelpOptions
 operator|=
@@ -121,11 +129,35 @@ operator|=
 name|HddsVersionProvider
 operator|.
 name|class
+argument_list|,
+name|subcommands
+operator|=
+block|{
+name|ListSubcommand
+operator|.
+name|class
+block|,
+name|InfoSubcommand
+operator|.
+name|class
+block|,
+name|DeleteSubcommand
+operator|.
+name|class
+block|,
+name|CreateSubcommand
+operator|.
+name|class
+block|,
+name|CloseSubcommand
+operator|.
+name|class
+block|}
 argument_list|)
-DECL|class|ActivatePipelineSubcommand
+DECL|class|ContainerCommands
 specifier|public
 class|class
-name|ActivatePipelineSubcommand
+name|ContainerCommands
 implements|implements
 name|Callable
 argument_list|<
@@ -133,28 +165,22 @@ name|Void
 argument_list|>
 block|{
 annotation|@
-name|CommandLine
-operator|.
 name|ParentCommand
 DECL|field|parent
 specifier|private
-name|PipelineCommands
+name|SCMCLI
 name|parent
 decl_stmt|;
-annotation|@
-name|CommandLine
-operator|.
-name|Parameters
-argument_list|(
-name|description
-operator|=
-literal|"ID of the pipeline to activate"
-argument_list|)
-DECL|field|pipelineId
-specifier|private
-name|String
-name|pipelineId
-decl_stmt|;
+DECL|method|getParent ()
+specifier|public
+name|SCMCLI
+name|getParent
+parameter_list|()
+block|{
+return|return
+name|parent
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|call ()
@@ -165,44 +191,26 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-try|try
-init|(
-name|ScmClient
-name|scmClient
-init|=
+throw|throw
+operator|new
+name|MissingSubcommandException
+argument_list|(
+name|this
+operator|.
 name|parent
 operator|.
-name|getParent
+name|getCmd
 argument_list|()
 operator|.
-name|createScmClient
+name|getSubcommands
 argument_list|()
-init|)
-block|{
-name|scmClient
 operator|.
-name|activatePipeline
+name|get
 argument_list|(
-name|HddsProtos
-operator|.
-name|PipelineID
-operator|.
-name|newBuilder
-argument_list|()
-operator|.
-name|setId
-argument_list|(
-name|pipelineId
+literal|"container"
 argument_list|)
-operator|.
-name|build
-argument_list|()
 argument_list|)
-expr_stmt|;
-return|return
-literal|null
-return|;
-block|}
+throw|;
 block|}
 block|}
 end_class
