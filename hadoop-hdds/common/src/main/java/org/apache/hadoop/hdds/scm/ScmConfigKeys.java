@@ -404,6 +404,24 @@ name|DFS_CONTAINER_RATIS_LOG_PURGE_GAP_DEFAULT
 init|=
 literal|1000000
 decl_stmt|;
+DECL|field|DFS_CONTAINER_RATIS_LEADER_NUM_PENDING_REQUESTS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_CONTAINER_RATIS_LEADER_NUM_PENDING_REQUESTS
+init|=
+literal|"dfs.container.ratis.leader.num.pending.requests"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|int
+DECL|field|DFS_CONTAINER_RATIS_LEADER_NUM_PENDING_REQUESTS_DEFAULT
+name|DFS_CONTAINER_RATIS_LEADER_NUM_PENDING_REQUESTS_DEFAULT
+init|=
+literal|4096
+decl_stmt|;
 comment|// expiry interval stateMachineData cache entry inside containerStateMachine
 specifier|public
 specifier|static
