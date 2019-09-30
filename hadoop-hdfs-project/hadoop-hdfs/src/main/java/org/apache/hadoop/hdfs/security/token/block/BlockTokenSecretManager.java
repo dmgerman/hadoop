@@ -684,19 +684,6 @@ operator|>
 literal|0
 argument_list|)
 expr_stmt|;
-name|setSerialNo
-argument_list|(
-operator|new
-name|SecureRandom
-argument_list|()
-operator|.
-name|nextInt
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|generateKeys
-argument_list|()
-expr_stmt|;
 block|}
 comment|/**    * Constructor for masters.    *    * @param keyUpdateInterval how often a new key will be generated    * @param tokenLifetime how long an individual token is valid    * @param nnIndex namenode index of the namenode for which we are creating the manager    * @param blockPoolId block pool ID    * @param encryptionAlgorithm encryption algorithm to use    * @param numNNs number of namenodes possible    * @param useProto should we use new protobuf style tokens    * @param shouldWrapQOP should wrap QOP in the block access token    */
 DECL|method|BlockTokenSecretManager (boolean isMaster, long keyUpdateInterval, long tokenLifetime, String blockPoolId, String encryptionAlgorithm, int nnIndex, int numNNs, boolean useProto, boolean shouldWrapQOP)
@@ -812,20 +799,47 @@ operator|new
 name|Timer
 argument_list|()
 expr_stmt|;
+name|setSerialNo
+argument_list|(
+operator|new
+name|SecureRandom
+argument_list|()
+operator|.
+name|nextInt
+argument_list|(
+name|Integer
+operator|.
+name|MAX_VALUE
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Block token key range: [{}, {})"
+argument_list|,
+name|nnRangeStart
+argument_list|,
+name|nnRangeStart
+operator|+
+name|intRange
+argument_list|)
+expr_stmt|;
 name|generateKeys
 argument_list|()
 expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|setSerialNo (int serialNo)
+DECL|method|setSerialNo (int nextNo)
 specifier|public
 specifier|synchronized
 name|void
 name|setSerialNo
 parameter_list|(
 name|int
-name|serialNo
+name|nextNo
 parameter_list|)
 block|{
 comment|// we mod the serial number by the range and then add that times the index
@@ -834,7 +848,7 @@ operator|.
 name|serialNo
 operator|=
 operator|(
-name|serialNo
+name|nextNo
 operator|%
 name|intRange
 operator|)
@@ -843,6 +857,37 @@ operator|(
 name|nnRangeStart
 operator|)
 expr_stmt|;
+assert|assert
+name|serialNo
+operator|>=
+name|nnRangeStart
+operator|&&
+name|serialNo
+operator|<
+operator|(
+name|nnRangeStart
+operator|+
+name|intRange
+operator|)
+operator|:
+literal|"serialNo "
+operator|+
+name|serialNo
+operator|+
+literal|" is not in the designated range: ["
+operator|+
+name|nnRangeStart
+operator|+
+literal|", "
+operator|+
+operator|(
+name|nnRangeStart
+operator|+
+name|intRange
+operator|)
+operator|+
+literal|")"
+assert|;
 block|}
 DECL|method|setBlockPoolId (String blockPoolId)
 specifier|public
