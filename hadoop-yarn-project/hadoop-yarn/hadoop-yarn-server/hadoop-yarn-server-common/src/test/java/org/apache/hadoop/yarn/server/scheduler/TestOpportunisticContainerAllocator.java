@@ -744,7 +744,7 @@ decl_stmt|;
 name|allocator
 operator|=
 operator|new
-name|OpportunisticContainerAllocator
+name|DistributedOpportunisticContainerAllocator
 argument_list|(
 name|secMan
 argument_list|)
