@@ -1741,7 +1741,7 @@ name|RaftServerConfigKeys
 operator|.
 name|Snapshot
 operator|.
-name|setSnapshotRetentionPolicy
+name|setRetentionFileNum
 argument_list|(
 name|properties
 argument_list|,
