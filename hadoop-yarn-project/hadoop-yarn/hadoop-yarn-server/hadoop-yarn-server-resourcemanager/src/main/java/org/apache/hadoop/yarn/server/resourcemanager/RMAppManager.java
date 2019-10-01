@@ -1281,10 +1281,15 @@ name|this
 operator|.
 name|exclusiveEnforcedPartitions
 operator|=
-name|context
+name|YarnConfiguration
 operator|.
 name|getExclusiveEnforcedPartitions
+argument_list|(
+name|rmContext
+operator|.
+name|getYarnConfiguration
 argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    *  This class is for logging the application summary.    */
