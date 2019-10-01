@@ -88,6 +88,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -483,6 +495,36 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+try|try
+block|{
+name|channel
+operator|.
+name|awaitTermination
+argument_list|(
+literal|5
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"failed to shutdown replication channel"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Grpc stream observer to ComletableFuture adapter.    */
 DECL|class|StreamDownloader
