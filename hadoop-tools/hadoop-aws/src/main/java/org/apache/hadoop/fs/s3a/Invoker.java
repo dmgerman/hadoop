@@ -142,6 +142,20 @@ name|RetryPolicy
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|DurationInfo
+import|;
+end_import
+
 begin_comment
 comment|/**  * Class to provide lambda expression invocation of AWS operations.  *  * The core retry logic is in  * {@link #retryUntranslated(String, boolean, Retried, Operation)};  * the other {@code retry() and retryUntranslated()} calls are wrappers.  *  * The static {@link #once(String, String, Operation)} and  * {@link #once(String, String, VoidOperation)} calls take an operation and  * return it with AWS exceptions translated to IOEs of some form.  *  * The retry logic on a failure is defined by the retry policy passed in  * the constructor; the standard retry policy is {@link S3ARetryPolicy},  * though others may be used.  *  * The constructor also takes two {@link Retried} callbacks.  * The {@code caughtCallback} is called whenever an exception (IOE or AWS)  * is caught, before the retry processing looks at it.  * The {@code retryCallback} is invoked after a retry is scheduled  * but before the sleep.  * These callbacks can be used for reporting and incrementing statistics.  *  * The static {@link #quietly(String, String, VoidOperation)} and  * {@link #quietlyEval(String, String, Operation)} calls exist to take any  * operation and quietly catch and log at debug. The return value of  * {@link #quietlyEval(String, String, Operation)} is a java 8 optional,  * which can then be used in java8-expressions.  */
 end_comment
@@ -257,6 +271,22 @@ throws|throws
 name|IOException
 block|{
 try|try
+init|(
+name|DurationInfo
+name|ignored
+init|=
+operator|new
+name|DurationInfo
+argument_list|(
+name|LOG
+argument_list|,
+literal|false
+argument_list|,
+literal|"%s"
+argument_list|,
+name|action
+argument_list|)
+init|)
 block|{
 return|return
 name|operation

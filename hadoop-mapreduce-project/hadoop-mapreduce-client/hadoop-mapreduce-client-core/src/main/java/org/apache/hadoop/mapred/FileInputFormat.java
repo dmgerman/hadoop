@@ -30,6 +30,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|InterruptedIOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -1181,10 +1191,18 @@ name|e
 parameter_list|)
 block|{
 throw|throw
-operator|new
+operator|(
 name|IOException
+operator|)
+operator|new
+name|InterruptedIOException
 argument_list|(
 literal|"Interrupted while getting file statuses"
+argument_list|)
+operator|.
+name|initCause
+argument_list|(
+name|e
 argument_list|)
 throw|;
 block|}

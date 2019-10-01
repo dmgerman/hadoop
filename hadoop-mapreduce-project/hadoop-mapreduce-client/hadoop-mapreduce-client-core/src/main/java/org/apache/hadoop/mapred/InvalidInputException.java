@@ -111,7 +111,7 @@ name|IOException
 argument_list|>
 name|problems
 decl_stmt|;
-comment|/**    * Create the exception with the given list.    * @param probs the list of problems to report. this list is not copied.    */
+comment|/**    * Create the exception with the given list.    * The first element of the list is used as the init cause value.    * @param probs the list of problems to report. this list is not copied.    */
 DECL|method|InvalidInputException (List<IOException> probs)
 specifier|public
 name|InvalidInputException
@@ -127,6 +127,26 @@ name|problems
 operator|=
 name|probs
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|probs
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|initCause
+argument_list|(
+name|probs
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Get the complete list of the problems reported.    * @return the list of problems, which must not be modified    */
 DECL|method|getProblems ()

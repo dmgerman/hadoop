@@ -382,6 +382,26 @@ begin_import
 import|import
 name|org
 operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|apache
 operator|.
 name|hadoop
@@ -395,7 +415,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Utility class to fetch block locations for specified Input paths using a  * configured number of threads.  */
+comment|/**  * Utility class to fetch block locations for specified Input paths using a  * configured number of threads.  * The thread count is determined from the value of  * "mapreduce.input.fileinputformat.list-status.num-threads" in the  * configuration.  */
 end_comment
 
 begin_class
@@ -406,6 +426,25 @@ specifier|public
 class|class
 name|LocatedFileStatusFetcher
 block|{
+DECL|field|LOG
+specifier|public
+specifier|static
+specifier|final
+name|Logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|LocatedFileStatusFetcher
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+decl_stmt|;
 DECL|field|inputDirs
 specifier|private
 specifier|final
@@ -472,9 +511,7 @@ name|invalidInputErrors
 init|=
 operator|new
 name|LinkedList
-argument_list|<
-name|IOException
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|field|processInitialInputPathCallback
@@ -536,7 +573,7 @@ specifier|volatile
 name|Throwable
 name|unknownError
 decl_stmt|;
-comment|/**    * @param conf configuration for the job    * @param dirs the initial list of paths    * @param recursive whether to traverse the patchs recursively    * @param inputFilter inputFilter to apply to the resulting paths    * @param newApi whether using the mapred or mapreduce API    * @throws InterruptedException    * @throws IOException    */
+comment|/**    * Instantiate.    * The newApi switch is only used to configure what exception is raised    * on failure of {@link #getFileStatuses()}, it does not change the algorithm.    * @param conf configuration for the job    * @param dirs the initial list of paths    * @param recursive whether to traverse the paths recursively    * @param inputFilter inputFilter to apply to the resulting paths    * @param newApi whether using the mapred or mapreduce API    * @throws InterruptedException    * @throws IOException    */
 DECL|method|LocatedFileStatusFetcher (Configuration conf, Path[] dirs, boolean recursive, PathFilter inputFilter, boolean newApi)
 specifier|public
 name|LocatedFileStatusFetcher
@@ -578,6 +615,15 @@ operator|.
 name|DEFAULT_LIST_STATUS_NUM_THREADS
 argument_list|)
 decl_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Instantiated LocatedFileStatusFetcher with {} threads"
+argument_list|,
+name|numThreads
+argument_list|)
+expr_stmt|;
 name|rawExec
 operator|=
 name|HadoopExecutors
@@ -617,12 +663,7 @@ name|resultQueue
 operator|=
 operator|new
 name|LinkedBlockingQueue
-argument_list|<
-name|List
-argument_list|<
-name|FileStatus
-argument_list|>
-argument_list|>
+argument_list|<>
 argument_list|()
 expr_stmt|;
 name|this
@@ -656,7 +697,7 @@ operator|=
 name|newApi
 expr_stmt|;
 block|}
-comment|/**    * Start executing and return FileStatuses based on the parameters specified    * @return fetched file statuses    * @throws InterruptedException    * @throws IOException    */
+comment|/**    * Start executing and return FileStatuses based on the parameters specified.    * @return fetched file statuses    * @throws InterruptedException interruption waiting for results.    * @throws IOException IO failure or other error.    * @throws InvalidInputException on an invalid input and the old API    * @throws org.apache.hadoop.mapreduce.lib.input.InvalidInputException on an    *         invalid input and the new API.    */
 DECL|method|getFileStatuses ()
 specifier|public
 name|Iterable
@@ -685,6 +726,15 @@ range|:
 name|inputDirs
 control|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Queuing scan of directory {}"
+argument_list|,
+name|p
+argument_list|)
+expr_stmt|;
 name|runningTasks
 operator|.
 name|incrementAndGet
@@ -740,6 +790,13 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Waiting scan completion"
+argument_list|)
+expr_stmt|;
 while|while
 condition|(
 name|runningTasks
@@ -769,6 +826,16 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
+comment|// either the scan completed or an error was raised.
+comment|// in the case of an error shutting down the executor will interrupt all
+comment|// active threads, which can add noise to the logs.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Scan complete: shutting down"
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|exec
@@ -785,6 +852,17 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Scan failed"
+argument_list|,
+name|this
+operator|.
+name|unknownError
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|this
@@ -875,16 +953,40 @@ block|}
 block|}
 if|if
 condition|(
+operator|!
 name|this
 operator|.
 name|invalidInputErrors
 operator|.
-name|size
+name|isEmpty
 argument_list|()
-operator|!=
-literal|0
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Invalid Input Errors raised"
+argument_list|)
+expr_stmt|;
+for|for
+control|(
+name|IOException
+name|error
+range|:
+name|invalidInputErrors
+control|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Error"
+argument_list|,
+name|error
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|this
@@ -932,7 +1034,7 @@ name|resultQueue
 argument_list|)
 return|;
 block|}
-comment|/**    * Collect misconfigured Input errors. Errors while actually reading file info    * are reported immediately    */
+comment|/**    * Collect misconfigured Input errors. Errors while actually reading file info    * are reported immediately.    */
 DECL|method|registerInvalidInputError (List<IOException> errors)
 specifier|private
 name|void
@@ -961,7 +1063,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Register fatal errors - example an IOException while accessing a file or a    * full exection queue    */
+comment|/**    * Register fatal errors - example an IOException while accessing a file or a    * full execution queue.    */
 DECL|method|registerError (Throwable t)
 specifier|private
 name|void
@@ -971,6 +1073,15 @@ name|Throwable
 name|t
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Error"
+argument_list|,
+name|t
+argument_list|)
+expr_stmt|;
 name|lock
 operator|.
 name|lock
@@ -1146,6 +1257,15 @@ name|fs
 operator|=
 name|fs
 expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"ProcessInputDirCallable {}"
+argument_list|,
+name|fileStatus
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|fileStatus
@@ -1266,9 +1386,7 @@ name|locatedFileStatuses
 init|=
 operator|new
 name|LinkedList
-argument_list|<
-name|FileStatus
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|field|dirsNeedingRecursiveCalls
@@ -1281,9 +1399,7 @@ name|dirsNeedingRecursiveCalls
 init|=
 operator|new
 name|LinkedList
-argument_list|<
-name|FileStatus
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|field|fs
@@ -1323,14 +1439,13 @@ try|try
 block|{
 if|if
 condition|(
+operator|!
 name|result
 operator|.
 name|locatedFileStatuses
 operator|.
-name|size
+name|isEmpty
 argument_list|()
-operator|!=
-literal|0
 condition|)
 block|{
 name|resultQueue
@@ -1345,14 +1460,13 @@ expr_stmt|;
 block|}
 if|if
 condition|(
+operator|!
 name|result
 operator|.
 name|dirsNeedingRecursiveCalls
 operator|.
-name|size
+name|isEmpty
 argument_list|()
-operator|!=
-literal|0
 condition|)
 block|{
 for|for
@@ -1365,6 +1479,18 @@ operator|.
 name|dirsNeedingRecursiveCalls
 control|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Queueing directory scan {}"
+argument_list|,
+name|fileStatus
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|runningTasks
 operator|.
 name|incrementAndGet
@@ -1548,6 +1674,15 @@ name|fs
 operator|=
 name|fs
 expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"ProcessInitialInputPathCallable path {}"
+argument_list|,
+name|path
+argument_list|)
+expr_stmt|;
 name|FileStatus
 index|[]
 name|matches
@@ -1681,7 +1816,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * The callback handler to handle results generated by    * {@link ProcessInitialInputPathCallable}    *     */
+comment|/**    * The callback handler to handle results generated by    * {@link ProcessInitialInputPathCallable}.    *     */
 DECL|class|ProcessInitialInputPathCallback
 specifier|private
 class|class

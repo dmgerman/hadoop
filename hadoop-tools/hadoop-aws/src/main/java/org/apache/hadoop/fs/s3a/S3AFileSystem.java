@@ -1008,6 +1008,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|Globber
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|s3a
 operator|.
 name|impl
@@ -9639,7 +9653,10 @@ parameter_list|)
 block|{
 name|workingDir
 operator|=
+name|makeQualified
+argument_list|(
 name|newDir
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Get the current working directory for the given file system.    * @return the directory pathname    */
@@ -14261,32 +14278,29 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|entryPoint
-argument_list|(
-name|INVOCATION_GLOB_STATUS
-argument_list|)
-expr_stmt|;
 return|return
-name|super
-operator|.
 name|globStatus
 argument_list|(
 name|pathPattern
+argument_list|,
+name|ACCEPT_ALL
 argument_list|)
 return|;
 block|}
-comment|/**    * Override superclass so as to add statistic collection.    * {@inheritDoc}    */
+comment|/**    * Override superclass so as to disable symlink resolution and so avoid    * some calls to the FS which may have problems when the store is being    * inconsistent.    * {@inheritDoc}    */
 annotation|@
 name|Override
-DECL|method|globStatus (Path pathPattern, PathFilter filter)
+DECL|method|globStatus ( final Path pathPattern, final PathFilter filter)
 specifier|public
 name|FileStatus
 index|[]
 name|globStatus
 parameter_list|(
+specifier|final
 name|Path
 name|pathPattern
 parameter_list|,
+specifier|final
 name|PathFilter
 name|filter
 parameter_list|)
@@ -14299,14 +14313,33 @@ name|INVOCATION_GLOB_STATUS
 argument_list|)
 expr_stmt|;
 return|return
-name|super
+name|Globber
 operator|.
-name|globStatus
+name|createGlobber
+argument_list|(
+name|this
+argument_list|)
+operator|.
+name|withPathPattern
 argument_list|(
 name|pathPattern
-argument_list|,
+argument_list|)
+operator|.
+name|withPathFiltern
+argument_list|(
 name|filter
 argument_list|)
+operator|.
+name|withResolveSymlinks
+argument_list|(
+literal|true
+argument_list|)
+operator|.
+name|build
+argument_list|()
+operator|.
+name|glob
+argument_list|()
 return|;
 block|}
 comment|/**    * Override superclass so as to add statistic collection.    * {@inheritDoc}    */
