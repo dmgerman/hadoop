@@ -3607,15 +3607,9 @@ argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|0
+literal|null
 argument_list|,
 name|diffList
-operator|.
-name|asList
-argument_list|()
-operator|.
-name|size
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// check 2. noChangeDir and noChangeFile are still there

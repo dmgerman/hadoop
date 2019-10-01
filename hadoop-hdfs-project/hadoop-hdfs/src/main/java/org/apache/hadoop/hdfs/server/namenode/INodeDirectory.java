@@ -3849,6 +3849,34 @@ argument_list|,
 name|priorSnapshotId
 argument_list|)
 expr_stmt|;
+comment|// If the inode has empty diff list and sf is not a
+comment|// DirectorySnapshottableFeature, remove the feature to save heap.
+if|if
+condition|(
+name|sf
+operator|.
+name|getDiffs
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
+operator|&&
+operator|!
+operator|(
+name|sf
+operator|instanceof
+name|DirectorySnapshottableFeature
+operator|)
+condition|)
+block|{
+name|this
+operator|.
+name|removeFeature
+argument_list|(
+name|sf
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 else|else
 block|{

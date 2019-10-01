@@ -179,6 +179,23 @@ name|emptyList
 argument_list|()
 return|;
 block|}
+DECL|method|isEmpty ()
+specifier|public
+name|boolean
+name|isEmpty
+parameter_list|()
+block|{
+return|return
+name|diffs
+operator|==
+literal|null
+operator|||
+name|diffs
+operator|.
+name|isEmpty
+argument_list|()
+return|;
+block|}
 comment|/** Clear the list. */
 DECL|method|clear ()
 specifier|public
