@@ -121,6 +121,16 @@ name|SCHEDULER_CONF
 init|=
 literal|"/scheduler-conf"
 decl_stmt|;
+comment|/** Path for {@code RMWebServices#formatSchedulerConfiguration}. */
+DECL|field|FORMAT_SCHEDULER_CONF
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FORMAT_SCHEDULER_CONF
+init|=
+literal|"/scheduler-conf/format"
+decl_stmt|;
 comment|/** Path for {@code RMWebServiceProtocol#dumpSchedulerLogs}. */
 DECL|field|SCHEDULER_LOGS
 specifier|public

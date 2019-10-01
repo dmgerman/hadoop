@@ -825,6 +825,26 @@ name|finalConfigPath
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|format ()
+specifier|public
+name|void
+name|format
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|fileSystem
+operator|.
+name|delete
+argument_list|(
+name|schedulerConfDir
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|getFinalConfigPath (Path tempPath)
 specifier|private
 name|Path

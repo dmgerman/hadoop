@@ -781,6 +781,24 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|format ()
+specifier|public
+name|void
+name|format
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|zkManager
+operator|.
+name|delete
+argument_list|(
+name|confStorePath
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|storeVersion ()
 specifier|public
 specifier|synchronized

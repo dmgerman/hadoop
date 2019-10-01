@@ -133,6 +133,16 @@ name|Configuration
 name|getConfiguration
 parameter_list|()
 function_decl|;
+DECL|method|formatConfigurationInStore (Configuration conf)
+name|void
+name|formatConfigurationInStore
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|Exception
+function_decl|;
 comment|/**    * Closes the configuration provider, releasing any required resources.    * @throws IOException on failure to close    */
 DECL|method|close ()
 name|void

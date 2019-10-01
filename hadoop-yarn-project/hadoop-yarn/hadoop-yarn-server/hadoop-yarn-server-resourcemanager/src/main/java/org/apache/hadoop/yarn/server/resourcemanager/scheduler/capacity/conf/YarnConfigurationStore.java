@@ -349,6 +349,16 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Format the persisted configuration.    * @throws IOException on failure to format    */
+DECL|method|format ()
+specifier|public
+specifier|abstract
+name|void
+name|format
+parameter_list|()
+throws|throws
+name|Exception
+function_decl|;
 comment|/**    * Get a list of confirmed configuration mutations starting from a given id.    * @param fromId id from which to start getting mutations, inclusive    * @return list of configuration mutations    */
 DECL|method|getConfirmedConfHistory (long fromId)
 specifier|public
