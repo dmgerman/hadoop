@@ -424,6 +424,13 @@ name|Text
 name|omService
 decl_stmt|;
 annotation|@
+name|Inject
+DECL|field|omServiceID
+specifier|private
+name|String
+name|omServiceID
+decl_stmt|;
+annotation|@
 name|Produces
 DECL|method|createClient ()
 specifier|public
@@ -672,6 +679,13 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|omServiceID
+operator|==
+literal|null
+condition|)
+block|{
 return|return
 name|OzoneClientFactory
 operator|.
@@ -680,6 +694,21 @@ argument_list|(
 name|ozoneConfiguration
 argument_list|)
 return|;
+block|}
+else|else
+block|{
+comment|// As in HA case, we need to pass om service ID.
+return|return
+name|OzoneClientFactory
+operator|.
+name|getRpcClient
+argument_list|(
+name|omServiceID
+argument_list|,
+name|ozoneConfiguration
+argument_list|)
+return|;
+block|}
 block|}
 annotation|@
 name|VisibleForTesting
