@@ -506,7 +506,7 @@ name|om
 operator|.
 name|codec
 operator|.
-name|VolumeListCodec
+name|UserVolumeInfoCodec
 import|;
 end_import
 
@@ -762,7 +762,7 @@ name|proto
 operator|.
 name|OzoneManagerProtocolProtos
 operator|.
-name|VolumeList
+name|UserVolumeInfo
 import|;
 end_import
 
@@ -964,7 +964,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * OM RocksDB Structure .    *<p>    * OM DB stores metadata as KV pairs in different column families.    *<p>    * OM DB Schema:    * |----------------------------------------------------------------------|    * |  Column Family     |        VALUE                                    |    * |----------------------------------------------------------------------|    * | userTable          |     user->VolumeList                            |    * |----------------------------------------------------------------------|    * | volumeTable        |     /volume->VolumeInfo                         |    * |----------------------------------------------------------------------|    * | bucketTable        |     /volume/bucket-> BucketInfo                 |    * |----------------------------------------------------------------------|    * | keyTable           | /volumeName/bucketName/keyName->KeyInfo         |    * |----------------------------------------------------------------------|    * | deletedTable       | /volumeName/bucketName/keyName->RepeatedKeyInfo |    * |----------------------------------------------------------------------|    * | openKey            | /volumeName/bucketName/keyName/id->KeyInfo      |    * |----------------------------------------------------------------------|    * | s3Table            | s3BucketName -> /volumeName/bucketName          |    * |----------------------------------------------------------------------|    * | s3SecretTable      | s3g_access_key_id -> s3Secret                   |    * |----------------------------------------------------------------------|    * | dTokenTable        | s3g_access_key_id -> s3Secret                   |    * |----------------------------------------------------------------------|    * | prefixInfoTable    | prefix -> PrefixInfo                            |    * |----------------------------------------------------------------------|    * |  multipartInfoTable| /volumeName/bucketName/keyName/uploadId ->...   |    * |----------------------------------------------------------------------|    */
+comment|/**    * OM RocksDB Structure .    *<p>    * OM DB stores metadata as KV pairs in different column families.    *<p>    * OM DB Schema:    * |----------------------------------------------------------------------|    * |  Column Family     |        VALUE                                    |    * |----------------------------------------------------------------------|    * | userTable          |     /user->UserVolumeInfo                       |    * |----------------------------------------------------------------------|    * | volumeTable        |     /volume->VolumeInfo                         |    * |----------------------------------------------------------------------|    * | bucketTable        |     /volume/bucket-> BucketInfo                 |    * |----------------------------------------------------------------------|    * | keyTable           | /volumeName/bucketName/keyName->KeyInfo         |    * |----------------------------------------------------------------------|    * | deletedTable       | /volumeName/bucketName/keyName->RepeatedKeyInfo |    * |----------------------------------------------------------------------|    * | openKey            | /volumeName/bucketName/keyName/id->KeyInfo      |    * |----------------------------------------------------------------------|    * | s3Table            | s3BucketName -> /volumeName/bucketName          |    * |----------------------------------------------------------------------|    * | s3SecretTable      | s3g_access_key_id -> s3Secret                   |    * |----------------------------------------------------------------------|    * | dTokenTable        | s3g_access_key_id -> s3Secret                   |    * |----------------------------------------------------------------------|    * | prefixInfoTable    | prefix -> PrefixInfo                            |    * |----------------------------------------------------------------------|    * |  multipartInfoTable| /volumeName/bucketName/keyName/uploadId ->...   |    * |----------------------------------------------------------------------|    */
 DECL|field|USER_TABLE
 specifier|public
 specifier|static
@@ -1238,7 +1238,7 @@ name|Table
 argument_list|<
 name|String
 argument_list|,
-name|VolumeList
+name|UserVolumeInfo
 argument_list|>
 name|getUserTable
 parameter_list|()
@@ -1665,12 +1665,12 @@ argument_list|)
 operator|.
 name|addCodec
 argument_list|(
-name|VolumeList
+name|UserVolumeInfo
 operator|.
 name|class
 argument_list|,
 operator|new
-name|VolumeListCodec
+name|UserVolumeInfoCodec
 argument_list|()
 argument_list|)
 operator|.
@@ -1731,7 +1731,7 @@ name|String
 operator|.
 name|class
 argument_list|,
-name|VolumeList
+name|UserVolumeInfo
 operator|.
 name|class
 argument_list|)
@@ -3700,7 +3700,7 @@ operator|.
 name|newArrayList
 argument_list|()
 decl_stmt|;
-name|VolumeList
+name|UserVolumeInfo
 name|volumes
 decl_stmt|;
 if|if
@@ -3883,7 +3883,7 @@ return|;
 block|}
 DECL|method|getVolumesByUser (String userNameKey)
 specifier|private
-name|VolumeList
+name|UserVolumeInfo
 name|getVolumesByUser
 parameter_list|(
 name|String
@@ -3894,8 +3894,8 @@ name|OMException
 block|{
 try|try
 block|{
-name|VolumeList
-name|volumeList
+name|UserVolumeInfo
+name|userVolInfo
 init|=
 name|getUserTable
 argument_list|()
@@ -3907,14 +3907,14 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|volumeList
+name|userVolInfo
 operator|==
 literal|null
 condition|)
 block|{
 comment|// No volume found for this user, return an empty list
 return|return
-name|VolumeList
+name|UserVolumeInfo
 operator|.
 name|newBuilder
 argument_list|()
@@ -3926,7 +3926,7 @@ block|}
 else|else
 block|{
 return|return
-name|volumeList
+name|userVolInfo
 return|;
 block|}
 block|}

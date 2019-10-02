@@ -393,7 +393,7 @@ argument_list|)
 expr_stmt|;
 name|OzoneManagerProtocolProtos
 operator|.
-name|VolumeList
+name|UserVolumeInfo
 name|newOwnerVolumeList
 init|=
 name|omMetadataManager
@@ -432,7 +432,7 @@ argument_list|)
 expr_stmt|;
 name|OzoneManagerProtocolProtos
 operator|.
-name|VolumeList
+name|UserVolumeInfo
 name|oldOwnerVolumeList
 init|=
 name|omMetadataManager

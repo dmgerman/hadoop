@@ -230,7 +230,7 @@ name|proto
 operator|.
 name|OzoneManagerProtocolProtos
 operator|.
-name|VolumeList
+name|UserVolumeInfo
 import|;
 end_import
 
@@ -549,7 +549,7 @@ name|Table
 argument_list|<
 name|String
 argument_list|,
-name|VolumeList
+name|UserVolumeInfo
 argument_list|>
 name|getUserTable
 parameter_list|()

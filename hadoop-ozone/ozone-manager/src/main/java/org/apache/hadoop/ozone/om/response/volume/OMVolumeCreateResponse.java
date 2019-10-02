@@ -152,7 +152,7 @@ name|proto
 operator|.
 name|OzoneManagerProtocolProtos
 operator|.
-name|VolumeList
+name|UserVolumeInfo
 import|;
 end_import
 
@@ -196,25 +196,25 @@ name|OMVolumeCreateResponse
 extends|extends
 name|OMClientResponse
 block|{
-DECL|field|volumeList
+DECL|field|userVolumeInfo
 specifier|private
-name|VolumeList
-name|volumeList
+name|UserVolumeInfo
+name|userVolumeInfo
 decl_stmt|;
 DECL|field|omVolumeArgs
 specifier|private
 name|OmVolumeArgs
 name|omVolumeArgs
 decl_stmt|;
-DECL|method|OMVolumeCreateResponse (OmVolumeArgs omVolumeArgs, VolumeList volumeList, @Nonnull OMResponse omResponse)
+DECL|method|OMVolumeCreateResponse (OmVolumeArgs omVolumeArgs, UserVolumeInfo userVolumeInfo, @Nonnull OMResponse omResponse)
 specifier|public
 name|OMVolumeCreateResponse
 parameter_list|(
 name|OmVolumeArgs
 name|omVolumeArgs
 parameter_list|,
-name|VolumeList
-name|volumeList
+name|UserVolumeInfo
+name|userVolumeInfo
 parameter_list|,
 annotation|@
 name|Nonnull
@@ -235,9 +235,9 @@ name|omVolumeArgs
 expr_stmt|;
 name|this
 operator|.
-name|volumeList
+name|userVolumeInfo
 operator|=
-name|volumeList
+name|userVolumeInfo
 expr_stmt|;
 block|}
 annotation|@
@@ -324,7 +324,7 @@ name|batchOperation
 argument_list|,
 name|dbUserKey
 argument_list|,
-name|volumeList
+name|userVolumeInfo
 argument_list|)
 expr_stmt|;
 block|}

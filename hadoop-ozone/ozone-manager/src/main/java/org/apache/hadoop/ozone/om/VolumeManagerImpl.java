@@ -200,7 +200,7 @@ name|proto
 operator|.
 name|OzoneManagerProtocolProtos
 operator|.
-name|VolumeList
+name|UserVolumeInfo
 import|;
 end_import
 
@@ -520,7 +520,7 @@ block|}
 comment|// Helpers to add and delete volume from user list
 DECL|method|addVolumeToOwnerList (String volume, String owner)
 specifier|private
-name|VolumeList
+name|UserVolumeInfo
 name|addVolumeToOwnerList
 parameter_list|(
 name|String
@@ -543,7 +543,7 @@ argument_list|(
 name|owner
 argument_list|)
 decl_stmt|;
-name|VolumeList
+name|UserVolumeInfo
 name|volumeList
 init|=
 name|metadataManager
@@ -627,10 +627,10 @@ argument_list|(
 name|volume
 argument_list|)
 expr_stmt|;
-name|VolumeList
+name|UserVolumeInfo
 name|newVolList
 init|=
-name|VolumeList
+name|UserVolumeInfo
 operator|.
 name|newBuilder
 argument_list|()
@@ -649,7 +649,7 @@ return|;
 block|}
 DECL|method|delVolumeFromOwnerList (String volume, String owner)
 specifier|private
-name|VolumeList
+name|UserVolumeInfo
 name|delVolumeFromOwnerList
 parameter_list|(
 name|String
@@ -662,7 +662,7 @@ throws|throws
 name|IOException
 block|{
 comment|// Get the volume list
-name|VolumeList
+name|UserVolumeInfo
 name|volumeList
 init|=
 name|metadataManager
@@ -731,10 +731,10 @@ argument_list|(
 name|volume
 argument_list|)
 expr_stmt|;
-name|VolumeList
+name|UserVolumeInfo
 name|newVolList
 init|=
-name|VolumeList
+name|UserVolumeInfo
 operator|.
 name|newBuilder
 argument_list|()
@@ -880,7 +880,7 @@ name|VOLUME_ALREADY_EXISTS
 argument_list|)
 throw|;
 block|}
-name|VolumeList
+name|UserVolumeInfo
 name|volumeList
 init|=
 name|addVolumeToOwnerList
@@ -1016,7 +1016,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|createVolumeCommitToDB (OmVolumeArgs omVolumeArgs, VolumeList volumeList, String dbVolumeKey, String dbUserKey)
+DECL|method|createVolumeCommitToDB (OmVolumeArgs omVolumeArgs, UserVolumeInfo volumeList, String dbVolumeKey, String dbUserKey)
 specifier|private
 name|void
 name|createVolumeCommitToDB
@@ -1024,7 +1024,7 @@ parameter_list|(
 name|OmVolumeArgs
 name|omVolumeArgs
 parameter_list|,
-name|VolumeList
+name|UserVolumeInfo
 name|volumeList
 parameter_list|,
 name|String
@@ -1260,7 +1260,7 @@ argument_list|,
 name|originalOwner
 argument_list|)
 expr_stmt|;
-name|VolumeList
+name|UserVolumeInfo
 name|oldOwnerVolumeList
 init|=
 name|delVolumeFromOwnerList
@@ -1280,7 +1280,7 @@ argument_list|(
 name|owner
 argument_list|)
 decl_stmt|;
-name|VolumeList
+name|UserVolumeInfo
 name|newOwnerVolumeList
 init|=
 name|addVolumeToOwnerList
@@ -1377,15 +1377,15 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|setOwnerCommitToDB (VolumeList oldOwnerVolumeList, VolumeList newOwnerVolumeList, OmVolumeArgs newOwnerVolumeArgs, String oldOwner)
+DECL|method|setOwnerCommitToDB (UserVolumeInfo oldOwnerVolumeList, UserVolumeInfo newOwnerVolumeList, OmVolumeArgs newOwnerVolumeArgs, String oldOwner)
 specifier|private
 name|void
 name|setOwnerCommitToDB
 parameter_list|(
-name|VolumeList
+name|UserVolumeInfo
 name|oldOwnerVolumeList
 parameter_list|,
-name|VolumeList
+name|UserVolumeInfo
 name|newOwnerVolumeList
 parameter_list|,
 name|OmVolumeArgs
@@ -1995,7 +1995,7 @@ argument_list|)
 expr_stmt|;
 comment|// delete the volume from the owner list
 comment|// as well as delete the volume entry
-name|VolumeList
+name|UserVolumeInfo
 name|newVolumeList
 init|=
 name|delVolumeFromOwnerList
@@ -2084,12 +2084,12 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|deleteVolumeCommitToDB (VolumeList newVolumeList, String volume, String owner)
+DECL|method|deleteVolumeCommitToDB (UserVolumeInfo newVolumeList, String volume, String owner)
 specifier|private
 name|void
 name|deleteVolumeCommitToDB
 parameter_list|(
-name|VolumeList
+name|UserVolumeInfo
 name|newVolumeList
 parameter_list|,
 name|String

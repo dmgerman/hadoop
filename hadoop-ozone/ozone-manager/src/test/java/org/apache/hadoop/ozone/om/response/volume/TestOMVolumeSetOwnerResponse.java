@@ -158,7 +158,7 @@ name|proto
 operator|.
 name|OzoneManagerProtocolProtos
 operator|.
-name|VolumeList
+name|OMResponse
 import|;
 end_import
 
@@ -178,7 +178,7 @@ name|proto
 operator|.
 name|OzoneManagerProtocolProtos
 operator|.
-name|OMResponse
+name|UserVolumeInfo
 import|;
 end_import
 
@@ -426,10 +426,10 @@ name|oldOwner
 init|=
 literal|"user1"
 decl_stmt|;
-name|VolumeList
+name|UserVolumeInfo
 name|volumeList
 init|=
-name|VolumeList
+name|UserVolumeInfo
 operator|.
 name|newBuilder
 argument_list|()
@@ -546,10 +546,10 @@ name|newOwner
 init|=
 literal|"user2"
 decl_stmt|;
-name|VolumeList
+name|UserVolumeInfo
 name|newOwnerVolumeList
 init|=
-name|VolumeList
+name|UserVolumeInfo
 operator|.
 name|newBuilder
 argument_list|()
@@ -572,10 +572,10 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|VolumeList
+name|UserVolumeInfo
 name|oldOwnerVolumeList
 init|=
-name|VolumeList
+name|UserVolumeInfo
 operator|.
 name|newBuilder
 argument_list|()

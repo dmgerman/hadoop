@@ -300,7 +300,7 @@ name|proto
 operator|.
 name|OzoneManagerProtocolProtos
 operator|.
-name|VolumeList
+name|UserVolumeInfo
 import|;
 end_import
 
@@ -1735,10 +1735,10 @@ block|{
 case|case
 name|USER
 case|:
-name|VolumeList
+name|UserVolumeInfo
 name|volumeList
 init|=
-name|VolumeList
+name|UserVolumeInfo
 operator|.
 name|parseFrom
 argument_list|(

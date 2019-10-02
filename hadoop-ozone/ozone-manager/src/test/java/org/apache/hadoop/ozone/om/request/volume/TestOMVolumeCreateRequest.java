@@ -743,8 +743,8 @@ argument_list|)
 expr_stmt|;
 name|OzoneManagerProtocolProtos
 operator|.
-name|VolumeList
-name|volumeList
+name|UserVolumeInfo
+name|userVolumeInfo
 init|=
 name|omMetadataManager
 operator|.
@@ -760,7 +760,7 @@ name|Assert
 operator|.
 name|assertNotNull
 argument_list|(
-name|volumeList
+name|userVolumeInfo
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -769,7 +769,7 @@ name|assertEquals
 argument_list|(
 name|volumeName
 argument_list|,
-name|volumeList
+name|userVolumeInfo
 operator|.
 name|getVolumeNames
 argument_list|(

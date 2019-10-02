@@ -388,7 +388,7 @@ name|proto
 operator|.
 name|OzoneManagerProtocolProtos
 operator|.
-name|VolumeList
+name|UserVolumeInfo
 import|;
 end_import
 
@@ -834,7 +834,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-name|VolumeList
+name|UserVolumeInfo
 name|volumeList
 init|=
 literal|null

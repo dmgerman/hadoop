@@ -794,14 +794,14 @@ argument_list|)
 decl_stmt|;
 name|OzoneManagerProtocolProtos
 operator|.
-name|VolumeList
+name|UserVolumeInfo
 name|oldOwnerVolumeList
 init|=
 literal|null
 decl_stmt|;
 name|OzoneManagerProtocolProtos
 operator|.
-name|VolumeList
+name|UserVolumeInfo
 name|newOwnerVolumeList
 init|=
 literal|null

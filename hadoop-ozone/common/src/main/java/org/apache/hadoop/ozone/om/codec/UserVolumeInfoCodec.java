@@ -46,7 +46,7 @@ name|proto
 operator|.
 name|OzoneManagerProtocolProtos
 operator|.
-name|VolumeList
+name|UserVolumeInfo
 import|;
 end_import
 
@@ -95,29 +95,29 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Codec to encode VolumeList as byte array.  */
+comment|/**  * Codec to encode UserVolumeInfo as byte array.  */
 end_comment
 
 begin_class
-DECL|class|VolumeListCodec
+DECL|class|UserVolumeInfoCodec
 specifier|public
 class|class
-name|VolumeListCodec
+name|UserVolumeInfoCodec
 implements|implements
 name|Codec
 argument_list|<
-name|VolumeList
+name|UserVolumeInfo
 argument_list|>
 block|{
 annotation|@
 name|Override
-DECL|method|toPersistedFormat (VolumeList object)
+DECL|method|toPersistedFormat (UserVolumeInfo object)
 specifier|public
 name|byte
 index|[]
 name|toPersistedFormat
 parameter_list|(
-name|VolumeList
+name|UserVolumeInfo
 name|object
 parameter_list|)
 throws|throws
@@ -143,7 +143,7 @@ annotation|@
 name|Override
 DECL|method|fromPersistedFormat (byte[] rawData)
 specifier|public
-name|VolumeList
+name|UserVolumeInfo
 name|fromPersistedFormat
 parameter_list|(
 name|byte
@@ -165,7 +165,7 @@ expr_stmt|;
 try|try
 block|{
 return|return
-name|VolumeList
+name|UserVolumeInfo
 operator|.
 name|parseFrom
 argument_list|(

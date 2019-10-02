@@ -158,7 +158,7 @@ name|proto
 operator|.
 name|OzoneManagerProtocolProtos
 operator|.
-name|VolumeList
+name|OMResponse
 import|;
 end_import
 
@@ -178,7 +178,7 @@ name|proto
 operator|.
 name|OzoneManagerProtocolProtos
 operator|.
-name|OMResponse
+name|UserVolumeInfo
 import|;
 end_import
 
@@ -408,10 +408,10 @@ name|userName
 init|=
 literal|"user1"
 decl_stmt|;
-name|VolumeList
+name|UserVolumeInfo
 name|volumeList
 init|=
-name|VolumeList
+name|UserVolumeInfo
 operator|.
 name|newBuilder
 argument_list|()

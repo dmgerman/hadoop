@@ -120,7 +120,7 @@ name|proto
 operator|.
 name|OzoneManagerProtocolProtos
 operator|.
-name|VolumeList
+name|UserVolumeInfo
 import|;
 end_import
 
@@ -176,10 +176,10 @@ name|owner
 decl_stmt|;
 DECL|field|updatedVolumeList
 specifier|private
-name|VolumeList
+name|UserVolumeInfo
 name|updatedVolumeList
 decl_stmt|;
-DECL|method|OMVolumeDeleteResponse (String volume, String owner, VolumeList updatedVolumeList, @Nonnull OMResponse omResponse)
+DECL|method|OMVolumeDeleteResponse (String volume, String owner, UserVolumeInfo updatedVolumeList, @Nonnull OMResponse omResponse)
 specifier|public
 name|OMVolumeDeleteResponse
 parameter_list|(
@@ -189,7 +189,7 @@ parameter_list|,
 name|String
 name|owner
 parameter_list|,
-name|VolumeList
+name|UserVolumeInfo
 name|updatedVolumeList
 parameter_list|,
 annotation|@
@@ -265,7 +265,7 @@ argument_list|(
 name|owner
 argument_list|)
 decl_stmt|;
-name|VolumeList
+name|UserVolumeInfo
 name|volumeList
 init|=
 name|updatedVolumeList

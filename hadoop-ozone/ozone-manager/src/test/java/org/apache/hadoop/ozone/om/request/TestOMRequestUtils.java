@@ -1543,12 +1543,12 @@ name|Exception
 block|{
 name|OzoneManagerProtocolProtos
 operator|.
-name|VolumeList
-name|volumeList
+name|UserVolumeInfo
+name|userVolumeInfo
 init|=
 name|OzoneManagerProtocolProtos
 operator|.
-name|VolumeList
+name|UserVolumeInfo
 operator|.
 name|newBuilder
 argument_list|()
@@ -1585,7 +1585,7 @@ argument_list|(
 name|ownerName
 argument_list|)
 argument_list|,
-name|volumeList
+name|userVolumeInfo
 argument_list|)
 expr_stmt|;
 block|}

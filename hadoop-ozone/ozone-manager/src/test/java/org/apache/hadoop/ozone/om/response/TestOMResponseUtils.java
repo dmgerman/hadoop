@@ -308,12 +308,12 @@ argument_list|()
 decl_stmt|;
 name|OzoneManagerProtocolProtos
 operator|.
-name|VolumeList
-name|volumeList
+name|UserVolumeInfo
+name|userVolumeInfo
 init|=
 name|OzoneManagerProtocolProtos
 operator|.
-name|VolumeList
+name|UserVolumeInfo
 operator|.
 name|newBuilder
 argument_list|()
@@ -378,7 +378,7 @@ name|OMVolumeCreateResponse
 argument_list|(
 name|omVolumeArgs
 argument_list|,
-name|volumeList
+name|userVolumeInfo
 argument_list|,
 name|omResponse
 argument_list|)

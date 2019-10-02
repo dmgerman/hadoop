@@ -556,7 +556,7 @@ name|proto
 operator|.
 name|OzoneManagerProtocolProtos
 operator|.
-name|VolumeList
+name|UserVolumeInfo
 import|;
 end_import
 
@@ -1190,7 +1190,7 @@ name|getCreationTime
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|VolumeList
+name|UserVolumeInfo
 name|volumeList
 init|=
 name|omMetadataManager

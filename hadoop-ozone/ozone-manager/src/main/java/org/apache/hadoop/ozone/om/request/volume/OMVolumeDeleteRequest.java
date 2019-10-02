@@ -666,7 +666,7 @@ literal|null
 decl_stmt|;
 name|OzoneManagerProtocolProtos
 operator|.
-name|VolumeList
+name|UserVolumeInfo
 name|newVolumeList
 init|=
 literal|null

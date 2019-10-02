@@ -118,7 +118,7 @@ name|proto
 operator|.
 name|OzoneManagerProtocolProtos
 operator|.
-name|VolumeList
+name|UserVolumeInfo
 import|;
 end_import
 
@@ -189,12 +189,12 @@ name|oldOwner
 decl_stmt|;
 DECL|field|oldOwnerVolumeList
 specifier|private
-name|VolumeList
+name|UserVolumeInfo
 name|oldOwnerVolumeList
 decl_stmt|;
 DECL|field|newOwnerVolumeList
 specifier|private
-name|VolumeList
+name|UserVolumeInfo
 name|newOwnerVolumeList
 decl_stmt|;
 DECL|field|newOwnerVolumeArgs
@@ -202,17 +202,17 @@ specifier|private
 name|OmVolumeArgs
 name|newOwnerVolumeArgs
 decl_stmt|;
-DECL|method|OMVolumeSetOwnerResponse (String oldOwner, VolumeList oldOwnerVolumeList, VolumeList newOwnerVolumeList, OmVolumeArgs newOwnerVolumeArgs, @Nonnull OMResponse omResponse)
+DECL|method|OMVolumeSetOwnerResponse (String oldOwner, UserVolumeInfo oldOwnerVolumeList, UserVolumeInfo newOwnerVolumeList, OmVolumeArgs newOwnerVolumeArgs, @Nonnull OMResponse omResponse)
 specifier|public
 name|OMVolumeSetOwnerResponse
 parameter_list|(
 name|String
 name|oldOwner
 parameter_list|,
-name|VolumeList
+name|UserVolumeInfo
 name|oldOwnerVolumeList
 parameter_list|,
-name|VolumeList
+name|UserVolumeInfo
 name|newOwnerVolumeList
 parameter_list|,
 name|OmVolumeArgs

@@ -142,7 +142,7 @@ name|proto
 operator|.
 name|OzoneManagerProtocolProtos
 operator|.
-name|VolumeList
+name|UserVolumeInfo
 import|;
 end_import
 
@@ -243,13 +243,13 @@ name|omRequest
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Delete volume from user volume list. This method should be called after    * acquiring user lock.    * @param volumeList - current volume list owned by user.    * @param volume - volume which needs to deleted from the volume list.    * @param owner - Name of the Owner.    * @param txID - The transaction ID that is updating this value.    * @return VolumeList - updated volume list for the user.    * @throws IOException    */
-DECL|method|delVolumeFromOwnerList (VolumeList volumeList, String volume, String owner, long txID)
+comment|/**    * Delete volume from user volume list. This method should be called after    * acquiring user lock.    * @param volumeList - current volume list owned by user.    * @param volume - volume which needs to deleted from the volume list.    * @param owner - Name of the Owner.    * @param txID - The transaction ID that is updating this value.    * @return UserVolumeInfo - updated UserVolumeInfo.    * @throws IOException    */
+DECL|method|delVolumeFromOwnerList (UserVolumeInfo volumeList, String volume, String owner, long txID)
 specifier|protected
-name|VolumeList
+name|UserVolumeInfo
 name|delVolumeFromOwnerList
 parameter_list|(
-name|VolumeList
+name|UserVolumeInfo
 name|volumeList
 parameter_list|,
 name|String
@@ -320,10 +320,10 @@ argument_list|(
 name|volume
 argument_list|)
 expr_stmt|;
-name|VolumeList
+name|UserVolumeInfo
 name|newVolList
 init|=
-name|VolumeList
+name|UserVolumeInfo
 operator|.
 name|newBuilder
 argument_list|()
@@ -354,12 +354,12 @@ name|newVolList
 return|;
 block|}
 comment|/**    * Add volume to user volume list. This method should be called after    * acquiring user lock.    * @param volumeList - current volume list owned by user.    * @param volume - volume which needs to be added to this list.    * @param owner    * @param maxUserVolumeCount    * @return VolumeList - which is updated volume list.    * @throws OMException - if user has volumes greater than    * maxUserVolumeCount, an exception is thrown.    */
-DECL|method|addVolumeToOwnerList (VolumeList volumeList, String volume, String owner, long maxUserVolumeCount, long txID)
+DECL|method|addVolumeToOwnerList (UserVolumeInfo volumeList, String volume, String owner, long maxUserVolumeCount, long txID)
 specifier|protected
-name|VolumeList
+name|UserVolumeInfo
 name|addVolumeToOwnerList
 parameter_list|(
-name|VolumeList
+name|UserVolumeInfo
 name|volumeList
 parameter_list|,
 name|String
@@ -460,10 +460,10 @@ argument_list|(
 name|volume
 argument_list|)
 expr_stmt|;
-name|VolumeList
+name|UserVolumeInfo
 name|newVolList
 init|=
-name|VolumeList
+name|UserVolumeInfo
 operator|.
 name|newBuilder
 argument_list|()
@@ -491,7 +491,7 @@ name|newVolList
 return|;
 block|}
 comment|/**    * Create Ozone Volume. This method should be called after acquiring user    * and volume Lock.    * @param omMetadataManager    * @param omVolumeArgs    * @param volumeList    * @param dbVolumeKey    * @param dbUserKey    * @param transactionLogIndex    * @throws IOException    */
-DECL|method|createVolume (final OMMetadataManager omMetadataManager, OmVolumeArgs omVolumeArgs, VolumeList volumeList, String dbVolumeKey, String dbUserKey, long transactionLogIndex)
+DECL|method|createVolume (final OMMetadataManager omMetadataManager, OmVolumeArgs omVolumeArgs, UserVolumeInfo volumeList, String dbVolumeKey, String dbUserKey, long transactionLogIndex)
 specifier|protected
 name|void
 name|createVolume
@@ -503,7 +503,7 @@ parameter_list|,
 name|OmVolumeArgs
 name|omVolumeArgs
 parameter_list|,
-name|VolumeList
+name|UserVolumeInfo
 name|volumeList
 parameter_list|,
 name|String
