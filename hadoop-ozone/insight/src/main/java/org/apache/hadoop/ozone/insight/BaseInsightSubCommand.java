@@ -234,7 +234,7 @@ name|insight
 operator|.
 name|scm
 operator|.
-name|ScmProtocolDatanodeInsight
+name|ScmProtocolSecurityInsight
 import|;
 end_import
 
@@ -562,10 +562,10 @@ name|insights
 operator|.
 name|put
 argument_list|(
-literal|"scm.protocol.datanode"
+literal|"scm.protocol.security"
 argument_list|,
 operator|new
-name|ScmProtocolDatanodeInsight
+name|ScmProtocolSecurityInsight
 argument_list|()
 argument_list|)
 expr_stmt|;

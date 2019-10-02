@@ -1,6 +1,6 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/**  * Licensed to the Apache Software Foundation (ASF) under one or more  * contributor license agreements.  See the NOTICE file distributed with this  * work for additional information regarding copyright ownership.  The ASF  * licenses this file to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance with the License.  * You may obtain a copy of the License at  *  * http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the  * License for the specific language governing permissions and limitations under  * the License.  */
+comment|/**  * Licensed to the Apache Software Foundation (ASF) under one or more  * contributor license agreements.  See the NOTICE file distributed with this  * work for additional information regarding copyright ownership.  The ASF  * licenses this file to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance with the License.  * You may obtain a copy of the License at  *<p>  * http://www.apache.org/licenses/LICENSE-2.0  *<p>  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the  * License for the specific language governing permissions and limitations under  * the License.  */
 end_comment
 
 begin_package
@@ -238,7 +238,9 @@ name|hadoop
 operator|.
 name|hdds
 operator|.
-name|protocolPB
+name|scm
+operator|.
+name|protocol
 operator|.
 name|SCMSecurityProtocolServerSideTranslatorPB
 import|;
@@ -390,6 +392,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
+name|protocolPB
+operator|.
+name|ProtocolMessageMetrics
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|KerberosInfo
@@ -521,6 +539,12 @@ specifier|final
 name|InetSocketAddress
 name|rpcAddress
 decl_stmt|;
+DECL|field|metrics
+specifier|private
+specifier|final
+name|ProtocolMessageMetrics
+name|metrics
+decl_stmt|;
 DECL|method|SCMSecurityProtocolServer (OzoneConfiguration conf, CertificateServer certificateServer)
 name|SCMSecurityProtocolServer
 parameter_list|(
@@ -591,6 +615,23 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
+name|metrics
+operator|=
+operator|new
+name|ProtocolMessageMetrics
+argument_list|(
+literal|"ScmSecurityProtocol"
+argument_list|,
+literal|"SCM Security protocol metrics"
+argument_list|,
+name|SCMSecurityProtocolProtos
+operator|.
+name|Type
+operator|.
+name|values
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|BlockingService
 name|secureProtoPbService
 init|=
@@ -604,6 +645,8 @@ operator|new
 name|SCMSecurityProtocolServerSideTranslatorPB
 argument_list|(
 name|this
+argument_list|,
+name|metrics
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -656,7 +699,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get SCM signed certificate for DataNode.    *    * @param dnDetails       - DataNode Details.    * @param certSignReq     - Certificate signing request.    * @return String         - SCM signed pem encoded certificate.    */
+comment|/**    * Get SCM signed certificate for DataNode.    *    * @param dnDetails   - DataNode Details.    * @param certSignReq - Certificate signing request.    * @return String         - SCM signed pem encoded certificate.    */
 annotation|@
 name|Override
 DECL|method|getDataNodeCertificate ( DatanodeDetailsProto dnDetails, String certSignReq)
@@ -754,7 +797,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Get SCM signed certificate for OM.    *    * @param omDetails       - OzoneManager Details.    * @param certSignReq     - Certificate signing request.    * @return String         - SCM signed pem encoded certificate.    */
+comment|/**    * Get SCM signed certificate for OM.    *    * @param omDetails   - OzoneManager Details.    * @param certSignReq - Certificate signing request.    * @return String         - SCM signed pem encoded certificate.    */
 annotation|@
 name|Override
 DECL|method|getOMCertificate (OzoneManagerDetailsProto omDetails, String certSignReq)
@@ -852,7 +895,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Get SCM signed certificate with given serial id.    *    * @param certSerialId    - Certificate serial id.    * @return string         - pem encoded SCM signed certificate.    */
+comment|/**    * Get SCM signed certificate with given serial id.    *    * @param certSerialId - Certificate serial id.    * @return string         - pem encoded SCM signed certificate.    */
 annotation|@
 name|Override
 DECL|method|getCertificate (String certSerialId)
@@ -1049,6 +1092,11 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|metrics
+operator|.
+name|register
+argument_list|()
+expr_stmt|;
 name|getRpcServer
 argument_list|()
 operator|.
@@ -1070,6 +1118,11 @@ name|info
 argument_list|(
 literal|"Stopping the SCMSecurityProtocolServer."
 argument_list|)
+expr_stmt|;
+name|metrics
+operator|.
+name|unregister
+argument_list|()
 expr_stmt|;
 name|getRpcServer
 argument_list|()
