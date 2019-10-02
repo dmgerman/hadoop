@@ -102,6 +102,8 @@ name|ozone
 operator|.
 name|om
 operator|.
+name|ha
+operator|.
 name|OMNodeDetails
 import|;
 end_import

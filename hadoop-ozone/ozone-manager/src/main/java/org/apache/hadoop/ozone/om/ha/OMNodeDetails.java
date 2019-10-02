@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one or mor
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.om
+DECL|package|org.apache.hadoop.ozone.om.ha
 package|package
 name|org
 operator|.
@@ -15,6 +15,8 @@ operator|.
 name|ozone
 operator|.
 name|om
+operator|.
+name|ha
 package|;
 end_package
 

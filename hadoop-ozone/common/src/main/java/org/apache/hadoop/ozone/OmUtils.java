@@ -1922,7 +1922,7 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * If a OM conf is only set with key suffixed with OM Node ID, return the    * set value.    * @return null if base conf key is set, otherwise the value set for    * key suffixed with Node ID.    */
+comment|/**    * If a OM conf is only set with key suffixed with OM Node ID, return the    * set value.    * @return if the value is set for key suffixed with OM Node ID, return the    * value, else return null.    */
 DECL|method|getConfSuffixedWithOMNodeId (Configuration conf, String confKey, String omServiceID, String omNodeId)
 specifier|public
 specifier|static
@@ -1943,30 +1943,6 @@ name|omNodeId
 parameter_list|)
 block|{
 name|String
-name|confValue
-init|=
-name|conf
-operator|.
-name|getTrimmed
-argument_list|(
-name|confKey
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|StringUtils
-operator|.
-name|isNotEmpty
-argument_list|(
-name|confValue
-argument_list|)
-condition|)
-block|{
-return|return
-literal|null
-return|;
-block|}
-name|String
 name|suffixedConfKey
 init|=
 name|OmUtils
@@ -1980,15 +1956,16 @@ argument_list|,
 name|omNodeId
 argument_list|)
 decl_stmt|;
+name|String
 name|confValue
-operator|=
+init|=
 name|conf
 operator|.
 name|getTrimmed
 argument_list|(
 name|suffixedConfKey
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 if|if
 condition|(
 name|StringUtils
