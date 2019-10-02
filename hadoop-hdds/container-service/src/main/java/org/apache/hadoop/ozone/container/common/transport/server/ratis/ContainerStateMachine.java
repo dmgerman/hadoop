@@ -1144,11 +1144,11 @@ specifier|final
 name|TokenVerifier
 name|tokenVerifier
 decl_stmt|;
-DECL|field|isStateMachineHealthy
+DECL|field|stateMachineHealthy
 specifier|private
 specifier|final
 name|AtomicBoolean
-name|isStateMachineHealthy
+name|stateMachineHealthy
 decl_stmt|;
 DECL|field|applyTransactionSemaphore
 specifier|private
@@ -1346,7 +1346,7 @@ argument_list|(
 name|maxPendingApplyTransactions
 argument_list|)
 expr_stmt|;
-name|isStateMachineHealthy
+name|stateMachineHealthy
 operator|=
 operator|new
 name|AtomicBoolean
@@ -1714,6 +1714,19 @@ name|out
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|isStateMachineHealthy ()
+specifier|public
+name|boolean
+name|isStateMachineHealthy
+parameter_list|()
+block|{
+return|return
+name|stateMachineHealthy
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|takeSnapshot ()
@@ -1742,8 +1755,6 @@ if|if
 condition|(
 operator|!
 name|isStateMachineHealthy
-operator|.
-name|get
 argument_list|()
 condition|)
 block|{
@@ -4137,6 +4148,8 @@ name|startTime
 argument_list|)
 expr_stmt|;
 block|}
+comment|// ignore close container exception while marking the stateMachine
+comment|// unhealthy
 if|if
 condition|(
 name|r
@@ -4149,6 +4162,28 @@ operator|.
 name|Result
 operator|.
 name|SUCCESS
+operator|&&
+name|r
+operator|.
+name|getResult
+argument_list|()
+operator|!=
+name|ContainerProtos
+operator|.
+name|Result
+operator|.
+name|CONTAINER_NOT_OPEN
+operator|&&
+name|r
+operator|.
+name|getResult
+argument_list|()
+operator|!=
+name|ContainerProtos
+operator|.
+name|Result
+operator|.
+name|CLOSED_CONTAINER_IO
 condition|)
 block|{
 name|StorageContainerException
@@ -4212,7 +4247,7 @@ argument_list|(
 name|sce
 argument_list|)
 expr_stmt|;
-name|isStateMachineHealthy
+name|stateMachineHealthy
 operator|.
 name|compareAndSet
 argument_list|(
@@ -4311,8 +4346,6 @@ comment|// failures before.
 if|if
 condition|(
 name|isStateMachineHealthy
-operator|.
-name|get
 argument_list|()
 condition|)
 block|{
