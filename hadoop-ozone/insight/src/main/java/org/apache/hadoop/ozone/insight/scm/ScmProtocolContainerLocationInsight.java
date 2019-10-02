@@ -74,7 +74,27 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|ScmBlockLocationProtocolProtos
+name|StorageContainerLocationProtocolProtos
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdds
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerLocationProtocolProtos
+operator|.
+name|StorageContainerLocationProtocolService
 import|;
 end_import
 
@@ -90,9 +110,9 @@ name|hdds
 operator|.
 name|scm
 operator|.
-name|server
+name|protocol
 operator|.
-name|SCMBlockProtocolServer
+name|StorageContainerLocationProtocolServerSideTranslatorPB
 import|;
 end_import
 
@@ -162,33 +182,15 @@ name|MetricGroupDisplay
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdds
-operator|.
-name|scm
-operator|.
-name|protocol
-operator|.
-name|ScmBlockLocationProtocolServerSideTranslatorPB
-import|;
-end_import
-
 begin_comment
 comment|/**  * Insight metric to check the SCM block location protocol behaviour.  */
 end_comment
 
 begin_class
-DECL|class|ScmProtocolBlockLocationInsight
+DECL|class|ScmProtocolContainerLocationInsight
 specifier|public
 class|class
-name|ScmProtocolBlockLocationInsight
+name|ScmProtocolContainerLocationInsight
 extends|extends
 name|BaseInsightPoint
 block|{
@@ -228,7 +230,7 @@ name|Type
 operator|.
 name|SCM
 argument_list|,
-name|ScmBlockLocationProtocolServerSideTranslatorPB
+name|StorageContainerLocationProtocolServerSideTranslatorPB
 operator|.
 name|class
 argument_list|,
@@ -239,10 +241,6 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|loggers
-operator|.
-name|add
-argument_list|(
 operator|new
 name|LoggerSource
 argument_list|(
@@ -250,14 +248,13 @@ name|Type
 operator|.
 name|SCM
 argument_list|,
-name|SCMBlockProtocolServer
+name|StorageContainerLocationProtocolService
 operator|.
 name|class
 argument_list|,
 name|defaultLevel
 argument_list|(
 name|verbose
-argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -324,13 +321,13 @@ name|addProtocolMessageMetrics
 argument_list|(
 name|metrics
 argument_list|,
-literal|"scm_block_location_protocol"
+literal|"scm_container_location_protocol"
 argument_list|,
 name|Type
 operator|.
 name|SCM
 argument_list|,
-name|ScmBlockLocationProtocolProtos
+name|StorageContainerLocationProtocolProtos
 operator|.
 name|Type
 operator|.
@@ -351,7 +348,7 @@ name|getDescription
 parameter_list|()
 block|{
 return|return
-literal|"SCM Block location protocol endpoint"
+literal|"SCM Container location protocol endpoint"
 return|;
 block|}
 block|}

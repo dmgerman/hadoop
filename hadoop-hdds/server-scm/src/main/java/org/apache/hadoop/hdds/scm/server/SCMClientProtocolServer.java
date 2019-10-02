@@ -676,6 +676,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
+name|protocolPB
+operator|.
+name|ProtocolMessageMetrics
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|UserGroupInformation
@@ -984,6 +1000,12 @@ specifier|private
 name|SafeModePrecheck
 name|safeModePrecheck
 decl_stmt|;
+DECL|field|protocolMetrics
+specifier|private
+specifier|final
+name|ProtocolMessageMetrics
+name|protocolMetrics
+decl_stmt|;
 DECL|method|SCMClientProtocolServer (OzoneConfiguration conf, StorageContainerManager scm)
 specifier|public
 name|SCMClientProtocolServer
@@ -1045,6 +1067,24 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
+name|protocolMetrics
+operator|=
+name|ProtocolMessageMetrics
+operator|.
+name|create
+argument_list|(
+literal|"ScmContainerLocationProtocol"
+argument_list|,
+literal|"SCM ContainerLocation protocol metrics"
+argument_list|,
+name|StorageContainerLocationProtocolProtos
+operator|.
+name|Type
+operator|.
+name|values
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// SCM Container Service RPC
 name|BlockingService
 name|storageProtoPbService
@@ -1055,6 +1095,8 @@ operator|new
 name|StorageContainerLocationProtocolServerSideTranslatorPB
 argument_list|(
 name|this
+argument_list|,
+name|protocolMetrics
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -1155,6 +1197,11 @@ name|void
 name|start
 parameter_list|()
 block|{
+name|protocolMetrics
+operator|.
+name|register
+argument_list|()
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -1183,6 +1230,11 @@ name|void
 name|stop
 parameter_list|()
 block|{
+name|protocolMetrics
+operator|.
+name|unregister
+argument_list|()
+expr_stmt|;
 try|try
 block|{
 name|LOG
