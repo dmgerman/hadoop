@@ -1292,6 +1292,32 @@ name|void
 name|start
 parameter_list|()
 block|{
+try|try
+block|{
+name|omMetadataManager
+operator|.
+name|start
+argument_list|(
+name|configuration
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioEx
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Error staring Recon OM Metadata Manager."
+argument_list|,
+name|ioEx
+argument_list|)
+expr_stmt|;
+block|}
 name|long
 name|initialDelay
 init|=
@@ -1488,7 +1514,7 @@ comment|/**    * Update Local OM DB with new OM DB snapshot.    * @throws IOExce
 annotation|@
 name|VisibleForTesting
 DECL|method|updateReconOmDBWithNewSnapshot ()
-name|void
+name|boolean
 name|updateReconOmDBWithNewSnapshot
 parameter_list|()
 throws|throws
@@ -1516,6 +1542,18 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Got new checkpoint from OM : "
+operator|+
+name|dbSnapshot
+operator|.
+name|getCheckpointLocation
+argument_list|()
+argument_list|)
+expr_stmt|;
 try|try
 block|{
 name|omMetadataManager
@@ -1531,6 +1569,9 @@ name|toFile
 argument_list|()
 argument_list|)
 expr_stmt|;
+return|return
+literal|true
+return|;
 block|}
 catch|catch
 parameter_list|(
@@ -1559,6 +1600,9 @@ literal|"Null snapshot location got from OM."
 argument_list|)
 expr_stmt|;
 block|}
+return|return
+literal|false
+return|;
 block|}
 comment|/**    * Get Delta updates from OM through RPC call and apply to local OM DB as    * well as accumulate in a buffer.    * @param fromSequenceNumber from sequence number to request from.    * @param omdbUpdatesHandler OM DB updates handler to buffer updates.    * @throws IOException when OM RPC request fails.    * @throws RocksDBException when writing to RocksDB fails.    */
 annotation|@
@@ -1704,6 +1748,13 @@ name|void
 name|syncDataFromOM
 parameter_list|()
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Syncing data from Ozone Manager."
+argument_list|)
+expr_stmt|;
 name|long
 name|currentSequenceNumber
 init|=
@@ -1740,6 +1791,13 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Obtaining delta updates from Ozone Manager"
+argument_list|)
+expr_stmt|;
 comment|// Get updates from OM and apply to local Recon OM DB.
 name|getAndApplyDeltaUpdatesFromOM
 argument_list|(
@@ -1828,11 +1886,26 @@ condition|)
 block|{
 try|try
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Obtaining full snapshot from Ozone Manager"
+argument_list|)
+expr_stmt|;
 comment|// Update local Recon OM DB to new snapshot.
+name|boolean
+name|success
+init|=
 name|updateReconOmDBWithNewSnapshot
 argument_list|()
-expr_stmt|;
+decl_stmt|;
 comment|// Update timestamp of successful delta updates query.
+if|if
+condition|(
+name|success
+condition|)
+block|{
 name|ReconTaskStatus
 name|reconTaskStatusRecord
 init|=
@@ -1863,6 +1936,13 @@ name|reconTaskStatusRecord
 argument_list|)
 expr_stmt|;
 comment|// Reinitialize tasks that are listening.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Calling reprocess on Recon tasks."
+argument_list|)
+expr_stmt|;
 name|reconTaskController
 operator|.
 name|reInitializeTasks
@@ -1870,6 +1950,7 @@ argument_list|(
 name|omMetadataManager
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
