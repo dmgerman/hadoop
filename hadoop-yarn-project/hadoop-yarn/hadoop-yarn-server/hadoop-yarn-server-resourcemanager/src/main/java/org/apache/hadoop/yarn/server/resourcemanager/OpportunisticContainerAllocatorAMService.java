@@ -330,22 +330,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|security
-operator|.
-name|AMRMTokenIdentifier
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|server
 operator|.
 name|api
@@ -966,24 +950,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|utils
-operator|.
-name|YarnServerSecurityUtils
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -1069,11 +1035,11 @@ specifier|final
 name|OpportunisticContainerAllocator
 name|oppContainerAllocator
 decl_stmt|;
-DECL|field|k
+DECL|field|numNodes
 specifier|private
 specifier|final
 name|int
-name|k
+name|numNodes
 decl_stmt|;
 DECL|field|cacheRefreshInterval
 specifier|private
@@ -1378,8 +1344,8 @@ name|error
 argument_list|(
 literal|"Calling allocate on previous or removed or non "
 operator|+
-literal|"existent application attempt "
-operator|+
+literal|"existent application attempt {}"
+argument_list|,
 name|appAttemptId
 argument_list|)
 expr_stmt|;
@@ -1653,7 +1619,7 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|k
+name|numNodes
 operator|=
 name|rmContext
 operator|.
@@ -2546,18 +2512,14 @@ name|error
 argument_list|(
 literal|"Unknown event arrived at"
 operator|+
-literal|"OpportunisticContainerAllocatorAMService: "
-operator|+
+literal|"OpportunisticContainerAllocatorAMService: {}"
+argument_list|,
 name|event
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 DECL|method|getNodeManagerQueueLimitCalculator ()
-specifier|public
 name|QueueLimitCalculator
 name|getNodeManagerQueueLimitCalculator
 parameter_list|()
@@ -2617,7 +2579,7 @@ name|selectLeastLoadedNodes
 argument_list|(
 name|this
 operator|.
-name|k
+name|numNodes
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2778,35 +2740,6 @@ return|;
 block|}
 return|return
 literal|null
-return|;
-block|}
-DECL|method|getAppAttemptId ()
-specifier|private
-specifier|static
-name|ApplicationAttemptId
-name|getAppAttemptId
-parameter_list|()
-throws|throws
-name|YarnException
-block|{
-name|AMRMTokenIdentifier
-name|amrmTokenIdentifier
-init|=
-name|YarnServerSecurityUtils
-operator|.
-name|authorizeRequest
-argument_list|()
-decl_stmt|;
-name|ApplicationAttemptId
-name|applicationAttemptId
-init|=
-name|amrmTokenIdentifier
-operator|.
-name|getApplicationAttemptId
-argument_list|()
-decl_stmt|;
-return|return
-name|applicationAttemptId
 return|;
 block|}
 block|}
