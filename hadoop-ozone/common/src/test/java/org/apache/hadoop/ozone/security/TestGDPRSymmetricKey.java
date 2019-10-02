@@ -66,6 +66,16 @@ name|Test
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|security
+operator|.
+name|SecureRandom
+import|;
+end_import
+
 begin_comment
 comment|/**  * Tests GDPRSymmetricKey structure.  */
 end_comment
@@ -91,7 +101,11 @@ name|gkey
 init|=
 operator|new
 name|GDPRSymmetricKey
+argument_list|(
+operator|new
+name|SecureRandom
 argument_list|()
+argument_list|)
 decl_stmt|;
 name|Assert
 operator|.

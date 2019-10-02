@@ -64,6 +64,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|security
+operator|.
+name|SecureRandom
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|HashMap
@@ -153,10 +163,13 @@ name|cipher
 return|;
 block|}
 comment|/**    * Default constructor creates key with default values.    * @throws Exception    */
-DECL|method|GDPRSymmetricKey ()
+DECL|method|GDPRSymmetricKey (SecureRandom secureRandom)
 specifier|public
 name|GDPRSymmetricKey
-parameter_list|()
+parameter_list|(
+name|SecureRandom
+name|secureRandom
+parameter_list|)
 throws|throws
 name|Exception
 block|{
@@ -170,11 +183,23 @@ name|secret
 operator|=
 name|RandomStringUtils
 operator|.
-name|randomAlphabetic
+name|random
 argument_list|(
 name|OzoneConsts
 operator|.
 name|GDPR_DEFAULT_RANDOM_SECRET_LENGTH
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|true
+argument_list|,
+literal|true
+argument_list|,
+literal|null
+argument_list|,
+name|secureRandom
 argument_list|)
 expr_stmt|;
 name|this
