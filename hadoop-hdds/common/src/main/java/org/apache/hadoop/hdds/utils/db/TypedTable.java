@@ -511,7 +511,7 @@ comment|// NEVER. Setting epoch value -1, so that when it is marked for
 comment|// delete, this will be considered for cleanup.
 name|cache
 operator|.
-name|put
+name|loadInitial
 argument_list|(
 operator|new
 name|CacheKey

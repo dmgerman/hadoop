@@ -106,6 +106,18 @@ name|CACHEKEY
 name|cacheKey
 parameter_list|)
 function_decl|;
+comment|/**    * This method should be called for tables with cache cleanup policy    * {@link TableCacheImpl.CacheCleanupPolicy#NEVER} after system restart to    * fill up the cache.    * @param cacheKey    * @param cacheValue    */
+DECL|method|loadInitial (CACHEKEY cacheKey, CACHEVALUE cacheValue)
+name|void
+name|loadInitial
+parameter_list|(
+name|CACHEKEY
+name|cacheKey
+parameter_list|,
+name|CACHEVALUE
+name|cacheValue
+parameter_list|)
+function_decl|;
 comment|/**    * Add an entry to the cache, if the key already exists it overrides.    * @param cacheKey    * @param value    */
 DECL|method|put (CACHEKEY cacheKey, CACHEVALUE value)
 name|void

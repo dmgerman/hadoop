@@ -305,6 +305,32 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|loadInitial (CACHEKEY cacheKey, CACHEVALUE cacheValue)
+specifier|public
+name|void
+name|loadInitial
+parameter_list|(
+name|CACHEKEY
+name|cacheKey
+parameter_list|,
+name|CACHEVALUE
+name|cacheValue
+parameter_list|)
+block|{
+comment|// No need to add entry to epochEntries. Adding to cache is required during
+comment|// normal put operation.
+name|cache
+operator|.
+name|put
+argument_list|(
+name|cacheKey
+argument_list|,
+name|cacheValue
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|put (CACHEKEY cacheKey, CACHEVALUE value)
 specifier|public
 name|void
