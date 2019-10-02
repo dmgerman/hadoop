@@ -8195,6 +8195,24 @@ name|DFS_NAMENODE_SEND_QOP_ENABLED_DEFAULT
 init|=
 literal|false
 decl_stmt|;
+DECL|field|DFS_NAMENODE_STATE_CONTEXT_ENABLED_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NAMENODE_STATE_CONTEXT_ENABLED_KEY
+init|=
+literal|"dfs.namenode.state.context.enabled"
+decl_stmt|;
+DECL|field|DFS_NAMENODE_STATE_CONTEXT_ENABLED_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_NAMENODE_STATE_CONTEXT_ENABLED_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 comment|// dfs.client.retry confs are moved to HdfsClientConfigKeys.Retry
 annotation|@
 name|Deprecated

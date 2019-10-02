@@ -26,6 +26,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_STATE_CONTEXT_ENABLED_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -534,6 +550,15 @@ operator|=
 operator|new
 name|Configuration
 argument_list|()
+expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|DFS_NAMENODE_STATE_CONTEXT_ENABLED_KEY
+argument_list|,
+literal|true
+argument_list|)
 expr_stmt|;
 comment|// disable fast tailing here because this test's assertions are based on the
 comment|// timing of explicitly called rollEditLogAndTail. Although this means this

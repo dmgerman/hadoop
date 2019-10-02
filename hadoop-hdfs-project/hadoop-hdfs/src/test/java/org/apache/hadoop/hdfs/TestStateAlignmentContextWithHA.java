@@ -622,6 +622,17 @@ argument_list|,
 name|NUMDATANODES
 argument_list|)
 expr_stmt|;
+name|CONF
+operator|.
+name|setBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_STATE_CONTEXT_ENABLED_KEY
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 name|qjmhaCluster
 operator|=
 name|HATestUtil
