@@ -24,6 +24,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|FileNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -69,6 +79,20 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|Path
 import|;
 end_import
 
@@ -357,7 +381,7 @@ argument_list|)
 decl_stmt|;
 name|intercept
 argument_list|(
-name|AbfsRestOperationException
+name|FileNotFoundException
 operator|.
 name|class
 argument_list|,
@@ -368,9 +392,16 @@ lambda|->
 block|{
 name|fs
 operator|.
-name|getIsNamespaceEnabled
-argument_list|()
+name|getFileStatus
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+literal|"/"
+argument_list|)
+argument_list|)
 expr_stmt|;
+comment|// Run a dummy FS call
 block|}
 argument_list|)
 expr_stmt|;
