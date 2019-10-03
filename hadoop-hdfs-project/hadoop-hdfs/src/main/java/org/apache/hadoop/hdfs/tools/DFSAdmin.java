@@ -2657,7 +2657,7 @@ literal|"\t[-report [-live] [-dead] [-decommissioning] "
 operator|+
 literal|"[-enteringmaintenance] [-inmaintenance]]\n"
 operator|+
-literal|"\t[-safemode<enter | leave | get | wait>]\n"
+literal|"\t[-safemode<enter | leave | get | wait | forceExit>]\n"
 operator|+
 literal|"\t[-saveNamespace [-beforeShutdown]]\n"
 operator|+
