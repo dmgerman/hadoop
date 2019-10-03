@@ -4858,6 +4858,8 @@ argument_list|,
 name|omRpcAddressTxt
 argument_list|,
 name|s3SecretManager
+argument_list|,
+name|certClient
 argument_list|)
 return|;
 block|}

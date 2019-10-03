@@ -545,8 +545,8 @@ specifier|private
 name|boolean
 name|isRatisEnabled
 decl_stmt|;
-comment|/**    * Create a secret manager.    *    * @param conf configuration.    * @param tokenMaxLifetime the maximum lifetime of the delegation tokens in    * milliseconds    * @param tokenRenewInterval how often the tokens must be renewed in    * milliseconds    * @param dtRemoverScanInterval how often the tokens are scanned for expired    * tokens in milliseconds    */
-DECL|method|OzoneDelegationTokenSecretManager (OzoneConfiguration conf, long tokenMaxLifetime, long tokenRenewInterval, long dtRemoverScanInterval, Text service, S3SecretManager s3SecretManager)
+comment|/**    * Create a secret manager.    *    * @param conf configuration.    * @param tokenMaxLifetime the maximum lifetime of the delegation tokens in    * milliseconds    * @param tokenRenewInterval how often the tokens must be renewed in    * milliseconds    * @param dtRemoverScanInterval how often the tokens are scanned for expired    * tokens in milliseconds    * @param certClient certificate client to SCM CA    */
+DECL|method|OzoneDelegationTokenSecretManager (OzoneConfiguration conf, long tokenMaxLifetime, long tokenRenewInterval, long dtRemoverScanInterval, Text service, S3SecretManager s3SecretManager, CertificateClient certClient)
 specifier|public
 name|OzoneDelegationTokenSecretManager
 parameter_list|(
@@ -567,6 +567,9 @@ name|service
 parameter_list|,
 name|S3SecretManager
 name|s3SecretManager
+parameter_list|,
+name|CertificateClient
+name|certClient
 parameter_list|)
 throws|throws
 name|IOException
@@ -586,6 +589,11 @@ argument_list|,
 name|service
 argument_list|,
 name|LOG
+argument_list|)
+expr_stmt|;
+name|setCertClient
+argument_list|(
+name|certClient
 argument_list|)
 expr_stmt|;
 name|currentTokens

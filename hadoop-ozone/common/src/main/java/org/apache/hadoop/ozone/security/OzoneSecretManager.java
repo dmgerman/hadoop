@@ -356,7 +356,7 @@ specifier|private
 name|AtomicInteger
 name|tokenSequenceNumber
 decl_stmt|;
-comment|/**    * Create a secret manager.    *    * @param secureConf configuration.    * @param tokenMaxLifetime the maximum lifetime of the delegation tokens in    * milliseconds    * @param tokenRenewInterval how often the tokens must be renewed in    * milliseconds    * @param service name of service    */
+comment|/**    * Create a secret manager.    *    * @param secureConf configuration.    * @param tokenMaxLifetime the maximum lifetime of the delegation tokens in    * milliseconds    * @param tokenRenewInterval how often the tokens must be renewed in    * milliseconds    * @param service name of service    * @param logger logger for the secret manager    */
 DECL|method|OzoneSecretManager (SecurityConfig secureConf, long tokenMaxLifetime, long tokenRenewInterval, Text service, Logger logger)
 specifier|public
 name|OzoneSecretManager
@@ -760,11 +760,10 @@ name|isRunning
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|certClient
-operator|=
+name|setCertClient
+argument_list|(
 name|client
+argument_list|)
 expr_stmt|;
 name|updateCurrentKey
 argument_list|(
@@ -913,6 +912,22 @@ block|{
 return|return
 name|certClient
 return|;
+block|}
+DECL|method|setCertClient (CertificateClient client)
+specifier|public
+name|void
+name|setCertClient
+parameter_list|(
+name|CertificateClient
+name|client
+parameter_list|)
+block|{
+name|this
+operator|.
+name|certClient
+operator|=
+name|client
+expr_stmt|;
 block|}
 block|}
 end_class
