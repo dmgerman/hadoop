@@ -2104,11 +2104,6 @@ name|kmsProvider
 operator|=
 name|kmsProvider
 expr_stmt|;
-name|start
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 block|}
 annotation|@
 name|Override
