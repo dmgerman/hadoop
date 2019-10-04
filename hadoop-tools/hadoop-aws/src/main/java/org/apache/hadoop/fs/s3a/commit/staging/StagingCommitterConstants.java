@@ -74,7 +74,7 @@ specifier|private
 name|StagingCommitterConstants
 parameter_list|()
 block|{   }
-comment|/**    * The temporary path for staging data, if not explicitly set.    * By using an unqualified path, this will be qualified to be relative    * to the users' home directory, so protectec from access for others.    */
+comment|/**    * The temporary path for staging data, if not explicitly set.    * By using an unqualified path, this will be qualified to be relative    * to the users' home directory, so protected from access for others.    */
 DECL|field|FILESYSTEM_TEMP_PATH
 specifier|public
 specifier|static

@@ -2652,10 +2652,12 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"{}: uploading from staging directory to S3"
+literal|"{}: uploading from staging directory to S3 {}"
 argument_list|,
 name|getRole
 argument_list|()
+argument_list|,
+name|attemptPath
 argument_list|)
 expr_stmt|;
 name|LOG

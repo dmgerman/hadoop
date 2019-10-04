@@ -80,6 +80,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -627,6 +641,10 @@ argument_list|,
 name|FS_S3A_COMMITTER_NAME
 argument_list|,
 name|FS_S3A_COMMITTER_STAGING_CONFLICT_MODE
+argument_list|,
+name|FS_S3A_COMMITTER_STAGING_UNIQUE_FILENAMES
+argument_list|,
+name|FAST_UPLOAD_BUFFER
 argument_list|)
 expr_stmt|;
 name|conf
@@ -960,6 +978,16 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|setName
+argument_list|(
+literal|"teardown"
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -1429,6 +1457,8 @@ name|getFileSystem
 argument_list|()
 argument_list|,
 literal|"query"
+argument_list|,
+literal|0
 argument_list|)
 return|;
 block|}
@@ -1674,8 +1704,8 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Load in the success data marker: this guarantees that an S3A    * committer was used.    * @param outputPath path of job    * @param committerName name of committer to match, or ""    * @param fs filesystem    * @param origin origin (e.g. "teragen" for messages)    * @return the success data    * @throws IOException IO failure    */
-DECL|method|validateSuccessFile (final Path outputPath, final String committerName, final S3AFileSystem fs, final String origin)
+comment|/**    * Load in the success data marker: this guarantees that an S3A    * committer was used.    * @param outputPath path of job    * @param committerName name of committer to match, or ""    * @param fs filesystem    * @param origin origin (e.g. "teragen" for messages)    * @param minimumFileCount minimum number of files to have been created    * @return the success data    * @throws IOException IO failure    */
+DECL|method|validateSuccessFile (final Path outputPath, final String committerName, final S3AFileSystem fs, final String origin, final int minimumFileCount)
 specifier|public
 specifier|static
 name|SuccessData
@@ -1696,6 +1726,10 @@ parameter_list|,
 specifier|final
 name|String
 name|origin
+parameter_list|,
+specifier|final
+name|int
+name|minimumFileCount
 parameter_list|)
 throws|throws
 name|IOException
@@ -1793,6 +1827,26 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|Assertions
+operator|.
+name|assertThat
+argument_list|(
+name|successData
+operator|.
+name|getFilenames
+argument_list|()
+argument_list|)
+operator|.
+name|describedAs
+argument_list|(
+literal|"Files committed"
+argument_list|)
+operator|.
+name|hasSizeGreaterThanOrEqualTo
+argument_list|(
+name|minimumFileCount
+argument_list|)
+expr_stmt|;
 return|return
 name|successData
 return|;
@@ -1897,7 +1951,7 @@ literal|" from "
 operator|+
 name|origin
 operator|+
-literal|"; a s3guard committer was not used"
+literal|"; an S3A committer was not used"
 argument_list|,
 name|status
 operator|.
@@ -1905,6 +1959,15 @@ name|getLen
 argument_list|()
 operator|>
 literal|0
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Loading committer success file {}"
+argument_list|,
+name|success
 argument_list|)
 expr_stmt|;
 return|return

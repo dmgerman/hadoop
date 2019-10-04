@@ -34,9 +34,53 @@ begin_import
 import|import
 name|java
 operator|.
-name|util
+name|time
 operator|.
-name|UUID
+name|LocalDateTime
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|time
+operator|.
+name|format
+operator|.
+name|DateTimeFormatter
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|AfterClass
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Rule
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|rules
+operator|.
+name|TemporaryFolder
 import|;
 end_import
 
@@ -199,6 +243,22 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|conf
+operator|.
+name|YarnConfiguration
+import|;
+end_import
+
+begin_import
 import|import static
 name|com
 operator|.
@@ -282,7 +342,45 @@ name|s3a
 operator|.
 name|S3ATestUtils
 operator|.
+name|prepareTestConfiguration
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3ATestUtils
+operator|.
 name|terminateService
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|commit
+operator|.
+name|CommitConstants
+operator|.
+name|FS_S3A_COMMITTER_STAGING_TMP_PATH
 import|;
 end_import
 
@@ -307,7 +405,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Full integration test MR jobs.  *  * This is all done on shared static mini YARN and HDFS clusters, set up before  * any of the tests methods run.  *  * To isolate tests properly for parallel test runs, that static state  * needs to be stored in the final classes implementing the tests, and  * exposed to the base class, with the setup clusters in the  * specific test suites creating the clusters with unique names.  *  * This is "hard" to do in Java, unlike, say, Scala.  *  * Note: this turns out not to be the root cause of ordering problems  * with the Terasort tests (that is hard coded use of a file in the local FS),  * but this design here does make it clear that the before and after class  * operations are explicitly called in the subclasses.  * If two subclasses of this class are instantiated in the same JVM, in order,  * they are guaranteed to be isolated.  *  * History: this is a superclass extracted from  * {@link AbstractITCommitMRJob} while adding support for testing terasorting.  *  */
+comment|/**  * Full integration test MR jobs.  *  * This is all done on shared static mini YARN and (optionally) HDFS clusters,  * set up before any of the tests methods run.  *  * To isolate tests properly for parallel test runs, that static state  * needs to be stored in the final classes implementing the tests, and  * exposed to the base class, with the setup clusters in the  * specific test suites creating the clusters with unique names.  *  * This is "hard" to do in Java, unlike, say, Scala.  *  * Note: this turns out not to be the root cause of ordering problems  * with the Terasort tests (that is hard coded use of a file in the local FS),  * but this design here does make it clear that the before and after class  * operations are explicitly called in the subclasses.  * If two subclasses of this class are instantiated in the same JVM, in order,  * they are guaranteed to be isolated.  *  */
 end_comment
 
 begin_class
@@ -342,7 +440,7 @@ specifier|final
 name|int
 name|TEST_FILE_COUNT
 init|=
-literal|2
+literal|1
 decl_stmt|;
 DECL|field|SCALE_TEST_FILE_COUNT
 specifier|private
@@ -351,7 +449,7 @@ specifier|final
 name|int
 name|SCALE_TEST_FILE_COUNT
 init|=
-literal|50
+literal|10
 decl_stmt|;
 DECL|field|SCALE_TEST_KEYS
 specifier|public
@@ -360,7 +458,7 @@ specifier|final
 name|int
 name|SCALE_TEST_KEYS
 init|=
-literal|1000
+literal|100
 decl_stmt|;
 DECL|field|BASE_TEST_KEYS
 specifier|public
@@ -371,18 +469,53 @@ name|BASE_TEST_KEYS
 init|=
 literal|10
 decl_stmt|;
+DECL|field|NO_OF_NODEMANAGERS
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|NO_OF_NODEMANAGERS
+init|=
+literal|2
+decl_stmt|;
 DECL|field|scaleTest
 specifier|private
 name|boolean
 name|scaleTest
 decl_stmt|;
-DECL|field|uniqueFilenames
+comment|/**    * The static cluster binding with the lifecycle of this test; served    * through instance-level methods for sharing across methods in the    * suite.    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"StaticNonFinalField"
+argument_list|)
+DECL|field|clusterBinding
 specifier|private
-name|boolean
-name|uniqueFilenames
-init|=
-literal|false
+specifier|static
+name|ClusterBinding
+name|clusterBinding
 decl_stmt|;
+annotation|@
+name|AfterClass
+DECL|method|teardownClusters ()
+specifier|public
+specifier|static
+name|void
+name|teardownClusters
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|terminateCluster
+argument_list|(
+name|clusterBinding
+argument_list|)
+expr_stmt|;
+name|clusterBinding
+operator|=
+literal|null
+expr_stmt|;
+block|}
 comment|/**    * This is the cluster binding which every subclass must create.    */
 DECL|class|ClusterBinding
 specifier|protected
@@ -391,6 +524,11 @@ specifier|final
 class|class
 name|ClusterBinding
 block|{
+DECL|field|clusterName
+specifier|private
+name|String
+name|clusterName
+decl_stmt|;
 DECL|field|hdfs
 specifier|private
 specifier|final
@@ -403,10 +541,14 @@ specifier|final
 name|MiniMRYarnCluster
 name|yarn
 decl_stmt|;
-DECL|method|ClusterBinding ( final MiniDFSClusterService hdfs, final MiniMRYarnCluster yarn)
+DECL|method|ClusterBinding ( final String clusterName, final MiniDFSClusterService hdfs, final MiniMRYarnCluster yarn)
 specifier|public
 name|ClusterBinding
 parameter_list|(
+specifier|final
+name|String
+name|clusterName
+parameter_list|,
 specifier|final
 name|MiniDFSClusterService
 name|hdfs
@@ -418,12 +560,15 @@ parameter_list|)
 block|{
 name|this
 operator|.
+name|clusterName
+operator|=
+name|clusterName
+expr_stmt|;
+name|this
+operator|.
 name|hdfs
 operator|=
-name|checkNotNull
-argument_list|(
 name|hdfs
-argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -443,6 +588,42 @@ parameter_list|()
 block|{
 return|return
 name|hdfs
+return|;
+block|}
+comment|/**      * Get the cluster FS, which will either be HDFS or the local FS.      * @return a filesystem.      * @throws IOException failure      */
+DECL|method|getClusterFS ()
+specifier|public
+name|FileSystem
+name|getClusterFS
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|MiniDFSClusterService
+name|miniCluster
+init|=
+name|getHdfs
+argument_list|()
+decl_stmt|;
+return|return
+name|miniCluster
+operator|!=
+literal|null
+condition|?
+name|miniCluster
+operator|.
+name|getClusterFS
+argument_list|()
+else|:
+name|FileSystem
+operator|.
+name|getLocal
+argument_list|(
+name|yarn
+operator|.
+name|getConfig
+argument_list|()
+argument_list|)
 return|;
 block|}
 DECL|method|getYarn ()
@@ -469,6 +650,16 @@ name|getConfig
 argument_list|()
 return|;
 block|}
+DECL|method|getClusterName ()
+specifier|public
+name|String
+name|getClusterName
+parameter_list|()
+block|{
+return|return
+name|clusterName
+return|;
+block|}
 DECL|method|terminate ()
 specifier|public
 name|void
@@ -489,19 +680,29 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Create the cluster binding. This must be done in    * class setup of the (final) subclass.    * The HDFS and YARN clusters share the same configuration, so    * the HDFS cluster binding is implicitly propagated to YARN.    * @param conf configuration to start with.    * @return the cluster binding.    * @throws IOException failure.    */
-DECL|method|createCluster (JobConf conf)
+comment|/**    * Create the cluster binding.    * The configuration will be patched by propagating down options    * from the maven build (S3Guard binding etc) and turning off unwanted    * YARN features.    *    * If an HDFS cluster is requested,    * the HDFS and YARN clusters will share the same configuration, so    * the HDFS cluster binding is implicitly propagated to YARN.    * If one is not requested, the local filesystem is used as the cluster FS.    * @param conf configuration to start with.    * @param useHDFS should an HDFS cluster be instantiated.    * @return the cluster binding.    * @throws IOException failure.    */
+DECL|method|createCluster ( final JobConf conf, final boolean useHDFS)
 specifier|protected
 specifier|static
 name|ClusterBinding
 name|createCluster
 parameter_list|(
+specifier|final
 name|JobConf
 name|conf
+parameter_list|,
+specifier|final
+name|boolean
+name|useHDFS
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|prepareTestConfiguration
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|conf
 operator|.
 name|setBoolean
@@ -526,20 +727,60 @@ operator|.
 name|MAX_VALUE
 argument_list|)
 expr_stmt|;
-comment|// create a unique cluster name.
+comment|// minicluster tests overreact to not enough disk space.
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_DISK_HEALTH_CHECK_ENABLE
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_MAX_PER_DISK_UTILIZATION_PERCENTAGE
+argument_list|,
+literal|100
+argument_list|)
+expr_stmt|;
+comment|// create a unique cluster name based on the current time in millis.
+name|String
+name|timestamp
+init|=
+name|LocalDateTime
+operator|.
+name|now
+argument_list|()
+operator|.
+name|format
+argument_list|(
+name|DateTimeFormatter
+operator|.
+name|ofPattern
+argument_list|(
+literal|"yyyy-MM-dd-HH.mm.ss.SS"
+argument_list|)
+argument_list|)
+decl_stmt|;
 name|String
 name|clusterName
 init|=
 literal|"yarn-"
 operator|+
-name|UUID
-operator|.
-name|randomUUID
-argument_list|()
+name|timestamp
 decl_stmt|;
 name|MiniDFSClusterService
 name|miniDFSClusterService
 init|=
+name|useHDFS
+condition|?
 name|deployService
 argument_list|(
 name|conf
@@ -548,6 +789,8 @@ operator|new
 name|MiniDFSClusterService
 argument_list|()
 argument_list|)
+else|:
+literal|null
 decl_stmt|;
 name|MiniMRYarnCluster
 name|yarnCluster
@@ -561,7 +804,7 @@ name|MiniMRYarnCluster
 argument_list|(
 name|clusterName
 argument_list|,
-literal|2
+name|NO_OF_NODEMANAGERS
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -569,56 +812,48 @@ return|return
 operator|new
 name|ClusterBinding
 argument_list|(
+name|clusterName
+argument_list|,
 name|miniDFSClusterService
 argument_list|,
 name|yarnCluster
 argument_list|)
 return|;
 block|}
-DECL|method|terminateCluster (ClusterBinding clusterBinding)
+comment|/**    * Terminate the cluster if it is not null.    * @param cluster the cluster    */
+DECL|method|terminateCluster (ClusterBinding cluster)
 specifier|protected
 specifier|static
 name|void
 name|terminateCluster
 parameter_list|(
 name|ClusterBinding
-name|clusterBinding
+name|cluster
 parameter_list|)
 block|{
 if|if
 condition|(
-name|clusterBinding
+name|cluster
 operator|!=
 literal|null
 condition|)
 block|{
-name|clusterBinding
+name|cluster
 operator|.
 name|terminate
 argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get the cluster binding for this subclass    * @return    */
+comment|/**    * Get the cluster binding for this subclass.    * @return the cluster binding    */
 DECL|method|getClusterBinding ()
 specifier|protected
-specifier|abstract
 name|ClusterBinding
 name|getClusterBinding
 parameter_list|()
-function_decl|;
-DECL|method|getHdfs ()
-specifier|protected
-name|MiniDFSClusterService
-name|getHdfs
-parameter_list|()
 block|{
 return|return
-name|getClusterBinding
-argument_list|()
-operator|.
-name|getHdfs
-argument_list|()
+name|clusterBinding
 return|;
 block|}
 DECL|method|getYarn ()
@@ -635,35 +870,37 @@ name|getYarn
 argument_list|()
 return|;
 block|}
-DECL|method|getLocalFS ()
-specifier|public
-name|FileSystem
-name|getLocalFS
-parameter_list|()
-block|{
-return|return
-name|getHdfs
-argument_list|()
-operator|.
-name|getLocalFS
-argument_list|()
-return|;
-block|}
-DECL|method|getDFS ()
+comment|/**    * Get the cluster filesystem -hdfs or local.    * @return the filesystem shared across the yarn nodes.    */
+DECL|method|getClusterFS ()
 specifier|protected
 name|FileSystem
-name|getDFS
+name|getClusterFS
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 return|return
-name|getHdfs
+name|getClusterBinding
 argument_list|()
 operator|.
 name|getClusterFS
 argument_list|()
 return|;
 block|}
-comment|/**    * The name of the committer as returned by    * {@link AbstractS3ACommitter#getName()} and used for committer construction.    */
+comment|/**    * We stage work into a temporary directory rather than directly under    * the user's home directory, as that is often rejected by CI test    * runners.    */
+annotation|@
+name|Rule
+DECL|field|stagingFilesDir
+specifier|public
+specifier|final
+name|TemporaryFolder
+name|stagingFilesDir
+init|=
+operator|new
+name|TemporaryFolder
+argument_list|()
+decl_stmt|;
+comment|/**    * The name of the committer as returned by    * {@link AbstractS3ACommitter#getName()}    * and used for committer construction.    */
 DECL|method|committerName ()
 specifier|protected
 specifier|abstract
@@ -671,6 +908,26 @@ name|String
 name|committerName
 parameter_list|()
 function_decl|;
+comment|/**    * binding on demand rather than in a BeforeClass static method.    * Subclasses can override this to change the binding options.    * @return the cluster binding    */
+DECL|method|demandCreateClusterBinding ()
+specifier|protected
+name|ClusterBinding
+name|demandCreateClusterBinding
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+return|return
+name|createCluster
+argument_list|(
+operator|new
+name|JobConf
+argument_list|()
+argument_list|,
+literal|false
+argument_list|)
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|setup ()
@@ -686,14 +943,6 @@ operator|.
 name|setup
 argument_list|()
 expr_stmt|;
-name|assertNotNull
-argument_list|(
-literal|"cluster is not bound"
-argument_list|,
-name|getClusterBinding
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|scaleTest
 operator|=
 name|getTestPropertyBool
@@ -704,6 +953,28 @@ argument_list|,
 name|KEY_SCALE_TESTS_ENABLED
 argument_list|,
 name|DEFAULT_SCALE_TESTS_ENABLED
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|getClusterBinding
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+name|clusterBinding
+operator|=
+name|demandCreateClusterBinding
+argument_list|()
+expr_stmt|;
+block|}
+name|assertNotNull
+argument_list|(
+literal|"cluster is not bound"
+argument_list|,
+name|getClusterBinding
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -721,13 +992,18 @@ operator|*
 literal|1000
 return|;
 block|}
+comment|/**    * Create a job configuration.    * This creates a new job conf from the yarn    * cluster configuration then calls    * {@link #applyCustomConfigOptions(JobConf)} to allow it to be customized.    * @return the new job configuration.    * @throws IOException failure    */
 DECL|method|newJobConf ()
 specifier|protected
 name|JobConf
 name|newJobConf
 parameter_list|()
+throws|throws
+name|IOException
 block|{
-return|return
+name|JobConf
+name|jobConf
+init|=
 operator|new
 name|JobConf
 argument_list|(
@@ -737,24 +1013,6 @@ operator|.
 name|getConfig
 argument_list|()
 argument_list|)
-return|;
-block|}
-DECL|method|createJob ()
-specifier|protected
-name|Job
-name|createJob
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-name|Configuration
-name|jobConf
-init|=
-name|getClusterBinding
-argument_list|()
-operator|.
-name|getConf
-argument_list|()
 decl_stmt|;
 name|jobConf
 operator|.
@@ -764,6 +1022,26 @@ name|getConfiguration
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|applyCustomConfigOptions
+argument_list|(
+name|jobConf
+argument_list|)
+expr_stmt|;
+return|return
+name|jobConf
+return|;
+block|}
+DECL|method|createJob (Configuration jobConf)
+specifier|protected
+name|Job
+name|createJob
+parameter_list|(
+name|Configuration
+name|jobConf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|Job
 name|mrJob
 init|=
@@ -789,6 +1067,7 @@ return|return
 name|mrJob
 return|;
 block|}
+comment|/**    * Patch the (job) configuration for this committer.    * @param jobConf configuration to patch    * @return a configuration which will run this configuration.    */
 DECL|method|patchConfigurationForCommitter ( final Configuration jobConf)
 specifier|protected
 name|Configuration
@@ -805,7 +1084,8 @@ name|setBoolean
 argument_list|(
 name|FS_S3A_COMMITTER_STAGING_UNIQUE_FILENAMES
 argument_list|,
-name|uniqueFilenames
+name|isUniqueFilenames
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|bindCommitter
@@ -827,7 +1107,38 @@ name|setBoolean
 argument_list|(
 name|KEY_SCALE_TESTS_ENABLED
 argument_list|,
-name|scaleTest
+name|isScaleTest
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// and fix the commit dir to the local FS across all workers.
+name|String
+name|staging
+init|=
+name|stagingFilesDir
+operator|.
+name|getRoot
+argument_list|()
+operator|.
+name|getAbsolutePath
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Staging temp dir is {}"
+argument_list|,
+name|staging
+argument_list|)
+expr_stmt|;
+name|jobConf
+operator|.
+name|set
+argument_list|(
+name|FS_S3A_COMMITTER_STAGING_TMP_PATH
+argument_list|,
+name|staging
 argument_list|)
 expr_stmt|;
 return|return
@@ -842,7 +1153,8 @@ name|getTestFileCount
 parameter_list|()
 block|{
 return|return
-name|scaleTest
+name|isScaleTest
+argument_list|()
 condition|?
 name|SCALE_TEST_FILE_COUNT
 else|:
@@ -911,7 +1223,7 @@ name|isUniqueFilenames
 parameter_list|()
 block|{
 return|return
-name|uniqueFilenames
+literal|false
 return|;
 block|}
 block|}
