@@ -670,6 +670,13 @@ name|boolean
 name|hasNoStorage
 parameter_list|()
 function_decl|;
+comment|/**    * Checks whether this block has a Provided replica.    * @return true if this block has a replica on Provided storage.    */
+DECL|method|isProvided ()
+specifier|abstract
+name|boolean
+name|isProvided
+parameter_list|()
+function_decl|;
 comment|/**    * Find specified DatanodeStorageInfo.    * @return DatanodeStorageInfo or null if not found.    */
 DECL|method|findStorageInfo (DatanodeDescriptor dn)
 name|DatanodeStorageInfo

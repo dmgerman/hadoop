@@ -1115,6 +1115,18 @@ return|return
 literal|true
 return|;
 block|}
+comment|/**    * Striped blocks on Provided Storage is not supported. All blocks on    * Provided storage are assumed to be "contiguous".    */
+annotation|@
+name|Override
+DECL|method|isProvided ()
+name|boolean
+name|isProvided
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
 comment|/**    * This class contains datanode storage information and block index in the    * block group.    */
 DECL|class|StorageAndBlockIndex
 specifier|public
