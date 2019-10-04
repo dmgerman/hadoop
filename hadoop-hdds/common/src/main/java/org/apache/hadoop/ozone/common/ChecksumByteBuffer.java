@@ -112,6 +112,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * An abstract class implementing {@link ChecksumByteBuffer}    * with a 32-bit checksum and a lookup table.    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"innerassignment"
+argument_list|)
 DECL|class|CrcIntTable
 specifier|abstract
 class|class
