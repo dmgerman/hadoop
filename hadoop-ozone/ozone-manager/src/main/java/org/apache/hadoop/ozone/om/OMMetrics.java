@@ -670,13 +670,6 @@ name|Metric
 name|MutableGaugeLong
 name|lastCheckpointCreationTimeTaken
 decl_stmt|;
-DECL|field|lastCheckpointTarOperationTimeTaken
-specifier|private
-annotation|@
-name|Metric
-name|MutableGaugeLong
-name|lastCheckpointTarOperationTimeTaken
-decl_stmt|;
 DECL|field|lastCheckpointStreamingTimeTaken
 specifier|private
 annotation|@
@@ -2004,25 +1997,6 @@ name|val
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setLastCheckpointTarOperationTimeTaken (long val)
-specifier|public
-name|void
-name|setLastCheckpointTarOperationTimeTaken
-parameter_list|(
-name|long
-name|val
-parameter_list|)
-block|{
-name|this
-operator|.
-name|lastCheckpointTarOperationTimeTaken
-operator|.
-name|set
-argument_list|(
-name|val
-argument_list|)
-expr_stmt|;
-block|}
 DECL|method|setLastCheckpointStreamingTimeTaken (long val)
 specifier|public
 name|void
@@ -2749,21 +2723,6 @@ parameter_list|()
 block|{
 return|return
 name|lastCheckpointCreationTimeTaken
-operator|.
-name|value
-argument_list|()
-return|;
-block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|getLastCheckpointTarOperationTimeTaken ()
-specifier|public
-name|long
-name|getLastCheckpointTarOperationTimeTaken
-parameter_list|()
-block|{
-return|return
-name|lastCheckpointTarOperationTimeTaken
 operator|.
 name|value
 argument_list|()

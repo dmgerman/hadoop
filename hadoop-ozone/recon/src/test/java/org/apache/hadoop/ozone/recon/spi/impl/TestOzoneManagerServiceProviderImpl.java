@@ -62,6 +62,24 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|recon
+operator|.
+name|ReconUtils
+operator|.
+name|createTarFile
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -275,20 +293,6 @@ operator|.
 name|conf
 operator|.
 name|OzoneConfiguration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|OmUtils
 import|;
 end_import
 
@@ -753,8 +757,6 @@ decl_stmt|;
 name|File
 name|tarFile
 init|=
-name|OmUtils
-operator|.
 name|createTarFile
 argument_list|(
 name|checkpoint
@@ -1030,8 +1032,6 @@ comment|//Create test tar file.
 name|File
 name|tarFile
 init|=
-name|OmUtils
-operator|.
 name|createTarFile
 argument_list|(
 name|checkpointDir

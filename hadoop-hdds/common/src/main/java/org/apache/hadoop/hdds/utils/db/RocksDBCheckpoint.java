@@ -264,9 +264,9 @@ name|IOException
 block|{
 name|LOG
 operator|.
-name|debug
+name|info
 argument_list|(
-literal|"Cleaning up checkpoint at "
+literal|"Cleaning up RocksDB checkpoint at "
 operator|+
 name|checkpointLocation
 operator|.
