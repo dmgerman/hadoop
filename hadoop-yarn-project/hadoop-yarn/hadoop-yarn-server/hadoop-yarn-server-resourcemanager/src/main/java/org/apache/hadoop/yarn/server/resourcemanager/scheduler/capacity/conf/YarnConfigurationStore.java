@@ -359,6 +359,16 @@ parameter_list|()
 throws|throws
 name|Exception
 function_decl|;
+comment|/**    * Get the last updated config version.    * @return Last updated config version.    */
+DECL|method|getConfigVersion ()
+specifier|public
+specifier|abstract
+name|long
+name|getConfigVersion
+parameter_list|()
+throws|throws
+name|Exception
+function_decl|;
 comment|/**    * Get a list of confirmed configuration mutations starting from a given id.    * @param fromId id from which to start getting mutations, inclusive    * @return list of configuration mutations    */
 DECL|method|getConfirmedConfHistory (long fromId)
 specifier|public

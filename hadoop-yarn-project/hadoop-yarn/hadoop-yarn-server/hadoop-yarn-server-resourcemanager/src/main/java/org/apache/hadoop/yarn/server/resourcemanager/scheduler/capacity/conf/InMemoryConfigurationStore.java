@@ -118,6 +118,11 @@ specifier|private
 name|LogMutation
 name|pendingMutation
 decl_stmt|;
+DECL|field|configVersion
+specifier|private
+name|long
+name|configVersion
+decl_stmt|;
 annotation|@
 name|Override
 DECL|method|initialize (Configuration conf, Configuration schedConf, RMContext rmContext)
@@ -140,6 +145,15 @@ operator|.
 name|schedConf
 operator|=
 name|schedConf
+expr_stmt|;
+name|this
+operator|.
+name|configVersion
+operator|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
 expr_stmt|;
 block|}
 annotation|@
@@ -236,6 +250,15 @@ expr_stmt|;
 block|}
 block|}
 block|}
+name|this
+operator|.
+name|configVersion
+operator|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+expr_stmt|;
 name|pendingMutation
 operator|=
 literal|null
@@ -267,6 +290,20 @@ parameter_list|()
 block|{
 return|return
 name|schedConf
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getConfigVersion ()
+specifier|public
+name|long
+name|getConfigVersion
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+return|return
+name|configVersion
 return|;
 block|}
 annotation|@
