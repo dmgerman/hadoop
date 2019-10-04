@@ -323,11 +323,19 @@ parameter_list|()
 throws|throws
 name|InterruptedException
 block|{
+if|if
+condition|(
+name|sls
+operator|!=
+literal|null
+condition|)
+block|{
 name|sls
 operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 DECL|method|runSLS (Configuration conf, long timeout)
 specifier|public

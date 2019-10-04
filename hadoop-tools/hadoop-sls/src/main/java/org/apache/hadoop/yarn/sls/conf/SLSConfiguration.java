@@ -104,6 +104,26 @@ name|PREFIX
 init|=
 literal|"yarn.sls."
 decl_stmt|;
+DECL|field|DNS_CACHING_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DNS_CACHING_ENABLED
+init|=
+name|PREFIX
+operator|+
+literal|"dns.caching.enabled"
+decl_stmt|;
+DECL|field|DNS_CACHING_ENABLED_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DNS_CACHING_ENABLED_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 comment|// runner
 DECL|field|RUNNER_PREFIX
 specifier|public
