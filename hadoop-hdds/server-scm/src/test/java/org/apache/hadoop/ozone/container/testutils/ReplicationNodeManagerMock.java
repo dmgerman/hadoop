@@ -422,6 +422,16 @@ name|UUID
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|LinkedList
+import|;
+end_import
+
 begin_comment
 comment|/**  * A Node Manager to test replication.  */
 end_comment
@@ -995,17 +1005,23 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getNodeByAddress (String address)
+DECL|method|getNodesByAddress (String address)
 specifier|public
+name|List
+argument_list|<
 name|DatanodeDetails
-name|getNodeByAddress
+argument_list|>
+name|getNodesByAddress
 parameter_list|(
 name|String
 name|address
 parameter_list|)
 block|{
 return|return
-literal|null
+operator|new
+name|LinkedList
+argument_list|<>
+argument_list|()
 return|;
 block|}
 block|}

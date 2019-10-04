@@ -521,10 +521,13 @@ name|String
 name|uuid
 parameter_list|)
 function_decl|;
-comment|/**    * Given datanode address(Ipaddress or hostname), returns the DatanodeDetails    * for the node.    *    * @param address datanode address    * @return the given datanode, or null if not found    */
-DECL|method|getNodeByAddress (String address)
+comment|/**    * Given datanode address(Ipaddress or hostname), returns a list of    * DatanodeDetails for the datanodes running at that address.    *    * @param address datanode address    * @return the given datanode, or empty list if none found    */
+DECL|method|getNodesByAddress (String address)
+name|List
+argument_list|<
 name|DatanodeDetails
-name|getNodeByAddress
+argument_list|>
+name|getNodesByAddress
 parameter_list|(
 name|String
 name|address
