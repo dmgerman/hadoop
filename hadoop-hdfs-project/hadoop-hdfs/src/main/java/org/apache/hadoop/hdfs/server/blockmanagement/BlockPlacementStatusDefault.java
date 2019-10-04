@@ -131,6 +131,33 @@ operator|+
 name|totalRacks
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getAdditionalReplicasRequired ()
+specifier|public
+name|int
+name|getAdditionalReplicasRequired
+parameter_list|()
+block|{
+if|if
+condition|(
+name|isPlacementPolicySatisfied
+argument_list|()
+condition|)
+block|{
+return|return
+literal|0
+return|;
+block|}
+else|else
+block|{
+return|return
+name|requiredRacks
+operator|-
+name|currentRacks
+return|;
+block|}
+block|}
 block|}
 end_class
 

@@ -76,6 +76,12 @@ name|String
 name|getErrorDescription
 parameter_list|()
 function_decl|;
+comment|/**    * Return the number of additional replicas needed to ensure the block    * placement policy is satisfied.    * @return The number of new replicas needed to satisify the placement policy    * or zero if no extra are needed    */
+DECL|method|getAdditionalReplicasRequired ()
+name|int
+name|getAdditionalReplicasRequired
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

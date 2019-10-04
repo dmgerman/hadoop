@@ -123,6 +123,18 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getAdditionalReplicasRequired ()
+specifier|public
+name|int
+name|getAdditionalReplicasRequired
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
 block|}
 annotation|@
 name|Override

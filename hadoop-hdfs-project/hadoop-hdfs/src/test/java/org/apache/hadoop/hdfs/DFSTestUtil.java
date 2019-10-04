@@ -4724,7 +4724,6 @@ argument_list|()
 return|;
 block|}
 block|}
-comment|/*    * Wait up to 20s for the given block to be replicated across    * the requested number of racks, with the requested number of    * replicas, and the requested number of replicas still needed.    */
 DECL|method|waitForReplication (MiniDFSCluster cluster, ExtendedBlock b, int racks, int replicas, int neededReplicas)
 specifier|public
 specifier|static
@@ -4751,6 +4750,52 @@ name|TimeoutException
 throws|,
 name|InterruptedException
 block|{
+name|waitForReplication
+argument_list|(
+name|cluster
+argument_list|,
+name|b
+argument_list|,
+name|racks
+argument_list|,
+name|replicas
+argument_list|,
+name|neededReplicas
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
+comment|/*    * Wait up to 20s for the given block to be replicated across    * the requested number of racks, with the requested number of    * replicas, and the requested number of replicas still needed.    */
+DECL|method|waitForReplication (MiniDFSCluster cluster, ExtendedBlock b, int racks, int replicas, int neededReplicas, int neededDomains)
+specifier|public
+specifier|static
+name|void
+name|waitForReplication
+parameter_list|(
+name|MiniDFSCluster
+name|cluster
+parameter_list|,
+name|ExtendedBlock
+name|b
+parameter_list|,
+name|int
+name|racks
+parameter_list|,
+name|int
+name|replicas
+parameter_list|,
+name|int
+name|neededReplicas
+parameter_list|,
+name|int
+name|neededDomains
+parameter_list|)
+throws|throws
+name|TimeoutException
+throws|,
+name|InterruptedException
+block|{
 name|int
 name|curRacks
 init|=
@@ -4763,6 +4808,11 @@ literal|0
 decl_stmt|;
 name|int
 name|curNeededReplicas
+init|=
+literal|0
+decl_stmt|;
+name|int
+name|curDomains
 init|=
 literal|0
 decl_stmt|;
@@ -4826,6 +4876,13 @@ index|[
 literal|2
 index|]
 expr_stmt|;
+name|curDomains
+operator|=
+name|r
+index|[
+literal|3
+index|]
+expr_stmt|;
 name|count
 operator|++
 expr_stmt|;
@@ -4844,6 +4901,16 @@ operator|||
 name|curNeededReplicas
 operator|!=
 name|neededReplicas
+operator|||
+operator|(
+name|neededDomains
+operator|!=
+literal|0
+operator|&&
+name|curDomains
+operator|!=
+name|neededDomains
+operator|)
 operator|)
 operator|&&
 name|count
@@ -4887,6 +4954,14 @@ operator|+
 literal|" Cur racks = "
 operator|+
 name|curRacks
+operator|+
+literal|" Domains = "
+operator|+
+name|neededDomains
+operator|+
+literal|" Cur domains = "
+operator|+
+name|curDomains
 argument_list|)
 throw|;
 block|}
