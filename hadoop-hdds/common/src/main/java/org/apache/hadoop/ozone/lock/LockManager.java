@@ -104,6 +104,18 @@ name|ConcurrentHashMap
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|function
+operator|.
+name|Consumer
+import|;
+end_import
+
 begin_comment
 comment|/**  * Manages the locks on a given resource. A new lock is created for each  * and every unique resource. Uniqueness of resource depends on the  * {@code equals} implementation of it.  */
 end_comment
@@ -114,7 +126,7 @@ specifier|public
 class|class
 name|LockManager
 parameter_list|<
-name|T
+name|R
 parameter_list|>
 block|{
 DECL|field|LOG
@@ -138,7 +150,7 @@ specifier|private
 specifier|final
 name|Map
 argument_list|<
-name|T
+name|R
 argument_list|,
 name|ActiveLock
 argument_list|>
@@ -167,15 +179,17 @@ name|PooledLockFactory
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|/**    * Creates new LockManager instance.    *    * @param conf Configuration object    */
-DECL|method|LockManager (Configuration conf)
+comment|/**    * Creates new LockManager instance with the given Configuration.    *    * @param conf Configuration object    */
+DECL|method|LockManager (final Configuration conf)
 specifier|public
 name|LockManager
 parameter_list|(
+specifier|final
 name|Configuration
 name|conf
 parameter_list|)
 block|{
+specifier|final
 name|int
 name|maxPoolSize
 init|=
@@ -200,16 +214,210 @@ name|maxPoolSize
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Acquires the lock on given resource.    *    *<p>If the lock is not available then the current thread becomes    * disabled for thread scheduling purposes and lies dormant until the    * lock has been acquired.    */
-DECL|method|lock (T resource)
+comment|/**    * Acquires the lock on given resource.    *    *<p>If the lock is not available then the current thread becomes    * disabled for thread scheduling purposes and lies dormant until the    * lock has been acquired.    *    * @param resource on which the lock has to be acquired    * @deprecated Use {@link LockManager#writeLock} instead    */
+DECL|method|lock (final R resource)
 specifier|public
 name|void
 name|lock
 parameter_list|(
-name|T
+specifier|final
+name|R
 name|resource
 parameter_list|)
 block|{
+name|writeLock
+argument_list|(
+name|resource
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Releases the lock on given resource.    *    * @param resource for which the lock has to be released    * @deprecated Use {@link LockManager#writeUnlock} instead    */
+DECL|method|unlock (final R resource)
+specifier|public
+name|void
+name|unlock
+parameter_list|(
+specifier|final
+name|R
+name|resource
+parameter_list|)
+block|{
+name|writeUnlock
+argument_list|(
+name|resource
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Acquires the read lock on given resource.    *    *<p>Acquires the read lock on resource if the write lock is not held by    * another thread and returns immediately.    *    *<p>If the write lock on resource is held by another thread then    * the current thread becomes disabled for thread scheduling    * purposes and lies dormant until the read lock has been acquired.    *    * @param resource on which the read lock has to be acquired    */
+DECL|method|readLock (final R resource)
+specifier|public
+name|void
+name|readLock
+parameter_list|(
+specifier|final
+name|R
+name|resource
+parameter_list|)
+block|{
+name|acquire
+argument_list|(
+name|resource
+argument_list|,
+name|ActiveLock
+operator|::
+name|readLock
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Releases the read lock on given resource.    *    * @param resource for which the read lock has to be released    * @throws IllegalMonitorStateException if the current thread does not    *                                      hold this lock    */
+DECL|method|readUnlock (final R resource)
+specifier|public
+name|void
+name|readUnlock
+parameter_list|(
+specifier|final
+name|R
+name|resource
+parameter_list|)
+throws|throws
+name|IllegalMonitorStateException
+block|{
+name|release
+argument_list|(
+name|resource
+argument_list|,
+name|ActiveLock
+operator|::
+name|readUnlock
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Acquires the write lock on given resource.    *    *<p>Acquires the write lock on resource if neither the read nor write lock    * are held by another thread and returns immediately.    *    *<p>If the current thread already holds the write lock then the    * hold count is incremented by one and the method returns    * immediately.    *    *<p>If the lock is held by another thread then the current    * thread becomes disabled for thread scheduling purposes and    * lies dormant until the write lock has been acquired.    *    * @param resource on which the lock has to be acquired    */
+DECL|method|writeLock (final R resource)
+specifier|public
+name|void
+name|writeLock
+parameter_list|(
+specifier|final
+name|R
+name|resource
+parameter_list|)
+block|{
+name|acquire
+argument_list|(
+name|resource
+argument_list|,
+name|ActiveLock
+operator|::
+name|writeLock
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Releases the write lock on given resource.    *    * @param resource for which the lock has to be released    * @throws IllegalMonitorStateException if the current thread does not    *                                      hold this lock    */
+DECL|method|writeUnlock (final R resource)
+specifier|public
+name|void
+name|writeUnlock
+parameter_list|(
+specifier|final
+name|R
+name|resource
+parameter_list|)
+throws|throws
+name|IllegalMonitorStateException
+block|{
+name|release
+argument_list|(
+name|resource
+argument_list|,
+name|ActiveLock
+operator|::
+name|writeUnlock
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Acquires the lock on given resource using the provided lock function.    *    * @param resource on which the lock has to be acquired    * @param lockFn function to acquire the lock    */
+DECL|method|acquire (final R resource, final Consumer<ActiveLock> lockFn)
+specifier|private
+name|void
+name|acquire
+parameter_list|(
+specifier|final
+name|R
+name|resource
+parameter_list|,
+specifier|final
+name|Consumer
+argument_list|<
+name|ActiveLock
+argument_list|>
+name|lockFn
+parameter_list|)
+block|{
+name|lockFn
+operator|.
+name|accept
+argument_list|(
+name|getLockForLocking
+argument_list|(
+name|resource
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Releases the lock on given resource using the provided release function.    *    * @param resource for which the lock has to be released    * @param releaseFn function to release the lock    */
+DECL|method|release (final R resource, final Consumer<ActiveLock> releaseFn)
+specifier|private
+name|void
+name|release
+parameter_list|(
+specifier|final
+name|R
+name|resource
+parameter_list|,
+specifier|final
+name|Consumer
+argument_list|<
+name|ActiveLock
+argument_list|>
+name|releaseFn
+parameter_list|)
+block|{
+specifier|final
+name|ActiveLock
+name|lock
+init|=
+name|getLockForReleasing
+argument_list|(
+name|resource
+argument_list|)
+decl_stmt|;
+name|releaseFn
+operator|.
+name|accept
+argument_list|(
+name|lock
+argument_list|)
+expr_stmt|;
+name|decrementActiveLockCount
+argument_list|(
+name|resource
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Returns {@link ActiveLock} instance for the given resource,    * on which the lock can be acquired.    *    * @param resource on which the lock has to be acquired    * @return {@link ActiveLock} instance    */
+DECL|method|getLockForLocking (final R resource)
+specifier|private
+name|ActiveLock
+name|getLockForLocking
+parameter_list|(
+specifier|final
+name|R
+name|resource
+parameter_list|)
+block|{
+comment|/*      * While getting a lock object for locking we should      * atomically increment the active count of the lock.      *      * This is to avoid cases where the selected lock could      * be removed from the activeLocks map and returned to      * the object pool.      */
+return|return
 name|activeLocks
 operator|.
 name|compute
@@ -223,6 +431,7 @@ name|v
 parameter_list|)
 lambda|->
 block|{
+specifier|final
 name|ActiveLock
 name|lock
 decl_stmt|;
@@ -284,39 +493,39 @@ name|lock
 return|;
 block|}
 argument_list|)
-operator|.
-name|lock
-argument_list|()
-expr_stmt|;
+return|;
 block|}
-comment|/**    * Releases the lock on given resource.    */
-DECL|method|unlock (T resource)
-specifier|public
-name|void
-name|unlock
+comment|/**    * Returns {@link ActiveLock} instance for the given resource,    * for which the lock has to be released.    *    * @param resource for which the lock has to be released    * @return {@link ActiveLock} instance    */
+DECL|method|getLockForReleasing (final R resource)
+specifier|private
+name|ActiveLock
+name|getLockForReleasing
 parameter_list|(
-name|T
+specifier|final
+name|R
 name|resource
 parameter_list|)
 block|{
-name|ActiveLock
-name|lock
-init|=
+if|if
+condition|(
+name|activeLocks
+operator|.
+name|containsKey
+argument_list|(
+name|resource
+argument_list|)
+condition|)
+block|{
+return|return
 name|activeLocks
 operator|.
 name|get
 argument_list|(
 name|resource
 argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|lock
-operator|==
-literal|null
-condition|)
-block|{
-comment|// Someone is releasing a lock which was never acquired. Log and return.
+return|;
+block|}
+comment|// Someone is releasing a lock which was never acquired.
 name|LOG
 operator|.
 name|error
@@ -338,11 +547,17 @@ literal|" without acquiring lock"
 argument_list|)
 throw|;
 block|}
-name|lock
-operator|.
-name|unlock
-argument_list|()
-expr_stmt|;
+comment|/**    * Decrements the active lock count and returns the {@link ActiveLock}    * object to pool if the active count is 0.    *    * @param resource resource to which the ActiveLock is associated    */
+DECL|method|decrementActiveLockCount (final R resource)
+specifier|private
+name|void
+name|decrementActiveLockCount
+parameter_list|(
+specifier|final
+name|R
+name|resource
+parameter_list|)
+block|{
 name|activeLocks
 operator|.
 name|computeIfPresent

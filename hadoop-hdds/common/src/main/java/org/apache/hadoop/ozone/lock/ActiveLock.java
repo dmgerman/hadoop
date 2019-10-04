@@ -42,7 +42,7 @@ name|concurrent
 operator|.
 name|locks
 operator|.
-name|Lock
+name|ReadWriteLock
 import|;
 end_import
 
@@ -56,7 +56,7 @@ name|concurrent
 operator|.
 name|locks
 operator|.
-name|ReentrantLock
+name|ReentrantReadWriteLock
 import|;
 end_import
 
@@ -73,7 +73,7 @@ name|ActiveLock
 block|{
 DECL|field|lock
 specifier|private
-name|Lock
+name|ReadWriteLock
 name|lock
 decl_stmt|;
 DECL|field|count
@@ -92,7 +92,7 @@ operator|.
 name|lock
 operator|=
 operator|new
-name|ReentrantLock
+name|ReentrantReadWriteLock
 argument_list|()
 expr_stmt|;
 name|this
@@ -120,27 +120,61 @@ name|ActiveLock
 argument_list|()
 return|;
 block|}
-comment|/**    * Acquires the lock.    *    *<p>If the lock is not available then the current thread becomes    * disabled for thread scheduling purposes and lies dormant until the    * lock has been acquired.    */
-DECL|method|lock ()
-specifier|public
+comment|/**    * Acquires read lock.    *    *<p>Acquires the read lock if the write lock is not held by    * another thread and returns immediately.    *    *<p>If the write lock is held by another thread then    * the current thread becomes disabled for thread scheduling    * purposes and lies dormant until the read lock has been acquired.    */
+DECL|method|readLock ()
 name|void
-name|lock
+name|readLock
 parameter_list|()
 block|{
 name|lock
+operator|.
+name|readLock
+argument_list|()
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Releases the lock.    */
-DECL|method|unlock ()
-specifier|public
+comment|/**    * Attempts to release the read lock.    *    *<p>If the number of readers is now zero then the lock    * is made available for write lock attempts.    */
+DECL|method|readUnlock ()
 name|void
-name|unlock
+name|readUnlock
 parameter_list|()
 block|{
 name|lock
+operator|.
+name|readLock
+argument_list|()
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Acquires write lock.    *    *<p>Acquires the write lock if neither the read nor write lock    * are held by another thread    * and returns immediately, setting the write lock hold count to    * one.    *    *<p>If the current thread already holds the write lock then the    * hold count is incremented by one and the method returns    * immediately.    *    *<p>If the lock is held by another thread then the current    * thread becomes disabled for thread scheduling purposes and    * lies dormant until the write lock has been acquired.    */
+DECL|method|writeLock ()
+name|void
+name|writeLock
+parameter_list|()
+block|{
+name|lock
+operator|.
+name|writeLock
+argument_list|()
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Attempts to release the write lock.    *    *<p>If the current thread is the holder of this lock then    * the hold count is decremented. If the hold count is now    * zero then the lock is released.    */
+DECL|method|writeUnlock ()
+name|void
+name|writeUnlock
+parameter_list|()
+block|{
+name|lock
+operator|.
+name|writeLock
+argument_list|()
 operator|.
 name|unlock
 argument_list|()
