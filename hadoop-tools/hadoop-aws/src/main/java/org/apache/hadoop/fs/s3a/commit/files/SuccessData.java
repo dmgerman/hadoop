@@ -205,7 +205,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Summary data saved into a {@code _SUCCESS} marker file.  *  * This provides an easy way to determine which committer was used  * to commit work.  *<ol>  *<li>File length == 0: classic {@code FileOutputCommitter}.</li>  *<li>Loadable as {@link SuccessData}:  *   A s3guard committer with name in in {@link #committer} field.</li>  *<li>Not loadable? Something else.</li>  *</ol>  *  * This is an unstable structure intended for diagnostics and testing.  * Applications reading this data should use/check the {@link #name} field  * to differentiate from any other JSON-based manifest and to identify  * changes in the output format.  */
+comment|/**  * Summary data saved into a {@code _SUCCESS} marker file.  *  * This provides an easy way to determine which committer was used  * to commit work.  *<ol>  *<li>File length == 0: classic {@code FileOutputCommitter}.</li>  *<li>Loadable as {@link SuccessData}:  *   A s3guard committer with name in in {@link #committer} field.</li>  *<li>Not loadable? Something else.</li>  *</ol>  *  * This is an unstable structure intended for diagnostics and testing.  * Applications reading this data should use/check the {@link #name} field  * to differentiate from any other JSON-based manifest and to identify  * changes in the output format.  *  * Note: to deal with scale issues, the S3A committers do not include any  * more than the number of objects listed in  * {@link org.apache.hadoop.fs.s3a.commit.CommitConstants#SUCCESS_MARKER_FILE_LIMIT}.  * This is intended to suffice for basic integration tests.  * Larger tests should examine the generated files themselves.  */
 end_comment
 
 begin_class

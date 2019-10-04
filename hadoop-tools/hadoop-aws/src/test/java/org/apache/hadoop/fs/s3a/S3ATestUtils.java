@@ -580,9 +580,41 @@ name|java
 operator|.
 name|util
 operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|TreeSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|concurrent
 operator|.
 name|Callable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|stream
+operator|.
+name|Collectors
 import|;
 end_import
 
@@ -2311,7 +2343,7 @@ name|tmpDir
 operator|+
 name|File
 operator|.
-name|pathSeparatorChar
+name|separator
 operator|+
 name|testUniqueForkId
 expr_stmt|;
@@ -4865,6 +4897,122 @@ operator|.
 name|getFileStatus
 argument_list|(
 name|testFilePath
+argument_list|)
+argument_list|)
+return|;
+block|}
+comment|/**    * This creates a set containing all current threads and some well-known    * thread names whose existence should not fail test runs.    * They are generally static cleaner threads created by various classes    * on instantiation.    * @return a set of threads to use in later assertions.    */
+DECL|method|listInitialThreadsForLifecycleChecks ()
+specifier|public
+specifier|static
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|listInitialThreadsForLifecycleChecks
+parameter_list|()
+block|{
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|threadSet
+init|=
+name|getCurrentThreadNames
+argument_list|()
+decl_stmt|;
+comment|// static filesystem statistics cleaner
+name|threadSet
+operator|.
+name|add
+argument_list|(
+literal|"org.apache.hadoop.fs.FileSystem$Statistics$StatisticsDataReferenceCleaner"
+argument_list|)
+expr_stmt|;
+comment|// AWS progress callbacks
+name|threadSet
+operator|.
+name|add
+argument_list|(
+literal|"java-sdk-progress-listener-callback-thread"
+argument_list|)
+expr_stmt|;
+comment|// another AWS thread
+name|threadSet
+operator|.
+name|add
+argument_list|(
+literal|"java-sdk-http-connection-reaper"
+argument_list|)
+expr_stmt|;
+comment|// java.lang.UNIXProcess. maybe if chmod is called?
+name|threadSet
+operator|.
+name|add
+argument_list|(
+literal|"process reaper"
+argument_list|)
+expr_stmt|;
+comment|// once a quantile has been scheduled, the mutable quantile thread pool
+comment|// is initialized; it has a minimum thread size of 1.
+name|threadSet
+operator|.
+name|add
+argument_list|(
+literal|"MutableQuantiles-0"
+argument_list|)
+expr_stmt|;
+comment|// IDE?
+name|threadSet
+operator|.
+name|add
+argument_list|(
+literal|"Attach Listener"
+argument_list|)
+expr_stmt|;
+return|return
+name|threadSet
+return|;
+block|}
+comment|/**    * Get a set containing the names of all active threads.    * @return the current set of threads.    */
+DECL|method|getCurrentThreadNames ()
+specifier|public
+specifier|static
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getCurrentThreadNames
+parameter_list|()
+block|{
+return|return
+name|Thread
+operator|.
+name|getAllStackTraces
+argument_list|()
+operator|.
+name|keySet
+argument_list|()
+operator|.
+name|stream
+argument_list|()
+operator|.
+name|map
+argument_list|(
+name|Thread
+operator|::
+name|getName
+argument_list|)
+operator|.
+name|collect
+argument_list|(
+name|Collectors
+operator|.
+name|toCollection
+argument_list|(
+name|TreeSet
+operator|::
+operator|new
 argument_list|)
 argument_list|)
 return|;

@@ -2216,6 +2216,8 @@ init|(
 name|metricsSystemLock
 init|)
 block|{
+comment|// it is critical to close each quantile, as they start a scheduled
+comment|// task in a shared thread pool.
 name|putLatencyQuantile
 operator|.
 name|stop
@@ -2246,6 +2248,13 @@ operator|==
 literal|0
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Shutting down metrics publisher"
+argument_list|)
+expr_stmt|;
 name|metricsSystem
 operator|.
 name|publishMetricsNow

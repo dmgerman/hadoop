@@ -404,6 +404,11 @@ annotation|@
 name|Parameterized
 operator|.
 name|Parameters
+argument_list|(
+name|name
+operator|=
+literal|"threads={0}"
+argument_list|)
 DECL|method|params ()
 specifier|public
 specifier|static

@@ -58,16 +58,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -1737,16 +1727,20 @@ argument_list|(
 name|context
 argument_list|)
 expr_stmt|;
+name|super
+operator|.
+name|setupJob
+argument_list|(
+name|context
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Get the list of pending uploads for this job attempt.    * @param context job context    * @return a list of pending uploads.    * @throws IOException Any IO failure    */
 annotation|@
 name|Override
 DECL|method|listPendingUploadsToCommit ( JobContext context)
 specifier|protected
-name|List
-argument_list|<
-name|SinglePendingCommit
-argument_list|>
+name|ActiveCommit
 name|listPendingUploadsToCommit
 parameter_list|(
 name|JobContext
@@ -1767,10 +1761,7 @@ block|}
 comment|/**    * Get the list of pending uploads for this job attempt, swallowing    * exceptions.    * @param context job context    * @return a list of pending uploads. If an exception was swallowed,    * then this may not match the actual set of pending operations    * @throws IOException shouldn't be raised, but retained for the compiler    */
 DECL|method|listPendingUploadsToAbort ( JobContext context)
 specifier|protected
-name|List
-argument_list|<
-name|SinglePendingCommit
-argument_list|>
+name|ActiveCommit
 name|listPendingUploadsToAbort
 parameter_list|(
 name|JobContext
@@ -1791,10 +1782,7 @@ block|}
 comment|/**    * Get the list of pending uploads for this job attempt.    * @param context job context    * @param suppressExceptions should exceptions be swallowed?    * @return a list of pending uploads. If exceptions are being swallowed,    * then this may not match the actual set of pending operations    * @throws IOException Any IO failure which wasn't swallowed.    */
 DECL|method|listPendingUploads ( JobContext context, boolean suppressExceptions)
 specifier|protected
-name|List
-argument_list|<
-name|SinglePendingCommit
-argument_list|>
+name|ActiveCommit
 name|listPendingUploads
 parameter_list|(
 name|JobContext
@@ -1807,12 +1795,22 @@ throws|throws
 name|IOException
 block|{
 try|try
+init|(
+name|DurationInfo
+name|ignored
+init|=
+operator|new
+name|DurationInfo
+argument_list|(
+name|LOG
+argument_list|,
+literal|"Listing pending uploads"
+argument_list|)
+init|)
 block|{
 name|Path
 name|wrappedJobAttemptPath
 init|=
-name|wrappedCommitter
-operator|.
 name|getJobAttemptPath
 argument_list|(
 name|context
@@ -1833,12 +1831,10 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 return|return
-name|loadPendingsetFiles
+name|ActiveCommit
+operator|.
+name|fromStatusList
 argument_list|(
-name|context
-argument_list|,
-name|suppressExceptions
-argument_list|,
 name|attemptFS
 argument_list|,
 name|listAndFilter
@@ -1891,12 +1887,10 @@ expr_stmt|;
 block|}
 comment|// reached iff an IOE was caught and swallowed
 return|return
-operator|new
-name|ArrayList
-argument_list|<>
-argument_list|(
-literal|0
-argument_list|)
+name|ActiveCommit
+operator|.
+name|empty
+argument_list|()
 return|;
 block|}
 annotation|@
@@ -2119,10 +2113,7 @@ argument_list|)
 argument_list|)
 init|)
 block|{
-name|List
-argument_list|<
-name|SinglePendingCommit
-argument_list|>
+name|ActiveCommit
 name|pending
 init|=
 name|listPendingUploadsToAbort
@@ -2137,6 +2128,8 @@ argument_list|,
 name|pending
 argument_list|,
 name|suppressExceptions
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -2527,6 +2520,12 @@ throw|throw
 name|e
 throw|;
 block|}
+finally|finally
+block|{
+name|destroyThreadPool
+argument_list|()
+expr_stmt|;
+block|}
 name|getCommitOperations
 argument_list|()
 operator|.
@@ -2726,6 +2725,11 @@ argument_list|)
 operator|.
 name|stopOnFailure
 argument_list|()
+operator|.
+name|suppressExceptions
+argument_list|(
+literal|false
+argument_list|)
 operator|.
 name|executeWith
 argument_list|(
@@ -3109,6 +3113,12 @@ expr_stmt|;
 throw|throw
 name|e
 throw|;
+block|}
+finally|finally
+block|{
+name|destroyThreadPool
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 end_function
@@ -3524,6 +3534,40 @@ operator|.
 name|ENGLISH
 argument_list|)
 return|;
+block|}
+end_function
+
+begin_comment
+comment|/**    * Pre-commit actions for a job.    * Loads all the pending files to verify they can be loaded    * and parsed.    * @param context job context    * @param pending pending commits    * @throws IOException any failure    */
+end_comment
+
+begin_function
+annotation|@
+name|Override
+DECL|method|preCommitJob ( final JobContext context, final ActiveCommit pending)
+specifier|public
+name|void
+name|preCommitJob
+parameter_list|(
+specifier|final
+name|JobContext
+name|context
+parameter_list|,
+specifier|final
+name|ActiveCommit
+name|pending
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// see if the files can be loaded.
+name|precommitCheckPendingFiles
+argument_list|(
+name|context
+argument_list|,
+name|pending
+argument_list|)
+expr_stmt|;
 block|}
 end_function
 

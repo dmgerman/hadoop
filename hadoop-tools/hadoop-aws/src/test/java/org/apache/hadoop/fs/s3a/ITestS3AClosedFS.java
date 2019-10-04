@@ -30,6 +30,40 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|AfterClass
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|junit
@@ -49,6 +83,42 @@ operator|.
 name|fs
 operator|.
 name|Path
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3ATestUtils
+operator|.
+name|getCurrentThreadNames
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3ATestUtils
+operator|.
+name|listInitialThreadsForLifecycleChecks
 import|;
 end_import
 
@@ -87,7 +157,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Tests of the S3A FileSystem which is closed; just make sure  * that that basic file Ops fail meaningfully.  */
+comment|/**  * Tests of the S3A FileSystem which is closed.  */
 end_comment
 
 begin_class
@@ -154,6 +224,47 @@ name|teardown
 parameter_list|()
 block|{
 comment|// no op, as the FS is closed
+block|}
+DECL|field|THREAD_SET
+specifier|private
+specifier|static
+specifier|final
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|THREAD_SET
+init|=
+name|listInitialThreadsForLifecycleChecks
+argument_list|()
+decl_stmt|;
+annotation|@
+name|AfterClass
+DECL|method|checkForThreadLeakage ()
+specifier|public
+specifier|static
+name|void
+name|checkForThreadLeakage
+parameter_list|()
+block|{
+name|Assertions
+operator|.
+name|assertThat
+argument_list|(
+name|getCurrentThreadNames
+argument_list|()
+argument_list|)
+operator|.
+name|describedAs
+argument_list|(
+literal|"The threads at the end of the test run"
+argument_list|)
+operator|.
+name|isSubsetOf
+argument_list|(
+name|THREAD_SET
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Test

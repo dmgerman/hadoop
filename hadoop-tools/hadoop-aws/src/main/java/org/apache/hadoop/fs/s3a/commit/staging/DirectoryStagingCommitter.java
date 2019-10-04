@@ -44,16 +44,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|slf4j
@@ -157,26 +147,6 @@ operator|.
 name|commit
 operator|.
 name|InternalCommitterConstants
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|s3a
-operator|.
-name|commit
-operator|.
-name|files
-operator|.
-name|SinglePendingCommit
 import|;
 end_import
 
@@ -312,13 +282,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|super
-operator|.
-name|setupJob
-argument_list|(
-name|context
-argument_list|)
-expr_stmt|;
 name|Path
 name|outputPath
 init|=
@@ -434,37 +397,46 @@ name|ignored
 parameter_list|)
 block|{
 comment|// there is no destination path, hence, no conflict.
+block|}
 comment|// make the parent directory, which also triggers a recursive directory
 comment|// creation operation
-name|fs
+name|super
 operator|.
-name|mkdirs
+name|setupJob
 argument_list|(
-name|outputPath
+name|context
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|/**    * Pre-commit actions for a job.    * Here: look at the conflict resolution mode and choose    * an action based on the current policy.    * @param context job context    * @param pending pending commits    * @throws IOException any failure    */
 annotation|@
 name|Override
-DECL|method|preCommitJob (JobContext context, List<SinglePendingCommit> pending)
-specifier|protected
+DECL|method|preCommitJob ( final JobContext context, final ActiveCommit pending)
+specifier|public
 name|void
 name|preCommitJob
 parameter_list|(
+specifier|final
 name|JobContext
 name|context
 parameter_list|,
-name|List
-argument_list|<
-name|SinglePendingCommit
-argument_list|>
+specifier|final
+name|ActiveCommit
 name|pending
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// see if the files can be loaded.
+name|super
+operator|.
+name|preCommitJob
+argument_list|(
+name|context
+argument_list|,
+name|pending
+argument_list|)
+expr_stmt|;
 name|Path
 name|outputPath
 init|=

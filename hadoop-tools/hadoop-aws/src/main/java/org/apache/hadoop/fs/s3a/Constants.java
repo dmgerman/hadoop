@@ -1904,6 +1904,16 @@ name|AWS_SERVICE_IDENTIFIER_STS
 init|=
 literal|"STS"
 decl_stmt|;
+comment|/**    * How long to wait for the thread pool to terminate when cleaning up.    * Value: {@value} seconds.    */
+DECL|field|THREAD_POOL_SHUTDOWN_DELAY_SECONDS
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|THREAD_POOL_SHUTDOWN_DELAY_SECONDS
+init|=
+literal|30
+decl_stmt|;
 block|}
 end_class
 

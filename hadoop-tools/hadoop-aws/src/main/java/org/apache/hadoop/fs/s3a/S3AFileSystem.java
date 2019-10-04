@@ -1991,6 +1991,22 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|HadoopExecutors
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -11923,6 +11939,44 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
+name|HadoopExecutors
+operator|.
+name|shutdown
+argument_list|(
+name|boundedThreadPool
+argument_list|,
+name|LOG
+argument_list|,
+name|THREAD_POOL_SHUTDOWN_DELAY_SECONDS
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
+argument_list|)
+expr_stmt|;
+name|boundedThreadPool
+operator|=
+literal|null
+expr_stmt|;
+name|HadoopExecutors
+operator|.
+name|shutdown
+argument_list|(
+name|unboundedThreadPool
+argument_list|,
+name|LOG
+argument_list|,
+name|THREAD_POOL_SHUTDOWN_DELAY_SECONDS
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
+argument_list|)
+expr_stmt|;
+name|unboundedThreadPool
+operator|=
+literal|null
+expr_stmt|;
 name|S3AUtils
 operator|.
 name|closeAll
@@ -15596,7 +15650,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Aborting multipart upload {} to {}"
 argument_list|,
@@ -15675,7 +15729,7 @@ argument_list|)
 decl_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Aborting multipart upload {} to {} initiated by {} on {}"
 argument_list|,

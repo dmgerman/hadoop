@@ -452,6 +452,16 @@ name|FS_S3A_COMMITTER_STAGING_ABORT_PENDING_UPLOADS
 init|=
 literal|"fs.s3a.committer.staging.abort.pending.uploads"
 decl_stmt|;
+comment|/**    * The limit to the number of committed objects tracked during    * job commits and saved to the _SUCCESS file.    */
+DECL|field|SUCCESS_MARKER_FILE_LIMIT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|SUCCESS_MARKER_FILE_LIMIT
+init|=
+literal|100
+decl_stmt|;
 block|}
 end_class
 

@@ -254,7 +254,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Using Commmitter {} for {}"
+literal|"Using Committer {} for {}"
 argument_list|,
 name|outputCommitter
 argument_list|,

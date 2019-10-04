@@ -96,6 +96,42 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|stream
+operator|.
+name|Collectors
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|AfterClass
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|junit
@@ -1078,6 +1114,66 @@ block|}
 name|super
 operator|.
 name|teardown
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * This only looks for leakage of committer thread pools,    * and not any other leaked threads, such as those from S3A FS instances.    */
+annotation|@
+name|AfterClass
+DECL|method|checkForThreadLeakage ()
+specifier|public
+specifier|static
+name|void
+name|checkForThreadLeakage
+parameter_list|()
+block|{
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|committerThreads
+init|=
+name|getCurrentThreadNames
+argument_list|()
+operator|.
+name|stream
+argument_list|()
+operator|.
+name|filter
+argument_list|(
+name|n
+lambda|->
+name|n
+operator|.
+name|startsWith
+argument_list|(
+name|AbstractS3ACommitter
+operator|.
+name|THREAD_PREFIX
+argument_list|)
+argument_list|)
+operator|.
+name|collect
+argument_list|(
+name|Collectors
+operator|.
+name|toList
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|Assertions
+operator|.
+name|assertThat
+argument_list|(
+name|committerThreads
+argument_list|)
+operator|.
+name|describedAs
+argument_list|(
+literal|"Outstanding committer threads"
+argument_list|)
+operator|.
+name|isEmpty
 argument_list|()
 expr_stmt|;
 block|}
@@ -2211,6 +2307,11 @@ argument_list|(
 literal|"commit complete\n"
 argument_list|)
 expr_stmt|;
+name|verifyCommitterHasNoThreads
+argument_list|(
+name|committer
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Execute work as part of a test, after creating the job.    * After the execution, {@link #abortJobQuietly(JobData)} is    * called for abort/cleanup.    * @param name name of work (for logging)    * @param action action to execute    * @throws Exception failure    */
@@ -2375,10 +2476,10 @@ argument_list|)
 expr_stmt|;
 comment|// Commit the task. This will promote data and metadata to where
 comment|// job commits will pick it up on commit or abort.
-name|committer
-operator|.
 name|commitTask
 argument_list|(
+name|committer
+argument_list|,
 name|tContext
 argument_list|)
 expr_stmt|;
@@ -2528,6 +2629,11 @@ comment|// now, state of system may still have pending data
 name|assertNoMultipartUploadsPending
 argument_list|(
 name|outDir
+argument_list|)
+expr_stmt|;
+name|verifyCommitterHasNoThreads
+argument_list|(
+name|committer2
 argument_list|)
 expr_stmt|;
 block|}
@@ -3116,10 +3222,10 @@ name|tContext
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|committer
-operator|.
 name|commitTask
 argument_list|(
+name|committer
+argument_list|,
 name|tContext
 argument_list|)
 expr_stmt|;
@@ -3194,10 +3300,10 @@ argument_list|(
 name|outDir
 argument_list|)
 expr_stmt|;
-name|committer
-operator|.
 name|commitJob
 argument_list|(
+name|committer
+argument_list|,
 name|jContext
 argument_list|)
 expr_stmt|;
@@ -3375,10 +3481,10 @@ argument_list|,
 name|committer
 argument_list|)
 expr_stmt|;
-name|committer
-operator|.
 name|commitJob
 argument_list|(
+name|committer
+argument_list|,
 name|jContext
 argument_list|)
 expr_stmt|;
@@ -4260,6 +4366,11 @@ argument_list|(
 name|jobData
 argument_list|)
 expr_stmt|;
+name|verifyCommitterHasNoThreads
+argument_list|(
+name|committer
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Extension point: assert that the job was all cleaned up after an abort.    * Base assertions    *<ul>    *<li>Output dir is absent or, if present, empty</li>    *<li>No pending MPUs to/under the output dir</li>    *</ul>    * @param jobData job data    * @throws Exception failure    */
 DECL|method|assertJobAbortCleanedUp (JobData jobData)
@@ -4472,6 +4583,11 @@ expr_stmt|;
 name|assertNoMultipartUploadsPending
 argument_list|(
 name|outDir
+argument_list|)
+expr_stmt|;
+name|verifyCommitterHasNoThreads
+argument_list|(
+name|committer
 argument_list|)
 expr_stmt|;
 block|}
@@ -5253,17 +5369,17 @@ name|tContext
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|committer
-operator|.
 name|commitTask
 argument_list|(
+name|committer
+argument_list|,
 name|tContext
 argument_list|)
 expr_stmt|;
-name|committer
-operator|.
 name|commitJob
 argument_list|(
+name|committer
+argument_list|,
 name|jContext
 argument_list|)
 expr_stmt|;
@@ -5402,6 +5518,11 @@ operator|.
 name|abortTask
 argument_list|(
 name|tContext
+argument_list|)
+expr_stmt|;
+name|verifyCommitterHasNoThreads
+argument_list|(
+name|committer2
 argument_list|)
 expr_stmt|;
 name|assertNoMultipartUploadsPending
@@ -5656,17 +5777,17 @@ argument_list|)
 expr_stmt|;
 comment|// at this point, job1 and job2 both have uncommitted tasks
 comment|// commit tasks in order task 2, task 1.
-name|committer2
-operator|.
 name|commitTask
 argument_list|(
+name|committer2
+argument_list|,
 name|tContext2
 argument_list|)
 expr_stmt|;
-name|committer1
-operator|.
 name|commitTask
 argument_list|(
+name|committer1
+argument_list|,
 name|tContext1
 argument_list|)
 expr_stmt|;
@@ -5681,10 +5802,10 @@ name|job2Dest
 argument_list|)
 expr_stmt|;
 comment|// commit jobs in order job 1, job 2
-name|committer1
-operator|.
 name|commitJob
 argument_list|(
+name|committer1
+argument_list|,
 name|jContext1
 argument_list|)
 expr_stmt|;
@@ -5703,10 +5824,10 @@ argument_list|(
 name|job2Dest
 argument_list|)
 expr_stmt|;
-name|committer2
-operator|.
 name|commitJob
 argument_list|(
+name|committer2
+argument_list|,
 name|jContext2
 argument_list|)
 expr_stmt|;
@@ -5884,6 +6005,87 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{   }
+comment|/**    * Commit a task then validate the state of the committer afterwards.    * @param committer committer    * @param tContext task context    * @throws IOException IO failure    */
+DECL|method|commitTask (final AbstractS3ACommitter committer, final TaskAttemptContext tContext)
+specifier|protected
+name|void
+name|commitTask
+parameter_list|(
+specifier|final
+name|AbstractS3ACommitter
+name|committer
+parameter_list|,
+specifier|final
+name|TaskAttemptContext
+name|tContext
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|committer
+operator|.
+name|commitTask
+argument_list|(
+name|tContext
+argument_list|)
+expr_stmt|;
+name|verifyCommitterHasNoThreads
+argument_list|(
+name|committer
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Commit a job then validate the state of the committer afterwards.    * @param committer committer    * @param jContext job context    * @throws IOException IO failure    */
+DECL|method|commitJob (final AbstractS3ACommitter committer, final JobContext jContext)
+specifier|protected
+name|void
+name|commitJob
+parameter_list|(
+specifier|final
+name|AbstractS3ACommitter
+name|committer
+parameter_list|,
+specifier|final
+name|JobContext
+name|jContext
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|committer
+operator|.
+name|commitJob
+argument_list|(
+name|jContext
+argument_list|)
+expr_stmt|;
+name|verifyCommitterHasNoThreads
+argument_list|(
+name|committer
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Verify that the committer does not have a thread pool.    * @param committer committer to validate.    */
+DECL|method|verifyCommitterHasNoThreads (AbstractS3ACommitter committer)
+specifier|protected
+name|void
+name|verifyCommitterHasNoThreads
+parameter_list|(
+name|AbstractS3ACommitter
+name|committer
+parameter_list|)
+block|{
+name|assertFalse
+argument_list|(
+literal|"Committer has an active thread pool"
+argument_list|,
+name|committer
+operator|.
+name|hasThreadPool
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

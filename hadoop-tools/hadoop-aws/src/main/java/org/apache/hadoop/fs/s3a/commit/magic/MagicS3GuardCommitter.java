@@ -597,10 +597,7 @@ block|}
 comment|/**    * Get the list of pending uploads for this job attempt, by listing    * all .pendingset files in the job attempt directory.    * @param context job context    * @return a list of pending commits.    * @throws IOException Any IO failure    */
 DECL|method|listPendingUploadsToCommit ( JobContext context)
 specifier|protected
-name|List
-argument_list|<
-name|SinglePendingCommit
-argument_list|>
+name|ActiveCommit
 name|listPendingUploadsToCommit
 parameter_list|(
 name|JobContext
@@ -616,12 +613,10 @@ name|getDestFS
 argument_list|()
 decl_stmt|;
 return|return
-name|loadPendingsetFiles
+name|ActiveCommit
+operator|.
+name|fromStatusList
 argument_list|(
-name|context
-argument_list|,
-literal|false
-argument_list|,
 name|fs
 argument_list|,
 name|listAndFilter
@@ -907,6 +902,9 @@ argument_list|(
 name|context
 argument_list|)
 expr_stmt|;
+name|destroyThreadPool
+argument_list|()
+expr_stmt|;
 block|}
 name|getCommitOperations
 argument_list|()
@@ -917,7 +915,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Inner routine for committing a task.    * The list of pending commits is loaded and then saved to the job attempt    * dir.    * Failure to load any file or save the final file triggers an abort of    * all known pending commits.    * @param context context    * @return the summary file    * @throws IOException exception    */
+comment|/**    * Inner routine for committing a task.    * The list of pending commits is loaded and then saved to the job attempt    * dir in a single pendingset file.    * Failure to load any file or save the final file triggers an abort of    * all known pending commits.    * @param context context    * @return the summary file    * @throws IOException exception    */
 DECL|method|innerCommitTask ( TaskAttemptContext context)
 specifier|private
 name|PendingSet
@@ -1258,6 +1256,9 @@ name|attemptPath
 argument_list|,
 literal|true
 argument_list|)
+expr_stmt|;
+name|destroyThreadPool
+argument_list|()
 expr_stmt|;
 block|}
 block|}
