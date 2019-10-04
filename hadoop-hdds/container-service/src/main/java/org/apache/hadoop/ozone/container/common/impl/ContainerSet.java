@@ -202,6 +202,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Iterator
 import|;
 end_import
@@ -282,18 +292,6 @@ name|ConcurrentSkipListSet
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|stream
-operator|.
-name|Collectors
-import|;
-end_import
-
 begin_comment
 comment|/**  * Class that manages Containers created on the datanode.  */
 end_comment
@@ -328,6 +326,9 @@ argument_list|<
 name|Long
 argument_list|,
 name|Container
+argument_list|<
+name|?
+argument_list|>
 argument_list|>
 name|containerMap
 init|=
@@ -350,13 +351,16 @@ name|ConcurrentSkipListSet
 argument_list|<>
 argument_list|()
 decl_stmt|;
-comment|/**    * Add Container to container map.    * @param container    * @return If container is added to containerMap returns true, otherwise    * false    */
-DECL|method|addContainer (Container container)
+comment|/**    * Add Container to container map.    * @param container container to be added    * @return If container is added to containerMap returns true, otherwise    * false    */
+DECL|method|addContainer (Container<?> container)
 specifier|public
 name|boolean
 name|addContainer
 parameter_list|(
 name|Container
+argument_list|<
+name|?
+argument_list|>
 name|container
 parameter_list|)
 throws|throws
@@ -448,10 +452,13 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Returns the Container with specified containerId.    * @param containerId    * @return Container    */
+comment|/**    * Returns the Container with specified containerId.    * @param containerId ID of the container to get    * @return Container    */
 DECL|method|getContainer (long containerId)
 specifier|public
 name|Container
+argument_list|<
+name|?
+argument_list|>
 name|getContainer
 parameter_list|(
 name|long
@@ -478,7 +485,7 @@ name|containerId
 argument_list|)
 return|;
 block|}
-comment|/**    * Removes the Container matching with specified containerId.    * @param containerId    * @return If container is removed from containerMap returns true, otherwise    * false    */
+comment|/**    * Removes the Container matching with specified containerId.    * @param containerId ID of the container to remove    * @return If container is removed from containerMap returns true, otherwise    * false    */
 DECL|method|removeContainer (long containerId)
 specifier|public
 name|boolean
@@ -500,6 +507,9 @@ literal|"Container Id cannot be negative."
 argument_list|)
 expr_stmt|;
 name|Container
+argument_list|<
+name|?
+argument_list|>
 name|removed
 init|=
 name|containerMap
@@ -563,12 +573,15 @@ name|size
 argument_list|()
 return|;
 block|}
-comment|/**    * Return an container Iterator over {@link ContainerSet#containerMap}.    * @return {@literal Iterator<Container>}    */
+comment|/**    * Return an container Iterator over {@link ContainerSet#containerMap}.    * @return {@literal Iterator<Container<?>>}    */
 DECL|method|getContainerIterator ()
 specifier|public
 name|Iterator
 argument_list|<
 name|Container
+argument_list|<
+name|?
+argument_list|>
 argument_list|>
 name|getContainerIterator
 parameter_list|()
@@ -583,12 +596,15 @@ name|iterator
 argument_list|()
 return|;
 block|}
-comment|/**    * Return an iterator of containers associated with the specified volume.    *    * @param  volume the HDDS volume which should be used to filter containers    * @return {@literal Iterator<Container>}    */
+comment|/**    * Return an iterator of containers associated with the specified volume.    *    * @param  volume the HDDS volume which should be used to filter containers    * @return {@literal Iterator<Container<?>>}    */
 DECL|method|getContainerIterator (HddsVolume volume)
 specifier|public
 name|Iterator
 argument_list|<
 name|Container
+argument_list|<
+name|?
+argument_list|>
 argument_list|>
 name|getContainerIterator
 parameter_list|(
@@ -667,27 +683,14 @@ argument_list|<
 name|Long
 argument_list|,
 name|Container
+argument_list|<
+name|?
+argument_list|>
 argument_list|>
 argument_list|>
 name|getContainerMapIterator
 parameter_list|()
 block|{
-name|containerMap
-operator|.
-name|keySet
-argument_list|()
-operator|.
-name|stream
-argument_list|()
-operator|.
-name|collect
-argument_list|(
-name|Collectors
-operator|.
-name|toSet
-argument_list|()
-argument_list|)
-expr_stmt|;
 return|return
 name|containerMap
 operator|.
@@ -708,6 +711,9 @@ argument_list|<
 name|Long
 argument_list|,
 name|Container
+argument_list|<
+name|?
+argument_list|>
 argument_list|>
 name|getContainerMapCopy
 parameter_list|()
@@ -728,6 +734,9 @@ argument_list|<
 name|Long
 argument_list|,
 name|Container
+argument_list|<
+name|?
+argument_list|>
 argument_list|>
 name|getContainerMap
 parameter_list|()
@@ -741,7 +750,7 @@ name|containerMap
 argument_list|)
 return|;
 block|}
-comment|/**    * A simple interface for container Iterations.    *<p>    * This call make no guarantees about consistency of the data between    * different list calls. It just returns the best known data at that point of    * time. It is possible that using this iteration you can miss certain    * container from the listing.    *    * @param startContainerId - Return containers with Id&gt;= startContainerId.    * @param count - how many to return    * @param data - Actual containerData    * @throws StorageContainerException    */
+comment|/**    * A simple interface for container Iterations.    *<p>    * This call make no guarantees about consistency of the data between    * different list calls. It just returns the best known data at that point of    * time. It is possible that using this iteration you can miss certain    * container from the listing.    *    * @param startContainerId - Return containers with Id&gt;= startContainerId.    * @param count - how many to return    * @param data - Actual containerData    */
 DECL|method|listContainer (long startContainerId, long count, List<ContainerData> data)
 specifier|public
 name|void
@@ -813,6 +822,9 @@ argument_list|<
 name|Long
 argument_list|,
 name|Container
+argument_list|<
+name|?
+argument_list|>
 argument_list|>
 name|map
 decl_stmt|;
@@ -860,6 +872,9 @@ decl_stmt|;
 for|for
 control|(
 name|Container
+argument_list|<
+name|?
+argument_list|>
 name|entry
 range|:
 name|map
@@ -895,7 +910,7 @@ return|return;
 block|}
 block|}
 block|}
-comment|/**    * Get container report.    *    * @return The container report.    * @throws IOException    */
+comment|/**    * Get container report.    *    * @return The container report.    */
 DECL|method|getContainerReport ()
 specifier|public
 name|ContainerReportsProto
@@ -917,22 +932,19 @@ comment|// after we iterate a point.
 name|List
 argument_list|<
 name|Container
+argument_list|<
+name|?
+argument_list|>
 argument_list|>
 name|containers
 init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|(
 name|containerMap
 operator|.
 name|values
-argument_list|()
-operator|.
-name|stream
-argument_list|()
-operator|.
-name|collect
-argument_list|(
-name|Collectors
-operator|.
-name|toList
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -949,6 +961,9 @@ decl_stmt|;
 for|for
 control|(
 name|Container
+argument_list|<
+name|?
+argument_list|>
 name|container
 range|:
 name|containers
@@ -1054,6 +1069,9 @@ block|}
 else|else
 block|{
 name|Container
+argument_list|<
+name|?
+argument_list|>
 name|container
 init|=
 name|containerMap

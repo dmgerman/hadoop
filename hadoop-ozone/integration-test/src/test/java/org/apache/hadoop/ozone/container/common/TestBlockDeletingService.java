@@ -1519,12 +1519,9 @@ name|GenericTestUtils
 operator|.
 name|waitFor
 argument_list|(
-parameter_list|()
-lambda|->
 name|svc
-operator|.
+operator|::
 name|isStarted
-argument_list|()
 argument_list|,
 literal|100
 argument_list|,
@@ -1594,6 +1591,9 @@ argument_list|<
 name|Long
 argument_list|,
 name|Container
+argument_list|<
+name|?
+argument_list|>
 argument_list|>
 name|containerMap
 init|=
@@ -1877,12 +1877,9 @@ name|GenericTestUtils
 operator|.
 name|waitFor
 argument_list|(
-parameter_list|()
-lambda|->
 name|service
-operator|.
+operator|::
 name|isStarted
-argument_list|()
 argument_list|,
 literal|100
 argument_list|,
@@ -2312,9 +2309,8 @@ comment|// The block deleting successfully and shouldn't catch timed
 comment|// out warning log.
 name|Assert
 operator|.
-name|assertTrue
+name|assertFalse
 argument_list|(
-operator|!
 name|newLog
 operator|.
 name|getOutput
@@ -2390,9 +2386,7 @@ argument_list|(
 literal|null
 argument_list|)
 expr_stmt|;
-name|BlockDeletingServiceTestImpl
-name|service
-init|=
+return|return
 operator|new
 name|BlockDeletingServiceTestImpl
 argument_list|(
@@ -2402,9 +2396,6 @@ name|timeout
 argument_list|,
 name|conf
 argument_list|)
-decl_stmt|;
-return|return
-name|service
 return|;
 block|}
 annotation|@
@@ -2516,12 +2507,9 @@ name|GenericTestUtils
 operator|.
 name|waitFor
 argument_list|(
-parameter_list|()
-lambda|->
 name|service
-operator|.
+operator|::
 name|isStarted
-argument_list|()
 argument_list|,
 literal|100
 argument_list|,
@@ -2599,7 +2587,7 @@ block|}
 catch|catch
 parameter_list|(
 name|Exception
-name|e
+name|ignored
 parameter_list|)
 block|{}
 return|return
@@ -2798,12 +2786,9 @@ name|GenericTestUtils
 operator|.
 name|waitFor
 argument_list|(
-parameter_list|()
-lambda|->
 name|service
-operator|.
+operator|::
 name|isStarted
-argument_list|()
 argument_list|,
 literal|100
 argument_list|,
@@ -2875,8 +2860,11 @@ block|{
 name|Iterator
 argument_list|<
 name|Container
+argument_list|<
+name|?
 argument_list|>
-name|containerIterator
+argument_list|>
+name|iterator
 init|=
 name|containerSet
 operator|.
@@ -2890,7 +2878,7 @@ literal|0
 decl_stmt|;
 while|while
 condition|(
-name|containerIterator
+name|iterator
 operator|.
 name|hasNext
 argument_list|()
@@ -2899,7 +2887,7 @@ block|{
 name|Container
 name|container
 init|=
-name|containerIterator
+name|iterator
 operator|.
 name|next
 argument_list|()

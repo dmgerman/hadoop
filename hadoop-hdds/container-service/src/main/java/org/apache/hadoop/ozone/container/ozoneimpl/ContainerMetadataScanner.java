@@ -42,20 +42,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|ozone
 operator|.
 name|container
@@ -174,18 +160,15 @@ name|stopping
 init|=
 literal|false
 decl_stmt|;
-DECL|method|ContainerMetadataScanner (Configuration conf, ContainerController controller, long metadataScanInterval)
+DECL|method|ContainerMetadataScanner (ContainerScrubberConfiguration conf, ContainerController controller)
 specifier|public
 name|ContainerMetadataScanner
 parameter_list|(
-name|Configuration
+name|ContainerScrubberConfiguration
 name|conf
 parameter_list|,
 name|ContainerController
 name|controller
-parameter_list|,
-name|long
-name|metadataScanInterval
 parameter_list|)
 block|{
 name|this
@@ -198,7 +181,10 @@ name|this
 operator|.
 name|metadataScanInterval
 operator|=
-name|metadataScanInterval
+name|conf
+operator|.
+name|getMetadataScanInterval
+argument_list|()
 expr_stmt|;
 name|this
 operator|.
@@ -207,9 +193,7 @@ operator|=
 name|ContainerMetadataScrubberMetrics
 operator|.
 name|create
-argument_list|(
-name|conf
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|setName
 argument_list|(
@@ -230,7 +214,7 @@ name|void
 name|run
 parameter_list|()
 block|{
-comment|/**      * the outer daemon loop exits on down()      */
+comment|/*      * the outer daemon loop exits on shutdown()      */
 name|LOG
 operator|.
 name|info
@@ -244,14 +228,6 @@ operator|!
 name|stopping
 condition|)
 block|{
-name|long
-name|start
-init|=
-name|System
-operator|.
-name|nanoTime
-argument_list|()
-decl_stmt|;
 name|runIteration
 argument_list|()
 expr_stmt|;
@@ -277,7 +253,6 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|runIteration ()
-specifier|public
 name|void
 name|runIteration
 parameter_list|()
@@ -293,6 +268,9 @@ decl_stmt|;
 name|Iterator
 argument_list|<
 name|Container
+argument_list|<
+name|?
+argument_list|>
 argument_list|>
 name|containerIt
 init|=

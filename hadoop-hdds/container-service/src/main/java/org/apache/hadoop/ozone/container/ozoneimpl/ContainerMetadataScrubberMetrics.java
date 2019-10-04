@@ -42,20 +42,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|metrics2
 operator|.
 name|MetricsSystem
@@ -353,15 +339,12 @@ operator|=
 name|ms
 expr_stmt|;
 block|}
-DECL|method|create (Configuration conf)
+DECL|method|create ()
 specifier|public
 specifier|static
 name|ContainerMetadataScrubberMetrics
 name|create
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
+parameter_list|()
 block|{
 name|MetricsSystem
 name|ms
@@ -374,7 +357,7 @@ decl_stmt|;
 name|String
 name|name
 init|=
-literal|"ContainerDataScrubberMetrics"
+literal|"ContainerMetadataScrubberMetrics"
 decl_stmt|;
 return|return
 name|ms

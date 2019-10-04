@@ -42,20 +42,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|metrics2
 operator|.
 name|MetricsSystem
@@ -456,16 +442,12 @@ operator|=
 name|ms
 expr_stmt|;
 block|}
-DECL|method|create (final Configuration conf, final String volumeName)
+DECL|method|create (final String volumeName)
 specifier|public
 specifier|static
 name|ContainerDataScrubberMetrics
 name|create
 parameter_list|(
-specifier|final
-name|Configuration
-name|conf
-parameter_list|,
 specifier|final
 name|String
 name|volumeName

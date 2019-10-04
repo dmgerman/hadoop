@@ -604,12 +604,14 @@ name|containerCount
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Using containerIterator.
 name|Iterator
 argument_list|<
 name|Container
+argument_list|<
+name|?
 argument_list|>
-name|containerIterator
+argument_list|>
+name|iterator
 init|=
 name|containerSet
 operator|.
@@ -623,7 +625,7 @@ literal|0
 decl_stmt|;
 while|while
 condition|(
-name|containerIterator
+name|iterator
 operator|.
 name|hasNext
 argument_list|()
@@ -632,7 +634,7 @@ block|{
 name|Container
 name|kv
 init|=
-name|containerIterator
+name|iterator
 operator|.
 name|next
 argument_list|()
@@ -719,6 +721,9 @@ argument_list|<
 name|Long
 argument_list|,
 name|Container
+argument_list|<
+name|?
+argument_list|>
 argument_list|>
 argument_list|>
 name|containerMapIterator
@@ -1011,6 +1016,9 @@ block|}
 name|Iterator
 argument_list|<
 name|Container
+argument_list|<
+name|?
+argument_list|>
 argument_list|>
 name|iter1
 init|=
@@ -1042,8 +1050,10 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
+literal|0
+argument_list|,
 operator|(
 name|c
 operator|.
@@ -1055,8 +1065,6 @@ argument_list|()
 operator|%
 literal|2
 operator|)
-operator|==
-literal|0
 argument_list|)
 expr_stmt|;
 name|count1
@@ -1073,6 +1081,9 @@ expr_stmt|;
 name|Iterator
 argument_list|<
 name|Container
+argument_list|<
+name|?
+argument_list|>
 argument_list|>
 name|iter2
 init|=
@@ -1104,8 +1115,10 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
+literal|1
+argument_list|,
 operator|(
 name|c
 operator|.
@@ -1117,8 +1130,6 @@ argument_list|()
 operator|%
 literal|2
 operator|)
-operator|==
-literal|1
 argument_list|)
 expr_stmt|;
 name|count2

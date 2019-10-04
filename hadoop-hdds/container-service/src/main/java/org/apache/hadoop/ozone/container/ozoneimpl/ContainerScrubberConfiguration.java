@@ -111,6 +111,11 @@ specifier|private
 name|long
 name|metadataScanInterval
 decl_stmt|;
+DECL|field|dataScanInterval
+specifier|private
+name|long
+name|dataScanInterval
+decl_stmt|;
 DECL|field|bandwidthPerVolume
 specifier|private
 name|long
@@ -226,6 +231,65 @@ parameter_list|()
 block|{
 return|return
 name|metadataScanInterval
+return|;
+block|}
+annotation|@
+name|Config
+argument_list|(
+name|key
+operator|=
+literal|"data.scan.interval"
+argument_list|,
+name|type
+operator|=
+name|ConfigType
+operator|.
+name|TIME
+argument_list|,
+name|defaultValue
+operator|=
+literal|"1m"
+argument_list|,
+name|tags
+operator|=
+block|{
+name|ConfigTag
+operator|.
+name|STORAGE
+block|}
+argument_list|,
+name|description
+operator|=
+literal|"Minimum time interval between two iterations of container"
+operator|+
+literal|" data scanning.  If an iteration takes less time than this, the"
+operator|+
+literal|" scanner will wait before starting the next iteration."
+argument_list|)
+DECL|method|setDataScanInterval (long dataScanInterval)
+specifier|public
+name|void
+name|setDataScanInterval
+parameter_list|(
+name|long
+name|dataScanInterval
+parameter_list|)
+block|{
+name|this
+operator|.
+name|dataScanInterval
+operator|=
+name|dataScanInterval
+expr_stmt|;
+block|}
+DECL|method|getDataScanInterval ()
+specifier|public
+name|long
+name|getDataScanInterval
+parameter_list|()
+block|{
+return|return
+name|dataScanInterval
 return|;
 block|}
 annotation|@
