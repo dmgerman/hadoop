@@ -1989,6 +1989,8 @@ operator|!=
 literal|null
 condition|)
 block|{
+try|try
+block|{
 name|Set
 argument_list|<
 name|PosixFilePermission
@@ -2017,6 +2019,24 @@ argument_list|,
 name|permissions
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|UnsupportedOperationException
+name|uoe
+parameter_list|)
+block|{
+comment|// Default to FileUtil for non posix file systems
+name|FileUtil
+operator|.
+name|setPermission
+argument_list|(
+name|curDir
+argument_list|,
+name|permission
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**      * Directory {@code current} contains latest files defining      * the file system meta-data.      *       * @return the directory path      */
