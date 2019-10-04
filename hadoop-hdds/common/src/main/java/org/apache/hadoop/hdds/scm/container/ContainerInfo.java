@@ -381,7 +381,7 @@ name|WRITER
 operator|=
 name|mapper
 operator|.
-name|writer
+name|writerWithDefaultPrettyPrinter
 argument_list|()
 expr_stmt|;
 block|}

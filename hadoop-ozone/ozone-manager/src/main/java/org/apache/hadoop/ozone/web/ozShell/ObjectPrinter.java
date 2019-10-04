@@ -81,12 +81,7 @@ name|JsonUtils
 operator|.
 name|toJsonStringWithDefaultPrettyPrinter
 argument_list|(
-name|JsonUtils
-operator|.
-name|toJsonString
-argument_list|(
 name|o
-argument_list|)
 argument_list|)
 return|;
 block|}

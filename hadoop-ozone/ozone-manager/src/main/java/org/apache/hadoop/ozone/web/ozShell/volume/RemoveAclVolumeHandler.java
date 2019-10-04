@@ -144,24 +144,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|web
-operator|.
-name|utils
-operator|.
-name|JsonUtils
-import|;
-end_import
-
-begin_import
-import|import
 name|picocli
 operator|.
 name|CommandLine
@@ -350,7 +332,7 @@ name|requireNonNull
 argument_list|(
 name|acl
 argument_list|,
-literal|"New acl to be added not specified."
+literal|"ACL to be removed not specified."
 argument_list|)
 expr_stmt|;
 name|OzoneAddress
@@ -477,19 +459,9 @@ name|printf
 argument_list|(
 literal|"%s%n"
 argument_list|,
-name|JsonUtils
-operator|.
-name|toJsonStringWithDefaultPrettyPrinter
-argument_list|(
-name|JsonUtils
-operator|.
-name|toJsonString
-argument_list|(
 literal|"Acl removed successfully: "
 operator|+
 name|result
-argument_list|)
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|client

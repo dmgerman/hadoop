@@ -158,34 +158,24 @@ parameter_list|()
 block|{
 comment|// Never constructed
 block|}
-DECL|method|toJsonStringWithDefaultPrettyPrinter (String jsonString)
+DECL|method|toJsonStringWithDefaultPrettyPrinter (Object obj)
 specifier|public
 specifier|static
 name|String
 name|toJsonStringWithDefaultPrettyPrinter
 parameter_list|(
-name|String
-name|jsonString
+name|Object
+name|obj
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|Object
-name|json
-init|=
-name|READER
-operator|.
-name|readValue
-argument_list|(
-name|jsonString
-argument_list|)
-decl_stmt|;
 return|return
 name|WRITTER
 operator|.
 name|writeValueAsString
 argument_list|(
-name|json
+name|obj
 argument_list|)
 return|;
 block|}

@@ -320,15 +320,10 @@ name|JsonUtils
 operator|.
 name|toJsonStringWithDefaultPrettyPrinter
 argument_list|(
-name|JsonUtils
-operator|.
-name|toJsonString
-argument_list|(
 name|token
 operator|.
 name|toString
 argument_list|()
-argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
