@@ -748,23 +748,6 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getConfigVersion ()
-specifier|public
-name|long
-name|getConfigVersion
-parameter_list|()
-throws|throws
-name|Exception
-block|{
-return|return
-name|confStore
-operator|.
-name|getConfigVersion
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
 DECL|method|getAclMutationPolicy ()
 specifier|public
 name|ConfigurationMutationACLPolicy

@@ -131,16 +131,6 @@ name|FORMAT_SCHEDULER_CONF
 init|=
 literal|"/scheduler-conf/format"
 decl_stmt|;
-comment|/** Path for {@code RMWebServices#getSchedulerConfigurationVersion}. */
-DECL|field|SCHEDULER_CONF_VERSION
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|SCHEDULER_CONF_VERSION
-init|=
-literal|"/scheduler-conf/version"
-decl_stmt|;
 comment|/** Path for {@code RMWebServiceProtocol#dumpSchedulerLogs}. */
 DECL|field|SCHEDULER_LOGS
 specifier|public
