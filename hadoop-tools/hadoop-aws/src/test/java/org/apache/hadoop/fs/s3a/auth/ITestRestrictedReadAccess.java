@@ -48,7 +48,7 @@ name|nio
 operator|.
 name|charset
 operator|.
-name|Charset
+name|StandardCharsets
 import|;
 end_import
 
@@ -90,6 +90,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Optional
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|concurrent
 operator|.
 name|Callable
@@ -107,6 +117,20 @@ operator|.
 name|api
 operator|.
 name|Assertions
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assumptions
 import|;
 end_import
 
@@ -292,22 +316,6 @@ name|fs
 operator|.
 name|s3a
 operator|.
-name|Constants
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|s3a
-operator|.
 name|S3AFileSystem
 import|;
 end_import
@@ -374,43 +382,7 @@ name|s3a
 operator|.
 name|s3guard
 operator|.
-name|LocalMetadataStore
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|s3a
-operator|.
-name|s3guard
-operator|.
-name|MetadataStore
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|s3a
-operator|.
-name|s3guard
-operator|.
-name|NullMetadataStore
+name|DynamoDBMetadataStore
 import|;
 end_import
 
@@ -568,6 +540,24 @@ name|s3a
 operator|.
 name|S3ATestUtils
 operator|.
+name|assumeS3GuardState
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3ATestUtils
+operator|.
 name|disableFilesystemCaching
 import|;
 end_import
@@ -604,7 +594,43 @@ name|s3a
 operator|.
 name|S3ATestUtils
 operator|.
+name|isS3GuardTestPropertySet
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3ATestUtils
+operator|.
 name|lsR
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3ATestUtils
+operator|.
+name|removeBaseAndBucketOverrides
 import|;
 end_import
 
@@ -835,7 +861,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This test creates a client with no read access to the underlying  * filesystem and then tries to perform various read operations on it.  * S3Guard in non-auth mode always goes to the FS, so we parameterize the  * test for S3Guard + Auth to see how failures move around.  *<ol>  *<li>Tests only run if an assumed role is provided.</li>  *<li>And the s3guard tests use the local metastore if  *   there was not one already.</li>  *</ol>  * The tests are all bundled into one big test case.  * From a purist unit test perspective, this is utterly wrong as it goes  * against the  *<i>"Each test case tests exactly one thing"</i>  * philosophy of JUnit.  *<p>  * However is significantly reduces setup costs on the parameterized test runs,  * as it means that the filesystems and directories only need to be  * created and destroyed once per parameterized suite, rather than  * once per individual test.  *<p>  * All the test probes have informative messages so when a test failure  * does occur, its cause should be discoverable. It main weaknesses are  * therefore:  *<ol>  *<li>A failure of an assertion blocks all subsequent assertions from  *   being checked.</li>  *<li>Maintenance is potentially harder.</li>  *</ol>  * To simplify maintenance, the operations tested are broken up into  * their own methods, with fields used to share the restricted role and  * created paths.  */
+comment|/**  * This test creates a client with no read access to the underlying  * filesystem and then tries to perform various read operations on it.  * S3Guard in non-auth mode always goes to the FS, so we parameterize the  * test for S3Guard + Auth to see how failures move around.  *<ol>  *<li>Tests only run if an assumed role is provided.</li>  *<li>And the S3Guard tests require DynamoDB.</li>  *</ol>  * The tests are all bundled into one big test case.  * From a purist unit test perspective, this is utterly wrong as it goes  * against the  *<i>"Each test case tests exactly one thing"</i>  * philosophy of JUnit.  *<p>  * However is significantly reduces setup costs on the parameterized test runs,  * as it means that the filesystems and directories only need to be  * created and destroyed once per parameterized suite, rather than  * once per individual test.  *<p>  * All the test probes have informative messages so when a test failure  * does occur, its cause should be discoverable. It main weaknesses are  * therefore:  *<ol>  *<li>A failure of an assertion blocks all subsequent assertions from  *   being checked.</li>  *<li>Maintenance is potentially harder.</li>  *</ol>  * To simplify maintenance, the operations tested are broken up into  * their own methods, with fields used to share the restricted role and  * created paths.  *  */
 end_comment
 
 begin_class
@@ -982,13 +1008,16 @@ literal|"hello"
 operator|.
 name|getBytes
 argument_list|(
-name|Charset
+name|StandardCharsets
 operator|.
-name|forName
-argument_list|(
-literal|"UTF-8"
+name|UTF_8
 argument_list|)
-argument_list|)
+decl_stmt|;
+DECL|field|guardedInAuthMode
+specifier|private
+specifier|final
+name|boolean
+name|guardedInAuthMode
 decl_stmt|;
 comment|/**    * Wildcard scan to find *.txt in the no-read directory.    * When a scan/glob is done with S3Guard in auth mode, the scan will    * succeed but the file open will fail for any non-empty file.    * In non-auth mode, the read restrictions will fail the actual scan.    */
 DECL|field|noReadWildcard
@@ -1164,6 +1193,14 @@ name|authMode
 operator|=
 name|authMode
 expr_stmt|;
+name|this
+operator|.
+name|guardedInAuthMode
+operator|=
+name|s3guard
+operator|&&
+name|authMode
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -1189,6 +1226,26 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
+comment|// is s3guard enabled?
+name|boolean
+name|guardedTestRun
+init|=
+name|isS3GuardTestPropertySet
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+comment|// in a guarded test run, except for the special case of raw,
+comment|// all DDB settings are left alone.
+name|removeBaseAndBucketOverrides
+argument_list|(
+name|bucketName
+argument_list|,
+name|conf
+argument_list|,
+name|METADATASTORE_AUTHORITATIVE
+argument_list|)
+expr_stmt|;
 name|removeBucketOverrides
 argument_list|(
 name|bucketName
@@ -1196,33 +1253,24 @@ argument_list|,
 name|conf
 argument_list|,
 name|S3_METADATA_STORE_IMPL
-argument_list|,
-name|METADATASTORE_AUTHORITATIVE
 argument_list|)
 expr_stmt|;
-name|conf
-operator|.
-name|setClass
-argument_list|(
-name|Constants
-operator|.
-name|S3_METADATA_STORE_IMPL
-argument_list|,
+if|if
+condition|(
+operator|!
 name|s3guard
-condition|?
-name|LocalMetadataStore
-operator|.
-name|class
-else|:
-name|NullMetadataStore
-operator|.
-name|class
+condition|)
+block|{
+name|removeBaseAndBucketOverrides
+argument_list|(
+name|bucketName
 argument_list|,
-name|MetadataStore
-operator|.
-name|class
+name|conf
+argument_list|,
+name|S3_METADATA_STORE_IMPL
 argument_list|)
 expr_stmt|;
+block|}
 name|conf
 operator|.
 name|setBoolean
@@ -1256,6 +1304,22 @@ operator|.
 name|setup
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|s3guard
+condition|)
+block|{
+comment|// s3guard is required for those test runs where any of the
+comment|// guard options are set
+name|assumeS3GuardState
+argument_list|(
+literal|true
+argument_list|,
+name|getConfiguration
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|assumeRoleTests
 argument_list|()
 expr_stmt|;
@@ -1270,6 +1334,16 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+try|try
+block|{
+name|super
+operator|.
+name|teardown
+argument_list|()
+expr_stmt|;
+block|}
+finally|finally
+block|{
 name|S3AUtils
 operator|.
 name|closeAll
@@ -1279,11 +1353,7 @@ argument_list|,
 name|readonlyFS
 argument_list|)
 expr_stmt|;
-name|super
-operator|.
-name|teardown
-argument_list|()
-expr_stmt|;
+block|}
 block|}
 DECL|method|assumeRoleTests ()
 specifier|private
@@ -1429,6 +1499,13 @@ init|=
 name|getFileSystem
 argument_list|()
 decl_stmt|;
+name|verifyS3GuardSettings
+argument_list|(
+name|realFS
+argument_list|,
+literal|"real filesystem"
+argument_list|)
+expr_stmt|;
 comment|// avoiding the parameterization to steer clear of accidentally creating
 comment|// patterns
 name|basePath
@@ -1590,6 +1667,17 @@ argument_list|,
 name|HELLO
 argument_list|)
 expr_stmt|;
+comment|// execute a recursive list to make sure that S3Guard tables are always
+comment|// up to date
+name|lsR
+argument_list|(
+name|realFS
+argument_list|,
+name|noReadDir
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 comment|// create a role filesystem which does not have read access under a path
 comment|// it still has write access, which can be explored in the final
 comment|// step to delete files and directories.
@@ -1649,6 +1737,96 @@ argument_list|(
 name|roleConfig
 argument_list|)
 expr_stmt|;
+name|verifyS3GuardSettings
+argument_list|(
+name|readonlyFS
+argument_list|,
+literal|"readonly"
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Verify that the FS (real or restricted) meets the    * requirement of the test.    * S3Guard tests are skipped if the (default) store is not    * a DDB store consistent across all FS instances.    * The raw tests fail if somehow the FS does still have a S3Guard metastore.    * @param fs filesystem    * @param storeType store role for error messages.    */
+DECL|method|verifyS3GuardSettings (final S3AFileSystem fs, final String storeType)
+specifier|protected
+name|void
+name|verifyS3GuardSettings
+parameter_list|(
+specifier|final
+name|S3AFileSystem
+name|fs
+parameter_list|,
+specifier|final
+name|String
+name|storeType
+parameter_list|)
+block|{
+if|if
+condition|(
+name|s3guard
+condition|)
+block|{
+name|Assumptions
+operator|.
+name|assumeThat
+argument_list|(
+name|fs
+operator|.
+name|getMetadataStore
+argument_list|()
+argument_list|)
+operator|.
+name|describedAs
+argument_list|(
+literal|"Metadata store in "
+operator|+
+name|storeType
+operator|+
+literal|" fs: %s"
+argument_list|,
+name|fs
+operator|.
+name|getMetadataStore
+argument_list|()
+argument_list|)
+operator|.
+name|isInstanceOf
+argument_list|(
+name|DynamoDBMetadataStore
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|Assertions
+operator|.
+name|assertThat
+argument_list|(
+name|fs
+operator|.
+name|hasMetadataStore
+argument_list|()
+argument_list|)
+operator|.
+name|describedAs
+argument_list|(
+literal|"Metadata store in "
+operator|+
+name|storeType
+operator|+
+literal|" fs: %s"
+argument_list|,
+name|fs
+operator|.
+name|getMetadataStore
+argument_list|()
+argument_list|)
+operator|.
+name|isFalse
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Validate basic IO operations.    */
 DECL|method|checkBasicFileOperations ()
@@ -1672,12 +1850,29 @@ argument_list|(
 name|basePath
 argument_list|)
 expr_stmt|;
-comment|// this is HEAD + "/" on S3; get on S3Guard auth
+name|lsR
+argument_list|(
+name|readonlyFS
+argument_list|,
+name|basePath
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+comment|// this is HEAD + "/" on S3; get on S3Guard auth when the path exists,
+name|accessDeniedIf
+argument_list|(
+operator|!
+name|s3guard
+argument_list|,
+parameter_list|()
+lambda|->
 name|readonlyFS
 operator|.
 name|listStatus
 argument_list|(
 name|emptyDir
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// a recursive list of the no-read-directory works because
@@ -1691,8 +1886,8 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-comment|// similarly, a getFileStatus ends up being a list and generating
-comment|// a file status marker.
+comment|// similarly, a getFileStatus ends up being a list of the path
+comment|// and so working.
 name|readonlyFS
 operator|.
 name|getFileStatus
@@ -1700,33 +1895,30 @@ argument_list|(
 name|noReadDir
 argument_list|)
 expr_stmt|;
-comment|// empty dir checks work!
+comment|// empty dir checks work when guarded because even in non-auth mode
+comment|// there are no checks for directories being out of date
+comment|// without S3, the HEAD path + "/" is blocked
+name|accessDeniedIf
+argument_list|(
+operator|!
+name|s3guard
+argument_list|,
+parameter_list|()
+lambda|->
 name|readonlyFS
 operator|.
 name|getFileStatus
 argument_list|(
 name|emptyDir
 argument_list|)
-expr_stmt|;
-comment|// now look at a file; the outcome depends on the mode.
-if|if
-condition|(
-name|authMode
-condition|)
-block|{
-comment|// auth mode doesn't check S3, so no failure
-name|readonlyFS
-operator|.
-name|getFileStatus
-argument_list|(
-name|subdirFile
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
-name|accessDenied
+comment|// now look at a file; the outcome depends on the mode.
+name|accessDeniedIf
 argument_list|(
+operator|!
+name|guardedInAuthMode
+argument_list|,
 parameter_list|()
 lambda|->
 name|readonlyFS
@@ -1737,7 +1929,6 @@ name|subdirFile
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 comment|// irrespective of mode, the attempt to read the data will fail.
 comment|// the only variable is where the failure occurs
 name|accessDenied
@@ -1758,50 +1949,50 @@ name|length
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// the empty file is interesting
-if|if
-condition|(
-operator|!
-name|authMode
-condition|)
-block|{
-comment|// non-auth mode, it fails at some point in the opening process.
-comment|// due to a HEAD being called on the object
-name|accessDenied
-argument_list|(
-parameter_list|()
-lambda|->
-name|ContractTestUtils
-operator|.
-name|readUTF8
-argument_list|(
-name|readonlyFS
-argument_list|,
-name|emptyFile
-argument_list|,
-literal|0
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
+comment|// the empty file is interesting.
 comment|// auth mode doesn't check the store.
 comment|// Furthermore, because it knows the file length is zero,
 comment|// it returns -1 without even opening the file.
 comment|// This means that permissions on the file do not get checked.
 comment|// See: HADOOP-16464.
-try|try
-init|(
+name|Optional
+argument_list|<
 name|FSDataInputStream
-name|is
+argument_list|>
+name|optIn
 init|=
+name|accessDeniedIf
+argument_list|(
+operator|!
+name|guardedInAuthMode
+argument_list|,
+parameter_list|()
+lambda|->
 name|readonlyFS
 operator|.
 name|open
 argument_list|(
 name|emptyFile
 argument_list|)
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|optIn
+operator|.
+name|isPresent
+argument_list|()
+condition|)
+block|{
+try|try
+init|(
+name|FSDataInputStream
+name|is
+init|=
+name|optIn
+operator|.
+name|get
+argument_list|()
 init|)
 block|{
 name|Assertions
@@ -1826,13 +2017,6 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
-name|readonlyFS
-operator|.
-name|getFileStatus
-argument_list|(
-name|subdirFile
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 comment|/**    * Explore Glob's recursive scan.    */
@@ -1874,30 +2058,12 @@ argument_list|,
 literal|null
 argument_list|,
 operator|!
-name|authMode
+name|guardedInAuthMode
 argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
 comment|// empty directories don't fail.
-name|assertStatusPathEquals
-argument_list|(
-name|emptyDir
-argument_list|,
-name|globFS
-argument_list|(
-name|readonlyFS
-argument_list|,
-name|emptyDir
-argument_list|,
-literal|null
-argument_list|,
-literal|false
-argument_list|,
-literal|1
-argument_list|)
-argument_list|)
-expr_stmt|;
 name|FileStatus
 index|[]
 name|st
@@ -1906,15 +2072,50 @@ name|globFS
 argument_list|(
 name|readonlyFS
 argument_list|,
+name|emptyDir
+argument_list|,
+literal|null
+argument_list|,
+operator|!
+name|s3guard
+argument_list|,
+literal|1
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|s3guard
+condition|)
+block|{
+name|assertStatusPathEquals
+argument_list|(
+name|emptyDir
+argument_list|,
+name|st
+argument_list|)
+expr_stmt|;
+block|}
+name|st
+operator|=
+name|globFS
+argument_list|(
+name|readonlyFS
+argument_list|,
 name|noReadWildcard
 argument_list|,
 literal|null
 argument_list|,
-literal|false
+operator|!
+name|s3guard
 argument_list|,
 literal|2
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+if|if
+condition|(
+name|s3guard
+condition|)
+block|{
 name|Assertions
 operator|.
 name|assertThat
@@ -1936,6 +2137,7 @@ argument_list|,
 name|subdir2File1
 argument_list|)
 expr_stmt|;
+block|}
 comment|// there is precisely one .docx file (subdir2File2.docx)
 name|globFS
 argument_list|(
@@ -1951,7 +2153,8 @@ argument_list|)
 argument_list|,
 literal|null
 argument_list|,
-literal|false
+operator|!
+name|s3guard
 argument_list|,
 literal|1
 argument_list|)
@@ -1971,7 +2174,8 @@ argument_list|)
 argument_list|,
 literal|null
 argument_list|,
-literal|false
+operator|!
+name|s3guard
 argument_list|,
 literal|0
 argument_list|)
@@ -2074,14 +2278,29 @@ argument_list|,
 literal|true
 argument_list|)
 decl_stmt|;
-name|Assertions
-operator|.
-name|assertThat
+name|accessDeniedIf
 argument_list|(
+operator|!
+name|s3guard
+argument_list|,
+parameter_list|()
+lambda|->
 name|fetcher
 operator|.
 name|getFileStatuses
 argument_list|()
+argument_list|)
+operator|.
+name|ifPresent
+argument_list|(
+name|stats
+lambda|->
+block|{
+name|Assertions
+operator|.
+name|assertThat
+argument_list|(
+name|stats
 argument_list|)
 operator|.
 name|describedAs
@@ -2106,11 +2325,20 @@ name|subdir2File1
 argument_list|,
 name|subdir2File2
 argument_list|)
-expr_stmt|;
+argument_list|;
 block|}
+block|)
+class|;
+end_class
+
+begin_comment
+unit|}
 comment|/**    * Run a located file status fetcher against the directory tree.    */
+end_comment
+
+begin_function
 DECL|method|checkLocatedFileStatusFourThreads ()
-specifier|public
+unit|public
 name|void
 name|checkLocatedFileStatusFourThreads
 parameter_list|()
@@ -2140,7 +2368,7 @@ name|threads
 argument_list|)
 expr_stmt|;
 name|LocatedFileStatusFetcher
-name|fetcher2
+name|fetcher
 init|=
 operator|new
 name|LocatedFileStatusFetcher
@@ -2161,14 +2389,29 @@ argument_list|,
 literal|true
 argument_list|)
 decl_stmt|;
+name|accessDeniedIf
+argument_list|(
+operator|!
+name|s3guard
+argument_list|,
+parameter_list|()
+lambda|->
+name|fetcher
+operator|.
+name|getFileStatuses
+argument_list|()
+argument_list|)
+operator|.
+name|ifPresent
+argument_list|(
+name|stats
+lambda|->
+block|{
 name|Assertions
 operator|.
 name|assertThat
 argument_list|(
-name|fetcher2
-operator|.
-name|getFileStatuses
-argument_list|()
+name|stats
 argument_list|)
 operator|.
 name|describedAs
@@ -2192,11 +2435,23 @@ name|subdirFile
 argument_list|,
 name|subdir2File1
 argument_list|)
-expr_stmt|;
+argument_list|;
 block|}
+end_function
+
+begin_empty_stmt
+unit|)
+empty_stmt|;
+end_empty_stmt
+
+begin_comment
+unit|}
 comment|/**    * Run a located file status fetcher against the directory tree.    */
+end_comment
+
+begin_function
 DECL|method|checkLocatedFileStatusScanFile ()
-specifier|public
+unit|public
 name|void
 name|checkLocatedFileStatusScanFile
 parameter_list|()
@@ -2220,13 +2475,8 @@ argument_list|,
 literal|16
 argument_list|)
 expr_stmt|;
-try|try
-block|{
-name|Iterable
-argument_list|<
-name|FileStatus
-argument_list|>
-name|fetched
+name|LocatedFileStatusFetcher
+name|fetcher
 init|=
 operator|new
 name|LocatedFileStatusFetcher
@@ -2246,31 +2496,30 @@ name|TEXT_FILE
 argument_list|,
 literal|true
 argument_list|)
+decl_stmt|;
+name|accessDeniedIf
+argument_list|(
+operator|!
+name|guardedInAuthMode
+argument_list|,
+parameter_list|()
+lambda|->
+name|fetcher
 operator|.
 name|getFileStatuses
 argument_list|()
-decl_stmt|;
-comment|// when not in auth mode, the HEAD request MUST have failed.
-name|failif
-argument_list|(
-operator|!
-name|authMode
-argument_list|,
-literal|"LocatedFileStatusFetcher("
-operator|+
-name|subdirFile
-operator|+
-literal|")"
-operator|+
-literal|" should have failed"
 argument_list|)
-expr_stmt|;
-comment|// and in auth mode, the file MUST have been found.
+operator|.
+name|ifPresent
+argument_list|(
+name|stats
+lambda|->
+block|{
 name|Assertions
 operator|.
 name|assertThat
 argument_list|(
-name|fetched
+name|stats
 argument_list|)
 operator|.
 name|describedAs
@@ -2292,34 +2541,23 @@ name|containsExactly
 argument_list|(
 name|subdirFile
 argument_list|)
-expr_stmt|;
+argument_list|;
 block|}
-catch|catch
-parameter_list|(
-name|AccessDeniedException
-name|e
-parameter_list|)
-block|{
-comment|// we require the HEAD request to fail with access denied in non-auth
-comment|// mode, but not in auth mode.
-name|failif
-argument_list|(
-name|authMode
-argument_list|,
-literal|"LocatedFileStatusFetcher("
-operator|+
-name|subdirFile
-operator|+
-literal|")"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
-block|}
+end_function
+
+begin_empty_stmt
+unit|)
+empty_stmt|;
+end_empty_stmt
+
+begin_comment
+unit|}
 comment|/**    * Explore what happens with a path that does not exist.    */
+end_comment
+
+begin_function
 DECL|method|checkLocatedFileStatusNonexistentPath ()
-specifier|public
+unit|public
 name|void
 name|checkLocatedFileStatusNonexistentPath
 parameter_list|()
@@ -2474,7 +2712,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Do some cleanup to see what happens with delete calls.    * Cleanup happens in test teardown anyway; doing it here    * just makes use of the delete calls to see how delete failures    * change with permissions and S3Guard stettings.    */
+end_comment
+
+begin_function
 DECL|method|checkDeleteOperations ()
 specifier|public
 name|void
@@ -2607,7 +2851,13 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Require an operation to fail with a FileNotFoundException.    * @param eval closure to evaluate.    * @param<T> type of callable    * @return the exception.    * @throws Exception any other exception    */
+end_comment
+
+begin_function
 DECL|method|fileNotFound (final Callable<T> eval)
 specifier|protected
 parameter_list|<
@@ -2637,7 +2887,13 @@ name|eval
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Require an operation to fail with an AccessDeniedException.    * @param eval closure to evaluate.    * @param<T> type of callable    * @return the exception.    * @throws Exception any other exception    */
+end_comment
+
+begin_function
 DECL|method|accessDenied (final Callable<T> eval)
 specifier|protected
 parameter_list|<
@@ -2667,7 +2923,81 @@ name|eval
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_comment
+comment|/**    * Conditionally expect an operation to fail with an AccessDeniedException.    * @param condition the condition which must be true for access to be denied    * @param eval closure to evaluate.    * @param<T> type of callable    * @return the return value if the call succeeded    * and did not return null.    * @throws Exception any unexpected exception    */
+end_comment
+
+begin_function
+DECL|method|accessDeniedIf ( final boolean condition, final Callable<T> eval)
+specifier|protected
+parameter_list|<
+name|T
+parameter_list|>
+name|Optional
+argument_list|<
+name|T
+argument_list|>
+name|accessDeniedIf
+parameter_list|(
+specifier|final
+name|boolean
+name|condition
+parameter_list|,
+specifier|final
+name|Callable
+argument_list|<
+name|T
+argument_list|>
+name|eval
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+if|if
+condition|(
+name|condition
+condition|)
+block|{
+name|intercept
+argument_list|(
+name|AccessDeniedException
+operator|.
+name|class
+argument_list|,
+name|eval
+argument_list|)
+expr_stmt|;
+return|return
+name|Optional
+operator|.
+name|empty
+argument_list|()
+return|;
+block|}
+else|else
+block|{
+return|return
+name|Optional
+operator|.
+name|ofNullable
+argument_list|(
+name|eval
+operator|.
+name|call
+argument_list|()
+argument_list|)
+return|;
+block|}
+block|}
+end_function
+
+begin_comment
 comment|/**    * Assert that a status array has exactly one element and its    * value is as expected.    * @param expected expected path    * @param statuses list of statuses    */
+end_comment
+
+begin_function
 DECL|method|assertStatusPathEquals (final Path expected, final FileStatus[] statuses)
 specifier|protected
 name|void
@@ -2732,7 +3062,13 @@ name|expected
 argument_list|)
 expr_stmt|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Glob under a path with expected outcomes.    * @param fs filesystem to use    * @param path path (which can include patterns)    * @param filter optional filter    * @param expectAuthFailure is auth failure expected?    * @param expectedCount expected count of results; -1 means null response    * @return the result of a successful glob or null if an expected auth    *          failure was caught.    * @throws IOException failure.    */
+end_comment
+
+begin_function
 DECL|method|globFS ( final S3AFileSystem fs, final Path path, final PathFilter filter, boolean expectAuthFailure, final int expectedCount)
 specifier|protected
 name|FileStatus
@@ -2929,6 +3265,26 @@ return|return
 literal|null
 return|;
 block|}
+catch|catch
+parameter_list|(
+name|IOException
+decl||
+name|RuntimeException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|AssertionError
+argument_list|(
+literal|"Other exception raised in glob:"
+operator|+
+name|e
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
 if|if
 condition|(
 name|expectedCount
@@ -2983,8 +3339,8 @@ return|return
 name|st
 return|;
 block|}
-block|}
-end_class
+end_function
 
+unit|}
 end_unit
 

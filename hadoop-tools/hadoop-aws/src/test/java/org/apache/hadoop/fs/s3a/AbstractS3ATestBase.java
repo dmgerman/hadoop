@@ -42,6 +42,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|Path
 import|;
 end_import
@@ -267,6 +281,8 @@ operator|new
 name|S3AContract
 argument_list|(
 name|conf
+argument_list|,
+literal|false
 argument_list|)
 return|;
 block|}
@@ -288,6 +304,18 @@ operator|.
 name|setName
 argument_list|(
 literal|"setup"
+argument_list|)
+expr_stmt|;
+comment|// force load the local FS -not because we want the FS, but we need all
+comment|// filesystems which add default configuration resources to do it before
+comment|// our tests start adding/removing options. See HADOOP-16626.
+name|FileSystem
+operator|.
+name|getLocal
+argument_list|(
+operator|new
+name|Configuration
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|super
@@ -391,15 +419,20 @@ name|Configuration
 name|createConfiguration
 parameter_list|()
 block|{
+name|Configuration
+name|conf
+init|=
+name|super
+operator|.
+name|createConfiguration
+argument_list|()
+decl_stmt|;
 return|return
 name|S3ATestUtils
 operator|.
 name|prepareTestConfiguration
 argument_list|(
-name|super
-operator|.
-name|createConfiguration
-argument_list|()
+name|conf
 argument_list|)
 return|;
 block|}

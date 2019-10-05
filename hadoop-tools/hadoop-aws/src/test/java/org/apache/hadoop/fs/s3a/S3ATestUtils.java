@@ -1773,20 +1773,9 @@ block|{
 name|boolean
 name|isEnabled
 init|=
-name|getTestPropertyBool
+name|isS3GuardTestPropertySet
 argument_list|(
 name|originalConf
-argument_list|,
-name|TEST_S3GUARD_ENABLED
-argument_list|,
-name|originalConf
-operator|.
-name|getBoolean
-argument_list|(
-name|TEST_S3GUARD_ENABLED
-argument_list|,
-literal|false
-argument_list|)
 argument_list|)
 decl_stmt|;
 name|Assume
@@ -1898,19 +1887,19 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Conditionally set the S3Guard options from test properties.    * @param conf configuration    */
-DECL|method|maybeEnableS3Guard (Configuration conf)
+comment|/**    * Is the test option for S3Guard set?    * @param conf configuration to examine.    * @return true if the config or system property turns s3guard tests on    */
+DECL|method|isS3GuardTestPropertySet (final Configuration conf)
 specifier|public
 specifier|static
-name|void
-name|maybeEnableS3Guard
+name|boolean
+name|isS3GuardTestPropertySet
 parameter_list|(
+specifier|final
 name|Configuration
 name|conf
 parameter_list|)
 block|{
-if|if
-condition|(
+return|return
 name|getTestPropertyBool
 argument_list|(
 name|conf
@@ -1925,6 +1914,25 @@ name|TEST_S3GUARD_ENABLED
 argument_list|,
 literal|false
 argument_list|)
+argument_list|)
+return|;
+block|}
+comment|/**    * Conditionally set the S3Guard options from test properties.    * @param conf configuration    */
+DECL|method|maybeEnableS3Guard (Configuration conf)
+specifier|public
+specifier|static
+name|void
+name|maybeEnableS3Guard
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+if|if
+condition|(
+name|isS3GuardTestPropertySet
+argument_list|(
+name|conf
 argument_list|)
 condition|)
 block|{
@@ -2855,14 +2863,19 @@ name|bucketPrefix
 operator|+
 name|stripped
 decl_stmt|;
-if|if
-condition|(
+name|String
+name|v
+init|=
 name|conf
 operator|.
 name|get
 argument_list|(
 name|target
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|v
 operator|!=
 literal|null
 condition|)
@@ -2871,9 +2884,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Removing option {}"
+literal|"Removing option {}; was {}"
 argument_list|,
 name|target
+argument_list|,
+name|v
 argument_list|)
 expr_stmt|;
 name|conf
@@ -4554,6 +4569,28 @@ argument_list|(
 name|persists
 argument_list|)
 return|;
+block|}
+comment|/**    * Set the metadata store of a filesystem instance to the given    * store, via a package-private setter method.    * @param fs filesystem.    * @param ms metastore    */
+DECL|method|setMetadataStore (S3AFileSystem fs, MetadataStore ms)
+specifier|public
+specifier|static
+name|void
+name|setMetadataStore
+parameter_list|(
+name|S3AFileSystem
+name|fs
+parameter_list|,
+name|MetadataStore
+name|ms
+parameter_list|)
+block|{
+name|fs
+operator|.
+name|setMetadataStore
+argument_list|(
+name|ms
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|checkListingDoesNotContainPath (S3AFileSystem fs, Path filePath)
 specifier|public

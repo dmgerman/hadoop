@@ -92,6 +92,7 @@ name|S3AContract
 extends|extends
 name|AbstractBondedFSContract
 block|{
+comment|/**    * Test resource with the contract bindings used in the standard    * contract tests: {@value}.    */
 DECL|field|CONTRACT_XML
 specifier|public
 specifier|static
@@ -101,6 +102,7 @@ name|CONTRACT_XML
 init|=
 literal|"contract/s3a.xml"
 decl_stmt|;
+comment|/**    * Instantiate, adding the s3a.xml contract file.    * This may force a reload of the entire configuration, so interferes with    * any code which has removed bucket overrides.    * @param conf configuration.    */
 DECL|method|S3AContract (Configuration conf)
 specifier|public
 name|S3AContract
@@ -109,17 +111,43 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
+name|this
+argument_list|(
+name|conf
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Instantiate, optionally adding the s3a.xml contract file.    * This may force a reload of the entire configuration, so interferes with    * any code which has removed bucket overrides.    * @param conf configuration.    * @param addContractResource should the s3a.xml file be added?    */
+DECL|method|S3AContract (Configuration conf, boolean addContractResource)
+specifier|public
+name|S3AContract
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|boolean
+name|addContractResource
+parameter_list|)
+block|{
 name|super
 argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
 comment|//insert the base features
+if|if
+condition|(
+name|addContractResource
+condition|)
+block|{
 name|addConfResource
 argument_list|(
 name|CONTRACT_XML
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
