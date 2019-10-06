@@ -627,8 +627,6 @@ parameter_list|)
 block|{
 name|boolean
 name|valid
-init|=
-literal|false
 decl_stmt|;
 try|try
 block|{
@@ -723,8 +721,6 @@ argument_list|)
 decl_stmt|;
 name|String
 name|errStr
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -816,7 +812,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-comment|/**      * compare the values in the container file loaded from disk,      * with the values we are expecting      */
+comment|/*      * compare the values in the container file loaded from disk,      * with the values we are expecting      */
 name|String
 name|dbType
 decl_stmt|;
@@ -949,9 +945,6 @@ condition|(
 operator|!
 name|metadataPath
 operator|.
-name|toString
-argument_list|()
-operator|.
 name|equals
 argument_list|(
 name|kvData
@@ -971,9 +964,6 @@ operator|+
 literal|"Expected ["
 operator|+
 name|metadataPath
-operator|.
-name|toString
-argument_list|()
 operator|+
 literal|"] Got ["
 operator|+
@@ -1007,7 +997,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|/**      * Check the integrity of the DB inside each container.      * In Scope:      * 1. iterate over each key (Block) and locate the chunks for the block      * 2. garbage detection : chunks which exist in the filesystem,      *    but not in the DB. This function is implemented as HDDS-1202      * Not in scope:      * 1. chunk checksum verification. this is left to a separate      * slow chunk scanner      */
+comment|/*      * Check the integrity of the DB inside each container.      * 1. iterate over each key (Block) and locate the chunks for the block      * 2. garbage detection (TBD): chunks which exist in the filesystem,      *    but not in the DB. This function will be implemented in HDDS-1202      * 3. chunk checksum verification.      */
 name|Preconditions
 operator|.
 name|checkState
@@ -1290,6 +1280,23 @@ name|getChecksumsList
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|Checksum
+name|cal
+init|=
+operator|new
+name|Checksum
+argument_list|(
+name|cData
+operator|.
+name|getChecksumType
+argument_list|()
+argument_list|,
+name|cData
+operator|.
+name|getBytesPerChecksum
+argument_list|()
+argument_list|)
+decl_stmt|;
 name|long
 name|bytesRead
 init|=
@@ -1320,17 +1327,12 @@ name|chunkFile
 argument_list|)
 init|)
 block|{
+for|for
+control|(
 name|int
 name|i
 init|=
 literal|0
-decl_stmt|,
-name|v
-init|=
-literal|0
-decl_stmt|;
-for|for
-control|(
 init|;
 name|i
 operator|<
@@ -1340,15 +1342,16 @@ name|i
 operator|++
 control|)
 block|{
+name|int
 name|v
-operator|=
+init|=
 name|fs
 operator|.
 name|read
 argument_list|(
 name|buffer
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 if|if
 condition|(
 name|v
@@ -1372,23 +1375,6 @@ argument_list|,
 name|canceler
 argument_list|)
 expr_stmt|;
-name|Checksum
-name|cal
-init|=
-operator|new
-name|Checksum
-argument_list|(
-name|cData
-operator|.
-name|getChecksumType
-argument_list|()
-argument_list|,
-name|cData
-operator|.
-name|getBytesPerChecksum
-argument_list|()
-argument_list|)
-decl_stmt|;
 name|ByteString
 name|expected
 init|=
@@ -1410,6 +1396,10 @@ operator|.
 name|computeChecksum
 argument_list|(
 name|buffer
+argument_list|,
+literal|0
+argument_list|,
+name|v
 argument_list|)
 operator|.
 name|getChecksums
@@ -1492,14 +1482,12 @@ block|}
 block|}
 if|if
 condition|(
-name|v
-operator|==
-operator|-
-literal|1
-operator|&&
-name|i
-operator|<
-name|length
+name|bytesRead
+operator|!=
+name|chunk
+operator|.
+name|getLen
+argument_list|()
 condition|)
 block|{
 throw|throw
