@@ -1245,6 +1245,15 @@ name|getPos
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|//Clear buffer to make next decode success
+name|strategy
+operator|.
+name|getReadBuffer
+argument_list|()
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
 comment|// we want to remember which block replicas we have tried
 name|corruptedBlocks
 operator|.
@@ -1288,6 +1297,15 @@ name|currentNode
 argument_list|,
 name|e
 argument_list|)
+expr_stmt|;
+comment|//Clear buffer to make next decode success
+name|strategy
+operator|.
+name|getReadBuffer
+argument_list|()
+operator|.
+name|clear
+argument_list|()
 expr_stmt|;
 throw|throw
 name|e

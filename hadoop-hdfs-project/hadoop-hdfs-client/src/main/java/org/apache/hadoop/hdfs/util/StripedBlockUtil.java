@@ -1609,6 +1609,10 @@ argument_list|(
 name|ecPolicy
 argument_list|,
 name|ranges
+argument_list|,
+name|blockGroup
+argument_list|,
+name|cellSize
 argument_list|)
 decl_stmt|;
 comment|// Step 4: calculate each chunk's position in destination buffer. Since the
@@ -1904,6 +1908,10 @@ argument_list|(
 name|ecPolicy
 argument_list|,
 name|ranges
+argument_list|,
+name|blockGroup
+argument_list|,
+name|cellSize
 argument_list|)
 decl_stmt|;
 comment|// Step 4: calculate each chunk's position in destination buffer
@@ -2395,7 +2403,7 @@ name|ranges
 return|;
 block|}
 comment|/**    * Merge byte ranges on each internal block into a set of inclusive    * {@link AlignedStripe} instances.    */
-DECL|method|mergeRangesForInternalBlocks ( ErasureCodingPolicy ecPolicy, VerticalRange[] ranges)
+DECL|method|mergeRangesForInternalBlocks ( ErasureCodingPolicy ecPolicy, VerticalRange[] ranges, LocatedStripedBlock blockGroup, int cellSize)
 specifier|private
 specifier|static
 name|AlignedStripe
@@ -2408,6 +2416,12 @@ parameter_list|,
 name|VerticalRange
 index|[]
 name|ranges
+parameter_list|,
+name|LocatedStripedBlock
+name|blockGroup
+parameter_list|,
+name|int
+name|cellSize
 parameter_list|)
 block|{
 name|int
@@ -2486,6 +2500,79 @@ name|spanInBlock
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|// Add block group last cell offset in stripePoints if it is fall in to read
+comment|// offset range.
+name|int
+name|lastCellIdxInBG
+init|=
+call|(
+name|int
+call|)
+argument_list|(
+name|blockGroup
+operator|.
+name|getBlockSize
+argument_list|()
+operator|/
+name|cellSize
+argument_list|)
+decl_stmt|;
+name|int
+name|idxInInternalBlk
+init|=
+name|lastCellIdxInBG
+operator|/
+name|ecPolicy
+operator|.
+name|getNumDataUnits
+argument_list|()
+decl_stmt|;
+name|long
+name|lastCellEndOffset
+init|=
+operator|(
+name|idxInInternalBlk
+operator|*
+operator|(
+name|long
+operator|)
+name|cellSize
+operator|)
+operator|+
+operator|(
+name|blockGroup
+operator|.
+name|getBlockSize
+argument_list|()
+operator|%
+name|cellSize
+operator|)
+decl_stmt|;
+if|if
+condition|(
+name|stripePoints
+operator|.
+name|first
+argument_list|()
+operator|<
+name|lastCellEndOffset
+operator|&&
+name|stripePoints
+operator|.
+name|last
+argument_list|()
+operator|>
+name|lastCellEndOffset
+condition|)
+block|{
+name|stripePoints
+operator|.
+name|add
+argument_list|(
+name|lastCellEndOffset
+argument_list|)
+expr_stmt|;
 block|}
 name|long
 name|prev
