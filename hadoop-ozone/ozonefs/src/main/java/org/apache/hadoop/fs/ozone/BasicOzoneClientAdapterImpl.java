@@ -629,13 +629,16 @@ argument_list|(
 literal|null
 argument_list|)
 expr_stmt|;
-name|OzoneConfiguration
-name|conf
-init|=
+try|try
+block|{
+return|return
 operator|new
 name|OzoneConfiguration
 argument_list|()
-decl_stmt|;
+return|;
+block|}
+finally|finally
+block|{
 name|Thread
 operator|.
 name|currentThread
@@ -646,9 +649,7 @@ argument_list|(
 name|contextClassLoader
 argument_list|)
 expr_stmt|;
-return|return
-name|conf
-return|;
+block|}
 block|}
 DECL|method|BasicOzoneClientAdapterImpl (OzoneConfiguration conf, String volumeStr, String bucketStr)
 specifier|public
@@ -724,6 +725,8 @@ argument_list|(
 literal|null
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|OzoneConfiguration
 name|conf
 init|=
@@ -796,9 +799,9 @@ literal|" specified in URI but host '"
 operator|+
 name|omHost
 operator|+
-literal|"' is "
+literal|"' is a "
 operator|+
-literal|"a logical (HA) OzoneManager and does not use port information."
+literal|"logical (HA) OzoneManager and does not use port information."
 argument_list|)
 throw|;
 block|}
@@ -840,8 +843,6 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
-try|try
-block|{
 name|String
 name|replicationTypeConf
 init|=
