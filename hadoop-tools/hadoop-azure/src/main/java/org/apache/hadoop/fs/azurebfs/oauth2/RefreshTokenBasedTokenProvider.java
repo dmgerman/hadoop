@@ -92,6 +92,12 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|authEndpoint
+specifier|private
+specifier|final
+name|String
+name|authEndpoint
+decl_stmt|;
 DECL|field|clientId
 specifier|private
 specifier|final
@@ -105,10 +111,14 @@ name|String
 name|refreshToken
 decl_stmt|;
 comment|/**    * Constructs a token provider based on the refresh token provided.    *    * @param clientId the client ID (GUID) of the client web app obtained from Azure Active Directory configuration    * @param refreshToken the refresh token    */
-DECL|method|RefreshTokenBasedTokenProvider (String clientId, String refreshToken)
+DECL|method|RefreshTokenBasedTokenProvider (final String authEndpoint, String clientId, String refreshToken)
 specifier|public
 name|RefreshTokenBasedTokenProvider
 parameter_list|(
+specifier|final
+name|String
+name|authEndpoint
+parameter_list|,
 name|String
 name|clientId
 parameter_list|,
@@ -116,6 +126,15 @@ name|String
 name|refreshToken
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|authEndpoint
+argument_list|,
+literal|"authEndpoint"
+argument_list|)
+expr_stmt|;
 name|Preconditions
 operator|.
 name|checkNotNull
@@ -133,6 +152,12 @@ name|refreshToken
 argument_list|,
 literal|"refreshToken"
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|authEndpoint
+operator|=
+name|authEndpoint
 expr_stmt|;
 name|this
 operator|.
@@ -169,6 +194,8 @@ name|AzureADAuthenticator
 operator|.
 name|getTokenUsingRefreshToken
 argument_list|(
+name|authEndpoint
+argument_list|,
 name|clientId
 argument_list|,
 name|refreshToken

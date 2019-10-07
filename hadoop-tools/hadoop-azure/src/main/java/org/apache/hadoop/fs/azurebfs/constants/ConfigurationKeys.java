@@ -434,6 +434,26 @@ name|FS_AZURE_ACCOUNT_OAUTH_MSI_TENANT
 init|=
 literal|"fs.azure.account.oauth2.msi.tenant"
 decl_stmt|;
+comment|/** Key for oauth msi endpoint: {@value}. */
+DECL|field|FS_AZURE_ACCOUNT_OAUTH_MSI_ENDPOINT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_AZURE_ACCOUNT_OAUTH_MSI_ENDPOINT
+init|=
+literal|"fs.azure.account.oauth2.msi.endpoint"
+decl_stmt|;
+comment|/** Key for oauth msi Authority: {@value}. */
+DECL|field|FS_AZURE_ACCOUNT_OAUTH_MSI_AUTHORITY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_AZURE_ACCOUNT_OAUTH_MSI_AUTHORITY
+init|=
+literal|"fs.azure.account.oauth2.msi.authority"
+decl_stmt|;
 comment|/** Key for oauth user name: {@value}. */
 DECL|field|FS_AZURE_ACCOUNT_OAUTH_USER_NAME
 specifier|public
@@ -463,6 +483,16 @@ name|String
 name|FS_AZURE_ACCOUNT_OAUTH_REFRESH_TOKEN
 init|=
 literal|"fs.azure.account.oauth2.refresh.token"
+decl_stmt|;
+comment|/** Key for oauth AAD refresh token endpoint: {@value}. */
+DECL|field|FS_AZURE_ACCOUNT_OAUTH_REFRESH_TOKEN_ENDPOINT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_AZURE_ACCOUNT_OAUTH_REFRESH_TOKEN_ENDPOINT
+init|=
+literal|"fs.azure.account.oauth2.refresh.token.endpoint"
 decl_stmt|;
 DECL|method|accountProperty (String property, String account)
 specifier|public

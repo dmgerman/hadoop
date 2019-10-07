@@ -423,18 +423,27 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * Gets AAD token from the local virtual machine's VM extension. This only works on    * an Azure VM with MSI extension    * enabled.    *    * @param tenantGuid  (optional) The guid of the AAD tenant. Can be {@code null}.    * @param clientId    (optional) The clientId guid of the MSI service    *                    principal to use. Can be {@code null}.    * @param bypassCache {@code boolean} specifying whether a cached token is acceptable or a fresh token    *                    request should me made to AAD    * @return {@link AzureADToken} obtained using the creds    * @throws IOException throws IOException if there is a failure in obtaining the token    */
-DECL|method|getTokenFromMsi (String tenantGuid, String clientId, boolean bypassCache)
+comment|/**    * Gets AAD token from the local virtual machine's VM extension. This only works on    * an Azure VM with MSI extension    * enabled.    *    * @param authEndpoint the OAuth 2.0 token endpoint associated    *                     with the user's directory (obtain from    *                     Active Directory configuration)    * @param tenantGuid  (optional) The guid of the AAD tenant. Can be {@code null}.    * @param clientId    (optional) The clientId guid of the MSI service    *                    principal to use. Can be {@code null}.    * @param bypassCache {@code boolean} specifying whether a cached token is acceptable or a fresh token    *                    request should me made to AAD    * @return {@link AzureADToken} obtained using the creds    * @throws IOException throws IOException if there is a failure in obtaining the token    */
+DECL|method|getTokenFromMsi (final String authEndpoint, final String tenantGuid, final String clientId, String authority, boolean bypassCache)
 specifier|public
 specifier|static
 name|AzureADToken
 name|getTokenFromMsi
 parameter_list|(
+specifier|final
+name|String
+name|authEndpoint
+parameter_list|,
+specifier|final
 name|String
 name|tenantGuid
 parameter_list|,
+specifier|final
 name|String
 name|clientId
+parameter_list|,
+name|String
+name|authority
 parameter_list|,
 name|boolean
 name|bypassCache
@@ -442,11 +451,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|String
-name|authEndpoint
-init|=
-literal|"http://169.254.169.254/metadata/identity/oauth2/token"
-decl_stmt|;
 name|QueryParams
 name|qp
 init|=
@@ -486,13 +490,21 @@ operator|>
 literal|0
 condition|)
 block|{
-name|String
 name|authority
-init|=
-literal|"https://login.microsoftonline.com/"
+operator|=
+name|authority
 operator|+
 name|tenantGuid
-decl_stmt|;
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"MSI authority : {}"
+argument_list|,
+name|authority
+argument_list|)
+expr_stmt|;
 name|qp
 operator|.
 name|add
@@ -587,27 +599,28 @@ literal|"GET"
 argument_list|)
 return|;
 block|}
-comment|/**    * Gets Azure Active Directory token using refresh token.    *    * @param clientId the client ID (GUID) of the client web app obtained from Azure Active Directory configuration    * @param refreshToken the refresh token    * @return {@link AzureADToken} obtained using the refresh token    * @throws IOException throws IOException if there is a failure in connecting to Azure AD    */
-DECL|method|getTokenUsingRefreshToken (String clientId, String refreshToken)
+comment|/**    * Gets Azure Active Directory token using refresh token.    *    * @param authEndpoint the OAuth 2.0 token endpoint associated    *                     with the user's directory (obtain from    *                     Active Directory configuration)    * @param clientId the client ID (GUID) of the client web app obtained from Azure Active Directory configuration    * @param refreshToken the refresh token    * @return {@link AzureADToken} obtained using the refresh token    * @throws IOException throws IOException if there is a failure in connecting to Azure AD    */
+DECL|method|getTokenUsingRefreshToken ( final String authEndpoint, final String clientId, final String refreshToken)
 specifier|public
 specifier|static
 name|AzureADToken
 name|getTokenUsingRefreshToken
 parameter_list|(
+specifier|final
+name|String
+name|authEndpoint
+parameter_list|,
+specifier|final
 name|String
 name|clientId
 parameter_list|,
+specifier|final
 name|String
 name|refreshToken
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|String
-name|authEndpoint
-init|=
-literal|"https://login.microsoftonline.com/Common/oauth2/token"
-decl_stmt|;
 name|QueryParams
 name|qp
 init|=
