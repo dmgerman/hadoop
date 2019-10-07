@@ -539,12 +539,13 @@ name|InterruptedException
 throws|,
 name|NoSuchAlgorithmException
 block|{
+specifier|final
 name|int
 name|bufferSize
 init|=
 name|data
 operator|.
-name|capacity
+name|remaining
 argument_list|()
 decl_stmt|;
 name|Logger
