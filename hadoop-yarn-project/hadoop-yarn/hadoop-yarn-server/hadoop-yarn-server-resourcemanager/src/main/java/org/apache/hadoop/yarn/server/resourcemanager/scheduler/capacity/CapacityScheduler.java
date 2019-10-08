@@ -2734,6 +2734,11 @@ specifier|private
 name|CapacitySchedulerQueueManager
 name|queueManager
 decl_stmt|;
+DECL|field|workflowPriorityMappingsMgr
+specifier|private
+name|WorkflowPriorityMappingsManager
+name|workflowPriorityMappingsMgr
+decl_stmt|;
 comment|// timeout to join when we stop this service
 DECL|field|THREAD_JOIN_TIMEOUT_MS
 specifier|protected
@@ -3478,6 +3483,14 @@ name|setCapacitySchedulerContext
 argument_list|(
 name|this
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|workflowPriorityMappingsMgr
+operator|=
+operator|new
+name|WorkflowPriorityMappingsManager
+argument_list|()
 expr_stmt|;
 name|this
 operator|.
@@ -5239,6 +5252,15 @@ expr_stmt|;
 name|updatePlacementRules
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|workflowPriorityMappingsMgr
+operator|.
+name|initialize
+argument_list|(
+name|this
+argument_list|)
+expr_stmt|;
 comment|// Notify Preemption Manager
 name|preemptionManager
 operator|.
@@ -5282,6 +5304,15 @@ argument_list|)
 expr_stmt|;
 name|updatePlacementRules
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|workflowPriorityMappingsMgr
+operator|.
+name|initialize
+argument_list|(
+name|this
+argument_list|)
 expr_stmt|;
 comment|// Notify Preemption Manager
 name|preemptionManager
@@ -6269,6 +6300,75 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
+block|}
+try|try
+block|{
+name|priority
+operator|=
+name|workflowPriorityMappingsMgr
+operator|.
+name|mapWorkflowPriorityForApp
+argument_list|(
+name|applicationId
+argument_list|,
+name|queue
+argument_list|,
+name|user
+argument_list|,
+name|priority
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|YarnException
+name|e
+parameter_list|)
+block|{
+name|String
+name|message
+init|=
+literal|"Failed to submit application "
+operator|+
+name|applicationId
+operator|+
+literal|" submitted by user "
+operator|+
+name|user
+operator|+
+literal|" reason: "
+operator|+
+name|e
+operator|.
+name|getMessage
+argument_list|()
+decl_stmt|;
+name|this
+operator|.
+name|rmContext
+operator|.
+name|getDispatcher
+argument_list|()
+operator|.
+name|getEventHandler
+argument_list|()
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|RMAppEvent
+argument_list|(
+name|applicationId
+argument_list|,
+name|RMAppEventType
+operator|.
+name|APP_REJECTED
+argument_list|,
+name|message
+argument_list|)
+argument_list|)
+expr_stmt|;
+return|return;
 block|}
 comment|// Submit to the queue
 try|try
@@ -15871,6 +15971,18 @@ return|return
 name|this
 operator|.
 name|queueManager
+return|;
+block|}
+DECL|method|getWorkflowPriorityMappingsManager ()
+specifier|public
+name|WorkflowPriorityMappingsManager
+name|getWorkflowPriorityMappingsManager
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|workflowPriorityMappingsMgr
 return|;
 block|}
 comment|/**    * Try to move a reserved container to a targetNode.    * If the targetNode is reserved by another application (other than this one).    * The previous reservation will be cancelled.    *    * @param toBeMovedContainer reserved container will be moved    * @param targetNode targetNode    * @return true if move succeeded. Return false if the targetNode is reserved by    *         a different container or move failed because of any other reasons.    */

@@ -13317,6 +13317,28 @@ name|NM_PREFIX
 operator|+
 literal|"containers-launcher.class"
 decl_stmt|;
+comment|// Configuration for the prefix of the tag which contains workflow ID,
+comment|// followed by the prefix.
+DECL|field|YARN_WORKFLOW_ID_TAG_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|YARN_WORKFLOW_ID_TAG_PREFIX
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"workflow-id.tag-prefix"
+decl_stmt|;
+DECL|field|DEFAULT_YARN_WORKFLOW_ID_TAG_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_YARN_WORKFLOW_ID_TAG_PREFIX
+init|=
+literal|"workflowid:"
+decl_stmt|;
 DECL|method|YarnConfiguration ()
 specifier|public
 name|YarnConfiguration
