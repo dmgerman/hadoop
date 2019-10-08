@@ -210,6 +210,20 @@ name|hadoop
 operator|.
 name|io
 operator|.
+name|IOUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
 name|Text
 import|;
 end_import
@@ -755,6 +769,11 @@ index|[]
 name|bytes
 parameter_list|)
 block|{
+name|cache
+operator|=
+literal|null
+expr_stmt|;
+comment|// invalidate the cache
 name|handshakeMsg
 operator|=
 name|bytes
@@ -1122,6 +1141,27 @@ literal|"Could not peek first byte."
 argument_list|)
 throw|;
 block|}
+comment|// this.cache should be assigned the raw bytes from the input data for
+comment|// upgrading compatibility. If we won't mutate fields and call getBytes()
+comment|// for something (e.g retrieve password), we should return the raw bytes
+comment|// instead of serializing the instance self fields to bytes, because we may
+comment|// lose newly added fields which we can't recognize
+name|this
+operator|.
+name|cache
+operator|=
+name|IOUtils
+operator|.
+name|readFullyToByteArray
+argument_list|(
+name|dis
+argument_list|)
+expr_stmt|;
+name|dis
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
 name|dis
 operator|.
 name|mark
