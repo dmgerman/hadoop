@@ -1927,6 +1927,14 @@ name|e
 parameter_list|)
 block|{
 comment|// Fallback
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
@@ -1938,6 +1946,7 @@ argument_list|,
 name|jmxProperties
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|MBeans
 operator|.

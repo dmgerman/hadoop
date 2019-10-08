@@ -421,11 +421,19 @@ name|IOException
 name|ex
 parameter_list|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"Encountered error parsing BlockData from protobuf:"
+literal|"Encountered error parsing BlockData from protobuf: "
 operator|+
 name|ex
 operator|.
@@ -433,6 +441,7 @@ name|getMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 literal|null
 return|;
@@ -740,11 +749,19 @@ name|IOException
 name|ex
 parameter_list|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"Encountered error parsing BlockData from protobuf:"
+literal|"Encountered error parsing BlockData from protobuf: "
 operator|+
 name|ex
 operator|.
@@ -752,6 +769,7 @@ name|getMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 return|return
 name|auditParams

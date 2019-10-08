@@ -297,6 +297,14 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|logger
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|logger
 operator|.
 name|debug
@@ -308,6 +316,7 @@ argument_list|,
 name|datanodeDetails
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Synchronized block should be replaced by container lock,
 comment|// once we have introduced lock inside ContainerInfo.
 synchronized|synchronized

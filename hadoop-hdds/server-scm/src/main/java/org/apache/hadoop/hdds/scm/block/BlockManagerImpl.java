@@ -897,6 +897,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
@@ -910,6 +918,7 @@ argument_list|,
 name|factor
 argument_list|)
 expr_stmt|;
+block|}
 name|ScmUtils
 operator|.
 name|preCheck
@@ -1253,6 +1262,14 @@ argument_list|(
 name|pipeline
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
@@ -1264,6 +1281,7 @@ argument_list|,
 name|containerID
 argument_list|)
 expr_stmt|;
+block|}
 name|pipelineManager
 operator|.
 name|incNumBlocksAllocatedMetric

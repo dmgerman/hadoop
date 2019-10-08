@@ -2947,6 +2947,14 @@ name|IOException
 throws|,
 name|AuthenticationException
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2970,6 +2978,7 @@ name|HDDS_SCM_KERBEROS_KEYTAB_FILE_KEY
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|SecurityUtil
@@ -3655,13 +3664,21 @@ argument_list|(
 name|stat
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Remove expired container stat entry for datanode: "
+literal|"Remove expired container stat entry for "
 operator|+
-literal|"{}."
+literal|"datanode: {}."
 argument_list|,
 name|removalNotification
 operator|.
@@ -3669,6 +3686,7 @@ name|getKey
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}

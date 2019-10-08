@@ -590,6 +590,14 @@ name|getNetworkFullPath
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -599,6 +607,7 @@ argument_list|,
 name|this
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * Remove a node from the network topology. This will be called when a    * existing datanode is removed from the system.    * @param node node to be removed; cannot be null    */
@@ -683,6 +692,14 @@ name|getNetworkFullPath
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -692,6 +709,7 @@ argument_list|,
 name|this
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Check if the tree already contains node<i>node</i>.    * @param node a node    * @return true if<i>node</i> is already in the tree; false otherwise    */
 DECL|method|contains (Node node)
@@ -2116,13 +2134,21 @@ name|ancestorGen
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Choosing node[index={},random={}] from \"{}\" available nodes"
+literal|"Choosing node[index={},random={}] from \"{}\" available "
 operator|+
-literal|" scope=\"{}\", excludedScope=\"{}\", excludeNodes=\"{}\"."
+literal|"nodes, scope=\"{}\", excludedScope=\"{}\", excludeNodes=\"{}\"."
 argument_list|,
 name|nodeIndex
 argument_list|,
@@ -2169,6 +2195,7 @@ argument_list|()
 operator|)
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|ret
 return|;

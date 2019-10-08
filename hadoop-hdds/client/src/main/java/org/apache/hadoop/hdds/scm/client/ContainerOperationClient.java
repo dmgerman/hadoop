@@ -623,6 +623,14 @@ comment|//    ObjectStageChangeRequestProto.Op.create,
 comment|//    ObjectStageChangeRequestProto.Stage.complete);
 comment|// TODO : Should we change the state on the client side ??
 comment|// That makes sense, but it is not needed for the client to work.
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -635,6 +643,7 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -1328,6 +1337,14 @@ literal|null
 decl_stmt|;
 try|try
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1337,6 +1354,7 @@ argument_list|,
 name|pipeline
 argument_list|)
 expr_stmt|;
+block|}
 comment|/*       TODO: two orders here, revisit this later:       1. close on SCM first, then on data node       2. close on data node first, then on SCM        with 1: if client failed after closing on SCM, then there is a       container SCM thinks as closed, but is actually open. Then SCM will no       longer allocate block to it, which is fine. But SCM may later try to       replicate this "closed" container, which I'm not sure is safe.        with 2: if client failed after close on datanode, then there is a       container SCM thinks as open, but is actually closed. Then SCM will still       try to allocate block to it. Which will fail when actually doing the       write. No more data can be written, but at least the correctness and       consistency of existing data will maintain.        For now, take the #2 way.        */
 comment|// Actually close the container on Datanode
 name|client

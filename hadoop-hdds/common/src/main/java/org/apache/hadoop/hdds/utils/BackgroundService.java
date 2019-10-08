@@ -485,6 +485,14 @@ name|void
 name|run
 parameter_list|()
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -494,6 +502,7 @@ argument_list|,
 name|serviceName
 argument_list|)
 expr_stmt|;
+block|}
 name|BackgroundTaskQueue
 name|tasks
 init|=
@@ -512,6 +521,14 @@ comment|// No task found, or some problems to init tasks
 comment|// return and retry in next interval.
 return|return;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -524,6 +541,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|CompletionService
 argument_list|<
 name|BackgroundTaskResult

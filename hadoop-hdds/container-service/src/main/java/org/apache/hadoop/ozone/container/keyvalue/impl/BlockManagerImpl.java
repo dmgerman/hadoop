@@ -743,6 +743,14 @@ operator|.
 name|incrKeyCount
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -769,6 +777,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|data
 operator|.

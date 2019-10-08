@@ -1330,6 +1330,14 @@ argument_list|,
 name|containerID
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
@@ -1345,6 +1353,7 @@ argument_list|,
 name|newState
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Just flush both old and new data sets from the result cache.
 name|flushCache
 argument_list|(

@@ -931,6 +931,14 @@ expr_stmt|;
 block|}
 else|else
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -940,6 +948,7 @@ operator|+
 name|tag
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 name|out

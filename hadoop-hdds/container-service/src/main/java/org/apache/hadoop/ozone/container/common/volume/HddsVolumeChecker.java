@@ -871,6 +871,14 @@ operator|.
 name|incrementAndGet
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
@@ -884,6 +892,7 @@ argument_list|,
 name|minDiskCheckGapMs
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|Collections
 operator|.
@@ -1384,6 +1393,14 @@ case|:
 case|case
 name|DEGRADED
 case|:
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1395,6 +1412,7 @@ argument_list|,
 name|result
 argument_list|)
 expr_stmt|;
+block|}
 name|markHealthy
 argument_list|()
 expr_stmt|;

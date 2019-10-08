@@ -400,6 +400,14 @@ operator|==
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -409,6 +417,7 @@ argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
+block|}
 comment|// wish we could have done this from ContainerData.setState
 name|container
 operator|.

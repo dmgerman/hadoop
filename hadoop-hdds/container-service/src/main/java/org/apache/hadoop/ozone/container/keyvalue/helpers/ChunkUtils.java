@@ -791,6 +791,14 @@ return|;
 block|}
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|log
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|log
 operator|.
 name|debug
@@ -802,6 +810,7 @@ argument_list|,
 name|bufferSize
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Reads data from an existing chunk file.    *    * @param chunkFile - file where data lives.    * @param data - chunk definition.    * @param volumeIOStats statistics collector    * @return ByteBuffer    */
 DECL|method|readData (File chunkFile, ChunkInfo data, VolumeIOStats volumeIOStats)

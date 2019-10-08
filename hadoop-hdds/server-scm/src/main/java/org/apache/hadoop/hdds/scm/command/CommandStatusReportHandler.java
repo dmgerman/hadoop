@@ -269,6 +269,14 @@ argument_list|(
 name|cmdStatusList
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOGGER
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOGGER
 operator|.
 name|trace
@@ -281,6 +289,7 @@ name|getDatanodeDetails
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Route command status to its watchers.
 name|cmdStatusList
 operator|.
@@ -288,6 +297,14 @@ name|forEach
 argument_list|(
 name|cmdStatus
 lambda|->
+block|{
+if|if
+condition|(
+name|LOGGER
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
 block|{
 name|LOGGER
 operator|.
@@ -306,6 +323,7 @@ name|getType
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|cmdStatus

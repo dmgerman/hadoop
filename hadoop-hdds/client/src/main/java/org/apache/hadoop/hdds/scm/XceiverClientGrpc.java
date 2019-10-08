@@ -1083,6 +1083,14 @@ operator|.
 name|getShortUserName
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1110,6 +1118,7 @@ name|getIpAddress
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|NettyChannelBuilder
 name|channelBuilder
 init|=
@@ -1709,6 +1718,14 @@ control|)
 block|{
 try|try
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1722,6 +1739,7 @@ operator|+
 name|dn
 argument_list|)
 expr_stmt|;
+block|}
 comment|// In case the command gets retried on a 2nd datanode,
 comment|// sendCommandAsyncCall will create a new channel and async stub
 comment|// in case these don't exist for the specific datanode.
@@ -2117,6 +2135,14 @@ name|token
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2137,6 +2163,7 @@ name|getNetworkFullPath
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 specifier|final
 name|CompletableFuture
 argument_list|<

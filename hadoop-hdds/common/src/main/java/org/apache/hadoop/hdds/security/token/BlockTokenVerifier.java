@@ -360,6 +360,14 @@ argument_list|(
 name|tokenStr
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOGGER
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOGGER
 operator|.
 name|debug
@@ -371,6 +379,7 @@ argument_list|,
 name|user
 argument_list|)
 expr_stmt|;
+block|}
 name|ByteArrayInputStream
 name|buf
 init|=

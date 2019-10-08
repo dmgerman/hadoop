@@ -417,6 +417,14 @@ operator|+
 literal|"missing DatanodeDetails."
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOGGER
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOGGER
 operator|.
 name|trace
@@ -426,6 +434,7 @@ argument_list|,
 name|dn
 argument_list|)
 expr_stmt|;
+block|}
 for|for
 control|(
 name|PipelineReport

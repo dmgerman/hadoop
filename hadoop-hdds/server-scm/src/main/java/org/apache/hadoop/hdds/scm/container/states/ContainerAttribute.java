@@ -570,6 +570,14 @@ expr_stmt|;
 block|}
 else|else
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -579,6 +587,7 @@ argument_list|,
 name|key
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * Removes a container ID from the set pointed by the key.    *    * @param key - key to identify the set.    * @param value - Container ID    */
@@ -634,6 +643,14 @@ name|value
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -647,6 +664,7 @@ argument_list|,
 name|key
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 literal|false
 return|;
@@ -657,6 +675,14 @@ return|;
 block|}
 else|else
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -666,6 +692,7 @@ argument_list|,
 name|key
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 literal|false
 return|;
@@ -719,6 +746,14 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -728,6 +763,7 @@ argument_list|,
 name|key
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|EMPTY_SET
 return|;
@@ -833,6 +869,14 @@ argument_list|,
 name|value
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
@@ -842,6 +886,7 @@ argument_list|,
 name|currentKey
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 throw|throw
 name|ex

@@ -1788,6 +1788,14 @@ name|blockID
 operator|=
 name|responseBlockID
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1836,6 +1844,7 @@ name|getCurrentBufferIndex
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 comment|// for standalone protocol, logIndex will always be 0.
 name|commitWatcher
 operator|.
@@ -1863,6 +1872,14 @@ argument_list|(
 name|e
 lambda|->
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1879,6 +1896,7 @@ name|getLocalizedMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|CompletionException
 name|ce
 init|=
@@ -2677,6 +2695,14 @@ argument_list|(
 name|e
 lambda|->
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2700,6 +2726,7 @@ name|getLocalizedMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|CompletionException
 name|ce
 init|=
@@ -2746,6 +2773,14 @@ name|e
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2766,6 +2801,7 @@ operator|+
 name|effectiveChunkSize
 argument_list|)
 expr_stmt|;
+block|}
 name|containerBlockData
 operator|.
 name|addChunks

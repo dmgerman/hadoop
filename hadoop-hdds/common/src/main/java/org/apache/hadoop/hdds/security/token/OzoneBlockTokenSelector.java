@@ -240,6 +240,14 @@ name|service
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
@@ -249,6 +257,7 @@ argument_list|,
 name|service
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 operator|(
 name|Token
@@ -343,6 +352,14 @@ name|service
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
@@ -352,6 +369,7 @@ argument_list|,
 name|service
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 operator|(
 name|Token

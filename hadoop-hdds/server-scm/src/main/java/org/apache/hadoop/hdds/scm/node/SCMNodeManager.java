@@ -1500,6 +1500,14 @@ name|NodeAlreadyExistsException
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
@@ -1512,6 +1520,7 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 return|return
 name|RegisteredCommand
@@ -3058,6 +3067,14 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -3069,6 +3086,7 @@ argument_list|,
 name|location
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|location
 return|;

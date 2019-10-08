@@ -1047,6 +1047,14 @@ argument_list|(
 name|msg
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
@@ -1067,6 +1075,7 @@ name|getTraceID
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|AuditAction
 name|action
 init|=
@@ -3179,6 +3188,14 @@ expr_stmt|;
 block|}
 break|break;
 default|default:
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -3188,6 +3205,7 @@ operator|+
 name|result
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|//TODO: use GRPC to fetch user and ip details

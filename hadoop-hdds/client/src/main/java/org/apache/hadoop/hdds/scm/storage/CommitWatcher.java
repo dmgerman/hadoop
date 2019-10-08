@@ -567,6 +567,14 @@ operator|.
 name|getAsLong
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -578,6 +586,7 @@ operator|+
 literal|" to catch up"
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|watchForCommit
 argument_list|(
@@ -637,6 +646,14 @@ operator|.
 name|getAsLong
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -648,6 +665,7 @@ operator|+
 literal|" to catch up"
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|watchForCommit
 argument_list|(

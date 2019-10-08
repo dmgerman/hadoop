@@ -1196,6 +1196,14 @@ name|getDeleteTransactionId
 argument_list|()
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1222,6 +1230,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 return|return;
 block|}
 name|int
@@ -1351,6 +1360,14 @@ operator|!=
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1369,6 +1386,7 @@ name|containerId
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 continue|continue;
 block|}
 comment|// Found the block in container db,
@@ -1404,6 +1422,14 @@ expr_stmt|;
 name|newDeletionBlocks
 operator|++
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1415,6 +1441,7 @@ argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -1443,6 +1470,14 @@ block|}
 block|}
 else|else
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1456,6 +1491,7 @@ argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 name|containerDB

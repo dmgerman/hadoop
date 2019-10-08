@@ -1226,6 +1226,14 @@ argument_list|(
 name|pipeline
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1240,6 +1248,7 @@ argument_list|,
 name|group
 argument_list|)
 expr_stmt|;
+block|}
 name|callRatisRpc
 argument_list|(
 name|pipeline

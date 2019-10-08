@@ -275,6 +275,14 @@ name|NoSuchProviderException
 throws|,
 name|NoSuchAlgorithmException
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -288,6 +296,7 @@ argument_list|,
 name|provider
 argument_list|)
 expr_stmt|;
+block|}
 name|KeyPairGenerator
 name|generator
 init|=

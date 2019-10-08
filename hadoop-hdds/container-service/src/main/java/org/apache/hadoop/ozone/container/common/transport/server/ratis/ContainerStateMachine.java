@@ -2346,6 +2346,14 @@ name|DispatcherContext
 name|context
 parameter_list|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
@@ -2375,6 +2383,7 @@ name|getTraceID
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|isBlockTokenEnabled
@@ -2456,6 +2465,14 @@ argument_list|,
 name|context
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
@@ -2467,6 +2484,7 @@ argument_list|,
 name|response
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|response
 return|;
@@ -2753,6 +2771,14 @@ argument_list|,
 name|writeChunkFuture
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2781,6 +2807,7 @@ name|getChunkName
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Remove the future once it finishes execution from the
 comment|// writeChunkFutureMap.
 name|writeChunkFuture
@@ -2894,6 +2921,14 @@ name|getLen
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2922,6 +2957,7 @@ name|getChunkName
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|raftFuture
 operator|.
 name|complete
@@ -4303,6 +4339,14 @@ expr_stmt|;
 block|}
 else|else
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -4331,6 +4375,7 @@ name|getResult
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|applyTransactionFuture
 operator|.
 name|complete

@@ -241,6 +241,14 @@ block|{
 case|case
 name|CLOSE
 case|:
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -259,6 +267,7 @@ name|getReason
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|publisher
 operator|.
 name|fireEvent

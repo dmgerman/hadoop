@@ -1283,6 +1283,14 @@ name|sizeRequired
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1297,6 +1305,7 @@ argument_list|,
 name|sizeRequired
 argument_list|)
 expr_stmt|;
+block|}
 name|metrics
 operator|.
 name|incrDatanodeChooseSuccessCount

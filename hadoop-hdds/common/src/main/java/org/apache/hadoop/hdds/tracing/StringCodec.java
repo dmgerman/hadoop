@@ -235,6 +235,14 @@ operator|!=
 literal|4
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -244,6 +252,7 @@ argument_list|,
 name|value
 argument_list|)
 expr_stmt|;
+block|}
 throw|throw
 operator|new
 name|MalformedTracerStateStringException

@@ -599,6 +599,14 @@ case|:
 case|case
 name|INVALID
 case|:
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -615,6 +623,7 @@ name|getContainerState
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 default|default:
 break|break;
 block|}

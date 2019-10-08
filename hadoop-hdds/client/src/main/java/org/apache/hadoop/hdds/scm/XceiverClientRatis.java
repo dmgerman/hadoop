@@ -1142,6 +1142,14 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1165,6 +1173,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 comment|// TODO : XceiverClient ratis should pass the config value of
 comment|// maxOutstandingRequests so as to set the upper bound on max no of async
 comment|// requests to be handled by raft client
@@ -1416,6 +1425,14 @@ name|request
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1425,6 +1442,7 @@ argument_list|,
 name|message
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|getClient
 argument_list|()
@@ -1437,6 +1455,14 @@ return|;
 block|}
 else|else
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1446,6 +1472,7 @@ argument_list|,
 name|message
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|getClient
 argument_list|()
@@ -1614,6 +1641,14 @@ return|return
 name|clientReply
 return|;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1625,6 +1660,7 @@ argument_list|,
 name|timeout
 argument_list|)
 expr_stmt|;
+block|}
 name|RaftClientReply
 name|reply
 decl_stmt|;
@@ -1904,6 +1940,14 @@ name|e
 parameter_list|)
 lambda|->
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1937,6 +1981,7 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+block|}
 name|metrics
 operator|.
 name|decrPendingContainerOpsMetrics
