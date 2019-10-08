@@ -4306,7 +4306,7 @@ operator|.
 name|getLock
 argument_list|()
 operator|.
-name|acquireLock
+name|acquireReadLock
 argument_list|(
 name|BUCKET_LOCK
 argument_list|,
@@ -4629,7 +4629,7 @@ operator|.
 name|getLock
 argument_list|()
 operator|.
-name|releaseLock
+name|releaseReadLock
 argument_list|(
 name|BUCKET_LOCK
 argument_list|,
@@ -7963,7 +7963,7 @@ operator|.
 name|getLock
 argument_list|()
 operator|.
-name|acquireLock
+name|acquireReadLock
 argument_list|(
 name|BUCKET_LOCK
 argument_list|,
@@ -8186,7 +8186,7 @@ operator|.
 name|getLock
 argument_list|()
 operator|.
-name|releaseLock
+name|releaseReadLock
 argument_list|(
 name|BUCKET_LOCK
 argument_list|,
@@ -8268,7 +8268,7 @@ operator|.
 name|getLock
 argument_list|()
 operator|.
-name|acquireLock
+name|acquireReadLock
 argument_list|(
 name|BUCKET_LOCK
 argument_list|,
@@ -8705,7 +8705,7 @@ operator|.
 name|getLock
 argument_list|()
 operator|.
-name|releaseLock
+name|releaseReadLock
 argument_list|(
 name|BUCKET_LOCK
 argument_list|,
@@ -9406,7 +9406,7 @@ operator|.
 name|getLock
 argument_list|()
 operator|.
-name|acquireLock
+name|acquireReadLock
 argument_list|(
 name|BUCKET_LOCK
 argument_list|,
@@ -9520,7 +9520,7 @@ operator|.
 name|getLock
 argument_list|()
 operator|.
-name|releaseLock
+name|releaseReadLock
 argument_list|(
 name|BUCKET_LOCK
 argument_list|,
@@ -9642,7 +9642,7 @@ operator|.
 name|getLock
 argument_list|()
 operator|.
-name|acquireLock
+name|acquireReadLock
 argument_list|(
 name|BUCKET_LOCK
 argument_list|,
@@ -9855,7 +9855,7 @@ operator|.
 name|getLock
 argument_list|()
 operator|.
-name|releaseLock
+name|releaseReadLock
 argument_list|(
 name|BUCKET_LOCK
 argument_list|,
@@ -10049,7 +10049,7 @@ operator|.
 name|getLock
 argument_list|()
 operator|.
-name|acquireLock
+name|acquireReadLock
 argument_list|(
 name|BUCKET_LOCK
 argument_list|,
@@ -10278,7 +10278,7 @@ operator|.
 name|getLock
 argument_list|()
 operator|.
-name|releaseLock
+name|releaseReadLock
 argument_list|(
 name|BUCKET_LOCK
 argument_list|,
@@ -10885,7 +10885,7 @@ operator|.
 name|getLock
 argument_list|()
 operator|.
-name|acquireLock
+name|acquireReadLock
 argument_list|(
 name|BUCKET_LOCK
 argument_list|,
@@ -10947,7 +10947,7 @@ operator|.
 name|getLock
 argument_list|()
 operator|.
-name|releaseLock
+name|releaseReadLock
 argument_list|(
 name|BUCKET_LOCK
 argument_list|,
@@ -11044,7 +11044,7 @@ operator|.
 name|getLock
 argument_list|()
 operator|.
-name|acquireLock
+name|acquireReadLock
 argument_list|(
 name|BUCKET_LOCK
 argument_list|,
@@ -11388,7 +11388,7 @@ operator|.
 name|getLock
 argument_list|()
 operator|.
-name|releaseLock
+name|releaseReadLock
 argument_list|(
 name|BUCKET_LOCK
 argument_list|,

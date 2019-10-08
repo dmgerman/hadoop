@@ -728,7 +728,7 @@ init|=
 literal|null
 decl_stmt|;
 name|boolean
-name|acquiredLock
+name|acquiredBucketLock
 init|=
 literal|false
 decl_stmt|;
@@ -778,15 +778,15 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|// acquire lock
-name|acquiredLock
+comment|// acquire lock.
+name|acquiredBucketLock
 operator|=
 name|omMetadataManager
 operator|.
 name|getLock
 argument_list|()
 operator|.
-name|acquireLock
+name|acquireWriteLock
 argument_list|(
 name|BUCKET_LOCK
 argument_list|,
@@ -1138,7 +1138,7 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|acquiredLock
+name|acquiredBucketLock
 condition|)
 block|{
 name|omMetadataManager
@@ -1146,7 +1146,7 @@ operator|.
 name|getLock
 argument_list|()
 operator|.
-name|releaseLock
+name|releaseWriteLock
 argument_list|(
 name|BUCKET_LOCK
 argument_list|,

@@ -42,6 +42,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|function
+operator|.
+name|Consumer
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|slf4j
@@ -116,6 +128,24 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|READ_LOCK
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|READ_LOCK
+init|=
+literal|"read"
+decl_stmt|;
+DECL|field|WRITE_LOCK
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|WRITE_LOCK
+init|=
+literal|"write"
+decl_stmt|;
 DECL|field|manager
 specifier|private
 specifier|final
@@ -171,6 +201,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Acquire lock on resource.    *    * For S3_BUCKET_LOCK, VOLUME_LOCK, BUCKET_LOCK type resource, same    * thread acquiring lock again is allowed.    *    * For USER_LOCK, PREFIX_LOCK, S3_SECRET_LOCK type resource, same thread    * acquiring lock again is not allowed.    *    * Special Note for USER_LOCK: Single thread can acquire single user lock/    * multi user lock. But not both at the same time.    * @param resource - Type of the resource.    * @param resources - Resource names on which user want to acquire lock.    * For Resource type BUCKET_LOCK, first param should be volume, second param    * should be bucket name. For remaining all resource only one param should    * be passed.    */
+annotation|@
+name|Deprecated
 DECL|method|acquireLock (Resource resource, String... resources)
 specifier|public
 name|boolean
@@ -194,6 +226,120 @@ argument_list|,
 name|resources
 argument_list|)
 decl_stmt|;
+return|return
+name|lock
+argument_list|(
+name|resource
+argument_list|,
+name|resourceName
+argument_list|,
+name|manager
+operator|::
+name|writeLock
+argument_list|,
+name|WRITE_LOCK
+argument_list|)
+return|;
+block|}
+comment|/**    * Acquire read lock on resource.    *    * For S3_BUCKET_LOCK, VOLUME_LOCK, BUCKET_LOCK type resource, same    * thread acquiring lock again is allowed.    *    * For USER_LOCK, PREFIX_LOCK, S3_SECRET_LOCK type resource, same thread    * acquiring lock again is not allowed.    *    * Special Note for USER_LOCK: Single thread can acquire single user lock/    * multi user lock. But not both at the same time.    * @param resource - Type of the resource.    * @param resources - Resource names on which user want to acquire lock.    * For Resource type BUCKET_LOCK, first param should be volume, second param    * should be bucket name. For remaining all resource only one param should    * be passed.    */
+DECL|method|acquireReadLock (Resource resource, String... resources)
+specifier|public
+name|boolean
+name|acquireReadLock
+parameter_list|(
+name|Resource
+name|resource
+parameter_list|,
+name|String
+modifier|...
+name|resources
+parameter_list|)
+block|{
+name|String
+name|resourceName
+init|=
+name|generateResourceName
+argument_list|(
+name|resource
+argument_list|,
+name|resources
+argument_list|)
+decl_stmt|;
+return|return
+name|lock
+argument_list|(
+name|resource
+argument_list|,
+name|resourceName
+argument_list|,
+name|manager
+operator|::
+name|readLock
+argument_list|,
+name|READ_LOCK
+argument_list|)
+return|;
+block|}
+comment|/**    * Acquire write lock on resource.    *    * For S3_BUCKET_LOCK, VOLUME_LOCK, BUCKET_LOCK type resource, same    * thread acquiring lock again is allowed.    *    * For USER_LOCK, PREFIX_LOCK, S3_SECRET_LOCK type resource, same thread    * acquiring lock again is not allowed.    *    * Special Note for USER_LOCK: Single thread can acquire single user lock/    * multi user lock. But not both at the same time.    * @param resource - Type of the resource.    * @param resources - Resource names on which user want to acquire lock.    * For Resource type BUCKET_LOCK, first param should be volume, second param    * should be bucket name. For remaining all resource only one param should    * be passed.    */
+DECL|method|acquireWriteLock (Resource resource, String... resources)
+specifier|public
+name|boolean
+name|acquireWriteLock
+parameter_list|(
+name|Resource
+name|resource
+parameter_list|,
+name|String
+modifier|...
+name|resources
+parameter_list|)
+block|{
+name|String
+name|resourceName
+init|=
+name|generateResourceName
+argument_list|(
+name|resource
+argument_list|,
+name|resources
+argument_list|)
+decl_stmt|;
+return|return
+name|lock
+argument_list|(
+name|resource
+argument_list|,
+name|resourceName
+argument_list|,
+name|manager
+operator|::
+name|writeLock
+argument_list|,
+name|WRITE_LOCK
+argument_list|)
+return|;
+block|}
+DECL|method|lock (Resource resource, String resourceName, Consumer<String> lockFn, String lockType)
+specifier|private
+name|boolean
+name|lock
+parameter_list|(
+name|Resource
+name|resource
+parameter_list|,
+name|String
+name|resourceName
+parameter_list|,
+name|Consumer
+argument_list|<
+name|String
+argument_list|>
+name|lockFn
+parameter_list|,
+name|String
+name|lockType
+parameter_list|)
+block|{
 if|if
 condition|(
 operator|!
@@ -233,9 +379,9 @@ throw|;
 block|}
 else|else
 block|{
-name|manager
+name|lockFn
 operator|.
-name|lock
+name|accept
 argument_list|(
 name|resourceName
 argument_list|)
@@ -244,7 +390,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Acquired {} lock on resource {}"
+literal|"Acquired {} {} lock on resource {}"
+argument_list|,
+name|lockType
 argument_list|,
 name|resource
 operator|.
@@ -599,7 +747,7 @@ block|{
 comment|// both users are equal.
 name|manager
 operator|.
-name|lock
+name|writeLock
 argument_list|(
 name|firstUser
 argument_list|)
@@ -609,7 +757,7 @@ else|else
 block|{
 name|manager
 operator|.
-name|lock
+name|writeLock
 argument_list|(
 name|firstUser
 argument_list|)
@@ -618,7 +766,7 @@ try|try
 block|{
 name|manager
 operator|.
-name|lock
+name|writeLock
 argument_list|(
 name|secondUser
 argument_list|)
@@ -634,7 +782,7 @@ comment|// We got an exception acquiring 2nd user lock. Release already
 comment|// acquired user lock, and throw exception to the user.
 name|manager
 operator|.
-name|unlock
+name|writeUnlock
 argument_list|(
 name|firstUser
 argument_list|)
@@ -648,7 +796,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Acquired {} lock on resource {} and {}"
+literal|"Acquired Write {} lock on resource {} and {}"
 argument_list|,
 name|resource
 operator|.
@@ -761,7 +909,7 @@ block|{
 comment|// both users are equal.
 name|manager
 operator|.
-name|unlock
+name|writeUnlock
 argument_list|(
 name|firstUser
 argument_list|)
@@ -771,14 +919,14 @@ else|else
 block|{
 name|manager
 operator|.
-name|unlock
+name|writeUnlock
 argument_list|(
 name|firstUser
 argument_list|)
 expr_stmt|;
 name|manager
 operator|.
-name|unlock
+name|writeUnlock
 argument_list|(
 name|secondUser
 argument_list|)
@@ -788,7 +936,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Release {} lock on resource {} and {}"
+literal|"Release Write {} lock on resource {} and {}"
 argument_list|,
 name|resource
 operator|.
@@ -815,7 +963,85 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Release lock on resource.    * @param resource - Type of the resource.    * @param resources - Resource names on which user want to acquire lock.    * For Resource type BUCKET_LOCK, first param should be volume, second param    * should be bucket name. For remaining all resource only one param should    * be passed.    */
+comment|/**    * Release write lock on resource.    * @param resource - Type of the resource.    * @param resources - Resource names on which user want to acquire lock.    * For Resource type BUCKET_LOCK, first param should be volume, second param    * should be bucket name. For remaining all resource only one param should    * be passed.    */
+DECL|method|releaseWriteLock (Resource resource, String... resources)
+specifier|public
+name|void
+name|releaseWriteLock
+parameter_list|(
+name|Resource
+name|resource
+parameter_list|,
+name|String
+modifier|...
+name|resources
+parameter_list|)
+block|{
+name|String
+name|resourceName
+init|=
+name|generateResourceName
+argument_list|(
+name|resource
+argument_list|,
+name|resources
+argument_list|)
+decl_stmt|;
+name|unlock
+argument_list|(
+name|resource
+argument_list|,
+name|resourceName
+argument_list|,
+name|manager
+operator|::
+name|writeUnlock
+argument_list|,
+name|WRITE_LOCK
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Release read lock on resource.    * @param resource - Type of the resource.    * @param resources - Resource names on which user want to acquire lock.    * For Resource type BUCKET_LOCK, first param should be volume, second param    * should be bucket name. For remaining all resource only one param should    * be passed.    */
+DECL|method|releaseReadLock (Resource resource, String... resources)
+specifier|public
+name|void
+name|releaseReadLock
+parameter_list|(
+name|Resource
+name|resource
+parameter_list|,
+name|String
+modifier|...
+name|resources
+parameter_list|)
+block|{
+name|String
+name|resourceName
+init|=
+name|generateResourceName
+argument_list|(
+name|resource
+argument_list|,
+name|resources
+argument_list|)
+decl_stmt|;
+name|unlock
+argument_list|(
+name|resource
+argument_list|,
+name|resourceName
+argument_list|,
+name|manager
+operator|::
+name|readUnlock
+argument_list|,
+name|READ_LOCK
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Release write lock on resource.    * @param resource - Type of the resource.    * @param resources - Resource names on which user want to acquire lock.    * For Resource type BUCKET_LOCK, first param should be volume, second param    * should be bucket name. For remaining all resource only one param should    * be passed.    */
+annotation|@
+name|Deprecated
 DECL|method|releaseLock (Resource resource, String... resources)
 specifier|public
 name|void
@@ -839,12 +1065,47 @@ argument_list|,
 name|resources
 argument_list|)
 decl_stmt|;
+name|unlock
+argument_list|(
+name|resource
+argument_list|,
+name|resourceName
+argument_list|,
+name|manager
+operator|::
+name|writeUnlock
+argument_list|,
+name|WRITE_LOCK
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|unlock (Resource resource, String resourceName, Consumer<String> lockFn, String lockType)
+specifier|private
+name|void
+name|unlock
+parameter_list|(
+name|Resource
+name|resource
+parameter_list|,
+name|String
+name|resourceName
+parameter_list|,
+name|Consumer
+argument_list|<
+name|String
+argument_list|>
+name|lockFn
+parameter_list|,
+name|String
+name|lockType
+parameter_list|)
+block|{
 comment|// TODO: Not checking release of higher order level lock happened while
 comment|// releasing lower order level lock, as for that we need counter for
 comment|// locks, as some locks support acquiring lock again.
-name|manager
+name|lockFn
 operator|.
-name|unlock
+name|accept
 argument_list|(
 name|resourceName
 argument_list|)
@@ -854,11 +1115,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Release {}, lock on resource {}"
+literal|"Release {} {}, lock on resource {}"
 argument_list|,
-name|resource
-operator|.
-name|name
+name|lockType
 argument_list|,
 name|resource
 operator|.

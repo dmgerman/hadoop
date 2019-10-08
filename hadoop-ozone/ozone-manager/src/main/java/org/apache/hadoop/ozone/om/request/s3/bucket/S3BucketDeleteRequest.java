@@ -701,7 +701,7 @@ operator|.
 name|getLock
 argument_list|()
 operator|.
-name|acquireLock
+name|acquireWriteLock
 argument_list|(
 name|S3_BUCKET_LOCK
 argument_list|,
@@ -762,7 +762,7 @@ operator|.
 name|getLock
 argument_list|()
 operator|.
-name|acquireLock
+name|acquireWriteLock
 argument_list|(
 name|BUCKET_LOCK
 argument_list|,
@@ -929,7 +929,7 @@ operator|.
 name|getLock
 argument_list|()
 operator|.
-name|releaseLock
+name|releaseWriteLock
 argument_list|(
 name|BUCKET_LOCK
 argument_list|,
@@ -949,7 +949,7 @@ operator|.
 name|getLock
 argument_list|()
 operator|.
-name|releaseLock
+name|releaseWriteLock
 argument_list|(
 name|S3_BUCKET_LOCK
 argument_list|,
