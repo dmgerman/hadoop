@@ -2386,20 +2386,40 @@ argument_list|()
 assert|;
 comment|// Calculating the number of live datanodes is time-consuming
 comment|// in large clusters. Skip it when datanodeThreshold is zero.
-name|int
-name|datanodeNum
+comment|// We need to evaluate getNumLiveDataNodes only when
+comment|// (blockSafe>= blockThreshold) is true and hence moving evaluation
+comment|// of datanodeNum conditional to isBlockThresholdMet as well
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+name|boolean
+name|isBlockThresholdMet
 init|=
-literal|0
+operator|(
+name|blockSafe
+operator|>=
+name|blockThreshold
+operator|)
+decl_stmt|;
+name|boolean
+name|isDatanodeThresholdMet
+init|=
+literal|true
 decl_stmt|;
 if|if
 condition|(
+name|isBlockThresholdMet
+operator|&&
 name|datanodeThreshold
 operator|>
 literal|0
 condition|)
 block|{
+name|int
 name|datanodeNum
-operator|=
+init|=
 name|blockManager
 operator|.
 name|getDatanodeManager
@@ -2407,21 +2427,20 @@ argument_list|()
 operator|.
 name|getNumLiveDataNodes
 argument_list|()
-expr_stmt|;
-block|}
-synchronized|synchronized
-init|(
-name|this
-init|)
-block|{
-return|return
-name|blockSafe
-operator|>=
-name|blockThreshold
-operator|&&
+decl_stmt|;
+name|isDatanodeThresholdMet
+operator|=
+operator|(
 name|datanodeNum
 operator|>=
 name|datanodeThreshold
+operator|)
+expr_stmt|;
+block|}
+return|return
+name|isBlockThresholdMet
+operator|&&
+name|isDatanodeThresholdMet
 return|;
 block|}
 block|}
