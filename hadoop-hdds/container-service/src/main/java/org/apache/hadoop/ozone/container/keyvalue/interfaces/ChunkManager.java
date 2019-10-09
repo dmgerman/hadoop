@@ -169,8 +169,7 @@ name|StorageContainerException
 function_decl|;
 comment|/**    * reads the data defined by a chunk.    *    * @param container - Container for the chunk    * @param blockID - ID of the block.    * @param info - ChunkInfo.    * @param dispatcherContext - dispatcher context info.    * @return  byte array    * @throws StorageContainerException    *    * TODO: Right now we do not support partial reads and writes of chunks.    * TODO: Explore if we need to do that for ozone.    */
 DECL|method|readChunk (Container container, BlockID blockID, ChunkInfo info, DispatcherContext dispatcherContext)
-name|byte
-index|[]
+name|ByteBuffer
 name|readChunk
 parameter_list|(
 name|Container

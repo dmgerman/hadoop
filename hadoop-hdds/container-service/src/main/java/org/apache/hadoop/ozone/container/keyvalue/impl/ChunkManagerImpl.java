@@ -967,8 +967,7 @@ block|}
 comment|/**    * reads the data defined by a chunk.    *    * @param container - Container for the chunk    * @param blockID - ID of the block.    * @param info - ChunkInfo.    * @param dispatcherContext dispatcher context info.    * @return byte array    * @throws StorageContainerException    * TODO: Right now we do not support partial reads and writes of chunks.    * TODO: Explore if we need to do that for ozone.    */
 DECL|method|readChunk (Container container, BlockID blockID, ChunkInfo info, DispatcherContext dispatcherContext)
 specifier|public
-name|byte
-index|[]
+name|ByteBuffer
 name|readChunk
 parameter_list|(
 name|Container
@@ -985,8 +984,6 @@ name|dispatcherContext
 parameter_list|)
 throws|throws
 name|StorageContainerException
-block|{
-try|try
 block|{
 name|KeyValueContainerData
 name|containerData
@@ -1115,73 +1112,7 @@ argument_list|)
 expr_stmt|;
 return|return
 name|data
-operator|.
-name|array
-argument_list|()
 return|;
-block|}
-block|}
-catch|catch
-parameter_list|(
-name|ExecutionException
-name|ex
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"read data failed. error: {}"
-argument_list|,
-name|ex
-argument_list|)
-expr_stmt|;
-throw|throw
-operator|new
-name|StorageContainerException
-argument_list|(
-literal|"Internal error: "
-argument_list|,
-name|ex
-argument_list|,
-name|CONTAINER_INTERNAL_ERROR
-argument_list|)
-throw|;
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|e
-parameter_list|)
-block|{
-name|Thread
-operator|.
-name|currentThread
-argument_list|()
-operator|.
-name|interrupt
-argument_list|()
-expr_stmt|;
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"read data failed. error: {}"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-throw|throw
-operator|new
-name|StorageContainerException
-argument_list|(
-literal|"Internal error: "
-argument_list|,
-name|e
-argument_list|,
-name|CONTAINER_INTERNAL_ERROR
-argument_list|)
-throw|;
 block|}
 return|return
 literal|null

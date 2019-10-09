@@ -42,6 +42,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|nio
+operator|.
+name|ByteBuffer
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|security
 operator|.
 name|MessageDigest
@@ -1480,8 +1490,7 @@ comment|/**    * Generates some data of the requested len.    *    * @param len 
 DECL|method|getData (int len)
 specifier|public
 specifier|static
-name|byte
-index|[]
+name|ByteBuffer
 name|getData
 parameter_list|(
 name|int
@@ -1506,11 +1515,16 @@ name|data
 argument_list|)
 expr_stmt|;
 return|return
+name|ByteBuffer
+operator|.
+name|wrap
+argument_list|(
 name|data
+argument_list|)
 return|;
 block|}
 comment|/**    * Computes the hash and sets the value correctly.    *    * @param info - chunk info.    * @param data - data array    * @throws NoSuchAlgorithmException    */
-DECL|method|setDataChecksum (ChunkInfo info, byte[] data)
+DECL|method|setDataChecksum (ChunkInfo info, ByteBuffer data)
 specifier|public
 specifier|static
 name|void
@@ -1519,8 +1533,7 @@ parameter_list|(
 name|ChunkInfo
 name|info
 parameter_list|,
-name|byte
-index|[]
+name|ByteBuffer
 name|data
 parameter_list|)
 throws|throws
@@ -1602,8 +1615,7 @@ name|getDatanodeBlockIDProtobuf
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|byte
-index|[]
+name|ByteBuffer
 name|data
 init|=
 name|getData
@@ -1746,8 +1758,7 @@ operator|.
 name|newBuilder
 argument_list|()
 decl_stmt|;
-name|byte
-index|[]
+name|ByteBuffer
 name|data
 init|=
 name|getData

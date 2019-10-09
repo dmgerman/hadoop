@@ -28,6 +28,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|base
 operator|.
 name|Preconditions
@@ -706,11 +720,18 @@ operator|)
 name|streamBufferMaxSize
 operator|/
 name|chunkSize
+argument_list|,
+name|xceiverClientManager
+operator|.
+name|byteBufferToByteStringConversion
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * A constructor for testing purpose only.    *    * @see KeyOutputStream#KeyOutputStream()    */
+annotation|@
+name|VisibleForTesting
 DECL|method|BlockOutputStreamEntryPool ()
-specifier|public
 name|BlockOutputStreamEntryPool
 parameter_list|()
 block|{

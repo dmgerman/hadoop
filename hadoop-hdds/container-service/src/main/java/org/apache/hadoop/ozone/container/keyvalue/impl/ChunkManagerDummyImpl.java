@@ -569,8 +569,7 @@ annotation|@
 name|Override
 DECL|method|readChunk (Container container, BlockID blockID, ChunkInfo info, DispatcherContext dispatcherContext)
 specifier|public
-name|byte
-index|[]
+name|ByteBuffer
 name|readChunk
 parameter_list|(
 name|Container
@@ -669,9 +668,6 @@ argument_list|)
 expr_stmt|;
 return|return
 name|data
-operator|.
-name|array
-argument_list|()
 return|;
 block|}
 comment|/**    * Delete a given chunk - Do nothing except stats.    *    * @param container - Container for the chunk    * @param blockID - ID of the block    * @param info - Chunk Info    */
