@@ -133,6 +133,14 @@ name|Configuration
 name|getConfiguration
 parameter_list|()
 function_decl|;
+comment|/**    * Get the last updated scheduler config version.    * @return Last updated scheduler config version.    */
+DECL|method|getConfigVersion ()
+name|long
+name|getConfigVersion
+parameter_list|()
+throws|throws
+name|Exception
+function_decl|;
 DECL|method|formatConfigurationInStore (Configuration conf)
 name|void
 name|formatConfigurationInStore
