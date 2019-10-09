@@ -446,8 +446,6 @@ name|int
 name|numDNs
 init|=
 name|groupSize
-operator|+
-literal|1
 decl_stmt|;
 annotation|@
 name|Before
@@ -796,23 +794,33 @@ operator|.
 name|triggerBlockReports
 argument_list|()
 expr_stmt|;
-comment|// add to invalidates
+comment|// delete redundant block
 name|cluster
 operator|.
 name|triggerHeartbeats
 argument_list|()
 expr_stmt|;
-comment|// datanode delete block
+comment|//wait for IBR
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|1100
+argument_list|)
+expr_stmt|;
+comment|// trigger reconstruction
 name|cluster
 operator|.
 name|triggerHeartbeats
 argument_list|()
 expr_stmt|;
-comment|// update blocksMap
-name|cluster
+comment|//wait for IBR
+name|Thread
 operator|.
-name|triggerBlockReports
-argument_list|()
+name|sleep
+argument_list|(
+literal|1100
+argument_list|)
 expr_stmt|;
 name|HashSet
 argument_list|<
