@@ -72,6 +72,18 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|ConcurrentSkipListMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|ConcurrentSkipListSet
 import|;
 end_import
@@ -193,7 +205,7 @@ block|{
 DECL|field|cache
 specifier|private
 specifier|final
-name|ConcurrentHashMap
+name|Map
 argument_list|<
 name|CACHEKEY
 argument_list|,
@@ -231,6 +243,27 @@ name|CacheCleanupPolicy
 name|cleanupPolicy
 parameter_list|)
 block|{
+comment|// As for full table cache only we need elements to be inserted in sorted
+comment|// manner, so that list will be easy. For other we can go with Hash map.
+if|if
+condition|(
+name|cleanupPolicy
+operator|==
+name|CacheCleanupPolicy
+operator|.
+name|NEVER
+condition|)
+block|{
+name|cache
+operator|=
+operator|new
+name|ConcurrentSkipListMap
+argument_list|<>
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
 name|cache
 operator|=
 operator|new
@@ -238,6 +271,7 @@ name|ConcurrentHashMap
 argument_list|<>
 argument_list|()
 expr_stmt|;
+block|}
 name|epochEntries
 operator|=
 operator|new
