@@ -5011,7 +5011,7 @@ return|return
 name|threadSet
 return|;
 block|}
-comment|/**    * Get a set containing the names of all active threads.    * @return the current set of threads.    */
+comment|/**    * Get a set containing the names of all active threads,    * stripping out all test runner threads.    * @return the current set of threads.    */
 DECL|method|getCurrentThreadNames ()
 specifier|public
 specifier|static
@@ -5022,7 +5022,12 @@ argument_list|>
 name|getCurrentThreadNames
 parameter_list|()
 block|{
-return|return
+name|TreeSet
+argument_list|<
+name|String
+argument_list|>
+name|threads
+init|=
 name|Thread
 operator|.
 name|getAllStackTraces
@@ -5041,6 +5046,30 @@ operator|::
 name|getName
 argument_list|)
 operator|.
+name|filter
+argument_list|(
+name|n
+lambda|->
+name|n
+operator|.
+name|startsWith
+argument_list|(
+literal|"JUnit"
+argument_list|)
+argument_list|)
+operator|.
+name|filter
+argument_list|(
+name|n
+lambda|->
+name|n
+operator|.
+name|startsWith
+argument_list|(
+literal|"surefire"
+argument_list|)
+argument_list|)
+operator|.
 name|collect
 argument_list|(
 name|Collectors
@@ -5052,6 +5081,9 @@ operator|::
 operator|new
 argument_list|)
 argument_list|)
+decl_stmt|;
+return|return
+name|threads
 return|;
 block|}
 block|}
