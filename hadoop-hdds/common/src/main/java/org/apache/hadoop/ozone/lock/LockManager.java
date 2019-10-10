@@ -169,17 +169,8 @@ argument_list|<
 name|ActiveLock
 argument_list|>
 name|lockPool
-init|=
-operator|new
-name|GenericObjectPool
-argument_list|<>
-argument_list|(
-operator|new
-name|PooledLockFactory
-argument_list|()
-argument_list|)
 decl_stmt|;
-comment|/**    * Creates new LockManager instance with the given Configuration.    *    * @param conf Configuration object    */
+comment|/**    * Creates new LockManager instance with the given Configuration.and uses    * non-fair mode for locks.    *    * @param conf Configuration object    */
 DECL|method|LockManager (final Configuration conf)
 specifier|public
 name|LockManager
@@ -187,6 +178,27 @@ parameter_list|(
 specifier|final
 name|Configuration
 name|conf
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|conf
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Creates new LockManager instance with the given Configuration.    *    * @param conf Configuration object    * @param fair - true to use fair lock ordering, else non-fair lock ordering.    */
+DECL|method|LockManager (final Configuration conf, boolean fair)
+specifier|public
+name|LockManager
+parameter_list|(
+specifier|final
+name|Configuration
+name|conf
+parameter_list|,
+name|boolean
+name|fair
 parameter_list|)
 block|{
 specifier|final
@@ -206,6 +218,19 @@ operator|.
 name|HDDS_LOCK_MAX_CONCURRENCY_DEFAULT
 argument_list|)
 decl_stmt|;
+name|lockPool
+operator|=
+operator|new
+name|GenericObjectPool
+argument_list|<>
+argument_list|(
+operator|new
+name|PooledLockFactory
+argument_list|(
+name|fair
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|lockPool
 operator|.
 name|setMaxTotal

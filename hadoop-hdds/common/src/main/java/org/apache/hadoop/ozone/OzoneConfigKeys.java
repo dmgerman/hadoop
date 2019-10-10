@@ -1753,6 +1753,24 @@ name|OZONE_NETWORK_TOPOLOGY_AWARE_READ_DEFAULT
 init|=
 literal|false
 decl_stmt|;
+DECL|field|OZONE_MANAGER_FAIR_LOCK
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_MANAGER_FAIR_LOCK
+init|=
+literal|"ozone.om.lock.fair"
+decl_stmt|;
+DECL|field|OZONE_MANAGER_FAIR_LOCK_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|OZONE_MANAGER_FAIR_LOCK_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * There is no need to instantiate this class.    */
 DECL|method|OzoneConfigKeys ()
 specifier|private

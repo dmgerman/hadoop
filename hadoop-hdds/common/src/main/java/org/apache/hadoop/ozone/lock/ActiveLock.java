@@ -81,11 +81,14 @@ specifier|private
 name|AtomicInteger
 name|count
 decl_stmt|;
-comment|/**    * Use ActiveLock#newInstance to create instance.    */
-DECL|method|ActiveLock ()
+comment|/**    * Use ActiveLock#newInstance to create instance.    *    * @param fairness - if true the lock uses a fair ordering policy, else    * non-fair ordering.    */
+DECL|method|ActiveLock (boolean fairness)
 specifier|private
 name|ActiveLock
-parameter_list|()
+parameter_list|(
+name|boolean
+name|fairness
+parameter_list|)
 block|{
 name|this
 operator|.
@@ -93,7 +96,9 @@ name|lock
 operator|=
 operator|new
 name|ReentrantReadWriteLock
-argument_list|()
+argument_list|(
+name|fairness
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -107,17 +112,22 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Creates a new instance of ActiveLock.    *    * @return new ActiveLock    */
-DECL|method|newInstance ()
+DECL|method|newInstance (boolean fairness)
 specifier|public
 specifier|static
 name|ActiveLock
 name|newInstance
-parameter_list|()
+parameter_list|(
+name|boolean
+name|fairness
+parameter_list|)
 block|{
 return|return
 operator|new
 name|ActiveLock
-argument_list|()
+argument_list|(
+name|fairness
+argument_list|)
 return|;
 block|}
 comment|/**    * Acquires read lock.    *    *<p>Acquires the read lock if the write lock is not held by    * another thread and returns immediately.    *    *<p>If the write lock is held by another thread then    * the current thread becomes disabled for thread scheduling    * purposes and lies dormant until the read lock has been acquired.    */

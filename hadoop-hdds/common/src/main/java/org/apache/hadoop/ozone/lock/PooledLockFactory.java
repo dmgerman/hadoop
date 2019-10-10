@@ -77,6 +77,25 @@ argument_list|<
 name|ActiveLock
 argument_list|>
 block|{
+DECL|field|fairness
+specifier|private
+name|boolean
+name|fairness
+decl_stmt|;
+DECL|method|PooledLockFactory (boolean fair)
+name|PooledLockFactory
+parameter_list|(
+name|boolean
+name|fair
+parameter_list|)
+block|{
+name|this
+operator|.
+name|fairness
+operator|=
+name|fair
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|create ()
@@ -91,7 +110,9 @@ return|return
 name|ActiveLock
 operator|.
 name|newInstance
-argument_list|()
+argument_list|(
+name|fairness
+argument_list|)
 return|;
 block|}
 annotation|@

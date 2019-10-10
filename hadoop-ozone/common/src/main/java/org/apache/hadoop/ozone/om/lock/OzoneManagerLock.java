@@ -102,6 +102,38 @@ name|LockManager
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConfigKeys
+operator|.
+name|OZONE_MANAGER_FAIR_LOCK_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConfigKeys
+operator|.
+name|OZONE_MANAGER_FAIR_LOCK
+import|;
+end_import
+
 begin_comment
 comment|/**  * Provides different locks to handle concurrency in OzoneMaster.  * We also maintain lock hierarchy, based on the weight.  *  *<table>  *<caption></caption>  *<tr>  *<td><b> WEIGHT</b></td><td><b> LOCK</b></td>  *</tr>  *<tr>  *<td> 0</td><td> S3 Bucket Lock</td>  *</tr>  *<tr>  *<td> 1</td><td> Volume Lock</td>  *</tr>  *<tr>  *<td> 2</td><td> Bucket Lock</td>  *</tr>  *<tr>  *<td> 3</td><td> User Lock</td>  *</tr>  *<tr>  *<td> 4</td><td> S3 Secret Lock</td>  *</tr>  *<tr>  *<td> 5</td><td> Prefix Lock</td>  *</tr>  *</table>  *  * One cannot obtain a lower weight lock while holding a lock with higher  * weight. The other way around is possible.<br>  *<br>  *<p>  * For example:  *<br>  * {@literal ->} acquire volume lock (will work)<br>  *   {@literal +->} acquire bucket lock (will work)<br>  *     {@literal +-->} acquire s3 bucket lock (will throw Exception)<br>  *</p>  *<br>  */
 end_comment
@@ -190,6 +222,18 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
+name|boolean
+name|fair
+init|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|OZONE_MANAGER_FAIR_LOCK
+argument_list|,
+name|OZONE_MANAGER_FAIR_LOCK_DEFAULT
+argument_list|)
+decl_stmt|;
 name|manager
 operator|=
 operator|new
@@ -197,6 +241,8 @@ name|LockManager
 argument_list|<>
 argument_list|(
 name|conf
+argument_list|,
+name|fair
 argument_list|)
 expr_stmt|;
 block|}
