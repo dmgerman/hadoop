@@ -172,6 +172,22 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|IO_FILE_BUFFER_SIZE_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|contract
 operator|.
 name|ContractTestUtils
@@ -505,6 +521,11 @@ name|getPos
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|assertAvailableIsZero
+argument_list|(
+name|instream
+argument_list|)
+expr_stmt|;
 comment|//expect initial read to fai;
 name|int
 name|result
@@ -519,6 +540,11 @@ argument_list|(
 literal|"initial byte read"
 argument_list|,
 name|result
+argument_list|)
+expr_stmt|;
+name|assertAvailableIsZero
+argument_list|(
+name|instream
 argument_list|)
 expr_stmt|;
 name|byte
@@ -539,6 +565,11 @@ argument_list|(
 literal|0
 argument_list|)
 expr_stmt|;
+name|assertAvailableIsZero
+argument_list|(
+name|instream
+argument_list|)
+expr_stmt|;
 comment|//reread, expect same exception
 name|result
 operator|=
@@ -546,6 +577,11 @@ name|instream
 operator|.
 name|read
 argument_list|()
+expr_stmt|;
+name|assertAvailableIsZero
+argument_list|(
+name|instream
+argument_list|)
 expr_stmt|;
 name|assertMinusOne
 argument_list|(
@@ -669,8 +705,8 @@ argument_list|()
 operator|.
 name|debug
 argument_list|(
-literal|"Stream is of type "
-operator|+
+literal|"Stream is of type {}"
+argument_list|,
 name|instream
 operator|.
 name|getClass
@@ -840,8 +876,80 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-comment|// its valid to raise error here; but the test is applied to make
+comment|// it is valid to raise error here; but the test is applied to make
 comment|// sure there's no other exception like an NPE.
+block|}
+comment|// a closed stream should either fail or return 0 bytes.
+try|try
+block|{
+name|int
+name|a
+init|=
+name|instream
+operator|.
+name|available
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"available() returns a value on a closed file: {}"
+argument_list|,
+name|a
+argument_list|)
+expr_stmt|;
+name|assertAvailableIsZero
+argument_list|(
+name|instream
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+decl||
+name|IllegalStateException
+name|expected
+parameter_list|)
+block|{
+comment|// expected
+block|}
+comment|// a closed stream should either fail or return 0 bytes.
+try|try
+block|{
+name|int
+name|a
+init|=
+name|instream
+operator|.
+name|available
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"available() returns a value on a closed file: {}"
+argument_list|,
+name|a
+argument_list|)
+expr_stmt|;
+name|assertAvailableIsZero
+argument_list|(
+name|instream
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+decl||
+name|IllegalStateException
+name|expected
+parameter_list|)
+block|{
+comment|// expected
 block|}
 comment|//and close again
 name|instream
@@ -1019,6 +1127,11 @@ operator|.
 name|read
 argument_list|()
 decl_stmt|;
+name|assertAvailableIsPositive
+argument_list|(
+name|instream
+argument_list|)
+expr_stmt|;
 name|assertEquals
 argument_list|(
 literal|0
@@ -1170,6 +1283,11 @@ operator|-
 literal|1
 argument_list|)
 expr_stmt|;
+name|assertAvailableIsPositive
+argument_list|(
+name|instream
+argument_list|)
+expr_stmt|;
 name|assertTrue
 argument_list|(
 literal|"Premature EOF"
@@ -1183,6 +1301,9 @@ operator|-
 literal|1
 argument_list|)
 expr_stmt|;
+name|checkAvailabilityAtEOF
+argument_list|()
+expr_stmt|;
 name|assertMinusOne
 argument_list|(
 literal|"read past end of file"
@@ -1191,6 +1312,21 @@ name|instream
 operator|.
 name|read
 argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * This can be overridden if a filesystem always returns 01    * @throws IOException    */
+DECL|method|checkAvailabilityAtEOF ()
+specifier|protected
+name|void
+name|checkAvailabilityAtEOF
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|assertAvailableIsZero
+argument_list|(
+name|instream
 argument_list|)
 expr_stmt|;
 block|}
@@ -1206,7 +1342,9 @@ name|Throwable
 block|{
 name|describe
 argument_list|(
-literal|"do a seek past the EOF, then verify the stream recovers"
+literal|"do a seek past the EOF, "
+operator|+
+literal|"then verify the stream recovers"
 argument_list|)
 expr_stmt|;
 name|instream
@@ -1331,6 +1469,11 @@ operator|-
 literal|1
 argument_list|)
 expr_stmt|;
+name|assertAvailableIsPositive
+argument_list|(
+name|instream
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Seek round a file bigger than IO buffers    * @throws Throwable    */
 annotation|@
@@ -1419,6 +1562,11 @@ operator|.
 name|read
 argument_list|()
 decl_stmt|;
+name|assertAvailableIsPositive
+argument_list|(
+name|instream
+argument_list|)
+expr_stmt|;
 name|assertEquals
 argument_list|(
 literal|0
@@ -1567,6 +1715,11 @@ operator|.
 name|read
 argument_list|()
 expr_stmt|;
+name|assertAvailableIsPositive
+argument_list|(
+name|instream
+argument_list|)
+expr_stmt|;
 name|assertEquals
 argument_list|(
 literal|1
@@ -1704,6 +1857,11 @@ name|getPos
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|assertAvailableIsPositive
+argument_list|(
+name|instream
+argument_list|)
+expr_stmt|;
 name|int
 name|v
 init|=
@@ -1765,6 +1923,11 @@ name|instream
 operator|.
 name|read
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertAvailableIsPositive
+argument_list|(
+name|instream
 argument_list|)
 expr_stmt|;
 comment|//now verify the picked up data
@@ -2152,6 +2315,11 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|)
+expr_stmt|;
+name|assertAvailableIsZero
+argument_list|(
+name|instream
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -3214,6 +3382,11 @@ operator|>
 literal|0
 argument_list|)
 expr_stmt|;
+name|assertAvailableIsZero
+argument_list|(
+name|instream
+argument_list|)
+expr_stmt|;
 name|assertEquals
 argument_list|(
 literal|"read just past EOF"
@@ -3225,6 +3398,65 @@ name|instream
 operator|.
 name|read
 argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Assert that the number of bytes available is zero.    * @param in input stream    */
+DECL|method|assertAvailableIsZero (FSDataInputStream in)
+specifier|protected
+specifier|static
+name|void
+name|assertAvailableIsZero
+parameter_list|(
+name|FSDataInputStream
+name|in
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|assertEquals
+argument_list|(
+literal|"stream.available() should be zero"
+argument_list|,
+literal|0
+argument_list|,
+name|in
+operator|.
+name|available
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Assert that the number of bytes available is greater than zero.    * @param in input stream    */
+DECL|method|assertAvailableIsPositive (FSDataInputStream in)
+specifier|protected
+specifier|static
+name|void
+name|assertAvailableIsPositive
+parameter_list|(
+name|FSDataInputStream
+name|in
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|int
+name|available
+init|=
+name|in
+operator|.
+name|available
+argument_list|()
+decl_stmt|;
+name|assertTrue
+argument_list|(
+literal|"stream.available() should be positive but is "
+operator|+
+name|available
+argument_list|,
+name|available
+operator|>
+literal|0
 argument_list|)
 expr_stmt|;
 block|}
