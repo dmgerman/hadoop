@@ -707,6 +707,14 @@ name|void
 name|connect
 parameter_list|()
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -727,6 +735,7 @@ argument_list|,
 name|omNodeID
 argument_list|)
 expr_stmt|;
+block|}
 comment|// TODO : XceiverClient ratis should pass the config value of
 comment|// maxOutstandingRequests so as to set the upper bound on max no of async
 comment|// requests to be handled by raft client
@@ -954,8 +963,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Parsing error message for error code "
-operator|+
+literal|"Parsing error message for error code {}"
+argument_list|,
 name|errorCode
 argument_list|)
 expr_stmt|;
@@ -1019,6 +1028,15 @@ parameter_list|,
 name|e
 parameter_list|)
 lambda|->
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1041,6 +1059,9 @@ argument_list|()
 argument_list|,
 name|e
 argument_list|)
+expr_stmt|;
+block|}
+block|}
 argument_list|)
 operator|.
 name|thenApply
@@ -1048,7 +1069,7 @@ argument_list|(
 name|reply
 lambda|->
 block|{
-lambda|try
+try|try
 block|{
 name|Preconditions
 operator|.
@@ -1117,18 +1138,12 @@ argument_list|)
 throw|;
 block|}
 block|}
-block|)
-class|;
-end_class
-
-begin_comment
-unit|}
+argument_list|)
+return|;
+block|}
 comment|/**    * Submits {@link RaftClient#sendReadOnlyAsync(Message)} request to Ratis    * server if the request is readOnly. Otherwise, submits    * {@link RaftClient#sendAsync(Message)} request.    * @param request OMRequest    * @return RaftClient response    */
-end_comment
-
-begin_function
 DECL|method|sendRequestAsync ( OMRequest request)
-unit|private
+specifier|private
 name|CompletableFuture
 argument_list|<
 name|RaftClientReply
@@ -1159,6 +1174,14 @@ argument_list|(
 name|request
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1170,6 +1193,7 @@ argument_list|,
 name|request
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|isReadOnlyRequest
 condition|?
@@ -1192,8 +1216,8 @@ name|byteString
 argument_list|)
 return|;
 block|}
-end_function
+block|}
+end_class
 
-unit|}
 end_unit
 

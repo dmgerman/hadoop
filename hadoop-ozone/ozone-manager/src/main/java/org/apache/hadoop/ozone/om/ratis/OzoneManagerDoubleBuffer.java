@@ -661,6 +661,14 @@ operator|.
 name|incrementAndGet
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -677,6 +685,7 @@ argument_list|,
 name|flushedTransactionsSize
 argument_list|)
 expr_stmt|;
+block|}
 name|long
 name|lastRatisTransactionIndex
 init|=

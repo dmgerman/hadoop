@@ -466,6 +466,14 @@ argument_list|(
 name|i
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -477,6 +485,7 @@ argument_list|,
 name|omKeyLocationInfo
 argument_list|)
 expr_stmt|;
+block|}
 name|addStream
 argument_list|(
 name|omKeyLocationInfo

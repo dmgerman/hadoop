@@ -386,6 +386,14 @@ argument_list|(
 name|resourceName
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -401,6 +409,7 @@ argument_list|,
 name|resourceName
 argument_list|)
 expr_stmt|;
+block|}
 name|lockSet
 operator|.
 name|set
@@ -792,6 +801,14 @@ name|ex
 throw|;
 block|}
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -807,6 +824,7 @@ argument_list|,
 name|secondUser
 argument_list|)
 expr_stmt|;
+block|}
 name|lockSet
 operator|.
 name|set
@@ -932,6 +950,14 @@ name|secondUser
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -947,6 +973,7 @@ argument_list|,
 name|secondUser
 argument_list|)
 expr_stmt|;
+block|}
 name|lockSet
 operator|.
 name|set
@@ -1111,6 +1138,14 @@ name|resourceName
 argument_list|)
 expr_stmt|;
 comment|// clear lock
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1126,6 +1161,7 @@ argument_list|,
 name|resourceName
 argument_list|)
 expr_stmt|;
+block|}
 name|lockSet
 operator|.
 name|set

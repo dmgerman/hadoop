@@ -3048,6 +3048,14 @@ argument_list|(
 name|dtService
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -3060,21 +3068,31 @@ name|dtService
 argument_list|)
 expr_stmt|;
 block|}
+block|}
 else|else
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
 block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Cannot get ozone delegation token for renewer {} to access "
+literal|"Cannot get ozone delegation token for renewer {} to "
 operator|+
-literal|"service {}"
+literal|"access service {}"
 argument_list|,
 name|renewer
 argument_list|,
 name|dtService
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 return|return
 name|token

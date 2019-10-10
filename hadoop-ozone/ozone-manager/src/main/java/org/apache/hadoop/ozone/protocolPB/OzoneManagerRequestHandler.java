@@ -2137,6 +2137,14 @@ name|OMRequest
 name|request
 parameter_list|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2146,6 +2154,7 @@ argument_list|,
 name|request
 argument_list|)
 expr_stmt|;
+block|}
 name|Type
 name|cmdType
 init|=

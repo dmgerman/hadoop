@@ -374,8 +374,8 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"Checking access for volume:"
-operator|+
+literal|"Checking access for volume: {}"
+argument_list|,
 name|objInfo
 argument_list|)
 expr_stmt|;
@@ -396,8 +396,8 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"Checking access for bucket:"
-operator|+
+literal|"Checking access for bucket: {}"
+argument_list|,
 name|objInfo
 argument_list|)
 expr_stmt|;
@@ -429,8 +429,8 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"Checking access for Key:"
-operator|+
+literal|"Checking access for Key: {}"
+argument_list|,
 name|objInfo
 argument_list|)
 expr_stmt|;
@@ -480,8 +480,8 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"Checking access for Prefix:"
-operator|+
+literal|"Checking access for Prefix: {]"
+argument_list|,
 name|objInfo
 argument_list|)
 expr_stmt|;

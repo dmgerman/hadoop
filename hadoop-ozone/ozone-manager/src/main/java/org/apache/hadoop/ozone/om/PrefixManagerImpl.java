@@ -812,6 +812,14 @@ name|isOperationsResult
 argument_list|()
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -823,6 +831,7 @@ argument_list|,
 name|prefixPath
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 literal|false
 return|;
@@ -1255,6 +1264,14 @@ argument_list|,
 name|context
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1271,6 +1288,7 @@ argument_list|,
 name|hasAccess
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|hasAccess
 return|;

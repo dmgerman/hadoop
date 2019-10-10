@@ -1088,6 +1088,14 @@ init|=
 name|incrementProxyIndex
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1104,6 +1112,7 @@ name|newProxyIndex
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Update the proxy index to the next proxy in the list.    * @return the new proxy index    */
 DECL|method|incrementProxyIndex ()

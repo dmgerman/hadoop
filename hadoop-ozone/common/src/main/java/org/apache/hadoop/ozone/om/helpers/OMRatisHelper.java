@@ -363,6 +363,14 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
@@ -376,6 +384,7 @@ argument_list|,
 name|group
 argument_list|)
 expr_stmt|;
+block|}
 specifier|final
 name|RaftProperties
 name|properties

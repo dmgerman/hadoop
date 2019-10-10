@@ -443,7 +443,7 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"Issued delegation token -> expiryTime:{},tokenId:{}"
+literal|"Issued delegation token -> expiryTime:{}, tokenId:{}"
 argument_list|,
 name|expiryTime
 argument_list|,

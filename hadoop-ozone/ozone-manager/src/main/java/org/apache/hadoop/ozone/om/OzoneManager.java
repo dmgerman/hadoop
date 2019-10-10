@@ -5298,13 +5298,21 @@ name|KERBEROS
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
 literal|"Ozone security is enabled. Attempting login for OM user. "
 operator|+
-literal|"Principal: {},keytab: {}"
+literal|"Principal: {}, keytab: {}"
 argument_list|,
 name|conf
 operator|.
@@ -5321,6 +5329,7 @@ name|OZONE_OM_KERBEROS_KEYTAB_FILE_KEY
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 name|UserGroupInformation
 operator|.
 name|setConfiguration

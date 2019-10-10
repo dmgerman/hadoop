@@ -9691,6 +9691,14 @@ condition|)
 block|{
 comment|// the key does not exist, but it is a parent "dir" of some key
 comment|// let access be determined based on volume/bucket/prefix ACL
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -9705,6 +9713,7 @@ name|getClientUgi
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 literal|true
 return|;
@@ -9774,6 +9783,14 @@ argument_list|,
 name|context
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -9793,6 +9810,7 @@ argument_list|,
 name|hasAccess
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|hasAccess
 return|;
@@ -10230,27 +10248,30 @@ name|keyName
 argument_list|)
 return|;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Unable to get file status for the key: volume:"
+literal|"Unable to get file status for the key: volume: {}, bucket:"
 operator|+
+literal|" {}, key: {}, with error: No such file exists."
+argument_list|,
 name|volumeName
-operator|+
-literal|" bucket:"
-operator|+
+argument_list|,
 name|bucketName
-operator|+
-literal|" key:"
-operator|+
+argument_list|,
 name|keyName
-operator|+
-literal|" with error no "
-operator|+
-literal|"such file exists:"
 argument_list|)
 expr_stmt|;
+block|}
 throw|throw
 operator|new
 name|OMException
@@ -11968,6 +11989,14 @@ argument_list|(
 name|sortedNodes
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -11981,6 +12010,7 @@ argument_list|,
 name|sortedNodes
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(

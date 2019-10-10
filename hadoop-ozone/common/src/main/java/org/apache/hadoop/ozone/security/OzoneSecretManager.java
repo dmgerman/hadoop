@@ -512,6 +512,14 @@ name|T
 name|identifier
 parameter_list|)
 block|{
+if|if
+condition|(
+name|logger
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|logger
 operator|.
 name|debug
@@ -529,6 +537,7 @@ name|getKeyId
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|byte
 index|[]
 name|password

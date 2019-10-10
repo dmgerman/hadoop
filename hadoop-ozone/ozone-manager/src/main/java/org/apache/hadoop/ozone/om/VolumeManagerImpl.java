@@ -711,6 +711,10 @@ operator|.
 name|debug
 argument_list|(
 literal|"volume:{} not found for user:{}"
+argument_list|,
+name|volume
+argument_list|,
+name|owner
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -2685,6 +2689,14 @@ name|OMException
 name|ex
 parameter_list|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2694,6 +2706,7 @@ argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 literal|false
 return|;
@@ -2937,6 +2950,14 @@ name|OMException
 name|ex
 parameter_list|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2946,6 +2967,7 @@ argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 literal|false
 return|;
@@ -3616,6 +3638,14 @@ name|getClientUgi
 argument_list|()
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -3635,6 +3665,7 @@ argument_list|,
 name|hasAccess
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|hasAccess
 return|;

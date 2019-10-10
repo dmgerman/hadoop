@@ -566,6 +566,14 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
@@ -575,6 +583,7 @@ argument_list|,
 name|omService
 argument_list|)
 expr_stmt|;
+block|}
 name|Token
 argument_list|<
 name|OzoneTokenIdentifier

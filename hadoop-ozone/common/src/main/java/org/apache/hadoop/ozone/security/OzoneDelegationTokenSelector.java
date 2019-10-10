@@ -199,6 +199,14 @@ argument_list|>
 name|tokens
 parameter_list|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|trace
@@ -208,6 +216,7 @@ argument_list|,
 name|service
 argument_list|)
 expr_stmt|;
+block|}
 name|Token
 name|token
 init|=
@@ -218,6 +227,14 @@ argument_list|,
 name|tokens
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -229,6 +246,7 @@ argument_list|,
 name|service
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|token
 return|;
