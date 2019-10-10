@@ -533,6 +533,13 @@ name|LocalResourceType
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|any
+argument_list|(
+name|LocalResourceVisibility
+operator|.
+name|class
+argument_list|)
 argument_list|)
 argument_list|)
 operator|.
@@ -544,7 +551,7 @@ operator|new
 name|LocalResource
 argument_list|()
 block|{
-block|@Override           public URL getResource(
+block|@Override             public URL getResource(
 argument_list|)
 block|{
 return|return
@@ -576,7 +583,7 @@ parameter_list|(
 name|URL
 name|resource
 parameter_list|)
-block|{            }
+block|{              }
 annotation|@
 name|Override
 specifier|public
@@ -597,7 +604,7 @@ parameter_list|(
 name|long
 name|size
 parameter_list|)
-block|{            }
+block|{              }
 annotation|@
 name|Override
 specifier|public
@@ -618,7 +625,7 @@ parameter_list|(
 name|long
 name|timestamp
 parameter_list|)
-block|{            }
+block|{              }
 annotation|@
 name|Override
 specifier|public
@@ -648,7 +655,7 @@ parameter_list|(
 name|LocalResourceType
 name|type
 parameter_list|)
-block|{            }
+block|{              }
 annotation|@
 name|Override
 specifier|public
@@ -657,7 +664,9 @@ name|getVisibility
 parameter_list|()
 block|{
 return|return
-literal|null
+name|LocalResourceVisibility
+operator|.
+name|APPLICATION
 return|;
 block|}
 annotation|@
@@ -669,7 +678,7 @@ parameter_list|(
 name|LocalResourceVisibility
 name|visibility
 parameter_list|)
-block|{            }
+block|{              }
 annotation|@
 name|Override
 specifier|public
@@ -690,7 +699,7 @@ parameter_list|(
 name|String
 name|pattern
 parameter_list|)
-block|{            }
+block|{              }
 annotation|@
 name|Override
 specifier|public
@@ -711,7 +720,7 @@ parameter_list|(
 name|boolean
 name|shouldBeUploadedToSharedCache
 parameter_list|)
-block|{            }
+block|{              }
 block|}
 block|)
 class|;
@@ -752,6 +761,13 @@ name|TypeEnum
 operator|.
 name|ARCHIVE
 argument_list|)
+operator|.
+name|visibility
+argument_list|(
+name|LocalResourceVisibility
+operator|.
+name|APPLICATION
+argument_list|)
 argument_list|)
 expr_stmt|;
 end_expr_stmt
@@ -786,6 +802,13 @@ operator|.
 name|TypeEnum
 operator|.
 name|STATIC
+argument_list|)
+operator|.
+name|visibility
+argument_list|(
+name|LocalResourceVisibility
+operator|.
+name|APPLICATION
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -822,6 +845,13 @@ name|TypeEnum
 operator|.
 name|JSON
 argument_list|)
+operator|.
+name|visibility
+argument_list|(
+name|LocalResourceVisibility
+operator|.
+name|APPLICATION
+argument_list|)
 argument_list|)
 expr_stmt|;
 end_expr_stmt
@@ -851,6 +881,13 @@ operator|.
 name|TypeEnum
 operator|.
 name|STATIC
+argument_list|)
+operator|.
+name|visibility
+argument_list|(
+name|LocalResourceVisibility
+operator|.
+name|APPLICATION
 argument_list|)
 argument_list|)
 expr_stmt|;

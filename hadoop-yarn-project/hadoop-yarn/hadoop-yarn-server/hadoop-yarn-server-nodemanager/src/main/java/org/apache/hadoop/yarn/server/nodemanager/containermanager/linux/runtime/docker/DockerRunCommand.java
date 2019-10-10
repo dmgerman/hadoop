@@ -876,6 +876,38 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|setServiceMode (boolean serviceMode)
+specifier|public
+name|DockerRunCommand
+name|setServiceMode
+parameter_list|(
+name|boolean
+name|serviceMode
+parameter_list|)
+block|{
+name|String
+name|value
+init|=
+name|Boolean
+operator|.
+name|toString
+argument_list|(
+name|serviceMode
+argument_list|)
+decl_stmt|;
+name|super
+operator|.
+name|addCommandArguments
+argument_list|(
+literal|"service-mode"
+argument_list|,
+name|value
+argument_list|)
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 comment|/**    * Check if user defined environment variables are empty.    *    * @return true if user defined environment variables are not empty.    */
 DECL|method|containsEnv ()
 specifier|public

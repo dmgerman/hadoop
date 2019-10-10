@@ -99,6 +99,12 @@ name|SERVICES_DIRECTORY
 init|=
 literal|"services"
 decl_stmt|;
+DECL|field|SERVICES_PUBLIC_DIRECTORY
+name|String
+name|SERVICES_PUBLIC_DIRECTORY
+init|=
+literal|"/tmp/hadoop-yarn/staging/"
+decl_stmt|;
 comment|/**    * JVM property to define the service lib directory;    * this is set by the yarn.sh script    */
 DECL|field|PROPERTY_LIB_DIR
 name|String

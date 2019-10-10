@@ -1554,7 +1554,7 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Create an AM resource from the    *    * @param destPath     dest path in filesystem    * @param resourceType resource type    * @return the local resource for AM    */
-DECL|method|createAmResource (Path destPath, LocalResourceType resourceType)
+DECL|method|createAmResource (Path destPath, LocalResourceType resourceType, LocalResourceVisibility visibility)
 specifier|public
 name|LocalResource
 name|createAmResource
@@ -1564,6 +1564,9 @@ name|destPath
 parameter_list|,
 name|LocalResourceType
 name|resourceType
+parameter_list|,
+name|LocalResourceVisibility
+name|visibility
 parameter_list|)
 throws|throws
 name|IOException
@@ -1599,13 +1602,25 @@ argument_list|)
 expr_stmt|;
 comment|// Set visibility of the resource
 comment|// Setting to most private option
+if|if
+condition|(
+name|visibility
+operator|==
+literal|null
+condition|)
+block|{
+name|visibility
+operator|=
+name|LocalResourceVisibility
+operator|.
+name|APPLICATION
+expr_stmt|;
+block|}
 name|amResource
 operator|.
 name|setVisibility
 argument_list|(
-name|LocalResourceVisibility
-operator|.
-name|APPLICATION
+name|visibility
 argument_list|)
 expr_stmt|;
 comment|// Set the resource to be copied over
@@ -1732,6 +1747,10 @@ argument_list|,
 name|LocalResourceType
 operator|.
 name|FILE
+argument_list|,
+name|LocalResourceVisibility
+operator|.
+name|APPLICATION
 argument_list|)
 decl_stmt|;
 name|String
@@ -1911,6 +1930,10 @@ argument_list|,
 name|LocalResourceType
 operator|.
 name|FILE
+argument_list|,
+name|LocalResourceVisibility
+operator|.
+name|APPLICATION
 argument_list|)
 return|;
 block|}
@@ -1949,6 +1972,10 @@ argument_list|,
 name|LocalResourceType
 operator|.
 name|ARCHIVE
+argument_list|,
+name|LocalResourceVisibility
+operator|.
+name|APPLICATION
 argument_list|)
 decl_stmt|;
 name|providerResources
