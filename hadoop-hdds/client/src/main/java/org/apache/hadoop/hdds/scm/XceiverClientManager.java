@@ -552,7 +552,7 @@ specifier|final
 name|boolean
 name|topologyAwareRead
 decl_stmt|;
-comment|/**    * Creates a new XceiverClientManager.    *    * @param conf configuration    */
+comment|/**    * Creates a new XceiverClientManager for non secured ozone cluster.    * For security enabled ozone cluster, client should use the other constructor    * with a valid ca certificate in pem string format.    *    * @param conf configuration    */
 DECL|method|XceiverClientManager (Configuration conf)
 specifier|public
 name|XceiverClientManager
