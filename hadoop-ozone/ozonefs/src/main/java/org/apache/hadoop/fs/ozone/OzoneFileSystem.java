@@ -263,7 +263,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|error
+name|debug
 argument_list|(
 literal|"Error retrieving KeyProvider."
 argument_list|,
