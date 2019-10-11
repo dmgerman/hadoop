@@ -298,7 +298,7 @@ name|s3guard
 operator|.
 name|DynamoDBMetadataStore
 operator|.
-name|VERSION_MARKER
+name|VERSION_MARKER_ITEM_NAME
 import|;
 end_import
 
@@ -761,7 +761,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|VERSION_MARKER
+name|VERSION_MARKER_ITEM_NAME
 operator|.
 name|equals
 argument_list|(
@@ -771,7 +771,7 @@ name|getLeft
 argument_list|()
 argument_list|)
 operator|&&
-name|VERSION_MARKER
+name|VERSION_MARKER_ITEM_NAME
 operator|.
 name|equals
 argument_list|(

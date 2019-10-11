@@ -1003,12 +1003,15 @@ name|getTags
 argument_list|()
 decl_stmt|;
 comment|// assert
+comment|// table version is always there as a plus one tag.
 name|assertEquals
 argument_list|(
 name|tagMap
 operator|.
 name|size
 argument_list|()
+operator|+
+literal|1
 argument_list|,
 name|tags
 operator|.
@@ -1024,6 +1027,22 @@ range|:
 name|tags
 control|)
 block|{
+comment|// skip the version marker tag
+if|if
+condition|(
+name|tag
+operator|.
+name|getKey
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|VERSION_MARKER_TAG_NAME
+argument_list|)
+condition|)
+block|{
+continue|continue;
+block|}
 name|Assert
 operator|.
 name|assertEquals

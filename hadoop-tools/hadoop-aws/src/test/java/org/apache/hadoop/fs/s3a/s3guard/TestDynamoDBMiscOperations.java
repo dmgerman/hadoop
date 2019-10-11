@@ -166,6 +166,26 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|s3guard
+operator|.
+name|DynamoDBMetadataStoreTableManager
+operator|.
+name|translateTableWaitFailure
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|mockito
 operator|.
 name|Mockito
@@ -183,26 +203,6 @@ operator|.
 name|Mockito
 operator|.
 name|when
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|s3a
-operator|.
-name|s3guard
-operator|.
-name|DynamoDBMetadataStore
-operator|.
-name|translateTableWaitFailure
 import|;
 end_import
 

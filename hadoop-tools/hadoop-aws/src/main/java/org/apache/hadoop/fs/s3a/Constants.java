@@ -457,7 +457,7 @@ specifier|final
 name|int
 name|DEFAULT_MAX_ERROR_RETRIES
 init|=
-literal|20
+literal|10
 decl_stmt|;
 comment|// seconds until we give up trying to establish a connection to s3
 DECL|field|ESTABLISH_TIMEOUT

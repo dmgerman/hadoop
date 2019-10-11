@@ -424,7 +424,7 @@ name|s3guard
 operator|.
 name|DynamoDBMetadataStore
 operator|.
-name|VERSION_MARKER
+name|VERSION_MARKER_ITEM_NAME
 import|;
 end_import
 
@@ -1704,7 +1704,7 @@ name|marker
 init|=
 name|createVersionMarker
 argument_list|(
-name|VERSION_MARKER
+name|VERSION_MARKER_ITEM_NAME
 argument_list|,
 name|VERSION
 argument_list|,
@@ -1742,7 +1742,7 @@ name|marker
 init|=
 name|createVersionMarker
 argument_list|(
-name|VERSION_MARKER
+name|VERSION_MARKER_ITEM_NAME
 argument_list|,
 name|VERSION
 argument_list|,

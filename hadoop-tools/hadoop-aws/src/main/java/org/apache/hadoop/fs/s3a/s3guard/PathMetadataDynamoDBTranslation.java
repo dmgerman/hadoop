@@ -1272,8 +1272,6 @@ parameter_list|(
 name|Item
 name|marker
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 if|if
 condition|(

@@ -652,6 +652,11 @@ specifier|private
 name|DynamoDBMetadataStore
 name|ddbms
 decl_stmt|;
+DECL|field|tableHandler
+specifier|private
+name|DynamoDBMetadataStoreTableManager
+name|tableHandler
+decl_stmt|;
 DECL|field|ddb
 specifier|private
 name|DynamoDB
@@ -963,6 +968,13 @@ operator|=
 name|ddbms
 operator|.
 name|getTableName
+argument_list|()
+expr_stmt|;
+name|tableHandler
+operator|=
+name|ddbms
+operator|.
+name|getTableHandler
 argument_list|()
 expr_stmt|;
 name|assertNotNull
@@ -1635,7 +1647,7 @@ argument_list|()
 argument_list|,
 parameter_list|()
 lambda|->
-name|ddbms
+name|tableHandler
 operator|.
 name|getVersionMarkerItem
 argument_list|()
