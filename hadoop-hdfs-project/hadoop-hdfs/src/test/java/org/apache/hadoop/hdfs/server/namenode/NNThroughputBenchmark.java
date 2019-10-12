@@ -1293,7 +1293,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|error
+name|info
 argument_list|(
 literal|"Log level = "
 operator|+
