@@ -153,6 +153,7 @@ argument_list|>
 name|pending
 decl_stmt|;
 DECL|method|TreeIterator ()
+specifier|public
 name|TreeIterator
 parameter_list|()
 block|{

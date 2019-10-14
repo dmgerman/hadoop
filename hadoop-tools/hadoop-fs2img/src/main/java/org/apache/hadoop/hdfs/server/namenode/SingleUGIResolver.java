@@ -94,20 +94,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
-operator|.
-name|FileStatus
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|security
 operator|.
 name|UserGroupInformation
@@ -330,12 +316,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|user (FileStatus s)
+DECL|method|user (String s)
 specifier|public
 name|String
 name|user
 parameter_list|(
-name|FileStatus
+name|String
 name|s
 parameter_list|)
 block|{
@@ -345,12 +331,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|group (FileStatus s)
+DECL|method|group (String s)
 specifier|public
 name|String
 name|group
 parameter_list|(
-name|FileStatus
+name|String
 name|s
 parameter_list|)
 block|{
