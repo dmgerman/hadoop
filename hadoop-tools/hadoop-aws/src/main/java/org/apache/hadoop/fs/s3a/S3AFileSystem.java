@@ -10058,7 +10058,7 @@ name|ALL
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the status of a file or directory, first through S3Guard and then    * through S3.    * The S3 probes can leave 404 responses in the S3 load balancers; if    * a check is only needed for a directory, declaring this saves time and    * avoids creating one for the object.    * When only probing for directories, if an entry for a file is found in    * S3Guard it is returned, but checks for updated values are skipped.    * Internal version of {@link #getFileStatus(Path)}.    * @param f The path we want information from    * @param needEmptyDirectoryFlag if true, implementation will calculate    *        a TRUE or FALSE value for {@link S3AFileStatus#isEmptyDirectory()}    * @param probes probes to make    * @return a S3AFileStatus object    * @throws FileNotFoundException when the path does not exist    * @throws IOException on other problems.    */
+comment|/**    * Get the status of a file or directory, first through S3Guard and then    * through S3.    * The S3 probes can leave 404 responses in the S3 load balancers; if    * a check is only needed for a directory, declaring this saves time and    * avoids creating one for the object.    * When only probing for directories, if an entry for a file is found in    * S3Guard it is returned, but checks for updated values are skipped.    * Internal version of {@link #getFileStatus(Path)}.    * @param f The path we want information from    * @param needEmptyDirectoryFlag if true, implementation will calculate    *        a TRUE or FALSE value for {@link S3AFileStatus#isEmptyDirectory()}    * @param probes probes to make.    * @return a S3AFileStatus object    * @throws FileNotFoundException when the path does not exist    * @throws IOException on other problems.    */
 annotation|@
 name|VisibleForTesting
 annotation|@
@@ -10529,9 +10529,7 @@ name|path
 argument_list|,
 name|key
 argument_list|,
-name|StatusProbeEnum
-operator|.
-name|ALL
+name|probes
 argument_list|,
 name|tombstones
 argument_list|)
@@ -10543,13 +10541,14 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Raw {@code getFileStatus} that talks direct to S3.    * Used to implement {@link #innerGetFileStatus(Path, boolean)},    * and for direct management of empty directory blobs.    * Retry policy: retry translated.    * @param path Qualified path    * @param key  Key string for the path    * @param probes probes to make    * @param tombstones tombstones to filter    * @return Status    * @throws FileNotFoundException when the path does not exist    * @throws IOException on other problems.    */
+comment|/**    * Raw {@code getFileStatus} that talks direct to S3.    * Used to implement {@link #innerGetFileStatus(Path, boolean, Set)},    * and for direct management of empty directory blobs.    *    * Checks made, in order:    *<ol>    *<li>    *     Head: look for an object at the given key, provided that    *     the key doesn't end in "/"    *</li>    *<li>    *     DirMarker: look for the directory marker -the key with a trailing /    *     if not passed in.    *     If an object was found with size 0 bytes, a directory status entry    *     is returned which declares that the directory is empty.    *</li>    *<li>    *     List: issue a LIST on the key (with / if needed), require one    *     entry to be found for the path to be considered a non-empty directory.    *</li>    *</ol>    *    * Notes:    *<ul>    *<li>    *     Objects ending in / which are not 0-bytes long are not treated as    *     directory markers, but instead as files.    *</li>    *<li>    *     There's ongoing discussions about whether a dir marker    *     should be interpreted as an empty dir.    *</li>    *<li>    *     The HEAD requests require the permissions to read an object,    *     including (we believe) the ability to decrypt the file.    *     At the very least, for SSE-C markers, you need the same key on    *     the client for the HEAD to work.    *</li>    *<li>    *     The List probe needs list permission; it is also more prone to    *     inconsistency, even on newly created files.    *</li>    *</ul>    *    * Retry policy: retry translated.    * @param path Qualified path    * @param key  Key string for the path    * @param probes probes to make    * @param tombstones tombstones to filter    * @return Status    * @throws FileNotFoundException the supplied probes failed.    * @throws IOException on other problems.    */
+annotation|@
+name|VisibleForTesting
 annotation|@
 name|Retries
 operator|.
 name|RetryTranslated
-DECL|method|s3GetFileStatus (final Path path, String key, final Set<StatusProbeEnum> probes, final Set<Path> tombstones)
-specifier|private
+DECL|method|s3GetFileStatus (final Path path, final String key, final Set<StatusProbeEnum> probes, final Set<Path> tombstones)
 name|S3AFileStatus
 name|s3GetFileStatus
 parameter_list|(
@@ -10557,6 +10556,7 @@ specifier|final
 name|Path
 name|path
 parameter_list|,
+specifier|final
 name|String
 name|key
 parameter_list|,
@@ -10584,7 +10584,10 @@ name|key
 operator|.
 name|isEmpty
 argument_list|()
-operator|&&
+condition|)
+block|{
+if|if
+condition|(
 name|probes
 operator|.
 name|contains
@@ -10593,10 +10596,19 @@ name|StatusProbeEnum
 operator|.
 name|Head
 argument_list|)
+operator|&&
+operator|!
+name|key
+operator|.
+name|endsWith
+argument_list|(
+literal|"/"
+argument_list|)
 condition|)
 block|{
 try|try
 block|{
+comment|// look for the simple file
 name|ObjectMetadata
 name|meta
 init|=
@@ -10605,47 +10617,13 @@ argument_list|(
 name|key
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|objectRepresentsDirectory
+name|LOG
+operator|.
+name|debug
 argument_list|(
+literal|"Found exact file: normal file {}"
+argument_list|,
 name|key
-argument_list|,
-name|meta
-operator|.
-name|getContentLength
-argument_list|()
-argument_list|)
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Found exact file: fake directory"
-argument_list|)
-expr_stmt|;
-return|return
-operator|new
-name|S3AFileStatus
-argument_list|(
-name|Tristate
-operator|.
-name|TRUE
-argument_list|,
-name|path
-argument_list|,
-name|username
-argument_list|)
-return|;
-block|}
-else|else
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Found exact file: normal file"
 argument_list|)
 expr_stmt|;
 return|return
@@ -10686,13 +10664,14 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-block|}
 catch|catch
 parameter_list|(
 name|AmazonServiceException
 name|e
 parameter_list|)
 block|{
+comment|// if the response is a 404 error, it just means that there is
+comment|// no file at that path...the remaining checks will be needed.
 if|if
 condition|(
 name|e
@@ -10732,17 +10711,12 @@ name|e
 argument_list|)
 throw|;
 block|}
+block|}
+comment|// Either a normal file was not found or the probe was skipped.
+comment|// because the key ended in "/" or it was not in the set of probes.
 comment|// Look for the dir marker
 if|if
 condition|(
-operator|!
-name|key
-operator|.
-name|endsWith
-argument_list|(
-literal|"/"
-argument_list|)
-operator|&&
 name|probes
 operator|.
 name|contains
@@ -10756,9 +10730,10 @@ block|{
 name|String
 name|newKey
 init|=
+name|maybeAddTrailingSlash
+argument_list|(
 name|key
-operator|+
-literal|"/"
+argument_list|)
 decl_stmt|;
 try|try
 block|{
@@ -10916,19 +10891,20 @@ condition|)
 block|{
 try|try
 block|{
-name|key
-operator|=
+name|String
+name|dirKey
+init|=
 name|maybeAddTrailingSlash
 argument_list|(
 name|key
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|S3ListRequest
 name|request
 init|=
 name|createListObjectsRequest
 argument_list|(
-name|key
+name|dirKey
 argument_list|,
 literal|"/"
 argument_list|,

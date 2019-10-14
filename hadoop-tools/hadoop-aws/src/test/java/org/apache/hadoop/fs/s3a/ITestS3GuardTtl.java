@@ -506,6 +506,33 @@ name|configuration
 return|;
 block|}
 annotation|@
+name|Override
+DECL|method|setup ()
+specifier|public
+name|void
+name|setup
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|super
+operator|.
+name|setup
+argument_list|()
+expr_stmt|;
+name|Assume
+operator|.
+name|assumeTrue
+argument_list|(
+name|getFileSystem
+argument_list|()
+operator|.
+name|hasMetadataStore
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
 name|Test
 DECL|method|testDirectoryListingAuthoritativeTtl ()
 specifier|public

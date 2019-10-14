@@ -472,6 +472,13 @@ name|fs
 parameter_list|)
 block|{
 comment|// detach from the (shared) metadata store.
+if|if
+condition|(
+name|fs
+operator|!=
+literal|null
+condition|)
+block|{
 name|fs
 operator|.
 name|setMetadataStore
@@ -481,6 +488,7 @@ name|NullMetadataStore
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|IOUtils
 operator|.
 name|cleanupWithLogger
@@ -501,6 +509,13 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+if|if
+condition|(
+name|fullyAuthFS
+operator|!=
+literal|null
+condition|)
+block|{
 name|fullyAuthFS
 operator|.
 name|delete
@@ -510,6 +525,7 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+block|}
 name|cleanUpFS
 argument_list|(
 name|fullyAuthFS
