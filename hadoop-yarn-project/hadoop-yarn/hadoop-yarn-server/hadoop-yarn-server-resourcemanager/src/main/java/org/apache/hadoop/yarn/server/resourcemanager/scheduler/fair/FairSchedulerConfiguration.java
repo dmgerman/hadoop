@@ -447,6 +447,18 @@ name|CONF_PREFIX
 init|=
 literal|"yarn.scheduler.fair."
 decl_stmt|;
+comment|/**    * Used during FS->CS conversion. When enabled, background threads are    * not started. This property should NOT be used by end-users!    */
+DECL|field|MIGRATION_MODE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MIGRATION_MODE
+init|=
+name|CONF_PREFIX
+operator|+
+literal|"migration.mode"
+decl_stmt|;
 DECL|field|ALLOCATION_FILE
 specifier|public
 specifier|static
@@ -469,7 +481,7 @@ literal|"fair-scheduler.xml"
 decl_stmt|;
 comment|/** Whether pools can be created that were not specified in the FS configuration file    */
 DECL|field|ALLOW_UNDECLARED_POOLS
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -480,7 +492,7 @@ operator|+
 literal|"allow-undeclared-pools"
 decl_stmt|;
 DECL|field|DEFAULT_ALLOW_UNDECLARED_POOLS
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|boolean
@@ -490,7 +502,7 @@ literal|true
 decl_stmt|;
 comment|/** Whether to use the user name as the queue name (instead of "default") if    * the request does not specify a queue. */
 DECL|field|USER_AS_DEFAULT_QUEUE
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -501,7 +513,7 @@ operator|+
 literal|"user-as-default-queue"
 decl_stmt|;
 DECL|field|DEFAULT_USER_AS_DEFAULT_QUEUE
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|boolean
@@ -521,7 +533,7 @@ literal|1.0f
 decl_stmt|;
 comment|/** Cluster threshold for node locality. */
 DECL|field|LOCALITY_THRESHOLD_NODE
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -532,7 +544,7 @@ operator|+
 literal|"locality.threshold.node"
 decl_stmt|;
 DECL|field|DEFAULT_LOCALITY_THRESHOLD_NODE
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|float
@@ -542,7 +554,7 @@ name|DEFAULT_LOCALITY_THRESHOLD
 decl_stmt|;
 comment|/** Cluster threshold for rack locality. */
 DECL|field|LOCALITY_THRESHOLD_RACK
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -553,7 +565,7 @@ operator|+
 literal|"locality.threshold.rack"
 decl_stmt|;
 DECL|field|DEFAULT_LOCALITY_THRESHOLD_RACK
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|float
@@ -617,7 +629,7 @@ comment|/**    * Enable continuous scheduling or not.    * @deprecated Continuou
 annotation|@
 name|Deprecated
 DECL|field|CONTINUOUS_SCHEDULING_ENABLED
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -630,7 +642,7 @@ decl_stmt|;
 annotation|@
 name|Deprecated
 DECL|field|DEFAULT_CONTINUOUS_SCHEDULING_ENABLED
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|boolean
@@ -642,7 +654,7 @@ comment|/**    * Sleep time of each pass in continuous scheduling (5ms in defaul
 annotation|@
 name|Deprecated
 DECL|field|CONTINUOUS_SCHEDULING_SLEEP_MS
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -655,7 +667,7 @@ decl_stmt|;
 annotation|@
 name|Deprecated
 DECL|field|DEFAULT_CONTINUOUS_SCHEDULING_SLEEP_MS
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|int
@@ -665,7 +677,7 @@ literal|5
 decl_stmt|;
 comment|/** Whether preemption is enabled. */
 DECL|field|PREEMPTION
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -676,7 +688,7 @@ operator|+
 literal|"preemption"
 decl_stmt|;
 DECL|field|DEFAULT_PREEMPTION
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|boolean
@@ -705,7 +717,7 @@ init|=
 literal|0.8f
 decl_stmt|;
 DECL|field|WAIT_TIME_BEFORE_KILL
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -716,7 +728,7 @@ operator|+
 literal|"waitTimeBeforeKill"
 decl_stmt|;
 DECL|field|DEFAULT_WAIT_TIME_BEFORE_KILL
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|int
@@ -735,7 +747,7 @@ literal|".increment-allocation"
 decl_stmt|;
 comment|/**    * Configurable delay (ms) before an app's starvation is considered after    * it is identified. This is to give the scheduler enough time to    * allocate containers post preemption. This delay is added to the    * {@link #WAIT_TIME_BEFORE_KILL} and enough heartbeats.    *    * This is intended to be a backdoor on production clusters, and hence    * intentionally not documented.    */
 DECL|field|WAIT_TIME_BEFORE_NEXT_STARVATION_CHECK_MS
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -745,7 +757,7 @@ name|CONF_PREFIX
 operator|+
 literal|"waitTimeBeforeNextStarvationCheck"
 decl_stmt|;
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|long
@@ -767,7 +779,7 @@ operator|+
 literal|"assignmultiple"
 decl_stmt|;
 DECL|field|DEFAULT_ASSIGN_MULTIPLE
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|boolean
@@ -777,7 +789,7 @@ literal|false
 decl_stmt|;
 comment|/** Whether to give more weight to apps requiring many resources. */
 DECL|field|SIZE_BASED_WEIGHT
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -788,7 +800,7 @@ operator|+
 literal|"sizebasedweight"
 decl_stmt|;
 DECL|field|DEFAULT_SIZE_BASED_WEIGHT
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|boolean
@@ -819,7 +831,7 @@ literal|true
 decl_stmt|;
 comment|/**    * Specify exact number of containers to assign on each heartbeat, if dynamic    * max assign is turned off.    */
 DECL|field|MAX_ASSIGN
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -830,7 +842,7 @@ operator|+
 literal|"max.assign"
 decl_stmt|;
 DECL|field|DEFAULT_MAX_ASSIGN
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|int

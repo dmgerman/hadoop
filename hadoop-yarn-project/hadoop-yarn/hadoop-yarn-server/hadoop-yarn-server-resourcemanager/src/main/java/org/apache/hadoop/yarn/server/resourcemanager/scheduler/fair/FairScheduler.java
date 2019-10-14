@@ -1973,6 +1973,11 @@ DECL|field|reservationThreshold
 name|Resource
 name|reservationThreshold
 decl_stmt|;
+DECL|field|migration
+specifier|private
+name|boolean
+name|migration
+decl_stmt|;
 DECL|method|FairScheduler ()
 specifier|public
 name|FairScheduler
@@ -7196,6 +7201,9 @@ expr_stmt|;
 if|if
 condition|(
 name|continuousSchedulingEnabled
+operator|&&
+operator|!
+name|migration
 condition|)
 block|{
 comment|// Continuous scheduling is deprecated log it on startup
@@ -7251,6 +7259,9 @@ name|conf
 operator|.
 name|getPreemptionEnabled
 argument_list|()
+operator|&&
+operator|!
+name|migration
 condition|)
 block|{
 name|createPreemptionThread
@@ -7450,6 +7461,19 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|migration
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|FairSchedulerConfiguration
+operator|.
+name|MIGRATION_MODE
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
 name|initScheduler
 argument_list|(
 name|conf
@@ -7462,6 +7486,12 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|migration
+condition|)
+block|{
 comment|// Initialize SchedulingMonitorManager
 name|schedulingMonitorManager
 operator|.
@@ -7472,6 +7502,7 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override

@@ -1055,6 +1055,16 @@ return|return
 name|result
 return|;
 block|}
+DECL|method|getRawMaxShare ()
+specifier|public
+name|ConfigurableResource
+name|getRawMaxShare
+parameter_list|()
+block|{
+return|return
+name|maxShare
+return|;
+block|}
 DECL|method|getReservedResource ()
 specifier|public
 name|Resource
@@ -1140,7 +1150,7 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getMaxAMShare ()
-specifier|protected
+specifier|public
 name|float
 name|getMaxAMShare
 parameter_list|()

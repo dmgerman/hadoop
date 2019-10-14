@@ -1308,6 +1308,28 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|fair
+operator|.
+name|FairSchedulerConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|scheduler
 operator|.
 name|OpportunisticContainerContext
@@ -1743,6 +1765,11 @@ operator|new
 name|SchedulingMonitorManager
 argument_list|()
 decl_stmt|;
+DECL|field|migration
+specifier|private
+name|boolean
+name|migration
+decl_stmt|;
 comment|/**    * Construct the service.    *    * @param name service name    */
 DECL|method|AbstractYarnScheduler (String name)
 specifier|public
@@ -1799,6 +1826,19 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|migration
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|FairSchedulerConfiguration
+operator|.
+name|MIGRATION_MODE
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
 name|nmExpireInterval
 operator|=
 name|conf
@@ -1859,6 +1899,12 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|migration
+condition|)
+block|{
 name|this
 operator|.
 name|releaseCache
@@ -1869,6 +1915,7 @@ argument_list|(
 literal|"Pending Container Clear Timer"
 argument_list|)
 expr_stmt|;
+block|}
 name|autoUpdateContainers
 operator|=
 name|conf
@@ -1943,6 +1990,12 @@ name|Exception
 block|{
 if|if
 condition|(
+operator|!
+name|migration
+condition|)
+block|{
+if|if
+condition|(
 name|updateThread
 operator|!=
 literal|null
@@ -1962,6 +2015,7 @@ expr_stmt|;
 name|createReleaseCache
 argument_list|()
 expr_stmt|;
+block|}
 name|super
 operator|.
 name|serviceStart

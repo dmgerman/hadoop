@@ -1183,6 +1183,21 @@ else|:
 name|maxApps
 return|;
 block|}
+DECL|method|getUserMaxApps ()
+specifier|public
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Integer
+argument_list|>
+name|getUserMaxApps
+parameter_list|()
+block|{
+return|return
+name|userMaxApps
+return|;
+block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getQueueMaxApps (String queue)
@@ -1215,6 +1230,26 @@ else|:
 name|maxApps
 return|;
 block|}
+DECL|method|getQueueMaxAppsDefault ()
+specifier|public
+name|int
+name|getQueueMaxAppsDefault
+parameter_list|()
+block|{
+return|return
+name|queueMaxAppsDefault
+return|;
+block|}
+DECL|method|getUserMaxAppsDefault ()
+specifier|public
+name|int
+name|getUserMaxAppsDefault
+parameter_list|()
+block|{
+return|return
+name|userMaxAppsDefault
+return|;
+block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getQueueMaxAMShare (String queue)
@@ -1245,6 +1280,16 @@ condition|?
 name|queueMaxAMShareDefault
 else|:
 name|maxAMShare
+return|;
+block|}
+DECL|method|getQueueMaxAMShareDefault ()
+specifier|public
+name|float
+name|getQueueMaxAMShareDefault
+parameter_list|()
+block|{
+return|return
+name|queueMaxAMShareDefault
 return|;
 block|}
 comment|/**    * Get the minimum resource allocation for the given queue.    *    * @param queue the target queue's name    * @return the min allocation on this queue or {@link Resources#none}    * if not set    */

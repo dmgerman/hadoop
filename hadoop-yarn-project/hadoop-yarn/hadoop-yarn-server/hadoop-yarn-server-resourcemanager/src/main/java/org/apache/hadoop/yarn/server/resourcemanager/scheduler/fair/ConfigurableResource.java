@@ -508,6 +508,32 @@ throw|;
 block|}
 block|}
 block|}
+DECL|method|getPercentages ()
+specifier|public
+name|double
+index|[]
+name|getPercentages
+parameter_list|()
+block|{
+return|return
+name|percentages
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
+name|Arrays
+operator|.
+name|copyOf
+argument_list|(
+name|percentages
+argument_list|,
+name|percentages
+operator|.
+name|length
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 
