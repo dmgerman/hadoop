@@ -585,11 +585,6 @@ annotation|@
 name|Parameterized
 operator|.
 name|Parameters
-argument_list|(
-name|name
-operator|=
-literal|"{0}-{1}"
-argument_list|)
 DECL|method|params ()
 specifier|public
 specifier|static
