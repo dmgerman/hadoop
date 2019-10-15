@@ -195,6 +195,15 @@ name|PRIMARY_GROUP_MAPPING
 init|=
 literal|"%primary_group"
 decl_stmt|;
+DECL|field|SECONDARY_GROUP_MAPPING
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SECONDARY_GROUP_MAPPING
+init|=
+literal|"%secondary_group"
+decl_stmt|;
 DECL|method|QueuePlacementRuleUtils ()
 specifier|private
 name|QueuePlacementRuleUtils
@@ -516,6 +525,17 @@ operator|.
 name|contains
 argument_list|(
 name|PRIMARY_GROUP_MAPPING
+argument_list|)
+operator|&&
+operator|!
+name|mapping
+operator|.
+name|getQueue
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+name|SECONDARY_GROUP_MAPPING
 argument_list|)
 return|;
 block|}
