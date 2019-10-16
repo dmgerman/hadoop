@@ -1084,7 +1084,7 @@ name|rmChecker
 init|=
 name|ResourceMetricsChecker
 operator|.
-name|create
+name|createMandatoryResourceChecker
 argument_list|()
 operator|.
 name|gaugeLong
@@ -2224,7 +2224,7 @@ name|resMetricsQueueSourceChecker
 init|=
 name|ResourceMetricsChecker
 operator|.
-name|create
+name|createMandatoryResourceChecker
 argument_list|()
 operator|.
 name|gaugeLong
@@ -2276,7 +2276,7 @@ name|resMetricsUserSourceChecker
 init|=
 name|ResourceMetricsChecker
 operator|.
-name|create
+name|createMandatoryResourceChecker
 argument_list|()
 operator|.
 name|gaugeLong
@@ -3520,7 +3520,7 @@ name|resMetricsQueueSourceChecker
 init|=
 name|ResourceMetricsChecker
 operator|.
-name|create
+name|createMandatoryResourceChecker
 argument_list|()
 operator|.
 name|gaugeLong
@@ -3574,7 +3574,7 @@ name|resMetricsParentQueueSourceChecker
 init|=
 name|ResourceMetricsChecker
 operator|.
-name|create
+name|createMandatoryResourceChecker
 argument_list|()
 operator|.
 name|gaugeLong
@@ -3628,7 +3628,7 @@ name|resMetricsUserSourceChecker
 init|=
 name|ResourceMetricsChecker
 operator|.
-name|create
+name|createMandatoryResourceChecker
 argument_list|()
 operator|.
 name|gaugeLong
@@ -3682,7 +3682,7 @@ name|resMetricsParentUserSourceChecker
 init|=
 name|ResourceMetricsChecker
 operator|.
-name|create
+name|createMandatoryResourceChecker
 argument_list|()
 operator|.
 name|gaugeLong
