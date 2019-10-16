@@ -42,6 +42,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|file
+operator|.
+name|AccessDeniedException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -112,7 +124,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get the region of a bucket. This may be via an S3 API call if not    * already cached.    * @return the region in which a bucket is located    * @throws IOException on any failure.    */
+comment|/**    * Get the region of a bucket. This may be via an S3 API call if not    * already cached.    * @return the region in which a bucket is located    * @throws AccessDeniedException if the caller lacks permission.    * @throws IOException on any failure.    */
 annotation|@
 name|Retries
 operator|.

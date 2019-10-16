@@ -84,6 +84,18 @@ begin_import
 import|import
 name|java
 operator|.
+name|nio
+operator|.
+name|file
+operator|.
+name|AccessDeniedException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|Date
@@ -411,6 +423,24 @@ operator|.
 name|s3a
 operator|.
 name|S3AUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|auth
+operator|.
+name|RolePolicies
 import|;
 end_import
 
@@ -2225,7 +2255,7 @@ name|out
 argument_list|)
 return|;
 block|}
-comment|/**    * Run the tool, capturing the output (if the tool supports that).    *    * As well as returning an exit code, the implementations can choose to    * throw an instance of {@link ExitUtil.ExitException} with their exit    * code set to the desired exit value. The exit code of such an exception    * is used for the tool's exit code, and the stack trace only logged at    * debug.    * @param args argument list    * @param out output stream    * @return the exit code to return.    * @throws Exception on any failure    */
+comment|/**    * Run the tool, capturing the output (if the tool supports that).    *    * As well as returning an exit code, the implementations can choose to    * throw an instance of {@code ExitUtil.ExitException} with their exit    * code set to the desired exit value. The exit code of such an exception    * is used for the tool's exit code, and the stack trace only logged at    * debug.    * @param args argument list    * @param out output stream    * @return the exit code to return.    * @throws Exception on any failure    */
 DECL|method|run (String[] args, PrintStream out)
 specifier|public
 specifier|abstract
@@ -5447,6 +5477,7 @@ block|}
 block|}
 comment|/**    * Get info about a bucket and its S3Guard integration status.    */
 DECL|class|BucketInfo
+specifier|public
 specifier|static
 class|class
 name|BucketInfo
@@ -5582,7 +5613,26 @@ name|ENCRYPTION_FLAG
 operator|+
 literal|" -require {none, sse-s3, sse-kms} - Require encryption policy"
 decl_stmt|;
+comment|/**      * Output when the client cannot get the location of a bucket.      */
+annotation|@
+name|VisibleForTesting
+DECL|field|LOCATION_UNKNOWN
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|LOCATION_UNKNOWN
+init|=
+literal|"Location unknown -caller lacks "
+operator|+
+name|RolePolicies
+operator|.
+name|S3_GET_BUCKET_LOCATION
+operator|+
+literal|" permission"
+decl_stmt|;
 DECL|method|BucketInfo (Configuration conf)
+specifier|public
 name|BucketInfo
 parameter_list|(
 name|Configuration
@@ -5820,6 +5870,8 @@ argument_list|,
 name|fsUri
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|println
 argument_list|(
 name|out
@@ -5832,6 +5884,33 @@ name|getBucketLocation
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|AccessDeniedException
+name|e
+parameter_list|)
+block|{
+comment|// Caller cannot get the location of this bucket due to permissions
+comment|// in their role or the bucket itself.
+comment|// Note and continue.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"failed to get bucket location"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|println
+argument_list|(
+name|out
+argument_list|,
+name|LOCATION_UNKNOWN
+argument_list|)
+expr_stmt|;
+block|}
 name|boolean
 name|usingS3Guard
 init|=

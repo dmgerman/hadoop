@@ -464,6 +464,35 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Given an S3 bucket region as returned by a bucket location query,    * fix it into a form which can be used by other AWS commands.    * https://forums.aws.amazon.com/thread.jspa?messageID=796829&tstart=0    * See also {@code com.amazonaws.services.s3.model.Region.fromValue()}    * for its conversion logic.    * @param region region from S3 call.    * @return the region to use in DDB etc.    */
+DECL|method|fixBucketRegion (final String region)
+specifier|public
+specifier|static
+name|String
+name|fixBucketRegion
+parameter_list|(
+specifier|final
+name|String
+name|region
+parameter_list|)
+block|{
+return|return
+name|region
+operator|==
+literal|null
+operator|||
+name|region
+operator|.
+name|equals
+argument_list|(
+literal|"US"
+argument_list|)
+condition|?
+literal|"us-east-1"
+else|:
+name|region
+return|;
+block|}
 block|}
 end_class
 

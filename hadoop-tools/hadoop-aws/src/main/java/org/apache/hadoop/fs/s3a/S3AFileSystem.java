@@ -2244,6 +2244,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|impl
+operator|.
+name|NetworkBinding
+operator|.
+name|fixBucketRegion
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|IOUtils
@@ -4258,7 +4278,7 @@ name|initTransferManager
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Get the region of a bucket.    * @return the region in which a bucket is located    * @throws IOException on any failure.    */
+comment|/**    * Get the region of a bucket.    * @return the region in which a bucket is located    * @throws AccessDeniedException if the caller lacks permission.    * @throws IOException on any failure.    */
 annotation|@
 name|Retries
 operator|.
@@ -4278,7 +4298,7 @@ name|bucket
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the region of a bucket.    * Retry policy: retrying, translated.    * @param bucketName the name of the bucket    * @return the region in which a bucket is located    * @throws IOException on any failure.    */
+comment|/**    * Get the region of a bucket; fixing up the region so it can be used    * in the builders of other AWS clients.    * Requires the caller to have the AWS role permission    * {@code s3:GetBucketLocation}.    * Retry policy: retrying, translated.    * @param bucketName the name of the bucket    * @return the region in which a bucket is located    * @throws AccessDeniedException if the caller lacks permission.    * @throws IOException on any failure.    */
 annotation|@
 name|VisibleForTesting
 annotation|@
@@ -4296,7 +4316,10 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-return|return
+specifier|final
+name|String
+name|region
+init|=
 name|invoker
 operator|.
 name|retry
@@ -4315,6 +4338,12 @@ name|getBucketLocation
 argument_list|(
 name|bucketName
 argument_list|)
+argument_list|)
+decl_stmt|;
+return|return
+name|fixBucketRegion
+argument_list|(
+name|region
 argument_list|)
 return|;
 block|}

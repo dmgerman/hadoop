@@ -374,6 +374,26 @@ name|SIGNING_ALGORITHM_S3
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|impl
+operator|.
+name|NetworkBinding
+operator|.
+name|fixBucketRegion
+import|;
+end_import
+
 begin_comment
 comment|/**  * Tests for custom Signers and SignerInitializers.  */
 end_comment
@@ -917,24 +937,11 @@ argument_list|(
 name|bucketName
 argument_list|)
 decl_stmt|;
-comment|//  See: https://forums.aws.amazon.com/thread.jspa?messageID=796829&tstart=0
-if|if
-condition|(
-name|region
-operator|.
-name|equals
-argument_list|(
-literal|"US"
-argument_list|)
-condition|)
-block|{
-name|region
-operator|=
-literal|"us-east-1"
-expr_stmt|;
-block|}
 return|return
+name|fixBucketRegion
+argument_list|(
 name|region
+argument_list|)
 return|;
 block|}
 end_function

@@ -1881,13 +1881,24 @@ operator|.
 name|getUri
 argument_list|()
 decl_stmt|;
+name|String
+name|message
+init|=
+literal|"Failed to get bucket location as client lacks permission "
+operator|+
+name|RolePolicies
+operator|.
+name|S3_GET_BUCKET_LOCATION
+operator|+
+literal|" for "
+operator|+
+name|uri
+decl_stmt|;
 name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Failed to get bucket location from S3 bucket {}"
-argument_list|,
-name|uri
+name|message
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -1897,15 +1908,7 @@ operator|)
 operator|new
 name|AccessDeniedException
 argument_list|(
-literal|"S3 client role lacks permission "
-operator|+
-name|RolePolicies
-operator|.
-name|S3_GET_BUCKET_LOCATION
-operator|+
-literal|" for "
-operator|+
-name|uri
+name|message
 argument_list|)
 operator|.
 name|initCause
