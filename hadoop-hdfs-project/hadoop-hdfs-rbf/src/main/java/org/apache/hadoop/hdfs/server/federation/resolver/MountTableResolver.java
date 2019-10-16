@@ -2196,15 +2196,13 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|RouterResolveException
 argument_list|(
 literal|"Cannot find locations for "
 operator|+
 name|path
 operator|+
-literal|", "
-operator|+
-literal|"because the default nameservice is disabled to read or write"
+literal|", because the default nameservice is disabled to read or write"
 argument_list|)
 throw|;
 block|}
