@@ -68,6 +68,24 @@ name|StandbyException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|AccessControlException
+import|;
+end_import
+
+begin_comment
+comment|/**  * The methods of UnreliableInterface could throw exceptions in a  * predefined way. It is currently used for testing {@link RetryPolicy}  * and {@link FailoverProxyProvider} classes, but can be potentially used  * to test any class's behaviour where an underlying interface or class  * may throw exceptions.  *  * Some methods may be annotated with the {@link Idempotent} annotation.  * In order to test those some methods of UnreliableInterface are annotated,  * but they are not actually Idempotent functions.  *  */
+end_comment
+
 begin_interface
 DECL|interface|UnreliableInterface
 specifier|public
@@ -212,6 +230,15 @@ name|failsWithSASLExceptionTenTimes
 parameter_list|()
 throws|throws
 name|SaslException
+function_decl|;
+annotation|@
+name|Idempotent
+DECL|method|failsWithAccessControlExceptionEightTimes ()
+name|void
+name|failsWithAccessControlExceptionEightTimes
+parameter_list|()
+throws|throws
+name|AccessControlException
 function_decl|;
 DECL|method|succeedsOnceThenFailsReturningString ()
 specifier|public

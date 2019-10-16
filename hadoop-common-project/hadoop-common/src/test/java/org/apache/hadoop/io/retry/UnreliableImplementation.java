@@ -68,6 +68,24 @@ name|StandbyException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|AccessControlException
+import|;
+end_import
+
+begin_comment
+comment|/**  * For the usage and purpose of this class see {@link UnreliableInterface}  * which this class implements.  *  * @see UnreliableInterface  */
+end_comment
+
 begin_class
 DECL|class|UnreliableImplementation
 class|class
@@ -94,6 +112,9 @@ name|failsTenTimesInvocationCount
 decl_stmt|,
 DECL|field|failsWithSASLExceptionTenTimesInvocationCount
 name|failsWithSASLExceptionTenTimesInvocationCount
+decl_stmt|,
+DECL|field|failsWithAccessControlExceptionInvocationCount
+name|failsWithAccessControlExceptionInvocationCount
 decl_stmt|,
 DECL|field|succeedsOnceThenFailsCount
 name|succeedsOnceThenFailsCount
@@ -411,6 +432,31 @@ block|{
 throw|throw
 operator|new
 name|SaslException
+argument_list|()
+throw|;
+block|}
+block|}
+annotation|@
+name|Override
+DECL|method|failsWithAccessControlExceptionEightTimes ()
+specifier|public
+name|void
+name|failsWithAccessControlExceptionEightTimes
+parameter_list|()
+throws|throws
+name|AccessControlException
+block|{
+if|if
+condition|(
+name|failsWithAccessControlExceptionInvocationCount
+operator|++
+operator|<
+literal|8
+condition|)
+block|{
+throw|throw
+operator|new
+name|AccessControlException
 argument_list|()
 throw|;
 block|}
