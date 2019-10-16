@@ -151,6 +151,16 @@ parameter_list|)
 throws|throws
 name|Exception
 function_decl|;
+DECL|method|revertToOldConfig (Configuration config)
+name|void
+name|revertToOldConfig
+parameter_list|(
+name|Configuration
+name|config
+parameter_list|)
+throws|throws
+name|Exception
+function_decl|;
 comment|/**    * Closes the configuration provider, releasing any required resources.    * @throws IOException on failure to close    */
 DECL|method|close ()
 name|void
