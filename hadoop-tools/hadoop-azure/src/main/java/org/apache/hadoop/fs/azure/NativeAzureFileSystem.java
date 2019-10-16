@@ -3152,6 +3152,35 @@ return|return
 literal|"wasb"
 return|;
 block|}
+comment|/**    * If fs.azure.override.canonical.service.name is set as true, return URI of    * the WASB filesystem, otherwise use the default implementation.    *    * @return a service string that uniquely identifies this file system    */
+annotation|@
+name|Override
+DECL|method|getCanonicalServiceName ()
+specifier|public
+name|String
+name|getCanonicalServiceName
+parameter_list|()
+block|{
+if|if
+condition|(
+name|returnUriAsCanonicalServiceName
+condition|)
+block|{
+return|return
+name|getUri
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
+return|return
+name|super
+operator|.
+name|getCanonicalServiceName
+argument_list|()
+return|;
+block|}
 comment|/**    *<p>    * A {@link FileSystem} for reading and writing files stored on<a    * href="http://store.azure.com/">Windows Azure</a>. This implementation is    * blob-based and stores files on Azure in their native form so they can be read    * by other Azure tools. This implementation uses HTTPS for secure network communication.    *</p>    */
 DECL|class|Secure
 specifier|public
@@ -3353,6 +3382,16 @@ name|String
 name|APPEND_SUPPORT_ENABLE_PROPERTY_NAME
 init|=
 literal|"fs.azure.enable.append.support"
+decl_stmt|;
+comment|/*    * Property to override canonical service name with filesystem's URI.    */
+DECL|field|RETURN_URI_AS_CANONICAL_SERVICE_NAME_PROPERTY_NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RETURN_URI_AS_CANONICAL_SERVICE_NAME_PROPERTY_NAME
+init|=
+literal|"fs.azure.override.canonical.service.name"
 decl_stmt|;
 comment|/**    * The configuration property to set number of threads to be used for rename operation.    */
 DECL|field|AZURE_RENAME_THREADS
@@ -4855,6 +4894,13 @@ name|appendSupportEnabled
 init|=
 literal|false
 decl_stmt|;
+DECL|field|returnUriAsCanonicalServiceName
+specifier|private
+name|boolean
+name|returnUriAsCanonicalServiceName
+init|=
+literal|false
+decl_stmt|;
 DECL|field|authURL
 specifier|private
 name|DelegationTokenAuthenticatedURL
@@ -5642,6 +5688,19 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+name|this
+operator|.
+name|returnUriAsCanonicalServiceName
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|RETURN_URI_AS_CANONICAL_SERVICE_NAME_PROPERTY_NAME
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
