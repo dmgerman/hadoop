@@ -38,7 +38,7 @@ name|jetty
 operator|.
 name|server
 operator|.
-name|NCSARequestLog
+name|CustomRequestLog
 import|;
 end_import
 
@@ -201,7 +201,7 @@ name|assertEquals
 argument_list|(
 literal|"Class mismatch"
 argument_list|,
-name|NCSARequestLog
+name|CustomRequestLog
 operator|.
 name|class
 argument_list|,

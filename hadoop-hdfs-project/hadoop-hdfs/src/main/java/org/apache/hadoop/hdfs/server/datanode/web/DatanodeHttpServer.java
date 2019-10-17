@@ -785,6 +785,7 @@ name|HTTP_ACCEPTOR_THREADS
 init|=
 literal|1
 decl_stmt|;
+comment|// Jetty 9.4.x: Adding one more thread to HTTP_MAX_THREADS.
 DECL|field|HTTP_MAX_THREADS
 specifier|private
 specifier|static
@@ -796,7 +797,7 @@ name|HTTP_SELECTOR_THREADS
 operator|+
 name|HTTP_ACCEPTOR_THREADS
 operator|+
-literal|1
+literal|2
 decl_stmt|;
 DECL|field|infoServer
 specifier|private
