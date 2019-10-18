@@ -118,13 +118,7 @@ name|cacheGroupsRefresh
 parameter_list|()
 throws|throws
 name|IOException
-block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|()
-throw|;
-block|}
+block|{   }
 annotation|@
 name|Override
 DECL|method|cacheGroupsAdd (List<String> groups)
@@ -140,13 +134,7 @@ name|groups
 parameter_list|)
 throws|throws
 name|IOException
-block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|()
-throw|;
-block|}
+block|{   }
 block|}
 end_class
 
