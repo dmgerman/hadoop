@@ -444,6 +444,23 @@ operator|.
 name|getTestDir
 argument_list|()
 decl_stmt|;
+static|static
+block|{
+comment|// The 4-letter-words commands are simple diagnostics telnet commands in
+comment|// ZooKeeper. Since ZooKeeper 3.5, these are disabled by default due to
+comment|// security concerns: https://issues.apache.org/jira/browse/ZOOKEEPER-2693
+comment|// We are enabling them for the tests here, as some tests in hadoop or in
+comment|// other projects might still use them
+name|System
+operator|.
+name|setProperty
+argument_list|(
+literal|"zookeeper.4lw.commands.whitelist"
+argument_list|,
+literal|"*"
+argument_list|)
+expr_stmt|;
+block|}
 DECL|field|hostPort
 specifier|protected
 specifier|final

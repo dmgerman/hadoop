@@ -580,7 +580,7 @@ name|zookeeper
 operator|.
 name|client
 operator|.
-name|ZooKeeperSaslClient
+name|ZKClientConfig
 import|;
 end_import
 
@@ -1228,7 +1228,7 @@ name|System
 operator|.
 name|setProperty
 argument_list|(
-name|ZooKeeperSaslClient
+name|ZKClientConfig
 operator|.
 name|LOGIN_CONTEXT_NAME_KEY
 argument_list|,

@@ -2077,30 +2077,25 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Wait until one of the following events:    *<ul>    *<li>Another thread publishes the results of an attempt to become active    * using {@link #recordActiveAttempt(ActiveAttemptRecord)}</li>    *<li>The node enters bad health status</li>    *<li>The specified timeout elapses</li>    *</ul>    *     * @param timeoutMillis number of millis to wait    * @return the published record, or null if the timeout elapses or the    * service becomes unhealthy     * @throws InterruptedException if the thread is interrupted.    */
-DECL|method|waitForActiveAttempt (int timeoutMillis)
+comment|/**    * Wait until one of the following events:    *<ul>    *<li>Another thread publishes the results of an attempt to become active    * using {@link #recordActiveAttempt(ActiveAttemptRecord)}</li>    *<li>The node enters bad health status</li>    *<li>The specified timeout elapses</li>    *</ul>    *     * @param timeoutMillis number of millis to wait    * @param onlyAfterNanoTime accept attempt records only after a given    * timestamp. Use this parameter to ignore the old attempt records from a    * previous fail-over attempt.    * @return the published record, or null if the timeout elapses or the    * service becomes unhealthy     * @throws InterruptedException if the thread is interrupted.    */
+DECL|method|waitForActiveAttempt (int timeoutMillis, long onlyAfterNanoTime)
 specifier|private
 name|ActiveAttemptRecord
 name|waitForActiveAttempt
 parameter_list|(
 name|int
 name|timeoutMillis
+parameter_list|,
+name|long
+name|onlyAfterNanoTime
 parameter_list|)
 throws|throws
 name|InterruptedException
 block|{
 name|long
-name|st
-init|=
-name|System
-operator|.
-name|nanoTime
-argument_list|()
-decl_stmt|;
-name|long
 name|waitUntil
 init|=
-name|st
+name|onlyAfterNanoTime
 operator|+
 name|TimeUnit
 operator|.
@@ -2157,7 +2152,7 @@ name|lastActiveAttemptRecord
 operator|.
 name|nanoTime
 operator|>=
-name|st
+name|onlyAfterNanoTime
 operator|)
 condition|)
 block|{
@@ -2902,6 +2897,14 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// Phase 3: ask the other nodes to yield from the election.
+name|long
+name|st
+init|=
+name|System
+operator|.
+name|nanoTime
+argument_list|()
+decl_stmt|;
 name|HAServiceTarget
 name|activeNode
 init|=
@@ -2981,6 +2984,8 @@ argument_list|(
 name|timeout
 operator|+
 literal|60000
+argument_list|,
+name|st
 argument_list|)
 decl_stmt|;
 if|if

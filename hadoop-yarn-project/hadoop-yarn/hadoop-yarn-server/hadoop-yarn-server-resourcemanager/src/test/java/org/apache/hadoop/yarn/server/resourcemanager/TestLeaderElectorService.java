@@ -935,11 +935,6 @@ name|client
 operator|.
 name|getZooKeeper
 argument_list|()
-argument_list|,
-name|client
-operator|.
-name|getCurrentConnectionString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|waitFor

@@ -32,7 +32,7 @@ name|zookeeper
 operator|.
 name|client
 operator|.
-name|ZooKeeperSaslClient
+name|ZKClientConfig
 import|;
 end_import
 
@@ -74,12 +74,12 @@ name|DEFAULT_ZK_ENABLE_SASL_CLIENT
 init|=
 literal|"true"
 decl_stmt|;
-comment|/**    * System property for the JAAS client context : {@value}.    *    * For SASL authentication to work, this must point to a    * context within the    *    *<p>    *   Default value is derived from    *   {@link ZooKeeperSaslClient#LOGIN_CONTEXT_NAME_KEY}    */
+comment|/**    * System property for the JAAS client context : {@value}.    *    * For SASL authentication to work, this must point to a    * context within the    *    *<p>    *   Default value is derived from    *   {@link ZKClientConfig#LOGIN_CONTEXT_NAME_KEY}    */
 DECL|field|PROP_ZK_SASL_CLIENT_CONTEXT
 name|String
 name|PROP_ZK_SASL_CLIENT_CONTEXT
 init|=
-name|ZooKeeperSaslClient
+name|ZKClientConfig
 operator|.
 name|LOGIN_CONTEXT_NAME_KEY
 decl_stmt|;
