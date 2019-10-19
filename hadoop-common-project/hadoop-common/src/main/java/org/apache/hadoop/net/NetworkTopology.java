@@ -685,16 +685,6 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-operator|!
-operator|(
-name|node
-operator|instanceof
-name|InnerNode
-operator|)
-condition|)
-block|{
-if|if
-condition|(
 name|depthOfAllLeaves
 operator|==
 operator|-
@@ -708,7 +698,6 @@ operator|.
 name|getLevel
 argument_list|()
 expr_stmt|;
-block|}
 block|}
 block|}
 name|LOG
