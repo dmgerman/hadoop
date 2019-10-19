@@ -52,6 +52,10 @@ DECL|enumConstant|ACTIVE
 name|ACTIVE
 block|,
 comment|// HAServiceState.ACTIVE or operational.
+DECL|enumConstant|OBSERVER
+name|OBSERVER
+block|,
+comment|// HAServiceState.OBSERVER.
 DECL|enumConstant|STANDBY
 name|STANDBY
 block|,
@@ -92,12 +96,15 @@ operator|.
 name|ACTIVE
 return|;
 case|case
-name|STANDBY
-case|:
-comment|// TODO: we should probably have a separate state OBSERVER for RBF and
-comment|// treat it differently.
-case|case
 name|OBSERVER
+case|:
+return|return
+name|FederationNamenodeServiceState
+operator|.
+name|OBSERVER
+return|;
+case|case
+name|STANDBY
 case|:
 return|return
 name|FederationNamenodeServiceState
