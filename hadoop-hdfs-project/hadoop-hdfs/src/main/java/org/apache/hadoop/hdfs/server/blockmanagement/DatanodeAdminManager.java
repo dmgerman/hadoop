@@ -1759,6 +1759,21 @@ operator|.
 name|numNodesChecked
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getPendingNodes ()
+specifier|public
+name|Queue
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+name|getPendingNodes
+parameter_list|()
+block|{
+return|return
+name|pendingNodes
+return|;
+block|}
 comment|/**    * Checks to see if datanodes have finished DECOMMISSION_INPROGRESS or    * ENTERING_MAINTENANCE state.    *<p/>    * Since this is done while holding the namesystem lock,    * the amount of work per monitor tick is limited.    */
 DECL|class|Monitor
 specifier|private

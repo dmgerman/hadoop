@@ -2207,6 +2207,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|addBlockToBeReplicated (Block block, DatanodeStorageInfo[] targets)
+specifier|public
 name|void
 name|addBlockToBeReplicated
 parameter_list|(

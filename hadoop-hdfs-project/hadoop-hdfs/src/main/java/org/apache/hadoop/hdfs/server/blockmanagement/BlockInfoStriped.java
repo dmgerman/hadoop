@@ -28,6 +28,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|base
 operator|.
 name|Preconditions
@@ -714,7 +728,10 @@ operator|-
 literal|1
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getStorageBlockIndex (DatanodeStorageInfo storage)
+specifier|public
 name|byte
 name|getStorageBlockIndex
 parameter_list|(

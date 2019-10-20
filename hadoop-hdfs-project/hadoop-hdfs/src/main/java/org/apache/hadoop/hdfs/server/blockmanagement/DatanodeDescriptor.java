@@ -2905,7 +2905,10 @@ operator|--
 expr_stmt|;
 block|}
 comment|/**    * Store block replication work.    */
+annotation|@
+name|VisibleForTesting
 DECL|method|addBlockToBeReplicated (Block block, DatanodeStorageInfo[] targets)
+specifier|public
 name|void
 name|addBlockToBeReplicated
 parameter_list|(
@@ -3158,7 +3161,10 @@ name|size
 argument_list|()
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getNumberOfReplicateBlocks ()
+specifier|public
 name|int
 name|getNumberOfReplicateBlocks
 parameter_list|()
