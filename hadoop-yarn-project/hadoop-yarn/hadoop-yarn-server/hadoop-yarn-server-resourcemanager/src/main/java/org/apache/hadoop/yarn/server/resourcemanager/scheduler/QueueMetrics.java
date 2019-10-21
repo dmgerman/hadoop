@@ -2655,8 +2655,9 @@ operator|.
 name|getName
 argument_list|()
 argument_list|,
-operator|new
 name|Long
+operator|.
+name|valueOf
 argument_list|(
 literal|0
 argument_list|)
