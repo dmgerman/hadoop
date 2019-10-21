@@ -127,7 +127,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Parses arguments passed to the FS->CS converter.  * If the arguments are valid, it calls the converter itself.  *  */
+comment|/**  * Parses arguments passed to the FS-&gt;CS converter.  * If the arguments are valid, it calls the converter itself.  *  */
 end_comment
 
 begin_class

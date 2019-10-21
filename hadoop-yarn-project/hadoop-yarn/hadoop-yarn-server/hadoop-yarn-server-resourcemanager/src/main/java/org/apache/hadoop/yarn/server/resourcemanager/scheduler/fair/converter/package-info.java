@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_comment
-comment|/**  * This package contains classes related to the Fair Scheduler ->  * Capacity Scheduler conversion.  */
+comment|/**  * This package contains classes related to the Fair Scheduler -&gt;  * Capacity Scheduler conversion.  */
 end_comment
 
 begin_package

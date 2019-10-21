@@ -41,7 +41,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Indicates that some preconditions were not met  * before FS->CS conversion.  *  */
+comment|/**  * Indicates that some preconditions were not met  * before FS-&gt;CS conversion.  *  */
 end_comment
 
 begin_class

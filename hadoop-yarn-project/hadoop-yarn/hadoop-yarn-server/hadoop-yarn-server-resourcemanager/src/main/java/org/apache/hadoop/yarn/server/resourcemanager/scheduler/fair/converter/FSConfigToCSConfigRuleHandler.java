@@ -179,7 +179,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Class that determines what should happen if the FS->CS converter  * encounters a property that is currently not supported.  *  * Acceptable values are either "abort" or "warning".  */
+comment|/**  * Class that determines what should happen if the FS-&gt;CS converter  * encounters a property that is currently not supported.  *  * Acceptable values are either "abort" or "warning".  */
 end_comment
 
 begin_class

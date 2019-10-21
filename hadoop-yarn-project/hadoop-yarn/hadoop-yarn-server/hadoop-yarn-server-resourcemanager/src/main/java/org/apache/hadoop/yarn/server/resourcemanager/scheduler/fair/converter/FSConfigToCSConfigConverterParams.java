@@ -27,7 +27,7 @@ package|;
 end_package
 
 begin_comment
-comment|/**  * POJO that holds values for the FS->CS converter.  *  */
+comment|/**  * POJO that holds values for the FS-&gt;CS converter.  *  */
 end_comment
 
 begin_class

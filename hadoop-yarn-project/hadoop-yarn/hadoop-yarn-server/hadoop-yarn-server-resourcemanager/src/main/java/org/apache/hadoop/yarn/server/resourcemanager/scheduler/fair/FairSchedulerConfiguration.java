@@ -447,7 +447,7 @@ name|CONF_PREFIX
 init|=
 literal|"yarn.scheduler.fair."
 decl_stmt|;
-comment|/**    * Used during FS->CS conversion. When enabled, background threads are    * not started. This property should NOT be used by end-users!    */
+comment|/**    * Used during FS-&gt;CS conversion. When enabled, background threads are    * not started. This property should NOT be used by end-users!    */
 DECL|field|MIGRATION_MODE
 specifier|public
 specifier|static

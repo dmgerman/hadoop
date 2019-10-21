@@ -27,7 +27,7 @@ package|;
 end_package
 
 begin_comment
-comment|/**  * Thrown by the FS->CS converter if it encounters an  * unsupported property.  */
+comment|/**  * Thrown by the FS-&gt;CS converter if it encounters an  * unsupported property.  */
 end_comment
 
 begin_class
