@@ -1210,6 +1210,8 @@ argument_list|(
 name|updateAccessTime
 argument_list|,
 name|blocks
+argument_list|,
+name|iip
 argument_list|)
 return|;
 block|}
@@ -3327,6 +3329,12 @@ specifier|final
 name|LocatedBlocks
 name|blocks
 decl_stmt|;
+DECL|field|iip
+specifier|private
+specifier|final
+name|INodesInPath
+name|iip
+decl_stmt|;
 DECL|method|updateAccessTime ()
 name|boolean
 name|updateAccessTime
@@ -3336,7 +3344,17 @@ return|return
 name|updateAccessTime
 return|;
 block|}
-DECL|method|GetBlockLocationsResult ( boolean updateAccessTime, LocatedBlocks blocks)
+DECL|method|getIIp ()
+specifier|public
+name|INodesInPath
+name|getIIp
+parameter_list|()
+block|{
+return|return
+name|iip
+return|;
+block|}
+DECL|method|GetBlockLocationsResult ( boolean updateAccessTime, LocatedBlocks blocks, INodesInPath iip)
 specifier|private
 name|GetBlockLocationsResult
 parameter_list|(
@@ -3345,6 +3363,9 @@ name|updateAccessTime
 parameter_list|,
 name|LocatedBlocks
 name|blocks
+parameter_list|,
+name|INodesInPath
+name|iip
 parameter_list|)
 block|{
 name|this
@@ -3358,6 +3379,12 @@ operator|.
 name|blocks
 operator|=
 name|blocks
+expr_stmt|;
+name|this
+operator|.
+name|iip
+operator|=
+name|iip
 expr_stmt|;
 block|}
 block|}
