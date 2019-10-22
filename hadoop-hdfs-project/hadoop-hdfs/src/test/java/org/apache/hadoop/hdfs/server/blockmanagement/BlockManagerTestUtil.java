@@ -246,20 +246,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|Daemon
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|junit
 operator|.
 name|Assert
@@ -838,25 +824,6 @@ return|return
 name|domSet
 operator|.
 name|size
-argument_list|()
-return|;
-block|}
-comment|/**    * @return redundancy monitor thread instance from block manager.    */
-DECL|method|getRedundancyThread (final BlockManager blockManager)
-specifier|public
-specifier|static
-name|Daemon
-name|getRedundancyThread
-parameter_list|(
-specifier|final
-name|BlockManager
-name|blockManager
-parameter_list|)
-block|{
-return|return
-name|blockManager
-operator|.
-name|getRedundancyThread
 argument_list|()
 return|;
 block|}
