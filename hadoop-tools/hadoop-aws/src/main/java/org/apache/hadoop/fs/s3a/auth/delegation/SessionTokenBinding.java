@@ -1326,7 +1326,7 @@ annotation|@
 name|Retries
 operator|.
 name|RetryTranslated
-DECL|method|createTokenIdentifier ( final Optional<RoleModel.Policy> policy, final EncryptionSecrets encryptionSecrets)
+DECL|method|createTokenIdentifier ( final Optional<RoleModel.Policy> policy, final EncryptionSecrets encryptionSecrets, final Text renewer)
 specifier|public
 name|SessionTokenIdentifier
 name|createTokenIdentifier
@@ -1343,6 +1343,10 @@ parameter_list|,
 specifier|final
 name|EncryptionSecrets
 name|encryptionSecrets
+parameter_list|,
+specifier|final
+name|Text
+name|renewer
 parameter_list|)
 throws|throws
 name|IOException
@@ -1484,6 +1488,8 @@ argument_list|()
 argument_list|,
 name|getOwnerText
 argument_list|()
+argument_list|,
+name|renewer
 argument_list|,
 name|getCanonicalUri
 argument_list|()

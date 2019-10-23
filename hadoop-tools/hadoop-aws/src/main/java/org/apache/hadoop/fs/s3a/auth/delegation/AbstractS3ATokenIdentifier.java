@@ -250,8 +250,8 @@ operator|.
 name|toString
 argument_list|()
 decl_stmt|;
-comment|/**    * Constructor.    * @param kind token kind.    * @param uri filesystem URI.    * @param owner token owner    * @param origin origin text for diagnostics.    * @param encryptionSecrets encryption secrets to set.    */
-DECL|method|AbstractS3ATokenIdentifier ( final Text kind, final URI uri, final Text owner, final String origin, final EncryptionSecrets encryptionSecrets)
+comment|/**    * Constructor.    * @param kind token kind.    * @param uri filesystem URI.    * @param owner token owner.    * @param renewer token renewer.    * @param origin origin text for diagnostics.    * @param encryptionSecrets encryption secrets to set.    */
+DECL|method|AbstractS3ATokenIdentifier ( final Text kind, final URI uri, final Text owner, final Text renewer, final String origin, final EncryptionSecrets encryptionSecrets)
 specifier|protected
 name|AbstractS3ATokenIdentifier
 parameter_list|(
@@ -268,6 +268,10 @@ name|Text
 name|owner
 parameter_list|,
 specifier|final
+name|Text
+name|renewer
+parameter_list|,
+specifier|final
 name|String
 name|origin
 parameter_list|,
@@ -282,9 +286,17 @@ name|kind
 argument_list|,
 name|owner
 argument_list|,
+operator|(
+name|renewer
+operator|!=
+literal|null
+condition|?
+name|renewer
+else|:
 operator|new
 name|Text
 argument_list|()
+operator|)
 argument_list|,
 operator|new
 name|Text
@@ -700,6 +712,19 @@ operator|.
 name|append
 argument_list|(
 name|created
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"; renewer="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|getRenewer
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|sb

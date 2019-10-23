@@ -247,6 +247,20 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|Text
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -410,7 +424,7 @@ specifier|private
 name|String
 name|roleArn
 decl_stmt|;
-comment|/**    * Constructor.    * Name is {@link #name}; token kind is    * {@link DelegationConstants#ROLE_TOKEN_KIND}.    */
+comment|/**    * Constructor.    * Name is {@link #NAME}; token kind is    * {@link DelegationConstants#ROLE_TOKEN_KIND}.    */
 DECL|method|RoleTokenBinding ()
 specifier|public
 name|RoleTokenBinding
@@ -551,7 +565,7 @@ annotation|@
 name|Retries
 operator|.
 name|RetryTranslated
-DECL|method|createTokenIdentifier ( final Optional<RoleModel.Policy> policy, final EncryptionSecrets encryptionSecrets)
+DECL|method|createTokenIdentifier ( final Optional<RoleModel.Policy> policy, final EncryptionSecrets encryptionSecrets, final Text renewer)
 specifier|public
 name|RoleTokenIdentifier
 name|createTokenIdentifier
@@ -568,6 +582,10 @@ parameter_list|,
 specifier|final
 name|EncryptionSecrets
 name|encryptionSecrets
+parameter_list|,
+specifier|final
+name|Text
+name|renewer
 parameter_list|)
 throws|throws
 name|IOException
@@ -682,6 +700,8 @@ argument_list|()
 argument_list|,
 name|getOwnerText
 argument_list|()
+argument_list|,
+name|renewer
 argument_list|,
 name|fromSTSCredentials
 argument_list|(

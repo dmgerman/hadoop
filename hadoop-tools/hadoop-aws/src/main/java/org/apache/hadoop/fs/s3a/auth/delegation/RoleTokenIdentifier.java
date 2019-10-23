@@ -89,7 +89,7 @@ name|ROLE_TOKEN_KIND
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|RoleTokenIdentifier (final URI uri, final Text owner, final MarshalledCredentials marshalledCredentials, final EncryptionSecrets encryptionSecrets, final String origin)
+DECL|method|RoleTokenIdentifier (final URI uri, final Text owner, final Text renewer, final MarshalledCredentials marshalledCredentials, final EncryptionSecrets encryptionSecrets, final String origin)
 specifier|public
 name|RoleTokenIdentifier
 parameter_list|(
@@ -100,6 +100,10 @@ parameter_list|,
 specifier|final
 name|Text
 name|owner
+parameter_list|,
+specifier|final
+name|Text
+name|renewer
 parameter_list|,
 specifier|final
 name|MarshalledCredentials
@@ -121,6 +125,8 @@ operator|.
 name|ROLE_TOKEN_KIND
 argument_list|,
 name|owner
+argument_list|,
+name|renewer
 argument_list|,
 name|uri
 argument_list|,

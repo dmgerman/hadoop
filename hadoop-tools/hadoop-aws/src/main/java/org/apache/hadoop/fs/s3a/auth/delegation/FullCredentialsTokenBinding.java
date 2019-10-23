@@ -187,6 +187,20 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|Text
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -251,7 +265,7 @@ specifier|private
 name|String
 name|credentialOrigin
 decl_stmt|;
-comment|/**    * Constructor, uses name of {@link #name} and token kind of    * {@link DelegationConstants#FULL_TOKEN_KIND}.    *    */
+comment|/**    * Constructor, uses name of {@link #NAME} and token kind of    * {@link DelegationConstants#FULL_TOKEN_KIND}.    *    */
 DECL|method|FullCredentialsTokenBinding ()
 specifier|public
 name|FullCredentialsTokenBinding
@@ -467,7 +481,7 @@ block|}
 comment|/**    * Create a new delegation token.    *    * It's slightly inefficient to create a new one every time, but    * it avoids concurrency problems with managing any singleton.    * @param policy minimum policy to use, if known.    * @param encryptionSecrets encryption secrets.    * @return a DT identifier    * @throws IOException failure    */
 annotation|@
 name|Override
-DECL|method|createTokenIdentifier ( final Optional<RoleModel.Policy> policy, final EncryptionSecrets encryptionSecrets)
+DECL|method|createTokenIdentifier ( final Optional<RoleModel.Policy> policy, final EncryptionSecrets encryptionSecrets, final Text renewer)
 specifier|public
 name|AbstractS3ATokenIdentifier
 name|createTokenIdentifier
@@ -484,6 +498,10 @@ parameter_list|,
 specifier|final
 name|EncryptionSecrets
 name|encryptionSecrets
+parameter_list|,
+specifier|final
+name|Text
+name|renewer
 parameter_list|)
 throws|throws
 name|IOException
@@ -500,6 +518,8 @@ argument_list|()
 argument_list|,
 name|getOwnerText
 argument_list|()
+argument_list|,
+name|renewer
 argument_list|,
 name|awsCredentials
 argument_list|,

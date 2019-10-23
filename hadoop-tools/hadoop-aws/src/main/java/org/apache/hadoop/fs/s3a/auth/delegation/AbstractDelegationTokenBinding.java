@@ -362,8 +362,8 @@ operator|.
 name|RequestNewToken
 return|;
 block|}
-comment|/**    * Create a delegation token for the user.    * This will only be called if a new DT is needed, that is: the    * filesystem has been deployed unbonded.    * @param policy minimum policy to use, if known.    * @param encryptionSecrets encryption secrets for the token.    * @return the token or null if the back end does not want to issue one.    * @throws IOException if one cannot be created    */
-DECL|method|createDelegationToken ( final Optional<RoleModel.Policy> policy, final EncryptionSecrets encryptionSecrets)
+comment|/**    * Create a delegation token for the user.    * This will only be called if a new DT is needed, that is: the    * filesystem has been deployed unbonded.    * @param policy minimum policy to use, if known.    * @param encryptionSecrets encryption secrets for the token.    * @param renewer the principal permitted to renew the token.    * @return the token or null if the back end does not want to issue one.    * @throws IOException if one cannot be created    */
+DECL|method|createDelegationToken ( final Optional<RoleModel.Policy> policy, final EncryptionSecrets encryptionSecrets, final Text renewer)
 specifier|public
 name|Token
 argument_list|<
@@ -383,6 +383,10 @@ parameter_list|,
 specifier|final
 name|EncryptionSecrets
 name|encryptionSecrets
+parameter_list|,
+specifier|final
+name|Text
+name|renewer
 parameter_list|)
 throws|throws
 name|IOException
@@ -399,6 +403,8 @@ argument_list|(
 name|policy
 argument_list|,
 name|encryptionSecrets
+argument_list|,
+name|renewer
 argument_list|)
 decl_stmt|;
 if|if
@@ -453,8 +459,8 @@ literal|null
 return|;
 block|}
 block|}
-comment|/**    * Create a token identifier with all the information needed    * to be included in a delegation token.    * This is where session credentials need to be extracted, etc.    * This will only be called if a new DT is needed, that is: the    * filesystem has been deployed unbonded.    *    * If {@link #createDelegationToken(Optional, EncryptionSecrets)}    * is overridden, this method can be replaced with a stub.    *    * @param policy minimum policy to use, if known.    * @param encryptionSecrets encryption secrets for the token.    * @return the token data to include in the token identifier.    * @throws IOException failure creating the token data.    */
-DECL|method|createTokenIdentifier ( Optional<RoleModel.Policy> policy, EncryptionSecrets encryptionSecrets)
+comment|/**    * Create a token identifier with all the information needed    * to be included in a delegation token.    * This is where session credentials need to be extracted, etc.    * This will only be called if a new DT is needed, that is: the    * filesystem has been deployed unbonded.    *    * If {@link #createDelegationToken(Optional, EncryptionSecrets, Text)}    * is overridden, this method can be replaced with a stub.    *    * @param policy minimum policy to use, if known.    * @param encryptionSecrets encryption secrets for the token.    * @param renewer the principal permitted to renew the token.    * @return the token data to include in the token identifier.    * @throws IOException failure creating the token data.    */
+DECL|method|createTokenIdentifier ( Optional<RoleModel.Policy> policy, EncryptionSecrets encryptionSecrets, Text renewer)
 specifier|public
 specifier|abstract
 name|AbstractS3ATokenIdentifier
@@ -470,6 +476,9 @@ name|policy
 parameter_list|,
 name|EncryptionSecrets
 name|encryptionSecrets
+parameter_list|,
+name|Text
+name|renewer
 parameter_list|)
 throws|throws
 name|IOException

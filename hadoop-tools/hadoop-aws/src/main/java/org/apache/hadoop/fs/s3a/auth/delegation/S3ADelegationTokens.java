@@ -1151,7 +1151,7 @@ return|return
 name|boundDT
 return|;
 block|}
-comment|/**    * Predicate: will this binding issue a DT if requested    * in a call to {@link #getBoundOrNewDT(EncryptionSecrets)}?    * That is: should the filesystem declare that it is issuing    * delegation tokens?    * @return a declaration of what will happen when asked for a token.    */
+comment|/**    * Predicate: will this binding issue a DT if requested    * in a call to {@link #getBoundOrNewDT(EncryptionSecrets, Text)}?    * That is: should the filesystem declare that it is issuing    * delegation tokens?    * @return a declaration of what will happen when asked for a token.    */
 DECL|method|getTokenIssuingPolicy ()
 specifier|public
 name|TokenIssuingPolicy
@@ -1172,13 +1172,13 @@ name|getTokenIssuingPolicy
 argument_list|()
 return|;
 block|}
-comment|/**    * Get any bound DT or create a new one.    * @return a delegation token.    * @throws IOException if one cannot be created    * @param encryptionSecrets encryption secrets for any new token.    */
+comment|/**    * Get any bound DT or create a new one.    * @return a delegation token.    * @throws IOException if one cannot be created    * @param encryptionSecrets encryption secrets for any new token.    * @param renewer the token renewer.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
 literal|"OptionalGetWithoutIsPresent"
 argument_list|)
-DECL|method|getBoundOrNewDT ( final EncryptionSecrets encryptionSecrets)
+DECL|method|getBoundOrNewDT ( final EncryptionSecrets encryptionSecrets, final Text renewer)
 specifier|public
 name|Token
 argument_list|<
@@ -1189,6 +1189,10 @@ parameter_list|(
 specifier|final
 name|EncryptionSecrets
 name|encryptionSecrets
+parameter_list|,
+specifier|final
+name|Text
+name|renewer
 parameter_list|)
 throws|throws
 name|IOException
@@ -1231,11 +1235,13 @@ return|return
 name|createDelegationToken
 argument_list|(
 name|encryptionSecrets
+argument_list|,
+name|renewer
 argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * How many delegation tokens have been issued?    * @return the number times {@link #createDelegationToken(EncryptionSecrets)}    * returned a token.    */
+comment|/**    * How many delegation tokens have been issued?    * @return the number times {@link #createDelegationToken(EncryptionSecrets, Text)}    * returned a token.    */
 DECL|method|getCreationCount ()
 specifier|public
 name|int
@@ -1249,10 +1255,10 @@ name|get
 argument_list|()
 return|;
 block|}
-comment|/**    * Create a delegation token for the user.    * This will only be called if a new DT is needed, that is: the    * filesystem has been deployed unbonded.    * @param encryptionSecrets encryption secrets for the token.    * @return the token    * @throws IOException if one cannot be created    */
+comment|/**    * Create a delegation token for the user.    * This will only be called if a new DT is needed, that is: the    * filesystem has been deployed unbonded.    * @param encryptionSecrets encryption secrets for the token.    * @param renewer the token renewer    * @return the token    * @throws IOException if one cannot be created    */
 annotation|@
 name|VisibleForTesting
-DECL|method|createDelegationToken ( final EncryptionSecrets encryptionSecrets)
+DECL|method|createDelegationToken ( final EncryptionSecrets encryptionSecrets, final Text renewer)
 specifier|public
 name|Token
 argument_list|<
@@ -1263,6 +1269,10 @@ parameter_list|(
 specifier|final
 name|EncryptionSecrets
 name|encryptionSecrets
+parameter_list|,
+specifier|final
+name|Text
+name|renewer
 parameter_list|)
 throws|throws
 name|IOException
@@ -1362,6 +1372,8 @@ argument_list|(
 name|rolePolicy
 argument_list|,
 name|encryptionSecrets
+argument_list|,
+name|renewer
 argument_list|)
 decl_stmt|;
 if|if

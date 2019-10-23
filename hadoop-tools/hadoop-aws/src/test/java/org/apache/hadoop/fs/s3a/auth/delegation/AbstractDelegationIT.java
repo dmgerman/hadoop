@@ -308,7 +308,7 @@ specifier|final
 name|String
 name|YARN_RM
 init|=
-literal|"yarn-rm@EXAMPLE"
+literal|"yarn-rm@EXAMPLE.COM"
 decl_stmt|;
 DECL|field|LOG
 specifier|private

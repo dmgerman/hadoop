@@ -166,8 +166,8 @@ name|kind
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Constructor.    * @param kind token kind.    * @param owner token owner    * @param uri filesystem URI.    * @param marshalledCredentials credentials to marshall    * @param encryptionSecrets encryption secrets    * @param origin origin text for diagnostics.    */
-DECL|method|SessionTokenIdentifier ( final Text kind, final Text owner, final URI uri, final MarshalledCredentials marshalledCredentials, final EncryptionSecrets encryptionSecrets, final String origin)
+comment|/**    * Constructor.    * @param kind token kind.    * @param owner token owner.    * @param renewer token renewer.    * @param uri filesystem URI.    * @param marshalledCredentials credentials to marshall    * @param encryptionSecrets encryption secrets    * @param origin origin text for diagnostics.    */
+DECL|method|SessionTokenIdentifier ( final Text kind, final Text owner, final Text renewer, final URI uri, final MarshalledCredentials marshalledCredentials, final EncryptionSecrets encryptionSecrets, final String origin)
 specifier|public
 name|SessionTokenIdentifier
 parameter_list|(
@@ -178,6 +178,10 @@ parameter_list|,
 specifier|final
 name|Text
 name|owner
+parameter_list|,
+specifier|final
+name|Text
+name|renewer
 parameter_list|,
 specifier|final
 name|URI
@@ -203,6 +207,8 @@ argument_list|,
 name|uri
 argument_list|,
 name|owner
+argument_list|,
+name|renewer
 argument_list|,
 name|origin
 argument_list|,
