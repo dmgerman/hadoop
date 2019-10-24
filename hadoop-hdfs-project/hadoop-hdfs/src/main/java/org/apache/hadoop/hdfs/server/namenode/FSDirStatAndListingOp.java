@@ -586,11 +586,6 @@ throw|;
 block|}
 block|}
 block|}
-name|boolean
-name|isSuperUser
-init|=
-literal|true
-decl_stmt|;
 if|if
 condition|(
 name|fsd
@@ -631,13 +626,6 @@ name|READ_EXECUTE
 argument_list|)
 expr_stmt|;
 block|}
-name|isSuperUser
-operator|=
-name|pc
-operator|.
-name|isSuperUser
-argument_list|()
-expr_stmt|;
 block|}
 return|return
 name|getListing
@@ -649,8 +637,6 @@ argument_list|,
 name|startAfter
 argument_list|,
 name|needLocation
-argument_list|,
-name|isSuperUser
 argument_list|)
 return|;
 block|}
@@ -1249,8 +1235,8 @@ else|:
 name|parentPolicy
 return|;
 block|}
-comment|/**    * Get a partial listing of the indicated directory    *    * We will stop when any of the following conditions is met:    * 1) this.lsLimit files have been added    * 2) needLocation is true AND enough files have been added such    * that at least this.lsLimit block locations are in the response    *    * @param fsd FSDirectory    * @param iip the INodesInPath instance containing all the INodes along the    *            path    * @param startAfter the name to start listing after    * @param needLocation if block locations are returned    * @param includeStoragePolicy if storage policy is returned    * @return a partial listing starting after startAfter    */
-DECL|method|getListing (FSDirectory fsd, INodesInPath iip, byte[] startAfter, boolean needLocation, boolean includeStoragePolicy)
+comment|/**    * Get a partial listing of the indicated directory    *    * We will stop when any of the following conditions is met:    * 1) this.lsLimit files have been added    * 2) needLocation is true AND enough files have been added such    * that at least this.lsLimit block locations are in the response    *    * @param fsd FSDirectory    * @param iip the INodesInPath instance containing all the INodes along the    *            path    * @param startAfter the name to start listing after    * @param needLocation if block locations are returned    * @return a partial listing starting after startAfter    */
+DECL|method|getListing (FSDirectory fsd, INodesInPath iip, byte[] startAfter, boolean needLocation)
 specifier|private
 specifier|static
 name|DirectoryListing
@@ -1268,9 +1254,6 @@ name|startAfter
 parameter_list|,
 name|boolean
 name|needLocation
-parameter_list|,
-name|boolean
-name|includeStoragePolicy
 parameter_list|)
 throws|throws
 name|IOException
@@ -1353,16 +1336,10 @@ block|}
 name|byte
 name|parentStoragePolicy
 init|=
-name|includeStoragePolicy
-condition|?
 name|targetNode
 operator|.
 name|getStoragePolicyID
 argument_list|()
-else|:
-name|HdfsConstants
-operator|.
-name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 decl_stmt|;
 if|if
 condition|(
@@ -1520,15 +1497,11 @@ decl_stmt|;
 name|byte
 name|childStoragePolicy
 init|=
-operator|(
-name|includeStoragePolicy
-operator|&&
 operator|!
 name|child
 operator|.
 name|isSymlink
 argument_list|()
-operator|)
 condition|?
 name|getStoragePolicyID
 argument_list|(
