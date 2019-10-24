@@ -3867,6 +3867,11 @@ name|sf
 operator|instanceof
 name|DirectorySnapshottableFeature
 operator|)
+operator|&&
+name|getDirectoryWithSnapshotFeature
+argument_list|()
+operator|!=
+literal|null
 condition|)
 block|{
 name|this
