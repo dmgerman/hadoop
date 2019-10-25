@@ -514,23 +514,6 @@ name|cb
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|removeCallback (Callback cb)
-specifier|public
-name|void
-name|removeCallback
-parameter_list|(
-name|Callback
-name|cb
-parameter_list|)
-block|{
-name|callbacks
-operator|.
-name|remove
-argument_list|(
-name|cb
-argument_list|)
-expr_stmt|;
-block|}
 DECL|method|addServiceStateCallback (ServiceStateCallback cb)
 specifier|public
 specifier|synchronized
@@ -546,24 +529,6 @@ operator|.
 name|serviceStateCallbacks
 operator|.
 name|add
-argument_list|(
-name|cb
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|removeServiceStateCallback (ServiceStateCallback cb)
-specifier|public
-specifier|synchronized
-name|void
-name|removeServiceStateCallback
-parameter_list|(
-name|ServiceStateCallback
-name|cb
-parameter_list|)
-block|{
-name|serviceStateCallbacks
-operator|.
-name|remove
 argument_list|(
 name|cb
 argument_list|)
@@ -1012,16 +977,6 @@ parameter_list|()
 block|{
 return|return
 name|state
-return|;
-block|}
-DECL|method|getLastServiceStatus ()
-specifier|synchronized
-name|HAServiceStatus
-name|getLastServiceStatus
-parameter_list|()
-block|{
-return|return
-name|lastServiceState
 return|;
 block|}
 DECL|method|isAlive ()
