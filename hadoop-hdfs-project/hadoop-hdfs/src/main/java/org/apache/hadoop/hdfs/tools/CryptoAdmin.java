@@ -1090,13 +1090,6 @@ argument_list|,
 literal|true
 argument_list|)
 operator|.
-name|wrapWidth
-argument_list|(
-name|AdminHelper
-operator|.
-name|MAX_LINE_WIDTH
-argument_list|)
-operator|.
 name|hideHeaders
 argument_list|()
 operator|.
@@ -2117,13 +2110,6 @@ operator|.
 name|addField
 argument_list|(
 literal|"Last File Checkpointed"
-argument_list|)
-operator|.
-name|wrapWidth
-argument_list|(
-name|AdminHelper
-operator|.
-name|MAX_LINE_WIDTH
 argument_list|)
 operator|.
 name|showHeaders
