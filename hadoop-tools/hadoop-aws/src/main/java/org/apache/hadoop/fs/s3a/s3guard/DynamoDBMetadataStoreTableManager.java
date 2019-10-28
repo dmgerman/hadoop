@@ -54,6 +54,18 @@ begin_import
 import|import
 name|java
 operator|.
+name|nio
+operator|.
+name|file
+operator|.
+name|AccessDeniedException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -693,6 +705,24 @@ operator|.
 name|Constants
 operator|.
 name|S3GUARD_DDB_TABLE_TAG
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3AUtils
+operator|.
+name|translateDynamoDBException
 import|;
 end_import
 
@@ -1466,6 +1496,8 @@ specifier|protected
 name|void
 name|tagTableWithVersionMarker
 parameter_list|()
+throws|throws
+name|AmazonDynamoDBException
 block|{
 try|try
 block|{
@@ -1509,7 +1541,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|warn
+name|debug
 argument_list|(
 literal|"Exception during tagging table: {}"
 argument_list|,
@@ -1517,6 +1549,8 @@ name|e
 operator|.
 name|getMessage
 argument_list|()
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 block|}
@@ -1533,6 +1567,8 @@ parameter_list|,
 name|AmazonDynamoDB
 name|addb
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|List
 argument_list|<
@@ -1611,7 +1647,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|warn
+name|debug
 argument_list|(
 literal|"Exception while getting tags from the dynamo table: {}"
 argument_list|,
@@ -1619,8 +1655,23 @@ name|e
 operator|.
 name|getMessage
 argument_list|()
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
+throw|throw
+name|translateDynamoDBException
+argument_list|(
+name|table
+operator|.
+name|getTableName
+argument_list|()
+argument_list|,
+literal|"Retrieving tags."
+argument_list|,
+name|e
+argument_list|)
+throw|;
 block|}
 if|if
 condition|(
@@ -2021,17 +2072,46 @@ init|=
 name|getVersionMarkerItem
 argument_list|()
 decl_stmt|;
-specifier|final
 name|Item
 name|versionMarkerFromTag
 init|=
+literal|null
+decl_stmt|;
+name|boolean
+name|canReadDdbTags
+init|=
+literal|true
+decl_stmt|;
+try|try
+block|{
+name|versionMarkerFromTag
+operator|=
 name|getVersionMarkerFromTags
 argument_list|(
 name|table
 argument_list|,
 name|amazonDynamoDB
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|AccessDeniedException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Can not read tags of table."
+argument_list|)
+expr_stmt|;
+name|canReadDdbTags
+operator|=
+literal|false
+expr_stmt|;
+block|}
 name|LOG
 operator|.
 name|debug
@@ -2084,11 +2164,16 @@ name|tableName
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
+name|canReadDdbTags
+condition|)
+block|{
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Table {} contains no version marker item or tag. "
+literal|"Table {} contains no version marker item and tag. "
 operator|+
 literal|"The table is empty, so the version marker will be added "
 operator|+
@@ -2097,12 +2182,34 @@ argument_list|,
 name|tableName
 argument_list|)
 expr_stmt|;
+name|putVersionMarkerItemToTable
+argument_list|()
+expr_stmt|;
 name|tagTableWithVersionMarker
 argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
+operator|!
+name|canReadDdbTags
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Table {} contains no version marker item and the tags are not readable. "
+operator|+
+literal|"The table is empty, so the ITEM version marker will be added ."
+argument_list|,
+name|tableName
+argument_list|)
 expr_stmt|;
 name|putVersionMarkerItemToTable
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 if|if
 condition|(
@@ -2159,6 +2266,8 @@ operator|&&
 name|versionMarkerFromTag
 operator|==
 literal|null
+operator|&&
+name|canReadDdbTags
 condition|)
 block|{
 specifier|final
