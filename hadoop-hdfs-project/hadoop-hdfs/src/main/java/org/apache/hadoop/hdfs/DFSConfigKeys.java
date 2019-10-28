@@ -1726,25 +1726,6 @@ name|DFS_NAMENODE_BLOCKREPORT_QUEUE_SIZE_DEFAULT
 init|=
 literal|1024
 decl_stmt|;
-DECL|field|DFS_WEBHDFS_AUTHENTICATION_FILTER_KEY
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DFS_WEBHDFS_AUTHENTICATION_FILTER_KEY
-init|=
-literal|"dfs.web.authentication.filter"
-decl_stmt|;
-comment|/* Phrased as below to avoid javac inlining as a constant, to match the behavior when      this was AuthFilter.class.getName(). Note that if you change the import for AuthFilter, you      need to update the literal here as well as TestDFSConfigKeys.    */
-DECL|field|DFS_WEBHDFS_AUTHENTICATION_FILTER_DEFAULT
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DFS_WEBHDFS_AUTHENTICATION_FILTER_DEFAULT
-init|=
-literal|"org.apache.hadoop.hdfs.web.AuthFilter"
-decl_stmt|;
 annotation|@
 name|Deprecated
 DECL|field|DFS_WEBHDFS_USER_PATTERN_KEY
