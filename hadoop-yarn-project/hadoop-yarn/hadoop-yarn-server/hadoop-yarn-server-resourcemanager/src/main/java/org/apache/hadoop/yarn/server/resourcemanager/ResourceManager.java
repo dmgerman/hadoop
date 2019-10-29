@@ -2625,6 +2625,11 @@ name|getShortUserName
 argument_list|()
 return|;
 block|}
+DECL|field|rmStatusInfoBean
+specifier|private
+name|RMInfo
+name|rmStatusInfoBean
+decl_stmt|;
 annotation|@
 name|VisibleForTesting
 DECL|method|setClusterTimeStamp (long timestamp)
@@ -2712,6 +2717,26 @@ name|setResourceManager
 argument_list|(
 name|this
 argument_list|)
+expr_stmt|;
+name|rmContext
+operator|.
+name|setYarnConfiguration
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|rmStatusInfoBean
+operator|=
+operator|new
+name|RMInfo
+argument_list|(
+name|this
+argument_list|)
+expr_stmt|;
+name|rmStatusInfoBean
+operator|.
+name|register
+argument_list|()
 expr_stmt|;
 comment|// Set HA configuration should be done before login
 name|this
@@ -2944,13 +2969,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|rmContext
-operator|.
-name|setYarnConfiguration
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 name|createAndInitActiveServices
 argument_list|(
 literal|false
@@ -7811,6 +7829,11 @@ name|HAServiceState
 operator|.
 name|STOPPING
 argument_list|)
+expr_stmt|;
+name|rmStatusInfoBean
+operator|.
+name|unregister
+argument_list|()
 expr_stmt|;
 block|}
 end_function
