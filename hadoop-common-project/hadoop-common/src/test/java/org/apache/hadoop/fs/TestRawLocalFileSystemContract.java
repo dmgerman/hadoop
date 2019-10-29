@@ -100,6 +100,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|NativeCodeLoader
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|Shell
 import|;
 end_import
@@ -145,6 +159,18 @@ operator|.
 name|Assert
 operator|.
 name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assume
+operator|.
+name|assumeTrue
 import|;
 end_import
 
@@ -546,6 +572,16 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|assumeTrue
+argument_list|(
+literal|"No native library"
+argument_list|,
+name|NativeCodeLoader
+operator|.
+name|isNativeCodeLoaded
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|Path
 name|testDir
 init|=
