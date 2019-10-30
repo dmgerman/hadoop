@@ -333,6 +333,14 @@ block|,
 name|AppActivitiesInfo
 operator|.
 name|class
+block|,
+name|QueueAclsInfo
+operator|.
+name|class
+block|,
+name|QueueAclInfo
+operator|.
+name|class
 block|}
 decl_stmt|;
 comment|// these dao classes need root unwrapping

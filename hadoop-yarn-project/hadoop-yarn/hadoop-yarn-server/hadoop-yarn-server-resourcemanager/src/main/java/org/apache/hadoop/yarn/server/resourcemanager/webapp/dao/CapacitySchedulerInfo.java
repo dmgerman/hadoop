@@ -354,6 +354,8 @@ name|queues
 operator|=
 name|getQueues
 argument_list|(
+name|cs
+argument_list|,
 name|parent
 argument_list|)
 expr_stmt|;
@@ -436,11 +438,14 @@ operator|.
 name|queues
 return|;
 block|}
-DECL|method|getQueues (CSQueue parent)
+DECL|method|getQueues ( CapacityScheduler cs, CSQueue parent)
 specifier|protected
 name|CapacitySchedulerQueueInfoList
 name|getQueues
 parameter_list|(
+name|CapacityScheduler
+name|cs
+parameter_list|,
 name|CSQueue
 name|parent
 parameter_list|)
@@ -563,6 +568,8 @@ operator|=
 operator|new
 name|CapacitySchedulerLeafQueueInfo
 argument_list|(
+name|cs
+argument_list|,
 operator|(
 name|LeafQueue
 operator|)
@@ -577,6 +584,8 @@ operator|=
 operator|new
 name|CapacitySchedulerQueueInfo
 argument_list|(
+name|cs
+argument_list|,
 name|queue
 argument_list|)
 expr_stmt|;
@@ -586,6 +595,8 @@ name|queues
 operator|=
 name|getQueues
 argument_list|(
+name|cs
+argument_list|,
 name|queue
 argument_list|)
 expr_stmt|;

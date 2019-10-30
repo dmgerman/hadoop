@@ -2759,7 +2759,7 @@ block|{
 name|int
 name|numExpectedElements
 init|=
-literal|20
+literal|24
 decl_stmt|;
 name|boolean
 name|isParentQueue
@@ -2779,7 +2779,7 @@ condition|)
 block|{
 name|numExpectedElements
 operator|=
-literal|35
+literal|42
 expr_stmt|;
 name|isParentQueue
 operator|=

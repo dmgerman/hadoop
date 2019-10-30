@@ -78,20 +78,6 @@ end_import
 
 begin_import
 import|import
-name|javax
-operator|.
-name|xml
-operator|.
-name|bind
-operator|.
-name|annotation
-operator|.
-name|XmlTransient
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -169,6 +155,28 @@ operator|.
 name|capacity
 operator|.
 name|AutoCreatedLeafQueue
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|capacity
+operator|.
+name|CapacityScheduler
 import|;
 end_import
 
@@ -296,6 +304,11 @@ specifier|protected
 name|float
 name|userLimitFactor
 decl_stmt|;
+DECL|field|configuredMaxAMResourceLimit
+specifier|protected
+name|float
+name|configuredMaxAMResourceLimit
+decl_stmt|;
 DECL|field|AMResourceLimit
 specifier|protected
 name|ResourceInfo
@@ -336,27 +349,35 @@ specifier|protected
 name|boolean
 name|isAutoCreatedLeafQueue
 decl_stmt|;
-annotation|@
-name|XmlTransient
-DECL|field|orderingPolicyInfo
+DECL|field|maxApplicationLifetime
 specifier|protected
-name|String
-name|orderingPolicyInfo
+name|long
+name|maxApplicationLifetime
+decl_stmt|;
+DECL|field|defaultApplicationLifetime
+specifier|protected
+name|long
+name|defaultApplicationLifetime
 decl_stmt|;
 DECL|method|CapacitySchedulerLeafQueueInfo ()
 name|CapacitySchedulerLeafQueueInfo
 parameter_list|()
 block|{   }
 empty_stmt|;
-DECL|method|CapacitySchedulerLeafQueueInfo (LeafQueue q)
+DECL|method|CapacitySchedulerLeafQueueInfo (CapacityScheduler cs, LeafQueue q)
 name|CapacitySchedulerLeafQueueInfo
 parameter_list|(
+name|CapacityScheduler
+name|cs
+parameter_list|,
 name|LeafQueue
 name|q
 parameter_list|)
 block|{
 name|super
 argument_list|(
+name|cs
+argument_list|,
 name|q
 argument_list|)
 expr_stmt|;
@@ -421,6 +442,13 @@ operator|=
 name|q
 operator|.
 name|getUserLimitFactor
+argument_list|()
+expr_stmt|;
+name|configuredMaxAMResourceLimit
+operator|=
+name|q
+operator|.
+name|getMaxAMResourcePerQueuePercent
 argument_list|()
 expr_stmt|;
 name|AMResourceLimit
@@ -561,6 +589,20 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
+name|defaultApplicationLifetime
+operator|=
+name|q
+operator|.
+name|getDefaultApplicationLifetime
+argument_list|()
+expr_stmt|;
+name|maxApplicationLifetime
+operator|=
+name|q
+operator|.
+name|getMaximumApplicationLifetime
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -688,6 +730,16 @@ return|return
 name|userLimitFactor
 return|;
 block|}
+DECL|method|getConfiguredMaxAMResourceLimit ()
+specifier|public
+name|float
+name|getConfiguredMaxAMResourceLimit
+parameter_list|()
+block|{
+return|return
+name|configuredMaxAMResourceLimit
+return|;
+block|}
 DECL|method|getAMResourceLimit ()
 specifier|public
 name|ResourceInfo
@@ -738,16 +790,6 @@ return|return
 name|intraQueuePreemptionDisabled
 return|;
 block|}
-DECL|method|getOrderingPolicyInfo ()
-specifier|public
-name|String
-name|getOrderingPolicyInfo
-parameter_list|()
-block|{
-return|return
-name|orderingPolicyInfo
-return|;
-block|}
 DECL|method|getDefaultNodeLabelExpression ()
 specifier|public
 name|String
@@ -776,6 +818,26 @@ parameter_list|()
 block|{
 return|return
 name|isAutoCreatedLeafQueue
+return|;
+block|}
+DECL|method|getDefaultApplicationLifetime ()
+specifier|public
+name|long
+name|getDefaultApplicationLifetime
+parameter_list|()
+block|{
+return|return
+name|defaultApplicationLifetime
+return|;
+block|}
+DECL|method|getMaxApplicationLifetime ()
+specifier|public
+name|long
+name|getMaxApplicationLifetime
+parameter_list|()
+block|{
+return|return
+name|maxApplicationLifetime
 return|;
 block|}
 block|}
