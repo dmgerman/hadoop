@@ -134,6 +134,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1041,6 +1055,19 @@ block|}
 block|}
 block|}
 block|}
+block|}
+comment|/**    * @return timer thread.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getTimerThread ()
+specifier|public
+name|Daemon
+name|getTimerThread
+parameter_list|()
+block|{
+return|return
+name|timerThread
+return|;
 block|}
 comment|/*    * Shuts down the pending reconstruction monitor thread.    * Waits for the thread to exit.    */
 DECL|method|stop ()

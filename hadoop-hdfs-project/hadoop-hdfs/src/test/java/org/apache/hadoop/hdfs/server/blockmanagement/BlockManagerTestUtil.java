@@ -880,6 +880,29 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * Wakeup the timer thread of PendingReconstructionBlocks.    */
+DECL|method|wakeupPendingReconstructionTimerThread ( final BlockManager blockManager)
+specifier|public
+specifier|static
+name|void
+name|wakeupPendingReconstructionTimerThread
+parameter_list|(
+specifier|final
+name|BlockManager
+name|blockManager
+parameter_list|)
+block|{
+name|blockManager
+operator|.
+name|pendingReconstruction
+operator|.
+name|getTimerThread
+argument_list|()
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
+block|}
 DECL|method|getHeartbeatManager ( final BlockManager blockManager)
 specifier|public
 specifier|static
@@ -1773,6 +1796,55 @@ name|dnUuid
 argument_list|)
 argument_list|)
 return|;
+block|}
+comment|/**    * Remove storage from block.    */
+DECL|method|removeStorage (BlockInfo block, DatanodeStorageInfo storage)
+specifier|public
+specifier|static
+name|void
+name|removeStorage
+parameter_list|(
+name|BlockInfo
+name|block
+parameter_list|,
+name|DatanodeStorageInfo
+name|storage
+parameter_list|)
+block|{
+name|block
+operator|.
+name|removeStorage
+argument_list|(
+name|storage
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Add storage to block.    */
+DECL|method|addStorage (BlockInfo block, DatanodeStorageInfo storage, Block reportedBlock)
+specifier|public
+specifier|static
+name|void
+name|addStorage
+parameter_list|(
+name|BlockInfo
+name|block
+parameter_list|,
+name|DatanodeStorageInfo
+name|storage
+parameter_list|,
+name|Block
+name|reportedBlock
+parameter_list|)
+block|{
+name|block
+operator|.
+name|addStorage
+argument_list|(
+name|storage
+argument_list|,
+name|reportedBlock
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

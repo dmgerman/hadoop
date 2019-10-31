@@ -286,6 +286,8 @@ block|,
 DECL|enumConstant|READONLY
 name|READONLY
 block|,
+comment|// decommissioning replicas. for a striped block ,this value excludes
+comment|// redundant and live replicas for the same internal block.
 DECL|enumConstant|DECOMMISSIONING
 name|DECOMMISSIONING
 block|,
