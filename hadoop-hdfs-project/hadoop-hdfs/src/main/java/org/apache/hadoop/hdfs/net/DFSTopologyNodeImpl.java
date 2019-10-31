@@ -388,18 +388,6 @@ literal|0
 return|;
 block|}
 block|}
-DECL|method|getNumOfChildren ()
-name|int
-name|getNumOfChildren
-parameter_list|()
-block|{
-return|return
-name|children
-operator|.
-name|size
-argument_list|()
-return|;
-block|}
 DECL|method|incStorageTypeCount (StorageType type)
 specifier|private
 name|void

@@ -2749,6 +2749,21 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+comment|// this cluster topology is:
+comment|// /d1/r1, /d1/r2, /d2/r3, /d3/r1, /d3/r2, /d4/r1
+comment|// so root "" has four children
+name|assertEquals
+argument_list|(
+literal|4
+argument_list|,
+name|cluster
+operator|.
+name|clusterMap
+operator|.
+name|getNumOfChildren
+argument_list|()
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|int
@@ -2830,6 +2845,18 @@ name|getChildren
 argument_list|()
 operator|.
 name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
+name|cluster
+operator|.
+name|clusterMap
+operator|.
+name|getNumOfChildren
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -214,7 +214,10 @@ name|children
 return|;
 block|}
 comment|/** @return the number of children this node has. */
+annotation|@
+name|Override
 DECL|method|getNumOfChildren ()
+specifier|public
 name|int
 name|getNumOfChildren
 parameter_list|()

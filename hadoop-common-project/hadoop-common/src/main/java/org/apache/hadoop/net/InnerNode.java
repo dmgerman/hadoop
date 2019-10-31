@@ -123,6 +123,12 @@ argument_list|>
 name|getChildren
 parameter_list|()
 function_decl|;
+comment|/** @return the number of children this node has. */
+DECL|method|getNumOfChildren ()
+name|int
+name|getNumOfChildren
+parameter_list|()
+function_decl|;
 comment|/** @return the number of leave nodes. */
 DECL|method|getNumOfLeaves ()
 name|int
