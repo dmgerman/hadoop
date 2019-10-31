@@ -50,17 +50,23 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Assert
+name|BeforeClass
 import|;
 end_import
 
 begin_import
-import|import
+import|import static
 name|org
 operator|.
-name|junit
+name|assertj
 operator|.
-name|BeforeClass
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
 import|;
 end_import
 
@@ -80,8 +86,6 @@ specifier|static
 name|void
 name|init
 parameter_list|()
-throws|throws
-name|Exception
 block|{
 name|Configuration
 name|conf
@@ -115,9 +119,7 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
 name|JceAesCtrCryptoCodec
 operator|.
@@ -125,7 +127,10 @@ name|class
 operator|.
 name|getCanonicalName
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 name|codec
 operator|.
 name|getClass

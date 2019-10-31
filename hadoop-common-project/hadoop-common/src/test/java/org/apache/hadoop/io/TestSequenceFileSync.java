@@ -17,18 +17,6 @@ package|;
 end_package
 
 begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
-import|;
-end_import
-
-begin_import
 import|import
 name|java
 operator|.
@@ -144,6 +132,22 @@ name|Test
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
+import|;
+end_import
+
 begin_comment
 comment|/** Tests sync based seek reads/write intervals inside SequenceFiles. */
 end_comment
@@ -242,13 +246,16 @@ argument_list|,
 name|val
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
 name|key
 operator|.
 name|get
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 name|expectedRecord
 argument_list|)
 expr_stmt|;
@@ -267,18 +274,8 @@ argument_list|,
 name|expectedRecord
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
-literal|"Invalid value in iter "
-operator|+
-name|iter
-operator|+
-literal|": "
-operator|+
-name|val
-argument_list|,
-literal|0
-argument_list|,
 name|val
 operator|.
 name|find
@@ -288,6 +285,20 @@ argument_list|,
 literal|0
 argument_list|)
 argument_list|)
+operator|.
+name|withFailMessage
+argument_list|(
+literal|"Invalid value in iter "
+operator|+
+name|iter
+operator|+
+literal|": "
+operator|+
+name|val
+argument_list|)
+operator|.
+name|isZero
+argument_list|()
 expr_stmt|;
 block|}
 annotation|@
@@ -771,12 +782,15 @@ argument_list|)
 argument_list|)
 decl_stmt|;
 comment|// Ensure the custom sync interval value is set
-name|assertEquals
+name|assertThat
 argument_list|(
 name|writer
 operator|.
 name|syncInterval
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|20
 operator|*
 literal|100

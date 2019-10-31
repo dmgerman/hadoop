@@ -252,34 +252,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|Groups
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|ShellBasedUnixGroupsMapping
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -293,6 +265,22 @@ operator|.
 name|slf4j
 operator|.
 name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
 import|;
 end_import
 
@@ -2314,7 +2302,7 @@ expr_stmt|;
 comment|// Now get the cache entry - it should return immediately
 comment|// with the old value and the cache will not have completed
 comment|// a request to getGroups yet.
-name|assertEquals
+name|assertThat
 argument_list|(
 name|groups
 operator|.
@@ -2325,7 +2313,10 @@ argument_list|)
 operator|.
 name|size
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|2
 argument_list|)
 expr_stmt|;
@@ -2361,7 +2352,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Another call to get groups should give 3 groups instead of 2
-name|assertEquals
+name|assertThat
 argument_list|(
 name|groups
 operator|.
@@ -2372,7 +2363,10 @@ argument_list|)
 operator|.
 name|size
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|3
 argument_list|)
 expr_stmt|;
@@ -2499,7 +2493,7 @@ argument_list|)
 expr_stmt|;
 comment|// Now get the cache entry - it should block and return the new
 comment|// 3 group value
-name|assertEquals
+name|assertThat
 argument_list|(
 name|groups
 operator|.
@@ -2510,7 +2504,10 @@ argument_list|)
 operator|.
 name|size
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|3
 argument_list|)
 expr_stmt|;
@@ -2657,7 +2654,7 @@ expr_stmt|;
 comment|// Now get the cache entry - it should return immediately
 comment|// with the old value and the cache will not have completed
 comment|// a request to getGroups yet.
-name|assertEquals
+name|assertThat
 argument_list|(
 name|groups
 operator|.
@@ -2668,7 +2665,10 @@ argument_list|)
 operator|.
 name|size
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|2
 argument_list|)
 expr_stmt|;
@@ -2722,7 +2722,7 @@ name|getRequestCount
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
 name|groups
 operator|.
@@ -2733,7 +2733,10 @@ argument_list|)
 operator|.
 name|size
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|2
 argument_list|)
 expr_stmt|;
@@ -2765,7 +2768,7 @@ name|getRequestCount
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
 name|groups
 operator|.
@@ -2776,7 +2779,10 @@ argument_list|)
 operator|.
 name|size
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|3
 argument_list|)
 expr_stmt|;
@@ -2890,7 +2896,7 @@ name|i
 operator|++
 control|)
 block|{
-name|assertEquals
+name|assertThat
 argument_list|(
 name|groups
 operator|.
@@ -2901,7 +2907,10 @@ argument_list|)
 operator|.
 name|size
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|2
 argument_list|)
 expr_stmt|;
@@ -2960,7 +2969,7 @@ argument_list|(
 literal|false
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
 name|groups
 operator|.
@@ -2971,7 +2980,10 @@ argument_list|)
 operator|.
 name|size
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|2
 argument_list|)
 expr_stmt|;
@@ -3449,7 +3461,7 @@ name|clearBlackList
 argument_list|()
 expr_stmt|;
 comment|// First populate the cash
-name|assertEquals
+name|assertThat
 argument_list|(
 name|groups
 operator|.
@@ -3460,7 +3472,10 @@ argument_list|)
 operator|.
 name|size
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|2
 argument_list|)
 expr_stmt|;
@@ -3482,7 +3497,7 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
 name|groups
 operator|.
@@ -3493,7 +3508,10 @@ argument_list|)
 operator|.
 name|size
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|2
 argument_list|)
 expr_stmt|;

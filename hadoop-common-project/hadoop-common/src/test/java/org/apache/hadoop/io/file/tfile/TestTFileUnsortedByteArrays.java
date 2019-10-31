@@ -44,16 +44,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|junit
-operator|.
-name|Assert
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|apache
 operator|.
 name|hadoop
@@ -199,6 +189,34 @@ operator|.
 name|junit
 operator|.
 name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
 import|;
 end_import
 
@@ -499,6 +517,8 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+try|try
+init|(
 name|Reader
 name|reader
 init|=
@@ -524,37 +544,34 @@ argument_list|()
 argument_list|,
 name|conf
 argument_list|)
-decl_stmt|;
-name|Assert
-operator|.
-name|assertFalse
+init|)
+block|{
+name|assertThat
 argument_list|(
 name|reader
 operator|.
 name|isSorted
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|Assert
 operator|.
-name|assertEquals
+name|isFalse
+argument_list|()
+expr_stmt|;
+name|assertThat
 argument_list|(
-operator|(
-name|int
-operator|)
 name|reader
 operator|.
 name|getEntryCount
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|4
 argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|Scanner
-name|scanner
-init|=
 name|reader
 operator|.
 name|createScannerByKey
@@ -569,9 +586,7 @@ operator|.
 name|getBytes
 argument_list|()
 argument_list|)
-decl_stmt|;
-name|Assert
-operator|.
+expr_stmt|;
 name|fail
 argument_list|(
 literal|"Failed to catch creating scanner with keys on unsorted file."
@@ -581,16 +596,9 @@ block|}
 catch|catch
 parameter_list|(
 name|RuntimeException
-name|e
+name|expected
 parameter_list|)
-block|{     }
-finally|finally
-block|{
-name|reader
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
+block|{       }
 block|}
 block|}
 comment|// we still can scan records in an unsorted TFile
@@ -604,6 +612,8 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+try|try
+init|(
 name|Reader
 name|reader
 init|=
@@ -629,32 +639,34 @@ argument_list|()
 argument_list|,
 name|conf
 argument_list|)
-decl_stmt|;
-name|Assert
-operator|.
-name|assertFalse
+init|)
+block|{
+name|assertThat
 argument_list|(
 name|reader
 operator|.
 name|isSorted
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|Assert
 operator|.
-name|assertEquals
+name|isFalse
+argument_list|()
+expr_stmt|;
+name|assertThat
 argument_list|(
-operator|(
-name|int
-operator|)
 name|reader
 operator|.
 name|getEntryCount
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|4
 argument_list|)
 expr_stmt|;
+try|try
+init|(
 name|Scanner
 name|scanner
 init|=
@@ -662,8 +674,7 @@ name|reader
 operator|.
 name|createScanner
 argument_list|()
-decl_stmt|;
-try|try
+init|)
 block|{
 comment|// read key and value
 name|byte
@@ -697,9 +708,7 @@ argument_list|(
 name|kbuf
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
 operator|new
 name|String
@@ -710,7 +719,10 @@ literal|0
 argument_list|,
 name|klen
 argument_list|)
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|"keyZ"
 argument_list|)
 expr_stmt|;
@@ -745,9 +757,7 @@ argument_list|(
 name|vbuf
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
 operator|new
 name|String
@@ -758,7 +768,10 @@ literal|0
 argument_list|,
 name|vlen
 argument_list|)
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|"valueZ"
 argument_list|)
 expr_stmt|;
@@ -796,9 +809,7 @@ argument_list|(
 name|vbuf
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
 operator|new
 name|String
@@ -809,7 +820,10 @@ literal|0
 argument_list|,
 name|vlen
 argument_list|)
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|"valueM"
 argument_list|)
 expr_stmt|;
@@ -841,9 +855,7 @@ argument_list|(
 name|kbuf
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
 operator|new
 name|String
@@ -854,23 +866,14 @@ literal|0
 argument_list|,
 name|klen
 argument_list|)
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|"keyM"
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-name|scanner
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-name|reader
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 comment|// we still can scan records in an unsorted TFile
@@ -884,6 +887,8 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+try|try
+init|(
 name|Reader
 name|reader
 init|=
@@ -909,32 +914,34 @@ argument_list|()
 argument_list|,
 name|conf
 argument_list|)
-decl_stmt|;
-name|Assert
-operator|.
-name|assertFalse
+init|)
+block|{
+name|assertThat
 argument_list|(
 name|reader
 operator|.
 name|isSorted
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|Assert
 operator|.
-name|assertEquals
+name|isFalse
+argument_list|()
+expr_stmt|;
+name|assertThat
 argument_list|(
-operator|(
-name|int
-operator|)
 name|reader
 operator|.
 name|getEntryCount
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|4
 argument_list|)
 expr_stmt|;
+try|try
+init|(
 name|Scanner
 name|scanner
 init|=
@@ -942,8 +949,7 @@ name|reader
 operator|.
 name|createScanner
 argument_list|()
-decl_stmt|;
-try|try
+init|)
 block|{
 comment|// read key and value
 name|byte
@@ -977,9 +983,7 @@ argument_list|(
 name|kbuf
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
 operator|new
 name|String
@@ -990,7 +994,10 @@ literal|0
 argument_list|,
 name|klen
 argument_list|)
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|"keyZ"
 argument_list|)
 expr_stmt|;
@@ -1025,9 +1032,7 @@ argument_list|(
 name|vbuf
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
 operator|new
 name|String
@@ -1038,7 +1043,10 @@ literal|0
 argument_list|,
 name|vlen
 argument_list|)
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|"valueZ"
 argument_list|)
 expr_stmt|;
@@ -1076,9 +1084,7 @@ argument_list|(
 name|vbuf
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
 operator|new
 name|String
@@ -1089,7 +1095,10 @@ literal|0
 argument_list|,
 name|vlen
 argument_list|)
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|"valueM"
 argument_list|)
 expr_stmt|;
@@ -1121,9 +1130,7 @@ argument_list|(
 name|kbuf
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
 operator|new
 name|String
@@ -1134,23 +1141,14 @@ literal|0
 argument_list|,
 name|klen
 argument_list|)
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|"keyM"
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-name|scanner
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-name|reader
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 annotation|@
@@ -1163,6 +1161,8 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+try|try
+init|(
 name|Reader
 name|reader
 init|=
@@ -1188,16 +1188,15 @@ argument_list|()
 argument_list|,
 name|conf
 argument_list|)
-decl_stmt|;
+init|;
 name|Scanner
 name|scanner
-init|=
+operator|=
 name|reader
 operator|.
 name|createScanner
 argument_list|()
-decl_stmt|;
-try|try
+init|)
 block|{
 comment|// can't find ceil
 try|try
@@ -1212,8 +1211,6 @@ name|getBytes
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"Cannot search in a unsorted TFile!"
@@ -1223,12 +1220,8 @@ block|}
 catch|catch
 parameter_list|(
 name|Exception
-name|e
+name|expected
 parameter_list|)
-block|{
-comment|// noop, expecting excetions
-block|}
-finally|finally
 block|{       }
 comment|// can't find higher
 try|try
@@ -1243,8 +1236,6 @@ name|getBytes
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"Cannot search higher in a unsorted TFile!"
@@ -1254,12 +1245,8 @@ block|}
 catch|catch
 parameter_list|(
 name|Exception
-name|e
+name|expected
 parameter_list|)
-block|{
-comment|// noop, expecting excetions
-block|}
-finally|finally
 block|{       }
 comment|// can't seek
 try|try
@@ -1274,8 +1261,6 @@ name|getBytes
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"Cannot search a unsorted TFile!"
@@ -1285,26 +1270,9 @@ block|}
 catch|catch
 parameter_list|(
 name|Exception
-name|e
+name|expected
 parameter_list|)
-block|{
-comment|// noop, expecting excetions
-block|}
-finally|finally
 block|{       }
-block|}
-finally|finally
-block|{
-name|scanner
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-name|reader
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 DECL|method|closeOutput ()

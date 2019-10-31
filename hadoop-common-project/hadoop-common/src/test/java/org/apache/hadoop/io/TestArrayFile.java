@@ -132,6 +132,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -149,18 +165,6 @@ operator|.
 name|Assert
 operator|.
 name|assertNotNull
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
 import|;
 end_import
 
@@ -962,13 +966,16 @@ argument_list|(
 name|nextWritable
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
 name|nextWritable
 operator|.
 name|get
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 name|i
 argument_list|)
 expr_stmt|;
@@ -1001,31 +1008,40 @@ argument_list|(
 name|nextWritable
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertThat
 argument_list|(
-literal|"testArrayFileIteration error !!!"
-argument_list|,
 name|reader
 operator|.
 name|key
 argument_list|()
-operator|==
+argument_list|)
+operator|.
+name|withFailMessage
+argument_list|(
+literal|"testArrayFileIteration error !!!"
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|7
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertThat
+argument_list|(
+name|nextWritable
+argument_list|)
+operator|.
+name|withFailMessage
 argument_list|(
 literal|"testArrayFileIteration error !!!"
-argument_list|,
-name|nextWritable
+argument_list|)
 operator|.
-name|equals
+name|isEqualTo
 argument_list|(
 operator|new
 name|LongWritable
 argument_list|(
 literal|7
-argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;

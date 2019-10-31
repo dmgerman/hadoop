@@ -94,18 +94,6 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|ArgumentMatchers
-operator|.
-name|anyInt
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
 name|Mockito
 operator|.
 name|doAnswer
@@ -1043,6 +1031,22 @@ operator|.
 name|event
 operator|.
 name|Level
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
 import|;
 end_import
 
@@ -7071,16 +7075,15 @@ block|}
 finally|finally
 block|{
 comment|// Check if dummyRun called only once
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
 name|handler
 operator|.
 name|invocations
-argument_list|,
-literal|1
 argument_list|)
+operator|.
+name|isOne
+argument_list|()
 expr_stmt|;
 name|Client
 operator|.
@@ -7976,7 +7979,7 @@ operator|new
 name|Configuration
 argument_list|()
 decl_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
 name|Client
 operator|.
@@ -7984,7 +7987,10 @@ name|getTimeout
 argument_list|(
 name|config
 argument_list|)
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 operator|-
 literal|1
 argument_list|)

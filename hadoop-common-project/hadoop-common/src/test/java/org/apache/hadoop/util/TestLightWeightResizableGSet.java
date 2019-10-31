@@ -100,11 +100,15 @@ begin_import
 import|import static
 name|org
 operator|.
-name|junit
+name|assertj
 operator|.
-name|Assert
+name|core
 operator|.
-name|*
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
 import|;
 end_import
 
@@ -645,15 +649,16 @@ name|TestElement
 argument_list|>
 argument_list|()
 decl_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
 name|set
 operator|.
 name|size
 argument_list|()
-argument_list|,
-literal|0
 argument_list|)
+operator|.
+name|isZero
+argument_list|()
 expr_stmt|;
 comment|// put all elements
 for|for
@@ -686,22 +691,26 @@ name|i
 index|]
 argument_list|)
 decl_stmt|;
-name|assertTrue
+name|assertThat
 argument_list|(
 name|element
-operator|==
-literal|null
 argument_list|)
+operator|.
+name|isNull
+argument_list|()
 expr_stmt|;
 block|}
 comment|// check the set size
-name|assertEquals
+name|assertThat
 argument_list|(
 name|set
 operator|.
 name|size
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 name|elements
 operator|.
 name|length
@@ -725,7 +734,7 @@ name|i
 operator|++
 control|)
 block|{
-name|assertTrue
+name|assertThat
 argument_list|(
 name|set
 operator|.
@@ -737,6 +746,9 @@ name|i
 index|]
 argument_list|)
 argument_list|)
+operator|.
+name|isTrue
+argument_list|()
 expr_stmt|;
 name|TestElement
 name|element
@@ -751,7 +763,7 @@ name|i
 index|]
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
 name|elements
 index|[
@@ -760,7 +772,10 @@ index|]
 operator|.
 name|getData
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 name|element
 operator|.
 name|getData
@@ -818,22 +833,26 @@ name|i
 index|]
 argument_list|)
 decl_stmt|;
-name|assertTrue
+name|assertThat
 argument_list|(
 name|element
-operator|!=
-literal|null
 argument_list|)
+operator|.
+name|isNotNull
+argument_list|()
 expr_stmt|;
 block|}
 comment|// check the set size
-name|assertEquals
+name|assertThat
 argument_list|(
 name|set
 operator|.
 name|size
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 name|elements
 operator|.
 name|length
@@ -857,7 +876,7 @@ name|i
 operator|++
 control|)
 block|{
-name|assertTrue
+name|assertThat
 argument_list|(
 name|set
 operator|.
@@ -869,6 +888,9 @@ name|i
 index|]
 argument_list|)
 argument_list|)
+operator|.
+name|isTrue
+argument_list|()
 expr_stmt|;
 name|TestElement
 name|element
@@ -883,7 +905,7 @@ name|i
 index|]
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
 name|newElements
 index|[
@@ -892,7 +914,10 @@ index|]
 operator|.
 name|getData
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 name|element
 operator|.
 name|getData
@@ -912,13 +937,16 @@ operator|.
 name|values
 argument_list|()
 decl_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
 name|cElements
 operator|.
 name|size
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 name|elements
 operator|.
 name|length
@@ -932,7 +960,7 @@ range|:
 name|cElements
 control|)
 block|{
-name|assertTrue
+name|assertThat
 argument_list|(
 name|set
 operator|.
@@ -941,6 +969,9 @@ argument_list|(
 name|element
 argument_list|)
 argument_list|)
+operator|.
+name|isTrue
+argument_list|()
 expr_stmt|;
 block|}
 comment|// remove elements
@@ -974,15 +1005,16 @@ name|i
 index|]
 argument_list|)
 decl_stmt|;
-name|assertTrue
+name|assertThat
 argument_list|(
 name|element
-operator|!=
-literal|null
 argument_list|)
+operator|.
+name|isNotNull
+argument_list|()
 expr_stmt|;
 comment|// the element should not exist after remove
-name|assertFalse
+name|assertThat
 argument_list|(
 name|set
 operator|.
@@ -994,18 +1026,22 @@ name|i
 index|]
 argument_list|)
 argument_list|)
+operator|.
+name|isFalse
+argument_list|()
 expr_stmt|;
 block|}
 comment|// check the set size
-name|assertEquals
+name|assertThat
 argument_list|(
 name|set
 operator|.
 name|size
 argument_list|()
-argument_list|,
-literal|0
 argument_list|)
+operator|.
+name|isZero
+argument_list|()
 expr_stmt|;
 block|}
 annotation|@
@@ -1050,15 +1086,16 @@ name|TestElement
 argument_list|>
 argument_list|()
 decl_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
 name|set
 operator|.
 name|size
 argument_list|()
-argument_list|,
-literal|0
 argument_list|)
+operator|.
+name|isZero
+argument_list|()
 expr_stmt|;
 comment|// put all elements
 for|for
@@ -1091,22 +1128,26 @@ name|i
 index|]
 argument_list|)
 decl_stmt|;
-name|assertTrue
+name|assertThat
 argument_list|(
 name|element
-operator|==
-literal|null
 argument_list|)
+operator|.
+name|isNull
+argument_list|()
 expr_stmt|;
 block|}
 comment|// check the set size
-name|assertEquals
+name|assertThat
 argument_list|(
 name|set
 operator|.
 name|size
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 name|elements
 operator|.
 name|length
@@ -1119,15 +1160,16 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
-name|assertEquals
+name|assertThat
 argument_list|(
 name|set
 operator|.
 name|size
 argument_list|()
-argument_list|,
-literal|0
 argument_list|)
+operator|.
+name|isZero
+argument_list|()
 expr_stmt|;
 comment|// check all elements removed
 for|for
@@ -1147,7 +1189,7 @@ name|i
 operator|++
 control|)
 block|{
-name|assertFalse
+name|assertThat
 argument_list|(
 name|set
 operator|.
@@ -1159,9 +1201,12 @@ name|i
 index|]
 argument_list|)
 argument_list|)
+operator|.
+name|isFalse
+argument_list|()
 expr_stmt|;
 block|}
-name|assertFalse
+name|assertThat
 argument_list|(
 name|set
 operator|.
@@ -1171,6 +1216,9 @@ operator|.
 name|hasNext
 argument_list|()
 argument_list|)
+operator|.
+name|isFalse
+argument_list|()
 expr_stmt|;
 block|}
 comment|// put all elements back
@@ -1204,12 +1252,13 @@ name|i
 index|]
 argument_list|)
 decl_stmt|;
-name|assertTrue
+name|assertThat
 argument_list|(
 name|element
-operator|==
-literal|null
 argument_list|)
+operator|.
+name|isNull
+argument_list|()
 expr_stmt|;
 block|}
 comment|// remove all through iterator
@@ -1243,7 +1292,7 @@ name|next
 argument_list|()
 decl_stmt|;
 comment|// element should be there before removing
-name|assertTrue
+name|assertThat
 argument_list|(
 name|set
 operator|.
@@ -1252,6 +1301,9 @@ argument_list|(
 name|element
 argument_list|)
 argument_list|)
+operator|.
+name|isTrue
+argument_list|()
 expr_stmt|;
 name|iter
 operator|.
@@ -1259,7 +1311,7 @@ name|remove
 argument_list|()
 expr_stmt|;
 comment|// element should not be there now
-name|assertFalse
+name|assertThat
 argument_list|(
 name|set
 operator|.
@@ -1268,6 +1320,9 @@ argument_list|(
 name|element
 argument_list|)
 argument_list|)
+operator|.
+name|isFalse
+argument_list|()
 expr_stmt|;
 block|}
 comment|// the deleted elements should not be there
@@ -1288,7 +1343,7 @@ name|i
 operator|++
 control|)
 block|{
-name|assertFalse
+name|assertThat
 argument_list|(
 name|set
 operator|.
@@ -1300,10 +1355,13 @@ name|i
 index|]
 argument_list|)
 argument_list|)
+operator|.
+name|isFalse
+argument_list|()
 expr_stmt|;
 block|}
 comment|// iterator should not have next
-name|assertFalse
+name|assertThat
 argument_list|(
 name|set
 operator|.
@@ -1313,17 +1371,21 @@ operator|.
 name|hasNext
 argument_list|()
 argument_list|)
+operator|.
+name|isFalse
+argument_list|()
 expr_stmt|;
 comment|// check the set size
-name|assertEquals
+name|assertThat
 argument_list|(
 name|set
 operator|.
 name|size
 argument_list|()
-argument_list|,
-literal|0
 argument_list|)
+operator|.
+name|isZero
+argument_list|()
 expr_stmt|;
 block|}
 block|}

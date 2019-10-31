@@ -140,6 +140,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|assertj
+operator|.
+name|core
+operator|.
+name|api
+operator|.
+name|Assertions
+operator|.
+name|assertThat
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|mockito
 operator|.
 name|ArgumentMatchers
@@ -440,19 +456,21 @@ argument_list|,
 name|chain
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
-literal|"X-Frame-Options count not equal to 1."
-argument_list|,
 name|headers
 operator|.
 name|size
 argument_list|()
-argument_list|,
-literal|1
 argument_list|)
+operator|.
+name|withFailMessage
+argument_list|(
+literal|"X-Frame-Options count not equal to 1."
+argument_list|)
+operator|.
+name|isOne
+argument_list|()
 expr_stmt|;
 block|}
 annotation|@
@@ -751,26 +769,24 @@ argument_list|,
 name|chain
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
+name|assertThat
 argument_list|(
-literal|"X-Frame-Options count not equal to 1."
-argument_list|,
 name|headers
 operator|.
 name|size
 argument_list|()
-argument_list|,
-literal|1
 argument_list|)
-expr_stmt|;
-name|Assert
 operator|.
-name|assertEquals
+name|withFailMessage
 argument_list|(
 literal|"X-Frame-Options count not equal to 1."
-argument_list|,
+argument_list|)
+operator|.
+name|isOne
+argument_list|()
+expr_stmt|;
+name|assertThat
+argument_list|(
 name|headers
 operator|.
 name|toArray
@@ -778,7 +794,15 @@ argument_list|()
 index|[
 literal|0
 index|]
-argument_list|,
+argument_list|)
+operator|.
+name|withFailMessage
+argument_list|(
+literal|"X-Frame-Options count not equal to 1."
+argument_list|)
+operator|.
+name|isEqualTo
+argument_list|(
 literal|"SAMEORIGIN"
 argument_list|)
 expr_stmt|;
