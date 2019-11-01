@@ -1337,6 +1337,15 @@ name|WORKLOAD_INPUT_PATH_ARG
 init|=
 literal|"workload_input_path"
 decl_stmt|;
+DECL|field|WORKLOAD_OUTPUT_PATH_ARG
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|WORKLOAD_OUTPUT_PATH_ARG
+init|=
+literal|"workload_output_path"
+decl_stmt|;
 DECL|field|WORKLOAD_THREADS_PER_MAPPER_ARG
 specifier|public
 specifier|static
@@ -1604,6 +1613,14 @@ DECL|field|workloadInputPath
 specifier|private
 name|String
 name|workloadInputPath
+init|=
+literal|""
+decl_stmt|;
+comment|// The output path for the workload job metric results.
+DECL|field|workloadOutputPath
+specifier|private
+name|String
+name|workloadOutputPath
 init|=
 literal|""
 decl_stmt|;
@@ -2163,6 +2180,17 @@ argument_list|,
 literal|true
 argument_list|,
 literal|"Location of the audit traces to replay (Required for workload)"
+argument_list|)
+expr_stmt|;
+name|opts
+operator|.
+name|addOption
+argument_list|(
+name|WORKLOAD_OUTPUT_PATH_ARG
+argument_list|,
+literal|true
+argument_list|,
+literal|"Location of the metrics output (Required for workload)"
 argument_list|)
 expr_stmt|;
 name|opts
@@ -2909,6 +2937,15 @@ operator|.
 name|getOptionValue
 argument_list|(
 name|WORKLOAD_INPUT_PATH_ARG
+argument_list|)
+expr_stmt|;
+name|workloadOutputPath
+operator|=
+name|commandLine
+operator|.
+name|getOptionValue
+argument_list|(
+name|WORKLOAD_OUTPUT_PATH_ARG
 argument_list|)
 expr_stmt|;
 name|workloadThreadsPerMapper
@@ -5987,6 +6024,17 @@ operator|.
 name|INPUT_PATH_KEY
 argument_list|,
 name|workloadInputPath
+argument_list|)
+expr_stmt|;
+name|workloadConf
+operator|.
+name|set
+argument_list|(
+name|AuditReplayMapper
+operator|.
+name|OUTPUT_PATH_KEY
+argument_list|,
+name|workloadOutputPath
 argument_list|)
 expr_stmt|;
 name|workloadConf

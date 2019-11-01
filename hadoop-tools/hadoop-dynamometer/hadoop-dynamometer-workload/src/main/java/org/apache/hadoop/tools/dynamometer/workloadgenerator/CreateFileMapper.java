@@ -171,6 +171,10 @@ argument_list|<
 name|NullWritable
 argument_list|,
 name|NullWritable
+argument_list|,
+name|NullWritable
+argument_list|,
+name|NullWritable
 argument_list|>
 block|{
 DECL|field|NUM_MAPPERS_KEY

@@ -82,12 +82,44 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
+name|Job
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
 name|Mapper
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|lib
+operator|.
+name|output
+operator|.
+name|NullOutputFormat
+import|;
+end_import
+
 begin_comment
-comment|/**  * Represents the base class for a generic workload-generating mapper. By  * default, it will expect to use {@link VirtualInputFormat} as its  * {@link InputFormat}. Subclasses expecting a different {@link InputFormat}  * should override the {@link #getInputFormat(Configuration)} method.  */
+comment|/**  * Represents the base class for a generic workload-generating mapper. By  * default, it will expect to use {@link VirtualInputFormat} as its  * {@link InputFormat}. Subclasses requiring a reducer or expecting a different  * {@link InputFormat} should override the {@link #configureJob(Job)} method.  */
 end_comment
 
 begin_class
@@ -100,6 +132,10 @@ parameter_list|<
 name|KEYIN
 parameter_list|,
 name|VALUEIN
+parameter_list|,
+name|KEYOUT
+parameter_list|,
+name|VALUEOUT
 parameter_list|>
 extends|extends
 name|Mapper
@@ -108,32 +144,11 @@ name|KEYIN
 argument_list|,
 name|VALUEIN
 argument_list|,
-name|NullWritable
+name|KEYOUT
 argument_list|,
-name|NullWritable
+name|VALUEOUT
 argument_list|>
 block|{
-comment|/**    * Return the input class to be used by this mapper.    * @param conf configuration.    * @return the {@link InputFormat} implementation for the mapper.    */
-DECL|method|getInputFormat (Configuration conf)
-specifier|public
-name|Class
-argument_list|<
-name|?
-extends|extends
-name|InputFormat
-argument_list|>
-name|getInputFormat
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-block|{
-return|return
-name|VirtualInputFormat
-operator|.
-name|class
-return|;
-block|}
 comment|/**    * Get the description of the behavior of this mapper.    * @return description string.    */
 DECL|method|getDescription ()
 specifier|public
@@ -164,6 +179,60 @@ name|Configuration
 name|conf
 parameter_list|)
 function_decl|;
+comment|/**    * Setup input and output formats and optional reducer.    */
+DECL|method|configureJob (Job job)
+specifier|public
+name|void
+name|configureJob
+parameter_list|(
+name|Job
+name|job
+parameter_list|)
+block|{
+name|job
+operator|.
+name|setInputFormatClass
+argument_list|(
+name|VirtualInputFormat
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+name|job
+operator|.
+name|setNumReduceTasks
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+name|job
+operator|.
+name|setOutputKeyClass
+argument_list|(
+name|NullWritable
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+name|job
+operator|.
+name|setOutputValueClass
+argument_list|(
+name|NullWritable
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+name|job
+operator|.
+name|setOutputFormatClass
+argument_list|(
+name|NullOutputFormat
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 
