@@ -2886,7 +2886,10 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|incrementPendingReplicationWithoutTargets ()
+specifier|public
 name|void
 name|incrementPendingReplicationWithoutTargets
 parameter_list|()
