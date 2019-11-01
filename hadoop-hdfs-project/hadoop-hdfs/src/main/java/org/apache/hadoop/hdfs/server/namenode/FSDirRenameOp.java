@@ -919,7 +919,7 @@ return|return
 name|dstIIP
 return|;
 block|}
-comment|/**    * Change a path name    *    * @param fsd FSDirectory    * @param src source path    * @param dst destination path    * @return true INodesInPath if rename succeeds; null otherwise    * @deprecated See {@link #renameToInt(FSDirectory, String, String,    * boolean, Options.Rename...)}    */
+comment|/**    * Change a path name    *    * @param fsd FSDirectory    * @param srcIIP source path    * @param dstIIP destination path    * @return true INodesInPath if rename succeeds; null otherwise    * @deprecated See {@link #renameToInt(FSDirectory, String, String,    * boolean, Options.Rename...)}    */
 annotation|@
 name|Deprecated
 DECL|method|unprotectedRenameTo (FSDirectory fsd, final INodesInPath srcIIP, final INodesInPath dstIIP, long timestamp)
@@ -959,6 +959,17 @@ operator|.
 name|getLastINode
 argument_list|()
 decl_stmt|;
+name|List
+argument_list|<
+name|INodeDirectory
+argument_list|>
+name|snapshottableDirs
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+decl_stmt|;
 try|try
 block|{
 name|validateRenameSource
@@ -966,6 +977,8 @@ argument_list|(
 name|fsd
 argument_list|,
 name|srcIIP
+argument_list|,
+name|snapshottableDirs
 argument_list|)
 expr_stmt|;
 block|}
@@ -1120,6 +1133,20 @@ return|return
 literal|null
 return|;
 block|}
+name|validateNestSnapshot
+argument_list|(
+name|fsd
+argument_list|,
+name|src
+argument_list|,
+name|dstParent
+operator|.
+name|asDirectory
+argument_list|()
+argument_list|,
+name|snapshottableDirs
+argument_list|)
+expr_stmt|;
 name|fsd
 operator|.
 name|ezManager
@@ -1812,7 +1839,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Rename src to dst.    * See {@link DistributedFileSystem#rename(Path, Path, Options.Rename...)}    * for details related to rename semantics and exceptions.    *    * @param fsd             FSDirectory    * @param src             source path    * @param dst             destination path    * @param timestamp       modification time    * @param collectedBlocks blocks to be removed    * @param options         Rename options    * @return whether a file/directory gets overwritten in the dst path    */
+comment|/**    * Rename src to dst.    * See {@link DistributedFileSystem#rename(Path, Path, Options.Rename...)}    * for details related to rename semantics and exceptions.    *    * @param fsd             FSDirectory    * @param srcIIP          source path    * @param dstIIP          destination path    * @param timestamp       modification time    * @param collectedBlocks blocks to be removed    * @param options         Rename options    * @return whether a file/directory gets overwritten in the dst path    */
 DECL|method|unprotectedRenameTo (FSDirectory fsd, final INodesInPath srcIIP, final INodesInPath dstIIP, long timestamp, BlocksMapUpdateInfo collectedBlocks, Options.Rename... options)
 specifier|static
 name|RenameResult
@@ -1904,11 +1931,24 @@ operator|.
 name|getLastINode
 argument_list|()
 decl_stmt|;
+name|List
+argument_list|<
+name|INodeDirectory
+argument_list|>
+name|srcSnapshottableDirs
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+decl_stmt|;
 name|validateRenameSource
 argument_list|(
 name|fsd
 argument_list|,
 name|srcIIP
+argument_list|,
+name|srcSnapshottableDirs
 argument_list|)
 expr_stmt|;
 comment|// validate the destination
@@ -2012,7 +2052,7 @@ name|List
 argument_list|<
 name|INodeDirectory
 argument_list|>
-name|snapshottableDirs
+name|dstSnapshottableDirs
 init|=
 operator|new
 name|ArrayList
@@ -2048,7 +2088,7 @@ name|fsd
 argument_list|,
 name|dstIIP
 argument_list|,
-name|snapshottableDirs
+name|dstSnapshottableDirs
 argument_list|)
 expr_stmt|;
 block|}
@@ -2133,6 +2173,20 @@ name|error
 argument_list|)
 throw|;
 block|}
+name|validateNestSnapshot
+argument_list|(
+name|fsd
+argument_list|,
+name|src
+argument_list|,
+name|dstParent
+operator|.
+name|asDirectory
+argument_list|()
+argument_list|,
+name|srcSnapshottableDirs
+argument_list|)
+expr_stmt|;
 comment|// Ensure dst has quota to accommodate rename
 name|verifyFsLimitsForRename
 argument_list|(
@@ -2306,7 +2360,7 @@ block|}
 block|}
 if|if
 condition|(
-name|snapshottableDirs
+name|dstSnapshottableDirs
 operator|.
 name|size
 argument_list|()
@@ -2323,7 +2377,7 @@ argument_list|()
 operator|.
 name|removeSnapshottableDirs
 argument_list|(
-name|snapshottableDirs
+name|dstSnapshottableDirs
 argument_list|)
 expr_stmt|;
 block|}
@@ -2920,7 +2974,7 @@ throw|;
 block|}
 block|}
 block|}
-DECL|method|validateRenameSource (FSDirectory fsd, INodesInPath srcIIP)
+DECL|method|validateRenameSource (FSDirectory fsd, INodesInPath srcIIP, List<INodeDirectory> snapshottableDirs)
 specifier|private
 specifier|static
 name|void
@@ -2931,6 +2985,12 @@ name|fsd
 parameter_list|,
 name|INodesInPath
 name|srcIIP
+parameter_list|,
+name|List
+argument_list|<
+name|INodeDirectory
+argument_list|>
+name|snapshottableDirs
 parameter_list|)
 throws|throws
 name|IOException
@@ -3028,9 +3088,108 @@ name|fsd
 argument_list|,
 name|srcIIP
 argument_list|,
-literal|null
+name|snapshottableDirs
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|validateNestSnapshot (FSDirectory fsd, String srcPath, INodeDirectory dstParent, List<INodeDirectory> snapshottableDirs)
+specifier|private
+specifier|static
+name|void
+name|validateNestSnapshot
+parameter_list|(
+name|FSDirectory
+name|fsd
+parameter_list|,
+name|String
+name|srcPath
+parameter_list|,
+name|INodeDirectory
+name|dstParent
+parameter_list|,
+name|List
+argument_list|<
+name|INodeDirectory
+argument_list|>
+name|snapshottableDirs
+parameter_list|)
+throws|throws
+name|SnapshotException
+block|{
+if|if
+condition|(
+name|fsd
+operator|.
+name|getFSNamesystem
+argument_list|()
+operator|.
+name|getSnapshotManager
+argument_list|()
+operator|.
+name|isAllowNestedSnapshots
+argument_list|()
+condition|)
+block|{
+return|return;
+block|}
+comment|/*      * snapshottableDirs is a list of snapshottable directory (child of rename      * src) which do not have snapshots yet. If this list is not empty, that      * means rename src has snapshottable descendant directories.      */
+if|if
+condition|(
+name|snapshottableDirs
+operator|!=
+literal|null
+operator|&&
+name|snapshottableDirs
+operator|.
+name|size
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+if|if
+condition|(
+name|fsd
+operator|.
+name|getFSNamesystem
+argument_list|()
+operator|.
+name|getSnapshotManager
+argument_list|()
+operator|.
+name|isDescendantOfSnapshotRoot
+argument_list|(
+name|dstParent
+argument_list|)
+condition|)
+block|{
+name|String
+name|dstPath
+init|=
+name|dstParent
+operator|.
+name|getFullPathName
+argument_list|()
+decl_stmt|;
+throw|throw
+operator|new
+name|SnapshotException
+argument_list|(
+literal|"Unable to rename because "
+operator|+
+name|srcPath
+operator|+
+literal|" has snapshottable descendant directories and "
+operator|+
+name|dstPath
+operator|+
+literal|" is a descent of a snapshottable directory, and HDFS does"
+operator|+
+literal|" not support nested snapshottable directory."
+argument_list|)
+throw|;
+block|}
+block|}
 block|}
 DECL|class|RenameOperation
 specifier|private
