@@ -179,6 +179,12 @@ name|String
 name|getRpcClientConnections
 parameter_list|()
 function_decl|;
+comment|/**    * Get the JSON representation of the async caller thread pool.    * @return JSON string representation of the async caller thread pool.    */
+DECL|method|getAsyncCallerPool ()
+name|String
+name|getAsyncCallerPool
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

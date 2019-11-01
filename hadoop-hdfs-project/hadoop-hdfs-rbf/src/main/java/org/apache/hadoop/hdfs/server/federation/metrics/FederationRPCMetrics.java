@@ -892,6 +892,24 @@ name|getJSON
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getAsyncCallerPool ()
+specifier|public
+name|String
+name|getAsyncCallerPool
+parameter_list|()
+block|{
+return|return
+name|rpcServer
+operator|.
+name|getRPCClient
+argument_list|()
+operator|.
+name|getAsyncCallerPoolJson
+argument_list|()
+return|;
+block|}
 comment|/**    * Add the time to proxy an operation from the moment the Router sends it to    * the Namenode until it replied.    * @param time Proxy time of an operation in nanoseconds.    */
 DECL|method|addProxyTime (long time)
 specifier|public
