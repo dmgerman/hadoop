@@ -1555,7 +1555,7 @@ literal|"Ordering Policy: "
 argument_list|,
 name|lqinfo
 operator|.
-name|getOrderingPolicyInfo
+name|getOrderingPolicyDisplayName
 argument_list|()
 argument_list|)
 operator|.

@@ -199,6 +199,12 @@ name|String
 name|getInfo
 parameter_list|()
 function_decl|;
+comment|/**    * Return configuration name (which will be used to set ordering policy).    * @return configuration name    */
+DECL|method|getConfigName ()
+name|String
+name|getConfigName
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

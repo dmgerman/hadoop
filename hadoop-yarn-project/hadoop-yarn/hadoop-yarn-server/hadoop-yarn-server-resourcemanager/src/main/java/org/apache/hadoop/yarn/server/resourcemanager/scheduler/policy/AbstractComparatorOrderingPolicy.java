@@ -597,6 +597,15 @@ name|String
 name|getInfo
 parameter_list|()
 function_decl|;
+annotation|@
+name|Override
+DECL|method|getConfigName ()
+specifier|public
+specifier|abstract
+name|String
+name|getConfigName
+parameter_list|()
+function_decl|;
 block|}
 end_class
 

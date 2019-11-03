@@ -78,6 +78,20 @@ end_import
 
 begin_import
 import|import
+name|javax
+operator|.
+name|xml
+operator|.
+name|bind
+operator|.
+name|annotation
+operator|.
+name|XmlTransient
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -359,6 +373,13 @@ specifier|protected
 name|long
 name|defaultApplicationLifetime
 decl_stmt|;
+annotation|@
+name|XmlTransient
+DECL|field|orderingPolicyDisplayName
+specifier|protected
+name|String
+name|orderingPolicyDisplayName
+decl_stmt|;
 DECL|method|CapacitySchedulerLeafQueueInfo ()
 name|CapacitySchedulerLeafQueueInfo
 parameter_list|()
@@ -490,7 +511,7 @@ operator|.
 name|getIntraQueuePreemptionDisabled
 argument_list|()
 expr_stmt|;
-name|orderingPolicyInfo
+name|orderingPolicyDisplayName
 operator|=
 name|q
 operator|.
@@ -498,6 +519,16 @@ name|getOrderingPolicy
 argument_list|()
 operator|.
 name|getInfo
+argument_list|()
+expr_stmt|;
+name|orderingPolicyInfo
+operator|=
+name|q
+operator|.
+name|getOrderingPolicy
+argument_list|()
+operator|.
+name|getConfigName
 argument_list|()
 expr_stmt|;
 name|defaultNodeLabelExpression
@@ -788,6 +819,16 @@ parameter_list|()
 block|{
 return|return
 name|intraQueuePreemptionDisabled
+return|;
+block|}
+DECL|method|getOrderingPolicyDisplayName ()
+specifier|public
+name|String
+name|getOrderingPolicyDisplayName
+parameter_list|()
+block|{
+return|return
+name|orderingPolicyDisplayName
 return|;
 block|}
 DECL|method|getDefaultNodeLabelExpression ()
