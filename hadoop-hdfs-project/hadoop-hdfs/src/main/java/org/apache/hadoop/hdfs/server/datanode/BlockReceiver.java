@@ -6830,7 +6830,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"IOException in BlockReceiver.run(): "
+literal|"IOException in PacketResponder.run(): "
 argument_list|,
 name|e
 argument_list|)
