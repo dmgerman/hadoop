@@ -17,12 +17,14 @@ package|;
 end_package
 
 begin_import
-import|import
-name|java
+import|import static
+name|org
 operator|.
-name|io
+name|junit
 operator|.
-name|*
+name|Assert
+operator|.
+name|assertArrayEquals
 import|;
 end_import
 
@@ -51,26 +53,12 @@ import|;
 end_import
 
 begin_import
-import|import static
-name|org
+import|import
+name|java
 operator|.
-name|junit
+name|io
 operator|.
-name|Assert
-operator|.
-name|fail
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertArrayEquals
+name|IOException
 import|;
 end_import
 
@@ -380,63 +368,35 @@ block|}
 comment|/**    * test {@link ArrayWritable} constructor with null    */
 annotation|@
 name|Test
+argument_list|(
+name|expected
+operator|=
+name|IllegalArgumentException
+operator|.
+name|class
+argument_list|)
 DECL|method|testNullArgument ()
 specifier|public
 name|void
 name|testNullArgument
 parameter_list|()
 block|{
-try|try
-block|{
+operator|new
+name|ArrayWritable
+argument_list|(
+operator|(
 name|Class
 argument_list|<
 name|?
 extends|extends
 name|Writable
 argument_list|>
-name|valueClass
-init|=
+operator|)
 literal|null
-decl_stmt|;
-operator|new
-name|ArrayWritable
-argument_list|(
-name|valueClass
 argument_list|)
 expr_stmt|;
-name|fail
-argument_list|(
-literal|"testNullArgument error !!!"
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IllegalArgumentException
-name|exp
-parameter_list|)
-block|{
-comment|//should be for test pass
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|e
-parameter_list|)
-block|{
-name|fail
-argument_list|(
-literal|"testNullArgument error !!!"
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 comment|/**    * test {@link ArrayWritable} constructor with {@code String[]} as a parameter    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 annotation|@
 name|Test
 DECL|method|testArrayWritableStringConstructor ()
