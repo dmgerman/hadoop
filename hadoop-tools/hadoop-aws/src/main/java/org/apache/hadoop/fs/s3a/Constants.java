@@ -1524,6 +1524,25 @@ name|S3GUARD_METASTORE_DYNAMO
 init|=
 literal|"org.apache.hadoop.fs.s3a.s3guard.DynamoDBMetadataStore"
 decl_stmt|;
+comment|/**    * The warn level if S3Guard is disabled.    */
+DECL|field|S3GUARD_DISABLED_WARN_LEVEL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|S3GUARD_DISABLED_WARN_LEVEL
+init|=
+literal|"org.apache.hadoop.fs.s3a.s3guard.disabled.warn.level"
+decl_stmt|;
+DECL|field|DEFAULT_S3GUARD_DISABLED_WARN_LEVEL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_S3GUARD_DISABLED_WARN_LEVEL
+init|=
+literal|"INFORM"
+decl_stmt|;
 comment|/**    * Inconsistency (visibility delay) injection settings.    */
 annotation|@
 name|InterfaceStability

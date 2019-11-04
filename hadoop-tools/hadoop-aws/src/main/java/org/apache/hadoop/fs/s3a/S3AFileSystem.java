@@ -3354,6 +3354,38 @@ name|allowAuthoritativePaths
 argument_list|)
 expr_stmt|;
 block|}
+comment|// LOG if S3Guard is disabled on the warn level set in config
+if|if
+condition|(
+operator|!
+name|hasMetadataStore
+argument_list|()
+condition|)
+block|{
+name|String
+name|warnLevel
+init|=
+name|conf
+operator|.
+name|getTrimmed
+argument_list|(
+name|S3GUARD_DISABLED_WARN_LEVEL
+argument_list|,
+name|DEFAULT_S3GUARD_DISABLED_WARN_LEVEL
+argument_list|)
+decl_stmt|;
+name|S3Guard
+operator|.
+name|logS3GuardDisabled
+argument_list|(
+name|LOG
+argument_list|,
+name|warnLevel
+argument_list|,
+name|bucket
+argument_list|)
+expr_stmt|;
+block|}
 name|initMultipartUploads
 argument_list|(
 name|conf
@@ -8768,7 +8800,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Invoke {@link #removeKeysS3(List, boolean)} with handling of    * {@code MultiObjectDeleteException}.    *    * @param keysToDelete collection of keys to delete on the s3-backend.    *        if empty, no request is made of the object store.    * @param deleteFakeDir indicates whether this is for deleting fake dirs    * @param operationState (nullable) operational state for a bulk update    * @throws InvalidRequestException if the request was rejected due to    * a mistaken attempt to delete the root directory.    * @throws MultiObjectDeleteException one or more of the keys could not    * be deleted in a multiple object delete operation.    * @throws AmazonClientException amazon-layer failure.    * @throws IOException other IO Exception.    */
+comment|/**    * Invoke {@link #removeKeysS3(List, boolean, boolean)} with handling of    * {@code MultiObjectDeleteException}.    *    * @param keysToDelete collection of keys to delete on the s3-backend.    *        if empty, no request is made of the object store.    * @param deleteFakeDir indicates whether this is for deleting fake dirs    * @param operationState (nullable) operational state for a bulk update    * @throws InvalidRequestException if the request was rejected due to    * a mistaken attempt to delete the root directory.    * @throws MultiObjectDeleteException one or more of the keys could not    * be deleted in a multiple object delete operation.    * @throws AmazonClientException amazon-layer failure.    * @throws IOException other IO Exception.    */
 annotation|@
 name|VisibleForTesting
 annotation|@
