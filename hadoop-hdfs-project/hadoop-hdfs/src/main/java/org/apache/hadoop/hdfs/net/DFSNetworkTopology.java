@@ -661,6 +661,35 @@ operator|)
 condition|)
 block|{
 comment|// a node is either DFSTopologyNodeImpl, or a DatanodeDescriptor
+comment|// if a node is DatanodeDescriptor and excludedNodes contains it,
+comment|// return null;
+if|if
+condition|(
+name|excludedNodes
+operator|!=
+literal|null
+operator|&&
+name|excludedNodes
+operator|.
+name|contains
+argument_list|(
+name|node
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"{} in excludedNodes"
+argument_list|,
+name|node
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
 return|return
 operator|(
 operator|(
