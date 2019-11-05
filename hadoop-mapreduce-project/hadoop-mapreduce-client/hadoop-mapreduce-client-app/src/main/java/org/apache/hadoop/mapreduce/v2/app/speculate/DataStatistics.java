@@ -275,6 +275,52 @@ return|return
 name|count
 return|;
 block|}
+comment|/**    * calculates the mean value within 95% ConfidenceInterval.    * 1.96 is standard for 95 %    *    * @return the mean value adding 95% confidence interval    */
+DECL|method|meanCI ()
+specifier|public
+specifier|synchronized
+name|double
+name|meanCI
+parameter_list|()
+block|{
+if|if
+condition|(
+name|count
+operator|<=
+literal|1
+condition|)
+return|return
+literal|0.0
+return|;
+name|double
+name|currMean
+init|=
+name|mean
+argument_list|()
+decl_stmt|;
+name|double
+name|currStd
+init|=
+name|std
+argument_list|()
+decl_stmt|;
+return|return
+name|currMean
+operator|+
+operator|(
+literal|1.96
+operator|*
+name|currStd
+operator|/
+name|Math
+operator|.
+name|sqrt
+argument_list|(
+name|count
+argument_list|)
+operator|)
+return|;
+block|}
 DECL|method|toString ()
 specifier|public
 name|String
@@ -302,6 +348,11 @@ operator|+
 literal|" std() is "
 operator|+
 name|std
+argument_list|()
+operator|+
+literal|", meanCI() is "
+operator|+
+name|meanCI
 argument_list|()
 return|;
 block|}

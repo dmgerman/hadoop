@@ -2179,6 +2179,15 @@ name|notHeartbeatedInAWhile
 argument_list|(
 name|now
 argument_list|)
+operator|||
+name|estimator
+operator|.
+name|hasStagnatedProgress
+argument_list|(
+name|runningTaskAttemptID
+argument_list|,
+name|now
+argument_list|)
 condition|)
 block|{
 comment|// Stats have stagnated for a while, simulate heart-beat.

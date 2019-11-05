@@ -2891,6 +2891,56 @@ name|MR_AM_PREFIX
 operator|+
 literal|"job.task.estimator.exponential.smooth.rate"
 decl_stmt|;
+comment|/** The lambda value in the smoothing function of the task estimator.*/
+DECL|field|MR_AM_TASK_ESTIMATOR_SIMPLE_SMOOTH_LAMBDA_MS
+name|String
+name|MR_AM_TASK_ESTIMATOR_SIMPLE_SMOOTH_LAMBDA_MS
+init|=
+name|MR_AM_PREFIX
+operator|+
+literal|"job.task.estimator.simple.exponential.smooth.lambda-ms"
+decl_stmt|;
+DECL|field|DEFAULT_MR_AM_TASK_ESTIMATOR_SIMPLE_SMOOTH_LAMBDA_MS
+name|long
+name|DEFAULT_MR_AM_TASK_ESTIMATOR_SIMPLE_SMOOTH_LAMBDA_MS
+init|=
+literal|1000L
+operator|*
+literal|120
+decl_stmt|;
+comment|/**    * The window length in the simple exponential smoothing that considers the    * task attempt is stagnated.    */
+DECL|field|MR_AM_TASK_ESTIMATOR_SIMPLE_SMOOTH_STAGNATED_MS
+name|String
+name|MR_AM_TASK_ESTIMATOR_SIMPLE_SMOOTH_STAGNATED_MS
+init|=
+name|MR_AM_PREFIX
+operator|+
+literal|"job.task.estimator.simple.exponential.smooth.stagnated-ms"
+decl_stmt|;
+DECL|field|DEFAULT_MR_AM_TASK_ESTIMATOR_SIMPLE_SMOOTH_STAGNATED_MS
+name|long
+name|DEFAULT_MR_AM_TASK_ESTIMATOR_SIMPLE_SMOOTH_STAGNATED_MS
+init|=
+literal|1000L
+operator|*
+literal|360
+decl_stmt|;
+comment|/**    * The number of initial readings that the estimator ignores before giving a    * prediction. At the beginning the smooth estimator won't be accurate in    * prediction.    */
+DECL|field|MR_AM_TASK_ESTIMATOR_SIMPLE_SMOOTH_SKIP_INITIALS
+name|String
+name|MR_AM_TASK_ESTIMATOR_SIMPLE_SMOOTH_SKIP_INITIALS
+init|=
+name|MR_AM_PREFIX
+operator|+
+literal|"job.task.estimator.simple.exponential.smooth.skip-initials"
+decl_stmt|;
+comment|/**    * The default number of reading the estimators is going to ignore before    * returning the smooth exponential prediction.    */
+DECL|field|DEFAULT_MR_AM_TASK_ESTIMATOR_SIMPLE_SMOOTH_INITIALS
+name|int
+name|DEFAULT_MR_AM_TASK_ESTIMATOR_SIMPLE_SMOOTH_INITIALS
+init|=
+literal|24
+decl_stmt|;
 comment|/** The number of threads used to handle task RPC calls.*/
 DECL|field|MR_AM_TASK_LISTENER_THREAD_COUNT
 specifier|public
