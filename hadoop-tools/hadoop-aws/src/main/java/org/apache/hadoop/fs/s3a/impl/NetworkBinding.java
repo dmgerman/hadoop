@@ -464,7 +464,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Given an S3 bucket region as returned by a bucket location query,    * fix it into a form which can be used by other AWS commands.    * https://forums.aws.amazon.com/thread.jspa?messageID=796829&tstart=0    * See also {@code com.amazonaws.services.s3.model.Region.fromValue()}    * for its conversion logic.    * @param region region from S3 call.    * @return the region to use in DDB etc.    */
+comment|/**    * Given an S3 bucket region as returned by a bucket location query,    * fix it into a form which can be used by other AWS commands.    *<p>    *<a href="https://forums.aws.amazon.com/thread.jspa?messageID=796829">    * https://forums.aws.amazon.com/thread.jspa?messageID=796829</a>    *</p>    * See also {@code com.amazonaws.services.s3.model.Region.fromValue()}    * for its conversion logic.    * @param region region from S3 call.    * @return the region to use in DDB etc.    */
 DECL|method|fixBucketRegion (final String region)
 specifier|public
 specifier|static
