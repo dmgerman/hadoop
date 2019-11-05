@@ -815,6 +815,8 @@ argument_list|,
 name|generateRandomString
 argument_list|()
 argument_list|,
+literal|"http"
+argument_list|,
 name|generateRandomString
 argument_list|()
 argument_list|,

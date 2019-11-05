@@ -1071,6 +1071,11 @@ argument_list|()
 argument_list|,
 name|nnInfo
 operator|.
+name|getWebScheme
+argument_list|()
+argument_list|,
+name|nnInfo
+operator|.
 name|getWebAddress
 argument_list|()
 argument_list|)

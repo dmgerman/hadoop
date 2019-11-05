@@ -1086,6 +1086,8 @@ name|ns
 operator|+
 name|nn
 argument_list|,
+literal|"http"
+argument_list|,
 literal|"testweb-"
 operator|+
 name|ns
@@ -1370,6 +1372,11 @@ init|=
 literal|"testcluster"
 decl_stmt|;
 name|String
+name|webScheme
+init|=
+literal|"http"
+decl_stmt|;
+name|String
 name|webAddress
 init|=
 literal|"testwebaddress"
@@ -1405,6 +1412,8 @@ argument_list|,
 name|serviceAddress
 argument_list|,
 name|lifelineAddress
+argument_list|,
+name|webScheme
 argument_list|,
 name|webAddress
 argument_list|,
@@ -1448,6 +1457,8 @@ name|serviceAddress
 argument_list|,
 name|lifelineAddress
 argument_list|,
+name|webScheme
+argument_list|,
 name|webAddress
 argument_list|,
 name|FederationNamenodeServiceState
@@ -1490,6 +1501,8 @@ name|serviceAddress
 argument_list|,
 name|lifelineAddress
 argument_list|,
+name|webScheme
+argument_list|,
 name|webAddress
 argument_list|,
 name|FederationNamenodeServiceState
@@ -1531,6 +1544,8 @@ argument_list|,
 name|serviceAddress
 argument_list|,
 name|lifelineAddress
+argument_list|,
+name|webScheme
 argument_list|,
 name|webAddress
 argument_list|,
@@ -1657,6 +1672,11 @@ init|=
 literal|"testcluster"
 decl_stmt|;
 name|String
+name|webScheme
+init|=
+literal|"http"
+decl_stmt|;
+name|String
 name|webAddress
 init|=
 literal|"testwebaddress"
@@ -1700,6 +1720,8 @@ argument_list|,
 name|webAddress
 argument_list|,
 name|lifelineAddress
+argument_list|,
+name|webScheme
 argument_list|,
 name|webAddress
 argument_list|,
@@ -1752,6 +1774,8 @@ name|serviceAddress
 argument_list|,
 name|lifelineAddress
 argument_list|,
+name|webScheme
+argument_list|,
 name|webAddress
 argument_list|,
 name|FederationNamenodeServiceState
@@ -1801,6 +1825,8 @@ name|serviceAddress
 argument_list|,
 name|lifelineAddress
 argument_list|,
+name|webScheme
+argument_list|,
 name|webAddress
 argument_list|,
 name|FederationNamenodeServiceState
@@ -1849,6 +1875,8 @@ argument_list|,
 name|serviceAddress
 argument_list|,
 name|lifelineAddress
+argument_list|,
+name|webScheme
 argument_list|,
 name|webAddress
 argument_list|,

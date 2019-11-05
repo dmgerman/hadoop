@@ -933,6 +933,8 @@ name|addr
 operator|+
 literal|":8003"
 argument_list|,
+literal|"http"
+argument_list|,
 name|addr
 operator|+
 literal|":8004"

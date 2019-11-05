@@ -123,6 +123,13 @@ name|webAddress
 init|=
 literal|""
 decl_stmt|;
+DECL|field|webScheme
+specifier|private
+name|String
+name|webScheme
+init|=
+literal|""
+decl_stmt|;
 comment|/** Namenode state. */
 DECL|field|status
 specifier|private
@@ -314,7 +321,7 @@ name|haStateValid
 init|=
 literal|false
 decl_stmt|;
-DECL|method|NamenodeStatusReport (String ns, String nn, String rpc, String service, String lifeline, String web)
+DECL|method|NamenodeStatusReport (String ns, String nn, String rpc, String service, String lifeline, String webScheme, String web)
 specifier|public
 name|NamenodeStatusReport
 parameter_list|(
@@ -332,6 +339,9 @@ name|service
 parameter_list|,
 name|String
 name|lifeline
+parameter_list|,
+name|String
+name|webScheme
 parameter_list|,
 name|String
 name|web
@@ -366,6 +376,12 @@ operator|.
 name|lifelineAddress
 operator|=
 name|lifeline
+expr_stmt|;
+name|this
+operator|.
+name|webScheme
+operator|=
+name|webScheme
 expr_stmt|;
 name|this
 operator|.
@@ -558,6 +574,19 @@ return|return
 name|this
 operator|.
 name|webAddress
+return|;
+block|}
+comment|/**    * Get the scheme of web address.    *    * @return The scheme of web address.    */
+DECL|method|getWebScheme ()
+specifier|public
+name|String
+name|getWebScheme
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|webScheme
 return|;
 block|}
 comment|/**    * Set the HA service state.    *    * @param state The HA service state to set.    */

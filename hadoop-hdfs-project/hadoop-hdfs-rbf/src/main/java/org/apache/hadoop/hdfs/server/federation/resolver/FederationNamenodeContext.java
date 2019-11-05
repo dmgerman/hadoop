@@ -50,7 +50,13 @@ name|String
 name|getLifelineAddress
 parameter_list|()
 function_decl|;
-comment|/**    * Get the HTTP server address of the namenode.    *    * @return HTTP address in the form of host:port.    */
+comment|/**    * Get the Scheme of web address of the namenode.    *    * @return Scheme of web address (HTTP/HTTPS).    */
+DECL|method|getWebScheme ()
+name|String
+name|getWebScheme
+parameter_list|()
+function_decl|;
+comment|/**    * Get the HTTP(s) server address of the namenode.    *    * @return HTTP(s) address in the form of host:port.    */
 DECL|method|getWebAddress ()
 name|String
 name|getWebAddress

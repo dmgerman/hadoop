@@ -1721,6 +1721,8 @@ name|ns
 operator|+
 name|nn
 argument_list|,
+literal|"http"
+argument_list|,
 literal|"testweb-"
 operator|+
 name|ns

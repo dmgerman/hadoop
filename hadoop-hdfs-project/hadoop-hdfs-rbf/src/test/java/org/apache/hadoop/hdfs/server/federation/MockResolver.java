@@ -907,6 +907,11 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"checkstyle:ParameterNumber"
+argument_list|)
 DECL|class|MockNamenodeContext
 specifier|private
 specifier|static
@@ -924,6 +929,11 @@ DECL|field|nameserviceId
 specifier|private
 name|String
 name|nameserviceId
+decl_stmt|;
+DECL|field|webScheme
+specifier|private
+name|String
+name|webScheme
 decl_stmt|;
 DECL|field|webAddress
 specifier|private
@@ -955,7 +965,7 @@ specifier|private
 name|long
 name|dateModified
 decl_stmt|;
-DECL|method|MockNamenodeContext ( String rpc, String service, String lifeline, String web, String ns, String nn, FederationNamenodeServiceState state)
+DECL|method|MockNamenodeContext ( String rpc, String service, String lifeline, String scheme, String web, String ns, String nn, FederationNamenodeServiceState state)
 name|MockNamenodeContext
 parameter_list|(
 name|String
@@ -966,6 +976,9 @@ name|service
 parameter_list|,
 name|String
 name|lifeline
+parameter_list|,
+name|String
+name|scheme
 parameter_list|,
 name|String
 name|web
@@ -997,6 +1010,12 @@ operator|.
 name|lifelineAddress
 operator|=
 name|lifeline
+expr_stmt|;
+name|this
+operator|.
+name|webScheme
+operator|=
+name|scheme
 expr_stmt|;
 name|this
 operator|.
@@ -1091,6 +1110,18 @@ parameter_list|()
 block|{
 return|return
 name|lifelineAddress
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getWebScheme ()
+specifier|public
+name|String
+name|getWebScheme
+parameter_list|()
+block|{
+return|return
+name|webScheme
 return|;
 block|}
 annotation|@
@@ -1216,6 +1247,11 @@ argument_list|,
 name|report
 operator|.
 name|getLifelineAddress
+argument_list|()
+argument_list|,
+name|report
+operator|.
+name|getWebScheme
 argument_list|()
 argument_list|,
 name|report

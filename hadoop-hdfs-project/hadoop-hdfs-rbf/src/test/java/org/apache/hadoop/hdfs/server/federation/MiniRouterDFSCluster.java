@@ -4886,6 +4886,8 @@ operator|.
 name|getLifelineAddress
 argument_list|()
 argument_list|,
+literal|"http"
+argument_list|,
 name|nn
 operator|.
 name|getWebAddress

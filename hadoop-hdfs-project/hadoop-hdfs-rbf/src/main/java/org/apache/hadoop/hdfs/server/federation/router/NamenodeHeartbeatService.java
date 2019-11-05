@@ -1213,6 +1213,8 @@ name|serviceAddress
 argument_list|,
 name|lifelineAddress
 argument_list|,
+name|scheme
+argument_list|,
 name|webAddress
 argument_list|)
 decl_stmt|;

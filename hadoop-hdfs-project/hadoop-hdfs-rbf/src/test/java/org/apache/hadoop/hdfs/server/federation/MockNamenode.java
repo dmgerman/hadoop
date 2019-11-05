@@ -3562,6 +3562,11 @@ operator|.
 name|getHTTPPort
 argument_list|()
 decl_stmt|;
+name|String
+name|scheme
+init|=
+literal|"http"
+decl_stmt|;
 name|NamenodeStatusReport
 name|report
 init|=
@@ -3577,6 +3582,8 @@ argument_list|,
 name|rpcAddress
 argument_list|,
 name|rpcAddress
+argument_list|,
+name|scheme
 argument_list|,
 name|httpAddress
 argument_list|)

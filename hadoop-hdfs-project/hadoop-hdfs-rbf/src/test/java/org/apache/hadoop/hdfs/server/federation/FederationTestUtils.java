@@ -1364,6 +1364,8 @@ argument_list|(
 literal|10000
 argument_list|)
 argument_list|,
+literal|"http"
+argument_list|,
 literal|"testwebaddress-"
 operator|+
 name|ns

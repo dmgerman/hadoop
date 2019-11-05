@@ -326,8 +326,8 @@ return|return
 name|record
 return|;
 block|}
-comment|/**    * Create a new membership instance.    *    * @param router Identifier of the router.    * @param nameservice Identifier of the nameservice.    * @param namenode Identifier of the namenode.    * @param clusterId Identifier of the cluster.    * @param blockPoolId Identifier of the blockpool.    * @param rpcAddress RPC address.    * @param serviceAddress Service RPC address.    * @param lifelineAddress Lifeline RPC address.    * @param webAddress HTTP address.    * @param state State of the federation.    * @param safemode If the safe mode is enabled.    * @return Membership instance.    */
-DECL|method|newInstance (String router, String nameservice, String namenode, String clusterId, String blockPoolId, String rpcAddress, String serviceAddress, String lifelineAddress, String webAddress, FederationNamenodeServiceState state, boolean safemode)
+comment|/**    * Create a new membership instance.    *    * @param router Identifier of the router.    * @param nameservice Identifier of the nameservice.    * @param namenode Identifier of the namenode.    * @param clusterId Identifier of the cluster.    * @param blockPoolId Identifier of the blockpool.    * @param rpcAddress RPC address.    * @param serviceAddress Service RPC address.    * @param lifelineAddress Lifeline RPC address.    * @param webScheme Scheme of Web Address, HTTP or HTTPS.    * @param webAddress HTTP(s) address.    * @param state State of the federation.    * @param safemode If the safe mode is enabled.    * @return Membership instance.    */
+DECL|method|newInstance (String router, String nameservice, String namenode, String clusterId, String blockPoolId, String rpcAddress, String serviceAddress, String lifelineAddress, String webScheme, String webAddress, FederationNamenodeServiceState state, boolean safemode)
 specifier|public
 specifier|static
 name|MembershipState
@@ -356,6 +356,9 @@ name|serviceAddress
 parameter_list|,
 name|String
 name|lifelineAddress
+parameter_list|,
+name|String
+name|webScheme
 parameter_list|,
 name|String
 name|webAddress
@@ -450,6 +453,13 @@ operator|.
 name|setBlockPoolId
 argument_list|(
 name|blockPoolId
+argument_list|)
+expr_stmt|;
+name|record
+operator|.
+name|setWebScheme
+argument_list|(
+name|webScheme
 argument_list|)
 expr_stmt|;
 name|record
@@ -578,6 +588,16 @@ name|FederationNamenodeServiceState
 name|state
 parameter_list|)
 function_decl|;
+DECL|method|setWebScheme (String webScheme)
+specifier|public
+specifier|abstract
+name|void
+name|setWebScheme
+parameter_list|(
+name|String
+name|webScheme
+parameter_list|)
+function_decl|;
 DECL|method|getNameserviceId ()
 specifier|public
 specifier|abstract
@@ -639,6 +659,13 @@ specifier|public
 specifier|abstract
 name|boolean
 name|getIsSafeMode
+parameter_list|()
+function_decl|;
+DECL|method|getWebScheme ()
+specifier|public
+specifier|abstract
+name|String
+name|getWebScheme
 parameter_list|()
 function_decl|;
 DECL|method|getState ()

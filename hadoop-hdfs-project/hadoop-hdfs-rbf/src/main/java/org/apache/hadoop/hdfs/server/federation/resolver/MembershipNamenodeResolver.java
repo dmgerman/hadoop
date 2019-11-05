@@ -1530,6 +1530,11 @@ argument_list|()
 argument_list|,
 name|report
 operator|.
+name|getWebScheme
+argument_list|()
+argument_list|,
+name|report
+operator|.
 name|getWebAddress
 argument_list|()
 argument_list|,
