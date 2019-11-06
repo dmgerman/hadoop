@@ -320,15 +320,11 @@ name|nnCount
 init|=
 literal|3
 decl_stmt|;
-annotation|@
-name|Before
-DECL|method|setup ()
-specifier|public
-name|void
-name|setup
+DECL|method|createConfig ()
+specifier|protected
+name|Configuration
+name|createConfig
 parameter_list|()
-throws|throws
-name|Exception
 block|{
 name|Configuration
 name|conf
@@ -350,6 +346,26 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
+return|return
+name|conf
+return|;
+block|}
+annotation|@
+name|Before
+DECL|method|setup ()
+specifier|public
+name|void
+name|setup
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|Configuration
+name|conf
+init|=
+name|createConfig
+argument_list|()
+decl_stmt|;
 name|MiniQJMHACluster
 name|miniQjmHaCluster
 init|=

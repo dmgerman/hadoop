@@ -941,6 +941,19 @@ argument_list|(
 name|args
 argument_list|)
 expr_stmt|;
+comment|// Disable using the RPC tailing mechanism for bootstrapping the standby
+comment|// since it is less efficient in this case; see HDFS-14806
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_HA_TAILEDITS_INPROGRESS_KEY
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
 name|parseConfAndFindOtherNN
 argument_list|()
 expr_stmt|;
