@@ -1443,10 +1443,10 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|error
+name|debug
 argument_list|(
-literal|"Could not sync with Journal at "
-operator|+
+literal|"Could not sync with Journal at {}."
+argument_list|,
 name|otherJNProxies
 operator|.
 name|get
