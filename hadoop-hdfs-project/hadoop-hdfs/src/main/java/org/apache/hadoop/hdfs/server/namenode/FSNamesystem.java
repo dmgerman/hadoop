@@ -8522,6 +8522,14 @@ operator|.
 name|processAllPendingDNMessages
 argument_list|()
 expr_stmt|;
+name|blockManager
+operator|.
+name|getBlockIdManager
+argument_list|()
+operator|.
+name|applyImpendingGenerationStamp
+argument_list|()
+expr_stmt|;
 comment|// Only need to re-process the queue, If not in SafeMode.
 if|if
 condition|(

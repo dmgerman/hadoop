@@ -6111,12 +6111,14 @@ name|SetGenstampV2Op
 operator|)
 name|op
 decl_stmt|;
+comment|// update the impending gen stamp, but not the actual genstamp,
+comment|// see HDFS-14941
 name|blockManager
 operator|.
 name|getBlockIdManager
 argument_list|()
 operator|.
-name|setGenerationStamp
+name|setImpendingGenerationStamp
 argument_list|(
 name|setGenstampV2Op
 operator|.

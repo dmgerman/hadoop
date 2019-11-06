@@ -22292,7 +22292,9 @@ name|BlockCollection
 name|bc
 parameter_list|)
 block|{
-return|return
+name|BlockInfo
+name|blockInfo
+init|=
 name|blocksMap
 operator|.
 name|addBlockCollection
@@ -22301,6 +22303,19 @@ name|block
 argument_list|,
 name|bc
 argument_list|)
+decl_stmt|;
+name|blockIdManager
+operator|.
+name|setGenerationStampIfGreater
+argument_list|(
+name|block
+operator|.
+name|getGenerationStamp
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|blockInfo
 return|;
 block|}
 comment|/**    * Do some check when adding a block to blocksmap.    * For HDFS-7994 to check whether then block is a NonEcBlockUsingStripedID.    *    */

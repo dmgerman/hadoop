@@ -118,6 +118,60 @@ name|value
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|setIfGreater (long value)
+specifier|public
+name|boolean
+name|setIfGreater
+parameter_list|(
+name|long
+name|value
+parameter_list|)
+block|{
+while|while
+condition|(
+literal|true
+condition|)
+block|{
+name|long
+name|local
+init|=
+name|currentValue
+operator|.
+name|get
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|value
+operator|<=
+name|local
+condition|)
+block|{
+return|return
+literal|false
+return|;
+comment|// swap failed
+block|}
+if|if
+condition|(
+name|currentValue
+operator|.
+name|compareAndSet
+argument_list|(
+name|local
+argument_list|,
+name|value
+argument_list|)
+condition|)
+block|{
+return|return
+literal|true
+return|;
+comment|// swap successful
+block|}
+comment|// keep trying
+block|}
+block|}
 comment|/** Increment and then return the next value. */
 DECL|method|nextValue ()
 specifier|public

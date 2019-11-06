@@ -4605,7 +4605,6 @@ block|}
 block|}
 comment|/**    * Save allocated block at the given pending filename    *    * @param fsn FSNamesystem    * @param src path to the file    * @param inodesInPath representing each of the components of src.    *                     The last INode is the INode for {@code src} file.    * @param newBlock newly allocated block to be save    * @param targets target datanodes where replicas of the new block is placed    * @throws QuotaExceededException If addition of block exceeds space quota    */
 DECL|method|saveAllocatedBlock (FSNamesystem fsn, String src, INodesInPath inodesInPath, Block newBlock, DatanodeStorageInfo[] targets, BlockType blockType)
-specifier|private
 specifier|static
 name|void
 name|saveAllocatedBlock

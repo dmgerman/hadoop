@@ -228,6 +228,17 @@ operator|new
 name|GenerationStamp
 argument_list|()
 decl_stmt|;
+comment|/**    * Most recent global generation stamp as seen on Active NameNode.    * Used by StandbyNode only.<p/>    * StandbyNode does not update its global {@link #generationStamp} during    * edits tailing. The global generation stamp on StandbyNode is updated    *<ol><li>when the block with the next generation stamp is actually    * received</li>    *<li>during fail-over it is bumped to the last value received from the    * Active NN through edits and stored as    * {@link #impendingGenerationStamp}</li></ol>    * The former helps to avoid a race condition with IBRs during edits tailing.    * The latter guarantees that generation stamps are never reused by new    * Active after fail-over.    *<p/> See HDFS-14941 for more details.    */
+DECL|field|impendingGenerationStamp
+specifier|private
+specifier|final
+name|GenerationStamp
+name|impendingGenerationStamp
+init|=
+operator|new
+name|GenerationStamp
+argument_list|()
+decl_stmt|;
 comment|/**    * The value of the generation stamp when the first switch to sequential    * block IDs was made. Blocks with generation stamps below this value    * have randomly allocated block IDs. Blocks with generation stamps above    * this value had sequentially allocated block IDs. Read from the fsImage    * (or initialized as an offset from the V1 (legacy) generation stamp on    * upgrade).    */
 DECL|field|legacyGenerationStampLimit
 specifier|private
@@ -490,6 +501,73 @@ block|{
 name|generationStamp
 operator|.
 name|setCurrentValue
+argument_list|(
+name|stamp
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Set the currently highest gen stamp from active. Used    * by Standby only.    * @param stamp new genstamp    */
+DECL|method|setImpendingGenerationStamp (long stamp)
+specifier|public
+name|void
+name|setImpendingGenerationStamp
+parameter_list|(
+name|long
+name|stamp
+parameter_list|)
+block|{
+name|impendingGenerationStamp
+operator|.
+name|setIfGreater
+argument_list|(
+name|stamp
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Set the current genstamp to the impending genstamp.    */
+DECL|method|applyImpendingGenerationStamp ()
+specifier|public
+name|void
+name|applyImpendingGenerationStamp
+parameter_list|()
+block|{
+name|setGenerationStampIfGreater
+argument_list|(
+name|impendingGenerationStamp
+operator|.
+name|getCurrentValue
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getImpendingGenerationStamp ()
+specifier|public
+name|long
+name|getImpendingGenerationStamp
+parameter_list|()
+block|{
+return|return
+name|impendingGenerationStamp
+operator|.
+name|getCurrentValue
+argument_list|()
+return|;
+block|}
+comment|/**    * Set genstamp only when the given one is higher.    * @param stamp    */
+DECL|method|setGenerationStampIfGreater (long stamp)
+specifier|public
+name|void
+name|setGenerationStampIfGreater
+parameter_list|(
+name|long
+name|stamp
+parameter_list|)
+block|{
+name|generationStamp
+operator|.
+name|setIfGreater
 argument_list|(
 name|stamp
 argument_list|)
