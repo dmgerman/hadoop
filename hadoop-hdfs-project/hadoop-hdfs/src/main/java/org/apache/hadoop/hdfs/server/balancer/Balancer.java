@@ -3060,15 +3060,6 @@ operator|==
 literal|0
 condition|)
 block|{
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"The cluster is balanced. Exiting..."
-argument_list|)
-expr_stmt|;
 return|return
 name|newResult
 argument_list|(
@@ -3663,6 +3654,21 @@ name|nnc
 operator|.
 name|getBlockpoolID
 argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|done
+condition|)
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"The cluster is balanced. Exiting..."
 argument_list|)
 expr_stmt|;
 block|}
