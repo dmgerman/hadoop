@@ -598,6 +598,17 @@ argument_list|)
 expr_stmt|;
 name|conf
 operator|.
+name|setBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_USE_DFS_NETWORK_TOPOLOGY_KEY
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
 name|set
 argument_list|(
 name|CommonConfigurationKeysPublic
