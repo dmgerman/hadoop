@@ -3682,6 +3682,25 @@ name|DFS_DATANODE_METRICS_LOGGER_PERIOD_SECONDS_DEFAULT
 init|=
 literal|600
 decl_stmt|;
+comment|/**    * The maximum number of getBlocks RPCs data movement utilities can make to    * a NameNode per second. Values<= 0 disable throttling. This affects    * anything that uses a NameNodeConnector, i.e., the Balancer, Mover,    * and StoragePolicySatisfier.    */
+DECL|field|DFS_NAMENODE_GETBLOCKS_MAX_QPS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NAMENODE_GETBLOCKS_MAX_QPS_KEY
+init|=
+literal|"dfs.namenode.get-blocks.max-qps"
+decl_stmt|;
+DECL|field|DFS_NAMENODE_GETBLOCKS_MAX_QPS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DFS_NAMENODE_GETBLOCKS_MAX_QPS_DEFAULT
+init|=
+literal|20
+decl_stmt|;
 DECL|field|DFS_BALANCER_MOVEDWINWIDTH_KEY
 specifier|public
 specifier|static

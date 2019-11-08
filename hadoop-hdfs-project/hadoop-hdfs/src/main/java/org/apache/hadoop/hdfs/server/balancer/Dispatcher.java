@@ -4813,15 +4813,12 @@ operator|>
 literal|0
 return|;
 block|}
-comment|/**      * This method iteratively does the following: it first selects a block to      * move, then sends a request to the proxy source to start the block move      * when the source's block list falls below a threshold, it asks the      * namenode for more blocks. It terminates when it has dispatch enough block      * move tasks or it has received enough blocks from the namenode, or the      * elapsed time of the iteration has exceeded the max time limit.      *      * @param delay - time to sleep before sending getBlocks. Intended to      * disperse Balancer RPCs to NameNode for large clusters. See HDFS-11384.      */
-DECL|method|dispatchBlocks (long delay)
+comment|/**      * This method iteratively does the following: it first selects a block to      * move, then sends a request to the proxy source to start the block move      * when the source's block list falls below a threshold, it asks the      * namenode for more blocks. It terminates when it has dispatch enough block      * move tasks or it has received enough blocks from the namenode, or the      * elapsed time of the iteration has exceeded the max time limit.      *      */
+DECL|method|dispatchBlocks ()
 specifier|private
 name|void
 name|dispatchBlocks
-parameter_list|(
-name|long
-name|delay
-parameter_list|)
+parameter_list|()
 block|{
 name|this
 operator|.
@@ -4941,41 +4938,6 @@ block|{
 comment|// fetch new blocks
 try|try
 block|{
-if|if
-condition|(
-name|delay
-operator|>
-literal|0
-condition|)
-block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Sleeping "
-operator|+
-name|delay
-operator|+
-literal|"  msec."
-argument_list|)
-expr_stmt|;
-block|}
-name|Thread
-operator|.
-name|sleep
-argument_list|(
-name|delay
-argument_list|)
-expr_stmt|;
-block|}
 specifier|final
 name|long
 name|received
@@ -5000,14 +4962,6 @@ continue|continue;
 block|}
 catch|catch
 parameter_list|(
-name|InterruptedException
-name|ignored
-parameter_list|)
-block|{
-comment|// nothing to do
-block|}
-catch|catch
-parameter_list|(
 name|IOException
 name|e
 parameter_list|)
@@ -5022,13 +4976,6 @@ name|e
 argument_list|)
 expr_stmt|;
 return|return;
-block|}
-finally|finally
-block|{
-name|delay
-operator|=
-literal|0L
-expr_stmt|;
 block|}
 block|}
 else|else
@@ -5970,15 +5917,6 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * The best-effort limit on the number of RPCs per second    * the Balancer will send to the NameNode.    */
-DECL|field|BALANCER_NUM_RPC_PER_SEC
-specifier|final
-specifier|static
-name|int
-name|BALANCER_NUM_RPC_PER_SEC
-init|=
-literal|20
-decl_stmt|;
 comment|/**    * Dispatch block moves for each source. The thread selects blocks to move&    * sends request to proxy source to initiate block move. The process is flow    * controlled. Block selection is blocked if there are too many un-confirmed    * block moves.    *     * @return the total number of bytes successfully moved in this iteration.    */
 DECL|method|dispatchBlockMoves ()
 specifier|private
@@ -6045,44 +5983,15 @@ literal|0
 operator|:
 literal|"Number of concurrent threads is 0."
 assert|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Balancer allowed RPCs per sec = "
-operator|+
-name|BALANCER_NUM_RPC_PER_SEC
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Balancer concurrent threads = "
-operator|+
+literal|"Balancer concurrent dispatcher threads = {}"
+argument_list|,
 name|concurrentThreads
 argument_list|)
 expr_stmt|;
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Disperse Interval sec = "
-operator|+
-name|concurrentThreads
-operator|/
-name|BALANCER_NUM_RPC_PER_SEC
-argument_list|)
-expr_stmt|;
-block|}
 comment|// Determine the size of each mover thread pool per target
 name|int
 name|threadsPerTarget
@@ -6173,11 +6082,6 @@ literal|" threads per target."
 argument_list|)
 expr_stmt|;
 block|}
-name|long
-name|dSec
-init|=
-literal|0
-decl_stmt|;
 specifier|final
 name|Iterator
 argument_list|<
@@ -6216,14 +6120,6 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
-specifier|final
-name|long
-name|delay
-init|=
-name|dSec
-operator|*
-literal|1000
-decl_stmt|;
 name|futures
 index|[
 name|j
@@ -6247,45 +6143,12 @@ block|{
 name|s
 operator|.
 name|dispatchBlocks
-argument_list|(
-name|delay
-argument_list|)
+argument_list|()
 expr_stmt|;
 block|}
 block|}
 argument_list|)
 expr_stmt|;
-comment|// Calculate delay in seconds for the next iteration
-if|if
-condition|(
-name|j
-operator|>=
-name|concurrentThreads
-condition|)
-block|{
-name|dSec
-operator|=
-literal|0
-expr_stmt|;
-block|}
-elseif|else
-if|if
-condition|(
-operator|(
-name|j
-operator|+
-literal|1
-operator|)
-operator|%
-name|BALANCER_NUM_RPC_PER_SEC
-operator|==
-literal|0
-condition|)
-block|{
-name|dSec
-operator|++
-expr_stmt|;
-block|}
 block|}
 comment|// wait for all dispatcher threads to finish
 for|for
