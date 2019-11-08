@@ -218,6 +218,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|AccessControlException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -342,8 +356,8 @@ name|getRPCClient
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Set quota for the federation path.    * @param path Federation path.    * @param namespaceQuota Name space quota.    * @param storagespaceQuota Storage space quota.    * @param type StorageType that the space quota is intended to be set on.    * @throws IOException If the quota system is disabled.    */
-DECL|method|setQuota (String path, long namespaceQuota, long storagespaceQuota, StorageType type)
+comment|/**    * Set quota for the federation path.    * @param path Federation path.    * @param namespaceQuota Name space quota.    * @param storagespaceQuota Storage space quota.    * @param type StorageType that the space quota is intended to be set on.    * @param checkMountEntry whether to check the path is a mount entry.    * @throws AccessControlException If the quota system is disabled or if    * checkMountEntry is true and the path is a mount entry.    */
+DECL|method|setQuota (String path, long namespaceQuota, long storagespaceQuota, StorageType type, boolean checkMountEntry)
 specifier|public
 name|void
 name|setQuota
@@ -359,10 +373,40 @@ name|storagespaceQuota
 parameter_list|,
 name|StorageType
 name|type
+parameter_list|,
+name|boolean
+name|checkMountEntry
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|checkMountEntry
+operator|&&
+name|isMountEntry
+argument_list|(
+name|path
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|AccessControlException
+argument_list|(
+literal|"Permission denied: "
+operator|+
+name|RouterRpcServer
+operator|.
+name|getRemoteUser
+argument_list|()
+operator|+
+literal|" is not allowed to change quota of "
+operator|+
+name|path
+argument_list|)
+throw|;
+block|}
 name|setQuotaInternal
 argument_list|(
 name|path
@@ -900,12 +944,40 @@ end_return
 
 begin_comment
 unit|}
+comment|/**    * Is the path a mount entry.    *    * @param path the path to be checked.    * @return {@code true} if path is a mount entry; {@code false} otherwise.    */
+end_comment
+
+begin_function
+DECL|method|isMountEntry (String path)
+unit|private
+name|boolean
+name|isMountEntry
+parameter_list|(
+name|String
+name|path
+parameter_list|)
+block|{
+return|return
+name|router
+operator|.
+name|getQuotaManager
+argument_list|()
+operator|.
+name|isMountEntry
+argument_list|(
+name|path
+argument_list|)
+return|;
+block|}
+end_function
+
+begin_comment
 comment|/**    * Get valid quota remote locations used in {@link #getQuotaUsage(String)}.    * Differentiate the method {@link #getQuotaRemoteLocations(String)}, this    * method will do some additional filtering.    * @param path Federation path.    * @return List of valid quota remote locations.    * @throws IOException    */
 end_comment
 
 begin_function
 DECL|method|getValidQuotaLocations (String path)
-unit|private
+specifier|private
 name|List
 argument_list|<
 name|RemoteLocation

@@ -272,6 +272,42 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Is the path a mount entry.    *    * @param path the path.    * @return {@code true} if path is a mount entry; {@code false} otherwise.    */
+DECL|method|isMountEntry (String path)
+name|boolean
+name|isMountEntry
+parameter_list|(
+name|String
+name|path
+parameter_list|)
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+return|return
+name|this
+operator|.
+name|cache
+operator|.
+name|containsKey
+argument_list|(
+name|path
+argument_list|)
+return|;
+block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Get the nearest ancestor's quota usage, and meanwhile its quota was set.    * @param path The path being written.    * @return RouterQuotaUsage Quota usage.    */
 DECL|method|getQuotaUsage (String path)
 specifier|public

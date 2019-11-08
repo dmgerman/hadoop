@@ -1013,6 +1013,11 @@ name|Mockito
 operator|.
 name|any
 argument_list|()
+argument_list|,
+name|Mockito
+operator|.
+name|anyBoolean
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|Whitebox
