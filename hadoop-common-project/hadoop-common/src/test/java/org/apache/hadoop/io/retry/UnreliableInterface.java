@@ -240,6 +240,15 @@ parameter_list|()
 throws|throws
 name|AccessControlException
 function_decl|;
+annotation|@
+name|Idempotent
+DECL|method|failsWithWrappedAccessControlException ()
+name|void
+name|failsWithWrappedAccessControlException
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 DECL|method|succeedsOnceThenFailsReturningString ()
 specifier|public
 name|String
