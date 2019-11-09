@@ -406,13 +406,9 @@ name|nodemanager
 operator|.
 name|containermanager
 operator|.
-name|linux
-operator|.
-name|resources
+name|resourceplugin
 operator|.
 name|fpga
-operator|.
-name|FpgaResourceAllocator
 operator|.
 name|FpgaDevice
 import|;
