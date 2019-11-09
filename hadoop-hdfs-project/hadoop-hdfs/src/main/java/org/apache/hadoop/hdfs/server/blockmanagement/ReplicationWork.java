@@ -28,6 +28,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|BlockCommand
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|net
 operator|.
 name|Node
@@ -175,6 +193,26 @@ name|DatanodeStorageInfo
 index|[]
 name|chosenTargets
 init|=
+literal|null
+decl_stmt|;
+comment|// HDFS-14720 If the block is deleted, the block size will become
+comment|// BlockCommand.NO_ACK (LONG.MAX_VALUE) . This kind of block we don't need
+comment|// to send for replication or reconstruction
+if|if
+condition|(
+name|getBlock
+argument_list|()
+operator|.
+name|getNumBytes
+argument_list|()
+operator|!=
+name|BlockCommand
+operator|.
+name|NO_ACK
+condition|)
+block|{
+name|chosenTargets
+operator|=
 name|blockplacement
 operator|.
 name|chooseTarget
@@ -211,7 +249,8 @@ argument_list|)
 argument_list|,
 literal|null
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
 name|setTargets
 argument_list|(
 name|chosenTargets
