@@ -2301,6 +2301,10 @@ block|,
 literal|"c"
 block|,
 literal|"d"
+block|,
+literal|"asubgroup1"
+block|,
+literal|"asubgroup2"
 block|}
 argument_list|)
 expr_stmt|;
