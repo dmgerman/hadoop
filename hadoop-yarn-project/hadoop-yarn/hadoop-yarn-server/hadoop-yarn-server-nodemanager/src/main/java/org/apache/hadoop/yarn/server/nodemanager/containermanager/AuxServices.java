@@ -2205,17 +2205,7 @@ argument_list|)
 condition|)
 block|{
 return|return
-operator|new
-name|Path
-argument_list|(
 name|targetDirPath
-operator|+
-name|Path
-operator|.
-name|SEPARATOR
-operator|+
-literal|"*"
-argument_list|)
 return|;
 block|}
 else|else
