@@ -1813,7 +1813,7 @@ literal|"\n"
 operator|+
 literal|"-replicate and -policy are optional arguments. They cannot been "
 operator|+
-literal|"used at the same time"
+literal|"used at the same time.\n"
 return|;
 block|}
 annotation|@
