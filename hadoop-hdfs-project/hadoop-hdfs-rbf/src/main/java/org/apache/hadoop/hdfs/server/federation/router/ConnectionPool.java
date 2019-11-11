@@ -1791,9 +1791,6 @@ operator|)
 condition|?
 name|proto
 operator|.
-name|getClass
-argument_list|()
-operator|.
 name|getName
 argument_list|()
 else|:
