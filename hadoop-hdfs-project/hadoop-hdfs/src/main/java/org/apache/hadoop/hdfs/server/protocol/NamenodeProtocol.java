@@ -120,6 +120,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|ha
+operator|.
+name|ReadOnly
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|retry
@@ -241,6 +261,8 @@ comment|// do checkpoint
 comment|/**    * Get a list of blocks belonging to<code>datanode</code>    * whose total size equals<code>size</code>.    *    * @see org.apache.hadoop.hdfs.server.balancer.Balancer    * @param datanode  a data node    * @param size      requested size    * @param minBlockSize each block should be of this minimum Block Size    * @return BlocksWithLocations a list of blocks&amp; their locations    * @throws IOException if size is less than or equal to 0 or   datanode does not exist    */
 annotation|@
 name|Idempotent
+annotation|@
+name|ReadOnly
 DECL|method|getBlocks (DatanodeInfo datanode, long size, long minBlockSize)
 name|BlocksWithLocations
 name|getBlocks
