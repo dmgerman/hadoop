@@ -1637,7 +1637,7 @@ block|{
 return|return
 name|retry
 argument_list|(
-literal|"put"
+literal|"Writing Object"
 argument_list|,
 name|putObjectRequest
 operator|.
@@ -1677,7 +1677,7 @@ comment|// no retry; rely on xfer manager logic
 return|return
 name|retry
 argument_list|(
-literal|"put"
+literal|"Writing Object"
 argument_list|,
 name|putObjectRequest
 operator|.

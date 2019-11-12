@@ -988,6 +988,17 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+name|removeBaseAndBucketOverrides
+argument_list|(
+name|conf
+argument_list|,
+name|DELEGATION_TOKEN_BINDING
+argument_list|,
+name|SERVER_SIDE_ENCRYPTION_ALGORITHM
+argument_list|,
+name|SERVER_SIDE_ENCRYPTION_KEY
+argument_list|)
+expr_stmt|;
 name|conf
 operator|.
 name|set
@@ -1961,6 +1972,8 @@ name|SESSION_TOKEN
 argument_list|,
 name|SERVER_SIDE_ENCRYPTION_ALGORITHM
 argument_list|,
+name|SERVER_SIDE_ENCRYPTION_KEY
+argument_list|,
 name|DELEGATION_TOKEN_ROLE_ARN
 argument_list|,
 name|DELEGATION_TOKEN_ENDPOINT
@@ -2041,13 +2054,24 @@ name|encryptionTestEnabled
 argument_list|()
 condition|)
 block|{
+name|assertNotNull
+argument_list|(
+literal|"Encryption propagation failed"
+argument_list|,
+name|delegatedFS
+operator|.
+name|getServerSideEncryptionAlgorithm
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|assertEquals
 argument_list|(
 literal|"Encryption propagation failed"
 argument_list|,
-name|S3AEncryptionMethods
+name|fs
 operator|.
-name|SSE_S3
+name|getServerSideEncryptionAlgorithm
+argument_list|()
 argument_list|,
 name|delegatedFS
 operator|.
@@ -2173,13 +2197,24 @@ name|encryptionTestEnabled
 argument_list|()
 condition|)
 block|{
+name|assertNotNull
+argument_list|(
+literal|"Encryption propagation failed"
+argument_list|,
+name|secondDelegate
+operator|.
+name|getServerSideEncryptionAlgorithm
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|assertEquals
 argument_list|(
 literal|"Encryption propagation failed"
 argument_list|,
-name|S3AEncryptionMethods
+name|fs
 operator|.
-name|SSE_S3
+name|getServerSideEncryptionAlgorithm
+argument_list|()
 argument_list|,
 name|secondDelegate
 operator|.

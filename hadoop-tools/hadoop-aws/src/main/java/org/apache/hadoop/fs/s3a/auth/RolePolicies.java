@@ -187,7 +187,7 @@ specifier|final
 name|String
 name|KMS_ALL_KEYS
 init|=
-literal|"arn:aws:kms:*"
+literal|"*"
 decl_stmt|;
 comment|/**    * This is used by S3 to generate a per-object encryption key and    * the encrypted value of this, the latter being what it tags    * the object with for later decryption: {@value}.    */
 DECL|field|KMS_GENERATE_DATA_KEY
@@ -215,6 +215,8 @@ block|{
 name|KMS_DECRYPT
 block|,
 name|KMS_GENERATE_DATA_KEY
+block|,
+name|KMS_ENCRYPT
 block|}
 decl_stmt|;
 comment|/**    * Actions needed to read SSE-KMS data.    */
@@ -247,7 +249,7 @@ literal|true
 argument_list|,
 name|KMS_ALL_KEYS
 argument_list|,
-name|KMS_KEY_RW
+name|KMS_ALL_OPERATIONS
 argument_list|)
 decl_stmt|;
 comment|/**    * Statement to allow read access to KMS keys, so the ability    * to read SSE-KMS data,, but not decrypt it.    */

@@ -615,6 +615,13 @@ name|String
 name|binding
 parameter_list|)
 block|{
+name|removeBaseAndBucketOverrides
+argument_list|(
+name|conf
+argument_list|,
+name|DELEGATION_TOKEN_BINDING
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info

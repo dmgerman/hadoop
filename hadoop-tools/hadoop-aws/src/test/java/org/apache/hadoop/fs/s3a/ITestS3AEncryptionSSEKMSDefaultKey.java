@@ -19,18 +19,6 @@ package|;
 end_package
 
 begin_import
-import|import static
-name|org
-operator|.
-name|hamcrest
-operator|.
-name|CoreMatchers
-operator|.
-name|containsString
-import|;
-end_import
-
-begin_import
 import|import
 name|java
 operator|.
@@ -81,6 +69,18 @@ operator|.
 name|fs
 operator|.
 name|Path
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|hamcrest
+operator|.
+name|CoreMatchers
+operator|.
+name|containsString
 import|;
 end_import
 
@@ -167,7 +167,9 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|"aws:kms"
+literal|"SSE Algorithm"
+argument_list|,
+name|AWS_KMS_SSE_ALGORITHM
 argument_list|,
 name|md
 operator|.

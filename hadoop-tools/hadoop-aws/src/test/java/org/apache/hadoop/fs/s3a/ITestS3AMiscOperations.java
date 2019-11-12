@@ -120,6 +120,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|CommonPathCapabilities
@@ -270,6 +284,60 @@ name|touch
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|Constants
+operator|.
+name|SERVER_SIDE_ENCRYPTION_ALGORITHM
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|Constants
+operator|.
+name|SERVER_SIDE_ENCRYPTION_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3ATestUtils
+operator|.
+name|removeBaseAndBucketOverrides
+import|;
+end_import
+
 begin_comment
 comment|/**  * Tests of the S3A FileSystem which don't have a specific home and can share  * a filesystem instance with others.  * Checksums are turned on unless explicitly disabled for a test case.  */
 end_comment
@@ -320,6 +388,36 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|createConfiguration ()
+specifier|protected
+name|Configuration
+name|createConfiguration
+parameter_list|()
+block|{
+specifier|final
+name|Configuration
+name|conf
+init|=
+name|super
+operator|.
+name|createConfiguration
+argument_list|()
+decl_stmt|;
+name|removeBaseAndBucketOverrides
+argument_list|(
+name|conf
+argument_list|,
+name|SERVER_SIDE_ENCRYPTION_ALGORITHM
+argument_list|,
+name|SERVER_SIDE_ENCRYPTION_KEY
+argument_list|)
+expr_stmt|;
+return|return
+name|conf
+return|;
 block|}
 comment|/**    * Turn checksums on.    * Relies on the FS not caching the configuration option    * @param enabled enabled flag.    */
 DECL|method|enableChecksums (final boolean enabled)
@@ -758,7 +856,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"checksums"
+literal|"checksums of empty files"
 argument_list|,
 name|checksum1
 argument_list|,
