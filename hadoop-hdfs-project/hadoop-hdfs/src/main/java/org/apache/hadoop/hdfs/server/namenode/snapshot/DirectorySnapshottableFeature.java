@@ -922,8 +922,8 @@ name|snapshot
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Add a snapshot. */
-DECL|method|addSnapshot (INodeDirectory snapshotRoot, int id, String name, final LeaseManager leaseManager, final boolean captureOpenFiles, int maxSnapshotLimit)
+comment|/**    * Add a snapshot.    * @param snapshotRoot Root of the snapshot.    * @param name Name of the snapshot.    * @param mtime The snapshot creation time set by Time.now().    * @throws SnapshotException Throw SnapshotException when there is a snapshot    *           with the same name already exists or snapshot quota exceeds    */
+DECL|method|addSnapshot (INodeDirectory snapshotRoot, int id, String name, final LeaseManager leaseManager, final boolean captureOpenFiles, int maxSnapshotLimit, long now)
 specifier|public
 name|Snapshot
 name|addSnapshot
@@ -947,6 +947,9 @@ name|captureOpenFiles
 parameter_list|,
 name|int
 name|maxSnapshotLimit
+parameter_list|,
+name|long
+name|now
 parameter_list|)
 throws|throws
 name|SnapshotException
@@ -1104,16 +1107,7 @@ argument_list|,
 name|s
 argument_list|)
 expr_stmt|;
-comment|// set modification time
-specifier|final
-name|long
-name|now
-init|=
-name|Time
-operator|.
-name|now
-argument_list|()
-decl_stmt|;
+comment|// modification time is the snapshot creation time
 name|snapshotRoot
 operator|.
 name|updateModificationTime

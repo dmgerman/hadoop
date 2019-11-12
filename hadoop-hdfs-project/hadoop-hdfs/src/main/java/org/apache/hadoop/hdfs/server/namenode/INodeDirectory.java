@@ -1366,7 +1366,8 @@ name|snapshotQuota
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addSnapshot (int id, String name, final LeaseManager leaseManager, final boolean captureOpenFiles, int maxSnapshotLimit)
+comment|/**    * Add a snapshot.    * @param name Name of the snapshot.    * @param mtime The snapshot creation time set by Time.now().    */
+DECL|method|addSnapshot (int id, String name, final LeaseManager leaseManager, final boolean captureOpenFiles, int maxSnapshotLimit, long mtime)
 specifier|public
 name|Snapshot
 name|addSnapshot
@@ -1387,6 +1388,9 @@ name|captureOpenFiles
 parameter_list|,
 name|int
 name|maxSnapshotLimit
+parameter_list|,
+name|long
+name|mtime
 parameter_list|)
 throws|throws
 name|SnapshotException
@@ -1408,6 +1412,8 @@ argument_list|,
 name|captureOpenFiles
 argument_list|,
 name|maxSnapshotLimit
+argument_list|,
+name|mtime
 argument_list|)
 return|;
 block|}

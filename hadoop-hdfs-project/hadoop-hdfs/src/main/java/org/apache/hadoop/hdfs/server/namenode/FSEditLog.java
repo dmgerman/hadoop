@@ -5531,7 +5531,8 @@ name|op
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|logCreateSnapshot (String snapRoot, String snapName, boolean toLogRpcIds)
+comment|/**    * Log that a snapshot is created.    * @param snapRoot Root of the snapshot.    * @param snapName Name of the snapshot.    * @param toLogRpcIds If it is logging RPC ids.    * @param mtime The snapshot creation time set by Time.now().    */
+DECL|method|logCreateSnapshot (String snapRoot, String snapName, boolean toLogRpcIds, long mtime)
 name|void
 name|logCreateSnapshot
 parameter_list|(
@@ -5543,6 +5544,9 @@ name|snapName
 parameter_list|,
 name|boolean
 name|toLogRpcIds
+parameter_list|,
+name|long
+name|mtime
 parameter_list|)
 block|{
 name|CreateSnapshotOp
@@ -5566,6 +5570,11 @@ operator|.
 name|setSnapshotName
 argument_list|(
 name|snapName
+argument_list|)
+operator|.
+name|setSnapshotMTime
+argument_list|(
+name|mtime
 argument_list|)
 decl_stmt|;
 name|logRpcIds

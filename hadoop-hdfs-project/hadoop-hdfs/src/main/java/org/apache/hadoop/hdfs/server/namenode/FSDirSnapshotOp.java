@@ -298,6 +298,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -637,6 +651,16 @@ argument_list|,
 name|snapshotRoot
 argument_list|)
 expr_stmt|;
+comment|// time of snapshot creation
+specifier|final
+name|long
+name|now
+init|=
+name|Time
+operator|.
+name|now
+argument_list|()
+decl_stmt|;
 name|fsd
 operator|.
 name|writeLock
@@ -663,6 +687,8 @@ argument_list|,
 name|snapshotRoot
 argument_list|,
 name|snapshotName
+argument_list|,
+name|now
 argument_list|)
 expr_stmt|;
 block|}
@@ -686,6 +712,8 @@ argument_list|,
 name|snapshotName
 argument_list|,
 name|logRetryCache
+argument_list|,
+name|now
 argument_list|)
 expr_stmt|;
 return|return

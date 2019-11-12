@@ -1503,8 +1503,8 @@ literal|false
 return|;
 block|}
 block|}
-comment|/**    * Create a snapshot of the given path.    * It is assumed that the caller will perform synchronization.    *    * @param iip the INodes resolved from the snapshottable directory's path    * @param snapshotName    *          The name of the snapshot.    * @throws IOException    *           Throw IOException when 1) the given path does not lead to an    *           existing snapshottable directory, and/or 2) there exists a    *           snapshot with the given name for the directory, and/or 3)    *           snapshot number exceeds quota    */
-DECL|method|createSnapshot (final LeaseManager leaseManager, final INodesInPath iip, String snapshotRoot, String snapshotName)
+comment|/**    * Create a snapshot of the given path.    * It is assumed that the caller will perform synchronization.    *    * @param iip the INodes resolved from the snapshottable directory's path    * @param snapshotName    *          The name of the snapshot.    * @param mtime is the snapshot creation time set by Time.now().    * @throws IOException    *           Throw IOException when 1) the given path does not lead to an    *           existing snapshottable directory, and/or 2) there exists a    *           snapshot with the given name for the directory, and/or 3)    *           snapshot number exceeds quota    */
+DECL|method|createSnapshot (final LeaseManager leaseManager, final INodesInPath iip, String snapshotRoot, String snapshotName, long mtime)
 specifier|public
 name|String
 name|createSnapshot
@@ -1522,6 +1522,9 @@ name|snapshotRoot
 parameter_list|,
 name|String
 name|snapshotName
+parameter_list|,
+name|long
+name|mtime
 parameter_list|)
 throws|throws
 name|IOException
@@ -1570,6 +1573,8 @@ operator|.
 name|captureOpenFiles
 argument_list|,
 name|maxSnapshotLimit
+argument_list|,
+name|mtime
 argument_list|)
 expr_stmt|;
 comment|//create success, update id
