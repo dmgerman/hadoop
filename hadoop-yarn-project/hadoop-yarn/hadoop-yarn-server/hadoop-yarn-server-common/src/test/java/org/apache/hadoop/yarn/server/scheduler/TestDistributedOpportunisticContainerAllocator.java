@@ -530,11 +530,15 @@ name|when
 import|;
 end_import
 
+begin_comment
+comment|/**  * Test cases for DistributedOpportunisticContainerAllocator.  */
+end_comment
+
 begin_class
-DECL|class|TestOpportunisticContainerAllocator
+DECL|class|TestDistributedOpportunisticContainerAllocator
 specifier|public
 class|class
-name|TestOpportunisticContainerAllocator
+name|TestDistributedOpportunisticContainerAllocator
 block|{
 DECL|field|LOG
 specifier|private
@@ -547,7 +551,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|TestOpportunisticContainerAllocator
+name|TestDistributedOpportunisticContainerAllocator
 operator|.
 name|class
 argument_list|)
@@ -563,7 +567,7 @@ literal|1024
 decl_stmt|;
 DECL|field|allocator
 specifier|private
-name|OpportunisticContainerAllocator
+name|DistributedOpportunisticContainerAllocator
 name|allocator
 init|=
 literal|null

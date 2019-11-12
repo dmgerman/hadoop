@@ -22,20 +22,6 @@ end_package
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -470,16 +456,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Set
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|concurrent
 operator|.
 name|atomic
@@ -829,7 +805,9 @@ specifier|final
 name|BaseContainerTokenSecretManager
 name|tokenSecretManager
 decl_stmt|;
+comment|/**    * This class encapsulates container and resourceName for an allocation.    */
 DECL|class|Allocation
+specifier|public
 specifier|static
 class|class
 name|Allocation
@@ -846,7 +824,9 @@ specifier|final
 name|String
 name|resourceName
 decl_stmt|;
+comment|/**      * Creates an instance of Allocation.      * @param container allocated container.      * @param resourceName location where it got allocated.      */
 DECL|method|Allocation (Container container, String resourceName)
+specifier|public
 name|Allocation
 parameter_list|(
 name|Container
@@ -869,7 +849,9 @@ operator|=
 name|resourceName
 expr_stmt|;
 block|}
+comment|/**      * Get container of the allocation.      * @return container of the allocation.      */
 DECL|method|getContainer ()
+specifier|public
 name|Container
 name|getContainer
 parameter_list|()
@@ -878,7 +860,9 @@ return|return
 name|container
 return|;
 block|}
+comment|/**      * Get resource name of the allocation.      * @return resource name of the allocation.      */
 DECL|method|getResourceName ()
+specifier|public
 name|String
 name|getResourceName
 parameter_list|()
@@ -1128,36 +1112,34 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|getNodeLocations ()
+DECL|method|getNodeMap ()
 specifier|public
-name|Set
+name|Map
 argument_list|<
 name|String
+argument_list|,
+name|AtomicInteger
 argument_list|>
-name|getNodeLocations
+name|getNodeMap
 parameter_list|()
 block|{
 return|return
 name|nodeLocations
-operator|.
-name|keySet
-argument_list|()
 return|;
 block|}
-DECL|method|getRackLocations ()
+DECL|method|getRackMap ()
 specifier|public
-name|Set
+name|Map
 argument_list|<
 name|String
+argument_list|,
+name|AtomicInteger
 argument_list|>
-name|getRackLocations
+name|getRackMap
 parameter_list|()
 block|{
 return|return
 name|rackLocations
-operator|.
-name|keySet
-argument_list|()
 return|;
 block|}
 block|}
@@ -1202,9 +1184,8 @@ operator|=
 name|maxAllocationsPerAMHeartbeat
 expr_stmt|;
 block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|setMaxAllocationsPerAMHeartbeat (int maxAllocationsPerAMHeartbeat)
+DECL|method|setMaxAllocationsPerAMHeartbeat ( int maxAllocationsPerAMHeartbeat)
+specifier|public
 name|void
 name|setMaxAllocationsPerAMHeartbeat
 parameter_list|(

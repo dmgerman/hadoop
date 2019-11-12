@@ -1041,6 +1041,7 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getOppSchedulerMetrics ()
+specifier|public
 name|OpportunisticSchedulerMetrics
 name|getOppSchedulerMetrics
 parameter_list|()
