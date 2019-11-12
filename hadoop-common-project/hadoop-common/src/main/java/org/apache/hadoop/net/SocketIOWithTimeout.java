@@ -1024,6 +1024,11 @@ name|ret
 init|=
 literal|0
 decl_stmt|;
+name|long
+name|timeoutLeft
+init|=
+name|timeout
+decl_stmt|;
 try|try
 block|{
 while|while
@@ -1068,7 +1073,7 @@ name|selector
 operator|.
 name|select
 argument_list|(
-name|timeout
+name|timeoutLeft
 argument_list|)
 expr_stmt|;
 if|if
@@ -1081,6 +1086,35 @@ block|{
 return|return
 name|ret
 return|;
+block|}
+comment|/* Sometimes select() returns 0 much before timeout for             * unknown reasons. So select again if required.            */
+if|if
+condition|(
+name|timeout
+operator|>
+literal|0
+condition|)
+block|{
+name|timeoutLeft
+operator|-=
+name|Time
+operator|.
+name|now
+argument_list|()
+operator|-
+name|start
+expr_stmt|;
+name|timeoutLeft
+operator|=
+name|Math
+operator|.
+name|max
+argument_list|(
+literal|0
+argument_list|,
+name|timeoutLeft
+argument_list|)
+expr_stmt|;
 block|}
 if|if
 condition|(
@@ -1103,42 +1137,28 @@ literal|"IO on channel "
 operator|+
 name|channel
 operator|+
-literal|". "
+literal|". Total timeout mills is "
 operator|+
 name|timeout
+operator|+
+literal|", "
+operator|+
+name|timeoutLeft
 operator|+
 literal|" millis timeout left."
 argument_list|)
 throw|;
 block|}
-comment|/* Sometimes select() returns 0 much before timeout for             * unknown reasons. So select again if required.            */
 if|if
 condition|(
-name|timeout
-operator|>
-literal|0
-condition|)
-block|{
-name|timeout
-operator|-=
-name|Time
-operator|.
-name|now
-argument_list|()
-operator|-
-name|start
-expr_stmt|;
-if|if
-condition|(
-name|timeout
-operator|<=
+name|timeoutLeft
+operator|==
 literal|0
 condition|)
 block|{
 return|return
 literal|0
 return|;
-block|}
 block|}
 block|}
 block|}
