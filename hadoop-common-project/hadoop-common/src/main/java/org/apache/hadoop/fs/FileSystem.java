@@ -576,6 +576,20 @@ name|hadoop
 operator|.
 name|io
 operator|.
+name|IOUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
 name|MultipleIOException
 import|;
 end_import
@@ -9093,6 +9107,8 @@ expr_stmt|;
 name|Class
 argument_list|<
 name|?
+extends|extends
+name|FileSystem
 argument_list|>
 name|clazz
 init|=
@@ -9109,9 +9125,6 @@ decl_stmt|;
 name|FileSystem
 name|fs
 init|=
-operator|(
-name|FileSystem
-operator|)
 name|ReflectionUtils
 operator|.
 name|newInstance
@@ -9121,6 +9134,8 @@ argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|fs
 operator|.
 name|initialize
@@ -9130,6 +9145,55 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+decl||
+name|RuntimeException
+name|e
+parameter_list|)
+block|{
+comment|// exception raised during initialization.
+comment|// log summary at warn and full stack at debug
+name|LOGGER
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to initialize fileystem {}: {}"
+argument_list|,
+name|uri
+argument_list|,
+name|e
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|LOGGER
+operator|.
+name|debug
+argument_list|(
+literal|"Failed to initialize fileystem"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+comment|// then (robustly) close the FS, so as to invoke any
+comment|// cleanup code.
+name|IOUtils
+operator|.
+name|cleanupWithLogger
+argument_list|(
+name|LOGGER
+argument_list|,
+name|fs
+argument_list|)
+expr_stmt|;
+throw|throw
+name|e
+throw|;
+block|}
 return|return
 name|fs
 return|;

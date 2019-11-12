@@ -2737,6 +2737,8 @@ operator|.
 name|getHost
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2808,8 +2810,6 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-try|try
-block|{
 comment|// look for encryption data
 comment|// DT Bindings may override this
 name|setEncryptionSecrets
@@ -3096,6 +3096,9 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+comment|// This initiates a probe against S3 for the bucket existing.
+comment|// It is where all network and authentication configuration issues
+comment|// surface, and is potentially slow.
 name|verifyBucketExists
 argument_list|()
 expr_stmt|;
@@ -3398,6 +3401,10 @@ name|AmazonClientException
 name|e
 parameter_list|)
 block|{
+comment|// amazon client exception: stop all services then throw the translation
+name|stopAllServices
+argument_list|()
+expr_stmt|;
 throw|throw
 name|translateException
 argument_list|(
@@ -3411,6 +3418,22 @@ argument_list|)
 argument_list|,
 name|e
 argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+decl||
+name|RuntimeException
+name|e
+parameter_list|)
+block|{
+comment|// other exceptions: stop the services.
+name|stopAllServices
+argument_list|()
+expr_stmt|;
+throw|throw
+name|e
 throw|;
 block|}
 block|}
@@ -11971,12 +11994,27 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
+name|stopAllServices
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Stop all services.    * This is invoked in close() and during failures of initialize()    * -make sure that all operations here are robust to failures in    * both the expected state of this FS and of failures while being stopped.    */
+DECL|method|stopAllServices ()
+specifier|protected
+specifier|synchronized
+name|void
+name|stopAllServices
+parameter_list|()
+block|{
 if|if
 condition|(
 name|transfers
 operator|!=
 literal|null
 condition|)
+block|{
+try|try
 block|{
 name|transfers
 operator|.
@@ -11985,6 +12023,24 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|RuntimeException
+name|e
+parameter_list|)
+block|{
+comment|// catch and swallow for resilience.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"When shutting down"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 name|transfers
 operator|=
 literal|null
@@ -12025,25 +12081,6 @@ name|SECONDS
 argument_list|)
 expr_stmt|;
 name|unboundedThreadPool
-operator|=
-literal|null
-expr_stmt|;
-name|S3AUtils
-operator|.
-name|closeAll
-argument_list|(
-name|LOG
-argument_list|,
-name|metadataStore
-argument_list|,
-name|instrumentation
-argument_list|)
-expr_stmt|;
-name|metadataStore
-operator|=
-literal|null
-expr_stmt|;
-name|instrumentation
 operator|=
 literal|null
 expr_stmt|;
@@ -12058,20 +12095,26 @@ name|cleanupWithLogger
 argument_list|(
 name|LOG
 argument_list|,
+name|metadataStore
+argument_list|,
+name|instrumentation
+argument_list|,
 name|delegationTokens
 operator|.
 name|orElse
 argument_list|(
 literal|null
 argument_list|)
-argument_list|)
-expr_stmt|;
-name|cleanupWithLogger
-argument_list|(
-name|LOG
 argument_list|,
 name|signerManager
 argument_list|)
+expr_stmt|;
+name|delegationTokens
+operator|=
+name|Optional
+operator|.
+name|empty
+argument_list|()
 expr_stmt|;
 name|signerManager
 operator|=
@@ -12081,7 +12124,6 @@ name|credentials
 operator|=
 literal|null
 expr_stmt|;
-block|}
 block|}
 comment|/**    * Verify that the input stream is open. Non blocking; this gives    * the last state of the volatile {@link #closed} field.    * @throws IOException if the connection is closed.    */
 DECL|method|checkNotClosed ()

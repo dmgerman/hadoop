@@ -814,6 +814,22 @@ name|translateDeleteException
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|IOUtils
+operator|.
+name|cleanupWithLogger
+import|;
+end_import
+
 begin_comment
 comment|/**  * Utility methods for S3A code.  */
 end_comment
@@ -6093,7 +6109,9 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Close the Closeable objects and<b>ignore</b> any Exception or    * null pointers.    * (This is the SLF4J equivalent of that in {@code IOUtils}).    * @param log the log to log at debug level. Can be null.    * @param closeables the objects to close    */
+comment|/**    * Close the Closeable objects and<b>ignore</b> any Exception or    * null pointers.    * This is obsolete: use    * {@link org.apache.hadoop.io.IOUtils#cleanupWithLogger(Logger, Closeable...)}    * @param log the log to log at debug level. Can be null.    * @param closeables the objects to close    */
+annotation|@
+name|Deprecated
 DECL|method|closeAll (Logger log, Closeable... closeables)
 specifier|public
 specifier|static
@@ -6108,70 +6126,13 @@ modifier|...
 name|closeables
 parameter_list|)
 block|{
-if|if
-condition|(
+name|cleanupWithLogger
+argument_list|(
 name|log
-operator|==
-literal|null
-condition|)
-block|{
-name|log
-operator|=
-name|LOG
-expr_stmt|;
-block|}
-for|for
-control|(
-name|Closeable
-name|c
-range|:
+argument_list|,
 name|closeables
-control|)
-block|{
-if|if
-condition|(
-name|c
-operator|!=
-literal|null
-condition|)
-block|{
-try|try
-block|{
-name|log
-operator|.
-name|debug
-argument_list|(
-literal|"Closing {}"
-argument_list|,
-name|c
 argument_list|)
 expr_stmt|;
-name|c
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|e
-parameter_list|)
-block|{
-name|log
-operator|.
-name|debug
-argument_list|(
-literal|"Exception in closing {}"
-argument_list|,
-name|c
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-block|}
 block|}
 comment|/**    * Close the Closeable objects and<b>ignore</b> any Exception or    * null pointers.    * (This is the SLF4J equivalent of that in {@code IOUtils}).    * @param log the log to log at debug level. Can be null.    * @param closeables the objects to close    */
 DECL|method|closeAutocloseables (Logger log, AutoCloseable... closeables)

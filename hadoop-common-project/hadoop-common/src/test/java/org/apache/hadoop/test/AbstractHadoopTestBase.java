@@ -34,16 +34,6 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Assert
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
 name|Before
 import|;
 end_import
@@ -93,17 +83,15 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A base class for JUnit4 tests that sets a default timeout for all tests  * that subclass this test.  *  * Threads are named to the method being executed, for ease of diagnostics  * in logs and thread dumps.  */
+comment|/**  * A base class for JUnit5+ tests that sets a default timeout for all tests  * that subclass this test.  *  * Threads are named to the method being executed, for ease of diagnostics  * in logs and thread dumps.  *  * Unlike {@link HadoopTestBase} this class does not extend JUnit Assert  * so is easier to use with AssertJ.  */
 end_comment
 
 begin_class
-DECL|class|HadoopTestBase
+DECL|class|AbstractHadoopTestBase
 specifier|public
 specifier|abstract
 class|class
-name|HadoopTestBase
-extends|extends
-name|Assert
+name|AbstractHadoopTestBase
 block|{
 comment|/**    * System property name to set the test timeout: {@value}.    */
 DECL|field|PROPERTY_TEST_DEFAULT_TIMEOUT

@@ -332,6 +332,22 @@ name|checkNotNull
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|IOUtils
+operator|.
+name|cleanupWithLogger
+import|;
+end_import
+
 begin_comment
 comment|/**  * Relays FS calls to the mocked FS, allows for some extra logging with  * stack traces to be included, stubbing out other methods  * where needed to avoid failures.  *  * The logging is useful for tracking  * down why there are extra calls to a method than a test would expect:  * changes in implementation details often trigger such false-positive  * test failures.  *  * This class is in the s3a package so that it has access to methods  */
 end_comment
@@ -731,6 +747,22 @@ argument_list|(
 name|this
 argument_list|,
 name|conf
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+block|{
+name|cleanupWithLogger
+argument_list|(
+name|LOG
+argument_list|,
+name|instrumentation
 argument_list|)
 expr_stmt|;
 block|}

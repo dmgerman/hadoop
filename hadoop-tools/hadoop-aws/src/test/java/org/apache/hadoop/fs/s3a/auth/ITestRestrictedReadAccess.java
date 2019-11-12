@@ -348,22 +348,6 @@ name|fs
 operator|.
 name|s3a
 operator|.
-name|S3AUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|s3a
-operator|.
 name|Statistic
 import|;
 end_import
@@ -789,6 +773,22 @@ operator|.
 name|RoleTestUtils
 operator|.
 name|newAssumedRoleConfig
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|IOUtils
+operator|.
+name|cleanupWithLogger
 import|;
 end_import
 
@@ -1344,9 +1344,7 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
-name|S3AUtils
-operator|.
-name|closeAll
+name|cleanupWithLogger
 argument_list|(
 name|LOG
 argument_list|,

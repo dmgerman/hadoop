@@ -248,13 +248,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|io
 operator|.
-name|s3a
+name|IOUtils
 operator|.
-name|S3AUtils
-operator|.
-name|closeAll
+name|cleanupWithLogger
 import|;
 end_import
 
@@ -582,7 +580,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|closeAll
+name|cleanupWithLogger
 argument_list|(
 name|LOG
 argument_list|,

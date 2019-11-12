@@ -456,6 +456,22 @@ name|*
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|IOUtils
+operator|.
+name|cleanupWithLogger
+import|;
+end_import
+
 begin_comment
 comment|/**  * Upload files/parts directly via different buffering mechanisms:  * including memory and disk.  *  * If the stream is closed and no update has started, then the upload  * is instead done as a single PUT operation.  *  * Unstable: statistics and error handling might evolve.  */
 end_comment
@@ -1488,7 +1504,7 @@ throw|;
 block|}
 finally|finally
 block|{
-name|closeAll
+name|cleanupWithLogger
 argument_list|(
 name|LOG
 argument_list|,
@@ -1506,7 +1522,7 @@ argument_list|,
 name|statistics
 argument_list|)
 expr_stmt|;
-name|closeAll
+name|cleanupWithLogger
 argument_list|(
 name|LOG
 argument_list|,
@@ -1668,7 +1684,7 @@ return|;
 block|}
 finally|finally
 block|{
-name|closeAll
+name|cleanupWithLogger
 argument_list|(
 name|LOG
 argument_list|,
@@ -2268,7 +2284,7 @@ block|}
 finally|finally
 block|{
 comment|// close the stream and block
-name|closeAll
+name|cleanupWithLogger
 argument_list|(
 name|LOG
 argument_list|,
