@@ -150,6 +150,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|UUID
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1176,6 +1186,14 @@ argument_list|,
 name|hostname
 operator|+
 name|id
+operator|+
+name|UUID
+operator|.
+name|randomUUID
+argument_list|()
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|double
