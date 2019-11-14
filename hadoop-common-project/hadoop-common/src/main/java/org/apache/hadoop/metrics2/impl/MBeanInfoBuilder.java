@@ -541,10 +541,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{}"
+argument_list|,
 name|attrs
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|MBeanAttributeInfo
