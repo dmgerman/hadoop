@@ -1293,14 +1293,6 @@ parameter_list|()
 throws|throws
 name|LoginException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -1308,7 +1300,6 @@ argument_list|(
 literal|"hadoop login commit"
 argument_list|)
 expr_stmt|;
-block|}
 comment|// if we already have a user, we are done.
 if|if
 condition|(
@@ -1326,27 +1317,18 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"using existing subject:"
-operator|+
+literal|"Using existing subject: {}"
+argument_list|,
 name|subject
 operator|.
 name|getPrincipals
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|true
 return|;
@@ -1368,24 +1350,15 @@ operator|!=
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"using kerberos user:"
-operator|+
+literal|"Using kerberos user: {}"
+argument_list|,
 name|user
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|//If we don't have a kerberos user and security is disabled, check
 comment|//if user is specified in the environment or properties
@@ -1459,24 +1432,15 @@ argument_list|(
 name|OS_PRINCIPAL_CLASS
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"using local user:"
-operator|+
+literal|"Using local user: {}"
+argument_list|,
 name|user
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|// if we found the user, add our principal
 if|if
@@ -1486,31 +1450,20 @@ operator|!=
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Using user: \""
-operator|+
+literal|"Using user: \"{}\" with name: {}"
+argument_list|,
 name|user
-operator|+
-literal|"\" with name "
-operator|+
+argument_list|,
 name|user
 operator|.
 name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|User
 name|userEntry
 init|=
@@ -1580,29 +1533,15 @@ argument_list|)
 argument_list|)
 throw|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"User entry: \""
-operator|+
+literal|"User entry: \"{}\""
+argument_list|,
 name|userEntry
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|"\""
 argument_list|)
 expr_stmt|;
-block|}
 name|subject
 operator|.
 name|getPrincipals
@@ -1617,20 +1556,13 @@ return|return
 literal|true
 return|;
 block|}
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Can't find user in "
-operator|+
-name|subject
-argument_list|)
-expr_stmt|;
 throw|throw
 operator|new
 name|LoginException
 argument_list|(
-literal|"Can't find user name"
+literal|"Failed to find user in name "
+operator|+
+name|subject
 argument_list|)
 throw|;
 block|}
@@ -1681,22 +1613,13 @@ parameter_list|()
 throws|throws
 name|LoginException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"hadoop login"
+literal|"Hadoop login"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|true
 return|;
@@ -1711,22 +1634,13 @@ parameter_list|()
 throws|throws
 name|LoginException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"hadoop logout"
+literal|"Hadoop logout"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|true
 return|;
@@ -3838,7 +3752,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"failure to load login credentials"
+literal|"Failure to load login credentials"
 argument_list|,
 name|ioe
 argument_list|)
@@ -3847,24 +3761,15 @@ throw|throw
 name|ioe
 throw|;
 block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"UGI loginUser:"
-operator|+
+literal|"UGI loginUser: {}"
+argument_list|,
 name|loginUser
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|loginUser
 return|;
@@ -4456,33 +4361,17 @@ operator|.
 name|now
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Current time is "
-operator|+
+literal|"Current time is {}, next refresh is {}"
+argument_list|,
 name|now
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Next refresh is "
-operator|+
+argument_list|,
 name|nextRefresh
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|now
@@ -4653,17 +4542,12 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"NPE thrown while getting "
+literal|"NPE thrown while getting KerberosTicket endTime. "
 operator|+
-literal|"KerberosTicket endTime. Aborting renew thread for %s."
+literal|"Aborting renew thread for {}."
 argument_list|,
 name|getUserName
 argument_list|()
-argument_list|)
 argument_list|,
 name|ie
 argument_list|)
@@ -4674,17 +4558,13 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
 literal|"Exception encountered while running the "
 operator|+
-literal|"renewal command for %s. "
+literal|"renewal command for {}. "
 operator|+
-literal|"(TGT end time:%d, renewalFailures: %d, "
+literal|"(TGT end time:{}, renewalFailures: {}, "
 operator|+
-literal|"renewalFailuresTotal: %d)"
+literal|"renewalFailuresTotal: {})"
 argument_list|,
 name|getUserName
 argument_list|()
@@ -4704,7 +4584,6 @@ name|renewalFailuresTotal
 operator|.
 name|value
 argument_list|()
-argument_list|)
 argument_list|,
 name|ie
 argument_list|)
@@ -4879,14 +4758,6 @@ argument_list|,
 literal|"-R"
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
@@ -4896,7 +4767,6 @@ argument_list|,
 name|output
 argument_list|)
 expr_stmt|;
-block|}
 name|reloginFromTicketCache
 argument_list|()
 expr_stmt|;
@@ -5177,25 +5047,16 @@ throw|;
 block|}
 try|try
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Initiating logout for "
-operator|+
+literal|"Initiating logout for {}"
+argument_list|,
 name|getUserName
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 comment|// hadoop login context internally locks credentials.
 name|login
 operator|.
@@ -5701,25 +5562,16 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Initiating logout for "
-operator|+
+literal|"Initiating logout for {}"
+argument_list|,
 name|getUserName
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 comment|//clear up the kerberos state. But the tokens are not cleared! As per
 comment|//the Java kerberos login module code, only the kerberos credentials
 comment|//are cleared
@@ -5750,25 +5602,16 @@ name|getConfiguration
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Initiating re-login for "
-operator|+
+literal|"Initiating re-login for {}"
+argument_list|,
 name|getUserName
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|login
 operator|.
 name|login
@@ -7327,38 +7170,18 @@ name|IOException
 name|ie
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Failed to get groups for user "
-operator|+
+literal|"Failed to get groups for user {}"
+argument_list|,
 name|getShortUserName
 argument_list|()
-operator|+
-literal|" by "
-operator|+
-name|ie
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|trace
-argument_list|(
-literal|"TRACE"
 argument_list|,
 name|ie
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|Collections
 operator|.
@@ -7735,13 +7558,30 @@ argument_list|>
 name|action
 parameter_list|)
 block|{
-name|logPrivilegedAction
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-name|subject
+literal|"PrivilegedAction [as: {}][action: {}]"
+argument_list|,
+name|this
 argument_list|,
 name|action
+argument_list|,
+operator|new
+name|Exception
+argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|Subject
 operator|.
@@ -7789,13 +7629,30 @@ name|InterruptedException
 block|{
 try|try
 block|{
-name|logPrivilegedAction
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-name|subject
+literal|"PrivilegedAction [as: {}][action: {}]"
+argument_list|,
+name|this
 argument_list|,
 name|action
+argument_list|,
+operator|new
+name|Exception
+argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|Subject
 operator|.
@@ -7821,28 +7678,17 @@ operator|.
 name|getCause
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"PrivilegedActionException as:"
-operator|+
+literal|"PrivilegedActionException as: {}"
+argument_list|,
 name|this
-operator|+
-literal|" cause:"
-operator|+
+argument_list|,
 name|cause
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|cause
@@ -7940,61 +7786,6 @@ name|cause
 argument_list|)
 throw|;
 block|}
-block|}
-block|}
-end_function
-
-begin_function
-DECL|method|logPrivilegedAction (Subject subject, Object action)
-specifier|private
-name|void
-name|logPrivilegedAction
-parameter_list|(
-name|Subject
-name|subject
-parameter_list|,
-name|Object
-name|action
-parameter_list|)
-block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-comment|// would be nice if action included a descriptive toString()
-name|String
-name|where
-init|=
-operator|new
-name|Throwable
-argument_list|()
-operator|.
-name|getStackTrace
-argument_list|()
-index|[
-literal|2
-index|]
-operator|.
-name|toString
-argument_list|()
-decl_stmt|;
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"PrivilegedAction as:"
-operator|+
-name|this
-operator|+
-literal|" from:"
-operator|+
-name|where
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 end_function
