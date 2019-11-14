@@ -384,7 +384,7 @@ argument_list|()
 expr_stmt|;
 name|logger
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Gracefully shutting down executor service. Waiting max {} {}"
 argument_list|,
@@ -408,7 +408,7 @@ condition|)
 block|{
 name|logger
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Executor service has not shutdown yet. Forcing. "
 operator|+
@@ -439,7 +439,7 @@ condition|)
 block|{
 name|logger
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Succesfully shutdown executor service"
 argument_list|)
