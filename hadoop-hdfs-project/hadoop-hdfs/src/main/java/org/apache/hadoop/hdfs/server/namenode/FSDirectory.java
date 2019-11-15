@@ -2760,6 +2760,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|getProtectedDirectories ()
+specifier|public
 name|SortedSet
 argument_list|<
 name|String
@@ -3431,6 +3432,7 @@ return|;
 block|}
 comment|/**    * @return true if the path is a non-empty directory; otherwise, return false.    */
 DECL|method|isNonEmptyDirectory (INodesInPath inodesInPath)
+specifier|public
 name|boolean
 name|isNonEmptyDirectory
 parameter_list|(
