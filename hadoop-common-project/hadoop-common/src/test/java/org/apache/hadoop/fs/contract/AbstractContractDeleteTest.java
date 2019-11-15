@@ -359,7 +359,7 @@ name|path
 init|=
 name|path
 argument_list|(
-literal|"testDeleteNonEmptyDirNonRecursive"
+literal|"testDeleteNonEmptyDirRecursive"
 argument_list|)
 decl_stmt|;
 name|mkdirs
