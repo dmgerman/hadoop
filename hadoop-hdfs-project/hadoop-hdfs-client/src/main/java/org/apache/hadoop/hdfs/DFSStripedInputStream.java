@@ -888,16 +888,6 @@ return|return
 name|src
 return|;
 block|}
-DECL|method|getDFSClient ()
-specifier|protected
-name|DFSClient
-name|getDFSClient
-parameter_list|()
-block|{
-return|return
-name|dfsClient
-return|;
-block|}
 DECL|method|getLocatedBlocks ()
 specifier|protected
 name|LocatedBlocks
@@ -1469,7 +1459,7 @@ name|getStartOffset
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|addToDeadNodes
+name|addToLocalDeadNodes
 argument_list|(
 name|dnInfo
 operator|.

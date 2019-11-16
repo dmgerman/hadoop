@@ -1231,9 +1231,10 @@ index|[]
 name|oneByteBuf
 decl_stmt|;
 comment|// used for 'int read()'
-DECL|method|addToDeadNodes (DatanodeInfo dnInfo)
+DECL|method|addToLocalDeadNodes (DatanodeInfo dnInfo)
+specifier|protected
 name|void
-name|addToDeadNodes
+name|addToLocalDeadNodes
 parameter_list|(
 name|DatanodeInfo
 name|dnInfo
@@ -1248,6 +1249,60 @@ argument_list|,
 name|dnInfo
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|removeFromLocalDeadNodes (DatanodeInfo dnInfo)
+specifier|protected
+name|void
+name|removeFromLocalDeadNodes
+parameter_list|(
+name|DatanodeInfo
+name|dnInfo
+parameter_list|)
+block|{
+name|deadNodes
+operator|.
+name|remove
+argument_list|(
+name|dnInfo
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|getLocalDeadNodes ()
+specifier|protected
+name|ConcurrentHashMap
+argument_list|<
+name|DatanodeInfo
+argument_list|,
+name|DatanodeInfo
+argument_list|>
+name|getLocalDeadNodes
+parameter_list|()
+block|{
+return|return
+name|deadNodes
+return|;
+block|}
+DECL|method|clearLocalDeadNodes ()
+specifier|private
+name|void
+name|clearLocalDeadNodes
+parameter_list|()
+block|{
+name|deadNodes
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|getDFSClient ()
+specifier|protected
+name|DFSClient
+name|getDFSClient
+parameter_list|()
+block|{
+return|return
+name|dfsClient
+return|;
 block|}
 DECL|method|DFSInputStream (DFSClient dfsClient, String src, boolean verifyChecksum, LocatedBlocks locatedBlocks)
 name|DFSInputStream
@@ -3125,8 +3180,17 @@ name|ex
 argument_list|)
 expr_stmt|;
 comment|// Put chosen node into dead list, continue
-name|addToDeadNodes
+name|addToLocalDeadNodes
 argument_list|(
+name|chosenNode
+argument_list|)
+expr_stmt|;
+name|dfsClient
+operator|.
+name|addNodeToDeadNodeDetector
+argument_list|(
+name|this
+argument_list|,
 name|chosenNode
 argument_list|)
 expr_stmt|;
@@ -3365,6 +3429,8 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
 if|if
 condition|(
 operator|!
@@ -3506,6 +3572,20 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
+finally|finally
+block|{
+comment|/**        * If dfsInputStream is closed and datanode is in        * DeadNodeDetector#dfsInputStreamNodes, we need remove the datanode from        * the DeadNodeDetector#dfsInputStreamNodes. Since user should not use        * this dfsInputStream anymore.        */
+name|dfsClient
+operator|.
+name|removeNodeFromDeadNodeDetector
+argument_list|(
+name|this
+argument_list|,
+name|locatedBlocks
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -3721,8 +3801,17 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|addToDeadNodes
+name|addToLocalDeadNodes
 argument_list|(
+name|currentNode
+argument_list|)
+expr_stmt|;
+name|dfsClient
+operator|.
+name|addNodeToDeadNodeDetector
+argument_list|(
+name|this
+argument_list|,
 name|currentNode
 argument_list|)
 expr_stmt|;
@@ -4032,8 +4121,17 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|addToDeadNodes
+name|addToLocalDeadNodes
 argument_list|(
+name|currentNode
+argument_list|)
+expr_stmt|;
+name|dfsClient
+operator|.
+name|addNodeToDeadNodeDetector
+argument_list|(
+name|this
+argument_list|,
 name|currentNode
 argument_list|)
 expr_stmt|;
@@ -4358,7 +4456,12 @@ operator|.
 name|getLocations
 argument_list|()
 argument_list|,
-name|deadNodes
+name|dfsClient
+operator|.
+name|getDeadNodes
+argument_list|(
+name|this
+argument_list|)
 argument_list|,
 name|ignoredNodes
 argument_list|)
@@ -4579,9 +4682,7 @@ literal|"Interrupted while choosing DataNode for read."
 argument_list|)
 throw|;
 block|}
-name|deadNodes
-operator|.
-name|clear
+name|clearLocalDeadNodes
 argument_list|()
 expr_stmt|;
 comment|//2nd option is to remove only nodes[blockId]
@@ -4675,7 +4776,12 @@ block|{
 if|if
 condition|(
 operator|!
-name|deadNodes
+name|dfsClient
+operator|.
+name|getDeadNodes
+argument_list|(
+name|this
+argument_list|)
 operator|.
 name|containsKey
 argument_list|(
@@ -5486,7 +5592,7 @@ operator|.
 name|info
 argument_list|)
 expr_stmt|;
-name|addToDeadNodes
+name|addToLocalDeadNodes
 argument_list|(
 name|datanode
 operator|.
@@ -5631,8 +5737,19 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-name|addToDeadNodes
+name|addToLocalDeadNodes
 argument_list|(
+name|datanode
+operator|.
+name|info
+argument_list|)
+expr_stmt|;
+name|dfsClient
+operator|.
+name|addNodeToDeadNodeDetector
+argument_list|(
+name|this
+argument_list|,
 name|datanode
 operator|.
 name|info
@@ -7324,14 +7441,16 @@ block|}
 name|boolean
 name|markedDead
 init|=
-name|deadNodes
+name|dfsClient
 operator|.
-name|containsKey
+name|isDeadNode
 argument_list|(
+name|this
+argument_list|,
 name|currentNode
 argument_list|)
 decl_stmt|;
-name|addToDeadNodes
+name|addToLocalDeadNodes
 argument_list|(
 name|currentNode
 argument_list|)
@@ -7356,9 +7475,7 @@ name|markedDead
 condition|)
 block|{
 comment|/* remove it from deadNodes. blockSeekTo could have cleared        * deadNodes and added currentNode again. Thats ok. */
-name|deadNodes
-operator|.
-name|remove
+name|removeFromLocalDeadNodes
 argument_list|(
 name|oldNode
 argument_list|)
