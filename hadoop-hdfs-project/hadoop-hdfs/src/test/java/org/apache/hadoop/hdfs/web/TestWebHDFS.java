@@ -1542,6 +1542,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Assert
 import|;
 end_import
@@ -1738,6 +1748,40 @@ operator|.
 name|nanoTime
 argument_list|()
 decl_stmt|;
+DECL|field|cluster
+specifier|private
+specifier|static
+name|MiniDFSCluster
+name|cluster
+init|=
+literal|null
+decl_stmt|;
+annotation|@
+name|After
+DECL|method|tearDown ()
+specifier|public
+name|void
+name|tearDown
+parameter_list|()
+block|{
+if|if
+condition|(
+literal|null
+operator|!=
+name|cluster
+condition|)
+block|{
+name|cluster
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+name|cluster
+operator|=
+literal|null
+expr_stmt|;
+block|}
+block|}
 comment|/** A timer for measuring performance. */
 DECL|class|Ticker
 specifier|static
@@ -2051,10 +2095,8 @@ operator|.
 name|createConf
 argument_list|()
 decl_stmt|;
-specifier|final
-name|MiniDFSCluster
 name|cluster
-init|=
+operator|=
 operator|new
 name|MiniDFSCluster
 operator|.
@@ -2070,9 +2112,7 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
-decl_stmt|;
-try|try
-block|{
+expr_stmt|;
 name|cluster
 operator|.
 name|waitActive
@@ -2404,15 +2444,6 @@ argument_list|,
 name|expected
 argument_list|)
 expr_stmt|;
-block|}
-finally|finally
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|checkData (long offset, long remaining, int n, byte[] actual, byte[] expected)
 specifier|static
@@ -3003,10 +3034,8 @@ literal|0077
 argument_list|)
 argument_list|)
 expr_stmt|;
-specifier|final
-name|MiniDFSCluster
 name|cluster
-init|=
+operator|=
 operator|new
 name|MiniDFSCluster
 operator|.
@@ -3022,9 +3051,7 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
-decl_stmt|;
-try|try
-block|{
+expr_stmt|;
 name|cluster
 operator|.
 name|waitActive
@@ -3474,15 +3501,6 @@ block|}
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 comment|/**    * Test client receives correct DSQuotaExceededException.    */
 annotation|@
 name|Test
@@ -3517,10 +3535,8 @@ literal|80L
 operator|<<
 literal|20
 decl_stmt|;
-specifier|final
-name|MiniDFSCluster
 name|cluster
-init|=
+operator|=
 operator|new
 name|MiniDFSCluster
 operator|.
@@ -3536,9 +3552,7 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
-decl_stmt|;
-try|try
-block|{
+expr_stmt|;
 name|cluster
 operator|.
 name|waitActive
@@ -3698,7 +3712,7 @@ name|DSQuotaExceededException
 name|e
 parameter_list|)
 block|{
-comment|//expected
+comment|// expected
 block|}
 finally|finally
 block|{
@@ -3718,15 +3732,6 @@ parameter_list|)
 block|{
 comment|// discard exception from close
 block|}
-block|}
-block|}
-finally|finally
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 annotation|@
@@ -3794,10 +3799,8 @@ operator|+
 literal|"(user|group|mask|other):[[0-9A-Za-z_][@A-Za-z0-9._-]]*:([rwx-]{3})?)*$"
 argument_list|)
 expr_stmt|;
-specifier|final
-name|MiniDFSCluster
 name|cluster
-init|=
+operator|=
 operator|new
 name|MiniDFSCluster
 operator|.
@@ -3813,9 +3816,7 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
-decl_stmt|;
-try|try
-block|{
+expr_stmt|;
 name|cluster
 operator|.
 name|waitActive
@@ -4012,15 +4013,6 @@ block|}
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 comment|/**    * Test for catching "no datanode" IOException, when to create a file    * but datanode is not running for some reason.    */
 annotation|@
 name|Test
@@ -4037,11 +4029,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|MiniDFSCluster
-name|cluster
-init|=
-literal|null
-decl_stmt|;
 specifier|final
 name|Configuration
 name|conf
@@ -4136,22 +4123,6 @@ name|ex
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-if|if
-condition|(
-name|cluster
-operator|!=
-literal|null
-condition|)
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 block|}
 comment|/**    * Test allow and disallow snapshot through WebHdfs. Verifying webhdfs with    * Distributed filesystem methods.    */
 annotation|@
@@ -4164,11 +4135,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|MiniDFSCluster
-name|cluster
-init|=
-literal|null
-decl_stmt|;
 specifier|final
 name|Configuration
 name|conf
@@ -4178,8 +4144,6 @@ operator|.
 name|createConf
 argument_list|()
 decl_stmt|;
-try|try
-block|{
 name|cluster
 operator|=
 operator|new
@@ -4541,23 +4505,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-finally|finally
-block|{
-if|if
-condition|(
-name|cluster
-operator|!=
-literal|null
-condition|)
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-block|}
 annotation|@
 name|Test
 argument_list|(
@@ -4573,11 +4520,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|MiniDFSCluster
-name|cluster
-init|=
-literal|null
-decl_stmt|;
 specifier|final
 name|Configuration
 name|conf
@@ -4587,8 +4529,6 @@ operator|.
 name|createConf
 argument_list|()
 decl_stmt|;
-try|try
-block|{
 name|cluster
 operator|=
 operator|new
@@ -5031,23 +4971,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-if|if
-condition|(
-name|cluster
-operator|!=
-literal|null
-condition|)
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-block|}
 comment|/**    * Test snapshot creation through WebHdfs.    */
 annotation|@
 name|Test
@@ -5059,11 +4982,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|MiniDFSCluster
-name|cluster
-init|=
-literal|null
-decl_stmt|;
 specifier|final
 name|Configuration
 name|conf
@@ -5073,8 +4991,6 @@ operator|.
 name|createConf
 argument_list|()
 decl_stmt|;
-try|try
-block|{
 name|cluster
 operator|=
 operator|new
@@ -5240,23 +5156,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-if|if
-condition|(
-name|cluster
-operator|!=
-literal|null
-condition|)
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-block|}
 comment|/**    * Test snapshot deletion through WebHdfs.    */
 annotation|@
 name|Test
@@ -5268,11 +5167,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|MiniDFSCluster
-name|cluster
-init|=
-literal|null
-decl_stmt|;
 specifier|final
 name|Configuration
 name|conf
@@ -5282,8 +5176,6 @@ operator|.
 name|createConf
 argument_list|()
 decl_stmt|;
-try|try
-block|{
 name|cluster
 operator|=
 operator|new
@@ -5496,23 +5388,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-if|if
-condition|(
-name|cluster
-operator|!=
-literal|null
-condition|)
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-block|}
 comment|/**    * Test snapshot diff through WebHdfs.    */
 annotation|@
 name|Test
@@ -5524,11 +5399,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|MiniDFSCluster
-name|cluster
-init|=
-literal|null
-decl_stmt|;
 specifier|final
 name|Configuration
 name|conf
@@ -5538,8 +5408,6 @@ operator|.
 name|createConf
 argument_list|()
 decl_stmt|;
-try|try
-block|{
 name|cluster
 operator|=
 operator|new
@@ -6105,23 +5973,6 @@ literal|5
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-if|if
-condition|(
-name|cluster
-operator|!=
-literal|null
-condition|)
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-block|}
 comment|/**    * Test snapshottable directory list through WebHdfs.    */
 annotation|@
 name|Test
@@ -6133,11 +5984,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|MiniDFSCluster
-name|cluster
-init|=
-literal|null
-decl_stmt|;
 specifier|final
 name|Configuration
 name|conf
@@ -6147,8 +5993,6 @@ operator|.
 name|createConf
 argument_list|()
 decl_stmt|;
-try|try
-block|{
 name|cluster
 operator|=
 operator|new
@@ -6772,23 +6616,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-finally|finally
-block|{
-if|if
-condition|(
-name|cluster
-operator|!=
-literal|null
-condition|)
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-block|}
 annotation|@
 name|Test
 DECL|method|testWebHdfsCreateNonRecursive ()
@@ -6801,11 +6628,6 @@ name|IOException
 throws|,
 name|URISyntaxException
 block|{
-name|MiniDFSCluster
-name|cluster
-init|=
-literal|null
-decl_stmt|;
 specifier|final
 name|Configuration
 name|conf
@@ -6876,19 +6698,6 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|cluster
-operator|!=
-literal|null
-condition|)
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 block|}
 comment|/**    * Test snapshot rename through WebHdfs.    */
@@ -6902,11 +6711,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|MiniDFSCluster
-name|cluster
-init|=
-literal|null
-decl_stmt|;
 specifier|final
 name|Configuration
 name|conf
@@ -6916,8 +6720,6 @@ operator|.
 name|createConf
 argument_list|()
 decl_stmt|;
-try|try
-block|{
 name|cluster
 operator|=
 operator|new
@@ -7131,23 +6933,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-if|if
-condition|(
-name|cluster
-operator|!=
-literal|null
-condition|)
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-block|}
 comment|/**    * Make sure a RetriableException is thrown when rpcServer is null in    * NamenodeWebHdfsMethods.    */
 annotation|@
 name|Test
@@ -7159,11 +6944,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|MiniDFSCluster
-name|cluster
-init|=
-literal|null
-decl_stmt|;
 specifier|final
 name|Configuration
 name|conf
@@ -7173,8 +6953,6 @@ operator|.
 name|createConf
 argument_list|()
 decl_stmt|;
-try|try
-block|{
 name|cluster
 operator|=
 operator|new
@@ -7295,23 +7073,6 @@ name|rpcServer
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-if|if
-condition|(
-name|cluster
-operator|!=
-literal|null
-condition|)
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-block|}
 annotation|@
 name|Test
 DECL|method|testDTInInsecureClusterWithFallback ()
@@ -7324,11 +7085,6 @@ name|IOException
 throws|,
 name|URISyntaxException
 block|{
-name|MiniDFSCluster
-name|cluster
-init|=
-literal|null
-decl_stmt|;
 specifier|final
 name|Configuration
 name|conf
@@ -7349,8 +7105,6 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-try|try
-block|{
 name|cluster
 operator|=
 operator|new
@@ -7397,23 +7151,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-if|if
-condition|(
-name|cluster
-operator|!=
-literal|null
-condition|)
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-block|}
 annotation|@
 name|Test
 DECL|method|testDTInInsecureCluster ()
@@ -7424,11 +7161,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|MiniDFSCluster
-name|cluster
-init|=
-literal|null
-decl_stmt|;
 specifier|final
 name|Configuration
 name|conf
@@ -7510,22 +7242,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-if|if
-condition|(
-name|cluster
-operator|!=
-literal|null
-condition|)
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 block|}
 annotation|@
 name|Test
@@ -7537,11 +7253,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|MiniDFSCluster
-name|cluster
-init|=
-literal|null
-decl_stmt|;
 specifier|final
 name|Configuration
 name|conf
@@ -7586,8 +7297,6 @@ argument_list|(
 name|CONTENTS
 argument_list|)
 expr_stmt|;
-try|try
-block|{
 name|cluster
 operator|=
 operator|new
@@ -7796,23 +7505,6 @@ name|realContents
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-if|if
-condition|(
-name|cluster
-operator|!=
-literal|null
-condition|)
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-block|}
 annotation|@
 name|Test
 DECL|method|testContentSummary ()
@@ -7823,11 +7515,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|MiniDFSCluster
-name|cluster
-init|=
-literal|null
-decl_stmt|;
 specifier|final
 name|Configuration
 name|conf
@@ -7847,8 +7534,6 @@ argument_list|(
 literal|"/QuotaDir"
 argument_list|)
 decl_stmt|;
-try|try
-block|{
 name|cluster
 operator|=
 operator|new
@@ -7940,23 +7625,6 @@ operator|)
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-if|if
-condition|(
-name|cluster
-operator|!=
-literal|null
-condition|)
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-block|}
 annotation|@
 name|Test
 DECL|method|testQuotaUsage ()
@@ -7967,11 +7635,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|MiniDFSCluster
-name|cluster
-init|=
-literal|null
-decl_stmt|;
 specifier|final
 name|Configuration
 name|conf
@@ -7991,8 +7654,6 @@ argument_list|(
 literal|"/TestDir"
 argument_list|)
 decl_stmt|;
-try|try
-block|{
 name|cluster
 operator|=
 operator|new
@@ -8234,23 +7895,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-if|if
-condition|(
-name|cluster
-operator|!=
-literal|null
-condition|)
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-block|}
 annotation|@
 name|Test
 DECL|method|testSetQuota ()
@@ -8261,11 +7905,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|MiniDFSCluster
-name|cluster
-init|=
-literal|null
-decl_stmt|;
 specifier|final
 name|Configuration
 name|conf
@@ -8285,8 +7924,6 @@ argument_list|(
 literal|"/TestDir"
 argument_list|)
 decl_stmt|;
-try|try
-block|{
 name|cluster
 operator|=
 operator|new
@@ -8671,23 +8308,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-if|if
-condition|(
-name|cluster
-operator|!=
-literal|null
-condition|)
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-block|}
 annotation|@
 name|Test
 DECL|method|testWebHdfsPread ()
@@ -8707,9 +8327,8 @@ operator|.
 name|createConf
 argument_list|()
 decl_stmt|;
-name|MiniDFSCluster
 name|cluster
-init|=
+operator|=
 operator|new
 name|MiniDFSCluster
 operator|.
@@ -8725,7 +8344,7 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 name|byte
 index|[]
 name|content
@@ -8948,11 +8567,6 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 annotation|@
@@ -8969,13 +8583,6 @@ name|testGetHomeDirectory
 parameter_list|()
 throws|throws
 name|Exception
-block|{
-name|MiniDFSCluster
-name|cluster
-init|=
-literal|null
-decl_stmt|;
-try|try
 block|{
 name|Configuration
 name|conf
@@ -9046,7 +8653,6 @@ operator|new
 name|Configuration
 argument_list|()
 decl_stmt|;
-block|{
 name|WebHdfsFileSystem
 name|webhdfs
 init|=
@@ -9092,11 +8698,8 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-block|}
-block|{
-name|WebHdfsFileSystem
 name|webhdfs
-init|=
+operator|=
 name|createWebHDFSAsTestUser
 argument_list|(
 name|confTemp
@@ -9105,7 +8708,7 @@ name|uri
 argument_list|,
 literal|"XXX"
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|assertNotEquals
 argument_list|(
 name|hdfs
@@ -9137,22 +8740,6 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
-block|}
-finally|finally
-block|{
-if|if
-condition|(
-name|cluster
-operator|!=
-literal|null
-condition|)
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 annotation|@
 name|Test
 DECL|method|testWebHdfsGetBlockLocationsWithStorageType ()
@@ -9163,11 +8750,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|MiniDFSCluster
-name|cluster
-init|=
-literal|null
-decl_stmt|;
 specifier|final
 name|Configuration
 name|conf
@@ -9216,8 +8798,6 @@ argument_list|(
 name|CONTENTS
 argument_list|)
 expr_stmt|;
-try|try
-block|{
 name|cluster
 operator|=
 operator|new
@@ -9330,23 +8910,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-finally|finally
-block|{
-if|if
-condition|(
-name|cluster
-operator|!=
-literal|null
-condition|)
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-block|}
 annotation|@
 name|Test
 DECL|method|testWebHdfsGetBlockLocations ()
@@ -9357,11 +8920,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|MiniDFSCluster
-name|cluster
-init|=
-literal|null
-decl_stmt|;
 specifier|final
 name|Configuration
 name|conf
@@ -9410,8 +8968,6 @@ argument_list|(
 name|contents
 argument_list|)
 expr_stmt|;
-try|try
-block|{
 name|cluster
 operator|=
 operator|new
@@ -9782,23 +9338,6 @@ argument_list|,
 name|locationArray5
 argument_list|)
 expr_stmt|;
-block|}
-finally|finally
-block|{
-if|if
-condition|(
-name|cluster
-operator|!=
-literal|null
-condition|)
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 block|}
 DECL|method|toBlockLocationArray (String json)
 specifier|private
@@ -10339,10 +9878,8 @@ name|numDatanodes
 init|=
 literal|1
 decl_stmt|;
-specifier|final
-name|MiniDFSCluster
 name|cluster
-init|=
+operator|=
 operator|new
 name|MiniDFSCluster
 operator|.
@@ -10358,9 +9895,7 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
-decl_stmt|;
-try|try
-block|{
+expr_stmt|;
 name|cluster
 operator|.
 name|waitActive
@@ -10381,7 +9916,7 @@ operator|.
 name|WEBHDFS_SCHEME
 argument_list|)
 decl_stmt|;
-comment|//create a file
+comment|// create a file
 specifier|final
 name|long
 name|length
@@ -10417,7 +9952,7 @@ argument_list|,
 literal|20120406L
 argument_list|)
 expr_stmt|;
-comment|//get file status and check that it was written properly.
+comment|// get file status and check that it was written properly.
 specifier|final
 name|FileStatus
 name|s1
@@ -10536,7 +10071,7 @@ parameter_list|(
 name|IOException
 name|ioe
 parameter_list|)
-block|{ }
+block|{     }
 name|WebHdfsFileSystem
 name|wfs
 init|=
@@ -10714,15 +10249,6 @@ argument_list|,
 literal|3
 argument_list|)
 expr_stmt|;
-block|}
-finally|finally
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|field|attemptedRetry
 specifier|public
@@ -11242,11 +10768,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|MiniDFSCluster
-name|cluster
-init|=
-literal|null
-decl_stmt|;
 specifier|final
 name|Configuration
 name|conf
@@ -11256,8 +10777,6 @@ operator|.
 name|createConf
 argument_list|()
 decl_stmt|;
-try|try
-block|{
 name|cluster
 operator|=
 operator|new
@@ -11350,7 +10869,7 @@ argument_list|,
 literal|"PUT"
 argument_list|)
 expr_stmt|;
-comment|//Write a file that we can read
+comment|// Write a file that we can read
 specifier|final
 name|WebHdfsFileSystem
 name|fs
@@ -11580,23 +11099,6 @@ literal|"POST"
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-if|if
-condition|(
-name|cluster
-operator|!=
-literal|null
-condition|)
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-block|}
 annotation|@
 name|Test
 DECL|method|testGetTrashRoot ()
@@ -11607,11 +11109,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|MiniDFSCluster
-name|cluster
-init|=
-literal|null
-decl_stmt|;
 specifier|final
 name|Configuration
 name|conf
@@ -11633,8 +11130,6 @@ operator|.
 name|getShortUserName
 argument_list|()
 decl_stmt|;
-try|try
-block|{
 name|cluster
 operator|=
 operator|new
@@ -11723,23 +11218,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-if|if
-condition|(
-name|cluster
-operator|!=
-literal|null
-condition|)
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-block|}
 annotation|@
 name|Test
 DECL|method|testStoragePolicy ()
@@ -11750,11 +11228,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|MiniDFSCluster
-name|cluster
-init|=
-literal|null
-decl_stmt|;
 specifier|final
 name|Configuration
 name|conf
@@ -11774,8 +11247,6 @@ argument_list|(
 literal|"/file"
 argument_list|)
 decl_stmt|;
-try|try
-block|{
 name|cluster
 operator|=
 operator|new
@@ -11958,23 +11429,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
-block|{
-if|if
-condition|(
-name|cluster
-operator|!=
-literal|null
-condition|)
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-block|}
 annotation|@
 name|Test
 DECL|method|testSetStoragePolicyWhenPolicyDisabled ()
@@ -12003,9 +11457,8 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|MiniDFSCluster
 name|cluster
-init|=
+operator|=
 operator|new
 name|MiniDFSCluster
 operator|.
@@ -12021,7 +11474,7 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 try|try
 block|{
 name|cluster
@@ -12085,14 +11538,6 @@ argument_list|(
 literal|"Failed to set storage policy since"
 argument_list|)
 argument_list|)
-expr_stmt|;
-block|}
-finally|finally
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -12241,11 +11686,8 @@ operator|new
 name|HdfsConfiguration
 argument_list|()
 decl_stmt|;
-try|try
-init|(
-name|MiniDFSCluster
 name|cluster
-init|=
+operator|=
 operator|new
 name|MiniDFSCluster
 operator|.
@@ -12261,8 +11703,7 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
-init|)
-block|{
+expr_stmt|;
 name|cluster
 operator|.
 name|waitActive
@@ -12442,7 +11883,6 @@ literal|"disable"
 argument_list|)
 expr_stmt|;
 block|}
-block|}
 comment|// Test for Storage Policy Satisfier in DFS.
 annotation|@
 name|Test
@@ -12488,10 +11928,9 @@ name|conf
 argument_list|)
 decl_stmt|;
 try|try
-init|(
-name|MiniDFSCluster
+block|{
 name|cluster
-init|=
+operator|=
 operator|new
 name|MiniDFSCluster
 operator|.
@@ -12531,8 +11970,7 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
-init|)
-block|{
+expr_stmt|;
 name|cluster
 operator|.
 name|waitActive
@@ -12693,11 +12131,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|MiniDFSCluster
-name|cluster
-init|=
-literal|null
-decl_stmt|;
 specifier|final
 name|Configuration
 name|conf
@@ -12713,8 +12146,6 @@ name|dnNumber
 init|=
 literal|3
 decl_stmt|;
-try|try
-block|{
 name|cluster
 operator|=
 operator|new
@@ -12870,25 +12301,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-finally|finally
-block|{
-if|if
-condition|(
-name|cluster
-operator|!=
-literal|null
-condition|)
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-block|}
 comment|/**    * Test fsserver defaults response from {@link DistributedFileSystem} and    * {@link WebHdfsFileSystem} are the same.    * @throws Exception    */
 annotation|@
 name|Test
@@ -12900,11 +12312,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|MiniDFSCluster
-name|cluster
-init|=
-literal|null
-decl_stmt|;
 specifier|final
 name|Configuration
 name|conf
@@ -13081,8 +12488,6 @@ argument_list|,
 name|policyId
 argument_list|)
 decl_stmt|;
-try|try
-block|{
 name|cluster
 operator|=
 operator|new
@@ -13164,23 +12569,6 @@ operator|.
 name|getServerDefaults
 argument_list|()
 expr_stmt|;
-block|}
-finally|finally
-block|{
-if|if
-condition|(
-name|cluster
-operator|!=
-literal|null
-condition|)
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 block|}
 DECL|method|compareFsServerDefaults (FsServerDefaults serverDefaults1, FsServerDefaults serverDefaults2)
 specifier|private
@@ -13378,11 +12766,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|MiniDFSCluster
-name|cluster
-init|=
-literal|null
-decl_stmt|;
 specifier|final
 name|Configuration
 name|conf
@@ -13392,8 +12775,6 @@ operator|.
 name|createConf
 argument_list|()
 decl_stmt|;
-try|try
-block|{
 name|cluster
 operator|=
 operator|new
@@ -13478,24 +12859,7 @@ name|UnsupportedOperationException
 name|uoe
 parameter_list|)
 block|{
-comment|//Expected exception.
-block|}
-block|}
-finally|finally
-block|{
-if|if
-condition|(
-name|cluster
-operator|!=
-literal|null
-condition|)
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
+comment|// Expected exception.
 block|}
 block|}
 comment|/**    * Tests that {@link WebHdfsFileSystem.AbstractRunner} propagates original    * exception's stacktrace and cause during runWithRetry attempts.    * @throws Exception    */
@@ -13547,10 +12911,8 @@ name|numDatanodes
 init|=
 literal|1
 decl_stmt|;
-specifier|final
-name|MiniDFSCluster
 name|cluster
-init|=
+operator|=
 operator|new
 name|MiniDFSCluster
 operator|.
@@ -13566,9 +12928,7 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
-decl_stmt|;
-try|try
-block|{
+expr_stmt|;
 name|cluster
 operator|.
 name|waitActive
@@ -13589,7 +12949,7 @@ operator|.
 name|WEBHDFS_SCHEME
 argument_list|)
 decl_stmt|;
-comment|//create a file
+comment|// create a file
 specifier|final
 name|long
 name|length
@@ -13625,7 +12985,7 @@ argument_list|,
 literal|20120406L
 argument_list|)
 expr_stmt|;
-comment|//get file status and check that it was written properly.
+comment|// get file status and check that it was written properly.
 specifier|final
 name|FileStatus
 name|s1
@@ -13784,15 +13144,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-finally|finally
-block|{
-name|cluster
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 comment|/**    * Tests that the LISTSTATUS ang GETFILESTATUS WebHDFS calls return the    * ecPolicy for EC files.    */
 annotation|@
 name|Test
@@ -13840,9 +13191,8 @@ operator|.
 name|getName
 argument_list|()
 decl_stmt|;
-name|MiniDFSCluster
 name|cluster
-init|=
+operator|=
 operator|new
 name|MiniDFSCluster
 operator|.
@@ -13858,7 +13208,7 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 name|cluster
 operator|.
 name|waitActive
