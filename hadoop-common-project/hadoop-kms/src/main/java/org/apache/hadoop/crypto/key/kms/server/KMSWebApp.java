@@ -252,6 +252,18 @@ name|LoggerFactory
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|bridge
+operator|.
+name|SLF4JBridgeHandler
+import|;
+end_import
+
 begin_class
 annotation|@
 name|InterfaceAudience
@@ -477,6 +489,19 @@ specifier|static
 name|KeyProviderCryptoExtension
 name|keyProviderCryptoExtension
 decl_stmt|;
+static|static
+block|{
+name|SLF4JBridgeHandler
+operator|.
+name|removeHandlersForRootLogger
+argument_list|()
+expr_stmt|;
+name|SLF4JBridgeHandler
+operator|.
+name|install
+argument_list|()
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|contextInitialized (ServletContextEvent sce)
