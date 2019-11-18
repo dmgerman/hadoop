@@ -18366,7 +18366,7 @@ name|initForWritableEndpoints
 argument_list|(
 name|callerUGI
 argument_list|,
-literal|true
+literal|false
 argument_list|)
 expr_stmt|;
 if|if
