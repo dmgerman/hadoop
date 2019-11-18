@@ -236,6 +236,28 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|runtime
+operator|.
+name|ContainerExecutionException
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -480,6 +502,30 @@ DECL|method|isRecovering ()
 name|boolean
 name|isRecovering
 parameter_list|()
+function_decl|;
+DECL|method|setContainerRuntimeData (Object containerRuntimeData)
+name|void
+name|setContainerRuntimeData
+parameter_list|(
+name|Object
+name|containerRuntimeData
+parameter_list|)
+function_decl|;
+DECL|method|getContainerRuntimeData (Class<T> runtimeClazz)
+parameter_list|<
+name|T
+parameter_list|>
+name|T
+name|getContainerRuntimeData
+parameter_list|(
+name|Class
+argument_list|<
+name|T
+argument_list|>
+name|runtimeClazz
+parameter_list|)
+throws|throws
+name|ContainerExecutionException
 function_decl|;
 comment|/**    * Get assigned resource mappings to the container.    *    * @return Resource Mappings of the container    */
 DECL|method|getResourceMappings ()

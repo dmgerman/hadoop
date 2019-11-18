@@ -218,7 +218,7 @@ name|linux
 operator|.
 name|runtime
 operator|.
-name|DockerLinuxContainerRuntime
+name|OCIContainerRuntime
 import|;
 end_import
 
@@ -405,10 +405,10 @@ decl_stmt|;
 DECL|field|runtime
 specifier|private
 specifier|final
-name|DockerLinuxContainerRuntime
+name|OCIContainerRuntime
 name|runtime
 decl_stmt|;
-DECL|method|ContainerVolumePublisher (Container container, String localMountRoot, DockerLinuxContainerRuntime runtime)
+DECL|method|ContainerVolumePublisher (Container container, String localMountRoot, OCIContainerRuntime runtime)
 specifier|public
 name|ContainerVolumePublisher
 parameter_list|(
@@ -418,7 +418,7 @@ parameter_list|,
 name|String
 name|localMountRoot
 parameter_list|,
-name|DockerLinuxContainerRuntime
+name|OCIContainerRuntime
 name|runtime
 parameter_list|)
 block|{

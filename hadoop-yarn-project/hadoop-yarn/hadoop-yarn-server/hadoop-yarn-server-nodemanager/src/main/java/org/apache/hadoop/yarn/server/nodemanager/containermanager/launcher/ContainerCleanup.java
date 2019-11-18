@@ -344,7 +344,7 @@ name|linux
 operator|.
 name|runtime
 operator|.
-name|OCIContainerRuntime
+name|DockerLinuxContainerRuntime
 import|;
 end_import
 
@@ -897,9 +897,9 @@ block|}
 comment|// rm container in docker
 if|if
 condition|(
-name|OCIContainerRuntime
+name|DockerLinuxContainerRuntime
 operator|.
-name|isOCICompliantContainerRequested
+name|isDockerContainerRequested
 argument_list|(
 name|conf
 argument_list|,

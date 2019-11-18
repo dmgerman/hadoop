@@ -6417,6 +6417,13 @@ argument_list|(
 name|masterKey
 argument_list|)
 expr_stmt|;
+name|context
+operator|.
+name|setContainerExecutor
+argument_list|(
+name|exec
+argument_list|)
+expr_stmt|;
 return|return
 name|context
 return|;

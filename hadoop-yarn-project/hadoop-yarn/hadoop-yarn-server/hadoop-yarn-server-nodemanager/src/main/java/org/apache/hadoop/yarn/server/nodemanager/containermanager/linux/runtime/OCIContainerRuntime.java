@@ -532,6 +532,32 @@ name|isDockerContainerRequested
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|linux
+operator|.
+name|runtime
+operator|.
+name|RuncContainerRuntime
+operator|.
+name|isRuncContainerRequested
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>This class is a {@link ContainerRuntime} implementation that uses the  * native {@code container-executor} binary via a  * {@link PrivilegedOperationExecutor} instance to launch processes inside  * OCI-compliant containers.</p>  *  */
 end_comment
@@ -798,6 +824,13 @@ parameter_list|)
 block|{
 return|return
 name|isDockerContainerRequested
+argument_list|(
+name|daemonConf
+argument_list|,
+name|env
+argument_list|)
+operator|||
+name|isRuncContainerRequested
 argument_list|(
 name|daemonConf
 argument_list|,

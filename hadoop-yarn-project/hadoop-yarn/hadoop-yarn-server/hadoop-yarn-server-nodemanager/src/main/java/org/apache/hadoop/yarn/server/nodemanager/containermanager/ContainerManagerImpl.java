@@ -12173,6 +12173,16 @@ name|getLocalizationStatuses
 argument_list|()
 return|;
 block|}
+DECL|method|getResourceLocalizationService ()
+specifier|public
+name|ResourceLocalizationService
+name|getResourceLocalizationService
+parameter_list|()
+block|{
+return|return
+name|rsrcLocalizationSrvc
+return|;
+block|}
 block|}
 end_class
 

@@ -128,6 +128,9 @@ name|DOCKER
 block|,
 DECL|enumConstant|JAVASANDBOX
 name|JAVASANDBOX
+block|,
+DECL|enumConstant|RUNC
+name|RUNC
 block|;   }
 DECL|field|LOCALIZED_RESOURCES
 specifier|public

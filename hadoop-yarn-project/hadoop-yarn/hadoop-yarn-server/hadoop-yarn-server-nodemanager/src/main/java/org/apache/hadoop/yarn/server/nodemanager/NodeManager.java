@@ -3260,6 +3260,14 @@ block|}
 name|registerMXBean
 argument_list|()
 expr_stmt|;
+name|context
+operator|.
+name|getContainerExecutor
+argument_list|()
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
 name|super
 operator|.
 name|serviceInit
@@ -3303,7 +3311,6 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
-comment|// Cleanup ResourcePluginManager
 if|if
 condition|(
 literal|null
@@ -3311,6 +3318,15 @@ operator|!=
 name|context
 condition|)
 block|{
+name|context
+operator|.
+name|getContainerExecutor
+argument_list|()
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+comment|// Cleanup ResourcePluginManager
 name|ResourcePluginManager
 name|rpm
 init|=

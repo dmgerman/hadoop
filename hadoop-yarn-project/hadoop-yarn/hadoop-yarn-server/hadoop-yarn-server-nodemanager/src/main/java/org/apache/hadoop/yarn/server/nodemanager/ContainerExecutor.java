@@ -378,6 +378,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|LocalResource
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Resource
 import|;
 end_import
@@ -1027,6 +1045,18 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+DECL|method|start ()
+specifier|public
+name|void
+name|start
+parameter_list|()
+block|{}
+DECL|method|stop ()
+specifier|public
+name|void
+name|stop
+parameter_list|()
+block|{}
 comment|/**    * This function localizes the JAR file on-demand.    * On Windows the ContainerLaunch creates a temporary special JAR manifest of    * other JARs to workaround the CLASSPATH length. In a secure cluster this    * JAR must be localized so that the container has access to it.    * The default implementation returns the classpath passed to it, which    * is expected to have been created in the node manager's<i>fprivate</i>    * folder, which will not work with secure Windows clusters.    *    * @param jarPath the path to the JAR to localize    * @param target the directory where the JAR file should be localized    * @param owner the name of the user who should own the localized file    * @return the path to the localized JAR file    * @throws IOException if localization fails    */
 DECL|method|localizeClasspathJar (Path jarPath, Path target, String owner)
 specifier|public
@@ -1189,6 +1219,32 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+DECL|method|getLocalResources (Container container)
+specifier|public
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|LocalResource
+argument_list|>
+name|getLocalResources
+parameter_list|(
+name|Container
+name|container
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|container
+operator|.
+name|getLaunchContext
+argument_list|()
+operator|.
+name|getLocalResources
+argument_list|()
+return|;
+block|}
 comment|/**    * Update cluster information inside container.    *    * @param ctx ContainerRuntimeContext    * @param user Owner of application    * @param appId YARN application ID    * @param spec Service Specification    * @throws IOException if there is a failure while writing spec to disk    */
 DECL|method|updateYarnSysFS (Context ctx, String user, String appId, String spec)
 specifier|public

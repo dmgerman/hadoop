@@ -142,6 +142,28 @@ name|nodemanager
 operator|.
 name|containermanager
 operator|.
+name|localizer
+operator|.
+name|ResourceLocalizationService
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
 name|monitor
 operator|.
 name|ContainersMonitor
@@ -215,6 +237,11 @@ function_decl|;
 DECL|method|handleCredentialUpdate ()
 name|void
 name|handleCredentialUpdate
+parameter_list|()
+function_decl|;
+DECL|method|getResourceLocalizationService ()
+name|ResourceLocalizationService
+name|getResourceLocalizationService
 parameter_list|()
 function_decl|;
 block|}

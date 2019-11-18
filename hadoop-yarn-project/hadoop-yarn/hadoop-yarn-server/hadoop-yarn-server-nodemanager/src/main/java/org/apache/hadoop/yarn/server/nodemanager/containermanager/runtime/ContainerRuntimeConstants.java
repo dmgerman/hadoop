@@ -69,6 +69,17 @@ name|CONTAINER_RUNTIME_DOCKER
 init|=
 literal|"docker"
 decl_stmt|;
+annotation|@
+name|Private
+DECL|field|CONTAINER_RUNTIME_RUNC
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CONTAINER_RUNTIME_RUNC
+init|=
+literal|"runc"
+decl_stmt|;
 block|}
 end_class
 
