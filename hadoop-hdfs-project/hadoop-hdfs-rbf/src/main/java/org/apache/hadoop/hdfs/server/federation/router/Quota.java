@@ -602,6 +602,8 @@ block|{
 return|return
 name|aggregateQuota
 argument_list|(
+name|path
+argument_list|,
 name|getEachQuotaUsage
 argument_list|(
 name|path
@@ -1124,14 +1126,17 @@ block|}
 end_function
 
 begin_comment
-comment|/**    * Aggregate quota that queried from sub-clusters.    * @param results Quota query result.    * @return Aggregated Quota.    */
+comment|/**    * Aggregate quota that queried from sub-clusters.    * @param path Federation path of the results.    * @param results Quota query result.    * @return Aggregated Quota.    */
 end_comment
 
 begin_function
-DECL|method|aggregateQuota (Map<RemoteLocation, QuotaUsage> results)
+DECL|method|aggregateQuota (String path, Map<RemoteLocation, QuotaUsage> results)
 name|QuotaUsage
 name|aggregateQuota
 parameter_list|(
+name|String
+name|path
+parameter_list|,
 name|Map
 argument_list|<
 name|RemoteLocation
@@ -1140,6 +1145,8 @@ name|QuotaUsage
 argument_list|>
 name|results
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|long
 name|nsCount
@@ -1169,6 +1176,14 @@ name|boolean
 name|hasQuotaUnset
 init|=
 literal|false
+decl_stmt|;
+name|boolean
+name|isMountEntry
+init|=
+name|isMountEntry
+argument_list|(
+name|path
+argument_list|)
 decl_stmt|;
 for|for
 control|(
@@ -1204,6 +1219,27 @@ operator|.
 name|getValue
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|isMountEntry
+condition|)
+block|{
+name|nsCount
+operator|+=
+name|usage
+operator|.
+name|getFileAndDirectoryCount
+argument_list|()
+expr_stmt|;
+name|ssCount
+operator|+=
+name|usage
+operator|.
+name|getSpaceConsumed
+argument_list|()
+expr_stmt|;
+block|}
+elseif|else
 if|if
 condition|(
 name|usage
@@ -1295,6 +1331,34 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+if|if
+condition|(
+name|isMountEntry
+condition|)
+block|{
+name|QuotaUsage
+name|quota
+init|=
+name|getGlobalQuota
+argument_list|(
+name|path
+argument_list|)
+decl_stmt|;
+name|nsQuota
+operator|=
+name|quota
+operator|.
+name|getQuota
+argument_list|()
+expr_stmt|;
+name|ssQuota
+operator|=
+name|quota
+operator|.
+name|getSpaceQuota
+argument_list|()
+expr_stmt|;
 block|}
 name|QuotaUsage
 operator|.
