@@ -1080,6 +1080,24 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+comment|// Set s3guard is off warn level to silent, as the fs is often instantiated
+comment|// without s3guard on purpose.
+name|conf
+operator|.
+name|set
+argument_list|(
+name|S3GUARD_DISABLED_WARN_LEVEL
+argument_list|,
+name|S3Guard
+operator|.
+name|DisabledWarnLevel
+operator|.
+name|SILENT
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|commandFormat
 operator|=
 operator|new
