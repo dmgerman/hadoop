@@ -2653,6 +2653,48 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
+name|total
+operator|==
+literal|0
+operator|&&
+name|nodeThresh
+operator|==
+literal|0
+condition|)
+block|{
+name|assertTrue
+argument_list|(
+literal|"Bad safemode status: '"
+operator|+
+name|status
+operator|+
+literal|"'"
+argument_list|,
+name|status
+operator|.
+name|isEmpty
+argument_list|()
+operator|||
+name|status
+operator|.
+name|startsWith
+argument_list|(
+literal|"Safe mode is ON. The reported blocks 0 "
+operator|+
+literal|"has reached the threshold 0.9990 of total blocks 0. The "
+operator|+
+literal|"minimum number of live datanodes is not required. In safe "
+operator|+
+literal|"mode extension. Safe mode will be turned off automatically "
+operator|+
+literal|"in 0 seconds."
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
 name|safe
 operator|==
 name|total

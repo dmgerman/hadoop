@@ -1103,6 +1103,10 @@ condition|)
 block|{
 if|if
 condition|(
+name|blockTotal
+operator|>
+literal|0
+operator|&&
 name|extension
 operator|>
 literal|0
@@ -2267,7 +2271,7 @@ name|ignored
 parameter_list|)
 block|{     }
 block|}
-comment|/**    * Get time (counting in milliseconds) left to leave extension period.    *    * Negative value indicates the extension period has passed.    */
+comment|/**    * Get time (counting in milliseconds) left to leave extension period.    * It should leave safemode at once if blockTotal = 0 rather than wait    * extension time (30s by default).    *    * Negative value indicates the extension period has passed.    */
 DECL|method|timeToLeaveExtension ()
 specifier|private
 name|long
@@ -2275,6 +2279,10 @@ name|timeToLeaveExtension
 parameter_list|()
 block|{
 return|return
+name|blockTotal
+operator|>
+literal|0
+condition|?
 name|reachedTime
 operator|.
 name|get
@@ -2284,6 +2292,8 @@ name|extension
 operator|-
 name|monotonicNow
 argument_list|()
+else|:
+literal|0
 return|;
 block|}
 comment|/**    * Returns true if Namenode was started with a RollBack option.    *    * @param option - StartupOption    * @return boolean    */
