@@ -236,16 +236,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Collections
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Comparator
 import|;
 end_import
@@ -287,6 +277,16 @@ operator|.
 name|util
 operator|.
 name|Set
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|TreeSet
 import|;
 end_import
 
@@ -1861,14 +1861,14 @@ return|return
 name|nodeList
 return|;
 block|}
-comment|/**    * Convenience method to sort nodes.    *    * Note that the sort is performed without holding a lock. We are sorting    * here instead of on the caller to allow for future optimizations (e.g.    * sort once every x milliseconds).    */
-DECL|method|sortedNodeList (Comparator<N> comparator)
+comment|/**    * Convenience method to sort nodes.    * Nodes can change while being sorted. Using a standard sort will fail    * without locking each node, the TreeSet handles this without locks.    *    * @param comparator the comparator to sort the nodes with    * @return sorted set of nodes in the form of a TreeSet    */
+DECL|method|sortedNodeSet (Comparator<N> comparator)
 specifier|public
-name|List
+name|TreeSet
 argument_list|<
 name|N
 argument_list|>
-name|sortedNodeList
+name|sortedNodeSet
 parameter_list|(
 name|Comparator
 argument_list|<
@@ -1877,13 +1877,18 @@ argument_list|>
 name|comparator
 parameter_list|)
 block|{
-name|List
+name|TreeSet
 argument_list|<
 name|N
 argument_list|>
-name|sortedList
+name|sortedSet
 init|=
-literal|null
+operator|new
+name|TreeSet
+argument_list|<>
+argument_list|(
+name|comparator
+argument_list|)
 decl_stmt|;
 name|readLock
 operator|.
@@ -1892,10 +1897,9 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|sortedList
-operator|=
-operator|new
-name|ArrayList
+name|sortedSet
+operator|.
+name|addAll
 argument_list|(
 name|nodes
 operator|.
@@ -1912,17 +1916,8 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
-name|Collections
-operator|.
-name|sort
-argument_list|(
-name|sortedList
-argument_list|,
-name|comparator
-argument_list|)
-expr_stmt|;
 return|return
-name|sortedList
+name|sortedSet
 return|;
 block|}
 comment|/**    * Convenience method to return list of nodes corresponding to resourceName    * passed in the {@link ResourceRequest}.    *    * @param resourceName Host/rack name of the resource, or    * {@link ResourceRequest#ANY}    * @return list of nodes that match the resourceName    */

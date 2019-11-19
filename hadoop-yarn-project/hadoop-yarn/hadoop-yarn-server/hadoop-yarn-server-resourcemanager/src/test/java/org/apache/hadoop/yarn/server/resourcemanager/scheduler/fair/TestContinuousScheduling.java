@@ -2184,11 +2184,6 @@ argument_list|,
 literal|30
 argument_list|)
 decl_stmt|;
-synchronized|synchronized
-init|(
-name|scheduler
-init|)
-block|{
 name|node
 operator|.
 name|deductUnallocatedResource
@@ -2205,7 +2200,6 @@ name|i
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}

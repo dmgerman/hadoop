@@ -1650,6 +1650,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|TreeSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|concurrent
 operator|.
 name|ConcurrentHashMap
@@ -5179,27 +5189,36 @@ operator|.
 name|getTime
 argument_list|()
 decl_stmt|;
-name|List
+name|TreeSet
 argument_list|<
 name|FSSchedulerNode
 argument_list|>
-name|nodeIdList
+name|nodeIdSet
 decl_stmt|;
-comment|// Hold a lock to prevent comparator order changes due to changes of node
-comment|// unallocated resources
-synchronized|synchronized
-init|(
-name|this
-init|)
+comment|// Hold a lock to prevent node changes as much as possible.
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
 block|{
-name|nodeIdList
+name|nodeIdSet
 operator|=
 name|nodeTracker
 operator|.
-name|sortedNodeList
+name|sortedNodeSet
 argument_list|(
 name|nodeAvailableResourceComparator
 argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
 expr_stmt|;
 block|}
 comment|// iterate all nodes
@@ -5208,7 +5227,7 @@ control|(
 name|FSSchedulerNode
 name|node
 range|:
-name|nodeIdList
+name|nodeIdSet
 control|)
 block|{
 try|try
