@@ -1913,8 +1913,10 @@ return|;
 block|}
 block|}
 comment|/**    * Copies the specified remote file to local NM aux service directory. If the    * same file already exists (as determined by modification time), the file    * will not be copied again.    *    * @param sName service name    * @param className service class name    * @param remoteFile location of the file to download    * @param type type of file (STATIC for a jar or ARCHIVE for a tarball)    * @param conf configuration    * @return path of the downloaded file    * @throws IOException    */
+annotation|@
+name|VisibleForTesting
 DECL|method|maybeDownloadJars (String sName, String className, String remoteFile, AuxServiceFile.TypeEnum type, Configuration conf)
-specifier|private
+specifier|protected
 name|Path
 name|maybeDownloadJars
 parameter_list|(
