@@ -1034,9 +1034,9 @@ finally|finally
 block|{
 name|IOUtils
 operator|.
-name|cleanup
+name|cleanupWithLogger
 argument_list|(
-literal|null
+name|LOG
 argument_list|,
 name|fos
 argument_list|)

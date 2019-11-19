@@ -6950,9 +6950,9 @@ condition|)
 block|{
 name|IOUtils
 operator|.
-name|cleanup
+name|cleanupWithLogger
 argument_list|(
-literal|null
+name|LOG
 argument_list|,
 name|channel
 argument_list|)
@@ -13134,9 +13134,9 @@ condition|)
 block|{
 name|IOUtils
 operator|.
-name|cleanup
+name|cleanupWithLogger
 argument_list|(
-literal|null
+name|LOG
 argument_list|,
 name|channel
 argument_list|)
@@ -13144,9 +13144,9 @@ expr_stmt|;
 block|}
 name|IOUtils
 operator|.
-name|cleanup
+name|cleanupWithLogger
 argument_list|(
-literal|null
+name|LOG
 argument_list|,
 name|socket
 argument_list|)
