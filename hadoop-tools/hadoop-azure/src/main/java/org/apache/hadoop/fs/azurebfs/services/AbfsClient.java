@@ -472,13 +472,19 @@ specifier|final
 name|String
 name|userAgent
 decl_stmt|;
+DECL|field|abfsPerfTracker
+specifier|private
+specifier|final
+name|AbfsPerfTracker
+name|abfsPerfTracker
+decl_stmt|;
 DECL|field|tokenProvider
 specifier|private
 specifier|final
 name|AccessTokenProvider
 name|tokenProvider
 decl_stmt|;
-DECL|method|AbfsClient (final URL baseUrl, final SharedKeyCredentials sharedKeyCredentials, final AbfsConfiguration abfsConfiguration, final ExponentialRetryPolicy exponentialRetryPolicy, final AccessTokenProvider tokenProvider)
+DECL|method|AbfsClient (final URL baseUrl, final SharedKeyCredentials sharedKeyCredentials, final AbfsConfiguration abfsConfiguration, final ExponentialRetryPolicy exponentialRetryPolicy, final AccessTokenProvider tokenProvider, final AbfsPerfTracker abfsPerfTracker)
 specifier|public
 name|AbfsClient
 parameter_list|(
@@ -501,6 +507,10 @@ parameter_list|,
 specifier|final
 name|AccessTokenProvider
 name|tokenProvider
+parameter_list|,
+specifier|final
+name|AbfsPerfTracker
+name|abfsPerfTracker
 parameter_list|)
 block|{
 name|this
@@ -624,6 +634,12 @@ name|tokenProvider
 operator|=
 name|tokenProvider
 expr_stmt|;
+name|this
+operator|.
+name|abfsPerfTracker
+operator|=
+name|abfsPerfTracker
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -664,6 +680,16 @@ parameter_list|()
 block|{
 return|return
 name|filesystem
+return|;
+block|}
+DECL|method|getAbfsPerfTracker ()
+specifier|protected
+name|AbfsPerfTracker
+name|getAbfsPerfTracker
+parameter_list|()
+block|{
+return|return
+name|abfsPerfTracker
 return|;
 block|}
 DECL|method|getRetryPolicy ()

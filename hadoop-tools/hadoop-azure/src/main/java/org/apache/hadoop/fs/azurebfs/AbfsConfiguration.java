@@ -1226,6 +1226,22 @@ specifier|private
 name|boolean
 name|useUpn
 decl_stmt|;
+annotation|@
+name|BooleanConfigurationValidatorAnnotation
+argument_list|(
+name|ConfigurationKey
+operator|=
+name|FS_AZURE_ABFS_LATENCY_TRACK
+argument_list|,
+name|DefaultValue
+operator|=
+name|DEFAULT_ABFS_LATENCY_TRACK
+argument_list|)
+DECL|field|trackLatency
+specifier|private
+name|boolean
+name|trackLatency
+decl_stmt|;
 DECL|field|storageAccountKeys
 specifier|private
 name|Map
@@ -2298,6 +2314,19 @@ return|return
 name|this
 operator|.
 name|useUpn
+return|;
+block|}
+comment|/**    * Whether {@code AbfsClient} should track and send latency info back to storage servers.    *    * @return a boolean indicating whether latency should be tracked.    */
+DECL|method|shouldTrackLatency ()
+specifier|public
+name|boolean
+name|shouldTrackLatency
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|trackLatency
 return|;
 block|}
 DECL|method|getTokenProvider ()

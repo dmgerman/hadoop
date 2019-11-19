@@ -355,6 +355,15 @@ name|X_MS_NAMESPACE_ENABLED
 init|=
 literal|"x-ms-namespace-enabled"
 decl_stmt|;
+DECL|field|X_MS_ABFS_CLIENT_LATENCY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|X_MS_ABFS_CLIENT_LATENCY
+init|=
+literal|"x-ms-abfs-client-latency"
+decl_stmt|;
 DECL|method|HttpHeaderConfigurations ()
 specifier|private
 name|HttpHeaderConfigurations

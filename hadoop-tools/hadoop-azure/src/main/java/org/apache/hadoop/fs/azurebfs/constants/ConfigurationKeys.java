@@ -494,6 +494,16 @@ name|FS_AZURE_ACCOUNT_OAUTH_REFRESH_TOKEN_ENDPOINT
 init|=
 literal|"fs.azure.account.oauth2.refresh.token.endpoint"
 decl_stmt|;
+comment|/** Key for enabling the tracking of ABFS API latency and sending the latency numbers to the ABFS API service */
+DECL|field|FS_AZURE_ABFS_LATENCY_TRACK
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_AZURE_ABFS_LATENCY_TRACK
+init|=
+literal|"fs.azure.abfs.latency.track"
+decl_stmt|;
 DECL|method|accountProperty (String property, String account)
 specifier|public
 specifier|static

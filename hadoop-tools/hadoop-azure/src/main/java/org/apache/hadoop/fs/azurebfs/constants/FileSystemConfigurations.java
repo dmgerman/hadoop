@@ -363,6 +363,15 @@ name|DEFAULT_USE_UPN
 init|=
 literal|false
 decl_stmt|;
+DECL|field|DEFAULT_ABFS_LATENCY_TRACK
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_ABFS_LATENCY_TRACK
+init|=
+literal|false
+decl_stmt|;
 DECL|method|FileSystemConfigurations ()
 specifier|private
 name|FileSystemConfigurations
