@@ -697,14 +697,31 @@ literal|"Preempting container "
 operator|+
 name|container
 operator|+
-literal|" from queue "
+literal|" from queue: "
 operator|+
+operator|(
+name|app
+operator|!=
+literal|null
+condition|?
 name|app
 operator|.
 name|getQueueName
 argument_list|()
+else|:
+literal|"unknown"
+operator|)
 argument_list|)
 expr_stmt|;
+comment|// If the app has unregistered while building the container list
+comment|// the app might be null, skip notifying the app
+if|if
+condition|(
+name|app
+operator|!=
+literal|null
+condition|)
+block|{
 name|app
 operator|.
 name|trackContainerForPreemption
@@ -712,6 +729,7 @@ argument_list|(
 name|container
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}
@@ -897,6 +915,35 @@ name|getApplicationAttemptId
 argument_list|()
 argument_list|)
 decl_stmt|;
+comment|// If the app has unregistered while building the container list the app
+comment|// might be null, just skip this container: it should be cleaned up soon
+if|if
+condition|(
+name|app
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Found container "
+operator|+
+name|container
+operator|+
+literal|" on node "
+operator|+
+name|node
+operator|.
+name|getNodeName
+argument_list|()
+operator|+
+literal|"without app, skipping preemption"
+argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
 name|ApplicationId
 name|appId
 init|=
