@@ -2666,14 +2666,10 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|intercept
-argument_list|(
-name|FileNotFoundException
-operator|.
-name|class
-argument_list|,
-parameter_list|()
-lambda|->
+comment|// and look for the magic directory
+comment|// HADOOP-16632 shows how partitioned/speculative tasks can leave
+comment|// data here and it is not an error. So just log and continue
+try|try
 block|{
 specifier|final
 name|FileStatus
@@ -2686,32 +2682,15 @@ argument_list|(
 name|magicDir
 argument_list|)
 decl_stmt|;
-name|StringBuilder
-name|result
-init|=
-operator|new
-name|StringBuilder
+name|LOG
+operator|.
+name|warn
 argument_list|(
 literal|"Found magic dir which should"
 operator|+
-literal|" have been deleted at "
-argument_list|)
-operator|.
-name|append
-argument_list|(
+literal|" have been deleted at {}"
+argument_list|,
 name|st
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|'\n'
-argument_list|)
-decl_stmt|;
-name|result
-operator|.
-name|append
-argument_list|(
-literal|" ["
 argument_list|)
 expr_stmt|;
 name|applyLocatedFiles
@@ -2729,43 +2708,25 @@ parameter_list|(
 name|status
 parameter_list|)
 lambda|->
-name|result
+name|LOG
 operator|.
-name|append
+name|warn
 argument_list|(
-literal|" "
-argument_list|)
-operator|.
-name|append
-argument_list|(
+literal|"{}"
+argument_list|,
 name|status
-operator|.
-name|getPath
-argument_list|()
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|'\n'
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|result
-operator|.
-name|append
-argument_list|(
-literal|"]"
-argument_list|)
-expr_stmt|;
-return|return
-name|result
-operator|.
-name|toString
-argument_list|()
-return|;
 block|}
-argument_list|)
-expr_stmt|;
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|ignored
+parameter_list|)
+block|{
+comment|// expected
+block|}
 block|}
 block|}
 block|}
