@@ -1154,6 +1154,20 @@ index|[]
 block|{}
 argument_list|)
 expr_stmt|;
+name|PARAMS_DEF
+operator|.
+name|put
+argument_list|(
+name|Operation
+operator|.
+name|GETSERVERDEFAULTS
+argument_list|,
+operator|new
+name|Class
+index|[]
+block|{}
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|HttpFSParametersProvider ()
 specifier|public

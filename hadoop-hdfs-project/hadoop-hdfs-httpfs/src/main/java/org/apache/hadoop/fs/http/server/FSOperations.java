@@ -128,6 +128,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FsServerDefaults
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|GlobFilter
 import|;
 end_import
@@ -6675,6 +6689,101 @@ operator|new
 name|UnsupportedOperationException
 argument_list|(
 literal|"getSnapshottableDirListing is "
+operator|+
+literal|"not supported for HttpFs on "
+operator|+
+name|fs
+operator|.
+name|getClass
+argument_list|()
+operator|+
+literal|". Please check your fs.defaultFS configuration"
+argument_list|)
+throw|;
+block|}
+return|return
+name|JsonUtil
+operator|.
+name|toJsonString
+argument_list|(
+name|sds
+argument_list|)
+return|;
+block|}
+block|}
+comment|/**    * Executor that performs a getServerDefaults operation.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+DECL|class|FSGetServerDefaults
+specifier|public
+specifier|static
+class|class
+name|FSGetServerDefaults
+implements|implements
+name|FileSystemAccess
+operator|.
+name|FileSystemExecutor
+argument_list|<
+name|String
+argument_list|>
+block|{
+comment|/**      * Creates a getServerDefaults executor.      */
+DECL|method|FSGetServerDefaults ()
+specifier|public
+name|FSGetServerDefaults
+parameter_list|()
+block|{     }
+comment|/**      * Executes the filesystem operation.      * @param fs filesystem instance to use.      * @return A JSON string.      * @throws IOException thrown if an IO error occurred.      */
+annotation|@
+name|Override
+DECL|method|execute (FileSystem fs)
+specifier|public
+name|String
+name|execute
+parameter_list|(
+name|FileSystem
+name|fs
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|FsServerDefaults
+name|sds
+init|=
+literal|null
+decl_stmt|;
+if|if
+condition|(
+name|fs
+operator|instanceof
+name|DistributedFileSystem
+condition|)
+block|{
+name|DistributedFileSystem
+name|dfs
+init|=
+operator|(
+name|DistributedFileSystem
+operator|)
+name|fs
+decl_stmt|;
+name|sds
+operator|=
+name|dfs
+operator|.
+name|getServerDefaults
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"getServerDefaults is "
 operator|+
 literal|"not supported for HttpFs on "
 operator|+
