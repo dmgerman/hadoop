@@ -2901,6 +2901,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|ensureInitialized
+argument_list|()
+expr_stmt|;
 name|AccessControlContext
 name|context
 init|=
@@ -3171,6 +3174,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|ensureInitialized
+argument_list|()
+expr_stmt|;
 name|UserGroupInformation
 name|loginUser
 init|=
