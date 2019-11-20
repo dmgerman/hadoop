@@ -286,16 +286,6 @@ name|VisibleForTesting
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|slf4j
-operator|.
-name|Logger
-import|;
-end_import
-
 begin_comment
 comment|/**  * Keeps a Collection for every named machine containing blocks  * that have recently been invalidated and are thought to live  * on the machine in question.  */
 end_comment
@@ -432,24 +422,18 @@ operator|=
 name|blockIdManager
 expr_stmt|;
 name|printBlockDeletionTime
-argument_list|(
-name|BlockManager
-operator|.
-name|LOG
-argument_list|)
+argument_list|()
 expr_stmt|;
 block|}
-DECL|method|printBlockDeletionTime (final Logger log)
+DECL|method|printBlockDeletionTime ()
 specifier|private
 name|void
 name|printBlockDeletionTime
-parameter_list|(
-specifier|final
-name|Logger
-name|log
-parameter_list|)
+parameter_list|()
 block|{
-name|log
+name|BlockManager
+operator|.
+name|LOG
 operator|.
 name|info
 argument_list|(
@@ -503,7 +487,9 @@ literal|1000
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|log
+name|BlockManager
+operator|.
+name|LOG
 operator|.
 name|info
 argument_list|(
