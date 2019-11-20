@@ -3938,8 +3938,12 @@ DECL|field|timestampNanos
 name|long
 name|timestampNanos
 decl_stmt|;
-comment|// time received when response is null
-comment|// time served when response is not null
+comment|// time the call was received
+DECL|field|responseTimestampNanos
+name|long
+name|responseTimestampNanos
+decl_stmt|;
+comment|// time the call was served
 DECL|field|responseWaitCount
 specifier|private
 name|AtomicInteger
@@ -4187,6 +4191,12 @@ name|Time
 operator|.
 name|monotonicNowNanos
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|responseTimestampNanos
+operator|=
+name|timestampNanos
 expr_stmt|;
 name|this
 operator|.
@@ -7970,7 +7980,7 @@ name|now
 operator|>
 name|call
 operator|.
-name|timestampNanos
+name|responseTimestampNanos
 operator|+
 name|PURGE_INTERVAL_NANOS
 condition|)
@@ -8237,7 +8247,7 @@ block|{
 comment|// set the serve time when the response has to be sent later
 name|call
 operator|.
-name|timestampNanos
+name|responseTimestampNanos
 operator|=
 name|Time
 operator|.
