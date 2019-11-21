@@ -4467,7 +4467,7 @@ return|return
 name|removed
 return|;
 block|}
-comment|/**    * List mount points.    *    * @param path Path to list.    * @throws IOException If it cannot be listed.    */
+comment|/**    * List mount points.    *    * @param argv Parameters of the path.    * @param i Index in the parameters.    * @throws IOException If it cannot be listed.    */
 DECL|method|listMounts (String[] argv, int i)
 specifier|public
 name|void
@@ -5378,7 +5378,7 @@ operator|.
 name|getSpaceConsumed
 argument_list|()
 decl_stmt|;
-comment|// If nsQuota and ssQuota were unset, clear nsQuota and ssQuota.
+comment|// If nsQuota and ssQuota were reset, clear nsQuota and ssQuota.
 if|if
 condition|(
 name|nsQuota
