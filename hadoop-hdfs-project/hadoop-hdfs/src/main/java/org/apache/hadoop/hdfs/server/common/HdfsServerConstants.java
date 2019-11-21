@@ -1413,6 +1413,13 @@ name|MAX_BLOCKS_IN_GROUP
 init|=
 literal|16
 decl_stmt|;
+comment|// maximum bandwidth per datanode 1TB/sec.
+DECL|field|MAX_BANDWIDTH_PER_DATANODE
+name|long
+name|MAX_BANDWIDTH_PER_DATANODE
+init|=
+literal|1099511627776L
+decl_stmt|;
 block|}
 end_interface
 

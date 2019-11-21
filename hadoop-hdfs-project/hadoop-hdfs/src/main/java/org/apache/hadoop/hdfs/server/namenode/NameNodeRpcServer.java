@@ -8903,6 +8903,29 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|bandwidth
+operator|>
+name|HdfsServerConstants
+operator|.
+name|MAX_BANDWIDTH_PER_DATANODE
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Bandwidth should not exceed maximum limit "
+operator|+
+name|HdfsServerConstants
+operator|.
+name|MAX_BANDWIDTH_PER_DATANODE
+operator|+
+literal|" bytes per second"
+argument_list|)
+throw|;
+block|}
 name|checkNNStartup
 argument_list|()
 expr_stmt|;
