@@ -46,9 +46,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|conf
 operator|.
-name|FsShell
+name|Configuration
 import|;
 end_import
 
@@ -60,9 +60,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
+name|fs
 operator|.
-name|Configuration
+name|FsShell
 import|;
 end_import
 
@@ -148,22 +148,6 @@ block|{
 name|super
 argument_list|()
 expr_stmt|;
-specifier|final
-name|AbfsConfiguration
-name|conf
-init|=
-name|getConfiguration
-argument_list|()
-decl_stmt|;
-name|conf
-operator|.
-name|setBoolean
-argument_list|(
-name|AZURE_CREATE_REMOTE_FILESYSTEM_DURING_INITIALIZATION
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
 block|}
 comment|/**    * Test for HADOOP-16138: hadoop fs mkdir / of nonexistent abfs    * container raises NPE.    *    * The command should return with 1 exit status, but there should be no NPE.    *    * @throws Exception    */
 annotation|@
@@ -183,15 +167,6 @@ init|=
 name|getRawConfiguration
 argument_list|()
 decl_stmt|;
-name|FsShell
-name|fsShell
-init|=
-operator|new
-name|FsShell
-argument_list|(
-name|rawConf
-argument_list|)
-decl_stmt|;
 specifier|final
 name|String
 name|account
@@ -205,6 +180,15 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
+name|rawConf
+operator|.
+name|setBoolean
+argument_list|(
+name|AZURE_CREATE_REMOTE_FILESYSTEM_DURING_INITIALIZATION
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
 name|String
 name|nonExistentContainer
 init|=
@@ -214,6 +198,15 @@ name|UUID
 operator|.
 name|randomUUID
 argument_list|()
+decl_stmt|;
+name|FsShell
+name|fsShell
+init|=
+operator|new
+name|FsShell
+argument_list|(
+name|rawConf
+argument_list|)
 decl_stmt|;
 name|int
 name|result
