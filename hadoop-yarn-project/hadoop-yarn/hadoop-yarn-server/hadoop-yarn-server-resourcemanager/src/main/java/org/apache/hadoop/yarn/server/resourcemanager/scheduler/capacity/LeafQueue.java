@@ -9640,6 +9640,13 @@ operator|.
 name|getContainer
 argument_list|()
 operator|+
+literal|" containerState="
+operator|+
+name|rmContainer
+operator|.
+name|getState
+argument_list|()
+operator|+
 literal|" resource="
 operator|+
 name|rmContainer
@@ -9777,6 +9784,13 @@ operator|+
 name|rmContainer
 operator|.
 name|getContainer
+argument_list|()
+operator|+
+literal|" containerState="
+operator|+
+name|rmContainer
+operator|.
+name|getState
 argument_list|()
 operator|+
 literal|" resource="
