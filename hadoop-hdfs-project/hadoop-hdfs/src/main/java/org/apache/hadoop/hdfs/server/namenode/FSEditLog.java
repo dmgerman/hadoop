@@ -5640,7 +5640,8 @@ name|op
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|logRenameSnapshot (String path, String snapOldName, String snapNewName, boolean toLogRpcIds)
+comment|/**    * Log that a snapshot is renamed.    * @param path Root of the snapshot.    * @param snapOldName Old name of the snapshot.    * @param snapNewName New name the snapshot will be renamed to.    * @param toLogRpcIds If it is logging RPC ids.    * @param mtime The snapshot modification time set by Time.now().    */
+DECL|method|logRenameSnapshot (String path, String snapOldName, String snapNewName, boolean toLogRpcIds, long mtime)
 name|void
 name|logRenameSnapshot
 parameter_list|(
@@ -5655,6 +5656,9 @@ name|snapNewName
 parameter_list|,
 name|boolean
 name|toLogRpcIds
+parameter_list|,
+name|long
+name|mtime
 parameter_list|)
 block|{
 name|RenameSnapshotOp
@@ -5683,6 +5687,11 @@ operator|.
 name|setSnapshotNewName
 argument_list|(
 name|snapNewName
+argument_list|)
+operator|.
+name|setSnapshotMTime
+argument_list|(
+name|mtime
 argument_list|)
 decl_stmt|;
 name|logRpcIds

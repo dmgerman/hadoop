@@ -682,8 +682,8 @@ name|snapshotsByNames
 argument_list|)
 return|;
 block|}
-comment|/**    * Rename a snapshot    * @param path    *          The directory path where the snapshot was taken. Used for    *          generating exception message.    * @param oldName    *          Old name of the snapshot    * @param newName    *          New name the snapshot will be renamed to    * @throws SnapshotException    *           Throw SnapshotException when either the snapshot with the old    *           name does not exist or a snapshot with the new name already    *           exists    */
-DECL|method|renameSnapshot (String path, String oldName, String newName)
+comment|/**    * Rename a snapshot    * @param path    *          The directory path where the snapshot was taken. Used for    *          generating exception message.    * @param oldName    *          Old name of the snapshot    * @param newName    *          New name the snapshot will be renamed to    * @param mtime The snapshot modification time set by Time.now().    * @throws SnapshotException    *           Throw SnapshotException when either the snapshot with the old    *           name does not exist or a snapshot with the new name already    *           exists    */
+DECL|method|renameSnapshot (String path, String oldName, String newName, long mtime)
 specifier|public
 name|void
 name|renameSnapshot
@@ -696,6 +696,9 @@ name|oldName
 parameter_list|,
 name|String
 name|newName
+parameter_list|,
+name|long
+name|mtime
 parameter_list|)
 throws|throws
 name|SnapshotException
@@ -815,6 +818,17 @@ operator|.
 name|setLocalName
 argument_list|(
 name|newNameBytes
+argument_list|)
+expr_stmt|;
+name|ssRoot
+operator|.
+name|setModificationTime
+argument_list|(
+name|mtime
+argument_list|,
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 expr_stmt|;
 name|indexOfNew

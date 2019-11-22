@@ -793,6 +793,16 @@ argument_list|,
 name|path
 argument_list|)
 expr_stmt|;
+comment|// time of snapshot modification
+specifier|final
+name|long
+name|now
+init|=
+name|Time
+operator|.
+name|now
+argument_list|()
+decl_stmt|;
 name|fsd
 operator|.
 name|writeLock
@@ -811,6 +821,8 @@ argument_list|,
 name|snapshotOldName
 argument_list|,
 name|snapshotNewName
+argument_list|,
+name|now
 argument_list|)
 expr_stmt|;
 block|}
@@ -836,6 +848,8 @@ argument_list|,
 name|snapshotNewName
 argument_list|,
 name|logRetryCache
+argument_list|,
+name|now
 argument_list|)
 expr_stmt|;
 block|}

@@ -1445,7 +1445,8 @@ name|snapshotName
 argument_list|)
 return|;
 block|}
-DECL|method|renameSnapshot (String path, String oldName, String newName)
+comment|/**    * Rename a snapshot.    * @param path The directory path where the snapshot was taken.    * @param oldName Old name of the snapshot    * @param newName New name the snapshot will be renamed to    * @param mtime The snapshot modification time set by Time.now().    */
+DECL|method|renameSnapshot (String path, String oldName, String newName, long mtime)
 specifier|public
 name|void
 name|renameSnapshot
@@ -1458,6 +1459,9 @@ name|oldName
 parameter_list|,
 name|String
 name|newName
+parameter_list|,
+name|long
+name|mtime
 parameter_list|)
 throws|throws
 name|SnapshotException
@@ -1472,6 +1476,8 @@ argument_list|,
 name|oldName
 argument_list|,
 name|newName
+argument_list|,
+name|mtime
 argument_list|)
 expr_stmt|;
 block|}

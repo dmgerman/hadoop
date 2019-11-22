@@ -6004,6 +6004,10 @@ argument_list|,
 name|renameSnapshotOp
 operator|.
 name|snapshotNewName
+argument_list|,
+name|renameSnapshotOp
+operator|.
+name|mtime
 argument_list|)
 expr_stmt|;
 if|if

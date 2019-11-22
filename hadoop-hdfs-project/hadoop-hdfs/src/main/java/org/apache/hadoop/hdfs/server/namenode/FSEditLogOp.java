@@ -19219,6 +19219,11 @@ DECL|field|snapshotNewName
 name|String
 name|snapshotNewName
 decl_stmt|;
+comment|/** Modification time of the edit set by Time.now(). */
+DECL|field|mtime
+name|long
+name|mtime
+decl_stmt|;
 DECL|method|RenameSnapshotOp ()
 name|RenameSnapshotOp
 parameter_list|()
@@ -19269,7 +19274,12 @@ name|snapshotNewName
 operator|=
 literal|null
 expr_stmt|;
+name|mtime
+operator|=
+literal|0L
+expr_stmt|;
 block|}
+comment|/* set the old name of the snapshot. */
 DECL|method|setSnapshotOldName (String snapshotOldName)
 name|RenameSnapshotOp
 name|setSnapshotOldName
@@ -19288,6 +19298,7 @@ return|return
 name|this
 return|;
 block|}
+comment|/* set the new name of the snapshot. */
 DECL|method|setSnapshotNewName (String snapshotNewName)
 name|RenameSnapshotOp
 name|setSnapshotNewName
@@ -19319,6 +19330,25 @@ operator|.
 name|snapshotRoot
 operator|=
 name|snapshotRoot
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|/* The snapshot rename time set by Time.now(). */
+DECL|method|setSnapshotMTime (long mTime)
+name|RenameSnapshotOp
+name|setSnapshotMTime
+parameter_list|(
+name|long
+name|mTime
+parameter_list|)
+block|{
+name|this
+operator|.
+name|mtime
+operator|=
+name|mTime
 expr_stmt|;
 return|return
 name|this
@@ -19362,6 +19392,15 @@ operator|=
 name|FSImageSerialization
 operator|.
 name|readString
+argument_list|(
+name|in
+argument_list|)
+expr_stmt|;
+name|mtime
+operator|=
+name|FSImageSerialization
+operator|.
+name|readLong
 argument_list|(
 name|in
 argument_list|)
@@ -19411,6 +19450,15 @@ operator|.
 name|writeString
 argument_list|(
 name|snapshotNewName
+argument_list|,
+name|out
+argument_list|)
+expr_stmt|;
+name|FSImageSerialization
+operator|.
+name|writeLong
+argument_list|(
+name|mtime
 argument_list|,
 name|out
 argument_list|)
@@ -19471,6 +19519,22 @@ argument_list|,
 name|snapshotNewName
 argument_list|)
 expr_stmt|;
+name|XMLUtils
+operator|.
+name|addSaxString
+argument_list|(
+name|contentHandler
+argument_list|,
+literal|"MTIME"
+argument_list|,
+name|Long
+operator|.
+name|toString
+argument_list|(
+name|mtime
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|appendRpcIdsToXml
 argument_list|(
 name|contentHandler
@@ -19518,6 +19582,22 @@ operator|.
 name|getValue
 argument_list|(
 literal|"SNAPSHOTNEWNAME"
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|mtime
+operator|=
+name|Long
+operator|.
+name|parseLong
+argument_list|(
+name|st
+operator|.
+name|getValue
+argument_list|(
+literal|"MTIME"
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|readRpcIdsFromXml
@@ -19571,6 +19651,16 @@ operator|.
 name|append
 argument_list|(
 name|snapshotNewName
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", mtime="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|mtime
 argument_list|)
 expr_stmt|;
 name|appendRpcIdsToString

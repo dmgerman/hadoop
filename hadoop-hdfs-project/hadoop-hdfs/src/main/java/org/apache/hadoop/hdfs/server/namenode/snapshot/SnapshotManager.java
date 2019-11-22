@@ -1642,8 +1642,8 @@ name|getAndDecrement
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Rename the given snapshot    * @param oldSnapshotName    *          Old name of the snapshot    * @param newSnapshotName    *          New name of the snapshot    * @throws IOException    *           Throw IOException when 1) the given path does not lead to an    *           existing snapshottable directory, and/or 2) the snapshot with the    *           old name does not exist for the directory, and/or 3) there exists    *           a snapshot with the new name for the directory    */
-DECL|method|renameSnapshot (final INodesInPath iip, final String snapshotRoot, final String oldSnapshotName, final String newSnapshotName)
+comment|/**    * Rename the given snapshot    * @param oldSnapshotName    *          Old name of the snapshot    * @param newSnapshotName    *          New name of the snapshot    * @param now is the snapshot modification time set by Time.now().    * @throws IOException    *           Throw IOException when 1) the given path does not lead to an    *           existing snapshottable directory, and/or 2) the snapshot with the    *           old name does not exist for the directory, and/or 3) there exists    *           a snapshot with the new name for the directory    */
+DECL|method|renameSnapshot (final INodesInPath iip, final String snapshotRoot, final String oldSnapshotName, final String newSnapshotName, long now)
 specifier|public
 name|void
 name|renameSnapshot
@@ -1663,6 +1663,9 @@ parameter_list|,
 specifier|final
 name|String
 name|newSnapshotName
+parameter_list|,
+name|long
+name|now
 parameter_list|)
 throws|throws
 name|IOException
@@ -1685,6 +1688,8 @@ argument_list|,
 name|oldSnapshotName
 argument_list|,
 name|newSnapshotName
+argument_list|,
+name|now
 argument_list|)
 expr_stmt|;
 block|}
