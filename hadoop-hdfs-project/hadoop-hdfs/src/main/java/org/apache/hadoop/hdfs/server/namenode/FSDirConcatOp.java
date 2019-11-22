@@ -1250,6 +1250,16 @@ block|}
 block|}
 block|}
 block|}
+name|deltas
+operator|.
+name|addNameSpace
+argument_list|(
+operator|-
+name|srcList
+operator|.
+name|length
+argument_list|)
+expr_stmt|;
 return|return
 name|deltas
 return|;
