@@ -6589,6 +6589,13 @@ operator|.
 name|getCause
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|tracker
+operator|!=
+literal|null
+condition|)
+block|{
 name|tracker
 operator|.
 name|handle
@@ -6608,6 +6615,7 @@ name|diagnostics
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 name|publicRsrc
 operator|.
 name|handle
