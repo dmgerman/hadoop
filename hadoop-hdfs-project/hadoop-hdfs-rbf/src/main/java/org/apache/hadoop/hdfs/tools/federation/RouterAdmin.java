@@ -3591,6 +3591,9 @@ operator|+
 name|dest
 argument_list|)
 expr_stmt|;
+return|return
+literal|false
+return|;
 block|}
 block|}
 if|if
