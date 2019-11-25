@@ -209,8 +209,8 @@ specifier|private
 name|QueuePlacementRuleUtils
 parameter_list|()
 block|{   }
-DECL|method|validateQueueMappingUnderParentQueue (CSQueue parentQueue, String parentQueueName, String leafQueueName)
-specifier|private
+DECL|method|validateQueueMappingUnderParentQueue ( CSQueue parentQueue, String parentQueueName, String leafQueueName)
+specifier|public
 specifier|static
 name|void
 name|validateQueueMappingUnderParentQueue
