@@ -2505,6 +2505,16 @@ name|getPreviousAttemptContainers
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|response
+operator|.
+name|setRejectedSchedulingRequests
+argument_list|(
+name|allocation
+operator|.
+name|getRejectedRequest
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|handleInvalidResourceException (InvalidResourceRequestException e, RMAppAttempt rmAppAttempt)
 specifier|private

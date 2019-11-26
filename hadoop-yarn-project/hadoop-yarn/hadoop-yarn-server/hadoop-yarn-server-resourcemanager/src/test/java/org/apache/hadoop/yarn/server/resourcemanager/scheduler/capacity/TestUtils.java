@@ -997,6 +997,13 @@ argument_list|)
 expr_stmt|;
 name|rmContext
 operator|.
+name|setYarnConfiguration
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|rmContext
+operator|.
 name|setNodeLabelManager
 argument_list|(
 name|nlm

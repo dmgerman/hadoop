@@ -4555,6 +4555,11 @@ argument_list|,
 name|newlyDemotedContainers
 argument_list|,
 name|previousAttemptContainers
+argument_list|,
+name|appSchedulingInfo
+operator|.
+name|getRejectedRequest
+argument_list|()
 argument_list|)
 return|;
 block|}

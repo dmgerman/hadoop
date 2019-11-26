@@ -1850,6 +1850,11 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|incrementPlacementAttempt
+argument_list|()
+expr_stmt|;
 return|return
 literal|false
 return|;

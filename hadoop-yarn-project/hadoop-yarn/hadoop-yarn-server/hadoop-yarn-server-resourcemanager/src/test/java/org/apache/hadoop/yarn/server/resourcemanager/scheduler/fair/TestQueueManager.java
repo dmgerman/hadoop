@@ -2970,6 +2970,22 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+name|doReturn
+argument_list|(
+name|scheduler
+operator|.
+name|getConfig
+argument_list|()
+argument_list|)
+operator|.
+name|when
+argument_list|(
+name|rmContext
+argument_list|)
+operator|.
+name|getYarnConfiguration
+argument_list|()
+expr_stmt|;
 comment|// the appAttempt is created
 comment|// removeEmptyDynamicQueues() should not remove the queue
 name|FSAppAttempt

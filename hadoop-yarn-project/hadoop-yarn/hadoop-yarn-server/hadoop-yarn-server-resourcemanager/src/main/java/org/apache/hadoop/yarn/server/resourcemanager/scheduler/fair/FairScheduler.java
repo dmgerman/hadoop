@@ -4961,6 +4961,8 @@ name|pullNewlyDemotedContainers
 argument_list|()
 argument_list|,
 name|previousAttemptContainers
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}

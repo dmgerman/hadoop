@@ -284,6 +284,20 @@ name|Optional
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicInteger
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>  * This class has the following functionality:  * 1) Keeps track of pending resource requests when following events happen:  * - New ResourceRequests are added to scheduler.  * - New containers get allocated.  *  * 2) Determines the order that the nodes given in the {@link CandidateNodeSet}  * will be used for allocating containers.  *</p>  *  *<p>  * And different set of resource requests (E.g., resource requests with the  * same schedulerKey) can have one instance of AppPlacementAllocator, each  * AppPlacementAllocator can have different ways to order nodes depends on  * requests.  *</p>  */
 end_comment
@@ -314,6 +328,17 @@ DECL|field|rmContext
 specifier|protected
 name|RMContext
 name|rmContext
+decl_stmt|;
+DECL|field|placementAttempt
+specifier|private
+name|AtomicInteger
+name|placementAttempt
+init|=
+operator|new
+name|AtomicInteger
+argument_list|(
+literal|0
+argument_list|)
 decl_stmt|;
 comment|/**    * Get iterator of preferred node depends on requirement and/or availability.    * @param candidateNodeSet input CandidateNodeSet    * @return iterator of preferred node    */
 DECL|method|getPreferredNodeIterator ( CandidateNodeSet<N> candidateNodeSet)
@@ -543,6 +568,31 @@ name|SchedulingRequest
 name|getSchedulingRequest
 parameter_list|()
 function_decl|;
+DECL|method|getPlacementAttempt ()
+specifier|public
+name|int
+name|getPlacementAttempt
+parameter_list|()
+block|{
+return|return
+name|placementAttempt
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
+DECL|method|incrementPlacementAttempt ()
+specifier|public
+name|void
+name|incrementPlacementAttempt
+parameter_list|()
+block|{
+name|placementAttempt
+operator|.
+name|getAndIncrement
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 end_class
 

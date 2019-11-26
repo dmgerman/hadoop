@@ -28619,6 +28619,19 @@ argument_list|(
 name|nlm
 argument_list|)
 expr_stmt|;
+name|when
+argument_list|(
+name|rmContext
+operator|.
+name|getYarnConfiguration
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|csConf
+argument_list|)
+expr_stmt|;
 comment|// Queue "test" consumes 100% of the cluster, so its capacity and absolute
 comment|// capacity are both 1.0f.
 name|Queue
