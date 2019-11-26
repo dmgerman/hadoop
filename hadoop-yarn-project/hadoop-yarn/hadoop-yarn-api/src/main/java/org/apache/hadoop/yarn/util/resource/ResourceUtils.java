@@ -603,6 +603,15 @@ name|RES_PATTERN
 init|=
 literal|"^[^=]+=\\d+\\s?\\w*$"
 decl_stmt|;
+DECL|field|YARN_IO_OPTIONAL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|YARN_IO_OPTIONAL
+init|=
+literal|"(yarn\\.io/)?"
+decl_stmt|;
 DECL|field|initializedResources
 specifier|private
 specifier|static
@@ -3585,6 +3594,8 @@ name|quote
 argument_list|(
 name|prefix
 argument_list|)
+operator|+
+name|YARN_IO_OPTIONAL
 operator|+
 literal|"[^.]+$"
 argument_list|)
