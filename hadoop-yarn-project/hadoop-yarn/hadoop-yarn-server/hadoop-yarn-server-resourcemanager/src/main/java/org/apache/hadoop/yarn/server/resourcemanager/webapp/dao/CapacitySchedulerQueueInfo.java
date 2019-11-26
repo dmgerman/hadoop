@@ -890,7 +890,7 @@ name|conf
 operator|.
 name|getAcls
 argument_list|(
-name|queueName
+name|queuePath
 argument_list|)
 operator|.
 name|entrySet
@@ -952,7 +952,12 @@ name|conf
 operator|.
 name|get
 argument_list|(
+name|CapacitySchedulerConfiguration
+operator|.
+name|getQueuePrefix
+argument_list|(
 name|queuePath
+argument_list|)
 operator|+
 name|aclApplicationMaxPriority
 argument_list|,

@@ -2053,6 +2053,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|getQueuePrefix (String queue)
+specifier|public
 specifier|static
 name|String
 name|getQueuePrefix
