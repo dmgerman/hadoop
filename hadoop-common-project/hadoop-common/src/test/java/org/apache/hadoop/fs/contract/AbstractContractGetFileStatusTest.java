@@ -1350,6 +1350,44 @@ block|}
 block|}
 annotation|@
 name|Test
+DECL|method|testListStatusIteratorNoDir ()
+specifier|public
+name|void
+name|testListStatusIteratorNoDir
+parameter_list|()
+throws|throws
+name|Throwable
+block|{
+name|describe
+argument_list|(
+literal|"test the listStatusIterator call on a path which is not "
+operator|+
+literal|"present"
+argument_list|)
+expr_stmt|;
+name|intercept
+argument_list|(
+name|FileNotFoundException
+operator|.
+name|class
+argument_list|,
+parameter_list|()
+lambda|->
+name|getFileSystem
+argument_list|()
+operator|.
+name|listStatusIterator
+argument_list|(
+name|path
+argument_list|(
+literal|"missing"
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
 DECL|method|testLocatedStatusNoDir ()
 specifier|public
 name|void
