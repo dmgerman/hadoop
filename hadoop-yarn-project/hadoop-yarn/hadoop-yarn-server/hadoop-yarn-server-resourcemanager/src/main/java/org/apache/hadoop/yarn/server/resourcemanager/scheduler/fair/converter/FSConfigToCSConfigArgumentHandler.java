@@ -64,7 +64,7 @@ name|commons
 operator|.
 name|cli
 operator|.
-name|MissingArgumentException
+name|HelpFormatter
 import|;
 end_import
 
@@ -93,6 +93,20 @@ operator|.
 name|cli
 operator|.
 name|Options
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|cli
+operator|.
+name|ParseException
 import|;
 end_import
 
@@ -191,8 +205,6 @@ argument_list|,
 literal|"Path to a valid yarn-site.xml config file"
 argument_list|,
 literal|true
-argument_list|,
-literal|true
 argument_list|)
 block|,
 comment|// fair-scheduler.xml is not mandatory
@@ -207,8 +219,6 @@ argument_list|,
 literal|"fsconfig"
 argument_list|,
 literal|"Path to a valid fair-scheduler.xml config file"
-argument_list|,
-literal|false
 argument_list|,
 literal|true
 argument_list|)
@@ -225,8 +235,6 @@ argument_list|,
 literal|"Optional parameter. If given, should specify a valid path to the "
 operator|+
 literal|"conversion rules file (property format)."
-argument_list|,
-literal|false
 argument_list|,
 literal|true
 argument_list|)
@@ -245,8 +253,6 @@ operator|+
 literal|"only be emitted to the console."
 argument_list|,
 literal|false
-argument_list|,
-literal|false
 argument_list|)
 block|,
 DECL|enumConstant|CLUSTER_RESOURCE
@@ -261,8 +267,6 @@ argument_list|,
 literal|"Needs to be given if maxResources is defined as percentages "
 operator|+
 literal|"for any queue, otherwise this parameter can be omitted."
-argument_list|,
-literal|false
 argument_list|,
 literal|true
 argument_list|)
@@ -283,8 +287,20 @@ operator|+
 literal|"Must have write permission for user who is running this script."
 argument_list|,
 literal|true
+argument_list|)
+block|,
+DECL|enumConstant|HELP
+name|HELP
+argument_list|(
+literal|"help"
 argument_list|,
-literal|true
+literal|"h"
+argument_list|,
+literal|"help"
+argument_list|,
+literal|"Displays the list of options"
+argument_list|,
+literal|false
 argument_list|)
 block|;
 DECL|field|name
@@ -311,19 +327,13 @@ specifier|final
 name|String
 name|description
 decl_stmt|;
-DECL|field|required
-specifier|private
-specifier|final
-name|boolean
-name|required
-decl_stmt|;
 DECL|field|hasArg
 specifier|private
 specifier|final
 name|boolean
 name|hasArg
 decl_stmt|;
-DECL|method|CliOption (String name, String shortSwitch, String longSwitch, String description, boolean required, boolean hasArg)
+DECL|method|CliOption (String name, String shortSwitch, String longSwitch, String description, boolean hasArg)
 name|CliOption
 parameter_list|(
 name|String
@@ -337,9 +347,6 @@ name|longSwitch
 parameter_list|,
 name|String
 name|description
-parameter_list|,
-name|boolean
-name|required
 parameter_list|,
 name|boolean
 name|hasArg
@@ -368,12 +375,6 @@ operator|.
 name|description
 operator|=
 name|description
-expr_stmt|;
-name|this
-operator|.
-name|required
-operator|=
-name|required
 expr_stmt|;
 name|this
 operator|.
@@ -403,38 +404,12 @@ argument_list|,
 name|description
 argument_list|)
 decl_stmt|;
-name|option
-operator|.
-name|setRequired
-argument_list|(
-name|required
-argument_list|)
-expr_stmt|;
 return|return
 name|option
-return|;
-block|}
-DECL|method|getAsArgumentString ()
-specifier|public
-name|String
-name|getAsArgumentString
-parameter_list|()
-block|{
-return|return
-name|shortSwitch
-operator|+
-literal|"|"
-operator|+
-name|longSwitch
-operator|+
-literal|": "
-operator|+
-name|description
 return|;
 block|}
 block|}
 DECL|method|parseAndConvert (String[] args)
-specifier|public
 name|int
 name|parseAndConvert
 parameter_list|(
@@ -453,6 +428,31 @@ argument_list|()
 decl_stmt|;
 try|try
 block|{
+if|if
+condition|(
+name|args
+operator|.
+name|length
+operator|==
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Missing command line arguments"
+argument_list|)
+expr_stmt|;
+name|printHelp
+argument_list|(
+name|opts
+argument_list|)
+expr_stmt|;
+return|return
+literal|0
+return|;
+block|}
 name|CommandLine
 name|cliParser
 init|=
@@ -467,6 +467,29 @@ argument_list|,
 name|args
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|cliParser
+operator|.
+name|hasOption
+argument_list|(
+name|CliOption
+operator|.
+name|HELP
+operator|.
+name|shortSwitch
+argument_list|)
+condition|)
+block|{
+name|printHelp
+argument_list|(
+name|opts
+argument_list|)
+expr_stmt|;
+return|return
+literal|0
+return|;
+block|}
 name|checkOptionPresent
 argument_list|(
 name|cliParser
@@ -476,13 +499,9 @@ operator|.
 name|YARN_SITE
 argument_list|)
 expr_stmt|;
-name|checkOptionPresent
+name|checkOutputDefined
 argument_list|(
 name|cliParser
-argument_list|,
-name|CliOption
-operator|.
-name|OUTPUT_DIR
 argument_list|)
 expr_stmt|;
 name|FSConfigToCSConfigConverterParams
@@ -503,14 +522,14 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|MissingArgumentException
+name|ParseException
 name|e
 parameter_list|)
 block|{
 name|String
 name|msg
 init|=
-literal|"Missing argument for options"
+literal|"Options parsing failed: "
 operator|+
 name|e
 operator|.
@@ -522,6 +541,11 @@ argument_list|(
 name|e
 argument_list|,
 name|msg
+argument_list|)
+expr_stmt|;
+name|printHelp
+argument_list|(
+name|opts
 argument_list|)
 expr_stmt|;
 return|return
@@ -637,11 +661,18 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
+name|debug
+argument_list|(
+literal|"Stack trace"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
 name|error
 argument_list|(
 name|msg
-argument_list|,
-name|e
 argument_list|)
 expr_stmt|;
 name|System
@@ -854,6 +885,32 @@ name|build
 argument_list|()
 return|;
 block|}
+DECL|method|printHelp (Options opts)
+specifier|private
+name|void
+name|printHelp
+parameter_list|(
+name|Options
+name|opts
+parameter_list|)
+block|{
+name|HelpFormatter
+name|formatter
+init|=
+operator|new
+name|HelpFormatter
+argument_list|()
+decl_stmt|;
+name|formatter
+operator|.
+name|printHelp
+argument_list|(
+literal|"General options are: "
+argument_list|,
+name|opts
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|checkOptionPresent (CommandLine cliParser, CliOption cliOption)
 specifier|private
 specifier|static
@@ -904,6 +961,64 @@ name|cliOption
 operator|.
 name|longSwitch
 argument_list|)
+argument_list|)
+throw|;
+block|}
+block|}
+DECL|method|checkOutputDefined (CommandLine cliParser)
+specifier|private
+specifier|static
+name|void
+name|checkOutputDefined
+parameter_list|(
+name|CommandLine
+name|cliParser
+parameter_list|)
+block|{
+name|boolean
+name|hasOutputDir
+init|=
+name|cliParser
+operator|.
+name|hasOption
+argument_list|(
+name|CliOption
+operator|.
+name|OUTPUT_DIR
+operator|.
+name|shortSwitch
+argument_list|)
+decl_stmt|;
+name|boolean
+name|console
+init|=
+name|cliParser
+operator|.
+name|hasOption
+argument_list|(
+name|CliOption
+operator|.
+name|CONSOLE_MODE
+operator|.
+name|shortSwitch
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|console
+operator|&&
+operator|!
+name|hasOutputDir
+condition|)
+block|{
+throw|throw
+operator|new
+name|PreconditionException
+argument_list|(
+literal|"Output directory or console mode was not defined. Please"
+operator|+
+literal|" use -h or --help to see command line switches"
 argument_list|)
 throw|;
 block|}

@@ -442,8 +442,17 @@ return|return
 name|errContent
 return|;
 block|}
+DECL|method|getStdOutContent ()
+name|ByteArrayOutputStream
+name|getStdOutContent
+parameter_list|()
+block|{
+return|return
+name|outContent
+return|;
+block|}
 DECL|method|deleteTestFiles ()
-specifier|private
+specifier|public
 name|void
 name|deleteTestFiles
 parameter_list|()
