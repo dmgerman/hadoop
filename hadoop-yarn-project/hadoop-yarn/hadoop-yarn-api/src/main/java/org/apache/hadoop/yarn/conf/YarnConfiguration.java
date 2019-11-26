@@ -6371,6 +6371,8 @@ specifier|final
 name|String
 name|APPLICATION_TAG_BASED_PLACEMENT_PREFIX
 init|=
+name|RM_PREFIX
+operator|+
 literal|"application-tag-based-placement"
 decl_stmt|;
 DECL|field|APPLICATION_TAG_BASED_PLACEMENT_ENABLED

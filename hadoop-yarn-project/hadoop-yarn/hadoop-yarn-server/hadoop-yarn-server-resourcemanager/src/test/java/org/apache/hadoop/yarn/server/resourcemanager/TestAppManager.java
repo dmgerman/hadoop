@@ -1474,6 +1474,15 @@ name|USER
 operator|+
 literal|0
 decl_stmt|;
+DECL|field|USER_ID_PREFIX
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|USER_ID_PREFIX
+init|=
+literal|"userid="
+decl_stmt|;
 DECL|method|getAppEventType ()
 specifier|public
 specifier|synchronized
@@ -8486,7 +8495,9 @@ decl_stmt|;
 name|String
 name|userIdTag
 init|=
-literal|"u=user2"
+name|USER_ID_PREFIX
+operator|+
+literal|"user2"
 decl_stmt|;
 name|setApplicationTags
 argument_list|(
@@ -8507,9 +8518,9 @@ name|user
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Test case for when the application tag based placement is enabled and    * the submitting user 'user1' is whitelisted and the user from the    * application tag has access to queue.    * Expected behaviour: the placement is done for user from the tag 'user2'    */
 annotation|@
 name|Test
-comment|/**    * Test case for when the application tag based placement is enabled and    * the submitting user 'user1' is whitelisted and the user from the    * application tag has access to queue.    * Expected behaviour: the placement is done for user from the tag 'user2'    */
 DECL|method|testGetUserNameForPlacementTagBasedPlacementEnabled ()
 specifier|public
 name|void
@@ -8536,7 +8547,7 @@ decl_stmt|;
 name|String
 name|userIdTag
 init|=
-literal|"u="
+name|USER_ID_PREFIX
 operator|+
 name|expectedUser
 decl_stmt|;
@@ -8566,9 +8577,9 @@ name|expectedUser
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Test case for when the application tag based placement is enabled.    * And submitting user 'user1' is whitelisted and  there are multiple valid    * username tags passed    * Expected behaviour: the placement is done for the first valid username    * from the tag 'user2'    */
 annotation|@
 name|Test
-comment|/**    * Test case for when the application tag based placement is enabled and    * the submitting user 'user1' is whitelisted and  there are multiple valid    * username tags passed    * Expected behaviour: the placement is done for the first valid username    * from the tag 'user2'    */
 DECL|method|testGetUserNameForPlacementTagBasedPlacementMultipleUserIds ()
 specifier|public
 name|void
@@ -8595,14 +8606,16 @@ decl_stmt|;
 name|String
 name|userIdTag
 init|=
-literal|"u="
+name|USER_ID_PREFIX
 operator|+
 name|expectedUser
 decl_stmt|;
 name|String
 name|userIdTag2
 init|=
-literal|"u=user3"
+name|USER_ID_PREFIX
+operator|+
+literal|"user3"
 decl_stmt|;
 name|setApplicationTags
 argument_list|(
@@ -8632,9 +8645,9 @@ name|expectedUser
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Test case for when the application tag based placement is enabled.    * And no username is set in the application tag    * Expected behaviour: the placement is done for the submitting user 'user1'    */
 annotation|@
 name|Test
-comment|/**    * Test case for when the application tag based placement is enabled but    * no username is set in the application tag    * Expected behaviour: the placement is done for the submitting user 'user1'    */
 DECL|method|testGetUserNameForPlacementTagBasedPlacementNoUserId ()
 specifier|public
 name|void
@@ -8677,9 +8690,9 @@ name|user
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Test case for when the application tag based placement is enabled but    * the user from the application tag 'user2' does not have access to the    * queue.    * Expected behaviour: the placement is done for the submitting user 'user1'    */
 annotation|@
 name|Test
-comment|/**    * Test case for when the application tag based placement is enabled but    * the user from the application tag 'user2' does not have access to the    * queue.    * Expected behaviour: the placement is done for the submitting user 'user1'    */
 DECL|method|testGetUserNameForPlacementUserWithoutAccessToQueue ()
 specifier|public
 name|void
@@ -8701,7 +8714,9 @@ decl_stmt|;
 name|String
 name|userIdTag
 init|=
-literal|"u=user2"
+name|USER_ID_PREFIX
+operator|+
+literal|"user2"
 decl_stmt|;
 name|setApplicationTags
 argument_list|(
@@ -8729,9 +8744,9 @@ name|user
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Test case for when the application tag based placement is enabled but    * the submitting user 'user1' is not whitelisted and there is a valid    * username tag passed.    * Expected behaviour: the placement is done for the submitting user 'user1'    */
 annotation|@
 name|Test
-comment|/**    * Test case for when the application tag based placement is enabled but    * the submitting user 'user1' is not whitelisted and there is a valid    * username tag passed.    * Expected behaviour: the placement is done for the submitting user 'user1'    */
 DECL|method|testGetUserNameForPlacementNotWhitelistedUser ()
 specifier|public
 name|void
@@ -8753,7 +8768,9 @@ decl_stmt|;
 name|String
 name|userIdTag
 init|=
-literal|"u=user2"
+name|USER_ID_PREFIX
+operator|+
+literal|"user2"
 decl_stmt|;
 name|setApplicationTags
 argument_list|(
@@ -8781,9 +8798,9 @@ name|user
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Test case for when the application tag based placement is enabled but    * there is no whitelisted user.    * Expected behaviour: the placement is done for the submitting user 'user1'    */
 annotation|@
 name|Test
-comment|/**    * Test case for when the application tag based placement is enabled but    * there is no whitelisted user.    * Expected behaviour: the placement is done for the submitting user 'user1'    */
 DECL|method|testGetUserNameForPlacementEmptyWhiteList ()
 specifier|public
 name|void
@@ -8805,7 +8822,9 @@ decl_stmt|;
 name|String
 name|userIdTag
 init|=
-literal|"u=user2"
+name|USER_ID_PREFIX
+operator|+
+literal|"user2"
 decl_stmt|;
 name|setApplicationTags
 argument_list|(
@@ -8831,9 +8850,9 @@ name|user
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Test case for when the application tag based placement is enabled and    * there is one wrongly qualified user    * 'userid=' and a valid user 'userid=user2' passed    * with application tag.    * Expected behaviour: the placement is done for the first valid username    * from the tag 'user2'    */
 annotation|@
 name|Test
-comment|/**    * Test case for when the application tag based placement is enabled and    * there is one wrongly qualified user 'u=' and a valid user 'u=user2' passed    * via application tag.    * Expected behaviour: the placement is done for the first valid username    * from the tag 'user2'    */
 DECL|method|testGetUserNameForPlacementWronglyQualifiedFirstUserNameInTag ()
 specifier|public
 name|void
@@ -8860,14 +8879,14 @@ decl_stmt|;
 name|String
 name|userIdTag
 init|=
-literal|"u="
+name|USER_ID_PREFIX
 operator|+
 name|expectedUser
 decl_stmt|;
 name|String
 name|wrongUserIdTag
 init|=
-literal|"u="
+name|USER_ID_PREFIX
 decl_stmt|;
 name|setApplicationTags
 argument_list|(
@@ -8897,9 +8916,9 @@ name|expectedUser
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Test case for when the application tag based placement is enabled and    * there is only one wrongly qualified user 'userid=' passed    * with application tag.    * Expected behaviour: the placement is done for the submitting user 'user1'    */
 annotation|@
 name|Test
-comment|/**    * Test case for when the application tag based placement is enabled and    * there is only one wrongly qualified user 'u=' passed via application tag.    * Expected behaviour: the placement is done for the submitting user 'user1'    */
 DECL|method|testGetUserNameForPlacementWronglyQualifiedUserNameInTag ()
 specifier|public
 name|void
@@ -8921,7 +8940,7 @@ decl_stmt|;
 name|String
 name|wrongUserIdTag
 init|=
-literal|"u="
+name|USER_ID_PREFIX
 decl_stmt|;
 name|setApplicationTags
 argument_list|(

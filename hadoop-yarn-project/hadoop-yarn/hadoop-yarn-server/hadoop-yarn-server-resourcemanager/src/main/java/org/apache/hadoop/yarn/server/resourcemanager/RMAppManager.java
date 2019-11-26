@@ -1137,6 +1137,15 @@ name|String
 argument_list|>
 name|exclusiveEnforcedPartitions
 decl_stmt|;
+DECL|field|USER_ID_PREFIX
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|USER_ID_PREFIX
+init|=
+literal|"userid="
+decl_stmt|;
 DECL|method|RMAppManager (RMContext context, YarnScheduler scheduler, ApplicationMasterService masterService, ApplicationACLsManager applicationACLsManager, Configuration conf)
 specifier|public
 name|RMAppManager
@@ -5111,7 +5120,7 @@ name|debug
 argument_list|(
 literal|"Application tag based placement is enabled, checking for "
 operator|+
-literal|"userId in the application tag"
+literal|"'userid' among the application tags"
 argument_list|)
 expr_stmt|;
 name|Set
@@ -5144,7 +5153,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Found userId '{}' in application tag"
+literal|"Found 'userid' '{}' in application tag"
 argument_list|,
 name|userNameFromAppTag
 argument_list|)
@@ -5228,7 +5237,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"userId was not found in application tags"
+literal|"'userid' was not found in application tags"
 argument_list|)
 expr_stmt|;
 block|}
@@ -5319,11 +5328,6 @@ argument_list|>
 name|applicationTags
 parameter_list|)
 block|{
-name|String
-name|userIdPrefix
-init|=
-literal|"u="
-decl_stmt|;
 for|for
 control|(
 name|String
@@ -5338,7 +5342,7 @@ name|tag
 operator|.
 name|startsWith
 argument_list|(
-name|userIdPrefix
+name|USER_ID_PREFIX
 argument_list|)
 condition|)
 block|{
