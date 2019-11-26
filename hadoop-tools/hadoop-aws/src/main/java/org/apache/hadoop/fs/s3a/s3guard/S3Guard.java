@@ -2662,8 +2662,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get a path entry provided it is not considered expired.    * @param ms metastore    * @param path path to look up.    * @param timeProvider nullable time provider    * @param needEmptyDirectoryFlag if true, implementation will    * return known state of directory emptiness.    * @return the metadata or null if there as no entry.    * @throws IOException failure.    */
-DECL|method|getWithTtl (MetadataStore ms, Path path, @Nullable ITtlTimeProvider timeProvider, final boolean needEmptyDirectoryFlag)
+comment|/**    * Get a path entry provided it is not considered expired.    * If the allowAuthoritative flag is true, return without    * checking for TTL expiry.    * @param ms metastore    * @param path path to look up.    * @param timeProvider nullable time provider    * @param needEmptyDirectoryFlag if true, implementation will    * return known state of directory emptiness.    * @param allowAuthoritative if this flag is true, the ttl won't apply to the    * metadata - so it will be returned regardless of it's expiry.    * @return the metadata or null if there as no entry.    * @throws IOException failure.    */
+DECL|method|getWithTtl (MetadataStore ms, Path path, @Nullable ITtlTimeProvider timeProvider, final boolean needEmptyDirectoryFlag, final boolean allowAuthoritative)
 specifier|public
 specifier|static
 name|PathMetadata
@@ -2683,6 +2683,10 @@ parameter_list|,
 specifier|final
 name|boolean
 name|needEmptyDirectoryFlag
+parameter_list|,
+specifier|final
+name|boolean
+name|allowAuthoritative
 parameter_list|)
 throws|throws
 name|IOException
@@ -2713,6 +2717,23 @@ operator|.
 name|debug
 argument_list|(
 literal|"timeProvider is null, returning pathMetadata as is"
+argument_list|)
+expr_stmt|;
+return|return
+name|pathMetadata
+return|;
+block|}
+comment|// authoritative mode is enabled for this directory, return what the ms has
+if|if
+condition|(
+name|allowAuthoritative
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"allowAuthoritative is true, returning pathMetadata as is"
 argument_list|)
 expr_stmt|;
 return|return
@@ -2801,12 +2822,10 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * List children; mark the result as non-auth if the TTL has expired.    * @param ms metastore    * @param path path to look up.    * @param timeProvider nullable time provider    * @return the listing of entries under a path, or null if there as no entry.    * @throws IOException failure.    */
+comment|/**    * List children; mark the result as non-auth if the TTL has expired.    * If the allowAuthoritative flag is true, return without filtering or    * checking for TTL expiry.    * @param ms metastore    * @param path path to look up.    * @param timeProvider nullable time provider    * @param allowAuthoritative if this flag is true, the ttl won't apply to the    * metadata - so it will be returned regardless of it's expiry.    * @return the listing of entries under a path, or null if there as no entry.    * @throws IOException failure.    */
 annotation|@
-name|Retries
-operator|.
 name|RetryTranslated
-DECL|method|listChildrenWithTtl (MetadataStore ms, Path path, @Nullable ITtlTimeProvider timeProvider)
+DECL|method|listChildrenWithTtl (MetadataStore ms, Path path, @Nullable ITtlTimeProvider timeProvider, boolean allowAuthoritative)
 specifier|public
 specifier|static
 name|DirListingMetadata
@@ -2822,6 +2841,9 @@ annotation|@
 name|Nullable
 name|ITtlTimeProvider
 name|timeProvider
+parameter_list|,
+name|boolean
+name|allowAuthoritative
 parameter_list|)
 throws|throws
 name|IOException
@@ -2854,43 +2876,43 @@ return|return
 name|dlm
 return|;
 block|}
-name|long
-name|ttl
-init|=
-name|timeProvider
+if|if
+condition|(
+name|allowAuthoritative
+condition|)
+block|{
+name|LOG
 operator|.
-name|getMetadataTtl
-argument_list|()
-decl_stmt|;
+name|debug
+argument_list|(
+literal|"allowAuthoritative is true, returning pathMetadata as is"
+argument_list|)
+expr_stmt|;
+return|return
+name|dlm
+return|;
+block|}
+comment|// filter expired entries
 if|if
 condition|(
 name|dlm
 operator|!=
 literal|null
-operator|&&
+condition|)
+block|{
 name|dlm
 operator|.
-name|isAuthoritative
-argument_list|()
-operator|&&
-name|dlm
-operator|.
-name|isExpired
+name|removeExpiredEntriesFromListing
 argument_list|(
-name|ttl
+name|timeProvider
+operator|.
+name|getMetadataTtl
+argument_list|()
 argument_list|,
 name|timeProvider
 operator|.
 name|getNow
 argument_list|()
-argument_list|)
-condition|)
-block|{
-name|dlm
-operator|.
-name|setAuthoritative
-argument_list|(
-literal|false
 argument_list|)
 expr_stmt|;
 block|}

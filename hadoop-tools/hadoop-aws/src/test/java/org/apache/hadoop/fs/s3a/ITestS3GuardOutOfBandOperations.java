@@ -1757,6 +1757,44 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// READ GUARDED
+comment|// This should fail in authoritative mode since we trust the metadatastore
+comment|// despite of the expiry. The metadata will not expire.
+if|if
+condition|(
+name|authoritative
+condition|)
+block|{
+name|intercept
+argument_list|(
+name|FileNotFoundException
+operator|.
+name|class
+argument_list|,
+name|testFilePath
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+literal|"File should not be present in the metedatastore in authoritative mode."
+argument_list|,
+parameter_list|()
+lambda|->
+name|readBytesToString
+argument_list|(
+name|guardedFs
+argument_list|,
+name|testFilePath
+argument_list|,
+name|newText
+operator|.
+name|length
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|String
 name|newRead
 init|=
@@ -1803,6 +1841,7 @@ argument_list|,
 name|newRead
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 finally|finally
 block|{
@@ -2141,7 +2180,43 @@ argument_list|(
 literal|110L
 argument_list|)
 expr_stmt|;
-comment|// WRITE TO DELETED DIRECTORY - SUCCESS
+comment|// WRITE TO DELETED DIRECTORY
+comment|// - FAIL ON AUTH = TRUE
+comment|// - SUCCESS ON AUTH = FALSE
+if|if
+condition|(
+name|authoritative
+condition|)
+block|{
+name|intercept
+argument_list|(
+name|FileNotFoundException
+operator|.
+name|class
+argument_list|,
+name|filePath
+operator|.
+name|getParent
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+literal|"Parent does not exist, so in authoritative mode this should fail."
+argument_list|,
+parameter_list|()
+lambda|->
+name|createNonRecursive
+argument_list|(
+name|guardedFs
+argument_list|,
+name|filePath
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|createNonRecursive
 argument_list|(
 name|guardedFs
@@ -2149,6 +2224,7 @@ argument_list|,
 name|filePath
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 finally|finally
 block|{
@@ -2569,6 +2645,9 @@ name|ttl
 argument_list|)
 expr_stmt|;
 comment|// DELETE IN GUARDED FS
+comment|// NOTE: in auth this will be ineffective:
+comment|//  we already have the tombstone marker on the item, it won't expire,
+comment|//  so we don't delete the raw S3 file.
 name|guardedFs
 operator|.
 name|delete
@@ -2579,6 +2658,25 @@ literal|true
 argument_list|)
 expr_stmt|;
 comment|// FILE MUST NOT EXIST IN RAW
+comment|// If authoritative, the file status can be retrieved raw:
+comment|//    deleting with guarded FS won't do anything because the tombstone
+comment|//    marker won't expire in auth mode.
+comment|// If not authoritative, we go to the S3 bucket and get an FNFE
+if|if
+condition|(
+name|authoritative
+condition|)
+block|{
+name|rawFS
+operator|.
+name|getFileStatus
+argument_list|(
+name|filePath
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|intercept
 argument_list|(
 name|FileNotFoundException
@@ -2604,6 +2702,7 @@ name|filePath
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 finally|finally
 block|{
@@ -2782,6 +2881,7 @@ name|testFile
 argument_list|)
 expr_stmt|;
 comment|// the tombstone is expired, so we should detect the file
+comment|// in non-authoritative mode
 name|when
 argument_list|(
 name|mockTimeProvider
@@ -2797,6 +2897,21 @@ operator|+
 name|ttl
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|authoritative
+condition|)
+block|{
+name|checkListingDoesNotContainPath
+argument_list|(
+name|guardedFs
+argument_list|,
+name|testFile
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|checkListingContainsPath
 argument_list|(
 name|guardedFs
@@ -2804,6 +2919,7 @@ argument_list|,
 name|testFile
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 finally|finally
 block|{

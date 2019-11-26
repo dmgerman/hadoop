@@ -3485,7 +3485,6 @@ argument_list|(
 name|path
 argument_list|)
 decl_stmt|;
-comment|// Filter expired entries.
 specifier|final
 name|DirListingMetadata
 name|dirListing
@@ -3499,29 +3498,6 @@ argument_list|,
 name|dirPathMeta
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|dirListing
-operator|!=
-literal|null
-condition|)
-block|{
-name|dirListing
-operator|.
-name|removeExpiredEntriesFromListing
-argument_list|(
-name|ttlTimeProvider
-operator|.
-name|getMetadataTtl
-argument_list|()
-argument_list|,
-name|ttlTimeProvider
-operator|.
-name|getNow
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 return|return
 name|dirListing
 return|;
@@ -4288,8 +4264,6 @@ argument_list|(
 name|newDirs
 argument_list|,
 name|operationState
-argument_list|,
-name|ttlTimeProvider
 argument_list|)
 expr_stmt|;
 block|}
@@ -5325,12 +5299,10 @@ name|metas
 argument_list|)
 argument_list|,
 name|operationState
-argument_list|,
-name|ttlTimeProvider
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Internal put operation.    *<p>    * The ancestors to all entries are added to the set of entries to write,    * provided they are not already stored in any supplied operation state.    * Both the supplied metadata entries and ancestor entries are sorted    * so that the topmost entries are written first.    * This is to ensure that a failure partway through the operation will not    * create entries in the table without parents.    * @param metas metadata entries to write.    * @param operationState (nullable) operational state for a bulk update    * @param ttlTp The time provider for metadata expiry    * @throws IOException failure.    */
+comment|/**    * Internal put operation.    *<p>    * The ancestors to all entries are added to the set of entries to write,    * provided they are not already stored in any supplied operation state.    * Both the supplied metadata entries and ancestor entries are sorted    * so that the topmost entries are written first.    * This is to ensure that a failure partway through the operation will not    * create entries in the table without parents.    * @param metas metadata entries to write.    * @param operationState (nullable) operational state for a bulk update    * @throws IOException failure.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -5340,7 +5312,7 @@ annotation|@
 name|Retries
 operator|.
 name|RetryTranslated
-DECL|method|innerPut ( final Collection<DDBPathMetadata> metas, @Nullable final BulkOperationState operationState, final ITtlTimeProvider ttlTp)
+DECL|method|innerPut ( final Collection<DDBPathMetadata> metas, @Nullable final BulkOperationState operationState)
 specifier|private
 name|void
 name|innerPut
@@ -5357,10 +5329,6 @@ name|Nullable
 specifier|final
 name|BulkOperationState
 name|operationState
-parameter_list|,
-specifier|final
-name|ITtlTimeProvider
-name|ttlTp
 parameter_list|)
 throws|throws
 name|IOException
@@ -6887,8 +6855,6 @@ argument_list|(
 name|metas
 argument_list|,
 name|state
-argument_list|,
-name|ttlTimeProvider
 argument_list|)
 expr_stmt|;
 block|}
@@ -8332,30 +8298,6 @@ name|ttlTimeProvider
 operator|=
 name|ttlTimeProvider
 expr_stmt|;
-block|}
-comment|/**    * Extract a time provider from the argument or fall back to the    * one in the constructor.    * @param ttlTp nullable time source passed in as an argument.    * @return a non-null time source.    */
-DECL|method|extractTimeProvider ( @ullable ITtlTimeProvider ttlTp)
-specifier|private
-name|ITtlTimeProvider
-name|extractTimeProvider
-parameter_list|(
-annotation|@
-name|Nullable
-name|ITtlTimeProvider
-name|ttlTp
-parameter_list|)
-block|{
-return|return
-name|ttlTp
-operator|!=
-literal|null
-condition|?
-name|ttlTp
-else|:
-name|this
-operator|.
-name|ttlTimeProvider
-return|;
 block|}
 comment|/**    * Username.    * @return the current username    */
 DECL|method|getUsername ()

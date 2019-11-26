@@ -9463,6 +9463,14 @@ operator|+
 literal|'/'
 expr_stmt|;
 block|}
+name|boolean
+name|allowAuthoritative
+init|=
+name|allowAuthoritative
+argument_list|(
+name|f
+argument_list|)
+decl_stmt|;
 name|DirListingMetadata
 name|dirMeta
 init|=
@@ -9475,14 +9483,8 @@ argument_list|,
 name|path
 argument_list|,
 name|ttlTimeProvider
-argument_list|)
-decl_stmt|;
-name|boolean
+argument_list|,
 name|allowAuthoritative
-init|=
-name|allowAuthoritative
-argument_list|(
-name|f
 argument_list|)
 decl_stmt|;
 if|if
@@ -10213,6 +10215,14 @@ argument_list|,
 name|key
 argument_list|)
 expr_stmt|;
+name|boolean
+name|allowAuthoritative
+init|=
+name|allowAuthoritative
+argument_list|(
+name|path
+argument_list|)
+decl_stmt|;
 comment|// Check MetadataStore, if any.
 name|PathMetadata
 name|pm
@@ -10238,6 +10248,8 @@ argument_list|,
 name|ttlTimeProvider
 argument_list|,
 name|needEmptyDirectoryFlag
+argument_list|,
+name|allowAuthoritative
 argument_list|)
 expr_stmt|;
 block|}
@@ -10312,16 +10324,6 @@ comment|// if ms is not authoritative, check S3 if there's any recent
 comment|// modification - compare the modTime to check if metadata is up to date
 comment|// Skip going to s3 if the file checked is a directory. Because if the
 comment|// dest is also a directory, there's no difference.
-comment|// TODO After HADOOP-16085 the modification detection can be done with
-comment|//  etags or object version instead of modTime
-name|boolean
-name|allowAuthoritative
-init|=
-name|allowAuthoritative
-argument_list|(
-name|path
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
 operator|!
@@ -10517,6 +10519,8 @@ argument_list|,
 name|path
 argument_list|,
 name|ttlTimeProvider
+argument_list|,
+name|allowAuthoritative
 argument_list|)
 decl_stmt|;
 if|if
@@ -15168,6 +15172,8 @@ argument_list|,
 name|path
 argument_list|,
 name|ttlTimeProvider
+argument_list|,
+name|allowAuthoritative
 argument_list|)
 decl_stmt|;
 if|if
@@ -15476,6 +15482,14 @@ argument_list|(
 name|path
 argument_list|)
 decl_stmt|;
+name|boolean
+name|allowAuthoritative
+init|=
+name|allowAuthoritative
+argument_list|(
+name|f
+argument_list|)
+decl_stmt|;
 name|DirListingMetadata
 name|meta
 init|=
@@ -15488,6 +15502,8 @@ argument_list|,
 name|path
 argument_list|,
 name|ttlTimeProvider
+argument_list|,
+name|allowAuthoritative
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -15511,14 +15527,6 @@ argument_list|,
 name|filter
 argument_list|,
 name|acceptor
-argument_list|)
-decl_stmt|;
-name|boolean
-name|allowAuthoritative
-init|=
-name|allowAuthoritative
-argument_list|(
-name|f
 argument_list|)
 decl_stmt|;
 return|return

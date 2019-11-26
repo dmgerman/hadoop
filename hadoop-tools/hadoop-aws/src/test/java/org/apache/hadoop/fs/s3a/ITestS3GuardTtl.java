@@ -388,6 +388,11 @@ annotation|@
 name|Parameterized
 operator|.
 name|Parameters
+argument_list|(
+name|name
+operator|=
+literal|"auth={0}"
+argument_list|)
 DECL|method|params ()
 specifier|public
 specifier|static
@@ -711,6 +716,8 @@ argument_list|,
 name|dir
 argument_list|,
 name|mockTimeProvider
+argument_list|,
+name|authoritative
 argument_list|)
 decl_stmt|;
 name|assertTrue
@@ -724,6 +731,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// change the time, and assume it's not authoritative anymore
+comment|// if the metadatastore is not authoritative.
 name|when
 argument_list|(
 name|mockTimeProvider
@@ -748,8 +756,28 @@ argument_list|,
 name|dir
 argument_list|,
 name|mockTimeProvider
+argument_list|,
+name|authoritative
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|authoritative
+condition|)
+block|{
+name|assertTrue
+argument_list|(
+literal|"Listing should be authoritative."
+argument_list|,
+name|dirListing
+operator|.
+name|isAuthoritative
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|assertFalse
 argument_list|(
 literal|"Listing should not be authoritative."
@@ -760,6 +788,7 @@ name|isAuthoritative
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 comment|// get an authoritative listing in ms again - retain test
 name|fs
 operator|.
@@ -780,6 +809,8 @@ argument_list|,
 name|dir
 argument_list|,
 name|mockTimeProvider
+argument_list|,
+name|authoritative
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -1026,7 +1057,7 @@ literal|110L
 argument_list|)
 expr_stmt|;
 comment|// metadata is expired so this should refresh the metadata with
-comment|// last_updated to the getNow()
+comment|// last_updated to the getNow() if the store is not authoritative
 specifier|final
 name|FileStatus
 name|fileExpire1Status
@@ -1043,6 +1074,29 @@ argument_list|(
 name|fileExpire1Status
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|authoritative
+condition|)
+block|{
+name|assertEquals
+argument_list|(
+literal|100L
+argument_list|,
+name|ms
+operator|.
+name|get
+argument_list|(
+name|fileExpire1
+argument_list|)
+operator|.
+name|getLastUpdated
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|assertEquals
 argument_list|(
 literal|110L
@@ -1058,8 +1112,9 @@ name|getLastUpdated
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 comment|// metadata is expired so this should refresh the metadata with
-comment|// last_updated to the getNow()
+comment|// last_updated to the getNow() if the store is not authoritative
 specifier|final
 name|FileStatus
 name|fileExpire2Status
@@ -1076,6 +1131,29 @@ argument_list|(
 name|fileExpire2Status
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|authoritative
+condition|)
+block|{
+name|assertEquals
+argument_list|(
+literal|101L
+argument_list|,
+name|ms
+operator|.
+name|get
+argument_list|(
+name|fileExpire2
+argument_list|)
+operator|.
+name|getLastUpdated
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|assertEquals
 argument_list|(
 literal|110L
@@ -1091,6 +1169,7 @@ name|getLastUpdated
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 specifier|final
 name|FileStatus
 name|fileRetainStatus
@@ -1826,7 +1905,8 @@ argument_list|(
 name|tombstonedPath
 argument_list|)
 expr_stmt|;
-comment|// listing will be filtered, and won't contain the tombstone with oldtime
+comment|// listing will be filtered if the store is not authoritative,
+comment|// and won't contain the tombstone with oldtime
 name|when
 argument_list|(
 name|mockTimeProvider
@@ -1844,11 +1924,17 @@ specifier|final
 name|DirListingMetadata
 name|filteredDLM
 init|=
-name|getDirListingMetadata
+name|S3Guard
+operator|.
+name|listChildrenWithTtl
 argument_list|(
 name|ms
 argument_list|,
 name|baseDirPath
+argument_list|,
+name|mockTimeProvider
+argument_list|,
+name|authoritative
 argument_list|)
 decl_stmt|;
 name|containedPaths
@@ -1882,6 +1968,38 @@ name|toList
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|authoritative
+condition|)
+block|{
+name|Assertions
+operator|.
+name|assertThat
+argument_list|(
+name|containedPaths
+argument_list|)
+operator|.
+name|describedAs
+argument_list|(
+literal|"Full listing of path %s"
+argument_list|,
+name|baseDirPath
+argument_list|)
+operator|.
+name|hasSize
+argument_list|(
+literal|11
+argument_list|)
+operator|.
+name|contains
+argument_list|(
+name|tombstonedPath
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|Assertions
 operator|.
 name|assertThat
@@ -1906,6 +2024,7 @@ argument_list|(
 name|tombstonedPath
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 finally|finally
 block|{

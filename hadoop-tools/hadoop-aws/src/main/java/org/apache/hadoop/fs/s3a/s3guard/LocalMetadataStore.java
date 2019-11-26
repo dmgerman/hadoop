@@ -1032,35 +1032,6 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|listing
-operator|.
-name|removeExpiredEntriesFromListing
-argument_list|(
-name|ttlTimeProvider
-operator|.
-name|getMetadataTtl
-argument_list|()
-argument_list|,
-name|ttlTimeProvider
-operator|.
-name|getNow
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"listChildren [after removing expired entries] ({}) -> {}"
-argument_list|,
-name|path
-argument_list|,
-name|listing
-operator|.
-name|prettyPrint
-argument_list|()
-argument_list|)
-expr_stmt|;
 comment|// Make a copy so callers can mutate without affecting our state
 return|return
 operator|new
