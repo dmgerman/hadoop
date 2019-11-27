@@ -121,6 +121,15 @@ name|QUERY_PARAM_ACTION
 init|=
 literal|"action"
 decl_stmt|;
+DECL|field|QUERY_FS_ACTION
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|QUERY_FS_ACTION
+init|=
+literal|"fsAction"
+decl_stmt|;
 DECL|field|QUERY_PARAM_POSITION
 specifier|public
 specifier|static

@@ -83,6 +83,9 @@ name|ReadFile
 block|,
 DECL|enumConstant|DeletePath
 name|DeletePath
+block|,
+DECL|enumConstant|CheckAccess
+name|CheckAccess
 block|}
 end_enum
 

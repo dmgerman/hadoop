@@ -1231,6 +1231,22 @@ name|BooleanConfigurationValidatorAnnotation
 argument_list|(
 name|ConfigurationKey
 operator|=
+name|FS_AZURE_ENABLE_CHECK_ACCESS
+argument_list|,
+name|DefaultValue
+operator|=
+name|DEFAULT_ENABLE_CHECK_ACCESS
+argument_list|)
+DECL|field|isCheckAccessEnabled
+specifier|private
+name|boolean
+name|isCheckAccessEnabled
+decl_stmt|;
+annotation|@
+name|BooleanConfigurationValidatorAnnotation
+argument_list|(
+name|ConfigurationKey
+operator|=
 name|FS_AZURE_ABFS_LATENCY_TRACK
 argument_list|,
 name|DefaultValue
@@ -2082,6 +2098,18 @@ return|return
 name|this
 operator|.
 name|azureBlockSize
+return|;
+block|}
+DECL|method|isCheckAccessEnabled ()
+specifier|public
+name|boolean
+name|isCheckAccessEnabled
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|isCheckAccessEnabled
 return|;
 block|}
 DECL|method|getAzureBlockLocationHost ()

@@ -363,6 +363,15 @@ name|DEFAULT_USE_UPN
 init|=
 literal|false
 decl_stmt|;
+DECL|field|DEFAULT_ENABLE_CHECK_ACCESS
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_ENABLE_CHECK_ACCESS
+init|=
+literal|false
+decl_stmt|;
 DECL|field|DEFAULT_ABFS_LATENCY_TRACK
 specifier|public
 specifier|static

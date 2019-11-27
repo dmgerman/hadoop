@@ -154,6 +154,15 @@ name|GET_ACCESS_CONTROL
 init|=
 literal|"getAccessControl"
 decl_stmt|;
+DECL|field|CHECK_ACCESS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CHECK_ACCESS
+init|=
+literal|"checkAccess"
+decl_stmt|;
 DECL|field|GET_STATUS
 specifier|public
 specifier|static

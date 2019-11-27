@@ -287,6 +287,16 @@ name|FS_AZURE_SSL_CHANNEL_MODE_KEY
 init|=
 literal|"fs.azure.ssl.channel.mode"
 decl_stmt|;
+comment|/** Provides a config to enable/disable the checkAccess API.    *  By default this will be    *  FileSystemConfigurations.DEFAULT_ENABLE_CHECK_ACCESS. **/
+DECL|field|FS_AZURE_ENABLE_CHECK_ACCESS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_AZURE_ENABLE_CHECK_ACCESS
+init|=
+literal|"fs.azure.enable.check.access"
+decl_stmt|;
 DECL|field|FS_AZURE_USE_UPN
 specifier|public
 specifier|static
