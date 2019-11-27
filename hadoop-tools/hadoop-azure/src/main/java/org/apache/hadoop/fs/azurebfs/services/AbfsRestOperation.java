@@ -520,6 +520,15 @@ name|retryCount
 init|=
 literal|0
 decl_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"First execution of REST operation - {}"
+argument_list|,
+name|operationType
+argument_list|)
+expr_stmt|;
 while|while
 condition|(
 operator|!
@@ -532,6 +541,17 @@ condition|)
 block|{
 try|try
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Retrying REST operation {}. RetryCount = {}"
+argument_list|,
+name|operationType
+argument_list|,
+name|retryCount
+argument_list|)
+expr_stmt|;
 name|Thread
 operator|.
 name|sleep

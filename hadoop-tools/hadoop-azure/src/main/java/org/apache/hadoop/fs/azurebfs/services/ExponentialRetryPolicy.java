@@ -50,16 +50,6 @@ specifier|public
 class|class
 name|ExponentialRetryPolicy
 block|{
-comment|/**    * Represents the default number of retry attempts.    */
-DECL|field|DEFAULT_CLIENT_RETRY_COUNT
-specifier|private
-specifier|static
-specifier|final
-name|int
-name|DEFAULT_CLIENT_RETRY_COUNT
-init|=
-literal|30
-decl_stmt|;
 comment|/**    * Represents the default amount of time used when calculating a random delta in the exponential    * delay between retries.    */
 DECL|field|DEFAULT_CLIENT_BACKOFF
 specifier|private
@@ -156,14 +146,18 @@ name|int
 name|retryCount
 decl_stmt|;
 comment|/**    * Initializes a new instance of the {@link ExponentialRetryPolicy} class.    */
-DECL|method|ExponentialRetryPolicy ()
+DECL|method|ExponentialRetryPolicy (final int maxIoRetries)
 specifier|public
 name|ExponentialRetryPolicy
-parameter_list|()
+parameter_list|(
+specifier|final
+name|int
+name|maxIoRetries
+parameter_list|)
 block|{
 name|this
 argument_list|(
-name|DEFAULT_CLIENT_RETRY_COUNT
+name|maxIoRetries
 argument_list|,
 name|DEFAULT_MIN_BACKOFF
 argument_list|,

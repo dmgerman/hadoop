@@ -7414,7 +7414,12 @@ name|abfsConfiguration
 argument_list|,
 operator|new
 name|ExponentialRetryPolicy
+argument_list|(
+name|abfsConfiguration
+operator|.
+name|getMaxIoRetries
 argument_list|()
+argument_list|)
 argument_list|,
 name|tokenProvider
 argument_list|,
