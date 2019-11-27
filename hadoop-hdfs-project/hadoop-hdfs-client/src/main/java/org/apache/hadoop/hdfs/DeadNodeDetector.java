@@ -18,6 +18,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -436,6 +450,78 @@ name|client
 operator|.
 name|HdfsClientConfigKeys
 operator|.
+name|DFS_CLIENT_DEAD_NODE_DETECTION_PROBE_SUSPECT_NODE_INTERVAL_MS_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_CLIENT_DEAD_NODE_DETECTION_PROBE_SUSPECT_NODE_INTERVAL_MS_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_CLIENT_DEAD_NODE_DETECTION_PROBE_SUSPECT_NODE_THREADS_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_CLIENT_DEAD_NODE_DETECTION_PROBE_SUSPECT_NODE_THREADS_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
+operator|.
 name|DFS_CLIENT_DEAD_NODE_DETECTION_RPC_THREADS_DEFAULT
 import|;
 end_import
@@ -455,6 +541,42 @@ operator|.
 name|HdfsClientConfigKeys
 operator|.
 name|DFS_CLIENT_DEAD_NODE_DETECTION_RPC_THREADS_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_CLIENT_DEAD_NODE_DETECTION_SUSPECT_NODE_QUEUE_MAX_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_CLIENT_DEAD_NODE_DETECTION_SUSPECT_NODE_QUEUE_MAX_KEY
 import|;
 end_import
 
@@ -547,7 +669,7 @@ name|DatanodeInfo
 argument_list|>
 name|deadNodes
 decl_stmt|;
-comment|/**    * Record dead nodes by one DFSInputStream. When dead node is not used by one    * DFSInputStream, remove it from dfsInputStreamNodes#DFSInputStream. If    * DFSInputStream does not include any dead node, remove DFSInputStream from    * dfsInputStreamNodes.    */
+comment|/**    * Record suspect and dead nodes by one DFSInputStream. When node is not used    * by one DFSInputStream, remove it from suspectAndDeadNodes#DFSInputStream.    * If DFSInputStream does not include any node, remove DFSInputStream from    * suspectAndDeadNodes.    */
 specifier|private
 specifier|final
 name|Map
@@ -559,8 +681,8 @@ argument_list|<
 name|DatanodeInfo
 argument_list|>
 argument_list|>
-DECL|field|dfsInputStreamNodes
-name|dfsInputStreamNodes
+DECL|field|suspectAndDeadNodes
+name|suspectAndDeadNodes
 decl_stmt|;
 comment|/**    * Datanodes that is being probed.    */
 DECL|field|probeInProg
@@ -598,6 +720,14 @@ name|deadNodeDetectInterval
 init|=
 literal|0
 decl_stmt|;
+comment|/**    * Interval time in milliseconds for probing suspect node behavior.    */
+DECL|field|suspectNodeDetectInterval
+specifier|private
+name|long
+name|suspectNodeDetectInterval
+init|=
+literal|0
+decl_stmt|;
 comment|/**    * The max queue size of probing dead node.    */
 DECL|field|maxDeadNodesProbeQueueLen
 specifier|private
@@ -605,6 +735,12 @@ name|int
 name|maxDeadNodesProbeQueueLen
 init|=
 literal|0
+decl_stmt|;
+comment|/**    * The max queue size of probing suspect node.    */
+DECL|field|maxSuspectNodesProbeQueueLen
+specifier|private
+name|int
+name|maxSuspectNodesProbeQueueLen
 decl_stmt|;
 comment|/**    * Connection timeout for probing dead node in milliseconds.    */
 DECL|field|probeConnectionTimeoutMs
@@ -621,17 +757,38 @@ name|DatanodeInfo
 argument_list|>
 name|deadNodesProbeQueue
 decl_stmt|;
+comment|/**    * The suspect node probe queue.    */
+DECL|field|suspectNodesProbeQueue
+specifier|private
+name|Queue
+argument_list|<
+name|DatanodeInfo
+argument_list|>
+name|suspectNodesProbeQueue
+decl_stmt|;
 comment|/**    * The thread pool of probing dead node.    */
 DECL|field|probeDeadNodesThreadPool
 specifier|private
 name|ExecutorService
 name|probeDeadNodesThreadPool
 decl_stmt|;
+comment|/**    * The thread pool of probing suspect node.    */
+DECL|field|probeSuspectNodesThreadPool
+specifier|private
+name|ExecutorService
+name|probeSuspectNodesThreadPool
+decl_stmt|;
 comment|/**    * The scheduler thread of probing dead node.    */
 DECL|field|probeDeadNodesSchedulerThr
 specifier|private
 name|Thread
 name|probeDeadNodesSchedulerThr
+decl_stmt|;
+comment|/**    * The scheduler thread of probing suspect node.    */
+DECL|field|probeSuspectNodesSchedulerThr
+specifier|private
+name|Thread
+name|probeSuspectNodesSchedulerThr
 decl_stmt|;
 comment|/**    * The thread pool of probing datanodes' rpc request. Sometimes the data node    * can hang and not respond to the client in a short time. And these node will    * filled with probe thread pool and block other normal node probing.    */
 DECL|field|rpcThreadPool
@@ -651,7 +808,10 @@ enum|enum
 name|ProbeType
 block|{
 DECL|enumConstant|CHECK_DEAD
+DECL|enumConstant|CHECK_SUSPECT
 name|CHECK_DEAD
+block|,
+name|CHECK_SUSPECT
 block|}
 comment|/**    * The state of DeadNodeDetector.    */
 DECL|enum|State
@@ -671,6 +831,16 @@ name|IDLE
 block|,
 name|ERROR
 block|}
+comment|/**    * Disabled start probe suspect/dead thread for the testing.    */
+DECL|field|disabledProbeThreadForTest
+specifier|private
+specifier|static
+specifier|volatile
+name|boolean
+name|disabledProbeThreadForTest
+init|=
+literal|false
+decl_stmt|;
 DECL|field|state
 specifier|private
 name|State
@@ -712,7 +882,7 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|dfsInputStreamNodes
+name|suspectAndDeadNodes
 operator|=
 operator|new
 name|ConcurrentHashMap
@@ -743,6 +913,17 @@ argument_list|,
 name|DFS_CLIENT_DEAD_NODE_DETECTION_PROBE_DEAD_NODE_INTERVAL_MS_DEFAULT
 argument_list|)
 expr_stmt|;
+name|suspectNodeDetectInterval
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFS_CLIENT_DEAD_NODE_DETECTION_PROBE_SUSPECT_NODE_INTERVAL_MS_KEY
+argument_list|,
+name|DFS_CLIENT_DEAD_NODE_DETECTION_PROBE_SUSPECT_NODE_INTERVAL_MS_DEFAULT
+argument_list|)
+expr_stmt|;
 name|socketTimeout
 operator|=
 name|conf
@@ -765,6 +946,17 @@ argument_list|(
 name|DFS_CLIENT_DEAD_NODE_DETECTION_DEAD_NODE_QUEUE_MAX_KEY
 argument_list|,
 name|DFS_CLIENT_DEAD_NODE_DETECTION_DEAD_NODE_QUEUE_MAX_DEFAULT
+argument_list|)
+expr_stmt|;
+name|maxSuspectNodesProbeQueueLen
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|DFS_CLIENT_DEAD_NODE_DETECTION_SUSPECT_NODE_QUEUE_MAX_KEY
+argument_list|,
+name|DFS_CLIENT_DEAD_NODE_DETECTION_SUSPECT_NODE_QUEUE_MAX_DEFAULT
 argument_list|)
 expr_stmt|;
 name|probeConnectionTimeoutMs
@@ -791,6 +983,19 @@ argument_list|(
 name|maxDeadNodesProbeQueueLen
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|suspectNodesProbeQueue
+operator|=
+operator|new
+name|ArrayBlockingQueue
+argument_list|<
+name|DatanodeInfo
+argument_list|>
+argument_list|(
+name|maxSuspectNodesProbeQueueLen
+argument_list|)
+expr_stmt|;
 name|int
 name|deadNodeDetectDeadThreads
 init|=
@@ -801,6 +1006,18 @@ argument_list|(
 name|DFS_CLIENT_DEAD_NODE_DETECTION_PROBE_DEAD_NODE_THREADS_KEY
 argument_list|,
 name|DFS_CLIENT_DEAD_NODE_DETECTION_PROBE_DEAD_NODE_THREADS_DEFAULT
+argument_list|)
+decl_stmt|;
+name|int
+name|suspectNodeDetectDeadThreads
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|DFS_CLIENT_DEAD_NODE_DETECTION_PROBE_SUSPECT_NODE_THREADS_KEY
+argument_list|,
+name|DFS_CLIENT_DEAD_NODE_DETECTION_PROBE_SUSPECT_NODE_THREADS_DEFAULT
 argument_list|)
 decl_stmt|;
 name|int
@@ -830,6 +1047,21 @@ name|DaemonFactory
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|probeSuspectNodesThreadPool
+operator|=
+name|Executors
+operator|.
+name|newFixedThreadPool
+argument_list|(
+name|suspectNodeDetectDeadThreads
+argument_list|,
+operator|new
+name|Daemon
+operator|.
+name|DaemonFactory
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|rpcThreadPool
 operator|=
 name|Executors
@@ -845,9 +1077,16 @@ name|DaemonFactory
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|disabledProbeThreadForTest
+condition|)
+block|{
 name|startProbeScheduler
 argument_list|()
 expr_stmt|;
+block|}
 name|LOG
 operator|.
 name|info
@@ -947,9 +1186,23 @@ break|break;
 block|}
 block|}
 block|}
-comment|/**    * Start probe dead node thread.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|disabledProbeThreadForTest ()
+specifier|static
+name|void
+name|disabledProbeThreadForTest
+parameter_list|()
+block|{
+name|disabledProbeThreadForTest
+operator|=
+literal|true
+expr_stmt|;
+block|}
+comment|/**    * Start probe dead node and suspect node thread.    */
+annotation|@
+name|VisibleForTesting
 DECL|method|startProbeScheduler ()
-specifier|private
 name|void
 name|startProbeScheduler
 parameter_list|()
@@ -978,6 +1231,34 @@ literal|true
 argument_list|)
 expr_stmt|;
 name|probeDeadNodesSchedulerThr
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+name|probeSuspectNodesSchedulerThr
+operator|=
+operator|new
+name|Thread
+argument_list|(
+operator|new
+name|ProbeScheduler
+argument_list|(
+name|this
+argument_list|,
+name|ProbeType
+operator|.
+name|CHECK_SUSPECT
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|probeSuspectNodesSchedulerThr
+operator|.
+name|setDaemon
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|probeSuspectNodesSchedulerThr
 operator|.
 name|start
 argument_list|()
@@ -1084,6 +1365,81 @@ name|CHECK_DEAD
 argument_list|)
 decl_stmt|;
 name|probeDeadNodesThreadPool
+operator|.
+name|execute
+argument_list|(
+name|probe
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+elseif|else
+if|if
+condition|(
+name|type
+operator|==
+name|ProbeType
+operator|.
+name|CHECK_SUSPECT
+condition|)
+block|{
+while|while
+condition|(
+operator|(
+name|datanodeInfo
+operator|=
+name|suspectNodesProbeQueue
+operator|.
+name|poll
+argument_list|()
+operator|)
+operator|!=
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+name|probeInProg
+operator|.
+name|containsKey
+argument_list|(
+name|datanodeInfo
+operator|.
+name|getDatanodeUuid
+argument_list|()
+argument_list|)
+condition|)
+block|{
+continue|continue;
+block|}
+name|probeInProg
+operator|.
+name|put
+argument_list|(
+name|datanodeInfo
+operator|.
+name|getDatanodeUuid
+argument_list|()
+argument_list|,
+name|datanodeInfo
+argument_list|)
+expr_stmt|;
+name|Probe
+name|probe
+init|=
+operator|new
+name|Probe
+argument_list|(
+name|this
+argument_list|,
+name|datanodeInfo
+argument_list|,
+name|ProbeType
+operator|.
+name|CHECK_SUSPECT
+argument_list|)
+decl_stmt|;
+name|probeSuspectNodesThreadPool
 operator|.
 name|execute
 argument_list|(
@@ -1402,7 +1758,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Remove the node out from dead node list: {}. "
+literal|"Remove the node out from dead node list: {}."
 argument_list|,
 name|probe
 operator|.
@@ -1410,7 +1766,77 @@ name|getDatanodeInfo
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|removeNodeFromDeadNode
+name|removeDeadNode
+argument_list|(
+name|probe
+operator|.
+name|getDatanodeInfo
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|probe
+operator|.
+name|getType
+argument_list|()
+operator|==
+name|ProbeType
+operator|.
+name|CHECK_SUSPECT
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Remove the node out from suspect node list: {}."
+argument_list|,
+name|probe
+operator|.
+name|getDatanodeInfo
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|removeNodeFromDeadNodeDetector
+argument_list|(
+name|probe
+operator|.
+name|getDatanodeInfo
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|probe
+operator|.
+name|getType
+argument_list|()
+operator|==
+name|ProbeType
+operator|.
+name|CHECK_SUSPECT
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Add the node to dead node list: {}."
+argument_list|,
+name|probe
+operator|.
+name|getDatanodeInfo
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|addToDead
 argument_list|(
 name|probe
 operator|.
@@ -1626,7 +2052,20 @@ return|return
 name|deadNodesProbeQueue
 return|;
 block|}
-comment|/**    * Add datanode in deadNodes and dfsInputStreamNodes. The node is considered    * to dead node. The dead node is shared by all the DFSInputStreams in the    * same client.    */
+DECL|method|getSuspectNodesProbeQueue ()
+specifier|public
+name|Queue
+argument_list|<
+name|DatanodeInfo
+argument_list|>
+name|getSuspectNodesProbeQueue
+parameter_list|()
+block|{
+return|return
+name|suspectNodesProbeQueue
+return|;
+block|}
+comment|/**    * Add datanode to suspectNodes and suspectAndDeadNodes.    */
 DECL|method|addNodeToDetect (DFSInputStream dfsInputStream, DatanodeInfo datanodeInfo)
 specifier|public
 specifier|synchronized
@@ -1646,7 +2085,7 @@ name|DatanodeInfo
 argument_list|>
 name|datanodeInfos
 init|=
-name|dfsInputStreamNodes
+name|suspectAndDeadNodes
 operator|.
 name|get
 argument_list|(
@@ -1676,7 +2115,7 @@ argument_list|(
 name|datanodeInfo
 argument_list|)
 expr_stmt|;
-name|dfsInputStreamNodes
+name|suspectAndDeadNodes
 operator|.
 name|putIfAbsent
 argument_list|(
@@ -1696,13 +2135,32 @@ name|datanodeInfo
 argument_list|)
 expr_stmt|;
 block|}
-name|addToDead
+name|addSuspectNodeToDetect
 argument_list|(
 name|datanodeInfo
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Remove dead node which is not used by any DFSInputStream from deadNodes.    * @return new dead node shared by all DFSInputStreams.    */
+comment|/**    * Add datanode to suspectNodes.    */
+DECL|method|addSuspectNodeToDetect (DatanodeInfo datanodeInfo)
+specifier|private
+name|boolean
+name|addSuspectNodeToDetect
+parameter_list|(
+name|DatanodeInfo
+name|datanodeInfo
+parameter_list|)
+block|{
+return|return
+name|suspectNodesProbeQueue
+operator|.
+name|offer
+argument_list|(
+name|datanodeInfo
+argument_list|)
+return|;
+block|}
+comment|/**      * Remove dead node which is not used by any DFSInputStream from deadNodes.      * @return new dead node shared by all DFSInputStreams.      */
 DECL|method|clearAndGetDetectedDeadNodes ()
 specifier|public
 specifier|synchronized
@@ -1735,7 +2193,7 @@ name|DatanodeInfo
 argument_list|>
 name|datanodeInfos
 range|:
-name|dfsInputStreamNodes
+name|suspectAndDeadNodes
 operator|.
 name|values
 argument_list|()
@@ -1795,7 +2253,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Remove dead node from dfsInputStreamNodes#dfsInputStream. If    * dfsInputStreamNodes#dfsInputStream does not contain any dead node, remove    * it from dfsInputStreamNodes.    */
+comment|/**    * Remove suspect and dead node from suspectAndDeadNodes#dfsInputStream and    *  local deadNodes.    */
 DECL|method|removeNodeFromDeadNodeDetector ( DFSInputStream dfsInputStream, DatanodeInfo datanodeInfo)
 specifier|public
 specifier|synchronized
@@ -1815,7 +2273,7 @@ name|DatanodeInfo
 argument_list|>
 name|datanodeInfos
 init|=
-name|dfsInputStreamNodes
+name|suspectAndDeadNodes
 operator|.
 name|get
 argument_list|(
@@ -1836,6 +2294,13 @@ argument_list|(
 name|datanodeInfo
 argument_list|)
 expr_stmt|;
+name|dfsInputStream
+operator|.
+name|removeFromLocalDeadNodes
+argument_list|(
+name|datanodeInfo
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|datanodeInfos
@@ -1844,7 +2309,7 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-name|dfsInputStreamNodes
+name|suspectAndDeadNodes
 operator|.
 name|remove
 argument_list|(
@@ -1854,12 +2319,12 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Remove dead node from dfsInputStreamNodes#dfsInputStream and deadNodes.    */
-DECL|method|removeNodeFromDeadNode (DatanodeInfo datanodeInfo)
-specifier|public
+comment|/**    * Remove suspect and dead node from suspectAndDeadNodes#dfsInputStream and    *  local deadNodes.    */
+DECL|method|removeNodeFromDeadNodeDetector ( DatanodeInfo datanodeInfo)
+specifier|private
 specifier|synchronized
 name|void
-name|removeNodeFromDeadNode
+name|removeNodeFromDeadNodeDetector
 parameter_list|(
 name|DatanodeInfo
 name|datanodeInfo
@@ -1880,7 +2345,7 @@ argument_list|>
 argument_list|>
 name|entry
 range|:
-name|dfsInputStreamNodes
+name|suspectAndDeadNodes
 operator|.
 name|entrySet
 argument_list|()
@@ -1922,8 +2387,40 @@ argument_list|(
 name|datanodeInfo
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|datanodeInfos
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|suspectAndDeadNodes
+operator|.
+name|remove
+argument_list|(
+name|dfsInputStream
+argument_list|)
+expr_stmt|;
 block|}
 block|}
+block|}
+block|}
+comment|/**    * Remove suspect and dead node from suspectAndDeadNodes#dfsInputStream and    * deadNodes.    */
+DECL|method|removeDeadNode (DatanodeInfo datanodeInfo)
+specifier|private
+name|void
+name|removeDeadNode
+parameter_list|(
+name|DatanodeInfo
+name|datanodeInfo
+parameter_list|)
+block|{
+name|removeNodeFromDeadNodeDetector
+argument_list|(
+name|datanodeInfo
+argument_list|)
+expr_stmt|;
 name|removeFromDead
 argument_list|(
 name|datanodeInfo
@@ -2027,6 +2524,25 @@ argument_list|(
 name|type
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|type
+operator|==
+name|ProbeType
+operator|.
+name|CHECK_SUSPECT
+condition|)
+block|{
+name|probeSleep
+argument_list|(
+name|deadNodeDetector
+operator|.
+name|suspectNodeDetectInterval
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|probeSleep
 argument_list|(
 name|deadNodeDetector
@@ -2034,6 +2550,7 @@ operator|.
 name|deadNodeDetectInterval
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}
