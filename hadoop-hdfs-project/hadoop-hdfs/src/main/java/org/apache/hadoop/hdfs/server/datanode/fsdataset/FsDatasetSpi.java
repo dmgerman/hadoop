@@ -1889,6 +1889,7 @@ name|AutoCloseableLock
 name|acquireDatasetLock
 parameter_list|()
 function_decl|;
+comment|/**    * Deep copy the replica info belonging to given block pool.    * @param bpid Specified block pool id.    * @return A set of replica info.    * @throws IOException    */
 DECL|method|deepCopyReplica (String bpid)
 name|Set
 argument_list|<

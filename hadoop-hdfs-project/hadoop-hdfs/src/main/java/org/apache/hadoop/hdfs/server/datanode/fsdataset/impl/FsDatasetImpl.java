@@ -1958,7 +1958,6 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * The deepCopyReplica call doesn't use the datasetock since it will lead the    * potential deadlock with the {@link FsVolumeList#addBlockPool} call.    */
 annotation|@
 name|Override
 DECL|method|deepCopyReplica (String bpid)
@@ -1985,6 +1984,21 @@ name|Replica
 argument_list|>
 name|replicas
 init|=
+literal|null
+decl_stmt|;
+try|try
+init|(
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
+init|)
+block|{
+name|replicas
+operator|=
 operator|new
 name|HashSet
 argument_list|<>
@@ -2009,7 +2023,8 @@ argument_list|(
 name|bpid
 argument_list|)
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
 return|return
 name|Collections
 operator|.

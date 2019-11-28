@@ -224,6 +224,11 @@ specifier|private
 name|Thread
 name|refreshUsed
 decl_stmt|;
+DECL|field|shouldFirstRefresh
+specifier|private
+name|boolean
+name|shouldFirstRefresh
+decl_stmt|;
 comment|/**    * This is the constructor used by the builder.    * All overriding classes should implement this.    */
 DECL|method|CachingGetSpaceUsed (CachingGetSpaceUsed.Builder builder)
 specifier|public
@@ -310,6 +315,12 @@ argument_list|(
 name|initialUsed
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|shouldFirstRefresh
+operator|=
+literal|true
+expr_stmt|;
 block|}
 DECL|method|init ()
 name|void
@@ -333,10 +344,41 @@ argument_list|(
 literal|0
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|shouldFirstRefresh
+condition|)
+block|{
+comment|// Skip initial refresh operation, so we need to do first refresh
+comment|// operation immediately in refresh thread.
+name|initRefeshThread
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|refresh
 argument_list|()
 expr_stmt|;
 block|}
+name|initRefeshThread
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * RunImmediately should set true, if we skip the first refresh.    * @param runImmediately The param default should be false.    */
+DECL|method|initRefeshThread (boolean runImmediately)
+specifier|private
+name|void
+name|initRefeshThread
+parameter_list|(
+name|boolean
+name|runImmediately
+parameter_list|)
+block|{
 if|if
 condition|(
 name|refreshInterval
@@ -353,6 +395,8 @@ operator|new
 name|RefreshThread
 argument_list|(
 name|this
+argument_list|,
+name|runImmediately
 argument_list|)
 argument_list|,
 literal|"refreshUsed-"
@@ -395,6 +439,23 @@ name|void
 name|refresh
 parameter_list|()
 function_decl|;
+comment|/**    * Reset that if we need to do the first refresh.    * @param shouldFirstRefresh The flag value to set.    */
+DECL|method|setShouldFirstRefresh (boolean shouldFirstRefresh)
+specifier|protected
+name|void
+name|setShouldFirstRefresh
+parameter_list|(
+name|boolean
+name|shouldFirstRefresh
+parameter_list|)
+block|{
+name|this
+operator|.
+name|shouldFirstRefresh
+operator|=
+name|shouldFirstRefresh
+expr_stmt|;
+block|}
 comment|/**    * @return an estimate of space used in the directory path.    */
 DECL|method|getUsed ()
 annotation|@
@@ -537,11 +598,19 @@ specifier|final
 name|CachingGetSpaceUsed
 name|spaceUsed
 decl_stmt|;
-DECL|method|RefreshThread (CachingGetSpaceUsed spaceUsed)
+DECL|field|runImmediately
+specifier|private
+name|boolean
+name|runImmediately
+decl_stmt|;
+DECL|method|RefreshThread (CachingGetSpaceUsed spaceUsed, boolean runImmediately)
 name|RefreshThread
 parameter_list|(
 name|CachingGetSpaceUsed
 name|spaceUsed
+parameter_list|,
+name|boolean
+name|runImmediately
 parameter_list|)
 block|{
 name|this
@@ -549,6 +618,12 @@ operator|.
 name|spaceUsed
 operator|=
 name|spaceUsed
+expr_stmt|;
+name|this
+operator|.
+name|runImmediately
+operator|=
+name|runImmediately
 expr_stmt|;
 block|}
 annotation|@
@@ -621,12 +696,23 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|runImmediately
+condition|)
+block|{
 name|Thread
 operator|.
 name|sleep
 argument_list|(
 name|refreshInterval
 argument_list|)
+expr_stmt|;
+block|}
+name|runImmediately
+operator|=
+literal|false
 expr_stmt|;
 comment|// update the used variable
 name|spaceUsed

@@ -266,6 +266,11 @@ argument_list|(
 name|builder
 argument_list|)
 expr_stmt|;
+name|setShouldFirstRefresh
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
 name|volume
 operator|=
 name|builder
