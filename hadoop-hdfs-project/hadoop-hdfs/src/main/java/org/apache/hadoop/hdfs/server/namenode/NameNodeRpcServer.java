@@ -10725,6 +10725,53 @@ block|{
 name|checkNNStartup
 argument_list|()
 expr_stmt|;
+comment|// This is to eliminate any race condition between manual transition of
+comment|// namenode into Observer, and ZKFC auto failover election, when the
+comment|// namenode has already participated in the
+comment|// ZKFC election, before transition to Observer state as Standby Node.
+comment|// For more details check : HDFS-14961.
+if|if
+condition|(
+name|nn
+operator|.
+name|getState
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|NameNode
+operator|.
+name|OBSERVER_STATE
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+operator|&&
+name|req
+operator|.
+name|getSource
+argument_list|()
+operator|==
+name|RequestSource
+operator|.
+name|REQUEST_BY_ZKFC
+condition|)
+block|{
+throw|throw
+operator|new
+name|AccessControlException
+argument_list|(
+literal|"Request from ZK failover controller at "
+operator|+
+name|Server
+operator|.
+name|getRemoteAddress
+argument_list|()
+operator|+
+literal|" denied since the namenode is in Observer state."
+argument_list|)
+throw|;
+block|}
 name|nn
 operator|.
 name|checkHaStateChange
