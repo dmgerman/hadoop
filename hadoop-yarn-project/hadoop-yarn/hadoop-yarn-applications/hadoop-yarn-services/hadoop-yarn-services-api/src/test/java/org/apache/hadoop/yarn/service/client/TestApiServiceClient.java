@@ -492,7 +492,7 @@ operator|)
 operator|.
 name|setMaxThreads
 argument_list|(
-literal|10
+literal|20
 argument_list|)
 expr_stmt|;
 name|ServletContextHandler
