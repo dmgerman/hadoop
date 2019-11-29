@@ -1181,6 +1181,22 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSUtil
+operator|.
+name|isParentEntry
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -27020,10 +27036,10 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|src
-operator|.
-name|startsWith
+name|isParentEntry
 argument_list|(
+name|src
+argument_list|,
 name|path
 argument_list|)
 condition|)

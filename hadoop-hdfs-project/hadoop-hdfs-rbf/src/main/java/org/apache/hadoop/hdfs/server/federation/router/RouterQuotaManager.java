@@ -32,13 +32,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
-operator|.
-name|federation
-operator|.
-name|router
-operator|.
-name|FederationUtil
+name|DFSUtil
 operator|.
 name|isParentEntry
 import|;

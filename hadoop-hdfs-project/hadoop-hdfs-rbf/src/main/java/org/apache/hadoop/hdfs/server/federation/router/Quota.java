@@ -23,6 +23,22 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSUtil
+operator|.
+name|isParentEntry
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -1066,8 +1082,6 @@ control|)
 block|{
 if|if
 condition|(
-name|FederationUtil
-operator|.
 name|isParentEntry
 argument_list|(
 name|loc

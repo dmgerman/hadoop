@@ -25,6 +25,22 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSUtil
+operator|.
+name|isParentEntry
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -105,26 +121,6 @@ operator|.
 name|permission
 operator|.
 name|FsAction
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|federation
-operator|.
-name|router
-operator|.
-name|FederationUtil
 import|;
 end_import
 
@@ -1018,8 +1014,6 @@ decl_stmt|;
 if|if
 condition|(
 operator|!
-name|FederationUtil
-operator|.
 name|isParentEntry
 argument_list|(
 name|srcPath
