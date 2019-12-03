@@ -1365,6 +1365,24 @@ name|FILTER_INITIALIZER_PROPERTY
 init|=
 literal|"hadoop.http.filter.initializers"
 decl_stmt|;
+DECL|field|HTTP_SNI_HOST_CHECK_ENABLED_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HTTP_SNI_HOST_CHECK_ENABLED_KEY
+init|=
+literal|"hadoop.http.sni.host.check.enabled"
+decl_stmt|;
+DECL|field|HTTP_SNI_HOST_CHECK_ENABLED_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|HTTP_SNI_HOST_CHECK_ENABLED_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 comment|// The ServletContext attribute where the daemon Configuration
 comment|// gets stored.
 DECL|field|CONF_CONTEXT_ATTRIBUTE
@@ -1751,6 +1769,11 @@ init|=
 name|XFrameOption
 operator|.
 name|SAMEORIGIN
+decl_stmt|;
+DECL|field|sniHostCheckEnabled
+specifier|private
+name|boolean
+name|sniHostCheckEnabled
 decl_stmt|;
 DECL|method|setName (String name)
 specifier|public
@@ -2195,6 +2218,26 @@ name|getEnum
 argument_list|(
 name|option
 argument_list|)
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|/**      * Enable or disable sniHostCheck.      *      * @param sniHostCheckEnabled Enable sniHostCheck if true, else disable it.      * @return Builder.      */
+DECL|method|setSniHostCheckEnabled (boolean sniHostCheckEnabled)
+specifier|public
+name|Builder
+name|setSniHostCheckEnabled
+parameter_list|(
+name|boolean
+name|sniHostCheckEnabled
+parameter_list|)
+block|{
+name|this
+operator|.
+name|sniHostCheckEnabled
+operator|=
+name|sniHostCheckEnabled
 expr_stmt|;
 return|return
 name|this
@@ -2647,6 +2690,26 @@ argument_list|,
 name|HTTP_SOCKET_BACKLOG_SIZE_DEFAULT
 argument_list|)
 decl_stmt|;
+comment|// If setSniHostCheckEnabled() is used to enable SNI hostname check,
+comment|// configuration lookup is skipped.
+if|if
+condition|(
+operator|!
+name|sniHostCheckEnabled
+condition|)
+block|{
+name|sniHostCheckEnabled
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|HTTP_SNI_HOST_CHECK_ENABLED_KEY
+argument_list|,
+name|HTTP_SNI_HOST_CHECK_ENABLED_DEFAULT
+argument_list|)
+expr_stmt|;
+block|}
 for|for
 control|(
 name|URI
@@ -2888,7 +2951,9 @@ name|addCustomizer
 argument_list|(
 operator|new
 name|SecureRequestCustomizer
-argument_list|()
+argument_list|(
+name|sniHostCheckEnabled
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|ServerConnector

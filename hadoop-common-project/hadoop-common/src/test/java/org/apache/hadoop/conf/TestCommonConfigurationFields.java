@@ -953,6 +953,13 @@ argument_list|(
 literal|"io.seqfile.local.dir"
 argument_list|)
 expr_stmt|;
+name|xmlPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+literal|"hadoop.http.sni.host.check.enabled"
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class
