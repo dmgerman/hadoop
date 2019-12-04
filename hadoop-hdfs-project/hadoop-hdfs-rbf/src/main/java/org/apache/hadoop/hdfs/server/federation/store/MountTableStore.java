@@ -104,6 +104,26 @@ name|server
 operator|.
 name|federation
 operator|.
+name|router
+operator|.
+name|RouterQuotaManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|federation
+operator|.
 name|store
 operator|.
 name|driver
@@ -201,6 +221,12 @@ specifier|private
 name|MountTableRefresherService
 name|refreshService
 decl_stmt|;
+comment|/** Router quota manager to update quota usage in mount table. */
+DECL|field|quotaManager
+specifier|private
+name|RouterQuotaManager
+name|quotaManager
+decl_stmt|;
 DECL|method|MountTableStore (StateStoreDriver driver)
 specifier|public
 name|MountTableStore
@@ -234,6 +260,32 @@ name|refreshService
 operator|=
 name|refreshService
 expr_stmt|;
+block|}
+DECL|method|setQuotaManager (RouterQuotaManager quotaManager)
+specifier|public
+name|void
+name|setQuotaManager
+parameter_list|(
+name|RouterQuotaManager
+name|quotaManager
+parameter_list|)
+block|{
+name|this
+operator|.
+name|quotaManager
+operator|=
+name|quotaManager
+expr_stmt|;
+block|}
+DECL|method|getQuotaManager ()
+specifier|public
+name|RouterQuotaManager
+name|getQuotaManager
+parameter_list|()
+block|{
+return|return
+name|quotaManager
+return|;
 block|}
 comment|/**    * Update mount table cache of this router as well as all other routers.    */
 DECL|method|updateCacheAllRouters ()
