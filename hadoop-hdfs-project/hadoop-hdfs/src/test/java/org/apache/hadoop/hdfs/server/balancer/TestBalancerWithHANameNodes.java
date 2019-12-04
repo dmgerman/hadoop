@@ -819,13 +819,52 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|60000
+literal|120000
 argument_list|)
 DECL|method|testBalancerWithObserver ()
 specifier|public
 name|void
 name|testBalancerWithObserver
 parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|testBalancerWithObserver
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Test Balancer with ObserverNodes when one has failed.    */
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|180000
+argument_list|)
+DECL|method|testBalancerWithObserverWithFailedNode ()
+specifier|public
+name|void
+name|testBalancerWithObserverWithFailedNode
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|testBalancerWithObserver
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|testBalancerWithObserver (boolean withObserverFailure)
+specifier|private
+name|void
+name|testBalancerWithObserver
+parameter_list|(
+name|boolean
+name|withObserverFailure
+parameter_list|)
 throws|throws
 name|Exception
 block|{
@@ -842,6 +881,16 @@ operator|.
 name|initConf
 argument_list|(
 name|conf
+argument_list|)
+expr_stmt|;
+comment|// Avoid the same FS being reused between tests
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+literal|"fs.hdfs.impl.disable.cache"
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|MiniQJMHACluster
@@ -936,6 +985,20 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|withObserverFailure
+condition|)
+block|{
+comment|// First observer NN is at index 2
+name|cluster
+operator|.
+name|shutdownNameNode
+argument_list|(
+literal|2
+argument_list|)
+expr_stmt|;
+block|}
 name|DistributedFileSystem
 name|dfs
 init|=
@@ -987,15 +1050,24 @@ name|i
 operator|++
 control|)
 block|{
-comment|// First observer node is at idx 2 so it should get both getBlocks calls
-comment|// all other NameNodes should see 0 getBlocks calls
+comment|// First observer node is at idx 2, or 3 if 2 has been shut down
+comment|// It should get both getBlocks calls, all other NNs should see 0 calls
+name|int
+name|expectedObserverIdx
+init|=
+name|withObserverFailure
+condition|?
+literal|3
+else|:
+literal|2
+decl_stmt|;
 name|int
 name|expectedCount
 init|=
 operator|(
 name|i
 operator|==
-literal|2
+name|expectedObserverIdx
 operator|)
 condition|?
 literal|2
