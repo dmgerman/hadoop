@@ -3235,6 +3235,8 @@ name|configuration
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|YarnException
 block|{
 name|writeLock
 operator|.
@@ -5238,7 +5240,9 @@ name|CapacitySchedulerConfiguration
 name|conf
 parameter_list|)
 throws|throws
-name|IOException
+name|YarnException
+block|{
+try|try
 block|{
 name|this
 operator|.
@@ -5274,6 +5278,23 @@ name|getRootQueue
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|YarnException
+argument_list|(
+literal|"Failed to initialize queues"
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
 block|}
 annotation|@
 name|Lock
