@@ -1856,23 +1856,6 @@ operator|+
 name|targetPath
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|timeout
-operator|==
-literal|0
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Timeout is set to 0. Skipping replication check."
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
 name|long
 name|startTime
 init|=
@@ -1957,7 +1940,6 @@ name|currentReplication
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 else|else
