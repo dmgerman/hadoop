@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager.webapp.dao
+DECL|package|org.apache.hadoop.yarn.webapp.dao
 package|package
 name|org
 operator|.
@@ -13,10 +13,6 @@ operator|.
 name|hadoop
 operator|.
 name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
 operator|.
 name|webapp
 operator|.
@@ -90,6 +86,10 @@ name|ArrayList
 import|;
 end_import
 
+begin_comment
+comment|/**  * This class stores the Scheduler Configuration.  */
+end_comment
+
 begin_class
 annotation|@
 name|XmlRootElement
@@ -111,7 +111,7 @@ class|class
 name|ConfInfo
 block|{
 DECL|field|property
-specifier|protected
+specifier|private
 name|ArrayList
 argument_list|<
 name|ConfItem
@@ -192,6 +192,7 @@ return|return
 name|property
 return|;
 block|}
+comment|/**    * This class stores the Configuration Property.    */
 annotation|@
 name|XmlAccessorType
 argument_list|(
