@@ -419,11 +419,13 @@ decl_stmt|;
 name|RMApp
 name|app
 init|=
-name|rm
+name|MockRMAppSubmitter
 operator|.
-name|submitApp
+name|submitWithMemory
 argument_list|(
 literal|2000
+argument_list|,
+name|rm
 argument_list|)
 decl_stmt|;
 comment|//kick the scheduling

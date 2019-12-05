@@ -664,6 +664,24 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|MockRMAppSubmitter
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|MockRMWithCustomAMLauncher
 import|;
 end_import
@@ -1522,11 +1540,13 @@ comment|// Submit an app
 name|RMApp
 name|app
 init|=
-name|rm
+name|MockRMAppSubmitter
 operator|.
-name|submitApp
+name|submitWithMemory
 argument_list|(
 literal|1024
+argument_list|,
+name|rm
 argument_list|)
 decl_stmt|;
 comment|// Set up a node.
@@ -2752,11 +2772,13 @@ comment|// Submit an app
 name|RMApp
 name|app
 init|=
-name|rm
+name|MockRMAppSubmitter
 operator|.
-name|submitApp
+name|submitWithMemory
 argument_list|(
 literal|1024
+argument_list|,
+name|rm
 argument_list|)
 decl_stmt|;
 comment|// Set up a node.

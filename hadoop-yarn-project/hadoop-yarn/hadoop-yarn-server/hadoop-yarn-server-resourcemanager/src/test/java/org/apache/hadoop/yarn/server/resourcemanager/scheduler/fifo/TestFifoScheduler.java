@@ -790,6 +790,24 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|MockRMAppSubmitter
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|NodeManager
 import|;
 end_import
@@ -4937,11 +4955,13 @@ decl_stmt|;
 name|RMApp
 name|app1
 init|=
-name|rm
+name|MockRMAppSubmitter
 operator|.
-name|submitApp
+name|submitWithMemory
 argument_list|(
 literal|2048
+argument_list|,
+name|rm
 argument_list|)
 decl_stmt|;
 comment|// kick the scheduling, 2 GB given to AM1, remaining 4GB on nm1
@@ -5144,11 +5164,13 @@ decl_stmt|;
 name|RMApp
 name|app1
 init|=
-name|rm
+name|MockRMAppSubmitter
 operator|.
-name|submitApp
+name|submitWithMemory
 argument_list|(
 literal|2048
+argument_list|,
+name|rm
 argument_list|)
 decl_stmt|;
 comment|// kick the scheduling, 2 GB given to AM1, remaining 4GB on nm1
@@ -5221,11 +5243,13 @@ expr_stmt|;
 name|RMApp
 name|app2
 init|=
-name|rm
+name|MockRMAppSubmitter
 operator|.
-name|submitApp
+name|submitWithMemory
 argument_list|(
 literal|2048
+argument_list|,
+name|rm
 argument_list|)
 decl_stmt|;
 comment|// kick the scheduling, 2GB given to AM, remaining 2 GB on nm2
@@ -6071,11 +6095,13 @@ comment|// Submit an application
 name|RMApp
 name|app1
 init|=
-name|rm
+name|MockRMAppSubmitter
 operator|.
-name|submitApp
+name|submitWithMemory
 argument_list|(
 name|testAlloc
+argument_list|,
+name|rm
 argument_list|)
 decl_stmt|;
 comment|// kick the scheduling
@@ -7984,11 +8010,13 @@ decl_stmt|;
 name|RMApp
 name|app1
 init|=
-name|rm
+name|MockRMAppSubmitter
 operator|.
-name|submitApp
+name|submitWithMemory
 argument_list|(
 literal|2048
+argument_list|,
+name|rm
 argument_list|)
 decl_stmt|;
 comment|// kick the scheduling, 2 GB given to AM1, remaining 2GB on nm1

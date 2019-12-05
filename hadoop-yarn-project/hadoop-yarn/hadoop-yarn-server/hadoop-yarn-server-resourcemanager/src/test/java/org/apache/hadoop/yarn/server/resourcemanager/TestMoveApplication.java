@@ -743,11 +743,13 @@ expr_stmt|;
 name|RMApp
 name|app
 init|=
-name|rm1
+name|MockRMAppSubmitter
 operator|.
-name|submitApp
+name|submitWithMemory
 argument_list|(
 literal|1024
+argument_list|,
+name|rm1
 argument_list|)
 decl_stmt|;
 name|ClientRMService

@@ -46,6 +46,24 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|MockRMAppSubmitter
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -746,11 +764,13 @@ expr_stmt|;
 name|RMApp
 name|app1
 init|=
-name|rm
+name|MockRMAppSubmitter
 operator|.
-name|submitApp
+name|submitWithMemory
 argument_list|(
 literal|2000
+argument_list|,
+name|rm
 argument_list|)
 decl_stmt|;
 comment|// Trigger the scheduling so the AM gets 'launched' on nm1
@@ -958,11 +978,13 @@ expr_stmt|;
 name|RMApp
 name|app1
 init|=
-name|rm
+name|MockRMAppSubmitter
 operator|.
-name|submitApp
+name|submitWithMemory
 argument_list|(
 literal|2000
+argument_list|,
+name|rm
 argument_list|)
 decl_stmt|;
 comment|// Trigger the scheduling so the AM gets 'launched' on nm1
@@ -1397,11 +1419,13 @@ comment|// registering another AM gives it the complete failed list
 name|RMApp
 name|app2
 init|=
-name|rm
+name|MockRMAppSubmitter
 operator|.
-name|submitApp
+name|submitWithMemory
 argument_list|(
 literal|2000
+argument_list|,
+name|rm
 argument_list|)
 decl_stmt|;
 comment|// Trigger nm2 heartbeat so that AM gets launched on it

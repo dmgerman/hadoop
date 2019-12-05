@@ -965,11 +965,13 @@ comment|// Submit an application
 name|RMApp
 name|app1
 init|=
-name|rm
+name|MockRMAppSubmitter
 operator|.
-name|submitApp
+name|submitWithMemory
 argument_list|(
 literal|2048
+argument_list|,
+name|rm
 argument_list|)
 decl_stmt|;
 comment|// kick the scheduling

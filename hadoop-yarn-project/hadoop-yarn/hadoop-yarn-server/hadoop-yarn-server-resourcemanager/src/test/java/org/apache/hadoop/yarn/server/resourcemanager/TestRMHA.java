@@ -1190,11 +1190,13 @@ argument_list|)
 expr_stmt|;
 name|app
 operator|=
-name|rm
+name|MockRMAppSubmitter
 operator|.
-name|submitApp
+name|submitWithMemory
 argument_list|(
 literal|1024
+argument_list|,
+name|rm
 argument_list|)
 expr_stmt|;
 name|attempt
