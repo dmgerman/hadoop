@@ -1457,6 +1457,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|maxLogs
+operator|>
+literal|0
+condition|)
+block|{
 name|LinkedList
 argument_list|<
 name|LogMutation
@@ -1514,6 +1521,7 @@ name|logs
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 name|pendingMutation
 operator|=
 name|logMutation
@@ -2117,6 +2125,18 @@ name|LOG_KEY
 argument_list|)
 argument_list|)
 argument_list|)
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getDB ()
+specifier|protected
+name|DB
+name|getDB
+parameter_list|()
+block|{
+return|return
+name|db
 return|;
 block|}
 annotation|@

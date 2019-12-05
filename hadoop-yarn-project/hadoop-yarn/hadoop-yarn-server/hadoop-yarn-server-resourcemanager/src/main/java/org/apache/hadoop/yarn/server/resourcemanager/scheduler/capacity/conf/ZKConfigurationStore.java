@@ -974,6 +974,13 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+if|if
+condition|(
+name|maxLogs
+operator|>
+literal|0
+condition|)
+block|{
 name|byte
 index|[]
 name|storedLogs
@@ -1064,6 +1071,7 @@ argument_list|,
 name|fencingNodePath
 argument_list|)
 expr_stmt|;
+block|}
 name|pendingMutation
 operator|=
 name|logMutation
