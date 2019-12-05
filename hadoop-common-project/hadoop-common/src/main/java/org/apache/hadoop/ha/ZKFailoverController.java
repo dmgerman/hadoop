@@ -900,7 +900,10 @@ return|return
 name|localTarget
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getServiceState ()
+specifier|public
 name|HAServiceState
 name|getServiceState
 parameter_list|()
@@ -3363,6 +3366,15 @@ block|{
 case|case
 name|SERVICE_HEALTHY
 case|:
+if|if
+condition|(
+name|serviceState
+operator|!=
+name|HAServiceState
+operator|.
+name|OBSERVER
+condition|)
+block|{
 name|elector
 operator|.
 name|joinElection
@@ -3373,6 +3385,7 @@ name|localTarget
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|quitElectionOnBadState
@@ -3742,6 +3755,7 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getElectorForTests ()
+specifier|public
 name|ActiveStandbyElector
 name|getElectorForTests
 parameter_list|()

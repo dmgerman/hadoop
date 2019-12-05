@@ -1877,6 +1877,18 @@ name|errorMessage
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getWantToBeInElection ()
+specifier|public
+name|boolean
+name|getWantToBeInElection
+parameter_list|()
+block|{
+return|return
+name|wantToBeInElection
+return|;
+block|}
 comment|/**    * We failed to become active. Re-join the election, but    * sleep for a few seconds after terminating our existing    * session, so that other nodes have a chance to become active.    * The failure to become active is already logged inside    * becomeActive().    */
 DECL|method|reJoinElectionAfterFailureToBecomeActive ()
 specifier|private
