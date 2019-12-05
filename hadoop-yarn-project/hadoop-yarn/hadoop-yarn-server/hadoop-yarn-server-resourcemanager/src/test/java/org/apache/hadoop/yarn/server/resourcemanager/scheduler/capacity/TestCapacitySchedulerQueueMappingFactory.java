@@ -96,6 +96,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|exceptions
+operator|.
+name|YarnException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -1270,8 +1286,63 @@ argument_list|(
 name|queueMappingsForUG
 argument_list|,
 literal|true
+argument_list|,
+literal|"f"
 argument_list|)
 expr_stmt|;
+try|try
+block|{
+name|testNestedUserQueueWithDynamicParentQueue
+argument_list|(
+name|queueMappingsForUG
+argument_list|,
+literal|true
+argument_list|,
+literal|"h"
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Leaf Queue 'h' doesn't exists"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|YarnException
+name|e
+parameter_list|)
+block|{
+comment|// Exception is expected as there is no such leaf queue
+block|}
+try|try
+block|{
+name|testNestedUserQueueWithDynamicParentQueue
+argument_list|(
+name|queueMappingsForUG
+argument_list|,
+literal|true
+argument_list|,
+literal|"a1"
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Actual Parent Queue of Leaf Queue 'a1' is 'a', but as per queue "
+operator|+
+literal|"mapping it returns primary queue as 'a1group'"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|YarnException
+name|e
+parameter_list|)
+block|{
+comment|// Exception is expected as there is mismatch in expected and actual
+comment|// parent queue
+block|}
 block|}
 annotation|@
 name|Test
@@ -1375,10 +1446,12 @@ argument_list|(
 name|queueMappingsForUG
 argument_list|,
 literal|false
+argument_list|,
+literal|"e"
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testNestedUserQueueWithDynamicParentQueue ( List<UserGroupMappingPlacementRule.QueueMapping> mapping, boolean primary)
+DECL|method|testNestedUserQueueWithDynamicParentQueue ( List<UserGroupMappingPlacementRule.QueueMapping> mapping, boolean primary, String user)
 specifier|private
 name|void
 name|testNestedUserQueueWithDynamicParentQueue
@@ -1393,6 +1466,9 @@ name|mapping
 parameter_list|,
 name|boolean
 name|primary
+parameter_list|,
+name|String
+name|user
 parameter_list|)
 throws|throws
 name|Exception
@@ -1595,14 +1671,14 @@ name|getPlacementForApp
 argument_list|(
 name|asc
 argument_list|,
-literal|"a"
+name|user
 argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
 literal|"Queue"
 argument_list|,
-literal|"a"
+name|user
 argument_list|,
 name|ctx
 operator|.
@@ -1619,7 +1695,9 @@ name|assertEquals
 argument_list|(
 literal|"Primary Group"
 argument_list|,
-literal|"agroup"
+name|user
+operator|+
+literal|"group"
 argument_list|,
 name|ctx
 operator|.
@@ -1634,7 +1712,9 @@ name|assertEquals
 argument_list|(
 literal|"Secondary Group"
 argument_list|,
-literal|"asubgroup1"
+name|user
+operator|+
+literal|"subgroup1"
 argument_list|,
 name|ctx
 operator|.
