@@ -1502,11 +1502,17 @@ name|void
 name|clear
 parameter_list|()
 block|{
+synchronized|synchronized
+init|(
+name|diffs
+init|)
+block|{
 name|diffs
 operator|.
 name|clear
 argument_list|()
 expr_stmt|;
+block|}
 name|stats
 operator|.
 name|clear
@@ -1762,6 +1768,11 @@ name|loopCount
 init|=
 literal|0
 decl_stmt|;
+synchronized|synchronized
+init|(
+name|diffs
+init|)
+block|{
 for|for
 control|(
 specifier|final
@@ -1827,6 +1838,7 @@ block|}
 name|loopCount
 operator|++
 expr_stmt|;
+block|}
 block|}
 if|if
 condition|(
@@ -2395,6 +2407,11 @@ name|d
 operator|++
 expr_stmt|;
 block|}
+synchronized|synchronized
+init|(
+name|diffs
+init|)
+block|{
 name|diffs
 operator|.
 name|addAll
@@ -2404,6 +2421,7 @@ argument_list|,
 name|diffRecord
 argument_list|)
 expr_stmt|;
+block|}
 name|LOG
 operator|.
 name|info
