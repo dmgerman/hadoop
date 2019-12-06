@@ -960,6 +960,24 @@ name|DFS_DATANODE_NON_LOCAL_LAZY_PERSIST_DEFAULT
 init|=
 literal|false
 decl_stmt|;
+DECL|field|DFS_DATANODE_FIXED_VOLUME_SIZE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_DATANODE_FIXED_VOLUME_SIZE_KEY
+init|=
+literal|"dfs.datanode.fixed.volume.size"
+decl_stmt|;
+DECL|field|DFS_DATANODE_FIXED_VOLUME_SIZE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_DATANODE_FIXED_VOLUME_SIZE_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 comment|// This setting is for testing/internal use only.
 DECL|field|DFS_DATANODE_DUPLICATE_REPLICA_DELETION
 specifier|public
