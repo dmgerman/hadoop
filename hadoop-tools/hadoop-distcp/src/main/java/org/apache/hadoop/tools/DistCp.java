@@ -500,7 +500,9 @@ name|DistCpSync
 argument_list|(
 name|context
 argument_list|,
-name|getConf
+name|job
+operator|.
+name|getConfiguration
 argument_list|()
 argument_list|)
 decl_stmt|;
