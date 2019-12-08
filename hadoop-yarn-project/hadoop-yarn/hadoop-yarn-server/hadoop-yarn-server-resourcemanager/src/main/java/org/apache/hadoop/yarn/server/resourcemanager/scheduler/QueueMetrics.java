@@ -1101,28 +1101,9 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|ResourceUtils
-operator|.
-name|getNumberOfKnownResourceTypes
-argument_list|()
-operator|>
-literal|2
-condition|)
-block|{
-name|this
-operator|.
-name|queueMetricsForCustomResources
-operator|=
-operator|new
-name|QueueMetricsForCustomResources
+name|createQueueMetricsForCustomResources
 argument_list|()
 expr_stmt|;
-name|registerCustomResources
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|tag (MetricsInfo info, String value)
 specifier|protected
@@ -2588,11 +2569,15 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Register all custom resources metrics as part of initialization. As and    * when this metric object construction happens for any queue, all custom    * resource metrics value would be initialized with '0' like any other    * mandatory resources metrics    */
-DECL|method|registerCustomResources ()
-specifier|private
-name|void
-name|registerCustomResources
+DECL|method|initAndGetCustomResources ()
+specifier|protected
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Long
+argument_list|>
+name|initAndGetCustomResources
 parameter_list|()
 block|{
 name|Map
@@ -2664,6 +2649,57 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+return|return
+name|customResources
+return|;
+block|}
+DECL|method|createQueueMetricsForCustomResources ()
+specifier|protected
+name|void
+name|createQueueMetricsForCustomResources
+parameter_list|()
+block|{
+if|if
+condition|(
+name|ResourceUtils
+operator|.
+name|getNumberOfKnownResourceTypes
+argument_list|()
+operator|>
+literal|2
+condition|)
+block|{
+name|this
+operator|.
+name|queueMetricsForCustomResources
+operator|=
+operator|new
+name|QueueMetricsForCustomResources
+argument_list|()
+expr_stmt|;
+name|registerCustomResources
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Register all custom resources metrics as part of initialization. As and    * when this metric object construction happens for any queue, all custom    * resource metrics value would be initialized with '0' like any other    * mandatory resources metrics    */
+DECL|method|registerCustomResources ()
+specifier|protected
+name|void
+name|registerCustomResources
+parameter_list|()
+block|{
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Long
+argument_list|>
+name|customResources
+init|=
+name|initAndGetCustomResources
+argument_list|()
+decl_stmt|;
 name|registerCustomResources
 argument_list|(
 name|customResources
@@ -2711,7 +2747,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|registerCustomResources (Map<String, Long> customResources, String metricPrefix, String metricDesc)
-specifier|private
+specifier|protected
 name|void
 name|registerCustomResources
 parameter_list|(
@@ -5167,6 +5203,36 @@ expr_stmt|;
 block|}
 block|}
 block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getQueueMetricsForCustomResources ()
+specifier|public
+name|QueueMetricsForCustomResources
+name|getQueueMetricsForCustomResources
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|queueMetricsForCustomResources
+return|;
+block|}
+DECL|method|setQueueMetricsForCustomResources ( QueueMetricsForCustomResources metrics)
+specifier|public
+name|void
+name|setQueueMetricsForCustomResources
+parameter_list|(
+name|QueueMetricsForCustomResources
+name|metrics
+parameter_list|)
+block|{
+name|this
+operator|.
+name|queueMetricsForCustomResources
+operator|=
+name|metrics
+expr_stmt|;
 block|}
 block|}
 end_class
