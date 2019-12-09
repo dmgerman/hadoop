@@ -1070,7 +1070,7 @@ name|Configuration
 argument_list|()
 decl_stmt|;
 DECL|field|CUSTOM_RES_1
-specifier|public
+specifier|private
 specifier|static
 specifier|final
 name|String
@@ -1079,7 +1079,7 @@ init|=
 literal|"custom_res_1"
 decl_stmt|;
 DECL|field|CUSTOM_RES_2
-specifier|public
+specifier|private
 specifier|static
 specifier|final
 name|String
