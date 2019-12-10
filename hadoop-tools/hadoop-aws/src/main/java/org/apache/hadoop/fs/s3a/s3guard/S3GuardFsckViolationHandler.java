@@ -1151,6 +1151,82 @@ literal|"The entry for the path is tombstoned in the MS."
 return|;
 block|}
 block|}
+comment|/**    * The violation handler there's no parent in the MetadataStore.    */
+DECL|class|OrphanDDBEntry
+specifier|public
+specifier|static
+class|class
+name|OrphanDDBEntry
+extends|extends
+name|ViolationHandler
+block|{
+DECL|method|OrphanDDBEntry (S3GuardFsck.ComparePair comparePair)
+specifier|public
+name|OrphanDDBEntry
+parameter_list|(
+name|S3GuardFsck
+operator|.
+name|ComparePair
+name|comparePair
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|comparePair
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getError ()
+specifier|public
+name|String
+name|getError
+parameter_list|()
+block|{
+return|return
+literal|"The DDB entry is orphan - there is no parent in the MS."
+return|;
+block|}
+block|}
+comment|/**    * The violation handler when there's no last updated field for the entry.    */
+DECL|class|NoLastUpdatedField
+specifier|public
+specifier|static
+class|class
+name|NoLastUpdatedField
+extends|extends
+name|ViolationHandler
+block|{
+DECL|method|NoLastUpdatedField (S3GuardFsck.ComparePair comparePair)
+specifier|public
+name|NoLastUpdatedField
+parameter_list|(
+name|S3GuardFsck
+operator|.
+name|ComparePair
+name|comparePair
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|comparePair
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getError ()
+specifier|public
+name|String
+name|getError
+parameter_list|()
+block|{
+return|return
+literal|"No lastUpdated field provided for the entry."
+return|;
+block|}
+block|}
 block|}
 end_class
 

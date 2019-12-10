@@ -1761,6 +1761,15 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"This test serves the purpose to run fsck with the correct "
+operator|+
+literal|"parameters, so there will be no exception thrown."
+argument_list|)
+expr_stmt|;
 specifier|final
 name|int
 name|result
@@ -1788,10 +1797,6 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"This test serves the purpose to run fsck with the correct "
-operator|+
-literal|"parameters, so there will be no exception thrown. "
-operator|+
 literal|"The return value of the run: {}"
 argument_list|,
 name|result
@@ -1876,6 +1881,176 @@ operator|+
 name|UUID
 operator|.
 name|randomUUID
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testCLIFsckDDbInternalWrongS3APath ()
+specifier|public
+name|void
+name|testCLIFsckDDbInternalWrongS3APath
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|intercept
+argument_list|(
+name|FileNotFoundException
+operator|.
+name|class
+argument_list|,
+literal|"wrong path"
+argument_list|,
+parameter_list|()
+lambda|->
+name|run
+argument_list|(
+name|S3GuardTool
+operator|.
+name|Fsck
+operator|.
+name|NAME
+argument_list|,
+literal|"-"
+operator|+
+name|Fsck
+operator|.
+name|DDB_MS_CONSISTENCY_FLAG
+argument_list|,
+literal|"s3a://"
+operator|+
+name|getFileSystem
+argument_list|()
+operator|.
+name|getBucket
+argument_list|()
+operator|+
+literal|"/"
+operator|+
+name|UUID
+operator|.
+name|randomUUID
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testCLIFsckDDbInternalParam ()
+specifier|public
+name|void
+name|testCLIFsckDDbInternalParam
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|describe
+argument_list|(
+literal|"This test serves the purpose to run fsck with the correct "
+operator|+
+literal|"parameters, so there will be no exception thrown."
+argument_list|)
+expr_stmt|;
+specifier|final
+name|int
+name|result
+init|=
+name|run
+argument_list|(
+name|S3GuardTool
+operator|.
+name|Fsck
+operator|.
+name|NAME
+argument_list|,
+literal|"-"
+operator|+
+name|Fsck
+operator|.
+name|DDB_MS_CONSISTENCY_FLAG
+argument_list|,
+literal|"s3a://"
+operator|+
+name|getFileSystem
+argument_list|()
+operator|.
+name|getBucket
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"The return value of the run: {}"
+argument_list|,
+name|result
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testCLIFsckCheckExclusive ()
+specifier|public
+name|void
+name|testCLIFsckCheckExclusive
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|describe
+argument_list|(
+literal|"There should be only one check param when running fsck."
+operator|+
+literal|"If more then one param is passed, the command should fail."
+operator|+
+literal|"This provide exclusive run for checks so the user is able to define "
+operator|+
+literal|"the order of checking."
+argument_list|)
+expr_stmt|;
+name|intercept
+argument_list|(
+name|ExitUtil
+operator|.
+name|ExitException
+operator|.
+name|class
+argument_list|,
+literal|"only one parameter"
+argument_list|,
+parameter_list|()
+lambda|->
+name|run
+argument_list|(
+name|S3GuardTool
+operator|.
+name|Fsck
+operator|.
+name|NAME
+argument_list|,
+literal|"-"
+operator|+
+name|Fsck
+operator|.
+name|DDB_MS_CONSISTENCY_FLAG
+argument_list|,
+literal|"-"
+operator|+
+name|Fsck
+operator|.
+name|CHECK_FLAG
+argument_list|,
+literal|"s3a://"
+operator|+
+name|getFileSystem
+argument_list|()
+operator|.
+name|getBucket
 argument_list|()
 argument_list|)
 argument_list|)
