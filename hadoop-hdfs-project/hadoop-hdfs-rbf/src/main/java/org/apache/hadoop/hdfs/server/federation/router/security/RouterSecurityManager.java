@@ -413,6 +413,14 @@ operator|.
 name|dtSecretManager
 operator|==
 literal|null
+operator|||
+operator|!
+name|this
+operator|.
+name|dtSecretManager
+operator|.
+name|isRunning
+argument_list|()
 condition|)
 block|{
 throw|throw
