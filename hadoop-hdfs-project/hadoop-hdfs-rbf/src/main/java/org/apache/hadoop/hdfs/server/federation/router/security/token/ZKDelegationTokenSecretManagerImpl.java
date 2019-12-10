@@ -201,7 +201,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Error starting threads for zkDelegationTokens "
+literal|"Error starting threads for zkDelegationTokens"
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 block|}
