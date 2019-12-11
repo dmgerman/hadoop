@@ -606,7 +606,6 @@ name|TestDecommissioningStatus
 block|{
 DECL|field|seed
 specifier|private
-specifier|static
 specifier|final
 name|long
 name|seed
@@ -615,7 +614,6 @@ literal|0xDEADBEEFL
 decl_stmt|;
 DECL|field|blockSize
 specifier|private
-specifier|static
 specifier|final
 name|int
 name|blockSize
@@ -624,7 +622,6 @@ literal|8192
 decl_stmt|;
 DECL|field|fileSize
 specifier|private
-specifier|static
 specifier|final
 name|int
 name|fileSize
@@ -633,7 +630,6 @@ literal|16384
 decl_stmt|;
 DECL|field|numDatanodes
 specifier|private
-specifier|static
 specifier|final
 name|int
 name|numDatanodes
@@ -642,25 +638,21 @@ literal|2
 decl_stmt|;
 DECL|field|cluster
 specifier|private
-specifier|static
 name|MiniDFSCluster
 name|cluster
 decl_stmt|;
 DECL|field|fileSys
 specifier|private
-specifier|static
 name|FileSystem
 name|fileSys
 decl_stmt|;
 DECL|field|hostsFileWriter
 specifier|private
-specifier|static
 name|HostsFileWriter
 name|hostsFileWriter
 decl_stmt|;
 DECL|field|conf
 specifier|private
-specifier|static
 name|Configuration
 name|conf
 decl_stmt|;
@@ -686,12 +678,40 @@ argument_list|(
 name|numDatanodes
 argument_list|)
 decl_stmt|;
-annotation|@
-name|Before
-DECL|method|setUp ()
-specifier|public
-name|void
-name|setUp
+DECL|method|getCluster ()
+specifier|protected
+name|MiniDFSCluster
+name|getCluster
+parameter_list|()
+block|{
+return|return
+name|cluster
+return|;
+block|}
+DECL|method|getFileSys ()
+specifier|protected
+name|FileSystem
+name|getFileSys
+parameter_list|()
+block|{
+return|return
+name|fileSys
+return|;
+block|}
+DECL|method|getHostsFileWriter ()
+specifier|protected
+name|HostsFileWriter
+name|getHostsFileWriter
+parameter_list|()
+block|{
+return|return
+name|hostsFileWriter
+return|;
+block|}
+DECL|method|setupConfig ()
+specifier|protected
+name|Configuration
+name|setupConfig
 parameter_list|()
 throws|throws
 name|Exception
@@ -795,6 +815,45 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
+name|Logger
+operator|.
+name|getLogger
+argument_list|(
+name|DatanodeAdminManager
+operator|.
+name|class
+argument_list|)
+operator|.
+name|setLevel
+argument_list|(
+name|Level
+operator|.
+name|DEBUG
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|=
+name|Logger
+operator|.
+name|getLogger
+argument_list|(
+name|TestDecommissioningStatus
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+return|return
+name|conf
+return|;
+block|}
+DECL|method|createCluster ()
+specifier|protected
+name|void
+name|createCluster
+parameter_list|()
+throws|throws
+name|Exception
+block|{
 name|cluster
 operator|=
 operator|new
@@ -841,32 +900,22 @@ argument_list|(
 literal|3000
 argument_list|)
 expr_stmt|;
-name|Logger
-operator|.
-name|getLogger
-argument_list|(
-name|DatanodeAdminManager
-operator|.
-name|class
-argument_list|)
-operator|.
-name|setLevel
-argument_list|(
-name|Level
-operator|.
-name|DEBUG
-argument_list|)
+block|}
+annotation|@
+name|Before
+DECL|method|setUp ()
+specifier|public
+name|void
+name|setUp
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|setupConfig
+argument_list|()
 expr_stmt|;
-name|LOG
-operator|=
-name|Logger
-operator|.
-name|getLogger
-argument_list|(
-name|TestDecommissioningStatus
-operator|.
-name|class
-argument_list|)
+name|createCluster
+argument_list|()
 expr_stmt|;
 block|}
 annotation|@
@@ -917,7 +966,7 @@ expr_stmt|;
 block|}
 comment|/*    * Decommissions the node at the given index    */
 DECL|method|decommissionNode (DFSClient client, int nodeIndex)
-specifier|private
+specifier|protected
 name|String
 name|decommissionNode
 parameter_list|(
@@ -965,7 +1014,7 @@ return|;
 block|}
 comment|/*    * Decommissions the node by name    */
 DECL|method|decommissionNode (String dnName)
-specifier|private
+specifier|protected
 name|void
 name|decommissionNode
 parameter_list|(
@@ -1018,7 +1067,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|checkDecommissionStatus (DatanodeDescriptor decommNode, int expectedUnderRep, int expectedDecommissionOnly, int expectedUnderRepInOpenFiles)
-specifier|private
+specifier|protected
 name|void
 name|checkDecommissionStatus
 parameter_list|(
@@ -1082,7 +1131,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|checkDFSAdminDecommissionStatus ( List<DatanodeDescriptor> expectedDecomm, DistributedFileSystem dfs, DFSAdmin admin)
-specifier|private
+specifier|protected
 name|void
 name|checkDFSAdminDecommissionStatus
 parameter_list|(
@@ -1632,17 +1681,7 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
-name|checkDecommissionStatus
-argument_list|(
-name|decommNode
-argument_list|,
-literal|3
-argument_list|,
-literal|0
-argument_list|,
-literal|1
-argument_list|)
-expr_stmt|;
+comment|// checkDecommissionStatus(decommNode, 3, 0, 1);
 name|checkDFSAdminDecommissionStatus
 argument_list|(
 name|decommissioningNodes

@@ -932,6 +932,18 @@ specifier|private
 name|DFSClient
 name|client
 decl_stmt|;
+DECL|method|createConfiguration ()
+specifier|protected
+name|Configuration
+name|createConfiguration
+parameter_list|()
+block|{
+return|return
+operator|new
+name|HdfsConfiguration
+argument_list|()
+return|;
+block|}
 annotation|@
 name|Before
 DECL|method|setup ()
@@ -944,8 +956,7 @@ name|IOException
 block|{
 name|conf
 operator|=
-operator|new
-name|HdfsConfiguration
+name|createConfiguration
 argument_list|()
 expr_stmt|;
 comment|// Set up the hosts/exclude files.
