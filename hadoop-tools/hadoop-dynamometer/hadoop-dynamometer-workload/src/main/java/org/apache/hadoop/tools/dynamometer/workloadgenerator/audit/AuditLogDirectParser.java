@@ -509,7 +509,11 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Exception while parsing timestamp from audit log"
+literal|"Exception while parsing timestamp from audit log line: `"
+operator|+
+name|inputLine
+operator|+
+literal|"`"
 argument_list|,
 name|p
 argument_list|)
@@ -610,7 +614,11 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Exception while parsing a message from audit log"
+literal|"Exception while parsing a message from audit log line: `"
+operator|+
+name|inputLine
+operator|+
+literal|"`"
 argument_list|,
 name|e
 argument_list|)
