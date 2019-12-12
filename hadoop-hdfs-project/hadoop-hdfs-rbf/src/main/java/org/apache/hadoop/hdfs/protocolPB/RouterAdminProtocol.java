@@ -80,6 +80,26 @@ name|server
 operator|.
 name|federation
 operator|.
+name|resolver
+operator|.
+name|RouterGenericManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|federation
+operator|.
 name|router
 operator|.
 name|NameserviceManager
@@ -145,6 +165,8 @@ extends|,
 name|NameserviceManager
 extends|,
 name|GenericRefreshProtocol
+extends|,
+name|RouterGenericManager
 block|{ }
 end_interface
 
