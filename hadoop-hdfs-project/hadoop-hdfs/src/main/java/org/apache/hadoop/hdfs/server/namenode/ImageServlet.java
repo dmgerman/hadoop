@@ -3331,9 +3331,26 @@ operator|-
 name|lastCheckpointTime
 argument_list|)
 decl_stmt|;
+comment|// Since the goal of the check below is to prevent overly
+comment|// frequent upload from Standby, the check should only be done
+comment|// for the periodical upload from Standby. For the other
+comment|// scenarios such as rollback image and ckpt file, they skip
+comment|// this check, see HDFS-15036 for more info.
 if|if
 condition|(
 name|checkRecentImageEnable
+operator|&&
+name|NameNodeFile
+operator|.
+name|IMAGE
+operator|.
+name|equals
+argument_list|(
+name|parsedParams
+operator|.
+name|getNameNodeFile
+argument_list|()
+argument_list|)
 operator|&&
 name|timeDelta
 operator|<

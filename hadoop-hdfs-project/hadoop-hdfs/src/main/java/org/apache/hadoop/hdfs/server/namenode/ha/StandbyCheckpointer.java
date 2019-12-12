@@ -1594,12 +1594,19 @@ argument_list|(
 name|url
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
+name|TransferFsImage
+operator|.
+name|TransferResult
+name|uploadResult
+init|=
 name|upload
 operator|.
 name|get
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|uploadResult
 operator|==
 name|TransferFsImage
 operator|.
@@ -1626,6 +1633,22 @@ expr_stmt|;
 block|}
 else|else
 block|{
+comment|// Getting here means image upload is explicitly rejected
+comment|// by the other node. This could happen if:
+comment|// 1. the other is also a standby, or
+comment|// 2. the other is active, but already accepted another
+comment|// newer image, or
+comment|// 3. the other is active but has a recent enough image.
+comment|// All these are valid cases, just log for information.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Image upload rejected by the other NameNode: {}"
+argument_list|,
+name|uploadResult
+argument_list|)
+expr_stmt|;
 name|receiverEntry
 operator|.
 name|setIsPrimary
