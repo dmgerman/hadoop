@@ -2222,6 +2222,8 @@ operator|new
 name|CannotObtainBlockLengthException
 argument_list|(
 name|locatedblock
+argument_list|,
+name|src
 argument_list|)
 throw|;
 block|}

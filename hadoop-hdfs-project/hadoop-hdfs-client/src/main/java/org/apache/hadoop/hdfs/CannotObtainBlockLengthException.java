@@ -139,6 +139,30 @@ name|locatedBlock
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Constructs an {@code CannotObtainBlockLengthException} with the    * specified LocatedBlock and file that failed to obtain block length.    *    * @param locatedBlock    *        The LocatedBlock instance which block length can not be obtained    * @param src The file which include this block    */
+DECL|method|CannotObtainBlockLengthException (LocatedBlock locatedBlock, String src)
+specifier|public
+name|CannotObtainBlockLengthException
+parameter_list|(
+name|LocatedBlock
+name|locatedBlock
+parameter_list|,
+name|String
+name|src
+parameter_list|)
+block|{
+name|super
+argument_list|(
+literal|"Cannot obtain block length for "
+operator|+
+name|locatedBlock
+operator|+
+literal|" of "
+operator|+
+name|src
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 
