@@ -138,8 +138,7 @@ argument_list|()
 decl_stmt|;
 comment|/**    * Retrieve the test timeout from the system property    * {@link #PROPERTY_TEST_DEFAULT_TIMEOUT}, falling back to    * the value in {@link #TEST_DEFAULT_TIMEOUT_VALUE} if the    * property is not defined.    * @return the recommended timeout for tests    */
 DECL|method|retrieveTestTimeout ()
-specifier|public
-specifier|static
+specifier|protected
 name|Timeout
 name|retrieveTestTimeout
 parameter_list|()
