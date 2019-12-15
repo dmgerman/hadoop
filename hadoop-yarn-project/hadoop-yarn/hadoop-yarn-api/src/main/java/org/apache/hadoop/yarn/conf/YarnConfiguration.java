@@ -6620,6 +6620,30 @@ name|DEFAULT_NM_MIN_PER_DISK_FREE_SPACE_MB
 init|=
 literal|0
 decl_stmt|;
+comment|/** The health checker scripts. */
+DECL|field|NM_HEALTH_CHECK_SCRIPTS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_HEALTH_CHECK_SCRIPTS
+init|=
+name|NM_PREFIX
+operator|+
+literal|"health-checker.scripts"
+decl_stmt|;
+DECL|field|DEFAULT_NM_HEALTH_CHECK_SCRIPTS
+specifier|public
+specifier|static
+specifier|final
+name|String
+index|[]
+name|DEFAULT_NM_HEALTH_CHECK_SCRIPTS
+init|=
+block|{
+literal|"script"
+block|}
+decl_stmt|;
 comment|/** Frequency of running node health script.*/
 DECL|field|NM_HEALTH_CHECK_INTERVAL_MS
 specifier|public
@@ -6645,52 +6669,76 @@ literal|60
 operator|*
 literal|1000
 decl_stmt|;
-comment|/** Health check script time out period.*/
-DECL|field|NM_HEALTH_CHECK_SCRIPT_TIMEOUT_MS
+comment|/** Health check time out period for all scripts.*/
+DECL|field|NM_HEALTH_CHECK_TIMEOUT_MS
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|NM_HEALTH_CHECK_SCRIPT_TIMEOUT_MS
+name|NM_HEALTH_CHECK_TIMEOUT_MS
 init|=
 name|NM_PREFIX
 operator|+
-literal|"health-checker.script.timeout-ms"
+literal|"health-checker.timeout-ms"
 decl_stmt|;
-DECL|field|DEFAULT_NM_HEALTH_CHECK_SCRIPT_TIMEOUT_MS
+DECL|field|DEFAULT_NM_HEALTH_CHECK_TIMEOUT_MS
 specifier|public
 specifier|static
 specifier|final
 name|long
-name|DEFAULT_NM_HEALTH_CHECK_SCRIPT_TIMEOUT_MS
+name|DEFAULT_NM_HEALTH_CHECK_TIMEOUT_MS
 init|=
 literal|2
 operator|*
 name|DEFAULT_NM_HEALTH_CHECK_INTERVAL_MS
 decl_stmt|;
-comment|/** The health check script to run.*/
-DECL|field|NM_HEALTH_CHECK_SCRIPT_PATH
+comment|/** Health check script time out period.*/
+DECL|field|NM_HEALTH_CHECK_SCRIPT_TIMEOUT_MS_TEMPLATE
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|NM_HEALTH_CHECK_SCRIPT_PATH
+name|NM_HEALTH_CHECK_SCRIPT_TIMEOUT_MS_TEMPLATE
 init|=
 name|NM_PREFIX
 operator|+
-literal|"health-checker.script.path"
+literal|"health-checker.%s.timeout-ms"
+decl_stmt|;
+comment|/** The health check script to run.*/
+DECL|field|NM_HEALTH_CHECK_SCRIPT_PATH_TEMPLATE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_HEALTH_CHECK_SCRIPT_PATH_TEMPLATE
+init|=
+name|NM_PREFIX
+operator|+
+literal|"health-checker.%s.path"
 decl_stmt|;
 comment|/** The arguments to pass to the health check script.*/
-DECL|field|NM_HEALTH_CHECK_SCRIPT_OPTS
+DECL|field|NM_HEALTH_CHECK_SCRIPT_OPTS_TEMPLATE
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|NM_HEALTH_CHECK_SCRIPT_OPTS
+name|NM_HEALTH_CHECK_SCRIPT_OPTS_TEMPLATE
 init|=
 name|NM_PREFIX
 operator|+
-literal|"health-checker.script.opts"
+literal|"health-checker.%s.opts"
+decl_stmt|;
+comment|/** Frequency of running node health script. */
+DECL|field|NM_HEALTH_CHECK_SCRIPT_INTERVAL_MS_TEMPLATE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_HEALTH_CHECK_SCRIPT_INTERVAL_MS_TEMPLATE
+init|=
+name|NM_PREFIX
+operator|+
+literal|"health-checker.%s.interval-ms"
 decl_stmt|;
 comment|/** The JVM options used on forking ContainerLocalizer process       by container executor. */
 DECL|field|NM_CONTAINER_LOCALIZER_JAVA_OPTS_KEY

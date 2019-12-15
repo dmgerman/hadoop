@@ -840,6 +840,8 @@ name|server
 operator|.
 name|nodemanager
 operator|.
+name|health
+operator|.
 name|NodeHealthCheckerService
 import|;
 end_import
@@ -1877,13 +1879,6 @@ operator|=
 operator|new
 name|NodeHealthCheckerService
 argument_list|(
-name|NodeManager
-operator|.
-name|getNodeHealthScriptRunner
-argument_list|(
-name|conf
-argument_list|)
-argument_list|,
 name|dirsHandler
 argument_list|)
 expr_stmt|;

@@ -132,6 +132,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|service
+operator|.
+name|AbstractService
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|DiskChecker
@@ -165,6 +179,26 @@ operator|.
 name|util
 operator|.
 name|DiskValidatorFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|health
+operator|.
+name|HealthReporter
 import|;
 end_import
 
@@ -298,20 +332,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|service
-operator|.
-name|AbstractService
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|StringUtils
@@ -401,6 +421,8 @@ class|class
 name|LocalDirsHandlerService
 extends|extends
 name|AbstractService
+implements|implements
+name|HealthReporter
 block|{
 DECL|field|LOG
 specifier|private
@@ -1760,6 +1782,21 @@ name|toString
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getHealthReport ()
+specifier|public
+name|String
+name|getHealthReport
+parameter_list|()
+block|{
+return|return
+name|getDisksHealthReport
+argument_list|(
+literal|false
+argument_list|)
+return|;
+block|}
 comment|/**    * The minimum fraction of number of disks needed to be healthy for a node to    * be considered healthy in terms of disks is configured using    * {@link YarnConfiguration#NM_MIN_HEALTHY_DISKS_FRACTION}, with a default    * value of {@link YarnConfiguration#DEFAULT_NM_MIN_HEALTHY_DISKS_FRACTION}.    * @return<em>false</em> if either (a) more than the allowed percentage of    * nm-local-dirs failed or (b) more than the allowed percentage of    * nm-log-dirs failed.    */
 DECL|method|areDisksHealthy ()
 specifier|public
@@ -1866,6 +1903,19 @@ return|return
 literal|true
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|isHealthy ()
+specifier|public
+name|boolean
+name|isHealthy
+parameter_list|()
+block|{
+return|return
+name|areDisksHealthy
+argument_list|()
+return|;
+block|}
 DECL|method|getLastDisksCheckTime ()
 specifier|public
 name|long
@@ -1874,6 +1924,19 @@ parameter_list|()
 block|{
 return|return
 name|lastDisksCheckTime
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getLastHealthReportTime ()
+specifier|public
+name|long
+name|getLastHealthReportTime
+parameter_list|()
+block|{
+return|return
+name|getLastDisksCheckTime
+argument_list|()
 return|;
 block|}
 DECL|method|isGoodLocalDir (String path)

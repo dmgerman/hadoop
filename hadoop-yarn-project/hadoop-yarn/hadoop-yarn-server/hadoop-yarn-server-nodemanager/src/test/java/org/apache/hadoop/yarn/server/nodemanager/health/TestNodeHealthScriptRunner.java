@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.util
+DECL|package|org.apache.hadoop.yarn.server.nodemanager.health
 package|package
 name|org
 operator|.
@@ -12,7 +12,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|util
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|health
 package|;
 end_package
 
@@ -126,9 +132,29 @@ begin_import
 import|import
 name|org
 operator|.
-name|junit
+name|apache
 operator|.
-name|After
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Shell
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|conf
+operator|.
+name|YarnConfiguration
 import|;
 end_import
 
@@ -138,7 +164,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Assert
+name|After
 import|;
 end_import
 
@@ -162,6 +188,46 @@ name|Test
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_comment
+comment|/**  * Test class for {@link NodeHealthScriptRunner}.  */
+end_comment
+
 begin_class
 DECL|class|TestNodeHealthScriptRunner
 specifier|public
@@ -169,7 +235,7 @@ class|class
 name|TestNodeHealthScriptRunner
 block|{
 DECL|field|testRootDir
-specifier|protected
+specifier|private
 specifier|static
 name|File
 name|testRootDir
@@ -345,6 +411,118 @@ name|setExecutable
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|createNodeHealthScript ()
+specifier|private
+name|NodeHealthScriptRunner
+name|createNodeHealthScript
+parameter_list|()
+block|{
+name|String
+name|scriptName
+init|=
+literal|"custom"
+decl_stmt|;
+name|YarnConfiguration
+name|conf
+init|=
+operator|new
+name|YarnConfiguration
+argument_list|()
+decl_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_HEALTH_CHECK_SCRIPTS
+argument_list|,
+name|scriptName
+argument_list|)
+expr_stmt|;
+name|String
+name|timeoutConfig
+init|=
+name|String
+operator|.
+name|format
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_HEALTH_CHECK_SCRIPT_TIMEOUT_MS_TEMPLATE
+argument_list|,
+name|scriptName
+argument_list|)
+decl_stmt|;
+name|conf
+operator|.
+name|setLong
+argument_list|(
+name|timeoutConfig
+argument_list|,
+literal|1000L
+argument_list|)
+expr_stmt|;
+name|String
+name|intervalConfig
+init|=
+name|String
+operator|.
+name|format
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_HEALTH_CHECK_SCRIPT_INTERVAL_MS_TEMPLATE
+argument_list|,
+name|scriptName
+argument_list|)
+decl_stmt|;
+name|conf
+operator|.
+name|setLong
+argument_list|(
+name|intervalConfig
+argument_list|,
+literal|500L
+argument_list|)
+expr_stmt|;
+name|String
+name|pathConfig
+init|=
+name|String
+operator|.
+name|format
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_HEALTH_CHECK_SCRIPT_PATH_TEMPLATE
+argument_list|,
+name|scriptName
+argument_list|)
+decl_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|pathConfig
+argument_list|,
+name|nodeHealthscriptFile
+operator|.
+name|getAbsolutePath
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|NodeHealthScriptRunner
+operator|.
+name|newInstance
+argument_list|(
+literal|"custom"
+argument_list|,
+name|conf
+argument_list|)
+return|;
+block|}
 annotation|@
 name|Test
 DECL|method|testNodeHealthScriptShouldRun ()
@@ -355,8 +533,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|Assert
-operator|.
 name|assertFalse
 argument_list|(
 literal|"Node health script should start"
@@ -365,6 +541,8 @@ name|NodeHealthScriptRunner
 operator|.
 name|shouldRun
 argument_list|(
+literal|"script"
+argument_list|,
 name|nodeHealthscriptFile
 operator|.
 name|getAbsolutePath
@@ -381,8 +559,6 @@ argument_list|)
 expr_stmt|;
 comment|// Node health script should not start if the node health script is not
 comment|// executable.
-name|Assert
-operator|.
 name|assertFalse
 argument_list|(
 literal|"Node health script should start"
@@ -391,6 +567,8 @@ name|NodeHealthScriptRunner
 operator|.
 name|shouldRun
 argument_list|(
+literal|"script"
+argument_list|,
 name|nodeHealthscriptFile
 operator|.
 name|getAbsolutePath
@@ -405,8 +583,6 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 literal|"Node health script should start"
@@ -415,6 +591,8 @@ name|NodeHealthScriptRunner
 operator|.
 name|shouldRun
 argument_list|(
+literal|"script"
+argument_list|,
 name|nodeHealthscriptFile
 operator|.
 name|getAbsolutePath
@@ -476,23 +654,8 @@ expr_stmt|;
 name|NodeHealthScriptRunner
 name|nodeHealthScriptRunner
 init|=
-operator|new
-name|NodeHealthScriptRunner
-argument_list|(
-name|nodeHealthscriptFile
-operator|.
-name|getAbsolutePath
+name|createNodeHealthScript
 argument_list|()
-argument_list|,
-literal|500
-argument_list|,
-literal|1000
-argument_list|,
-operator|new
-name|String
-index|[]
-block|{}
-argument_list|)
 decl_stmt|;
 name|nodeHealthScriptRunner
 operator|.
@@ -515,8 +678,6 @@ name|run
 argument_list|()
 expr_stmt|;
 comment|// Normal Script runs successfully
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 literal|"Node health status reported unhealthy"
@@ -527,15 +688,14 @@ name|isHealthy
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
+name|assertTrue
 argument_list|(
-literal|""
-argument_list|,
 name|nodeHealthScriptRunner
 operator|.
 name|getHealthReport
+argument_list|()
+operator|.
+name|isEmpty
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -553,8 +713,6 @@ operator|.
 name|run
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertFalse
 argument_list|(
 literal|"Node health status reported healthy"
@@ -565,8 +723,6 @@ name|isHealthy
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|nodeHealthScriptRunner
@@ -593,8 +749,6 @@ operator|.
 name|run
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 literal|"Node health status reported unhealthy"
@@ -605,15 +759,14 @@ name|isHealthy
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
+name|assertTrue
 argument_list|(
-literal|""
-argument_list|,
 name|nodeHealthScriptRunner
 operator|.
 name|getHealthReport
+argument_list|()
+operator|.
+name|isEmpty
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -630,8 +783,6 @@ operator|.
 name|run
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertFalse
 argument_list|(
 literal|"Node health status reported healthy even after timeout"
@@ -642,8 +793,6 @@ name|isHealthy
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|NodeHealthScriptRunner
@@ -669,8 +818,6 @@ operator|.
 name|run
 argument_list|()
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 literal|"Node health status reported unhealthy"
@@ -681,8 +828,6 @@ name|isHealthy
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|""
