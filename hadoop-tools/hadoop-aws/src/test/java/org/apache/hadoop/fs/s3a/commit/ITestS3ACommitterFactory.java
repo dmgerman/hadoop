@@ -536,6 +536,18 @@ argument_list|()
 expr_stmt|;
 block|}
 annotation|@
+name|Override
+DECL|method|useInconsistentClient ()
+specifier|public
+name|boolean
+name|useInconsistentClient
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
+annotation|@
 name|Test
 DECL|method|testEverything ()
 specifier|public
