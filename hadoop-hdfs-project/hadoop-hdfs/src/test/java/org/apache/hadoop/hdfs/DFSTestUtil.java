@@ -14843,6 +14843,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Create open files under root path.    * @param fs the filesystem.    * @param filePrefix the prefix of the files.    * @param numFilesToCreate the number of files to create.    */
 DECL|method|createOpenFiles (FileSystem fs, String filePrefix, int numFilesToCreate)
 specifier|public
 specifier|static
@@ -14856,6 +14857,50 @@ name|createOpenFiles
 parameter_list|(
 name|FileSystem
 name|fs
+parameter_list|,
+name|String
+name|filePrefix
+parameter_list|,
+name|int
+name|numFilesToCreate
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|createOpenFiles
+argument_list|(
+name|fs
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+literal|"/"
+argument_list|)
+argument_list|,
+name|filePrefix
+argument_list|,
+name|numFilesToCreate
+argument_list|)
+return|;
+block|}
+comment|/**    * Create open files.    * @param fs the filesystem.    * @param baseDir the base path of the files.    * @param filePrefix the prefix of the files.    * @param numFilesToCreate the number of files to create.    */
+DECL|method|createOpenFiles (FileSystem fs, Path baseDir, String filePrefix, int numFilesToCreate)
+specifier|public
+specifier|static
+name|Map
+argument_list|<
+name|Path
+argument_list|,
+name|FSDataOutputStream
+argument_list|>
+name|createOpenFiles
+parameter_list|(
+name|FileSystem
+name|fs
+parameter_list|,
+name|Path
+name|baseDir
 parameter_list|,
 name|String
 name|filePrefix
@@ -14929,8 +14974,8 @@ init|=
 operator|new
 name|Path
 argument_list|(
-literal|"/"
-operator|+
+name|baseDir
+argument_list|,
 name|filePrefix
 operator|+
 literal|"-"

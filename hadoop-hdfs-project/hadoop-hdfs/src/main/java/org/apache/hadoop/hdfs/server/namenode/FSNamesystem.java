@@ -10784,6 +10784,19 @@ name|OpenFileEntry
 argument_list|>
 name|batchedListEntries
 decl_stmt|;
+name|String
+name|normalizedPath
+init|=
+operator|new
+name|Path
+argument_list|(
+name|path
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+decl_stmt|;
+comment|// normalize path.
 try|try
 block|{
 name|readLock
@@ -10818,7 +10831,7 @@ name|getUnderConstructionFiles
 argument_list|(
 name|prevId
 argument_list|,
-name|path
+name|normalizedPath
 argument_list|)
 expr_stmt|;
 block|}
@@ -10842,7 +10855,7 @@ name|getFilesBlockingDecom
 argument_list|(
 name|prevId
 argument_list|,
-name|path
+name|normalizedPath
 argument_list|)
 expr_stmt|;
 block|}
@@ -11054,10 +11067,12 @@ argument_list|(
 name|path
 argument_list|)
 operator|||
-name|fullPathName
+name|DFSUtil
 operator|.
-name|startsWith
+name|isParentEntry
 argument_list|(
+name|fullPathName
+argument_list|,
 name|path
 argument_list|)
 condition|)
