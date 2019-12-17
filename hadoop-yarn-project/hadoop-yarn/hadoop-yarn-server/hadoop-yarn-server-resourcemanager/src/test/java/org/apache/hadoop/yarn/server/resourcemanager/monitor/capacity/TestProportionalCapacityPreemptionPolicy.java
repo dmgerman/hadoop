@@ -7871,14 +7871,14 @@ operator|.
 name|editSchedule
 argument_list|()
 expr_stmt|;
-comment|// 5 containers will be preempted here
+comment|// 4 containers will be preempted here
 name|verify
 argument_list|(
 name|mDisp
 argument_list|,
 name|times
 argument_list|(
-literal|5
+literal|4
 argument_list|)
 argument_list|)
 operator|.
@@ -9055,7 +9055,18 @@ literal|7
 index|]
 argument_list|)
 argument_list|,
+name|leafAbsCapacities
+argument_list|(
+name|qData
+index|[
 literal|0
+index|]
+argument_list|,
+name|qData
+index|[
+literal|7
+index|]
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|ParentQueue
@@ -9710,7 +9721,10 @@ index|[
 name|i
 index|]
 argument_list|,
-literal|0
+name|qData
+index|[
+name|i
+index|]
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -10085,7 +10099,10 @@ index|[
 literal|0
 index|]
 argument_list|,
+name|maxCap
+index|[
 literal|0
+index|]
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -10116,7 +10133,10 @@ index|[
 literal|0
 index|]
 argument_list|,
+name|maxCap
+index|[
 literal|0
+index|]
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -10190,7 +10210,10 @@ index|[
 literal|0
 index|]
 argument_list|,
+name|maxCap
+index|[
 literal|0
+index|]
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -10541,7 +10564,10 @@ index|[
 name|i
 index|]
 argument_list|,
-literal|0
+name|maxCap
+index|[
+name|i
+index|]
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -10572,7 +10598,10 @@ index|[
 name|i
 index|]
 argument_list|,
-literal|0
+name|maxCap
+index|[
+name|i
+index|]
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -10646,7 +10675,10 @@ index|[
 name|i
 index|]
 argument_list|,
-literal|0
+name|maxCap
+index|[
+name|i
+index|]
 argument_list|)
 argument_list|)
 expr_stmt|;
