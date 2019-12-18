@@ -13257,6 +13257,24 @@ name|DEFAULT_FILTER_INVALID_XML_CHARS
 init|=
 literal|false
 decl_stmt|;
+DECL|field|ENABLE_REST_APP_SUBMISSIONS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ENABLE_REST_APP_SUBMISSIONS
+init|=
+literal|"yarn.webapp.enable-rest-app-submissions"
+decl_stmt|;
+DECL|field|DEFAULT_ENABLE_REST_APP_SUBMISSIONS
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_ENABLE_REST_APP_SUBMISSIONS
+init|=
+literal|true
+decl_stmt|;
 comment|// RM and NM CSRF props
 DECL|field|REST_CSRF
 specifier|public
