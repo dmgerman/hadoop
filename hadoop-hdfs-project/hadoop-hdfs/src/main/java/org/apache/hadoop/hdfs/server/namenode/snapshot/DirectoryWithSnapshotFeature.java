@@ -3684,9 +3684,22 @@ name|currentINode
 operator|.
 name|isLastReference
 argument_list|()
+operator|&&
+name|currentINode
+operator|.
+name|getDiffs
+argument_list|()
+operator|.
+name|getLastSnapshotId
+argument_list|()
+operator|==
+name|prior
 condition|)
 block|{
-comment|// if this is the last reference, the created list can be
+comment|// If this is the last reference of the directory inode and it
+comment|// can not be accessed in any of the subsequent snapshots i.e,
+comment|// this is the latest snapshot diff and if this is the last
+comment|// reference, the created list can be
 comment|// destroyed.
 name|priorDiff
 operator|.
