@@ -94,8 +94,10 @@ name|boolean
 name|isResourceManager
 parameter_list|)
 block|{
-comment|// id, user, name, queue, starttime, finishtime, state, status, progress, ui
+comment|// id, user, name, app type, app tags, queue, priority,
+comment|// starttime, launchtime, finishtime, state, status, progress, ui
 comment|// FairSchedulerPage's table is a bit different
+comment|// This is define in RMAppsBlock.COLUMNS for the RM
 return|return
 name|tableInit
 argument_list|()
@@ -175,22 +177,22 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"{'sType':'natural', 'aTargets': [0]"
+literal|"{'sType':'natural', 'aTargets': [0], "
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|", 'mRender': parseHadoopID }"
+literal|"'mRender': parseHadoopID },\n"
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"\n, {'sType':'num-ignore-str', 'aTargets': [6, 7, 8]"
+literal|"{'sType':'num-ignore-str', 'aTargets': [7, 8, 9], "
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|", 'mRender': renderHadoopDate }"
+literal|"'mRender': renderHadoopDate },\n"
 argument_list|)
 expr_stmt|;
 if|if
@@ -203,13 +205,18 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"\n, {'sType':'num-ignore-str', 'aTargets': [11, 12, 13, 14, 15] }"
+literal|"{'sType':'num-ignore-str', "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"'aTargets': [12, 13, 14, 15, 16] },\n"
 argument_list|)
 expr_stmt|;
-comment|// set progress column index to 18
+comment|// set progress column index to 19
 name|progressIndex
 operator|=
-literal|"[18]"
+literal|"[19]"
 expr_stmt|;
 block|}
 elseif|else
@@ -223,7 +230,12 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"\n, {'sType':'num-ignore-str', 'aTargets': [11, 12, 13, 14, 15] }"
+literal|"{'sType':'num-ignore-str', "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"'aTargets': [11, 12, 13, 14, 15] },\n"
 argument_list|)
 expr_stmt|;
 comment|// set progress column index to 16
@@ -236,21 +248,17 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"\n, {'sType':'numeric', bSearchable:false, 'aTargets':"
+literal|"{'sType':'numeric', bSearchable:false, 'aTargets':"
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
 name|progressIndex
 argument_list|)
-expr_stmt|;
-name|sb
 operator|.
 name|append
 argument_list|(
-literal|", 'mRender': parseHadoopProgress }]"
+literal|", 'mRender': parseHadoopProgress }\n]"
 argument_list|)
 expr_stmt|;
 return|return
