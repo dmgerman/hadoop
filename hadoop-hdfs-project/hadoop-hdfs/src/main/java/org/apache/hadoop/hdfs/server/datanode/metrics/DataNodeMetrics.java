@@ -833,6 +833,26 @@ specifier|private
 name|MutableCounterLong
 name|ecReconstructionWriteTimeMillis
 decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Sum of all BPServiceActors command queue length"
+argument_list|)
+DECL|field|sumOfActorCommandQueueLength
+specifier|private
+name|MutableCounterLong
+name|sumOfActorCommandQueueLength
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Num of processed commands of all BPServiceActors"
+argument_list|)
+DECL|field|numProcessedCommands
+specifier|private
+name|MutableCounterLong
+name|numProcessedCommands
+decl_stmt|;
 DECL|field|registry
 specifier|final
 name|MetricsRegistry
@@ -2596,6 +2616,35 @@ argument_list|,
 name|timeSinceLastReport
 argument_list|)
 return|;
+block|}
+DECL|method|incrActorCmdQueueLength (int delta)
+specifier|public
+name|void
+name|incrActorCmdQueueLength
+parameter_list|(
+name|int
+name|delta
+parameter_list|)
+block|{
+name|sumOfActorCommandQueueLength
+operator|.
+name|incr
+argument_list|(
+name|delta
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|incrNumProcessedCommands ()
+specifier|public
+name|void
+name|incrNumProcessedCommands
+parameter_list|()
+block|{
+name|numProcessedCommands
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 end_class
