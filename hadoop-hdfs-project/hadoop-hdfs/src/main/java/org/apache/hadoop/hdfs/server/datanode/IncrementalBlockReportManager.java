@@ -1024,6 +1024,29 @@ argument_list|(
 name|reports
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to call blockReceivedAndDeleted: {}, nnId: {}"
+operator|+
+literal|", duration(ms): {}"
+argument_list|,
+name|Arrays
+operator|.
+name|toString
+argument_list|(
+name|reports
+argument_list|)
+argument_list|,
+name|nnRpcLatencySuffix
+argument_list|,
+name|monotonicNow
+argument_list|()
+operator|-
+name|startTime
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 block|}
